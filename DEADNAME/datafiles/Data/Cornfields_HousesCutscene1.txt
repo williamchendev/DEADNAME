@@ -1,0 +1,23 @@
+// Cutscene File
+
+unit1 = find("unit", "enemy_talk_B1")
+unit2 = find("unit", "enemy_talk_B2")
+
+interrupt(unit1,unit2)
+
+unit1 : Who's there?
+wait()
+unit2 : It's probably no one.
+wait()
+unit1 : I saw something!
+wait()
+unit1 : ...
+wait()
+unit1 : I swear I did!
+wait()
+unit2 : ...
+wait()
+unit2 : Sure.
+wait()
+unit1 : *grumble grumble*
+wait()

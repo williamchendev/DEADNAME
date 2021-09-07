@@ -1,0 +1,7 @@
+// Cutscene File
+player = find("unit_player")
+
+interrupt(player)
+
+player :: What poor taste in graffiti
+player :: I thought I was far more artistically inclined...
