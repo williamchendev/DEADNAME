@@ -32,7 +32,12 @@ walk_animation = sWilliamDS_Run;
 jump_animation = sWilliamDS_Jump;
 aim_animation = sWilliamDS_Aim;
 aim_walk_animation = sWilliamDS_AimWalk;
-hurt_animation = sWilliam_Hurt;
+
+idle_normals = sWolf_Idle_NormalMap;
+walk_normals = sWolf_Run_NormalMap;
+jump_normals = sWolf_Jump_NormalMap;
+aim_normals = sWolf_Aim_NormalMap;
+aim_walk_normals = sWolf_AimWalk_NormalMap;
 
 animation_spd = 0.18;
 
@@ -77,6 +82,9 @@ universal_physics_object.base_object = self;
 
 // Animation Variables
 draw_index = 0;
+
+sprite_lit_index = noone;
+sprite_normal_index = noone;
 
 draw_color = c_white;
 draw_alpha = 1;
@@ -152,6 +160,11 @@ key_aim_press = false;
 key_reload_press = false;
 
 key_command = false;
+
+// Shader Variables
+vectorcolorscale_shader_r = shader_get_uniform(shd_vectorcolorscale, "rScale");
+vectorcolorscale_shader_g = shader_get_uniform(shd_vectorcolorscale, "gScale");
+vectorcolorscale_shader_b = shader_get_uniform(shd_vectorcolorscale, "bScale");
 
 // Inventory
 inventory = create_empty_inventory(6, 4);

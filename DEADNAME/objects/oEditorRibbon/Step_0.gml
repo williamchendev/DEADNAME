@@ -45,8 +45,8 @@ if (mouse_hover_index != -1) {
 		
 		// Check if mouse is over Drop Down Menu
 		var temp_dropdown_hover = false;
-		if ((mouse_room_x() > (x + temp_dropdown_x)) and (mouse_room_x() < (x + temp_dropdown_x + temp_largest_option_width + ribbon_spacer))) {
-			if ((mouse_room_y() > (y + ribbon_height - 4)) and (mouse_room_y() < (y + ribbon_height + temp_ribbontext_height))) {
+		if ((mouse_get_x() > (x + temp_dropdown_x)) and (mouse_get_x() < (x + temp_dropdown_x + temp_largest_option_width + ribbon_spacer))) {
+			if ((mouse_get_y() > (y + ribbon_height - 4)) and (mouse_get_y() < (y + ribbon_height + temp_ribbontext_height))) {
 				temp_dropdown_hover = true;
 			}
 		}
@@ -59,9 +59,9 @@ if (mouse_hover_index != -1) {
 			// Iterate through Drop Down Options
 			for (var q = 0; q < temp_ribbon_options_length; q++) {
 				var temp_option = ribbon_options[mouse_hover_index, q];
-				if ((mouse_room_x() > (x + temp_dropdown_x + (ribbon_spacer / 2) - 1)) and (mouse_room_x() < (x + temp_dropdown_x + (ribbon_spacer / 2) + string_width(temp_option)))) {
+				if ((mouse_get_x() > (x + temp_dropdown_x + (ribbon_spacer / 2) - 1)) and (mouse_get_x() < (x + temp_dropdown_x + (ribbon_spacer / 2) + string_width(temp_option)))) {
 					var temp_option_y = y + (dropdown_spacer * (q + 0.5)) + ribbon_height;
-					if ((mouse_room_y() > temp_option_y - 1) and (mouse_room_y() < temp_option_y + 7)) {
+					if ((mouse_get_y() > temp_option_y - 1) and (mouse_get_y() < temp_option_y + 7)) {
 						dd_mouse_hover_index = q;
 						break;
 					}
@@ -119,7 +119,7 @@ if (mouse_hover_index != -1) {
 // Ribbon Title Calculations
 if (!ribbon_menu_selected) {
 	// Check Title Hover and Selection
-	if (abs((y + (ribbon_height / 2)) - mouse_room_y()) < (ribbon_height / 2)) {
+	if (abs((y + (ribbon_height / 2)) - mouse_get_y()) < (ribbon_height / 2)) {
 		// Iterate through all titles
 		var temp_ribbon_width = ribbon_spacer / 2;
 		for (var i = 0; i < array_length_1d(ribbon_names); i++) {
@@ -129,8 +129,8 @@ if (!ribbon_menu_selected) {
 			var temp_button_end_x = temp_ribbon_width + ((ribbon_spacer / 2) - 1);
 	
 			// Check if Mouse Hover
-			if (mouse_room_x() > (x + temp_button_start_x)) {
-				if (mouse_room_x() < (x + temp_button_end_x)) {
+			if (mouse_get_x() > (x + temp_button_start_x)) {
+				if (mouse_get_x() < (x + temp_button_end_x)) {
 					mouse_hover_index = i;
 					break;
 				}

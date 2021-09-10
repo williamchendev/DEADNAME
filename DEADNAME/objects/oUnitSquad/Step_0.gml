@@ -26,8 +26,8 @@ if (player_input) {
 		
 		key_command = keyboard_check(game_manager.command_check);
 		
-		cursor_x = mouse_x;
-		cursor_y = mouse_y;
+		cursor_x = mouse_get_x();
+		cursor_y = mouse_get_y();
 	}
 }
 else {

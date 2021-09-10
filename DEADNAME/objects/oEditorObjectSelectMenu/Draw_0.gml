@@ -6,10 +6,10 @@ var draw_offset_x = 16;
 if (expanded) {
 	draw_offset_x = 124;
 }
-var temp_mouse_x = format_string_numbers(string(round(mouse_room_x())), 5);
-var temp_mouse_y = format_string_numbers(string(round(mouse_room_y())), 5);
-var temp_box_x = format_string_numbers(string(floor(mouse_room_x() / 48)), 4);
-var temp_box_y = format_string_numbers(string(floor(mouse_room_y() / 48)), 4);
+var temp_mouse_x = format_string_numbers(string(round(mouse_get_x())), 5);
+var temp_mouse_y = format_string_numbers(string(round(mouse_get_y())), 5);
+var temp_box_x = format_string_numbers(string(floor(mouse_get_x() / 48)), 4);
+var temp_box_y = format_string_numbers(string(floor(mouse_get_y() / 48)), 4);
 if (selected) {
 	draw_text_outline(oGameManager.camera_x + draw_offset_x, oGameManager.camera_y + oGameManager.camera_height - 31, c_white, c_black, selected_text);
 }

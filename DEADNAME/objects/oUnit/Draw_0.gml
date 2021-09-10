@@ -1,8 +1,32 @@
 /// @description Unit Draw Event
 // Draws the unit to the screen
 
+// Lighting Draw Behaviour
+if (lit_draw_event) {
+	sprite_index = sprite_lit_index;
+}
+else if (normal_draw_event) {
+	sprite_index = sprite_normal_index;
+}
+else if (instance_exists(oLighting)) {
+	return;
+}
+
 // Draw Unit Sprite
+if (normal_draw_event) {
+	// Set Normal Vector Scaling Shader
+	shader_set(shd_vectorcolorscale);
+	shader_set_uniform_f(vectorcolorscale_shader_r, sign(draw_xscale * image_xscale) * cos(degtorad(draw_angle)));
+	shader_set_uniform_f(vectorcolorscale_shader_g, sign(draw_yscale) * sin(degtorad(draw_angle)));
+	shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
+}
+
 draw_sprite_ext(sprite_index, image_index, x, y - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2), draw_xscale * image_xscale, draw_yscale, draw_angle, draw_color, image_alpha);
+
+if (normal_draw_event) {
+	// Reset Normal Vector Scaling Shader
+	shader_reset();
+}
 
 // Draw Stats Variables
 var temp_stats_x = x - (sin(degtorad(draw_angle)) * (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset));

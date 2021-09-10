@@ -5,8 +5,8 @@
 if (visible) {
 	// Check if the user clicked to expand or shrink this submenu
 	if (mouse_check_button_pressed(mb_left) and oEditor.editor_click) {
-		if (abs(mouse_room_x() - (x + 53.5)) < 52) {
-			if (abs(mouse_room_y() - (y + 8.5)) < 8) {
+		if (abs(mouse_get_x() - (x + 53.5)) < 52) {
+			if (abs(mouse_get_y() - (y + 8.5)) < 8) {
 				// Pull in or push out sub menu
 				expanded = !expanded;
 				oEditor.editor_click = false;

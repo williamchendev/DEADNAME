@@ -3,7 +3,7 @@
 
 // Check if Mouse is over Button
 if (!pause) {
-	if (abs((x + 27.5) - mouse_room_x()) < 26.5) and (abs((y + 9) - mouse_room_y()) < 8) {
+	if (abs((x + 27.5) - mouse_get_x()) < 26.5) and (abs((y + 9) - mouse_get_y()) < 8) {
 		if (mouse_check_button_pressed(mb_left)) {
 			alpha = 1;
 			pressed = true;

@@ -4,4 +4,5 @@
 
 // Finds and returns the mouse x position
 var temp_camera = instance_find(oCamera, 0);
-return mouse_x + temp_camera.x;
+var temp_mouse_x = (window_mouse_get_x() / window_get_width()) * temp_camera.camera_width;
+return temp_camera.x + temp_mouse_x;

@@ -77,7 +77,7 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 	// PointLight Variables
 	var temp_lightrange = (temp_plight.range / 32) * 2;
 	var temp_lightintensity = temp_plight.intensity;
-	var temp_lightcolor = temp_plight.color;
+	var temp_lightcolor = make_color_rgb(color_get_red(temp_plight.color), color_get_green(temp_plight.color), color_get_blue(temp_plight.color));
 	
 	// PointLight Vectors Surface
 	surface_set_target(surface_vectors);

@@ -14,8 +14,8 @@ if (destroy) {
 // Mouse Drag
 if (drag) {
 	if (mouse_check_button(mb_left)) {
-		camera_x_offset = (mouse_room_x() - oGameManager.camera_x) - mouse_x_offset;
-		camera_y_offset = (mouse_room_y() - oGameManager.camera_y) - mouse_y_offset;
+		camera_x_offset = (mouse_get_x() - oGameManager.camera_x) - mouse_x_offset;
+		camera_y_offset = (mouse_get_y() - oGameManager.camera_y) - mouse_y_offset;
 	}
 	else {
 		drag = false;
@@ -24,8 +24,8 @@ if (drag) {
 
 // Close the Window or Check if Title Bar was selected
 if (mouse_check_button_pressed(mb_left)) {
-	if (abs((x + width - 5.5) - mouse_room_x()) < 4.5) {
-		if (abs((y + 7.5) - mouse_room_y()) < 4.5) {
+	if (abs((x + width - 5.5) - mouse_get_x()) < 4.5) {
+		if (abs((y + 7.5) - mouse_get_y()) < 4.5) {
 			if (instance_exists(oEditor)) {
 				oEditor.editor_click = false;
 			}
@@ -35,14 +35,14 @@ if (mouse_check_button_pressed(mb_left)) {
 			destroy = true;
 		}
 	}
-	else if (abs((x + (width / 2))  - mouse_room_x()) < width / 2) {
-		if (abs((y + (title_height / 2)) - mouse_room_y()) < title_height / 2) {
+	else if (abs((x + (width / 2))  - mouse_get_x()) < width / 2) {
+		if (abs((y + (title_height / 2)) - mouse_get_y()) < title_height / 2) {
 			with (oEditorWindow) {
 				drag = false;
 			}
 			drag = true;
-			mouse_x_offset = mouse_room_x() - x;
-			mouse_y_offset = mouse_room_y() - y;
+			mouse_x_offset = mouse_get_x() - x;
+			mouse_y_offset = mouse_get_y() - y;
 		}
 	}
 }

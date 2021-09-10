@@ -17,41 +17,41 @@ if (selected) {
 		mouse_mode = -1;
 		if (oEditor.editor_tools.util_type == 0) {
 			// Editor Select
-			if ((mouse_room_x() > (x + edge_a)) and (mouse_room_x() < (x + edge_b))) {
-				if ((mouse_room_y() > (y + edge_c)) and (mouse_room_y() < (y + edge_d))) {
+			if ((mouse_get_x() > (x + edge_a)) and (mouse_get_x() < (x + edge_b))) {
+				if ((mouse_get_y() > (y + edge_c)) and (mouse_get_y() < (y + edge_d))) {
 					// Check Edges and Mids for Editor Cursor Mode
-					if (point_distance(mouse_room_x(), mouse_room_y(), x + edge_a, y + edge_c) < mouse_edge_bounds) {
+					if (point_distance(mouse_get_x(), mouse_get_y(), x + edge_a, y + edge_c) < mouse_edge_bounds) {
 						// Left Top Corner
 						mouse_mode = 0;
 					}
-					else if (point_distance(mouse_room_x(), mouse_room_y(), x + edge_b, y + edge_c) < mouse_edge_bounds) {
+					else if (point_distance(mouse_get_x(), mouse_get_y(), x + edge_b, y + edge_c) < mouse_edge_bounds) {
 						// Right Top Corner
 						mouse_mode = 0;
 					}
-					else if (point_distance(mouse_room_x(), mouse_room_y(), x + edge_a, y + edge_d) < mouse_edge_bounds) {
+					else if (point_distance(mouse_get_x(), mouse_get_y(), x + edge_a, y + edge_d) < mouse_edge_bounds) {
 						// Left Bottom Corner
 						mouse_mode = 0;
 					}
-					else if (point_distance(mouse_room_x(), mouse_room_y(), x + edge_b, y + edge_d) < mouse_edge_bounds) {
+					else if (point_distance(mouse_get_x(), mouse_get_y(), x + edge_b, y + edge_d) < mouse_edge_bounds) {
 						// Right Bottom Corner
 						mouse_mode = 0;
 					}
-					else if (abs((x + edge_a) - mouse_room_x()) < mouse_mid_bounds) {
+					else if (abs((x + edge_a) - mouse_get_x()) < mouse_mid_bounds) {
 						// Left Horizontal Line
 						mouse_mode = 1;
 						scale_mode = false;
 					}
-					else if (abs((x + edge_b) - mouse_room_x()) < mouse_mid_bounds) {
+					else if (abs((x + edge_b) - mouse_get_x()) < mouse_mid_bounds) {
 						// Right Horizontal Line
 						mouse_mode = 1;
 						scale_mode = true;
 					}
-					else if (abs((y + edge_c) - mouse_room_y()) < mouse_mid_bounds) {
+					else if (abs((y + edge_c) - mouse_get_y()) < mouse_mid_bounds) {
 						// Top Vertical Line
 						mouse_mode = 2;
 						scale_mode = false;
 					}
-					else if (abs((y + edge_d) - mouse_room_y()) < mouse_mid_bounds) {
+					else if (abs((y + edge_d) - mouse_get_y()) < mouse_mid_bounds) {
 						// Bottom Vertical Line
 						mouse_mode = 2;
 						scale_mode = true;
@@ -61,8 +61,8 @@ if (selected) {
 		}
 		else if (oEditor.editor_tools.util_type == 1) {
 			// Editor Move
-			if ((mouse_room_x() > (x + edge_a)) and (mouse_room_x() < (x + edge_b))) {
-				if ((mouse_room_y() > (y + edge_c)) and (mouse_room_y() < (y + edge_d))) {
+			if ((mouse_get_x() > (x + edge_a)) and (mouse_get_x() < (x + edge_b))) {
+				if ((mouse_get_y() > (y + edge_c)) and (mouse_get_y() < (y + edge_d))) {
 					mouse_mode = 3;
 				}
 			}
@@ -80,8 +80,8 @@ if (selected) {
 			if (mouse_check_button_pressed(mb_left)) {
 				// Set Mouse Press variables
 				mouse_press = true;
-				mouse_press_x = mouse_room_x();
-				mouse_press_y = mouse_room_y();
+				mouse_press_x = mouse_get_x();
+				mouse_press_y = mouse_get_y();
 				
 				// Old Object Variables
 				old_x = x;
@@ -147,7 +147,7 @@ if (selected) {
 			if (mouse_mode == 0) {
 				// Rotate
 				var temp_old_rotate = point_direction(old_x + old_mid_x, old_y + old_mid_y, mouse_press_x, mouse_press_y);
-				var temp_new_rotate = point_direction(old_x + old_mid_x, old_y + old_mid_y, mouse_room_x(), mouse_room_y());
+				var temp_new_rotate = point_direction(old_x + old_mid_x, old_y + old_mid_y, mouse_get_x(), mouse_get_y());
 				var temp_object_rotation = old_rotation + (temp_new_rotate - temp_old_rotate);
 				
 				// Calculate Center Rotate Offset
@@ -200,7 +200,7 @@ if (selected) {
 						// Drag Right Scaling
 						if (sign(old_scale_x) >= 0) {
 							// Calculate Drag Scale
-							temp_mouse_offset = mouse_room_x() - (old_x + temp_bbox_old_scale_left);
+							temp_mouse_offset = mouse_get_x() - (old_x + temp_bbox_old_scale_left);
 							object_x_scale = (temp_mouse_offset / temp_mask_width);
 							if (temp_scale_snap) {
 								object_x_scale = round(object_x_scale);
@@ -212,7 +212,7 @@ if (selected) {
 						}
 						else {
 							// Calculate Drag Scale
-							temp_mouse_offset = mouse_room_x() - (old_x + temp_bbox_old_scale_right);
+							temp_mouse_offset = mouse_get_x() - (old_x + temp_bbox_old_scale_right);
 							object_x_scale = (temp_mouse_offset / temp_mask_width) * -1;
 							if (temp_scale_snap) {
 								object_x_scale = round(object_x_scale);
@@ -227,7 +227,7 @@ if (selected) {
 						// Drag Left Scaling
 						if (sign(old_scale_x) >= 0) {
 							// Calculate Drag Scale
-							temp_mouse_offset = (old_x + temp_bbox_old_scale_right) - mouse_room_x();
+							temp_mouse_offset = (old_x + temp_bbox_old_scale_right) - mouse_get_x();
 							object_x_scale = (temp_mouse_offset / temp_mask_width);
 							if (temp_scale_snap) {
 								object_x_scale = round(object_x_scale);
@@ -239,7 +239,7 @@ if (selected) {
 						}
 						else {			
 							// Calculate Drag Scale
-							temp_mouse_offset = (old_x + temp_bbox_old_scale_left) - mouse_room_x();
+							temp_mouse_offset = (old_x + temp_bbox_old_scale_left) - mouse_get_x();
 							object_x_scale = (temp_mouse_offset / temp_mask_width) * -1;
 							if (temp_scale_snap) {
 								object_x_scale = round(object_x_scale);
@@ -279,7 +279,7 @@ if (selected) {
 						// Drag Bottom Scaling
 						if (sign(old_scale_y) >= 0) {
 							// Calculate Drag Scale
-							temp_mouse_offset = mouse_room_y() - (old_y + temp_bbox_old_scale_top);
+							temp_mouse_offset = mouse_get_y() - (old_y + temp_bbox_old_scale_top);
 							object_y_scale = (temp_mouse_offset / temp_mask_height);
 							if (temp_scale_snap) {
 								object_y_scale = round(object_y_scale);
@@ -291,7 +291,7 @@ if (selected) {
 						}
 						else {
 							// Calculate Drag Scale
-							temp_mouse_offset = mouse_room_y() - (old_y + temp_bbox_old_scale_bottom);
+							temp_mouse_offset = mouse_get_y() - (old_y + temp_bbox_old_scale_bottom);
 							object_y_scale = (temp_mouse_offset / temp_mask_height) * -1;
 							if (temp_scale_snap) {
 								object_y_scale = round(object_y_scale);
@@ -306,7 +306,7 @@ if (selected) {
 						// Drag Top Scaling
 						if (sign(old_scale_y) >= 0) {
 							// Calculate Drag Scale
-							temp_mouse_offset = (old_y + temp_bbox_old_scale_bottom) - mouse_room_y();
+							temp_mouse_offset = (old_y + temp_bbox_old_scale_bottom) - mouse_get_y();
 							object_y_scale = (temp_mouse_offset / temp_mask_height);
 							if (temp_scale_snap) {
 								object_y_scale = round(object_y_scale);
@@ -318,7 +318,7 @@ if (selected) {
 						}
 						else {			
 							// Calculate Drag Scale
-							temp_mouse_offset = (old_y + temp_bbox_old_scale_top) - mouse_room_y();
+							temp_mouse_offset = (old_y + temp_bbox_old_scale_top) - mouse_get_y();
 							object_y_scale = (temp_mouse_offset / temp_mask_height) * -1;
 							if (temp_scale_snap) {
 								object_y_scale = round(object_y_scale);
@@ -347,13 +347,13 @@ if (selected) {
 				// Move
 				if (keyboard_check(vk_control)) {
 					// Free Move
-					x = old_x - (mouse_press_x - mouse_room_x());
-					y = old_y - (mouse_press_y - mouse_room_y());
+					x = old_x - (mouse_press_x - mouse_get_x());
+					y = old_y - (mouse_press_y - mouse_get_y());
 				}
 				else {
 					// Snap Move
-					var temp_free_x = old_x - (mouse_press_x - mouse_room_x());
-					var temp_free_y = old_y - (mouse_press_y - mouse_room_y());
+					var temp_free_x = old_x - (mouse_press_x - mouse_get_x());
+					var temp_free_y = old_y - (mouse_press_y - mouse_get_y());
 					
 					// Get Offset
 					var temp_obj_x_offset = 0;

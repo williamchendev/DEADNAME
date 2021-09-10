@@ -1,6 +1,17 @@
 /// @description Firearm Draw
 // Draws the firearm object to the screen
 
+// Lighting Draw Behaviour
+sprite_index = weapon_sprite;
+if (instance_exists(oLighting)) {
+	if (normal_draw_event) {
+		sprite_index = weapon_normal_sprite;
+	}
+	else if (!lit_draw_event) {
+		return;
+	}
+}
+
 // Weapon Rotation
 var temp_weapon_rotation = weapon_rotation + recoil_angle_shift;
 
@@ -123,8 +134,21 @@ if (ds_list_size(flash_timer) > 0 and attack_show) {
 	}
 }
 
+// Set Normal Vector Scaling Shader
+if (normal_draw_event) {
+	shader_set(shd_vectorcolorscale);
+	shader_set_uniform_f(vectorcolorscale_shader_r, sign(weapon_xscale) * cos(degtorad(temp_weapon_rotation)));
+	shader_set_uniform_f(vectorcolorscale_shader_g, sign(weapon_yscale) * sin(degtorad(temp_weapon_rotation)));
+	shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
+}
+
 // Draw the Firearm
-draw_sprite_ext(weapon_sprite, image_index, temp_x, temp_y, weapon_xscale, weapon_yscale, temp_weapon_rotation, c_white, 1);
+draw_sprite_ext(sprite_index, image_index, temp_x, temp_y, weapon_xscale, weapon_yscale, temp_weapon_rotation, c_white, 1);
+
+// Reset Normal Vector Scaling Shader
+if (normal_draw_event) {
+	shader_reset();
+}
 
 // Draw Debug Firearm Stats
 if (global.debug and draw_debug) {

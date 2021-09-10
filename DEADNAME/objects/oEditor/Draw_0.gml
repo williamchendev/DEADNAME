@@ -33,8 +33,8 @@ if (editor_mode == editortypes.block) {
 	}
 	
 	// Draw Selected Object at Cursor
-	var temp_snap_x = (floor(mouse_room_x() / 48) * 48);
-	var temp_snap_y = (floor(mouse_room_y() / 48) * 48);
+	var temp_snap_x = (floor(mouse_get_x() / 48) * 48);
+	var temp_snap_y = (floor(mouse_get_y() / 48) * 48);
 	
 	// Cursor Draw Behaviour
 	if (editor_tools.util_type == 2) {
@@ -42,8 +42,8 @@ if (editor_mode == editortypes.block) {
 		if (editor_objects.selected_menu != -1 and editor_objects.selected_index != -1) {
 			if (editor_objects.selected_menu == 1) {
 				// Tileset Cursor
-				if (mouse_room_x() >= 0 and mouse_room_x() < (block_width * 48)) {
-					if (mouse_room_y() >= 0 and mouse_room_y() < (block_height * 48)) {
+				if (mouse_get_x() >= 0 and mouse_get_x() < (block_width * 48)) {
+					if (mouse_get_y() >= 0 and mouse_get_y() < (block_height * 48)) {
 						if (editor_objects.selected_index == 0) {
 							// Draw Empty
 							draw_sprite(sDebugEmpty, 1, temp_snap_x, temp_snap_y);
@@ -63,8 +63,8 @@ if (editor_mode == editortypes.block) {
 					temp_obj_x_offset = global.editor_data[(editor_objects.selected_menu * global.editor_data_categories_length) + editor_objects.selected_index, 3];
 					temp_obj_y_offset = global.editor_data[(editor_objects.selected_menu * global.editor_data_categories_length) + editor_objects.selected_index, 4];
 				}
-				var temp_cursor_x = mouse_room_x();
-				var temp_cursor_y = mouse_room_y();
+				var temp_cursor_x = mouse_get_x();
+				var temp_cursor_y = mouse_get_y();
 				if (editor_snap) {
 					temp_cursor_x = temp_snap_x + temp_obj_x_offset;
 					temp_cursor_y = temp_snap_y + temp_obj_y_offset;
@@ -74,11 +74,11 @@ if (editor_mode == editortypes.block) {
 		}
 	}
 	else if (editor_tools.util_type == 3) {
-		draw_sprite(sEditorUtil, 3, mouse_room_x(), mouse_room_y());
+		draw_sprite(sEditorUtil, 3, mouse_get_x(), mouse_get_y());
 	}
 }
 
 // Draw Editor Cursor
 if (editor_cursor != -1) {
-	draw_sprite(sEditorCursor, editor_cursor, mouse_room_x(), mouse_room_y());
+	draw_sprite(sEditorCursor, editor_cursor, mouse_get_x(), mouse_get_y());
 }

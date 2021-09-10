@@ -12,14 +12,14 @@ if (editor_mode == editortypes.block) {
 	if (editor_click) {
 		// Check if Editor Options was selected
 		if (editor_objects.expanded) {
-			if (mouse_room_x() < oGameManager.camera_x + 117) {
+			if (mouse_get_x() < oGameManager.camera_x + 117) {
 				return;
 			}
 		}
 		
 		// Snap Variables
-		var temp_snap_x = floor(mouse_room_x() / 48);
-		var temp_snap_y = floor(mouse_room_y() / 48);
+		var temp_snap_x = floor(mouse_get_x() / 48);
+		var temp_snap_y = floor(mouse_get_y() / 48);
 		
 		// Editor Tool Type Behaviour
 		if (editor_tools.util_type <= 1) {
@@ -47,7 +47,7 @@ if (editor_mode == editortypes.block) {
 			if (mouse_check_button_pressed(mb_left)) {
 				// Set Editor Object Selected
 				var temp_object_list = ds_list_create();
-				var temp_editor_object_num = instance_position_list(mouse_room_x(), mouse_room_y(), oEditorObject, temp_object_list, true);
+				var temp_editor_object_num = instance_position_list(mouse_get_x(), mouse_get_y(), oEditorObject, temp_object_list, true);
 				if (temp_editor_object_num == 1) {
 					// Select Single OEditorObject
 					temp_select_obj = ds_list_find_value(temp_object_list, 0);
@@ -91,8 +91,8 @@ if (editor_mode == editortypes.block) {
 					// Tileset Selected
 					if (mouse_check_button(mb_left)) {
 						// Check if within bounds of the editor block
-						if (mouse_room_x() >= 0 and mouse_room_x() < (block_width * 48)) {
-							if (mouse_room_y() >= 0 and mouse_room_y() < (block_height * 48)) {
+						if (mouse_get_x() >= 0 and mouse_get_x() < (block_width * 48)) {
+							if (mouse_get_y() >= 0 and mouse_get_y() < (block_height * 48)) {
 								// Set the Tile
 								tileset_set(block_tileset, temp_snap_x, temp_snap_y, editor_objects.selected_index - 1);
 							}
@@ -118,8 +118,8 @@ if (editor_mode == editortypes.block) {
 						temp_obj_y = temp_obj_y_offset + (temp_snap_y * 48);
 					}
 					else {
-						temp_obj_x = mouse_room_x();
-						temp_obj_y = mouse_room_y();
+						temp_obj_x = mouse_get_x();
+						temp_obj_y = mouse_get_y();
 					}
 				
 					// Draw Object
@@ -192,7 +192,7 @@ if (editor_mode == editortypes.block) {
 				// Erase Object
 				if (mouse_check_button_pressed(mb_left)) {
 					var temp_object_list = ds_list_create();
-					var temp_object_num = instance_position_list(mouse_room_x(), mouse_room_y(), oEditorObject, temp_object_list, true);
+					var temp_object_num = instance_position_list(mouse_get_x(), mouse_get_y(), oEditorObject, temp_object_list, true);
 					if (temp_object_num > 0) { 
 						var temp_object_single = ds_list_find_value(temp_object_list, 0);
 						instance_destroy(temp_object_single);
@@ -208,8 +208,8 @@ if (editor_mode == editortypes.block) {
 				// Erase Tileset
 				if (mouse_check_button(mb_left)) {
 					// Check if within bounds of the editor block
-					if (mouse_room_x() >= 0 and mouse_room_x() < (block_width * 48)) {
-						if (mouse_room_y() >= 0 and mouse_room_y() < (block_height * 48)) {
+					if (mouse_get_x() >= 0 and mouse_get_x() < (block_width * 48)) {
+						if (mouse_get_y() >= 0 and mouse_get_y() < (block_height * 48)) {
 							// Reset the Tile
 							tileset_set(block_tileset, temp_snap_x, temp_snap_y, -1);
 						}

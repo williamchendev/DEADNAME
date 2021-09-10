@@ -16,6 +16,7 @@ far_range_radius = 400;
 
 // Sprite Settings
 weapon_sprite = sMarinda308;
+weapon_normal_sprite = sFAL_NormalMap;
 case_sprite = s308Case;
 muzzle_flash_sprite = s308MuzzleFlash;
 
@@ -128,3 +129,8 @@ hit_effect_sign = 1;
 collider_array_hit = noone;
 collider_array_hit[0] = oUnit;
 collider_array_hit[1] = oMaterial;
+
+// Shader Variables
+vectorcolorscale_shader_r = shader_get_uniform(shd_vectorcolorscale, "rScale");
+vectorcolorscale_shader_g = shader_get_uniform(shd_vectorcolorscale, "gScale");
+vectorcolorscale_shader_b = shader_get_uniform(shd_vectorcolorscale, "bScale");

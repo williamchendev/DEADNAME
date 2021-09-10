@@ -9,8 +9,8 @@ if (instance_exists(oEditorWindow)) {
 hover = false;
 if (visible) {
 	// Checks if mouse is hovering over object selection
-	if (abs(mouse_room_y() - y) < 16) {
-		if (abs(mouse_room_x() - x) < 16) {
+	if (abs(mouse_get_y() - y) < 16) {
+		if (abs(mouse_get_x() - x) < 16) {
 			hover = true;
 			// Check if Mouse was pressed
 			if (mouse_check_button_pressed(mb_left) and oEditor.editor_click) {

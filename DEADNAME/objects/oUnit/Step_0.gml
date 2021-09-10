@@ -180,9 +180,14 @@ if (!platform_free(x, y + 1, platform_list)) {
 	if (x_velocity != 0) {
 		if (!key_aim_press and !reload) {
 			sprite_index = walk_animation;
+			sprite_lit_index = walk_animation;
+			sprite_normal_index = walk_normals;
 		}
 		else if (canmove) {
 			sprite_index = aim_walk_animation;
+			sprite_lit_index = aim_walk_animation;
+			sprite_normal_index = aim_walk_normals;
+			
 			if (!reload) {
 				if (image_xscale != sign(x_velocity)) {
 					anim_spd_sign = -1;
@@ -193,9 +198,13 @@ if (!platform_free(x, y + 1, platform_list)) {
 	else {
 		if (key_aim_press and canmove and !reload) {
 			sprite_index = aim_animation;
+			sprite_lit_index = aim_animation;
+			sprite_normal_index = aim_normals;
 		}
 		else {
 			sprite_index = idle_animation;
+			sprite_lit_index = idle_animation;
+			sprite_normal_index = idle_normals;
 		}
 	}
 	
@@ -227,6 +236,9 @@ if (!platform_free(x, y + 1, platform_list)) {
 else {
 	// Set Jump Animation
 	sprite_index = jump_animation;
+	sprite_lit_index = jump_animation;
+	sprite_normal_index = jump_normals;
+	
 	if (y_velocity < -jump_peak_threshold) {
 		image_index = 0;
 	}
@@ -297,8 +309,6 @@ if (canmove and interact_active) {
 
 // Death & Ragdoll
 if (health_points <= 0) {
-	sprite_index = hurt_animation;
-	
 	// Ragdoll
 	if (ragdoll) {
 		// Establish Ragdoll Sprite Array

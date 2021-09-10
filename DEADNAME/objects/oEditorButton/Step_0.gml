@@ -8,7 +8,7 @@ if (instance_exists(oEditorWindow)) {
 
 // Check if Mouse Click on Button
 if (oEditor.editor_click) {
-	var temp_rad_check = sqrt(sqr(mouse_room_x() - x) + sqr(mouse_room_y() - y));
+	var temp_rad_check = sqrt(sqr(mouse_get_x() - x) + sqr(mouse_get_y() - y));
 	if (draw_radius > temp_rad_check) {
 		// Makes sure the editor doesn't let the user accidentally draw anything behind the button
 		if (mouse_check_button(mb_left)) {

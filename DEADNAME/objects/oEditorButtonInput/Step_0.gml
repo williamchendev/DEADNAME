@@ -6,8 +6,8 @@ event_inherited();
 
 // Check if Mouse Hover
 var temp_check = false;
-if (abs((x + (width / 2)) - mouse_room_x()) < width / 2) {
-	if (abs((y + (height / 2)) - mouse_room_y()) < height / 2) {
+if (abs((x + (width / 2)) - mouse_get_x()) < width / 2) {
+	if (abs((y + (height / 2)) - mouse_get_y()) < height / 2) {
 		temp_check = true;
 	}
 }

@@ -9,6 +9,7 @@ limb_target_x = x;
 limb_target_y = y;
 
 limb_sprite = sWilliam_Arms;
+limb_normal_sprite = sWolf_Arms_NormalMap;
 
 limb_direction = 1;
 
@@ -25,3 +26,8 @@ point2_y = 0;
 
 angle_1 = 0;
 angle_2 = 0;
+
+// Shader Variables
+vectorcolorscale_shader_r = shader_get_uniform(shd_vectorcolorscale, "rScale");
+vectorcolorscale_shader_g = shader_get_uniform(shd_vectorcolorscale, "gScale");
+vectorcolorscale_shader_b = shader_get_uniform(shd_vectorcolorscale, "bScale");

@@ -4,4 +4,5 @@
 
 // Finds and returns the mouse y position
 var temp_camera = instance_find(oCamera, 0);
-return mouse_y + temp_camera.y;
+var temp_mouse_y = (window_mouse_get_y() / window_get_height()) * temp_camera.camera_height;
+return temp_camera.y + temp_mouse_y;

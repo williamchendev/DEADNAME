@@ -199,8 +199,8 @@ if (selected) {
 
 // Click Event
 if (mouse_check_button_pressed(mb_left)) {
-	if (abs((x + (width / 2)) - mouse_room_x()) < width / 2) {
-		if (abs((y + (height / 2)) - mouse_room_y()) < height / 2) {
+	if (abs((x + (width / 2)) - mouse_get_x()) < width / 2) {
+		if (abs((y + (height / 2)) - mouse_get_y()) < height / 2) {
 			// Set Selected
 			if (!selected) {
 				// Reset Editor Input Selected
@@ -217,7 +217,7 @@ if (mouse_check_button_pressed(mb_left)) {
 			for (var i = 0; i <= string_length(text_display); i++) {
 				var old_length_pos = string_width(string_copy(text_display, 0, new_index));
 				var length_pos = string_width(string_copy(text_display, 0, i + 1));
-				if (abs(mouse_room_x() - (draw_x + length_pos)) < abs(mouse_room_x() - (draw_x + old_length_pos))) {
+				if (abs(mouse_get_x() - (draw_x + length_pos)) < abs(mouse_get_x() - (draw_x + old_length_pos))) {
 					new_index = i;
 				}
 			}

@@ -1,7 +1,6 @@
 /// @description Parallax Background Update
 // Calculates the Parallax Background Behaviour
 
-
 // Check Player
 var temp_reset_player_follow = false;
 if (player_follow == noone) {
@@ -24,8 +23,16 @@ if (temp_reset_player_follow) {
 }
 
 // Find Target
-var temp_target_x = game_manager.camera_x + (game_manager.game_width / 2);
-var temp_target_y = game_manager.camera_y + game_manager.game_height;
+var temp_camera = instance_find(oCamera, 0);
+var temp_camera_x = 0;
+var temp_camera_y = 0;
+if (instance_exists(temp_camera)) {
+	temp_camera_x = temp_camera.x;
+	temp_camera_y = temp_camera.y;
+}
+
+var temp_target_x = temp_camera_x + (game_manager.game_width / 2);
+var temp_target_y = temp_camera_y + game_manager.game_height;
 
 for (var i = 0; i < array_length_1d(background_sprite); i++) {
 	background_scroll_value[i] += global.deltatime * background_scroll_spd[i];

@@ -8,10 +8,10 @@ y = oGameManager.camera_y;
 // Checks if Mouse clicked on the expand tab for the Main Object Selection Menu
 if (!instance_exists(oEditorWindow)) {
 	if (mouse_check_button_pressed(mb_left) and oEditor.editor_click) {
-		if (abs(mouse_room_y() - (oGameManager.camera_y + (oGameManager.camera_height / 2))) < (oGameManager.camera_height / 2)) {
+		if (abs(mouse_get_y() - (oGameManager.camera_y + (oGameManager.camera_height / 2))) < (oGameManager.camera_height / 2)) {
 			if (expanded) {
 				// Pushes menu back in if expanded
-				if (abs(mouse_room_x() - (oGameManager.camera_x + 113)) < 4) {
+				if (abs(mouse_get_x() - (oGameManager.camera_x + 113)) < 4) {
 					oEditor.editor_click = false;
 					expanded = false;
 					with (oEditorObjectBracket) {
@@ -24,7 +24,7 @@ if (!instance_exists(oEditorWindow)) {
 			}
 			else {
 				// Pulls menu out if not expanded
-				if (abs(mouse_room_x() - (x + 4.5)) < 4) {
+				if (abs(mouse_get_x() - (x + 4.5)) < 4) {
 					oEditor.editor_click = false;
 					expanded = true;
 					with (oEditorObjectBracket) {
