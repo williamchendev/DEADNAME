@@ -28,17 +28,19 @@ if (!surface_exists(surface_light)) {
 surface_set_target(surface_color);
 draw_clear_alpha(c_black, 0);
 
-for (var i = 0; i < instance_number(oBasic); i++) {
-	var temp_sprite = instance_find(oBasic, i);
-	with (temp_sprite) {
-		// Basic Object Displacement
-		x -= other.x;
-		y -= other.y;
+for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
+	var temp_sprite = ds_list_find_value(basic_object_depth_list, i);
+	if (instance_exists(temp_sprite)) {
+		with (temp_sprite) {
+			// Basic Object Displacement
+			x -= other.x;
+			y -= other.y;
 		
-		// Basic Lighting Colors Draw Event
-		lit_draw_event = true;
-		event_perform(ev_draw, 0);
-		lit_draw_event = false;
+			// Basic Lighting Colors Draw Event
+			lit_draw_event = true;
+			event_perform(ev_draw, 0);
+			lit_draw_event = false;
+		}
 	}
 }
 
@@ -48,17 +50,19 @@ surface_reset_target();
 surface_set_target(surface_normals);
 draw_clear_alpha(c_black, 0);
 
-for (var i = 0; i < instance_number(oBasic); i++) {
-	var temp_sprite = instance_find(oBasic, i);
-	with (temp_sprite) {
-		// Basic Normals Draw Event
-		normal_draw_event = true;
-		event_perform(ev_draw, 0);
-		normal_draw_event = false;
+for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
+	var temp_sprite = ds_list_find_value(basic_object_depth_list, i);
+	if (instance_exists(temp_sprite)) {
+		with (temp_sprite) {
+			// Basic Normals Draw Event
+			normal_draw_event = true;
+			event_perform(ev_draw, 0);
+			normal_draw_event = false;
 		
-		// Reset Basic Object Displacement
-		x += other.x;
-		y += other.y;
+			// Reset Basic Object Displacement
+			x += other.x;
+			y += other.y;
+		}
 	}
 }
 
@@ -137,8 +141,8 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 }
 
 // Draw Lighting Background
-draw_set_color(c_black);
-draw_rectangle(x - 10, y - 10, x + screen_width + 10, y + screen_height + 10, false);
+//draw_set_color(c_black);
+//draw_rectangle(x - 10, y - 10, x + screen_width + 10, y + screen_height + 10, false);
 
 // Draw Lighting Surface
 shader_set(shd_drawlitsurface);

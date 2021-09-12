@@ -363,7 +363,7 @@ if (health_points <= 0) {
 		var temp_death_dialogue_exists = false;
 		for (var l = 0; l < instance_number(oTextBox); l++) {
 			var temp_textbox_inst = instance_find(oTextBox, l);
-			if (temp_textbox_inst.unit == self) {
+			if (temp_textbox_inst.unit == id) {
 				temp_death_dialogue_exists = true;
 				if (death_dialogue_text != noone) {
 					temp_textbox_inst.destroy = true;
@@ -379,12 +379,12 @@ if (health_points <= 0) {
 			
 			if (death_dialogue_text != noone) {
 				temp_death_dialogue.text = death_dialogue_text;
-				temp_death_dialogue.unit = self;
+				temp_death_dialogue.unit = id;
 				temp_death_dialogue.interrupt_text_active = false;
 			}
 			else {
 				temp_death_dialogue.text = "...";
-				temp_death_dialogue.unit = self;
+				temp_death_dialogue.unit = id;
 			}
 			
 			with (temp_death_dialogue) {

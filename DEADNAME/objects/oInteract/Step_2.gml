@@ -44,8 +44,8 @@ else {
 }
 
 if (interact_select_draw_value > 0) {
-	if (is_undefined(ds_map_find_value(game_manager.surface_manager.interacts_outline, self))) {
-		ds_map_add(game_manager.surface_manager.interacts_outline, self, interact_select_outline_color);
+	if (is_undefined(ds_map_find_value(game_manager.surface_manager.interacts_outline, id))) {
+		ds_map_add(game_manager.surface_manager.interacts_outline, id, interact_select_outline_color);
 	}
 }
 

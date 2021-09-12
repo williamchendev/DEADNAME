@@ -6,6 +6,16 @@ screen_width = 640;
 screen_height = 360;
 tint = c_white;
 
+// Variables
+visible = true;
+basic_object_depth_list = ds_list_create();
+for (var i = 0; i < instance_number(oBasic); i++) {
+	var temp_basic_inst = instance_find(oBasic, i);
+	if (ds_list_find_index(basic_object_depth_list, temp_basic_inst.id) == -1) {
+		ds_list_add_instance_by_depth(basic_object_depth_list, temp_basic_inst.id);
+	}
+}
+
 // Surfaces
 surface_color = noone;
 surface_normals = noone;

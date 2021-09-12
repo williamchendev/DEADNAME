@@ -12,5 +12,5 @@ instance_destroy(universal_physics_object);
 
 // Clear instance from Game Manager instantiated unit objects
 if (instance_exists(game_manager)) {
-	ds_list_delete(game_manager.instantiated_units, ds_list_find_index(game_manager.instantiated_units, self));
+	ds_list_delete(game_manager.instantiated_units, ds_list_find_index(game_manager.instantiated_units, id));
 }

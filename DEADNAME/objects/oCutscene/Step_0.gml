@@ -268,7 +268,7 @@ if (cutscene_valid and cutscene_enabled) {
 										break;
 									case "method_find":
 										// Get Value from Find Method
-										temp_variable_value = thespian_find(self, ds_list_find_value(temp_data_words, 2));
+										temp_variable_value = thespian_find(id, ds_list_find_value(temp_data_words, 2));
 										break;
 									default :
 										// Invalid Statement
@@ -320,18 +320,18 @@ if (cutscene_valid and cutscene_enabled) {
 				switch (ds_list_find_value(temp_data_words_type, 0)) {
 					case "method_wait":
 						// Wait Method Behaviour
-						thespian_wait(self, ds_list_find_value(temp_data_words, 0));
+						thespian_wait(id, ds_list_find_value(temp_data_words, 0));
 						if (cutscene_wait) {
 							return;
 						}
 						break;
 					case "method_move":
 						// Move Method Behaviour
-						thespian_move(self, ds_list_find_value(temp_data_words, 0));
+						thespian_move(id, ds_list_find_value(temp_data_words, 0));
 						break;
 					case "method_interrupt":
 						// Interrupt Method Behaviour
-						var temp_arguments = thespian_parse(self, ds_list_find_value(temp_data_words, 0));
+						var temp_arguments = thespian_parse(id, ds_list_find_value(temp_data_words, 0));
 						
 						// Index Interrupt Units
 						for (var l = 0; l < array_length_1d(temp_arguments); l++) {

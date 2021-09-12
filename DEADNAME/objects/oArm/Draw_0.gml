@@ -49,18 +49,20 @@ else {
 	// Draw Sprite Arms Behaviour
 	if (normal_draw_event) {
 		// Set Normal Vector Scaling Shader
-		shader_set(shd_vectorcolorscale);
+		shader_set(shd_vectortransform);
 		
 		// Draw Shoulder & Arm
-		shader_set_uniform_f(vectorcolorscale_shader_r, -sign(temp_dis_1 * limb_direction) * cos(degtorad(temp_angle_1)));
-		shader_set_uniform_f(vectorcolorscale_shader_g, sin(degtorad(temp_angle_1)));
-		shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
+		var temp_normalscale_x = -sign(temp_dis_1 * limb_direction) * sin(degtorad(temp_angle_1));
+		var temp_normalscale_y = sin(degtorad(temp_angle_1));
+		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+		shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_angle_1 - 90));
 		draw_sprite_ext(temp_arm_sprite_index, 0, limb_anchor_x - temp_light_surface_x_offset, limb_anchor_y - temp_light_surface_y_offset, -1, temp_dis_1 * limb_direction, temp_angle_1, c_white, 1); 
 		
 		// Draw Forearm & Hand
-		shader_set_uniform_f(vectorcolorscale_shader_r, -sign(temp_dis_2 * limb_direction) * cos(degtorad(temp_angle_2)));
-		shader_set_uniform_f(vectorcolorscale_shader_g, sin(degtorad(temp_angle_2)));
-		shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
+		temp_normalscale_x = -sign(temp_dis_2 * limb_direction) * sin(degtorad(temp_angle_2));
+		temp_normalscale_y = sin(degtorad(temp_angle_2));
+		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+		shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_angle_2 - 90));
 		draw_sprite_ext(temp_arm_sprite_index, 1, point1_x - temp_light_surface_x_offset, point1_y - temp_light_surface_y_offset, -1, temp_dis_2 * limb_direction, temp_angle_2, c_white, 1);
 		
 		// Reset Normal Vector Scaling Shader

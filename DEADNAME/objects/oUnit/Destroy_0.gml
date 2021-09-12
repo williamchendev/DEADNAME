@@ -5,3 +5,6 @@
 for (var l = array_length_1d(layers) - 1; l >= 0; l--) {
 	layer_destroy(layers[l]);
 }
+
+// oBasic Cleanup
+event_inherited();

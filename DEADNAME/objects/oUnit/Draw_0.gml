@@ -2,30 +2,42 @@
 // Draws the unit to the screen
 
 // Lighting Draw Behaviour
+var temp_skip_gui = false;
+var temp_skip_sprite = false;
 if (lit_draw_event) {
+	temp_skip_gui = true;
 	sprite_index = sprite_lit_index;
 }
 else if (normal_draw_event) {
+	temp_skip_gui = true;
 	sprite_index = sprite_normal_index;
 }
 else if (instance_exists(oLighting)) {
-	return;
+	temp_skip_sprite = true;
 }
 
 // Draw Unit Sprite
-if (normal_draw_event) {
-	// Set Normal Vector Scaling Shader
-	shader_set(shd_vectorcolorscale);
-	shader_set_uniform_f(vectorcolorscale_shader_r, sign(draw_xscale * image_xscale) * cos(degtorad(draw_angle)));
-	shader_set_uniform_f(vectorcolorscale_shader_g, sign(draw_yscale) * sin(degtorad(draw_angle)));
-	shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
-}
+if (!temp_skip_sprite) {
+	if (normal_draw_event) {
+		// Set Normal Vector Scaling Shader
+		shader_set(shd_vectortransform);
+		shader_set_uniform_f(vectortransform_shader_angle, degtorad(draw_angle));
+		var temp_normalscale_x = sign(draw_xscale * image_xscale) * cos(degtorad(draw_angle));
+		var temp_normalscale_y = sign(draw_yscale);
+		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+	}
 
-draw_sprite_ext(sprite_index, image_index, x, y - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2), draw_xscale * image_xscale, draw_yscale, draw_angle, draw_color, image_alpha);
+	draw_sprite_ext(sprite_index, image_index, x, y - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2), draw_xscale * image_xscale, draw_yscale, draw_angle, draw_color, image_alpha);
 
-if (normal_draw_event) {
-	// Reset Normal Vector Scaling Shader
-	shader_reset();
+	if (normal_draw_event) {
+		// Reset Normal Vector Scaling Shader
+		shader_reset();
+	}
+	
+	// Check to Skip GUI
+	if (temp_skip_gui) {
+		return;
+	}
 }
 
 // Draw Stats Variables

@@ -15,7 +15,7 @@ if (held) {
 }
 else {
 	if (mouse_check_button_pressed(mb_left)) {
-		if (position_meeting(mouse_x, mouse_y, self)) {
+		if (position_meeting(mouse_x, mouse_y, id)) {
 			with (oRagdollEntity) {
 				held = false;
 			}

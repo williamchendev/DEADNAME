@@ -1,6 +1,9 @@
 /// @description Weapon Initialization
 // Creates the settings and variables of the wepaon object
 
+// Basic Lighting Inheritance
+event_inherited();
+
 // Instance Settings
 game_manager = instance_find(oGameManager, 0);
 

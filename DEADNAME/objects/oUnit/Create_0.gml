@@ -78,7 +78,7 @@ slope_angle = 0;
 slope_offset = 0;
 
 universal_physics_object = instance_create_layer(x, y, layer_get_id("Instances"), oPhysics);
-universal_physics_object.base_object = self;
+universal_physics_object.base_object = id;
 
 // Animation Variables
 draw_index = 0;
@@ -161,17 +161,18 @@ key_reload_press = false;
 
 key_command = false;
 
-// Shader Variables
-vectorcolorscale_shader_r = shader_get_uniform(shd_vectorcolorscale, "rScale");
-vectorcolorscale_shader_g = shader_get_uniform(shd_vectorcolorscale, "gScale");
-vectorcolorscale_shader_b = shader_get_uniform(shd_vectorcolorscale, "bScale");
+// Lighting Variables
+event_inherited();
+
+vectortransform_shader_angle = shader_get_uniform(shd_vectortransform, "vectorAngle");
+vectortransform_shader_scale = shader_get_uniform(shd_vectortransform, "vectorScale");
 
 // Inventory
 inventory = create_empty_inventory(6, 4);
 
 // Singleton
 game_manager = instance_find(oGameManager, 0);
-ds_list_add(game_manager.instantiated_units, self);
+ds_list_add(game_manager.instantiated_units, id);
 
 // Layers
 layer_id = -1;
@@ -199,7 +200,7 @@ ds_list_destroy(temp_unit_layers);
 layer_id = temp_layer_id;
 
 for (var i = 0; i < 5; i++) {
-	layers[i] = layer_create(((layer_id + 1) * -5) - i, object_get_name(self) + "_" + string(instance_number(oUnit)) + "_layer" + string(i));
+	layers[i] = layer_create(((layer_id + 1) * -5) - i, object_get_name(id) + "_" + string(instance_number(oUnit)) + "_layer" + string(i));
 }
 
 layer = layers[2];

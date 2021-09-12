@@ -2383,6 +2383,14 @@
             }
         },
         {
+            "Key": "a3c22c20-db56-4302-aa63-8ec136afacc1",
+            "Value": {
+                "id": "1c80dbd5-1266-468b-a632-8fe5ffce69d9",
+                "resourcePath": "objects\\oBasicLitSprite\\oBasicLitSprite.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a41e0f55-e2a5-45e5-af79-e05c66b42afa",
             "Value": {
                 "id": "161d377b-575f-40ca-bb69-058f3f40344e",
@@ -2810,7 +2818,7 @@
             "Key": "be076273-5e57-4b7a-b92b-c4d394a07093",
             "Value": {
                 "id": "f5e9999f-d115-4f3e-85fe-495a654063af",
-                "resourcePath": "shaders\\shd_vectorcolorscale\\shd_vectorcolorscale.yy",
+                "resourcePath": "shaders\\shd_vectortransform\\shd_vectortransform.yy",
                 "resourceType": "GMShader"
             }
         },
@@ -3447,6 +3455,14 @@
             }
         },
         {
+            "Key": "e93712a1-86f0-4e1a-9d43-802dad0b38a0",
+            "Value": {
+                "id": "c12606e4-d006-48bc-8c4a-2974520a642c",
+                "resourcePath": "scripts\\ds_list_add_instance_by_depth\\ds_list_add_instance_by_depth.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "e9894a6b-6101-4ff7-bd3e-2f49ab2d9c0a",
             "Value": {
                 "id": "e496dbdb-5df0-4ecd-bd2f-ee4b8f1bb2cb",
@@ -3842,6 +3858,7 @@
         "02f9ba76-1e6f-46d4-ba76-2cc0fc8d804a",
         "35609add-fe27-4b72-9d54-6bd987800371",
         "5903b0fa-1e73-498c-9065-376bf0eadfb0",
+        "e93712a1-86f0-4e1a-9d43-802dad0b38a0",
         "48987033-63c1-4e4f-b73a-701dd30de577",
         "55dcfb49-a23a-418f-9590-0eb980883e97",
         "e9c453df-f9bf-4b09-90d3-c98ea823e231",

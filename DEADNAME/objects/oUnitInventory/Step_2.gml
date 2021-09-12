@@ -69,9 +69,9 @@ if (draw_inventory) {
 		}
 			
 		if (key_select_press) {
-			if (check_item_inventory(self, select_x, select_y, select_item_width, select_item_height, select_item_id, select_place_num)) {
+			if (check_item_inventory(id, select_x, select_y, select_item_width, select_item_height, select_item_id, select_place_num)) {
 				// Place Item in empty inventory space
-				place_item_inventory(self, select_item_id, select_x, select_y, select_place_num);
+				place_item_inventory(id, select_item_id, select_x, select_y, select_place_num);
 				
 				select_item_stacks -= select_place_num;
 				
@@ -129,10 +129,10 @@ if (draw_inventory) {
 					}
 				}
 				else {
-					if (check_item_inventory(self, select_x, select_y, select_item_width, select_item_height, select_item_id)) {
-						if (select_item_stacks == 1 && check_item_inventory(self, select_x, select_y, select_item_width, select_item_height, select_item_id, 1)) {	
+					if (check_item_inventory(id, select_x, select_y, select_item_width, select_item_height, select_item_id)) {
+						if (select_item_stacks == 1 && check_item_inventory(id, select_x, select_y, select_item_width, select_item_height, select_item_id, 1)) {	
 							// Place Item in empty inventory space
-							place_item_inventory(self, select_item_id, select_x, select_y);
+							place_item_inventory(id, select_item_id, select_x, select_y);
 							
 							// Update Weapon Index
 							if (weapon_place_index != -1) {
@@ -162,7 +162,7 @@ if (draw_inventory) {
 		else if (key_cancel_press) {
 			if (select_item_id != 0) {
 				// Place Item back into the inventory
-				add_item_inventory(self, select_item_id, select_item_stacks);
+				add_item_inventory(id, select_item_id, select_item_stacks);
 					
 				// Reset select item properties
 				select_item_id = 0;
@@ -288,7 +288,7 @@ if (draw_inventory) {
 	select_width = lerp(select_width, select_target_width * inventory_grid_size, draw_lerp_spd);
 	select_height = lerp(select_height, select_target_height * inventory_grid_size, draw_lerp_spd);
 	if (select_item_id != 0) {
-		select_can_place = check_item_inventory(self, select_x, select_y, select_item_width, select_item_height, select_item_id);
+		select_can_place = check_item_inventory(id, select_x, select_y, select_item_width, select_item_height, select_item_id);
 	}
 	
 	// Open Inventory Initialization & Reset
@@ -308,7 +308,7 @@ else {
 	if (draw_inventory_open) {
 		if (select_item_id != 0) {
 			// Place Item back into inventory
-			add_item_inventory(self, select_item_id, select_item_stacks);
+			add_item_inventory(id, select_item_id, select_item_stacks);
 			
 			// Reset select item properties
 			select_item_id = 0;

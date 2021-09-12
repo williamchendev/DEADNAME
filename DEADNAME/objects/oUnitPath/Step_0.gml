@@ -253,7 +253,7 @@ while (temp_pathfind_active) {
 						// Check Teleporter in Range of Node with Teleport Flag
 						if (point_distance(temp_teleport.teleport_obj.x, temp_teleport.teleport_obj.y, path_array[path_array_index, 1], path_array[path_array_index, 2]) < path_teleporter_delta_tolerance) {
 							// Interact with Teleport
-							temp_teleport.interact.interact_unit = self;
+							temp_teleport.interact.interact_unit = id;
 						}
 					}
 				}

@@ -2,13 +2,17 @@
 // Draws the firearm object to the screen
 
 // Lighting Draw Behaviour
+var temp_draw_gui = true;
+var temp_draw_sprite = true;
 sprite_index = weapon_sprite;
 if (instance_exists(oLighting)) {
+	temp_draw_gui = false;
 	if (normal_draw_event) {
 		sprite_index = weapon_normal_sprite;
 	}
 	else if (!lit_draw_event) {
-		return;
+		temp_draw_gui = true;
+		temp_draw_sprite = false;
 	}
 }
 
@@ -79,75 +83,82 @@ if (equip) {
 }
 */
 
-// Draw the Attack
+// Draw Firearm GUI & Visual Effects
 draw_set_color(c_white);
-if (ds_list_size(flash_timer) > 0 and attack_show) {
-	// Check Shader
-	var temp_shader = shader_current();
-	if (temp_shader != -1) {
+if (temp_draw_gui) {
+	// Draw the Attack
+	if (ds_list_size(flash_timer) > 0 and attack_show) {
+		// Check Shader
+		var temp_shader = shader_current();
+		if (temp_shader != -1) {
+			shader_reset();
+		}
+	
+		// Individual Bullet Flashes
+		for (var f = ds_list_size(flash_timer) - 1; f >= 0; f--) {
+			// Flash Variables
+			var temp_flash_timer = ds_list_find_value(flash_timer, f);
+			var temp_flash_length = ds_list_find_value(flash_length, f);
+			var temp_flash_direction = ds_list_find_value(flash_direction, f);
+			var temp_flash_xposition = ds_list_find_value(flash_xposition, f);
+			var temp_flash_yposition = ds_list_find_value(flash_yposition, f);
+			var temp_flash_imageindex = ds_list_find_value(flash_imageindex, f);
+	
+			// Check Draw Mode
+			if (temp_shader == -1) {
+				// Draw Bullet Trail
+				draw_set_alpha(0.4 * (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 2)));
+				draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
+	
+				// Draw Bullet Trail Muzzle Flash
+				draw_set_alpha(1);
+				if (muzzle_flash_sprite != noone) {
+					if (temp_flash_imageindex != -1) {
+						draw_sprite_ext(muzzle_flash_sprite, temp_flash_imageindex, temp_flash_xposition, temp_flash_yposition, 1, (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 3)) * weapon_yscale, temp_flash_direction, c_white, 1);
+					}
+				}
+			}
+			else {
+				// Draw Knockout
+				draw_set_alpha(1);
+				draw_set_color(c_black);
+				if (muzzle_flash_sprite != noone) {
+					if (temp_flash_imageindex != -1) {
+						draw_sprite_ext(muzzle_flash_sprite, temp_flash_imageindex, temp_muzzle_x, temp_muzzle_y, 1, (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 3)) * weapon_yscale, temp_flash_direction, c_black, 1);
+					}
+				}
+				/*
+				draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
+				*/
+				draw_sprite_ext(sImpact_Blood, hit_effect_index, temp_flash_xposition + lengthdir_x(temp_flash_length + hit_effect_offset, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length + hit_effect_offset, temp_flash_direction), hit_effect_xscale, hit_effect_yscale, temp_flash_direction, c_white, 1);
+			}
+		
+			// Reset Shader
+			if (temp_shader != -1) {
+				shader_set(temp_shader);
+			}
+		}
+	}
+}
+
+// Draw Firearm Sprite
+if (temp_draw_sprite) {
+	// Set Normal Vector Scaling Shader
+	if (normal_draw_event) {
+		shader_set(shd_vectortransform);
+		shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_weapon_rotation));
+		var temp_normalscale_x = sign(weapon_xscale);
+		var temp_normalscale_y = sign(weapon_yscale);
+		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+	}
+
+	// Draw the Firearm
+	draw_sprite_ext(sprite_index, image_index, temp_x, temp_y, weapon_xscale, weapon_yscale, temp_weapon_rotation, c_white, 1);
+
+	// Reset Normal Vector Scaling Shader
+	if (normal_draw_event) {
 		shader_reset();
 	}
-	
-	// Individual Bullet Flashes
-	for (var f = ds_list_size(flash_timer) - 1; f >= 0; f--) {
-		// Flash Variables
-		var temp_flash_timer = ds_list_find_value(flash_timer, f);
-		var temp_flash_length = ds_list_find_value(flash_length, f);
-		var temp_flash_direction = ds_list_find_value(flash_direction, f);
-		var temp_flash_xposition = ds_list_find_value(flash_xposition, f);
-		var temp_flash_yposition = ds_list_find_value(flash_yposition, f);
-		var temp_flash_imageindex = ds_list_find_value(flash_imageindex, f);
-	
-		// Check Draw Mode
-		if (temp_shader == -1) {
-			// Draw Bullet Trail
-			draw_set_alpha(0.4 * (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 2)));
-			draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
-	
-			// Draw Bullet Trail Muzzle Flash
-			draw_set_alpha(1);
-			if (muzzle_flash_sprite != noone) {
-				if (temp_flash_imageindex != -1) {
-					draw_sprite_ext(muzzle_flash_sprite, temp_flash_imageindex, temp_flash_xposition, temp_flash_yposition, 1, (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 3)) * weapon_yscale, temp_flash_direction, c_white, 1);
-				}
-			}
-		}
-		else {
-			// Draw Knockout
-			draw_set_alpha(1);
-			draw_set_color(c_black);
-			if (muzzle_flash_sprite != noone) {
-				if (temp_flash_imageindex != -1) {
-					draw_sprite_ext(muzzle_flash_sprite, temp_flash_imageindex, temp_muzzle_x, temp_muzzle_y, 1, (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 3)) * weapon_yscale, temp_flash_direction, c_black, 1);
-				}
-			}
-			/*
-			draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
-			*/
-			draw_sprite_ext(sImpact_Blood, hit_effect_index, temp_flash_xposition + lengthdir_x(temp_flash_length + hit_effect_offset, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length + hit_effect_offset, temp_flash_direction), hit_effect_xscale, hit_effect_yscale, temp_flash_direction, c_white, 1);
-		}
-		
-		// Reset Shader
-		if (temp_shader != -1) {
-			shader_set(temp_shader);
-		}
-	}
-}
-
-// Set Normal Vector Scaling Shader
-if (normal_draw_event) {
-	shader_set(shd_vectorcolorscale);
-	shader_set_uniform_f(vectorcolorscale_shader_r, sign(weapon_xscale) * cos(degtorad(temp_weapon_rotation)));
-	shader_set_uniform_f(vectorcolorscale_shader_g, sign(weapon_yscale) * sin(degtorad(temp_weapon_rotation)));
-	shader_set_uniform_f(vectorcolorscale_shader_b, 1.0);
-}
-
-// Draw the Firearm
-draw_sprite_ext(sprite_index, image_index, temp_x, temp_y, weapon_xscale, weapon_yscale, temp_weapon_rotation, c_white, 1);
-
-// Reset Normal Vector Scaling Shader
-if (normal_draw_event) {
-	shader_reset();
 }
 
 // Draw Debug Firearm Stats

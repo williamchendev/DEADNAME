@@ -1,6 +1,9 @@
 /// @description Arm Initialization
 // Creates the variables necessary for the Arm Effect Object
 
+// Basic Lighting Inheritance
+event_inherited();
+
 // Arm Settings
 limb_anchor_x = x;
 limb_anchor_y = y;
@@ -16,7 +19,6 @@ limb_direction = 1;
 limb_length = 0;
 limb_compress = 0.3;
 
-
 // Arm Variables
 point1_x = 0;
 point1_y = 0;
@@ -28,6 +30,5 @@ angle_1 = 0;
 angle_2 = 0;
 
 // Shader Variables
-vectorcolorscale_shader_r = shader_get_uniform(shd_vectorcolorscale, "rScale");
-vectorcolorscale_shader_g = shader_get_uniform(shd_vectorcolorscale, "gScale");
-vectorcolorscale_shader_b = shader_get_uniform(shd_vectorcolorscale, "bScale");
+vectortransform_shader_angle = shader_get_uniform(shd_vectortransform, "vectorAngle");
+vectortransform_shader_scale = shader_get_uniform(shd_vectortransform, "vectorScale");

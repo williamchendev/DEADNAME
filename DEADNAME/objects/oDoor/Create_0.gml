@@ -3,7 +3,7 @@
 
 // Interact Settings
 interact = instance_create_layer(x, y, layer, oInteract);
-interact.interact_obj = self;
+interact.interact_obj = id;
 
 // Door Settings
 door_open = true;

@@ -55,11 +55,11 @@ else {
 	// Set Squad Unit Outline
 	if (temp_ai_follow_valid) {		
 		// Set Unit to have Squad Outline
-		if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, self))) {
-			ds_map_add(game_manager.surface_manager.units_outline, self, squad_outline_color);
+		if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, id))) {
+			ds_map_add(game_manager.surface_manager.units_outline, id, squad_outline_color);
 		}
-		else if (ds_map_find_value(game_manager.surface_manager.units_outline, self) != c_white) {
-			ds_map_replace(game_manager.surface_manager.units_outline, self, squad_outline_color);
+		else if (ds_map_find_value(game_manager.surface_manager.units_outline, id) != c_white) {
+			ds_map_replace(game_manager.surface_manager.units_outline, id, squad_outline_color);
 		}
 		// Set Following Unit to have Squad Outline
 		if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, ai_follow_unit))) {
@@ -127,7 +127,7 @@ if (canmove) {
 						}
 					}
 					else if (key_fire_press and !old_fire_press) {
-						if (temp_unit_squad != self) {
+						if (temp_unit_squad != id) {
 							unit_select = temp_unit_squad;
 							key_fire_press = false;
 						}
@@ -273,7 +273,7 @@ if (canmove) {
 					
 						// Interaction Input
 						if (key_interact_press) {
-							interact_collision_list[q].interact_unit = self;
+							interact_collision_list[q].interact_unit = id;
 						}
 					
 						// Break Loop
@@ -284,7 +284,7 @@ if (canmove) {
 					// Interaction Input
 					if (key_up_press) {
 						// Teleport Interact Object Behaviour
-						interact_collision_list[q].interact_unit = self;
+						interact_collision_list[q].interact_unit = id;
 					}
 				}
 			}
