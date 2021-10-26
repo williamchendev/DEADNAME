@@ -48,6 +48,14 @@ scale_reset_spd = 0.15;
 
 stats_y_offset = 8;
 
+// Player Settings
+player_input = false;
+
+// Blood Settings
+blood = true;
+blood_color = make_color_rgb(153, 0, 18);
+blood_effect = oBloodEffect_Unit;
+
 // Ragdoll Settings
 ragdoll = true;
 ragdoll_head_sprite = sWilliamDS_Head;
@@ -109,6 +117,10 @@ draw_set_xscale_manual = false;
 
 // Weapon Variables
 reload = false;
+firearm = false;
+
+// Blood Variables
+blood_list = ds_list_create();
 
 // Ragdoll Variables
 force_applied = false;

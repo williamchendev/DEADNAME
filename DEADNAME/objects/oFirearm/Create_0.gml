@@ -5,6 +5,7 @@
 event_inherited();
 
 // Weapon Settings
+weapon_type = "firearm";
 weapon_ammo_id = 7;
 
 bullets = 0;
@@ -34,6 +35,15 @@ flash_delay = 7;
 // Combat Settings
 damage = 1;
 material_damage_sprite = sMatDmg_Small_2;
+
+// Hit Effect Settings
+hit_effect = true;
+
+hit_effect_sprite = sFirearmHitEffect1;
+hit_effect_duration = 6;
+hit_effect_scale_min = 0.75;
+hit_effect_scale_max = 1.25;
+hit_effect_random_angle = -1;
 
 // Position Settings
 muzzle_x = 28;
@@ -72,7 +82,6 @@ recoil_delay = 4.6;
 recoil_clamp = 16;
 
 click = true;
-use_realdeltatime = false;
 
 // Aiming Settings
 sniper = true;
@@ -119,11 +128,20 @@ flash_yposition = ds_list_create();
 
 flash_imageindex = ds_list_create();
 
-hit_effect_index = -1;
-hit_effect_offset = 0;
-hit_effect_xscale = 1;
-hit_effect_yscale = 1;
-hit_effect_sign = 1;
+hit_effect_timer = ds_list_create();
+hit_effect_index = ds_list_create();
+hit_effect_sign = ds_list_create();
+hit_effect_xpos = ds_list_create();
+hit_effect_ypos = ds_list_create();
+hit_effect_xscale = ds_list_create();
+hit_effect_yscale = ds_list_create();
+hit_effect_rotation = ds_list_create();
+
+knockout_hit_effect_index = -1;
+knockout_hit_effect_offset = 0;
+knockout_hit_effect_xscale = 1;
+knockout_hit_effect_yscale = 1;
+knockout_hit_effect_sign = 1;
 
 // Collider Variables
 collider_array_hit = noone;

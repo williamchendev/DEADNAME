@@ -218,6 +218,101 @@ if (bursts > 0) {
 					var temp_unit = temp_raycast_data[4];
 					temp_unit.health_points -= damage;
 					temp_unit.health_points = clamp(temp_unit.health_points, 0, temp_unit.max_health_points);
+					
+					// Blood Effect
+					if (temp_unit.blood) {
+						if (temp_unit.blood_effect != noone) {
+							// Create and Index Blood Sticker
+							var temp_unit_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], temp_unit.blood_effect);
+							ds_list_add(temp_unit.blood_list, temp_unit_blood_inst);
+							
+							// Apply Blood Sticker Settings
+							temp_unit_blood_inst.unit_inst = temp_unit;
+							temp_unit_blood_inst.blood_x = temp_unit.x - temp_raycast_data[1];
+							temp_unit_blood_inst.blood_y = temp_unit.y - temp_raycast_data[2];
+							temp_unit_blood_inst.blood_color = temp_unit.blood_color;
+							
+							// Check for Blood Splat
+							var temp_blood_splat_exists = false;
+							for (var q = ds_list_size(temp_unit.blood_list) - 1; q >= 0; q--) {
+								var temp_blood_sticker_valid = false;
+								var temp_blood_sticker_inst = ds_list_find_value(temp_unit.blood_list, q);
+								if (temp_blood_sticker_inst != noone) {
+									if (instance_exists(temp_blood_sticker_inst)) {
+										temp_blood_sticker_valid = true;
+										if (temp_blood_sticker_inst.object_index == oBloodEffect_Splatter) {
+											temp_blood_splat_exists = true;
+											break;
+										}
+									}
+								}
+								if (!temp_blood_sticker_valid) {
+									ds_list_delete(temp_unit.blood_list, q);
+								}
+							}
+
+							// Blood Splat
+							if (!temp_blood_splat_exists) {
+								// Create and Index Blood Splat
+								var temp_splat_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], oBloodEffect_Splatter);
+								ds_list_add(temp_unit.blood_list, temp_splat_blood_inst);
+							
+								// Apply Blood Splat Settings
+								temp_splat_blood_inst.unit_inst = temp_unit;
+								temp_splat_blood_inst.blood_x = temp_unit.x - temp_raycast_data[1];
+								temp_splat_blood_inst.blood_y = temp_unit.y - temp_raycast_data[2];
+								temp_splat_blood_inst.blood_size = 0.6;
+								temp_splat_blood_inst.image_blend = temp_unit.blood_color;
+							
+								// Create Blood Droplets
+								if (!collision_point(temp_raycast_data[1], temp_raycast_data[2], oSolid, false, true)) {
+									var temp_random_droplet_num = irandom_range(3, 12);
+									for (var q = 0; q < temp_random_droplet_num; q++) {
+										// Create and Index Blood Droplet
+										var temp_droplet_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], oBloodEffect_Droplet);
+										ds_list_add(temp_unit.blood_list, temp_droplet_blood_inst);
+								
+										// Apply Blood Droplet Settings
+										temp_droplet_blood_inst.blood_size = random_range(0.3, 1.2);
+										temp_droplet_blood_inst.image_blend = temp_unit.blood_color;
+										var temp_blood_droplet_direction = sign(temp_raycast_data[1] - x);
+										if (temp_blood_droplet_direction == 0) {
+											temp_blood_droplet_direction = 1;
+										}
+										temp_droplet_blood_inst.case_direction = temp_hitscan_angle + random_range(-30, 30);
+									}
+								}
+							}
+						}
+					}
+					
+					// Instantiate Hit Effect
+					if (hit_effect) {
+						// Random Variables
+						var temp_random_sign = random(1);
+						if (temp_random_sign <= 0.5) {
+							temp_random_sign = -1;
+						}
+						else {
+							temp_random_sign = 1;
+						}
+						var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
+					
+						// Set Hit Effect Entry
+						ds_list_add(hit_effect_timer, hit_effect_duration);
+						ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
+						ds_list_add(hit_effect_sign, temp_random_sign);
+						ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
+						ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
+						ds_list_add(hit_effect_xscale, temp_random_size);
+						ds_list_add(hit_effect_yscale, temp_random_size);
+						if (hit_effect_random_angle == -1) {
+							ds_list_add(hit_effect_rotation, irandom(3) * 90);
+						}
+						else {
+							ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
+						}
+					}
 			
 					// Ragdoll Effect
 					if (temp_unit.health_points == 0) {
@@ -229,6 +324,34 @@ if (bursts > 0) {
 					}
 				}
 				else if (temp_raycast_data[3] == oMaterial) {
+					// Instantiate Hit Effect
+					if (hit_effect) {
+						// Random Variables
+						var temp_random_sign = random(1);
+						if (temp_random_sign <= 0.5) {
+							temp_random_sign = -1;
+						}
+						else {
+							temp_random_sign = 1;
+						}
+						var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
+					
+						// Set Hit Effect Entry
+						ds_list_add(hit_effect_timer, hit_effect_duration);
+						ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
+						ds_list_add(hit_effect_sign, temp_random_sign);
+						ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
+						ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
+						ds_list_add(hit_effect_xscale, temp_random_size);
+						ds_list_add(hit_effect_yscale, temp_random_size);
+						if (hit_effect_random_angle == -1) {
+							ds_list_add(hit_effect_rotation, irandom(3) * 90);
+						}
+						else {
+							ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
+						}
+					}
+					
 					// Add Material Damage
 					material_add_damage(temp_raycast_data[4], material_damage_sprite, irandom(sprite_get_number(material_damage_sprite)), temp_raycast_data[1], temp_raycast_data[2], 1, 1, random(360));
 				}
@@ -342,23 +465,45 @@ if (bullet_cases != 0) {
 	bullet_cases = 0;
 }
 
-// Hit Effect
-if (instance_exists(oKnockout)) {
-	hit_effect_offset += temp_deltatime;
-	hit_effect_xscale += temp_deltatime * 0.1;
-	hit_effect_yscale -= temp_deltatime * 0.05;
-	if (hit_effect_index == -1) {
-		hit_effect_index = irandom_range(0, sprite_get_number(sImpact_Blood));
-		hit_effect_xscale = 0.8;
-		hit_effect_yscale = 1;
-		if (random_range(0, 1) <= 0.5) {
-			hit_effect_yscale = -1;
+// Weapon Hit Effect Calculation
+if (ds_list_size(hit_effect_timer) > 0) {
+	for (var l = ds_list_size(hit_effect_timer) - 1; l >= 0; l--) {
+		// Calculate Hit Effect Duration
+		var temp_hit_fx_time = ds_list_find_value(hit_effect_timer, l);
+		temp_hit_fx_time -= temp_deltatime;
+		ds_list_replace(hit_effect_timer, l, temp_hit_fx_time);
+		
+		// Delete Hit Effect Index
+		if (temp_hit_fx_time <= 0) {
+			ds_list_delete(hit_effect_timer, l);
+			ds_list_delete(hit_effect_index, l);
+			ds_list_delete(hit_effect_sign, l);
+			ds_list_delete(hit_effect_xpos, l);
+			ds_list_delete(hit_effect_ypos, l);
+			ds_list_delete(hit_effect_xscale, l);
+			ds_list_delete(hit_effect_yscale, l);
+			ds_list_delete(hit_effect_rotation, l);
 		}
-		hit_effect_yscale *= random_range(0.7, 1);
-		hit_effect_sign = sign(hit_effect_yscale);
+	}
+}
+
+// Knockout Hit Effect
+if (instance_exists(oKnockout)) {
+	knockout_hit_effect_offset += temp_deltatime;
+	knockout_hit_effect_xscale += temp_deltatime * 0.1;
+	knockout_hit_effect_yscale -= temp_deltatime * 0.05;
+	if (knockout_hit_effect_index == -1) {
+		knockout_hit_effect_index = irandom_range(0, sprite_get_number(sImpact_Blood));
+		knockout_hit_effect_xscale = 0.8;
+		knockout_hit_effect_yscale = 1;
+		if (random_range(0, 1) <= 0.5) {
+			knockout_hit_effect_yscale = -1;
+		}
+		knockout_hit_effect_yscale *= random_range(0.7, 1);
+		knockout_hit_effect_sign = sign(knockout_hit_effect_yscale);
 	}
 }
 else {
-	hit_effect_index = -1;
-	hit_effect_offset = 0;
+	knockout_hit_effect_index = -1;
+	knockout_hit_effect_offset = 0;
 }

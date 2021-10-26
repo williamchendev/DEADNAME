@@ -1,30 +1,6 @@
 /// @description Ragdoll Entity Update Event
 // Performs calculations for the Ragdoll Entity Object
 
-// Debug
-/*
-if (held) {
-	var px = (mouse_x-x);
-	var py = (mouse_y-y);
-	phy_speed_x = px;
-	phy_speed_y = py;
-	
-	if (!mouse_check_button(mb_left)) {
-		held = false;
-	}
-}
-else {
-	if (mouse_check_button_pressed(mb_left)) {
-		if (position_meeting(mouse_x, mouse_y, id)) {
-			with (oRagdollEntity) {
-				held = false;
-			}
-			held = true;
-		}
-	}
-}
-*/
-
 // Deltatime Physics
 var temp_speed_change_x = phy_linear_velocity_x - phy_speed_old_x;
 var temp_speed_change_y = phy_linear_velocity_y - phy_speed_old_y;

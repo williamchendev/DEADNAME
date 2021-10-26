@@ -29,6 +29,10 @@ point2_y = 0;
 angle_1 = 0;
 angle_2 = 0;
 
+// Surface Variables
+surface_x_offset = 0;
+surface_y_offset = 0;
+
 // Shader Variables
 vectortransform_shader_angle = shader_get_uniform(shd_vectortransform, "vectorAngle");
 vectortransform_shader_scale = shader_get_uniform(shd_vectortransform, "vectorScale");

@@ -23,6 +23,9 @@ weapon_hip_y = -24;
 weapon_aim_x = 4;
 weapon_aim_y = -32;
 
+weapon_melee_x = 1;
+weapon_melee_y = 2;
+
 inventory_x = -1;
 inventory_y = -30;
 
@@ -34,6 +37,9 @@ limb_y[0] = -32;
 
 limb_x[1] = 2;
 limb_y[1] = -32;
+
+limb_melee_arm_length_mult = 0.6;
+limb_melee_arm_swing_length_mult = 2;
 
 limb_aim_move_offset_x = -1;
 limb_aim_offset_y = 2;

@@ -7,6 +7,12 @@ if (ds_exists(platform_list, ds_type_list)) {
 }
 platform_list = -1;
 
+// Clear Blood Indexing List
+if (ds_exists(blood_list, ds_type_list)) {
+	ds_list_destroy(blood_list);
+}
+blood_list = -1;
+
 // Clear Universal Physics Object
 instance_destroy(universal_physics_object);
 

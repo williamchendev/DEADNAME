@@ -1,10 +1,25 @@
 /// @description Unit Combat Update Event
 // The combat calculations and behaviour of the Unit
 
+// Check Weapon Type
+firearm = false;
+for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
+	// Find Indexed Weapon
+	var temp_weapon_index = ds_list_find_value(inventory.weapons, i);
+	// Find Equipped Weapon
+	if (temp_weapon_index.equip) {
+		// Set Weapon Type
+		if (temp_weapon_index.weapon_type == "firearm") {
+			firearm = true;
+		}
+		break;
+	}
+}
+
 // Facing Behaviour
 if (!pathing) {
 	// Set Facing Target
-	if (targeting) {
+	if (targeting and firearm) {
 		if (!reload) {
 			if (sign(target_x - x) != 0) {
 				// Manually Set image_xscale to face target
@@ -31,10 +46,12 @@ if (pathing) {
 
 // Limbs
 if (limb[0] != noone) {
+	limb[0].layer = layers[4];
 	arm_right_angle_1 = limb[0].angle_1;
 	arm_right_angle_2 = limb[0].angle_2;
 }
 if (limb[1] != noone) {
+	limb[1].layer = layers[1];
 	arm_left_angle_1 = limb[1].angle_1;
 	arm_left_angle_2 = limb[1].angle_2;
 }
@@ -65,13 +82,185 @@ for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
 		
 		// Set Equipped Weapon
 		if (temp_weapon_index.equip) {
+			// Equip Weapon
 			temp_weapon = temp_weapon_index;
 		}
 	}
 }
 
 // Equipped Weapon & Combat Unit Behaviour
-if (temp_weapon != noone) {
+layer = layers[2];
+if (temp_weapon == noone) {
+	// Disarmed Behaviour
+}
+else if (temp_weapon.weapon_type == "melee") {
+	// Weapon, Body, & Arm Layers
+	layer = layers[1];
+	temp_weapon.layer = layers[3];
+	limb[0].layer = layers[2];
+	limb[1].layer = layers[4];
+	
+	// Melee Weapon Behaviour
+	var temp_melee_swing_value = (temp_weapon.weapon_arc_value * (1 + limb_melee_arm_swing_length_mult)) - 1;
+	if (!temp_weapon.attack) {
+		// Non Attack Mode
+		if (key_fire_press) {
+			temp_weapon.attack = canmove;
+			temp_weapon.ignore_id = team_id;
+		}
+		else if (key_aim_press) {
+		
+		}
+	}
+	else {
+		limb[1].layer = layers[3];
+		temp_weapon.layer = layers[4];
+	}
+	
+	// Melee Weapon Pivot
+	var temp_weapon_x = 0;
+	var temp_weapon_y = 0;
+	var temp_arm_length = 0;
+	for (var l = 0; l < array_length_1d(limb_x); l++) {
+		temp_weapon_x += limb_x[l];
+	}
+	temp_weapon_x = temp_weapon_x / l;
+	for (var l = 0; l < array_length_1d(limb_y); l++) {
+		temp_weapon_y += limb_y[l];
+	}
+	temp_weapon_y = temp_weapon_y / l;
+	for (var l = 0; l < array_length_1d(limb); l++) {
+		temp_arm_length += limb[l].limb_length;
+	}
+	temp_arm_length = round((temp_arm_length / l) * limb_melee_arm_length_mult);
+	
+	var temp_melee_weapon_pivot_distance = point_distance(0, 0, temp_weapon_x + weapon_melee_x, temp_weapon_y + weapon_melee_y);
+	var temp_melee_weapon_pivot_direction = point_direction(0, 0, temp_weapon_x + weapon_melee_x, temp_weapon_y + weapon_melee_y);
+	temp_weapon_x = lengthdir_x(temp_melee_weapon_pivot_distance, temp_melee_weapon_pivot_direction + draw_angle);
+	temp_weapon_y = lengthdir_y(temp_melee_weapon_pivot_distance, temp_melee_weapon_pivot_direction + draw_angle);
+	
+	// Arm Offset Variables
+	var temp_limb_run_move_offset_x = 0;
+	if (x_velocity != 0) {
+		// Limb Offsets
+		temp_limb_run_move_offset_x = (sign(x_velocity) * spd);
+	}
+	else {
+		// Face Targeting Direction
+		if (targeting) {
+			image_xscale = sign(target_x - x);
+			if (image_xscale == 0) {
+				image_xscale = 1;
+			}
+		}
+	}
+	
+	// Melee Weapon Rotation
+	var temp_weapon_rotation = 0;
+	aim_ambient_x = lerp(aim_ambient_x, x + temp_weapon_x + (draw_xscale * image_xscale * 50), temp_weapon.lerp_spd * global.deltatime);
+	aim_ambient_y = lerp(aim_ambient_y, y + temp_weapon_y, temp_weapon.lerp_spd * global.deltatime);
+	if (!targeting) {
+		// Ambient Aiming
+		temp_weapon_rotation = point_direction(x + temp_weapon_x, y + temp_weapon_y, aim_ambient_x, aim_ambient_y);
+	}
+	else {
+		temp_weapon_rotation = point_direction(x + temp_weapon_x, y + temp_weapon_y, target_x, target_y);
+	}
+	temp_weapon.image_xscale = sign(temp_melee_swing_value);
+	//temp_arm_length = (1.5 - ((abs(angle_difference(temp_weapon_rotation, 90)) / 180) * 0.5)) * temp_arm_length;
+	
+	// Melee Weapon Rotation/Positioning Lerp Behaviour
+	weapon_x = lerp(weapon_x, temp_weapon_x, temp_weapon.lerp_spd * global.deltatime);
+	weapon_y = lerp(weapon_y, temp_weapon_y, temp_weapon.lerp_spd * global.deltatime);
+	
+	temp_weapon.weapon_rotation = temp_weapon.weapon_rotation mod 360;
+	var temp_weapon_delta_angle = angle_difference(temp_weapon.weapon_rotation, temp_weapon_rotation);
+	temp_weapon.weapon_rotation = temp_weapon.weapon_rotation - (temp_weapon_delta_angle * temp_weapon.lerp_spd * global.deltatime);
+		
+	var temp_weapon_distance = point_distance(0, 0, (draw_xscale * image_xscale * weapon_x), (draw_yscale * image_yscale * weapon_y));
+	var temp_weapon_direction = point_direction(0, 0, (draw_xscale * image_xscale * weapon_x), (draw_yscale * image_yscale * weapon_y));
+	temp_weapon.x_position = x + lengthdir_x(temp_weapon_distance, temp_weapon_direction + draw_angle) + temp_limb_run_move_offset_x;
+	temp_weapon.y_position = y + lengthdir_y(temp_weapon_distance, temp_weapon_direction + draw_angle) - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2);
+	
+	temp_weapon.x_position += lengthdir_x(temp_arm_length * temp_melee_swing_value, temp_weapon.weapon_rotation);
+	temp_weapon.y_position += lengthdir_y(temp_arm_length * temp_melee_swing_value, temp_weapon.weapon_rotation);
+	
+	// Check Weapon & Arm Facing Down
+	var temp_arms_down_facing = 90 - (abs(angle_difference(temp_weapon.weapon_rotation, 90)));
+	if (abs(temp_arms_down_facing) <= 1) {
+		temp_arms_down_facing = 1;
+	}
+	temp_arms_down_facing = sign(temp_arms_down_facing);
+	
+	// Screen Shake
+	if (player_input and canmove) {
+		if (temp_weapon.melee_found_hit) {
+			camera_screen_shake = true;
+			camera_screen_shake_timer = 1;
+		}
+		else {
+			camera_screen_shake = false;
+		}
+	}
+	temp_weapon.melee_found_hit = false;
+
+	// Establish Arm Variables
+	var temp_arm_direction = 0;
+	if (sign(image_xscale) < 0) {
+		temp_arm_direction = 1;
+		limb[0].limb_sprite = limb_sprite[0];
+		limb[1].limb_sprite = limb_sprite[1];
+	}
+	else {
+		limb[0].limb_sprite = limb_sprite[1];
+		limb[1].limb_sprite = limb_sprite[0];
+	}
+	var temp_arm_x_offset = sign(x_velocity);
+		
+	// Set Arm Position Backarm
+	limb[0].visible = true;
+	limb[0].limb_direction = sign(image_xscale) * temp_arms_down_facing;
+		
+	var temp_limb_anchor_distance = point_distance(0, 0, (draw_xscale * image_xscale * limb_x[0]) + temp_arm_x_offset, (draw_yscale * image_yscale * limb_y[0]));
+	var temp_limb_anchor_direction = point_direction(0, 0, (draw_xscale * image_xscale * limb_x[0]) + temp_arm_x_offset, (draw_yscale * image_yscale * limb_y[0]));
+	limb[0].limb_anchor_x = x + lengthdir_x(temp_limb_anchor_distance, draw_angle + temp_limb_anchor_direction);
+	limb[0].limb_anchor_y = y + lengthdir_y(temp_limb_anchor_distance, draw_angle + temp_limb_anchor_direction) - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2);
+		
+	var temp_limb_distance = point_distance(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
+	var temp_limb_direction = point_direction(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
+	limb[0].limb_target_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift) + temp_limb_run_move_offset_x;
+	limb[0].limb_target_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+		
+	if (action != noone) {
+		limb[0].limb_target_x = action_target_x;
+		limb[0].limb_target_y = action_target_y;
+	}
+		
+	// Set Arm Position Frontarm
+	if (limbs > 1) {
+		limb[1].visible = true;
+		limb[1].limb_direction = -sign(image_xscale) * temp_arms_down_facing;
+			
+		var temp_limb_anchor_distance = point_distance(0, 0, (draw_xscale * image_xscale * limb_x[1]) + temp_arm_x_offset, (draw_yscale * image_yscale * limb_y[1]));
+		var temp_limb_anchor_direction = point_direction(0, 0, (draw_xscale * image_xscale * limb_x[1]) + temp_arm_x_offset, (draw_yscale * image_yscale * limb_y[1]));
+		limb[1].limb_anchor_x = x + lengthdir_x(temp_limb_anchor_distance, draw_angle + temp_limb_anchor_direction);
+		limb[1].limb_anchor_y = y + lengthdir_y(temp_limb_anchor_distance, draw_angle + temp_limb_anchor_direction) - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2);
+			
+		var temp_limb_distance = point_distance(0, 0, temp_weapon.arm_x[1], temp_weapon.arm_y[1] * sign(image_xscale));
+		var temp_limb_direction = point_direction(0, 0, temp_weapon.arm_x[1], temp_weapon.arm_y[1] * sign(image_xscale));
+			
+		if (temp_weapon.double_handed) {
+			limb[1].limb_target_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift) + temp_limb_run_move_offset_x;
+			limb[1].limb_target_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+		}
+		else {
+			// Ambient Arms BROKEN FIX PLEASE
+			limb[1].limb_target_x = x + ((sprite_get_xoffset(sprite_index) * image_xscale) / 2);
+			limb[1].limb_target_y = y - (sprite_get_yoffset(sprite_index) / 2);
+		}
+	}
+}
+else if (temp_weapon.weapon_type == "firearm") {
 	// Firearm AI Behaviour
 	if (ai_behaviour) {
 		// Reloading
@@ -144,7 +333,7 @@ if (temp_weapon != noone) {
 		
 	// Weapon Layer
 	temp_weapon.layer = layers[3];
-		
+	
 	// Aiming Behaviour
 	temp_weapon.aiming = false;
 	temp_weapon.weapon_rotation = temp_weapon.weapon_rotation mod 360;

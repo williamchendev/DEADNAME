@@ -110,13 +110,14 @@ limb_x[1] = 3;
 limb_y[1] = -34;
 
 limb_aim_move_offset_x = -2;
-limb_aim_offset_y = 9;
+limb_aim_offset_y = 8;
 
 limb_sprite[0] = sWolf_Arms;  // Right Arm
 limb_sprite[1] = sWolf_Arms;  // Left Arm
 
 // Inventory Settings
 add_item_inventory(inventory, 6);
+//add_item_inventory(inventory, 4);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

@@ -298,6 +298,11 @@ if (canmove) {
 		target_x = cursor_x;
 		target_y = cursor_y;
 	}
+	else if (!firearm and player_input) {
+		//targeting = true;
+		target_x = cursor_x;
+		target_y = cursor_y;
+	}
 }
 
 // Physics & Combat & Unit Behaviour Inheritance

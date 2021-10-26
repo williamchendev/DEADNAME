@@ -12,8 +12,10 @@ if (teleport) {
 if (canmove) {
 	// Horizontal Movement
 	var temp_spd = spd;
-	if (key_aim_press or reload) {
-		temp_spd = walk_spd;
+	if (firearm) {
+		if (key_aim_press or reload) {
+			temp_spd = walk_spd;
+		}
 	}
 	
 	if (key_left) {
@@ -178,7 +180,7 @@ draw_set_xscale_manual = false;
 if (!platform_free(x, y + 1, platform_list)) {
 	// Set Unit ground Animation
 	if (x_velocity != 0) {
-		if (!key_aim_press and !reload) {
+		if (!firearm or (!key_aim_press and !reload)) {
 			sprite_index = walk_animation;
 			sprite_lit_index = walk_animation;
 			sprite_normal_index = walk_normals;
@@ -196,7 +198,7 @@ if (!platform_free(x, y + 1, platform_list)) {
 		}
 	}
 	else {
-		if (key_aim_press and canmove and !reload) {
+		if (firearm and key_aim_press and canmove and !reload) {
 			sprite_index = aim_animation;
 			sprite_lit_index = aim_animation;
 			sprite_normal_index = aim_normals;
@@ -311,6 +313,21 @@ if (canmove and interact_active) {
 if (health_points <= 0) {
 	// Ragdoll
 	if (ragdoll) {
+		// Set Blood Layer
+		for (var i = 0; i < ds_list_size(blood_list); i++) {
+			var temp_blood_inst = ds_list_find_value(blood_list, i);
+			var temp_blood_sticker_valid = false;
+			if (temp_blood_inst != noone) {
+				if (instance_exists(temp_blood_inst)) {
+					temp_blood_sticker_valid = true;
+					temp_blood_inst.layer = layer_get_id("Instances");
+				}
+			}
+			if (!temp_blood_sticker_valid) {
+				ds_list_delete(blood_list, i);
+			}
+		}
+		
 		// Establish Ragdoll Sprite Array
 		var temp_ragdoll_sprites = noone;
 		temp_ragdoll_sprites[0] = ragdoll_head_sprite;
@@ -341,6 +358,22 @@ if (health_points <= 0) {
 		with (temp_ragdoll_limbs[5]) {
 			phy_fixed_rotation = true;
 			phy_rotation = -90 - other.arm_right_angle_2;
+		}
+		
+		// Apply Blood Effect to Ragdoll
+		for (var i = 0; i < ds_list_size(blood_list); i++) {
+			// Create Blood
+			var temp_blood_inst = ds_list_find_value(blood_list, i);
+			temp_blood_inst.unit_inst = noone;
+			temp_blood_inst.corpse_inst = temp_ragdoll_limbs[3];
+			temp_blood_inst.blood_y -= (y - temp_ragdoll_limbs[3].y);
+			
+			// Create Blood Occlusion List
+			temp_blood_inst.corpse_occlusion_list[0] = temp_ragdoll_limbs[0];
+			temp_blood_inst.corpse_occlusion_list[1] = temp_ragdoll_limbs[3];
+			temp_blood_inst.corpse_occlusion_list[2] = temp_ragdoll_limbs[4];
+			temp_blood_inst.corpse_occlusion_list[3] = temp_ragdoll_limbs[5];
+			temp_blood_inst.corpse_occlusion_list[4] = temp_ragdoll_limbs[6];
 		}
 	
 		// Apply Ragdoll Forces

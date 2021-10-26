@@ -144,6 +144,11 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 //draw_set_color(c_black);
 //draw_rectangle(x - 10, y - 10, x + screen_width + 10, y + screen_height + 10, false);
 
+// Draw Black Objects Background Surface
+shader_set(shd_black);
+draw_surface(surface_color, x, y);
+shader_reset();
+
 // Draw Lighting Surface
 shader_set(shd_drawlitsurface);
 
