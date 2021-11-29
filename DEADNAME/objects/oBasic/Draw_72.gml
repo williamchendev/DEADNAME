@@ -1,7 +1,7 @@
 /// @description Basic Light Object Update
 // Updates the oBasic Object's indexed depth in the Lighting Manager's List
 
-if (basic_old_depth != depth) {
+if (basic_old_depth != depth or basic_reindex_depth) {
 	if (instance_exists(oLighting)) {
 		// Remove oBasic from oLighting Array
 		var temp_lighting_manager = instance_find(oLighting, 0);
@@ -16,6 +16,6 @@ if (basic_old_depth != depth) {
 			}
 		}
 	}
-	
 	basic_old_depth = depth;
+	basic_reindex_depth = false;
 }

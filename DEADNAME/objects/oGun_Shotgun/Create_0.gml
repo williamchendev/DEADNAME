@@ -28,10 +28,11 @@ reload_y = 1;
 reload_offset_y = 6;
 
 // Reload Settings
+reload_individual_rounds = true;
 magazine_obj = noone;
 
 // Arm Settings
-double_handed = true;
+swap_action_hand = true;
 
 arm_x[0] = 4;
 arm_y[0] = 2;

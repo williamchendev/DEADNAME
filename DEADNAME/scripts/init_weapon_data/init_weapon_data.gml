@@ -45,9 +45,30 @@ global.weapon_data[3, weaponstats.object] = oGun_M3;
 global.weapon_data[3, weaponstats.type] = weapontype.firearm;
 global.weapon_data[3, weaponstats.ammo] = 7;
 
-// M3
+// Trench Gun
 global.weapon_data[4, weaponstats.action_title] = "Trench Gun";
 global.weapon_data[4, weaponstats.image_index] = 5;
 global.weapon_data[4, weaponstats.object] = oGun_Shotgun;
 global.weapon_data[4, weaponstats.type] = weapontype.firearm;
 global.weapon_data[4, weaponstats.ammo] = 7;
+
+// Bolt Action Rifle
+global.weapon_data[5, weaponstats.action_title] = "Bolt Action Rifle";
+global.weapon_data[5, weaponstats.image_index] = 5;
+global.weapon_data[5, weaponstats.object] = oGun_BoltAction;
+global.weapon_data[5, weaponstats.type] = weapontype.firearm;
+global.weapon_data[5, weaponstats.ammo] = 7;
+
+// Bolt Action Rifle
+global.weapon_data[6, weaponstats.action_title] = "Revolver";
+global.weapon_data[6, weaponstats.image_index] = 5;
+global.weapon_data[6, weaponstats.object] = oGun_Revolver;
+global.weapon_data[6, weaponstats.type] = weapontype.firearm;
+global.weapon_data[6, weaponstats.ammo] = 7;
+
+// Grenade Launcher
+global.weapon_data[7, weaponstats.action_title] = "Revolver";
+global.weapon_data[7, weaponstats.image_index] = 5;
+global.weapon_data[7, weaponstats.object] = oGun_GrenadeLauncher;
+global.weapon_data[7, weaponstats.type] = weapontype.firearm;
+global.weapon_data[7, weaponstats.ammo] = 7;

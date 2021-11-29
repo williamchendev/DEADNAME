@@ -1,6 +1,12 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+// Skip if Knockout
+if (instance_exists(oKnockout)) {
+	return;
+}
+
+// Skip Draw Event
 if (blood_draw_end) {
 	return;
 }

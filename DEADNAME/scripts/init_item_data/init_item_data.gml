@@ -124,7 +124,7 @@ global.item_data[8, itemstats.stack_limit] = 1;
 global.item_data[8, itemstats.type] = itemtypes.weapon;
 global.item_data[8, itemstats.type_index] = 3;
 
-// M3 Grease Gun
+// Trench Shotgun
 global.item_data[9, itemstats.name] = "Trench Gun";
 global.item_data[9, itemstats.description] = "Shitty foreign shotgun";
 global.item_data[9, itemstats.sprite_index] = sItems6x2;
@@ -134,3 +134,36 @@ global.item_data[9, itemstats.height_space] = 2;
 global.item_data[9, itemstats.stack_limit] = 1;
 global.item_data[9, itemstats.type] = itemtypes.weapon;
 global.item_data[9, itemstats.type_index] = 4;
+
+// Bolt Action Rifle
+global.item_data[10, itemstats.name] = "Bolt Action Rifle";
+global.item_data[10, itemstats.description] = "Antique Bullshit";
+global.item_data[10, itemstats.sprite_index] = sItems6x2;
+global.item_data[10, itemstats.image_index] = 2;
+global.item_data[10, itemstats.width_space] = 6;
+global.item_data[10, itemstats.height_space] = 2;
+global.item_data[10, itemstats.stack_limit] = 1;
+global.item_data[10, itemstats.type] = itemtypes.weapon;
+global.item_data[10, itemstats.type_index] = 5;
+
+// Bolt Action Rifle
+global.item_data[11, itemstats.name] = "Arkovian Revolver";
+global.item_data[11, itemstats.description] = "3 Shot Garbage";
+global.item_data[11, itemstats.sprite_index] = sItems6x2;
+global.item_data[11, itemstats.image_index] = 2;
+global.item_data[11, itemstats.width_space] = 6;
+global.item_data[11, itemstats.height_space] = 2;
+global.item_data[11, itemstats.stack_limit] = 1;
+global.item_data[11, itemstats.type] = itemtypes.weapon;
+global.item_data[11, itemstats.type_index] = 6;
+
+// Grenade Launcher
+global.item_data[12, itemstats.name] = "M79";
+global.item_data[12, itemstats.description] = "Kuthunk";
+global.item_data[12, itemstats.sprite_index] = sItems6x2;
+global.item_data[12, itemstats.image_index] = 2;
+global.item_data[12, itemstats.width_space] = 6;
+global.item_data[12, itemstats.height_space] = 2;
+global.item_data[12, itemstats.stack_limit] = 1;
+global.item_data[12, itemstats.type] = itemtypes.weapon;
+global.item_data[12, itemstats.type_index] = 7;

@@ -46,10 +46,10 @@ void main()
 			LightVector = (Highlights * 0.8) + (NormalB * 0.2);
 		
 			// New Stuff
-			Color = LightBlendColor * LightVector;
+			Color = max(LightBlendColor * LightVector, LightColor)  * lightShadowsColor;
 			Color.a = 1.0;
 		}
 	}
 	
-    gl_FragColor = max(Color, LightColor) * lightShadowsColor.r;
+    gl_FragColor = Color;
 }

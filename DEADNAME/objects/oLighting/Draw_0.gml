@@ -111,7 +111,7 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 	
 	// Shadows Surface Calculation
 	surface_set_target(surface_shadows);
-	draw_clear_alpha(c_white, 1);
+	draw_clear_alpha(c_white, 0);
 	
 	shader_set(shd_shadows);
 	shader_set_uniform_f(shadow_light_position, temp_plight.x - x, temp_plight.y - y);
@@ -145,9 +145,9 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 //draw_rectangle(x - 10, y - 10, x + screen_width + 10, y + screen_height + 10, false);
 
 // Draw Black Objects Background Surface
-shader_set(shd_black);
-draw_surface(surface_color, x, y);
-shader_reset();
+//shader_set(shd_black);
+//draw_surface(surface_color, x, y);
+//shader_reset();
 
 // Draw Lighting Surface
 shader_set(shd_drawlitsurface);

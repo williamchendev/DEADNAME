@@ -198,7 +198,7 @@ if (!platform_free(x, y + 1, platform_list)) {
 		}
 	}
 	else {
-		if (firearm and key_aim_press and canmove and !reload) {
+		if (firearm and (key_aim_press or bolt_action_load) and canmove and (!reload or bolt_action_load)) {
 			sprite_index = aim_animation;
 			sprite_lit_index = aim_animation;
 			sprite_normal_index = aim_normals;
@@ -364,16 +364,22 @@ if (health_points <= 0) {
 		for (var i = 0; i < ds_list_size(blood_list); i++) {
 			// Create Blood
 			var temp_blood_inst = ds_list_find_value(blood_list, i);
-			temp_blood_inst.unit_inst = noone;
-			temp_blood_inst.corpse_inst = temp_ragdoll_limbs[3];
-			temp_blood_inst.blood_y -= (y - temp_ragdoll_limbs[3].y);
+			if (temp_blood_inst != noone) {
+				if (instance_exists(temp_blood_inst)) {
+					temp_blood_inst.unit_inst = noone;
+					temp_blood_inst.corpse_inst = temp_ragdoll_limbs[3];
+					temp_blood_inst.blood_y -= (y - temp_ragdoll_limbs[3].y);
 			
-			// Create Blood Occlusion List
-			temp_blood_inst.corpse_occlusion_list[0] = temp_ragdoll_limbs[0];
-			temp_blood_inst.corpse_occlusion_list[1] = temp_ragdoll_limbs[3];
-			temp_blood_inst.corpse_occlusion_list[2] = temp_ragdoll_limbs[4];
-			temp_blood_inst.corpse_occlusion_list[3] = temp_ragdoll_limbs[5];
-			temp_blood_inst.corpse_occlusion_list[4] = temp_ragdoll_limbs[6];
+					// Create Blood Occlusion List
+					temp_blood_inst.corpse_occlusion_list[0] = temp_ragdoll_limbs[0];
+					temp_blood_inst.corpse_occlusion_list[1] = temp_ragdoll_limbs[3];
+					temp_blood_inst.corpse_occlusion_list[2] = temp_ragdoll_limbs[4];
+					temp_blood_inst.corpse_occlusion_list[3] = temp_ragdoll_limbs[5];
+					temp_blood_inst.corpse_occlusion_list[4] = temp_ragdoll_limbs[6];
+					continue;
+				}
+			}
+			ds_list_delete(blood_list, i);
 		}
 	
 		// Apply Ragdoll Forces

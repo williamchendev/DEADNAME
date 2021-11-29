@@ -52,6 +52,14 @@ else {
 	else {
 		transition_timer -= transition_spd * global.realdeltatime;
 		if (transition_timer <= 0) {
+			// Clear Data
+			if (game_manager != noone) {
+				if (instance_exists(game_manager)) {
+					ds_list_clear(game_manager.instantiated_units);
+				}
+			}
+			
+			// Room Transition
 			persistent = true;
 			transition_other_room_active = true;
 			room_goto(transition_room_goto);

@@ -18,17 +18,10 @@ var temp_x = x + recoil_offset_x;
 var temp_y = y + recoil_offset_y;
 
 // Weapon Scaling & Rotation
-if (temp_x + lengthdir_x(5, weapon_rotation) < temp_x) {
-	weapon_yscale = -1;
-}
-else {
-	weapon_yscale = 1;
-}
-
 var temp_weapon_rotation = weapon_rotation + recoil_angle_shift;
 
 // Set Fire Mode Behaviour
-if (attack) {
+if (attack and (!bolt_action or bolt_action_loaded)) {
 	// Calculate Weapon Muzzle Position
 	var temp_muzzle_direction = point_direction(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale);
 	var temp_muzzle_distance = point_distance(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale);
@@ -65,6 +58,7 @@ if (attack) {
 					bullets -= bursts;
 				}
 			}
+			bolt_action_loaded = false;
 		}
 	}
 }
@@ -74,6 +68,11 @@ else {
 	}
 }
 
+// Clear Trajectory Data
+projectile_trajectory_distance = 0;
+ds_list_clear(projectile_obj_x_trajectory);
+ds_list_clear(projectile_obj_y_trajectory);
+
 // Firearm Behaviour
 if (aiming) {
 	aim = lerp(aim, 1, aim_spd * temp_deltatime);
@@ -82,6 +81,70 @@ if (aiming) {
 		aim = 1;
 	}
 	aim_hip_max = aim;
+	
+	// Bullet Trajectory
+	if (projectile_obj != noone and bullets > 0) {
+		// Trajectory Aiming Reticle Animation
+		projectile_trajectory_draw_val += temp_deltatime * projectile_trajectory_aim_reticle_spd;
+		if (projectile_trajectory_draw_val > projectile_trajectory_aim_reticle_height + projectile_trajectory_aim_reticle_space) {
+			projectile_trajectory_draw_val = projectile_trajectory_draw_val mod (projectile_trajectory_aim_reticle_height + projectile_trajectory_aim_reticle_space);
+		}
+		
+		// Calculate Weapon Muzzle Position
+		var temp_muzzle_direction = point_direction(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale);
+		var temp_muzzle_distance = point_distance(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale);
+	
+		var temp_trajectory_x = temp_x + lengthdir_x(temp_muzzle_distance, temp_weapon_rotation + temp_muzzle_direction);
+		var temp_trajectory_y = temp_y + lengthdir_y(temp_muzzle_distance, temp_weapon_rotation + temp_muzzle_direction);
+	
+		// Check For Trajectory Collision
+		var i = 0;
+		var temp_trajectory_hit = false;
+		var temp_trajectory_gravity = 0;
+	
+		ds_list_add(projectile_obj_x_trajectory, temp_trajectory_x);
+		ds_list_add(projectile_obj_y_trajectory, temp_trajectory_y);
+		projectile_trajectory_distance = projectile_trajectory_distance_limit;
+		while (i < projectile_trajectory_distance_limit) {
+			// Find Target Position
+			var temp_trajectory_start_x = temp_trajectory_x;
+			var temp_trajectory_start_y = temp_trajectory_y;
+			var temp_trajectory_end_x = temp_trajectory_x + lengthdir_x(projectile_spd, temp_weapon_rotation);
+			var temp_trajectory_end_y = temp_trajectory_y + temp_trajectory_gravity + lengthdir_y(projectile_spd, temp_weapon_rotation);
+			temp_trajectory_gravity += projectile_gravity;
+		
+			// Trajectory Path Calculation
+			var temp_trajectory_path_distance = point_distance(temp_trajectory_start_x, temp_trajectory_start_y, temp_trajectory_end_x, temp_trajectory_end_y);
+			for (var q = 0; q <= temp_trajectory_path_distance; q++) {
+				var temp_trajectory_lerp_val = q / temp_trajectory_path_distance;
+				var temp_trajectory_mid_x = lerp(temp_trajectory_start_x, temp_trajectory_end_x, temp_trajectory_lerp_val);
+				var temp_trajectory_mid_y = lerp(temp_trajectory_start_y, temp_trajectory_end_y, temp_trajectory_lerp_val);
+			
+				temp_trajectory_x = temp_trajectory_mid_x;
+				temp_trajectory_y = temp_trajectory_mid_y;
+				if (collision_point(temp_trajectory_mid_x, temp_trajectory_mid_y, oSolid, true, true)) {
+					// Set Hit Event
+					temp_trajectory_hit = true;
+					break;
+				}
+			
+				// Index Projectile Trajectory and Increment
+				if (i mod projectile_trajectory_distance_index == 0) {
+					ds_list_add(projectile_obj_x_trajectory, temp_trajectory_x);
+					ds_list_add(projectile_obj_y_trajectory, temp_trajectory_y);
+				}
+				i++;
+			}
+		
+			// Hit Calculation
+			if (temp_trajectory_hit) {
+				ds_list_add(projectile_obj_x_trajectory, temp_trajectory_x);
+				ds_list_add(projectile_obj_y_trajectory, temp_trajectory_y);
+				projectile_trajectory_distance = i;
+				break;
+			}
+		}
+	}
 }
 else {
 	aim = lerp(aim, clamp(aim_hip_max - 0.4, 0, 1), (aim_spd * 0.7) * temp_deltatime);
@@ -101,28 +164,12 @@ if (bursts > 0) {
 			var temp_accuracy = (clamp((accuracy - accuracy_peak) * (1 - aim), 0, 360 - accuracy_peak) + accuracy_peak) / 2;
 			var temp_hitscan_angle = temp_weapon_rotation + random_range(-temp_accuracy, temp_accuracy);
 			
-			// Flash
-			ds_list_add(flash_direction, temp_hitscan_angle);
-			ds_list_add(flash_timer, flash_delay);
-			
-			if (muzzle_flash_sprite != noone) {
-				if (i == 0) {
-					ds_list_add(flash_imageindex, random_range(0, sprite_get_number(muzzle_flash_sprite)));
-				}
-				else {
-					ds_list_add(flash_imageindex, -1);
-				}
-			}
-			
 			// Position
 			var temp_muzzle_direction = point_direction(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale);
 			var temp_muzzle_distance = point_distance(0, 0, muzzle_x * weapon_xscale, muzzle_y * weapon_yscale) - 2;
 
 			var temp_muzzle_x = temp_x + lengthdir_x(temp_muzzle_distance, temp_weapon_rotation + temp_muzzle_direction);
 			var temp_muzzle_y = temp_y + lengthdir_y(temp_muzzle_distance, temp_weapon_rotation + temp_muzzle_direction);
-			
-			ds_list_add(flash_xposition, temp_muzzle_x);
-			ds_list_add(flash_yposition, temp_muzzle_y);
 			
 			// Disable Door Colliders
 			var temp_doors_active = noone;
@@ -136,235 +183,217 @@ if (bursts > 0) {
 				}
 			}
 			
-			// Raycast
-			var temp_hit_diceroll = random(1);
+			// Bullet-Object/Raycast Behaviour
+			if (projectile_obj == noone) {
+				// Raycast
+				var temp_hit_diceroll = random(1);
 			
-			var temp_collision_array_miss = noone;
-			if (random(1) <= 0.5) {
-				temp_collision_array_miss[0] = oMaterial;
-			}
+				var temp_collision_array_miss = noone;
+				if (random(1) <= 0.5) {
+					temp_collision_array_miss[0] = oMaterial;
+				}
 			
-			var temp_raycast_data = noone;
-			while (true) {
-				// Raycast Variables
-				var temp_collision_array = noone;
-				var temp_raycast_origin_x = temp_muzzle_x;
-				var temp_raycast_origin_y = temp_muzzle_y;
+				var temp_raycast_data = noone;
+				while (true) {
+					// Raycast Variables
+					var temp_collision_array = noone;
+					var temp_raycast_origin_x = temp_muzzle_x;
+					var temp_raycast_origin_y = temp_muzzle_y;
 				
-				// Close Range Raycast
-				temp_collision_array = temp_collision_array_miss;
-				if (temp_hit_diceroll <= close_range_hit_chance) {
-					temp_collision_array = collider_array_hit;
-				}
+					// Close Range Raycast
+					temp_collision_array = temp_collision_array_miss;
+					if (temp_hit_diceroll <= close_range_hit_chance) {
+						temp_collision_array = collider_array_hit;
+					}
 				
-				temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, close_range_radius, temp_collision_array, ignore_id);
-				if (temp_raycast_data[4] == noone) {
-					temp_raycast_origin_x = temp_muzzle_x + (close_range_radius * cos(degtorad(temp_hitscan_angle)));
-					temp_raycast_origin_y = temp_muzzle_y + (close_range_radius * -sin(degtorad(temp_hitscan_angle)));
-				}
-				else {
+					temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, close_range_radius, temp_collision_array, ignore_id);
+					if (temp_raycast_data[4] == noone) {
+						temp_raycast_origin_x = temp_muzzle_x + (close_range_radius * cos(degtorad(temp_hitscan_angle)));
+						temp_raycast_origin_y = temp_muzzle_y + (close_range_radius * -sin(degtorad(temp_hitscan_angle)));
+					}
+					else {
+						break;
+					}
+				
+					// Mid Range Raycast
+					temp_collision_array = temp_collision_array_miss;
+					if (temp_hit_diceroll <= mid_range_hit_chance) {
+						temp_collision_array = collider_array_hit;
+					}
+				
+					temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, mid_range_radius - close_range_radius, temp_collision_array, ignore_id);
+					temp_raycast_data[0] += close_range_radius;
+					if (temp_raycast_data[4] == noone) {
+						temp_raycast_origin_x = temp_muzzle_x + (mid_range_radius * cos(degtorad(temp_hitscan_angle)));
+						temp_raycast_origin_y = temp_muzzle_y + (mid_range_radius * -sin(degtorad(temp_hitscan_angle)));
+					}
+					else {
+						break;
+					}
+			
+					// Far Range Raycast
+					temp_collision_array = temp_collision_array_miss;
+					if (temp_hit_diceroll <= far_range_hit_chance) {
+						temp_collision_array = collider_array_hit;
+					}
+				
+					temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, far_range_radius - mid_range_radius, temp_collision_array, ignore_id);
+					temp_raycast_data[0] += mid_range_radius;
+					if (temp_raycast_data[4] == noone) {
+						temp_raycast_origin_x = temp_muzzle_x + (far_range_radius * cos(degtorad(temp_hitscan_angle)));
+						temp_raycast_origin_y = temp_muzzle_y + (far_range_radius * -sin(degtorad(temp_hitscan_angle)));
+					}
+					else {
+						break;
+					}
+			
+					// Sniper Range Raycast
+					temp_collision_array = temp_collision_array_miss;
+					if (temp_hit_diceroll <= sniper_range_hit_chance) {
+						temp_collision_array = collider_array_hit;
+					}
+				
+					temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, range - far_range_radius, temp_collision_array, ignore_id);
+					temp_raycast_data[0] += far_range_radius;
+				
 					break;
 				}
 				
-				// Mid Range Raycast
-				temp_collision_array = temp_collision_array_miss;
-				if (temp_hit_diceroll <= mid_range_hit_chance) {
-					temp_collision_array = collider_array_hit;
-				}
+				// Raycast Flash
+				ds_list_add(flash_xposition, temp_muzzle_x);
+				ds_list_add(flash_yposition, temp_muzzle_y);
 				
-				temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, mid_range_radius - close_range_radius, temp_collision_array, ignore_id);
-				temp_raycast_data[0] += close_range_radius;
-				if (temp_raycast_data[4] == noone) {
-					temp_raycast_origin_x = temp_muzzle_x + (mid_range_radius * cos(degtorad(temp_hitscan_angle)));
-					temp_raycast_origin_y = temp_muzzle_y + (mid_range_radius * -sin(degtorad(temp_hitscan_angle)));
-				}
-				else {
-					break;
+				ds_list_add(flash_direction, temp_hitscan_angle);
+				ds_list_add(flash_timer, flash_delay);
+			
+				if (muzzle_flash_sprite != noone) {
+					if (i == 0) {
+						ds_list_add(flash_imageindex, random_range(0, sprite_get_number(muzzle_flash_sprite)));
+					}
+					else {
+						ds_list_add(flash_imageindex, -1);
+					}
 				}
 			
-				// Far Range Raycast
-				temp_collision_array = temp_collision_array_miss;
-				if (temp_hit_diceroll <= far_range_hit_chance) {
-					temp_collision_array = collider_array_hit;
-				}
-				
-				temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, far_range_radius - mid_range_radius, temp_collision_array, ignore_id);
-				temp_raycast_data[0] += mid_range_radius;
-				if (temp_raycast_data[4] == noone) {
-					temp_raycast_origin_x = temp_muzzle_x + (far_range_radius * cos(degtorad(temp_hitscan_angle)));
-					temp_raycast_origin_y = temp_muzzle_y + (far_range_radius * -sin(degtorad(temp_hitscan_angle)));
-				}
-				else {
-					break;
-				}
-			
-				// Sniper Range Raycast
-				temp_collision_array = temp_collision_array_miss;
-				if (temp_hit_diceroll <= sniper_range_hit_chance) {
-					temp_collision_array = collider_array_hit;
-				}
-				
-				temp_raycast_data = raycast_combat_line(temp_raycast_origin_x, temp_raycast_origin_y, temp_hitscan_angle, range - far_range_radius, temp_collision_array, ignore_id);
-				temp_raycast_data[0] += far_range_radius;
-				
-				break;
-			}
-			
-			// Hit Calculation
-			if (temp_raycast_data[4] != noone) {
-				// Check Hit Collider Object Type
-				if (temp_raycast_data[3] == oUnit) {
-					// Unit Calculation
-					var temp_unit = temp_raycast_data[4];
-					temp_unit.health_points -= damage;
-					temp_unit.health_points = clamp(temp_unit.health_points, 0, temp_unit.max_health_points);
+				// Hit Calculation
+				if (temp_raycast_data[4] != noone) {
+					// Check Hit Collider Object Type
+					if (temp_raycast_data[3] == oUnit) {
+						// Unit Calculation
+						var temp_unit = temp_raycast_data[4];
+						temp_unit.health_points -= damage;
+						temp_unit.health_points = clamp(temp_unit.health_points, 0, temp_unit.max_health_points);
 					
-					// Blood Effect
-					if (temp_unit.blood) {
-						if (temp_unit.blood_effect != noone) {
-							// Create and Index Blood Sticker
-							var temp_unit_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], temp_unit.blood_effect);
-							ds_list_add(temp_unit.blood_list, temp_unit_blood_inst);
-							
-							// Apply Blood Sticker Settings
-							temp_unit_blood_inst.unit_inst = temp_unit;
-							temp_unit_blood_inst.blood_x = temp_unit.x - temp_raycast_data[1];
-							temp_unit_blood_inst.blood_y = temp_unit.y - temp_raycast_data[2];
-							temp_unit_blood_inst.blood_color = temp_unit.blood_color;
-							
-							// Check for Blood Splat
-							var temp_blood_splat_exists = false;
-							for (var q = ds_list_size(temp_unit.blood_list) - 1; q >= 0; q--) {
-								var temp_blood_sticker_valid = false;
-								var temp_blood_sticker_inst = ds_list_find_value(temp_unit.blood_list, q);
-								if (temp_blood_sticker_inst != noone) {
-									if (instance_exists(temp_blood_sticker_inst)) {
-										temp_blood_sticker_valid = true;
-										if (temp_blood_sticker_inst.object_index == oBloodEffect_Splatter) {
-											temp_blood_splat_exists = true;
-											break;
-										}
-									}
-								}
-								if (!temp_blood_sticker_valid) {
-									ds_list_delete(temp_unit.blood_list, q);
-								}
+						// Blood Effect
+						create_unit_blood(temp_unit, clamp(temp_raycast_data[1], temp_unit.bbox_left, temp_unit.bbox_right), clamp(temp_raycast_data[2], temp_unit.bbox_top, temp_unit.bbox_bottom), temp_hitscan_angle);
+					
+						// Instantiate Hit Effect
+						if (hit_effect) {
+							// Random Variables
+							var temp_random_sign = random(1);
+							if (temp_random_sign <= 0.5) {
+								temp_random_sign = -1;
 							}
-
-							// Blood Splat
-							if (!temp_blood_splat_exists) {
-								// Create and Index Blood Splat
-								var temp_splat_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], oBloodEffect_Splatter);
-								ds_list_add(temp_unit.blood_list, temp_splat_blood_inst);
-							
-								// Apply Blood Splat Settings
-								temp_splat_blood_inst.unit_inst = temp_unit;
-								temp_splat_blood_inst.blood_x = temp_unit.x - temp_raycast_data[1];
-								temp_splat_blood_inst.blood_y = temp_unit.y - temp_raycast_data[2];
-								temp_splat_blood_inst.blood_size = 0.6;
-								temp_splat_blood_inst.image_blend = temp_unit.blood_color;
-							
-								// Create Blood Droplets
-								if (!collision_point(temp_raycast_data[1], temp_raycast_data[2], oSolid, false, true)) {
-									var temp_random_droplet_num = irandom_range(3, 12);
-									for (var q = 0; q < temp_random_droplet_num; q++) {
-										// Create and Index Blood Droplet
-										var temp_droplet_blood_inst = instance_create_layer(temp_raycast_data[1], temp_raycast_data[2], temp_unit.layers[4], oBloodEffect_Droplet);
-										ds_list_add(temp_unit.blood_list, temp_droplet_blood_inst);
-								
-										// Apply Blood Droplet Settings
-										temp_droplet_blood_inst.blood_size = random_range(0.3, 1.2);
-										temp_droplet_blood_inst.image_blend = temp_unit.blood_color;
-										var temp_blood_droplet_direction = sign(temp_raycast_data[1] - x);
-										if (temp_blood_droplet_direction == 0) {
-											temp_blood_droplet_direction = 1;
-										}
-										temp_droplet_blood_inst.case_direction = temp_hitscan_angle + random_range(-30, 30);
-									}
-								}
+							else {
+								temp_random_sign = 1;
+							}
+							var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
+					
+							// Set Hit Effect Entry
+							ds_list_add(hit_effect_timer, hit_effect_duration);
+							ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
+							ds_list_add(hit_effect_sign, temp_random_sign);
+							ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
+							ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
+							ds_list_add(hit_effect_xscale, temp_random_size);
+							ds_list_add(hit_effect_yscale, temp_random_size);
+							if (hit_effect_random_angle == -1) {
+								ds_list_add(hit_effect_rotation, irandom(3) * 90);
+							}
+							else {
+								ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
 							}
 						}
-					}
-					
-					// Instantiate Hit Effect
-					if (hit_effect) {
-						// Random Variables
-						var temp_random_sign = random(1);
-						if (temp_random_sign <= 0.5) {
-							temp_random_sign = -1;
-						}
-						else {
-							temp_random_sign = 1;
-						}
-						var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
-					
-						// Set Hit Effect Entry
-						ds_list_add(hit_effect_timer, hit_effect_duration);
-						ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
-						ds_list_add(hit_effect_sign, temp_random_sign);
-						ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
-						ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
-						ds_list_add(hit_effect_xscale, temp_random_size);
-						ds_list_add(hit_effect_yscale, temp_random_size);
-						if (hit_effect_random_angle == -1) {
-							ds_list_add(hit_effect_rotation, irandom(3) * 90);
-						}
-						else {
-							ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
-						}
-					}
 			
-					// Ragdoll Effect
-					if (temp_unit.health_points == 0) {
-						temp_unit.force_applied = true;
-						temp_unit.force_x = temp_raycast_data[1];
-						temp_unit.force_y = temp_raycast_data[2];
-						temp_unit.force_xvector = cos(degtorad(temp_hitscan_angle)) * 15;
-						temp_unit.force_yvector = sin(degtorad(temp_hitscan_angle)) * 15;
-					}
-				}
-				else if (temp_raycast_data[3] == oMaterial) {
-					// Instantiate Hit Effect
-					if (hit_effect) {
-						// Random Variables
-						var temp_random_sign = random(1);
-						if (temp_random_sign <= 0.5) {
-							temp_random_sign = -1;
-						}
-						else {
-							temp_random_sign = 1;
-						}
-						var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
-					
-						// Set Hit Effect Entry
-						ds_list_add(hit_effect_timer, hit_effect_duration);
-						ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
-						ds_list_add(hit_effect_sign, temp_random_sign);
-						ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
-						ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
-						ds_list_add(hit_effect_xscale, temp_random_size);
-						ds_list_add(hit_effect_yscale, temp_random_size);
-						if (hit_effect_random_angle == -1) {
-							ds_list_add(hit_effect_rotation, irandom(3) * 90);
-						}
-						else {
-							ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
+						// Ragdoll Effect
+						if (temp_unit.health_points == 0) {
+							temp_unit.force_applied = true;
+							temp_unit.force_x = temp_raycast_data[1];
+							temp_unit.force_y = temp_raycast_data[2];
+							temp_unit.force_xvector = cos(degtorad(temp_hitscan_angle)) * 15;
+							temp_unit.force_yvector = sin(degtorad(temp_hitscan_angle)) * 15;
 						}
 					}
+					else if (temp_raycast_data[3] == oMaterial) {
+						// Instantiate Hit Effect
+						if (hit_effect) {
+							// Random Variables
+							var temp_random_sign = random(1);
+							if (temp_random_sign <= 0.5) {
+								temp_random_sign = -1;
+							}
+							else {
+								temp_random_sign = 1;
+							}
+							var temp_random_size = random_range(hit_effect_scale_min, hit_effect_scale_max);
 					
-					// Add Material Damage
-					material_add_damage(temp_raycast_data[4], material_damage_sprite, irandom(sprite_get_number(material_damage_sprite)), temp_raycast_data[1], temp_raycast_data[2], 1, 1, random(360));
+							// Set Hit Effect Entry
+							ds_list_add(hit_effect_timer, hit_effect_duration);
+							ds_list_add(hit_effect_index, irandom_range(0, sprite_get_number(hit_effect_sprite) - 1));
+							ds_list_add(hit_effect_sign, temp_random_sign);
+							ds_list_add(hit_effect_xpos, temp_raycast_data[1]);
+							ds_list_add(hit_effect_ypos, temp_raycast_data[2]);
+							ds_list_add(hit_effect_xscale, temp_random_size);
+							ds_list_add(hit_effect_yscale, temp_random_size);
+							if (hit_effect_random_angle == -1) {
+								ds_list_add(hit_effect_rotation, irandom(3) * 90);
+							}
+							else {
+								ds_list_add(hit_effect_rotation, irandom_range(-hit_effect_random_angle, hit_effect_random_angle));
+							}
+						}
+					
+						// Add Material Damage
+						material_add_damage(temp_raycast_data[4], material_damage_sprite, irandom(sprite_get_number(material_damage_sprite)), temp_raycast_data[1], temp_raycast_data[2], 1, 1, random(360));
+					}
 				}
+				
+				// Bullet Trail
+				var temp_bullet_trail_length = temp_raycast_data[0];
+				ds_list_add(flash_length, temp_bullet_trail_length);
+			}
+			else {
+				// Bullet Object Creation
+				var temp_bullet_obj = instance_create_layer(temp_muzzle_x, temp_muzzle_y, layer, projectile_obj);
+				temp_bullet_obj.weapon_obj = id;
+				temp_bullet_obj.ignore_id = ignore_id;
+				temp_bullet_obj.bullet_spd = projectile_spd;
+				temp_bullet_obj.bullet_direction = temp_hitscan_angle;
+				temp_bullet_obj.bullet_gravity = projectile_gravity;
+				temp_bullet_obj.bullet_realdeltatime = use_realdeltatime;
+				
+				// Raycast Flash
+				ds_list_add(flash_xposition, temp_muzzle_x);
+				ds_list_add(flash_yposition, temp_muzzle_y);
+				
+				ds_list_add(flash_direction, temp_hitscan_angle);
+				ds_list_add(flash_timer, flash_delay);
+			
+				if (muzzle_flash_sprite != noone) {
+					if (i == 0) {
+						ds_list_add(flash_imageindex, random_range(0, sprite_get_number(muzzle_flash_sprite)));
+					}
+					else {
+						ds_list_add(flash_imageindex, -1);
+					}
+				}
+				ds_list_add(flash_length, 0);
 			}
 			
 			// Re-enable All Door Colliders
 			for (var l = 0; l < array_length_1d(temp_doors_active); l++) {
 				instance_activate_object(temp_doors_active[l]);
 			}
-			
-			// Bullet Trail
-			var temp_bullet_trail_length = temp_raycast_data[0];
-			ds_list_add(flash_length, temp_bullet_trail_length);
 		}
 		
 		// Sound
@@ -448,21 +477,46 @@ else {
 	recoil_offset_y = lerp(recoil_offset_y, 0, lerp_spd * temp_deltatime);
 }
 
+// Gun Spin Behaviour
+if (gun_spin) {
+	gun_spin_angle += (360 * temp_deltatime * gun_spin_spd) * sign(weapon_yscale);
+	gun_spin_timer += temp_deltatime * gun_spin_spd;
+}
+
+// Break Action Behaviour
+if (break_action) {
+	if (image_index == 0) {
+		break_action_angle_val = 0;
+	}
+	else {
+		break_action_angle_val = lerp(break_action_angle_val, 1, angle_adjust_spd * temp_deltatime);
+	}
+}
+
 // Bullet Cases
 if (bullet_cases != 0) {
-	for (var c = 0; c < bullet_cases; c++) {
-		var temp_eject_direction = point_direction(0, 0, case_eject_x * weapon_xscale, case_eject_y * weapon_yscale);
-		var temp_eject_distance = point_distance(0, 0, case_eject_x * weapon_xscale, case_eject_y * weapon_yscale);
+	if (!gun_spin_reload or gun_spin) {
+		if (!bolt_action or (!bolt_action_loaded and image_index > 0)) {
+			if (!break_action or (image_index > 0)) {
+				for (var c = 0; c < bullet_cases; c++) {
+					var temp_eject_direction = point_direction(0, 0, case_eject_x * weapon_xscale, case_eject_y * weapon_yscale);
+					var temp_eject_distance = point_distance(0, 0, case_eject_x * weapon_xscale, case_eject_y * weapon_yscale);
 		
-		var temp_eject_x = x + recoil_offset_x + lengthdir_x(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
-		var temp_eject_y = y + recoil_offset_y + lengthdir_y(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
+					var temp_eject_x = x + recoil_offset_x + lengthdir_x(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
+					var temp_eject_y = y + recoil_offset_y + lengthdir_y(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
 		
-		var temp_case = instance_create_layer(temp_eject_x, temp_eject_y, layer, oBulletCase);
-		temp_case.case_direction = (weapon_rotation + ((-90 * weapon_yscale) - 180)) + (random_range(0, case_direction) * weapon_yscale);
-		temp_case.sprite_index = case_sprite;
-		temp_case.image_xscale = weapon_yscale;
+					var temp_case = instance_create_layer(temp_eject_x, temp_eject_y, layer, oBulletCase);
+					temp_case.case_direction = (weapon_rotation + ((-90 * weapon_yscale) - 180)) + (random_range(0, case_direction) * weapon_yscale);
+					if (gun_spin_reload) {
+						temp_case.case_direction = 270 + random_range(-10, 10);
+					}
+					temp_case.sprite_index = case_sprite;
+					temp_case.image_xscale = weapon_yscale;
+				}
+				bullet_cases = 0;
+			}
+		}
 	}
-	bullet_cases = 0;
 }
 
 // Weapon Hit Effect Calculation

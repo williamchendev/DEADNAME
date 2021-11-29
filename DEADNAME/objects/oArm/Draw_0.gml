@@ -5,18 +5,22 @@
 var temp_arm_sprite_index = limb_sprite;
 if (instance_exists(oLighting)) {
 	// Find Lighting Surface Offset
-	var temp_lighting_manager_inst = instance_find(oLighting, 0);
-	surface_x_offset = temp_lighting_manager_inst.x;
-	surface_y_offset = temp_lighting_manager_inst.y;
+	if (!manual_surface_offset) {
+		var temp_lighting_manager_inst = instance_find(oLighting, 0);
+		surface_x_offset = temp_lighting_manager_inst.x;
+		surface_y_offset = temp_lighting_manager_inst.y;
+	}
 	
 	// Switch Lighting Sprites
 	if (normal_draw_event) {
 		temp_arm_sprite_index = limb_normal_sprite;
 	}
 	else if (!lit_draw_event) {
+		manual_surface_offset = false;
 		return;
 	}
 }
+manual_surface_offset = false;
 
 // Draw Unit Sprite
 if (temp_arm_sprite_index == noone) {

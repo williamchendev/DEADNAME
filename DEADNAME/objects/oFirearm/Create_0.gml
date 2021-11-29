@@ -8,6 +8,8 @@ event_inherited();
 weapon_type = "firearm";
 weapon_ammo_id = 7;
 
+projectile_obj = noone;
+
 bullets = 0;
 bullets_max = 5;
 
@@ -21,16 +23,23 @@ weapon_normal_sprite = sFAL_NormalMap;
 case_sprite = s308Case;
 muzzle_flash_sprite = s308MuzzleFlash;
 
+break_action_sprite = noone;
+break_action_normal_sprite = noone;
+
 image_speed = 0;
 image_index = 1;
 
 // Bullet Settings
 projectiles = 1;
 
+projectile_spd = 5;
+projectile_gravity = 0.1;
+
 burst = 0;
 burst_delay = 0.1;
 
 flash_delay = 7;
+bullet_path_line_width = 1;
 
 // Combat Settings
 damage = 1;
@@ -54,14 +63,30 @@ reload_y = 0;
 reload_offset_y = 5;
 
 case_eject_x = 1;
-case_eject_y = -1;
-case_direction = 30;
+case_eject_y = 1;
+case_direction = 90;
 
 // Reload Settings
 magazine_obj = noone;
+reload_individual_rounds = false;
+
+bolt_action = false;
+break_action = false;
+gun_spin_reload = false;
+
+bolt_action_start_x = 0;
+bolt_action_start_y = 0;
+
+bolt_action_end_x = 0;
+bolt_action_end_y = 0;
+
+break_action_angle = 0;
+
+break_action_pivot_x = 0;
+break_action_pivot_y = 0;
 
 // Arm Settings
-double_handed = false;
+swap_action_hand = false;
 
 arm_x = noone;
 arm_y = noone;
@@ -81,6 +106,9 @@ recoil_direction = 6;
 recoil_delay = 4.6;
 recoil_clamp = 16;
 
+gun_spin_spd = 0.07;
+gun_spin_reload_spin_times = 3;
+
 click = true;
 
 // Aiming Settings
@@ -94,6 +122,14 @@ close_range_hit_chance = 1.0;
 mid_range_hit_chance = 1.0;
 far_range_hit_chance = 1.0;
 sniper_range_hit_chance = 1.0;
+
+projectile_trajectory_distance_index = 5;
+projectile_trajectory_distance_limit = 2000;
+
+projectile_trajectory_aim_reticle_spd = 1.1;
+projectile_trajectory_aim_reticle_width = 2;
+projectile_trajectory_aim_reticle_height = 12;
+projectile_trajectory_aim_reticle_space = 6;
 
 // Sound Settings
 silent = false;
@@ -117,6 +153,8 @@ bursts = 0;
 bursts_timer = 0;
 bullet_cases = 0;
 
+bolt_action_loaded = false;
+
 ignore_id = "unassigned";
 
 // Draw Variables
@@ -137,11 +175,22 @@ hit_effect_xscale = ds_list_create();
 hit_effect_yscale = ds_list_create();
 hit_effect_rotation = ds_list_create();
 
+projectile_obj_x_trajectory = ds_list_create();
+projectile_obj_y_trajectory = ds_list_create();
+projectile_trajectory_distance = 0;
+projectile_trajectory_draw_val = 0;
+
 knockout_hit_effect_index = -1;
 knockout_hit_effect_offset = 0;
 knockout_hit_effect_xscale = 1;
 knockout_hit_effect_yscale = 1;
 knockout_hit_effect_sign = 1;
+
+gun_spin = false;
+gun_spin_angle = 0;
+gun_spin_timer = 0;
+
+break_action_angle_val = 0;
 
 // Collider Variables
 collider_array_hit = noone;

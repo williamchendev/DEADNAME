@@ -10,6 +10,7 @@ target_y = 0;
 targeting = false;
 
 target_aim_threshold = 0.85;
+target_aim_fullauto_threshold = 0.5;
 
 // Squad Variables
 squad_aim = false;
@@ -29,20 +30,35 @@ weapon_melee_y = 2;
 inventory_x = -1;
 inventory_y = -30;
 
+weapon_ambient_move_spd = 0.027;
+weapon_ambient_move_size = 2;
+
 // Limb Settings
 limbs = 2;
 
 limb_x[0] = -5;
 limb_y[0] = -32;
+limb_angle[0] = -10;
 
 limb_x[1] = 2;
 limb_y[1] = -32;
+limb_angle[1] = 20;
 
-limb_melee_arm_length_mult = 0.6;
-limb_melee_arm_swing_length_mult = 2;
+limb_ambient_move_angle_offset = 35;
+
+limb_ambient_anim_spd = 0.017;
+
+limb_ambient_idle_rotate_radius = 1;
+limb_ambient_move_rotate_radius = 3.5;
+
+limb_ambient_idle_length_offset = 0.1;
+limb_ambient_move_length_offset = 0.35;
 
 limb_aim_move_offset_x = -1;
 limb_aim_offset_y = 2;
+
+limb_melee_arm_length_mult = 0.6;
+limb_melee_arm_swing_length_mult = 2;
 
 // Knockout Settings
 can_die = true;
@@ -55,12 +71,20 @@ knockout_timer = 0.6;
 weapon_x = 0;
 weapon_y = 0;
 
+weapon_ambient_move_val = 0;
+
 aim_ambient_x = 0;
 aim_ambient_y = 0;
 
+old_target_angle = 0;
+
 reload = false;
+bolt_action_load = false;
+bolt_action_reload = false;
 
 // Limb Variables
+limb_ambient_anim_val = 0;
+
 limb[0] = instance_create_layer(x, y, layers[4], oArm);
 limb[1] = instance_create_layer(x, y, layers[1], oArm);
 

@@ -30,6 +30,7 @@ angle_1 = 0;
 angle_2 = 0;
 
 // Surface Variables
+manual_surface_offset = false;
 surface_x_offset = 0;
 surface_y_offset = 0;
 

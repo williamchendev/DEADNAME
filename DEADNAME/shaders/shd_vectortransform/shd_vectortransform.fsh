@@ -17,7 +17,7 @@ void main()
 	Color = ((Color - 0.5) * 2.0);
 	
 	// RGB Value Calculation
-	Color = Color * vectorScale;
+	Color = Color * vec3(vectorScale.x * vectorScale.z, vectorScale.y * vectorScale.z, vectorScale.z);
 	float ColorDistance = sqrt((Color.x * Color.x) + (Color.y * Color.y));
 	float ColorAngle = atan(Color.y, Color.x);
 	ColorAngle = ColorAngle + vectorAngle;

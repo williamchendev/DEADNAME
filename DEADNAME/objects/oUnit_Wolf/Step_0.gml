@@ -29,7 +29,7 @@ if (temp_weapon != noone) {
 		if (!crunch) {
 			// Screen Shake Bursts
 			if (screen_shake_shots > temp_weapon.bullets - ds_list_size(temp_weapon.flash_timer)) {
-				if (!reload) {
+				if (!reload or bolt_action_load) {
 					camera_screen_shake = true;
 					camera_screen_shake_timer = 1;
 				}

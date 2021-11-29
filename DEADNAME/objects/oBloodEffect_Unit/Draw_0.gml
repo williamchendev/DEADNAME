@@ -148,6 +148,7 @@ else if (unit_inst != noone) {
 				}
 		
 				// Limb Offset
+				unit_inst.limb[i].manual_surface_offset = true;
 				unit_inst.limb[i].surface_x_offset = temp_unit_x_offset;
 				unit_inst.limb[i].surface_y_offset = temp_unit_y_offset;
 				with (unit_inst.limb[i]) {

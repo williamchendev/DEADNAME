@@ -116,8 +116,9 @@ limb_sprite[0] = sWolf_Arms;  // Right Arm
 limb_sprite[1] = sWolf_Arms;  // Left Arm
 
 // Inventory Settings
-add_item_inventory(inventory, 6);
+//add_item_inventory(inventory, 6);
 //add_item_inventory(inventory, 4);
+add_item_inventory(inventory, 6);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

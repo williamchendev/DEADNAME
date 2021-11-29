@@ -108,7 +108,12 @@ if (temp_draw_gui) {
 			if (temp_shader == -1) {
 				// Draw Bullet Trail
 				draw_set_alpha(0.4 * (1 - power(((flash_delay - temp_flash_timer) / flash_delay), 2)));
-				draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
+				if (bullet_path_line_width == 1) {
+					draw_line(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction));
+				}
+				else {
+					draw_line_width(temp_flash_xposition, temp_flash_yposition, temp_flash_xposition + lengthdir_x(temp_flash_length, temp_flash_direction), temp_flash_yposition + lengthdir_y(temp_flash_length, temp_flash_direction), bullet_path_line_width);
+				}
 	
 				// Draw Bullet Trail Muzzle Flash
 				draw_set_alpha(1);
@@ -139,10 +144,82 @@ if (temp_draw_gui) {
 			}
 		}
 	}
+	
+	// Draw Firearm Projectile Trajectory
+	if (aiming) {
+		if (projectile_obj != noone) {
+			// Draw Settings
+			draw_set_alpha(1);
+		
+			// Draw Trajectory Arc
+			var i = projectile_trajectory_draw_val;
+			while (i < projectile_trajectory_distance) {
+				// Find Trajectory Reticle Indexes
+				var temp_trajectory_pos1_index = clamp((i / projectile_trajectory_distance), 0, 1);
+				var temp_trajectory_pos2_index = clamp(((i + projectile_trajectory_aim_reticle_height) / projectile_trajectory_distance), 0, 1);
+				temp_trajectory_pos1_index = temp_trajectory_pos1_index * (ds_list_size(projectile_obj_x_trajectory) - 1);
+				temp_trajectory_pos2_index = temp_trajectory_pos2_index * (ds_list_size(projectile_obj_x_trajectory) - 1);
+			
+				// Create Reticle Partition Line Coordinates
+				var temp_trajectory_x1 = lerp(ds_list_find_value(projectile_obj_x_trajectory, floor(temp_trajectory_pos1_index)), ds_list_find_value(projectile_obj_x_trajectory, ceil(temp_trajectory_pos1_index)), temp_trajectory_pos1_index mod 1);
+				var temp_trajectory_y1 = lerp(ds_list_find_value(projectile_obj_y_trajectory, floor(temp_trajectory_pos1_index)), ds_list_find_value(projectile_obj_y_trajectory, ceil(temp_trajectory_pos1_index)), temp_trajectory_pos1_index mod 1);
+				var temp_trajectory_x2 = lerp(ds_list_find_value(projectile_obj_x_trajectory, floor(temp_trajectory_pos2_index)), ds_list_find_value(projectile_obj_x_trajectory, ceil(temp_trajectory_pos2_index)), temp_trajectory_pos2_index mod 1);
+				var temp_trajectory_y2 = lerp(ds_list_find_value(projectile_obj_y_trajectory, floor(temp_trajectory_pos2_index)), ds_list_find_value(projectile_obj_y_trajectory, ceil(temp_trajectory_pos2_index)), temp_trajectory_pos2_index mod 1);
+			
+				// Draw Partition Line Background
+				draw_set_color(c_black);
+				draw_line_width(temp_trajectory_x1, temp_trajectory_y1, temp_trajectory_x2, temp_trajectory_y2, projectile_trajectory_aim_reticle_width);
+			
+				// Draw Partition Line Front
+				var temp_trajectory_front_space_direction = point_direction(temp_trajectory_x1, temp_trajectory_y1, temp_trajectory_x2, temp_trajectory_y2);
+				temp_trajectory_x1 += lengthdir_x(1, temp_trajectory_front_space_direction);
+				temp_trajectory_y1 += lengthdir_y(1, temp_trajectory_front_space_direction);
+				temp_trajectory_x2 -= lengthdir_x(1, temp_trajectory_front_space_direction);
+				temp_trajectory_y2 -= lengthdir_y(1, temp_trajectory_front_space_direction);
+			
+				draw_line_width(temp_trajectory_x1, temp_trajectory_y1, temp_trajectory_x2, temp_trajectory_y2, projectile_trajectory_aim_reticle_width + 2);
+				draw_set_color(c_white);
+				draw_line_width(temp_trajectory_x1, temp_trajectory_y1, temp_trajectory_x2, temp_trajectory_y2, projectile_trajectory_aim_reticle_width);
+			
+				// Increment
+				i += projectile_trajectory_aim_reticle_height + projectile_trajectory_aim_reticle_space;
+			}
+		}
+	}
 }
 
 // Draw Firearm Sprite
 if (temp_draw_sprite) {
+	// Break Action Behaviour
+	if (break_action) {
+		if (image_index > 0) {
+			// Break Action Vector Settings
+			var temp_break_action_angle = temp_weapon_rotation + ((break_action_angle_val * break_action_angle) * sign(weapon_yscale));
+			var temp_break_action_distance = point_distance(0, 0, break_action_pivot_x * weapon_xscale, break_action_pivot_y * weapon_yscale);
+			var temp_break_action_direction = point_direction(0, 0, break_action_pivot_x * weapon_xscale, break_action_pivot_y * weapon_yscale);
+			var temp_break_action_pivot_x = temp_x + lengthdir_x(temp_break_action_distance, temp_weapon_rotation + temp_break_action_direction);
+			var temp_break_action_pivot_y = temp_y + lengthdir_y(temp_break_action_distance, temp_weapon_rotation + temp_break_action_direction);
+			
+			// Normal Draw Event Settings
+			var temp_break_action_sprite = break_action_sprite;
+			if (normal_draw_event) { 
+				temp_break_action_sprite = break_action_normal_sprite;
+				shader_set(shd_vectortransform);
+				shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_break_action_angle));
+				var temp_normalscale_x = sign(weapon_xscale);
+				var temp_normalscale_y = sign(weapon_yscale);
+				shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+			}
+			
+			// Draw Break Action
+			draw_sprite_ext(temp_break_action_sprite, 0, temp_break_action_pivot_x, temp_break_action_pivot_y, weapon_xscale, weapon_yscale, temp_break_action_angle, c_white, 1);
+			
+			if (normal_draw_event) {
+				shader_reset();
+			}
+		}
+	}
+	
 	// Set Normal Vector Scaling Shader
 	if (normal_draw_event) {
 		shader_set(shd_vectortransform);
@@ -150,6 +227,23 @@ if (temp_draw_sprite) {
 		var temp_normalscale_x = sign(weapon_xscale);
 		var temp_normalscale_y = sign(weapon_yscale);
 		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
+	}
+
+	// Gun Spin Behaviour
+	if (gun_spin) {
+		// Find Hand Position
+		var temp_limb_distance = point_distance(0, 0, arm_x[0] * weapon_xscale, arm_y[0] * weapon_yscale);
+		var temp_limb_direction = point_direction(0, 0, arm_x[0] * weapon_xscale, arm_y[0] * weapon_yscale);
+		temp_x = temp_x + lengthdir_x(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift);
+		temp_y = temp_y + lengthdir_y(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift);
+		
+		// Offset Position by Spin Angle
+		temp_weapon_rotation += gun_spin_angle;
+		temp_x -= lengthdir_x(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift + gun_spin_angle);
+		temp_y -= lengthdir_y(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift + gun_spin_angle);
+		
+		// Reset Gun Spin
+		gun_spin = false;
 	}
 
 	// Draw the Firearm

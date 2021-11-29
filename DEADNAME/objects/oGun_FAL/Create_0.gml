@@ -37,7 +37,7 @@ reload_y = 2;
 reload_offset_y = 6;
 
 // Arm Settings
-double_handed = true;
+swap_action_hand = true;
 
 arm_x[1] = 19;
 arm_y[1] = 0;

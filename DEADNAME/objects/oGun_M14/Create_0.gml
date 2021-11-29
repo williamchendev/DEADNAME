@@ -31,7 +31,7 @@ reload_offset_y = 6;
 magazine_obj = oGun_M14_Mag;
 
 // Arm Settings
-double_handed = true;
+swap_action_hand = true;
 
 arm_x[0] = 2;
 arm_y[0] = 1;

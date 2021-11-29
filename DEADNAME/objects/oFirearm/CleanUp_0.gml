@@ -15,6 +15,12 @@ flash_xposition = -1;
 flash_yposition = -1;
 flash_imageindex = -1;
 
+// Clear Projectile Trajectory DS List Data
+ds_list_destroy(projectile_obj_x_trajectory);
+ds_list_destroy(projectile_obj_y_trajectory);
+projectile_obj_x_trajectory = -1;
+projectile_obj_y_trajectory = -1;
+
 // Clear Hit Effect DS List Data
 ds_list_destroy(hit_effect_timer);
 ds_list_destroy(hit_effect_index);

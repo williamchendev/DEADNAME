@@ -10,7 +10,7 @@ weapon_sprite = sAluminumBat_Arc;
 weapon_idle_sprite = sAluminumBat_Idle;
 
 // Arm Settings
-double_handed = true;
+swap_action_hand = true;
 
 arm_x = noone;
 arm_y = noone;
