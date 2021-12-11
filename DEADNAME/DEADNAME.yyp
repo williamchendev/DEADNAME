@@ -39,14 +39,6 @@
             }
         },
         {
-            "Key": "02318742-6b60-411e-a781-77378f50aa3d",
-            "Value": {
-                "id": "079ac6d4-492e-46e0-86a7-fffe1fdf586f",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite4\\sSmokePuff_Large_Sprite4.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "02821824-20de-4142-8281-6357825e19da",
             "Value": {
                 "id": "a9e2275f-e21b-4449-8bc7-6aa0d447d79c",
@@ -75,6 +67,14 @@
             "Value": {
                 "id": "e0126098-376c-4d73-8ba1-147c56c097c9",
                 "resourcePath": "views\\032ed489-8123-4cd7-bf12-c5bb9a005b91.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "0366ed05-9c3b-4042-b73b-5f70001e7668",
+            "Value": {
+                "id": "3357ae55-e133-4e33-bce6-3ad6ec7d333a",
+                "resourcePath": "views\\0366ed05-9c3b-4042-b73b-5f70001e7668.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -279,14 +279,6 @@
             }
         },
         {
-            "Key": "140145fb-384a-4be9-9ea4-82d118446517",
-            "Value": {
-                "id": "49e7db63-8504-48f6-8406-4a5541777b53",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap\\sSmokePuff_Large_NormalMap.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "1552a08c-c703-491e-8bc9-c083152e9e6c",
             "Value": {
                 "id": "73f28e52-e821-45a0-a349-ecd166b7a615",
@@ -439,14 +431,6 @@
             }
         },
         {
-            "Key": "1be2ec0c-1280-4cb4-bf8f-a9ad16b14a4e",
-            "Value": {
-                "id": "516dddd2-d81f-435c-91d9-66d32c023311",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite\\sSmokePuff_Large_Sprite.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "1d02d0c2-a4d0-4a88-81b9-2c2fa8bf9b28",
             "Value": {
                 "id": "51f80d9d-9678-47f4-a858-f70318c67c0e",
@@ -479,10 +463,10 @@
             }
         },
         {
-            "Key": "1f6452f8-6707-4863-8df2-988d5b7ddb9c",
+            "Key": "200ab8fa-43c2-4fee-a213-d18b1fcfad13",
             "Value": {
-                "id": "3a49e424-ead2-4513-8fda-ee89018ed2cb",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite5\\sSmokePuff_Large_Sprite5.yy",
+                "id": "c424c34e-878f-4ac6-8492-53082cf39bca",
+                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap1\\sSmokePuff_Large_NormalMap1.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -546,7 +530,7 @@
             "Key": "23bf1d15-21cf-4f81-9e16-1f69f21d421f",
             "Value": {
                 "id": "1cdded8a-aac5-440b-ad23-7ab325e72bbd",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite9\\sSmokePuff_Large_Sprite9.yy",
+                "resourcePath": "sprites\\sSmokePuff_Large_Sprite1\\sSmokePuff_Large_Sprite1.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -700,14 +684,6 @@
                 "id": "5b17eebf-b816-4c6e-b2b6-f62dfd86de02",
                 "resourcePath": "rooms\\rDefaultLevel\\rDefaultLevel.yy",
                 "resourceType": "GMRoom"
-            }
-        },
-        {
-            "Key": "2bb66a31-e116-4dd9-ba3d-194ae3526963",
-            "Value": {
-                "id": "c4bae65c-fdbc-4039-968c-bbdff6b9118e",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap7\\sSmokePuff_Large_NormalMap7.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -875,6 +851,14 @@
             "Value": {
                 "id": "e8c805bf-ad80-44f9-a011-b967e905bc6e",
                 "resourcePath": "sprites\\sDebugMaterial\\sDebugMaterial.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "3444e1a1-15f7-49fc-b75c-261a5bb8f9bb",
+            "Value": {
+                "id": "c5fb3d2c-9e5a-40a2-8e21-dc7258cbd38d",
+                "resourcePath": "sprites\\sSmokePuff_Small_Sprite1\\sSmokePuff_Small_Sprite1.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1071,11 +1055,11 @@
             }
         },
         {
-            "Key": "3c85d205-6f42-48ff-b2f8-7b5e69175897",
+            "Key": "3c692af8-ecaf-4148-8f24-0887bff1d9bb",
             "Value": {
-                "id": "b2076ca6-e2b2-4e82-968d-2a68465348e0",
-                "resourcePath": "views\\3c85d205-6f42-48ff-b2f8-7b5e69175897.yy",
-                "resourceType": "GMFolder"
+                "id": "744dadc8-6d9d-40f9-a46d-a7a9f251e122",
+                "resourcePath": "scripts\\point_check_closest_position_line\\point_check_closest_position_line.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -1447,14 +1431,6 @@
             }
         },
         {
-            "Key": "503bef70-09b0-41f3-9f4e-efd23a0b6ad8",
-            "Value": {
-                "id": "5c15cf75-e962-43e9-9ed9-f0ee527fbb3d",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite92\\sSmokePuff_Large_Sprite92.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "50676b11-b98a-4778-81bf-1c096e0ef8a9",
             "Value": {
                 "id": "4c0e1e42-768b-4c31-8522-567086135532",
@@ -1532,14 +1508,6 @@
                 "id": "0a678745-b2f3-41a7-a913-a9fc05eca7ff",
                 "resourcePath": "views\\53ef89d0-8be8-42a9-97c9-110f9f0f48f6.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "540d3fac-ca21-415f-908a-f77b712d27ab",
-            "Value": {
-                "id": "32234604-4e5f-4f9b-80eb-9f47f27e2e52",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap3\\sSmokePuff_Large_NormalMap3.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -1639,14 +1607,6 @@
             }
         },
         {
-            "Key": "585cea50-ef87-4717-a5f6-afab12faf742",
-            "Value": {
-                "id": "7b1fde1f-4e0a-486d-9832-9c07d09ce7f0",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite3\\sSmokePuff_Large_Sprite3.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "586e2cab-1147-457e-8ab9-5d8986066bf2",
             "Value": {
                 "id": "b92a9a41-60f4-4666-b806-f902094b8dda",
@@ -1668,6 +1628,22 @@
                 "id": "0fc6f24f-4ace-4b19-8931-ddaef2816d6f",
                 "resourcePath": "scripts\\create_empty_inventory\\create_empty_inventory.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4",
+            "Value": {
+                "id": "d678e7ee-9c0b-4e2b-90bd-ef591cf71188",
+                "resourcePath": "objects\\oDirectionalLight\\oDirectionalLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "5a5c3e36-558b-4726-9ec7-4a43d0885ec6",
+            "Value": {
+                "id": "cc6119f4-a5f9-49d1-8371-41470547e960",
+                "resourcePath": "shaders\\shd_directionallightshadows\\shd_directionallightshadows.yy",
+                "resourceType": "GMShader"
             }
         },
         {
@@ -1823,6 +1799,14 @@
             }
         },
         {
+            "Key": "65029538-952c-4428-9efb-d761b836b145",
+            "Value": {
+                "id": "ec38894a-84fe-4f45-92be-164d9b6318e7",
+                "resourcePath": "objects\\oExplosionImpact\\oExplosionImpact.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "655646e7-3e4e-4bd8-b6a8-a4726d56f6ac",
             "Value": {
                 "id": "3ae6a4d1-38ea-4fc5-9e83-47ef14bc23bc",
@@ -1879,14 +1863,6 @@
             }
         },
         {
-            "Key": "69050a81-cbaa-4226-b898-eb25b8a7f0fa",
-            "Value": {
-                "id": "41f405ab-2ad0-4fa0-b5d6-8ce8390ed213",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap4\\sSmokePuff_Large_NormalMap4.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "69082547-f22c-4fbd-a336-9dd1642b386b",
             "Value": {
                 "id": "955ff926-2978-499d-979a-c64c1af9151c",
@@ -1916,6 +1892,14 @@
                 "id": "388e2a32-0315-40d5-99cf-0543cb2b19a3",
                 "resourcePath": "sprites\\sDoorPanel\\sDoorPanel.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6a36bce0-2b57-480e-b59d-4ac99a51d5e6",
+            "Value": {
+                "id": "b42fcd74-7a28-4844-be69-79098f1ba968",
+                "resourcePath": "views\\6a36bce0-2b57-480e-b59d-4ac99a51d5e6.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -2003,14 +1987,6 @@
             "Value": {
                 "id": "c79d57e7-4d38-4670-8819-75b8c1e3d98d",
                 "resourcePath": "sprites\\sDeadnameTitle\\sDeadnameTitle.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "70c442b6-5646-43b0-9410-94936131e533",
-            "Value": {
-                "id": "c97644e5-cb17-4dfd-9c78-35744d78ecbe",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite7\\sSmokePuff_Large_Sprite7.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2146,7 +2122,7 @@
             "Key": "781e4def-9c6f-4acc-8626-fffe41dfaad2",
             "Value": {
                 "id": "dda839da-fa7d-46f5-bbdb-f776fc7a7066",
-                "resourcePath": "shaders\\shd_shadows\\shd_shadows.yy",
+                "resourcePath": "shaders\\shd_pointlightshadows\\shd_pointlightshadows.yy",
                 "resourceType": "GMShader"
             }
         },
@@ -2255,6 +2231,14 @@
             }
         },
         {
+            "Key": "816fb168-8d4c-4f6f-bf4e-0d4bd405545f",
+            "Value": {
+                "id": "5d878974-6232-472b-95ab-797c72fdfe96",
+                "resourcePath": "objects\\oDebug_BulletCaseOld\\oDebug_BulletCaseOld.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "8251215e-19d2-4f96-9435-1d3ad5b5c21f",
             "Value": {
                 "id": "3db94115-e811-4b41-9703-cf8a0c7e0d4a",
@@ -2267,14 +2251,6 @@
             "Value": {
                 "id": "b125b511-67a1-49c8-b686-e8f891308ec7",
                 "resourcePath": "sprites\\sCornfields_Construct_DoorEndPanel\\sCornfields_Construct_DoorEndPanel.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "835b1f9e-ecbb-4378-a1ef-5948a74ee758",
-            "Value": {
-                "id": "6637b83c-70cb-43e4-a04e-cce377a559b5",
-                "resourcePath": "sprites\\sSparkleEffect1\\sSparkleEffect1.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2447,6 +2423,14 @@
             }
         },
         {
+            "Key": "901df782-ade7-479d-b4e3-2bb4c4461135",
+            "Value": {
+                "id": "ccac241a-5c81-40c0-90f6-31b773b6b9a5",
+                "resourcePath": "sprites\\sSmokePuff_Small_NormalMap1\\sSmokePuff_Small_NormalMap1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "90adff51-c0d4-4464-b4fa-d22ee103f4c1",
             "Value": {
                 "id": "ef37137b-c2b0-45b2-803b-b99b4923e696",
@@ -2599,6 +2583,22 @@
             }
         },
         {
+            "Key": "9852a39a-e194-4afd-a178-1e92e7f8e470",
+            "Value": {
+                "id": "37ea487f-2bd7-4b09-93a7-1e214f2a6085",
+                "resourcePath": "sprites\\sExplosionImpact_Medium_Sprite1\\sExplosionImpact_Medium_Sprite1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "98c570c8-cc06-4b7a-8307-307873ebffc2",
+            "Value": {
+                "id": "1caf5539-151d-4ce8-a852-166692ab3806",
+                "resourcePath": "sprites\\sExplosionImpact_Medium_NormalMap1\\sExplosionImpact_Medium_NormalMap1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "99ac8eb9-3827-4408-ab1c-945643909b17",
             "Value": {
                 "id": "6fcf2af1-5114-42e1-ac94-ea5b15e9e02b",
@@ -2708,22 +2708,6 @@
                 "id": "df2582cc-8a05-4228-82f6-54dfb7a32ba7",
                 "resourcePath": "datafiles_yy\\Data\\Cornfields_HousesCutscene2.txt.yy",
                 "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "a2ec0566-7bd2-4417-b30f-9d4c05c74d81",
-            "Value": {
-                "id": "c2e446ab-9cd5-46e0-9a66-bee7a8fa5058",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap5\\sSmokePuff_Large_NormalMap5.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "a3b08c58-8371-44b0-9a04-997584430d1a",
-            "Value": {
-                "id": "dfcf3324-2f18-47ec-921d-973d63b15c59",
-                "resourcePath": "objects\\oSparkleEffect1\\oSparkleEffect1.yy",
-                "resourceType": "GMObject"
             }
         },
         {
@@ -3159,6 +3143,14 @@
             }
         },
         {
+            "Key": "bb5fc51a-acd2-4f48-b997-14dcd5c866d7",
+            "Value": {
+                "id": "2d6fa634-10f4-4951-9c63-6278b44078aa",
+                "resourcePath": "sprites\\sDebugNormalMap_Sphere\\sDebugNormalMap_Sphere.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "bb7323be-5dc9-4a98-a19d-5183d41dd6bb",
             "Value": {
                 "id": "481d4d4f-d7fa-445b-b035-bb2ac5536e2a",
@@ -3311,6 +3303,14 @@
             }
         },
         {
+            "Key": "c3ebcca3-b032-456c-8a3e-4d98ea99720d",
+            "Value": {
+                "id": "41e2bb22-f074-4b06-889f-b4a1cd2a1640",
+                "resourcePath": "objects\\oDebugNormalMap_Sphere\\oDebugNormalMap_Sphere.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "c3ebf448-2aee-4b5a-a111-9c51aeba04c4",
             "Value": {
                 "id": "9c25f986-dde1-4e22-b204-c6749b235593",
@@ -3332,14 +3332,6 @@
                 "id": "1eb46117-344c-4fdb-bf07-099b27c5be6a",
                 "resourcePath": "views\\c4bf3853-cff9-4fbe-95a7-8e30d1224f30.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "c4ea4aeb-bb14-4a9c-a421-cc9031e5da19",
-            "Value": {
-                "id": "12ba192c-d037-4d5c-a3c3-db1de08a634c",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap6\\sSmokePuff_Large_NormalMap6.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -3823,14 +3815,6 @@
             }
         },
         {
-            "Key": "e1383e47-4a53-42bc-9581-6efb44d091ca",
-            "Value": {
-                "id": "67e1ef04-bd20-46f6-8b87-6f37b195751c",
-                "resourcePath": "sprites\\sSmokePuff_NormalMap\\sSmokePuff_NormalMap.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "e292c3b8-4026-4398-8ebb-a9070c068af6",
             "Value": {
                 "id": "028a5275-f63b-4369-96d8-85b05c3887a0",
@@ -3951,6 +3935,14 @@
             }
         },
         {
+            "Key": "e8a8f871-3717-4134-aac4-f3ea48fa25f0",
+            "Value": {
+                "id": "69d7aa43-d694-4423-b379-e0a3d33e3f8b",
+                "resourcePath": "views\\e8a8f871-3717-4134-aac4-f3ea48fa25f0.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "e92ab6eb-bd31-4324-81ac-b12a9428473c",
             "Value": {
                 "id": "88cc8a8c-e6f0-448b-a5db-4998ab6fb21b",
@@ -4004,14 +3996,6 @@
                 "id": "d126c55d-7cea-4164-83ed-1af09c6e6aa7",
                 "resourcePath": "objects\\oEditorStartMenuWindow\\oEditorStartMenuWindow.yy",
                 "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "eab8e865-b9cd-4e89-baae-0a8373224b6e",
-            "Value": {
-                "id": "51d68a54-d7b5-4427-88b5-4eff37f3be3e",
-                "resourcePath": "sprites\\sSmokePuff_Large_NormalMap2\\sSmokePuff_Large_NormalMap2.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
@@ -4143,6 +4127,14 @@
             }
         },
         {
+            "Key": "f0e49e0d-ca01-44ca-b35a-4b16d37b1c28",
+            "Value": {
+                "id": "b83be07a-a4c5-4234-b355-0628bf41a483",
+                "resourcePath": "objects\\oGlobalLight\\oGlobalLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "f13ec92f-9b7a-4714-88d3-73db07e971c7",
             "Value": {
                 "id": "2bec3896-9ec2-451c-b82c-770e8400d469",
@@ -4215,14 +4207,6 @@
             }
         },
         {
-            "Key": "f64a923c-5ab4-4a1e-801b-72ceb1d59fee",
-            "Value": {
-                "id": "1ecfad08-98a2-4dbc-8104-a8bed03dc97b",
-                "resourcePath": "sprites\\sSmokePuff_Sprite\\sSmokePuff_Sprite.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "f7372e58-ebbb-48fe-a8df-6fcf5e602c81",
             "Value": {
                 "id": "06320826-c413-47f7-9e2e-de6c823a305f",
@@ -4260,6 +4244,14 @@
                 "id": "dc36553c-b25c-4abe-82bf-cbeea8949de7",
                 "resourcePath": "scripts\\generate_level\\generate_level.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "f9d345c8-e8f9-4c4f-bf73-530f7070d717",
+            "Value": {
+                "id": "e21bff3c-ebb5-4139-af07-eee814e7e35d",
+                "resourcePath": "objects\\oDebug_ExplosionSpawner\\oDebug_ExplosionSpawner.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -4315,14 +4307,6 @@
             "Value": {
                 "id": "d4f85f30-37ab-47b1-ada0-2608635e9edd",
                 "resourcePath": "sprites\\sEditorUtil\\sEditorUtil.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "fd31b909-cec9-44e4-ba99-af126fe3eaaf",
-            "Value": {
-                "id": "9c6f8051-16df-4bc4-afd8-d74dd48bf082",
-                "resourcePath": "sprites\\sSmokePuff_Large_Sprite6\\sSmokePuff_Large_Sprite6.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4397,6 +4381,7 @@
         "b9ab1365-7550-4aff-ad1b-a79d79b76cfc",
         "7fa3d016-8576-4a72-904f-56ab1628fefc",
         "4be5031d-8507-4be6-bd3e-292a1f61e4c9",
+        "3c692af8-ecaf-4148-8f24-0887bff1d9bb",
         "6793e5e7-efaf-4a14-b083-e9b62b63cee2",
         "07390854-f9f9-4681-895d-be145d5a3b37",
         "fb61676d-4152-412e-8344-84547207f229",

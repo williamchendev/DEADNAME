@@ -6,6 +6,13 @@ if (instance_exists(oKnockout)) {
 	return;
 }
 
+// Lighting Behaviour
+if (instance_exists(oLighting)) {
+	if (!lit_draw_event or normal_draw_event) {
+		return;
+	}
+}
+
 // Create Surfaces
 if (!surface_exists(blood_surface)) {
 	blood_surface = surface_create(sprite_get_width(blood_sprite), sprite_get_height(blood_sprite));
@@ -165,8 +172,16 @@ else if (unit_inst != noone) {
 }
 
 // Draw Occluded Blood
+if (lit_draw_event) {
+	gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+}
+
 shader_set(shd_basicocclusion);
 texture_set_stage(occlusion_map, surface_get_texture(occlusion_surface));
 texture_set_stage(occlusion_remove_map, surface_get_texture(occlusion_remove_surface));
 draw_surface(blood_surface, x - (sprite_get_width(blood_sprite) / 2), y - (sprite_get_height(blood_sprite) / 2));
 shader_reset();
+
+if (lit_draw_event) {
+	gpu_set_blendmode(bm_normal);
+}

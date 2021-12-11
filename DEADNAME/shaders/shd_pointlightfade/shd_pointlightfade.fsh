@@ -4,6 +4,8 @@
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
+#define PI 3.1415926535
+
 void main()
 {
 	// Vector Data
@@ -12,9 +14,6 @@ void main()
 	// Check Point Range
 	vec3 Color = vec3(0.0, 0.0, 0.0);
 	if (PointDistance <= 0.5) {
-		// Variables
-		float PI = 3.141592;
-		
 		// RGB Value Calculation
 		float Red = (sin(v_vTexcoord.x * PI) / 2.0) + 0.5;
 		float Green = (sin((1.0 - v_vTexcoord.y) * PI) / 2.0) + 0.5;

@@ -1,0 +1,81 @@
+{
+    "id": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4",
+    "modelName": "GMObject",
+    "mvc": "1.0",
+    "name": "oDirectionalLight",
+    "eventList": [
+        {
+            "id": "f0237a67-6bf8-4ec8-8007-6b60936619d0",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 3,
+            "m_owner": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4"
+        }
+    ],
+    "maskSpriteId": "00000000-0000-0000-0000-000000000000",
+    "overriddenProperties": null,
+    "parentObjectId": "00000000-0000-0000-0000-000000000000",
+    "persistent": false,
+    "physicsAngularDamping": 0.1,
+    "physicsDensity": 0.5,
+    "physicsFriction": 0.2,
+    "physicsGroup": 0,
+    "physicsKinematic": false,
+    "physicsLinearDamping": 0.1,
+    "physicsObject": false,
+    "physicsRestitution": 0.1,
+    "physicsSensor": false,
+    "physicsShape": 1,
+    "physicsShapePoints": null,
+    "physicsStartAwake": true,
+    "properties": [
+        {
+            "id": "d78cc9ec-84ad-4789-8240-78301d6cf480",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": true,
+            "rangeMax": 360,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "270",
+            "varName": "angle",
+            "varType": 0
+        },
+        {
+            "id": "14179050-f824-4e37-8991-7833eaa84464",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": true,
+            "rangeMax": 1,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "1",
+            "varName": "intensity",
+            "varType": 0
+        },
+        {
+            "id": "f3de7176-8810-47d6-abf6-c392e017b476",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": false,
+            "rangeMax": 10,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "$FFFFFFFF",
+            "varName": "color",
+            "varType": 7
+        }
+    ],
+    "solid": false,
+    "spriteId": "6c0e27f3-fe4e-4fa2-81df-618327412454",
+    "visible": true
+}

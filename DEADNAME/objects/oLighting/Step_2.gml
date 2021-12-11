@@ -35,12 +35,12 @@ with (oSolid) {
 	
 	var temp_left_top_x_offset = lengthdir_x(temp_point1_dis, temp_point1_angle + image_angle);
 	var temp_left_top_y_offset = lengthdir_y(temp_point1_dis, temp_point1_angle + image_angle);
-	var temp_right_top_x_offset = lengthdir_x(temp_point2_dis, temp_point2_angle + image_angle);
+	var temp_right_top_x_offset = lengthdir_x(temp_point2_dis, temp_point2_angle + image_angle) + 1;
 	var temp_right_top_y_offset = lengthdir_y(temp_point2_dis, temp_point2_angle + image_angle);
-	var temp_right_bottom_x_offset = lengthdir_x(temp_point3_dis, temp_point3_angle + image_angle);
-	var temp_right_bottom_y_offset = lengthdir_y(temp_point3_dis, temp_point3_angle + image_angle);
+	var temp_right_bottom_x_offset = lengthdir_x(temp_point3_dis, temp_point3_angle + image_angle) + 1;
+	var temp_right_bottom_y_offset = lengthdir_y(temp_point3_dis, temp_point3_angle + image_angle) + 1;
 	var temp_left_bottom_x_offset = lengthdir_x(temp_point4_dis, temp_point4_angle + image_angle);
-	var temp_left_bottom_y_offset = lengthdir_y(temp_point4_dis, temp_point4_angle + image_angle);
+	var temp_left_bottom_y_offset = lengthdir_y(temp_point4_dis, temp_point4_angle + image_angle) + 1;
 	
 	// Create Shadow Quads from Vertice Triangles
 	vertex_position_3d(other.shadows_vertex_buffer, x + temp_left_top_x_offset - other.x, y + temp_left_top_y_offset - other.y, 0);

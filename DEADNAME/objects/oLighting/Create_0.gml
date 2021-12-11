@@ -34,7 +34,8 @@ vertex_format_add_position_3d();
 shadows_vertex_format = vertex_format_end();
 shadows_vertex_buffer = vertex_create_buffer();
 
-shadow_light_position = shader_get_uniform(shd_shadows, "lightPosition");
+shadow_pointlight_position = shader_get_uniform(shd_pointlightshadows, "lightPosition");
+shadow_directionallight_angle = shader_get_uniform(shd_directionallightshadows, "lightDirection");
 
 // Shader Textures
 sprite_normals = shader_get_sampler_index(shd_forwardlighting, "spriteNormalTex");

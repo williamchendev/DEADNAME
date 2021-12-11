@@ -52,6 +52,42 @@ var temp_hitbox_right_bottom_y_offset = max(temp_left_top_y_offset, temp_right_t
 var temp_hitbox_center_x = lerp(temp_solid_inst.x + temp_hitbox_left_top_x_offset, temp_solid_inst.x + temp_hitbox_right_bottom_x_offset, 0.5);
 var temp_hitbox_center_y = lerp(temp_solid_inst.y + temp_hitbox_left_top_y_offset, temp_solid_inst.y + temp_hitbox_right_bottom_y_offset, 0.5);
 
+// Point Closest on Line Calculations
+var temp_point_closest_top = point_check_closest_position_line(temp_x, temp_y, temp_solid_inst.x + temp_left_top_x_offset, temp_solid_inst.y + temp_left_top_y_offset, temp_solid_inst.x + temp_right_top_x_offset, temp_solid_inst.y + temp_right_top_y_offset);
+var temp_point_closest_left = point_check_closest_position_line(temp_x, temp_y, temp_solid_inst.x + temp_left_top_x_offset, temp_solid_inst.y + temp_left_top_y_offset, temp_solid_inst.x + temp_left_bottom_x_offset, temp_solid_inst.y + temp_left_bottom_y_offset);
+var temp_point_closest_right = point_check_closest_position_line(temp_x, temp_y, temp_solid_inst.x + temp_right_top_x_offset, temp_solid_inst.y + temp_right_top_y_offset, temp_solid_inst.x + temp_right_bottom_x_offset, temp_solid_inst.y + temp_right_bottom_y_offset);
+var temp_point_closest_bottom = point_check_closest_position_line(temp_x, temp_y, temp_solid_inst.x + temp_left_bottom_x_offset, temp_solid_inst.y + temp_left_bottom_y_offset, temp_solid_inst.x + temp_right_bottom_x_offset, temp_solid_inst.y + temp_right_bottom_y_offset);
+
+var temp_point_closest_top_dis = point_distance(temp_x, temp_y, temp_point_closest_top[0], temp_point_closest_top[1]);
+var temp_point_closest_left_dis = point_distance(temp_x, temp_y, temp_point_closest_left[0], temp_point_closest_left[1]);
+var temp_point_closest_right_dis = point_distance(temp_x, temp_y, temp_point_closest_right[0], temp_point_closest_right[1]);
+var temp_point_closest_bottom_dis = point_distance(temp_x, temp_y, temp_point_closest_bottom[0], temp_point_closest_bottom[1]);
+
+switch(min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_closest_right_dis, temp_point_closest_bottom_dis)) {
+	case temp_point_closest_top_dis:
+		if (min(temp_point_closest_left_dis, temp_point_closest_right_dis, temp_point_closest_bottom_dis) == temp_point_closest_top_dis) {
+			break;
+		}
+		return point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+	case temp_point_closest_left_dis:
+		if (min(temp_point_closest_top_dis, temp_point_closest_right_dis, temp_point_closest_bottom_dis) == temp_point_closest_left_dis) {
+			break;
+		}
+		return point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+	case temp_point_closest_right_dis:
+		if (min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_closest_bottom_dis) == temp_point_closest_right_dis) {
+			break;
+		}
+		return point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+	case temp_point_closest_bottom_dis:
+		if (min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_closest_right_dis) == temp_point_closest_bottom_dis) {
+			break;
+		}
+		return point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
+	default:
+		break;
+}
+
 // Angle Calculation
 var temp_point_angle = point_direction(temp_hitbox_center_x, temp_hitbox_center_y, temp_x, temp_y);
 
@@ -92,14 +128,3 @@ else if ((temp_point_angle <= temp_right_top_angle) or (temp_point_angle >= temp
 
 // Point is relative to the Solid's Bottom Side
 return point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
-
-/*
-if (temp_right_bottom_angle > temp_left_bottom_angle) {
-	if ((temp_point_angle <= temp_right_bottom_angle) and (temp_point_angle >= temp_left_bottom_angle)) {
-		
-	}
-}
-else if ((temp_point_angle <= temp_right_bottom_angle) or (temp_point_angle >= temp_left_bottom_angle)) {
-	
-}
-*/

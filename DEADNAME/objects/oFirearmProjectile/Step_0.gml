@@ -134,6 +134,7 @@ else {
 								temp_unit_inst.force_y = clamp(y, temp_unit_inst.bbox_top, temp_unit_inst.bbox_bottom);
 								temp_unit_inst.force_xvector = cos(degtorad(image_angle)) * bullet_spd * bullet_timescale * bullet_impact_ragdoll_force_mult;
 								temp_unit_inst.force_yvector = sin(degtorad(image_angle)) * bullet_spd * bullet_timescale * bullet_impact_ragdoll_force_mult;
+								x = temp_unit_inst.x;
 							}
 							
 							// Bullet Impact

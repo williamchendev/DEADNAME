@@ -510,8 +510,17 @@ if (bullet_cases != 0) {
 					if (gun_spin_reload) {
 						temp_case.case_direction = 270 + random_range(-10, 10);
 					}
+					temp_case.case_spd = case_spd;
+					temp_case.case_angle_spd = case_angle_spd;
+					
 					temp_case.sprite_index = case_sprite;
 					temp_case.image_xscale = weapon_yscale;
+					
+					with (temp_case) {
+						case_direction = degtorad(case_direction);
+						physics_apply_local_impulse(0, 0, cos(case_direction) * case_spd, -sin(case_direction) * case_spd);
+						physics_apply_angular_impulse(sign(image_xscale) * case_angle_spd);
+					}
 				}
 				bullet_cases = 0;
 			}

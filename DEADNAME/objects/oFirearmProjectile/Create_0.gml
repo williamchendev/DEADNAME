@@ -9,7 +9,7 @@ bullet_spd = 1;
 bullet_direction = 0;
 bullet_gravity = 0.1;
 
-bullet_impact_damage = 10;
+bullet_impact_damage = 3;
 bullet_impact_ragdoll_force_mult = 5;
 
 bullet_impact_fuse = true;

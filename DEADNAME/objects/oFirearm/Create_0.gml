@@ -64,6 +64,8 @@ reload_offset_y = 5;
 
 case_eject_x = 1;
 case_eject_y = 1;
+case_spd = 0.5;
+case_angle_spd = 2;
 case_direction = 90;
 
 // Reload Settings
