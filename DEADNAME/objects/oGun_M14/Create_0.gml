@@ -5,6 +5,7 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sMarinda308;
+weapon_normal_sprite = sMarinda308_NormalMap;
 
 // Bullet Settings
 projectiles = 1;
@@ -40,7 +41,7 @@ arm_x[1] = 16;
 arm_y[1] = 0;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Medium;
 case_eject_x = 1;
 case_eject_y = -1;
 case_direction = 30;

@@ -4,6 +4,78 @@
     },
     "option_gameguid": "3a058f33-6ac4-4244-b2b0-b83eae78ad3e",
     "option_game_speed": 60
+}←be5f1418-b31b-48af-a023-f04cdf6e5121|{
+    "textureGroups": {
+        "Additions": [
+            {
+                "Key": 1,
+                "Value": {
+                    "id": "d2c2f1b5-cca7-4c72-89f3-4383c9d05d7c",
+                    "modelName": "GMTextureGroup",
+                    "mvc": "1.0",
+                    "groupName": "Inventory",
+                    "targets": 461609314234257646,
+                    "autocrop": true,
+                    "border": 2,
+                    "groupParent": "00000000-0000-0000-0000-000000000000",
+                    "mipsToGenerate": 0,
+                    "scaled": true
+                }
+            },
+            {
+                "Key": 2,
+                "Value": {
+                    "id": "5d11c801-5c1f-4faf-a45c-1cf69a99f9b9",
+                    "modelName": "GMTextureGroup",
+                    "mvc": "1.0",
+                    "groupName": "Effects",
+                    "targets": 461609314234257646,
+                    "autocrop": true,
+                    "border": 2,
+                    "groupParent": "00000000-0000-0000-0000-000000000000",
+                    "mipsToGenerate": 0,
+                    "scaled": true
+                }
+            },
+            {
+                "Key": 3,
+                "Value": {
+                    "id": "266a3965-1317-43f8-96e7-26babb08efa9",
+                    "modelName": "GMTextureGroup",
+                    "mvc": "1.0",
+                    "groupName": "Units",
+                    "targets": 461609314234257646,
+                    "autocrop": true,
+                    "border": 2,
+                    "groupParent": "00000000-0000-0000-0000-000000000000",
+                    "mipsToGenerate": 0,
+                    "scaled": true
+                }
+            },
+            {
+                "Key": 4,
+                "Value": {
+                    "id": "33973231-4b09-4e7f-b16b-cf877283fb2c",
+                    "modelName": "GMTextureGroup",
+                    "mvc": "1.0",
+                    "groupName": "Weapons",
+                    "targets": 461609314234257646,
+                    "autocrop": true,
+                    "border": 2,
+                    "groupParent": "00000000-0000-0000-0000-000000000000",
+                    "mipsToGenerate": 0,
+                    "scaled": true
+                }
+            }
+        ],
+        "Checksum": "ࢺ懜璙ᓆ锯翋꤯맫",
+        "Deletions": [
+            
+        ],
+        "Ordering": [
+            
+        ]
+    }
 }←1225f6b0-ac20-43bd-a82e-be73fa0b6f4f|{
     "targets": 461609314234257646
 }←7b2c4976-1e09-44e5-8256-c527145e03bb|{

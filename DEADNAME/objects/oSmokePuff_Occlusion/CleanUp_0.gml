@@ -1,9 +1,11 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-// Destroy Unit Collision DS List
+// Destroy Collision DS Lists
 ds_list_destroy(unit_collision_list);
+ds_list_destroy(corpse_collision_list);
 unit_collision_list = -1;
+corpse_collision_list = -1;
 
 // Destroy Unused Surfaces
 if (surface_exists(smoke_surface)) {

@@ -65,6 +65,13 @@ ragdoll_chest_top_sprite = sWilliamDS_ChestTop;
 ragdoll_chest_bot_sprite = sWilliamDS_ChestBot;
 ragdoll_leg_left_sprite = sWilliamDS_LeftLeg;
 ragdoll_leg_right_sprite = sWilliamDS_RightLeg;
+ragdoll_head_normalmap = sWilliamDS_Head_NormalMap;
+ragdoll_arm_left_normalmap = sWilliamDS_Arms_NormalMap;
+ragdoll_arm_right_normalmap = sWilliam_Arms_NormalMap;
+ragdoll_chest_top_normalmap = sWilliamDS_ChestTop_NormalMap;
+ragdoll_chest_bot_normalmap = sWilliamDS_ChestBot_NormalMap;
+ragdoll_leg_left_normalmap = sWilliamDS_LeftLeg_NormalMap;
+ragdoll_leg_right_normalmap = sWilliamDS_RightLeg_NormalMap;
 
 // Death Dialogue Settings
 death_dialogue = false;
@@ -180,7 +187,7 @@ vectortransform_shader_angle = shader_get_uniform(shd_vectortransform, "vectorAn
 vectortransform_shader_scale = shader_get_uniform(shd_vectortransform, "vectorScale");
 
 // Inventory
-inventory = create_empty_inventory(6, 4);
+inventory = create_empty_inventory(id, 6, 4);
 
 // Singleton
 game_manager = instance_find(oGameManager, 0);

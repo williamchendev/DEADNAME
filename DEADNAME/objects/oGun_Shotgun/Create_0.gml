@@ -5,6 +5,7 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sShotgun;
+weapon_normal_sprite = sShotgun_NormalMap;
 
 // Bullet Settings
 projectiles = 5;
@@ -41,7 +42,7 @@ arm_x[1] = 14;
 arm_y[1] = 1;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Shotgun_Medium;
 case_eject_x = 8;
 case_eject_y = -1;
 case_direction = 30;

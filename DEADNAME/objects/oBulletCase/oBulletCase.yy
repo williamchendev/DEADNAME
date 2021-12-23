@@ -4,11 +4,20 @@
     "mvc": "1.0",
     "name": "oBulletCase",
     "eventList": [
-        
+        {
+            "id": "e32f4202-9c0b-4a24-bd77-4ebc8b631d82",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "1a3a4c1a-6f51-43e8-80ea-3b1834e84a2f"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "73fdadfb-c863-438e-8232-da3dfd79adaf",
+    "parentObjectId": "db4d9bb3-de50-4c0e-b125-7fd8476375dc",
     "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 1,
@@ -53,6 +62,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "94bead8a-b5c2-430f-b81e-310432d01357",
+    "spriteId": "d92acb80-b27b-4993-86a5-a2541db98cb4",
     "visible": true
 }

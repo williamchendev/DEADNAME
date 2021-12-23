@@ -64,6 +64,7 @@ for (var q = 0; q < limbs; q++) {
 
 // Weapons
 var temp_weapon = noone;
+var temp_holstered_weapon_index = 0;
 for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
 	// Find Indexed Weapon
 	var temp_weapon_index = ds_list_find_value(inventory.weapons, i);
@@ -75,18 +76,61 @@ for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
 			aim_ambient_x = x + (draw_xscale * image_xscale * 50);
 			aim_ambient_y = y + weapon_hip_y;
 	
-			temp_weapon_index.x += teleport_x;
-			temp_weapon_index.y += teleport_y;
+			temp_weapon_index.phy_position_x += teleport_x;
+			temp_weapon_index.phy_position_y += teleport_y;
 			temp_weapon_index.x_position += teleport_x;
 			temp_weapon_index.y_position += teleport_y;
 			temp_weapon_index.weapon_rotation = ((sign(image_xscale) * -90) + 90) + (sign(image_xscale) * 45);
 		}
 		
-		// Set Equipped Weapon
+		// Equipped and Holstered Weapon Behaviour
 		if (temp_weapon_index.equip) {
 			// Equip Weapon
 			temp_weapon = temp_weapon_index;
 		}
+		else {
+			// Holstered Weapon
+			var temp_holstered_weapon_sign = ((temp_holstered_weapon_index mod 2) * -2) + 1;
+			var temp_holstered_weapon_angle = (((temp_holstered_weapon_index + 2) div 2) * 30) * sign(image_xscale);
+			temp_holstered_weapon_angle = draw_angle + 90 + (temp_holstered_weapon_sign * temp_holstered_weapon_angle);
+			temp_weapon_index.weapon_yscale = sign(temp_holstered_weapon_sign * -image_xscale);
+			
+			// Holstered Weapon Angle
+			temp_weapon_index.weapon_rotation = temp_weapon_index.weapon_rotation mod 360;
+			var temp_weapon_delta_angle = angle_difference(temp_weapon_index.weapon_rotation, temp_holstered_weapon_angle);
+			temp_weapon_index.weapon_rotation = temp_weapon_index.weapon_rotation - (temp_weapon_delta_angle * temp_weapon_index.lerp_spd * global.deltatime);
+			
+			// Holstered Weapon Position
+			var temp_holster_dis = point_distance(x, y, x, lerp(bbox_top, bbox_bottom, 0.5));
+			var temp_holster_dir = point_direction(x, y, x, lerp(bbox_top, bbox_bottom, 0.5));
+			var temp_holster_x = x + lengthdir_x(temp_holster_dis, temp_holster_dir + draw_angle);
+			var temp_holster_y = y + (lengthdir_y(temp_holster_dis, temp_holster_dir + draw_angle) * draw_yscale);
+			
+			if (x_velocity != 0 and y_velocity == 0) {
+				var temp_holster_move_val = image_index / sprite_get_number(sprite_index);
+				if (abs(x_velocity) < spd) {
+					temp_holster_move_val = (image_index * 0.5) / sprite_get_number(sprite_index);
+				}
+				temp_holster_y += weapon_holster_ambient_move_size * sin(temp_holster_move_val * 2 * pi);
+			}
+			else {
+				if (image_index >= (sprite_get_number(sprite_index) / 2)) {
+					temp_holster_y += weapon_holster_ambient_move_size * 0.5;
+				}
+			}
+			
+			temp_weapon_index.phy_position_x = temp_holster_x;
+			temp_weapon_index.phy_position_y = temp_holster_y;
+			temp_weapon_index.x_position = temp_holster_x;
+			temp_weapon_index.y_position = temp_holster_y;
+			
+			// Increment Holstered Weapon Index
+			temp_holstered_weapon_index++;
+		}
+		
+		// Weapon Default Layer and Physics
+		temp_weapon_index.layer = layers[0];
+		temp_weapon_index.phy_active = false;
 	}
 }
 
@@ -214,10 +258,14 @@ else if (temp_weapon.weapon_type == "melee") {
 		temp_arm_direction = 1;
 		limb[0].limb_sprite = limb_sprite[0];
 		limb[1].limb_sprite = limb_sprite[1];
+		limb[0].limb_normal_sprite = limb_normal_sprite[0];
+		limb[1].limb_normal_sprite = limb_normal_sprite[1];
 	}
 	else {
 		limb[0].limb_sprite = limb_sprite[1];
 		limb[1].limb_sprite = limb_sprite[0];
+		limb[0].limb_normal_sprite = limb_normal_sprite[1];
+		limb[1].limb_normal_sprite = limb_normal_sprite[0];
 	}
 	var temp_arm_x_offset = sign(x_velocity);
 		
@@ -372,7 +420,7 @@ else if (temp_weapon.weapon_type == "firearm") {
 								var temp_mag_direction = point_direction(0, 0, temp_weapon.reload_x, temp_weapon.reload_y * sign(image_xscale));
 								var temp_mag_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 								var temp_mag_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-								var temp_mag = instance_create_layer(temp_mag_x, temp_mag_y, temp_weapon.layer, temp_weapon.magazine_obj);
+								var temp_mag = instance_create_depth(temp_mag_x, temp_mag_y, layer_get_depth(temp_weapon.layer) - 5, temp_weapon.magazine_obj);
 								with (temp_mag) {
 									if (!place_free(temp_mag_x + sign(other.image_xscale * (sprite_get_bbox_right(sprite_index) - sprite_get_xoffset(sprite_index))), temp_mag_y)) {
 										instance_destroy();
@@ -697,10 +745,14 @@ else if (temp_weapon.weapon_type == "firearm") {
 		temp_arm_direction = 1;
 		limb[0].limb_sprite = limb_sprite[0];
 		limb[1].limb_sprite = limb_sprite[1];
+		limb[0].limb_normal_sprite = limb_normal_sprite[0];
+		limb[1].limb_normal_sprite = limb_normal_sprite[1];
 	}
 	else {
 		limb[0].limb_sprite = limb_sprite[1];
 		limb[1].limb_sprite = limb_sprite[0];
+		limb[0].limb_normal_sprite = limb_normal_sprite[1];
+		limb[1].limb_normal_sprite = limb_normal_sprite[0];
 	}
 	var temp_arm_x_offset = sign(x_velocity);
 		
@@ -766,9 +818,11 @@ if (temp_default_behaviour) {
 		limb[0].visible = true;
 		limb[0].layer = layers[4];
 		limb[0].limb_sprite = limb_sprite[1];
+		limb[0].limb_normal_sprite = limb_normal_sprite[1];
 		limb[0].limb_direction = sign(image_xscale);
 		if (sign(image_xscale) < 0) {
 			limb[0].limb_sprite = limb_sprite[0];
+			limb[0].limb_normal_sprite = limb_normal_sprite[0];
 		}
 		
 		// Limb Animation
@@ -783,9 +837,11 @@ if (temp_default_behaviour) {
 		limb[1].visible = true;
 		limb[1].layer = layers[1];
 		limb[1].limb_sprite = limb_sprite[0];
+		limb[1].limb_normal_sprite = limb_normal_sprite[0];
 		limb[1].limb_direction = sign(image_xscale);
 		if (sign(image_xscale) < 0) {
 			limb[1].limb_sprite = limb_sprite[1];
+			limb[1].limb_normal_sprite = limb_normal_sprite[1];
 		}
 		
 		// Limb Animation
@@ -894,8 +950,8 @@ if (health_points <= 0) {
 	
 	if (temp_destroy_check) {
 		// Destroy Unit Object
-		instance_destroy(inventory);
 		instance_destroy();
+		instance_destroy(inventory);
 		
 		// Restart Room
 		if (!can_die) {

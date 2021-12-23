@@ -88,7 +88,7 @@ if (selected) {
 				old_y = y;
 				
 				var temp_bbox_left = sprite_get_bbox_left(temp_sprite_index) * object_x_scale;
-				var temp_bbox_right = sprite_get_bbox_right(temp_sprite_index) * object_x_scale;
+				var temp_bbox_right = (sprite_get_bbox_right(temp_sprite_index) + 1) * object_x_scale;
 				var temp_bbox_top = sprite_get_bbox_top(temp_sprite_index) * object_y_scale;
 				var temp_bbox_bottom = sprite_get_bbox_bottom(temp_sprite_index) * object_y_scale;
 	

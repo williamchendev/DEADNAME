@@ -5,6 +5,7 @@ event_inherited();
 
 // Animation Settings
 weapon_sprite = sFAL;
+weapon_normal_sprite = sFAL_NormalMap;
 
 // Weapon Settings
 weapon_ammo_id = 7;
@@ -46,7 +47,7 @@ arm_x[0] = 6;
 arm_y[0] = 1;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Small;
 case_eject_x = 1;
 case_eject_y = -1;
 case_direction = 40;

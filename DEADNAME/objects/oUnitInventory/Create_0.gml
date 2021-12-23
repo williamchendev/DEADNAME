@@ -2,6 +2,7 @@
 
 // Settings
 debug = false;
+unit_id = noone;
 
 // Object Mode Variables
 object_mode = false;

@@ -5,6 +5,7 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sGreaseGun;
+weapon_normal_sprite = sGreaseGun_NormalMap;
 
 // Weapon Settings
 weapon_ammo_id = 7;
@@ -46,7 +47,7 @@ arm_x[1] = 12;
 arm_y[1] = 1;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Small;
 case_eject_x = 2;
 case_eject_y = -1;
 case_direction = 30;

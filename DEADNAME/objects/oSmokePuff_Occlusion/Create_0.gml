@@ -8,6 +8,9 @@ event_inherited();
 unit_collision_num = 0;
 unit_collision_list = ds_list_create();
 
+corpse_collision_num = 0;
+corpse_collision_list = ds_list_create();
+
 // Surfaces
 smoke_surface = noone;
 occlusion_surface = noone;

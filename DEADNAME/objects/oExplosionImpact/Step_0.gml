@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Explosion Impact Update Event
+// Calculates the Explosion Impact Behaviour and visual effect
 
 // Explosion Impact Size Behaviour
 sprite_size = clamp(sprite_size, 0, 1);

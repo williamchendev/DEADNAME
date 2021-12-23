@@ -11,6 +11,12 @@ aim_animation = sWilliam_Aim;
 aim_walk_animation = sWilliam_Aim_Walk;
 hurt_animation = sWilliam_Hurt;
 
+idle_normals = sWilliam_Idle_NormalMap;
+walk_normals = sWolf_Run_NormalMap;
+jump_normals = sWolf_Jump_NormalMap;
+aim_normals = sWolf_Aim_NormalMap;
+aim_walk_normals = sWolf_AimWalk_NormalMap;
+
 limb_sprite[0] = sWilliam_Arms;
 limb_sprite[1] = sWilliam_Arms;
 

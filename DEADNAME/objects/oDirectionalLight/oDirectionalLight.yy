@@ -4,16 +4,7 @@
     "mvc": "1.0",
     "name": "oDirectionalLight",
     "eventList": [
-        {
-            "id": "f0237a67-6bf8-4ec8-8007-6b60936619d0",
-            "modelName": "GMEvent",
-            "mvc": "1.0",
-            "IsDnD": false,
-            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
-            "enumb": 0,
-            "eventtype": 3,
-            "m_owner": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4"
-        }
+        
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
@@ -77,5 +68,5 @@
     ],
     "solid": false,
     "spriteId": "6c0e27f3-fe4e-4fa2-81df-618327412454",
-    "visible": true
+    "visible": false
 }

@@ -10,7 +10,7 @@ if (target != noone) {
 		var temp_object_rotation = 0;
 
 		var temp_bbox_left = sprite_get_bbox_left(temp_sprite_index) * temp_object_x_scale;
-		var temp_bbox_right = sprite_get_bbox_right(temp_sprite_index) * temp_object_x_scale;
+		var temp_bbox_right = (sprite_get_bbox_right(temp_sprite_index) + 1) * temp_object_x_scale;
 		var temp_bbox_top = sprite_get_bbox_top(temp_sprite_index) * temp_object_y_scale;
 		var temp_bbox_bottom = sprite_get_bbox_bottom(temp_sprite_index) * temp_object_y_scale;
 	

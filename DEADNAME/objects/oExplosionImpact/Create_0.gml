@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Explosion Impact Init Event
+// Creates the Settings and Variables necessary for the Explosion Impact Object
 
 // Inherit the parent event
 event_inherited();

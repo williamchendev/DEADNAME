@@ -30,7 +30,24 @@ for (var h = 0; h < temp_inventory_height; h++) {
 				 
 				 if (global.item_data[temp_item_id, itemstats.type] == itemtypes.weapon) {
 					 if (temp_can_place_num > 0) {
-						 ds_list_add(temp_inventory_obj.weapons, instance_create_layer(x, y, layer_get_id("Instances"), global.weapon_data[global.item_data[temp_item_id, itemstats.type_index], weaponstats.object]));
+						 // Spawn Weapon Variables
+						 var temp_weapon_spawn_x = x;
+						 var temp_weapon_spawn_y = y;
+						 var temp_weapon_spawn_angle = 90;
+						 
+						 // Check if Inventory Unit is Valid
+						 if (temp_inventory_obj.unit_id != noone) {
+							if (instance_exists(temp_inventory_obj.unit_id)) {
+								temp_weapon_spawn_x = temp_inventory_obj.unit_id.x;
+								temp_weapon_spawn_y = lerp(temp_inventory_obj.unit_id.bbox_top, temp_inventory_obj.unit_id.bbox_bottom, 0.5);
+								temp_weapon_spawn_angle = temp_inventory_obj.unit_id.draw_angle + 90;
+							}
+						 }
+						 
+						 // Spawn and Index Weapon into Inventory
+						 var temp_item_init_weapon = instance_create_layer(temp_weapon_spawn_x, temp_weapon_spawn_y, layer_get_id("Instances"), global.weapon_data[global.item_data[temp_item_id, itemstats.type_index], weaponstats.object]);
+						 temp_item_init_weapon.weapon_rotation = temp_weapon_spawn_angle;
+						 ds_list_add(temp_inventory_obj.weapons, temp_item_init_weapon);
 						 ds_list_add(temp_inventory_obj.weapons_index, (temp_inventory_width * h) + w);
 					 }
 				 }

@@ -263,7 +263,7 @@ var temp_object_x_scale = draw_xscale * image_xscale;
 var temp_object_y_scale = draw_yscale * image_yscale;
 
 var temp_bbox_left = sprite_get_bbox_left(temp_sprite_index) * temp_object_x_scale;
-var temp_bbox_right = sprite_get_bbox_right(temp_sprite_index) * temp_object_x_scale;
+var temp_bbox_right = (sprite_get_bbox_right(temp_sprite_index) + 1) * temp_object_x_scale;
 var temp_bbox_top = sprite_get_bbox_top(temp_sprite_index) * temp_object_y_scale;
 var temp_bbox_bottom = sprite_get_bbox_bottom(temp_sprite_index) * temp_object_y_scale;
 	
@@ -337,6 +337,13 @@ if (health_points <= 0) {
 		temp_ragdoll_sprites[4] = ragdoll_chest_bot_sprite;
 		temp_ragdoll_sprites[5] = ragdoll_leg_left_sprite;
 		temp_ragdoll_sprites[6] = ragdoll_leg_right_sprite;
+		temp_ragdoll_sprites[7] = ragdoll_head_normalmap;
+		temp_ragdoll_sprites[8] = ragdoll_arm_left_normalmap;
+		temp_ragdoll_sprites[9] = ragdoll_arm_right_normalmap;
+		temp_ragdoll_sprites[10] = ragdoll_chest_top_normalmap;
+		temp_ragdoll_sprites[11] = ragdoll_chest_bot_normalmap;
+		temp_ragdoll_sprites[12] = ragdoll_leg_left_normalmap;
+		temp_ragdoll_sprites[13] = ragdoll_leg_right_normalmap;
 	
 		// Instantiate Ragdoll and the Ragdoll Limbs Array
 		var temp_ragdoll_limbs = create_ragdoll(x, y, image_xscale, layer_get_id("Instances"), temp_ragdoll_sprites);
@@ -433,6 +440,44 @@ if (health_points <= 0) {
 				y = unit_draw_y;
 			}
 		}
+	}
+	
+	// Death Drop Weapons Behaviour
+	for (var i = ds_list_size(inventory.weapons) - 1; i >= 0; i--) {
+		// Find Inventory Weapon Data
+		var temp_weapon_inst = ds_list_find_value(inventory.weapons, i);
+		
+		// Weapon Layer Functions
+		layer_add_instance(layer_get_id("Instances"), temp_weapon_inst);
+		if (temp_weapon_inst.equip) {
+			temp_weapon_inst.depth = -1;
+		}
+		else {
+			temp_weapon_inst.depth = 1;
+		}
+		
+		// Dropped Weapon Settings
+		temp_weapon_inst.attack = false;
+		temp_weapon_inst.equip = false;
+		temp_weapon_inst.aiming = false;
+		temp_weapon_inst.click = false;
+		temp_weapon_inst.use_realdeltatime = false;
+		temp_weapon_inst.basic_reindex_depth = true;
+		
+		// Dropped Weapon Physics
+		with (temp_weapon_inst) {
+			phy_active = true;
+			physics_apply_angular_impulse(random_range(-1, 1));
+		}
+		if (collision_circle(force_x, force_y, 3, temp_weapon_inst, false, true)) {
+			with (temp_weapon_inst) {
+				physics_apply_impulse(other.force_x, other.force_y, other.force_xvector, -other.force_yvector);
+			}
+		}
+	
+		// Remove Weapon from Inventory Weapon DS Lists
+		ds_list_delete(inventory.weapons, i);
+		ds_list_delete(inventory.weapons_index, i);
 	}
 }
 

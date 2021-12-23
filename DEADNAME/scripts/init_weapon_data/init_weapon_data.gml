@@ -20,7 +20,7 @@ enum weapontype {
 // Baseball Bat
 global.weapon_data[0, weaponstats.action_title] = "Use Baseball Bat";
 global.weapon_data[0, weaponstats.image_index] = 4;
-global.weapon_data[0, weaponstats.object] = oMeleeWeapon;
+global.weapon_data[0, weaponstats.object] = oMelee;
 global.weapon_data[0, weaponstats.type] = weapontype.melee;
 global.weapon_data[0, weaponstats.ammo] = -1;
 
@@ -67,7 +67,7 @@ global.weapon_data[6, weaponstats.type] = weapontype.firearm;
 global.weapon_data[6, weaponstats.ammo] = 7;
 
 // Grenade Launcher
-global.weapon_data[7, weaponstats.action_title] = "Revolver";
+global.weapon_data[7, weaponstats.action_title] = "Grenade Launcher";
 global.weapon_data[7, weaponstats.image_index] = 5;
 global.weapon_data[7, weaponstats.object] = oGun_GrenadeLauncher;
 global.weapon_data[7, weaponstats.type] = weapontype.firearm;

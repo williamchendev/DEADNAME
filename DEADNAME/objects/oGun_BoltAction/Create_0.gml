@@ -5,6 +5,7 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sBoltActionRifle;
+weapon_normal_sprite = sBoltActionRifle_NormalMap;
 
 // Bullet Settings
 projectiles = 1;
@@ -50,9 +51,11 @@ arm_x[1] = 19;
 arm_y[1] = 2;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Large;
 case_eject_x = 4;
 case_eject_y = -2;
+case_spd = 0.7;
+case_angle_spd = 0.1;
 case_direction = 30;
 
 // Behaviour Settings

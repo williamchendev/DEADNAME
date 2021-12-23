@@ -5,5 +5,12 @@ var temp_default_size = 2;
 surface_resize(application_surface, game_width, game_height);
 window_set_size(game_width * temp_default_size, game_height * temp_default_size);
 
+// Sleep Margin
+display_set_timing_method(tm_sleep);
+display_set_sleep_margin(20);
+
 // Game FPS Cap
 game_set_speed(60, gamespeed_fps);
+
+// Vsync
+display_reset(0, true);

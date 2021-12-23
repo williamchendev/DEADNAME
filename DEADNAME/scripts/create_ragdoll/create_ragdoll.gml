@@ -17,6 +17,7 @@ var temp_image_xscale = argument[2];
 var temp_layer = argument[3];
 
 var temp_sprites = argument[4];
+
 var head_sprite = temp_sprites[0];
 var arms_left_sprite = temp_sprites[1];
 var arms_right_sprite = temp_sprites[2];
@@ -24,6 +25,14 @@ var chest_top_sprite = temp_sprites[3];
 var chest_bot_sprite = temp_sprites[4];
 var legs_left_sprite = temp_sprites[5];
 var legs_right_sprite = temp_sprites[6];
+
+var head_normalmap = temp_sprites[7];
+var arms_left_normalmap = temp_sprites[8];
+var arms_right_normalmap = temp_sprites[9];
+var chest_top_normalmap = temp_sprites[10];
+var chest_bot_normalmap = temp_sprites[11];
+var legs_left_normalmap = temp_sprites[12];
+var legs_right_normalmap = temp_sprites[13];
 
 var head_offset = -4;
 var arm_offset = 5;
@@ -63,63 +72,85 @@ var temp_limbs = noone;
 
 var ragdoll_head_obj = instance_create_layer(temp_x, temp_y - chest_top_height + head_offset, temp_layer, oRagdoll_Limb_Head);
 ragdoll_head_obj.sprite_index = head_sprite;
+ragdoll_head_obj.colors_sprite_index = head_sprite;
+ragdoll_head_obj.normals_sprite_index = head_normalmap;
 ragdoll_head_obj.image_xscale = temp_image_xscale;
 temp_limbs[0] = ragdoll_head_obj;
 
 var ragdoll_arm1bot_obj = instance_create_layer(temp_x - (arm_offset * temp_image_xscale), temp_y - chest_top_height + arm_bbox_height, temp_layer, oRagdoll_Limb_Arm);
 ragdoll_arm1bot_obj.sprite_index = arms_left_sprite;
+ragdoll_arm1bot_obj.colors_sprite_index = arms_left_sprite;
+ragdoll_arm1bot_obj.normals_sprite_index = arms_left_normalmap;
 ragdoll_arm1bot_obj.image_index = 1;
 ragdoll_arm1bot_obj.image_xscale = -temp_image_xscale;
 temp_limbs[1] = ragdoll_arm1bot_obj;
 
 var ragdoll_arm1top_obj = instance_create_layer(temp_x - (arm_offset * temp_image_xscale), temp_y - chest_top_height, temp_layer, oRagdoll_Limb_Arm);
 ragdoll_arm1top_obj.sprite_index = arms_left_sprite;
+ragdoll_arm1top_obj.colors_sprite_index = arms_left_sprite;
+ragdoll_arm1top_obj.normals_sprite_index = arms_left_normalmap;
 ragdoll_arm1top_obj.image_index = 0;
 ragdoll_arm1top_obj.image_xscale = -temp_image_xscale;
 temp_limbs[2] = ragdoll_arm1top_obj;
 
 var ragdoll_chest_top_obj = instance_create_layer(temp_x, temp_y - chest_top_height + chest_bbox_top_height, temp_layer, oRagdoll_Limb_Chest);
 ragdoll_chest_top_obj.sprite_index = chest_top_sprite;
+ragdoll_chest_top_obj.colors_sprite_index = chest_top_sprite;
+ragdoll_chest_top_obj.normals_sprite_index = chest_top_normalmap;
 ragdoll_chest_top_obj.image_xscale = temp_image_xscale;
 temp_limbs[3] = ragdoll_chest_top_obj;
 
 var ragdoll_chest_bot_obj = instance_create_layer(temp_x, temp_y - chest_top_height + chest_bbox_top_height + chest_bbox_center_height, temp_layer, oRagdoll_Limb_Chest);
 ragdoll_chest_bot_obj.sprite_index = chest_bot_sprite;
+ragdoll_chest_bot_obj.colors_sprite_index = chest_bot_sprite;
+ragdoll_chest_bot_obj.normals_sprite_index = chest_bot_normalmap;
 ragdoll_chest_bot_obj.image_xscale = temp_image_xscale;
 temp_limbs[4] = ragdoll_chest_bot_obj;
 
 var ragdoll_leftleg1_obj = instance_create_layer(temp_x - leg_offset, temp_y - (leg_bbox_height * 2), temp_layer, oRagdoll_Limb_Leg);
 ragdoll_leftleg1_obj.sprite_index = legs_left_sprite;
+ragdoll_leftleg1_obj.colors_sprite_index = legs_left_sprite;
+ragdoll_leftleg1_obj.normals_sprite_index = legs_left_normalmap;
 ragdoll_leftleg1_obj.image_index = 0;
 ragdoll_leftleg1_obj.image_xscale = temp_image_xscale;
 temp_limbs[7] = ragdoll_leftleg1_obj;
 
 var ragdoll_rightleg1_obj = instance_create_layer(temp_x + leg_offset, temp_y - (leg_bbox_height * 2), temp_layer, oRagdoll_Limb_Leg);
 ragdoll_rightleg1_obj.sprite_index = legs_right_sprite;
+ragdoll_rightleg1_obj.colors_sprite_index = legs_right_sprite;
+ragdoll_rightleg1_obj.normals_sprite_index = legs_right_normalmap;
 ragdoll_rightleg1_obj.image_index = 0;
 ragdoll_rightleg1_obj.image_xscale = temp_image_xscale;
 temp_limbs[8] = ragdoll_rightleg1_obj;
 
 var ragdoll_leftleg2_obj = instance_create_layer(temp_x - leg_offset, temp_y - leg_bbox_height, temp_layer, oRagdoll_Limb_Leg);
 ragdoll_leftleg2_obj.sprite_index = legs_left_sprite;
+ragdoll_leftleg2_obj.colors_sprite_index = legs_left_sprite;
+ragdoll_leftleg2_obj.normals_sprite_index = legs_left_normalmap;
 ragdoll_leftleg2_obj.image_index = 1;
 ragdoll_leftleg2_obj.image_xscale = temp_image_xscale;
 temp_limbs[9] = ragdoll_leftleg2_obj;
 
 var ragdoll_rightleg2_obj = instance_create_layer(temp_x + leg_offset, temp_y - leg_bbox_height, temp_layer, oRagdoll_Limb_Leg);
 ragdoll_rightleg2_obj.sprite_index = legs_right_sprite;
+ragdoll_rightleg2_obj.colors_sprite_index = legs_right_sprite;
+ragdoll_rightleg2_obj.normals_sprite_index = legs_right_normalmap;
 ragdoll_rightleg2_obj.image_index = 1;
 ragdoll_rightleg2_obj.image_xscale = temp_image_xscale;
 temp_limbs[10] = ragdoll_rightleg2_obj;
 
 var ragdoll_arm2bot_obj = instance_create_layer(temp_x + (arm_offset * temp_image_xscale), temp_y - chest_top_height + arm_bbox_height, temp_layer, oRagdoll_Limb_Arm);
 ragdoll_arm2bot_obj.sprite_index = arms_right_sprite;
+ragdoll_arm2bot_obj.colors_sprite_index = arms_right_sprite;
+ragdoll_arm2bot_obj.normals_sprite_index = arms_right_normalmap;
 ragdoll_arm2bot_obj.image_index = 1;
 ragdoll_arm2bot_obj.image_xscale = -temp_image_xscale;
 temp_limbs[5] = ragdoll_arm2bot_obj;
 
 var ragdoll_arm2top_obj = instance_create_layer(temp_x + (arm_offset * temp_image_xscale), temp_y - chest_top_height, temp_layer, oRagdoll_Limb_Arm);
 ragdoll_arm2top_obj.sprite_index = arms_right_sprite;
+ragdoll_arm2top_obj.colors_sprite_index = arms_right_sprite;
+ragdoll_arm2top_obj.normals_sprite_index = arms_right_normalmap;
 ragdoll_arm2top_obj.image_index = 0;
 ragdoll_arm2top_obj.image_xscale = -temp_image_xscale;
 temp_limbs[6] = ragdoll_arm2top_obj;

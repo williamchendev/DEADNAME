@@ -5,6 +5,7 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sRevolver;
+weapon_normal_sprite = sRevolver_NormalMap;
 
 // Weapon Settings
 bullets = 0;
@@ -47,7 +48,7 @@ arm_x[1] = 8;
 arm_y[1] = 2;
 
 // Bullet Case Settings
-case_sprite = s308Case;
+bulletcase_obj = oBulletCase_Pistol_Small;
 case_eject_x = 8;
 case_eject_y = -1;
 case_direction = 30;

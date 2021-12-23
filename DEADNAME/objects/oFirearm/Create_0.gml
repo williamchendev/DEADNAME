@@ -8,6 +8,7 @@ event_inherited();
 weapon_type = "firearm";
 weapon_ammo_id = 7;
 
+bulletcase_obj = oBulletCase;
 projectile_obj = noone;
 
 bullets = 0;
@@ -19,9 +20,8 @@ far_range_radius = 400;
 
 // Sprite Settings
 weapon_sprite = sMarinda308;
-weapon_normal_sprite = sFAL_NormalMap;
-case_sprite = s308Case;
-muzzle_flash_sprite = s308MuzzleFlash;
+weapon_normal_sprite = sMarinda308_NormalMap;
+muzzle_flash_sprite = sMuzzleFlash_Small;
 
 break_action_sprite = noone;
 break_action_normal_sprite = noone;

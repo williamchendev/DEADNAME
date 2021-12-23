@@ -2,8 +2,8 @@
 // Creates the variables and settings necessary for the Lighting Engine
 
 // Settings
-screen_width = 640;
-screen_height = 360;
+screen_width = 641;
+screen_height = 361;
 tint = c_white;
 
 // Variables

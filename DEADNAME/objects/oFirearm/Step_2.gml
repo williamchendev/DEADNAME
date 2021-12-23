@@ -10,10 +10,14 @@ if (use_realdeltatime) {
 	temp_deltatime = global.realdeltatime;
 }
 
-/// Weapon Position
-x = lerp(x, x_position, move_spd * temp_deltatime);
-y = lerp(y, y_position, move_spd * temp_deltatime);
+// Weapon Physics
+if (!phy_active) {
+	phy_rotation = weapon_rotation + recoil_angle_shift;
+	phy_position_x = lerp(x, x_position, move_spd * temp_deltatime);
+	phy_position_y = lerp(y, y_position, move_spd * temp_deltatime);
+}
 
+// Weapon Position
 var temp_x = x + recoil_offset_x;
 var temp_y = y + recoil_offset_y;
 
@@ -418,7 +422,7 @@ if (bursts > 0) {
 		}
 		
 		// Bullet Cases
-		if (case_sprite != noone) {
+		if (bulletcase_obj != noone) {
 			bullet_cases++;
 		}
 		
@@ -505,21 +509,17 @@ if (bullet_cases != 0) {
 					var temp_eject_x = x + recoil_offset_x + lengthdir_x(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
 					var temp_eject_y = y + recoil_offset_y + lengthdir_y(temp_eject_distance, temp_weapon_rotation + temp_eject_direction);
 		
-					var temp_case = instance_create_layer(temp_eject_x, temp_eject_y, layer, oBulletCase);
+					var temp_case = instance_create_depth(temp_eject_x, temp_eject_y, layer_get_depth(layer), bulletcase_obj);
 					temp_case.case_direction = (weapon_rotation + ((-90 * weapon_yscale) - 180)) + (random_range(0, case_direction) * weapon_yscale);
 					if (gun_spin_reload) {
 						temp_case.case_direction = 270 + random_range(-10, 10);
 					}
-					temp_case.case_spd = case_spd;
-					temp_case.case_angle_spd = case_angle_spd;
-					
-					temp_case.sprite_index = case_sprite;
 					temp_case.image_xscale = weapon_yscale;
 					
 					with (temp_case) {
 						case_direction = degtorad(case_direction);
-						physics_apply_local_impulse(0, 0, cos(case_direction) * case_spd, -sin(case_direction) * case_spd);
-						physics_apply_angular_impulse(sign(image_xscale) * case_angle_spd);
+						physics_apply_local_impulse(0, 0, cos(case_direction) * other.case_spd, -sin(case_direction) * other.case_spd);
+						physics_apply_angular_impulse(sign(image_xscale) * other.case_angle_spd);
 					}
 				}
 				bullet_cases = 0;

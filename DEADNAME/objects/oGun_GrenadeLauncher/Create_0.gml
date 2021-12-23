@@ -5,9 +5,9 @@ event_inherited();
 
 // Sprite Settings
 weapon_sprite = sGrenadeLauncher;
+weapon_normal_sprite = sGrenadeLauncher_NormalMap;
 break_action_sprite = sGrenadeLauncher_BreakAction;
-break_action_normal_sprite = sGrenadeLauncher_BreakAction;
-muzzle_flash_sprite = s308MuzzleFlash;
+break_action_normal_sprite = sGrenadeLauncher_BreakAction_NormalMap;
 
 // Weapon Settings
 bullets = 0;
@@ -62,9 +62,11 @@ arm_x[1] = 14;
 arm_y[1] = 5;
 
 // Bullet Case Settings
-case_sprite = sGrenadeCannisterCase;
+bulletcase_obj = oBulletCase_GrenadeCanister;
 case_eject_x = 6;
 case_eject_y = 0;
+case_spd = 0.7;
+case_angle_spd = 0.3;
 case_direction = 30;
 
 // Behaviour Settings

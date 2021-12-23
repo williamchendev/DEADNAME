@@ -64,8 +64,10 @@ else {
 	if (place_meeting(x, y, oSolid)) {
 		temp_floor_splatter_inst = instance_create_layer(round(x), round(y), layer_get_id("Instances"), oBloodEffect_Floor);
 		var temp_solid_inst = instance_place(x, y, oSolid);
-		var temp_angle = point_check_solid_surface_angle(x, y, temp_solid_inst);
-		temp_floor_splatter_inst.image_angle = temp_angle;
+		var temp_solid_collision_data = point_check_solid_surface_angle(x, y, temp_solid_inst);
+		temp_floor_splatter_inst.image_angle = temp_solid_collision_data[0];
+		temp_floor_splatter_inst.x = temp_solid_collision_data[1];
+		temp_floor_splatter_inst.y = temp_solid_collision_data[2];
 	}
 	else if (place_meeting(x, y, oPlatform)) {
 		var temp_solid_inst = instance_place(x, y, oPlatform);

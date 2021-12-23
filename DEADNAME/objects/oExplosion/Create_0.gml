@@ -1,12 +1,12 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Explosion Init Event
+// Manages the Explosion Behaviour by instantiating the smoke and impact while calculating damage to oUnits within the blast radius
 
 // Singleton
 game_manager = instance_find(oGameManager, 0);
 
 // Explosion Settings
 explosion_damage = 8;
-explosion_radius = 72;
+explosion_radius = 80;
 explosion_force = 40;
 
 smoke_sprite_small = sSmokePuff_Small_Sprite1;
@@ -90,18 +90,19 @@ else {
 }
 temp_explosion_front_depth = ((temp_highest_explosion_layer_id + 1) + (temp_highest_unit_layer_id + 1)) * -5;
 
-//
+// Smoke Variables
 var temp_smoke_power = 1;
 var temp_smoke_angle = 0;
 var temp_smoke_random_angle = 180;
 var temp_smoke_wall_slowdown = true;
 	
-//
+// Smoke Wall Collision Behaviour
 var temp_solid_inst = collision_point(temp_explosion_x, temp_explosion_y, oSolid, false, true);
 if (temp_solid_inst != noone) {
+	var temp_solid_collision_data = point_check_solid_surface_angle(temp_explosion_x, temp_explosion_y, temp_solid_inst);
 	temp_smoke_power = 4;
 	temp_smoke_random_angle = 65;
-	temp_smoke_angle = point_check_solid_surface_angle(temp_explosion_x, temp_explosion_y, temp_solid_inst) + 90;
+	temp_smoke_angle = temp_solid_collision_data[0] + 90;
 	temp_smoke_wall_slowdown = false;
 }
 	
@@ -116,7 +117,7 @@ temp_smoke_inst.image_index = irandom(sprite_get_number(temp_smoke_inst.colors_s
 
 ds_list_add(explosion_objects, temp_smoke_inst.id);
 	
-//
+// Instantiate Explosion Background Smoke Puffs
 var temp_smoke_num = 25;
 for (var i = 0; i < temp_smoke_num; i++) {
 	var temp_smoke_inst = instance_create_depth(temp_explosion_x, temp_explosion_y, temp_explosion_back_depth, oSmokePuff);
@@ -130,6 +131,8 @@ for (var i = 0; i < temp_smoke_num; i++) {
 	
 	ds_list_add(explosion_objects, temp_smoke_inst.id);
 }
+
+// Instantiate Explosion Foreground Occlusion Smoke Puffs
 temp_smoke_num = 5;
 for (var i = 0; i < temp_smoke_num; i++) {
 	var temp_smoke_inst = instance_create_depth(temp_explosion_x, temp_explosion_y, temp_explosion_front_depth, oSmokePuff_Occlusion);
@@ -144,12 +147,12 @@ for (var i = 0; i < temp_smoke_num; i++) {
 	ds_list_add(explosion_objects, temp_smoke_inst.id);
 }
 
-//
+// Instantiate Explosion Impact
 var temp_explosionimpact_inst = instance_create_depth(temp_explosion_x, temp_explosion_y, temp_explosion_front_depth, oExplosionImpact);
 temp_explosionimpact_inst.image_blend = c_white;
 ds_list_add(explosion_objects, temp_explosionimpact_inst.id);
 
-//
+// Instantiate Explosion Foreground Small Smoke Puffs
 temp_smoke_num = 25;
 for (var i = 0; i < temp_smoke_num; i++) {
 	var temp_smoke_inst = instance_create_depth(temp_explosion_x, temp_explosion_y, temp_explosion_front_depth, oSmokePuff);

@@ -37,6 +37,12 @@ aim_animation = sWilliamDS_Heavy_Aim;
 aim_walk_animation = sWilliamDS_Heavy_AimWalk;
 hurt_animation = sWilliam_Hurt;
 
+idle_normals = sWilliamDS_Heavy_Idle_NormalMap;
+walk_normals = sWilliamDS_Heavy_Run_NormalMap;
+jump_normals = sWilliamDS_Heavy_Jump_NormalMap;
+aim_normals = sWilliamDS_Heavy_Aim_NormalMap;
+aim_walk_normals = sWilliamDS_Heavy_AimWalk_NormalMap;
+
 animation_spd = 0.18;
 
 action_spd = 0.20;
@@ -57,6 +63,13 @@ ragdoll_chest_top_sprite = sWilliamDS_Heavy_ChestTop;
 ragdoll_chest_bot_sprite = sWilliamDS_Heavy_ChestBot;
 ragdoll_leg_left_sprite = sWilliamDS_Heavy_LeftLeg;
 ragdoll_leg_right_sprite = sWilliamDS_Heavy_RightLeg;
+ragdoll_head_normalmap = sWilliamDS_Heavy_Head_NormalMap;
+ragdoll_arm_left_normalmap = sWilliamDS_Heavy_Arms_NormalMap;
+ragdoll_arm_right_normalmap = sWilliamDS_Heavy_Arms_NormalMap;
+ragdoll_chest_top_normalmap = sWilliamDS_Heavy_ChestTop_NormalMap;
+ragdoll_chest_bot_normalmap = sWilliamDS_Heavy_ChestBot_NormalMap;
+ragdoll_leg_left_normalmap = sWilliamDS_Heavy_LeftLeg_NormalMap;
+ragdoll_leg_right_normalmap = sWilliamDS_Heavy_RightLeg_NormalMap;
 
 // Sight Settings
 sight = true;
@@ -100,6 +113,8 @@ weapon_aim_y = -38;
 inventory_x = -6;
 inventory_y = -27;
 
+weapon_holster_ambient_move_size = 3;
+
 // Limb Settings
 limbs = 2;
 
@@ -115,9 +130,13 @@ limb_aim_offset_y = 2;
 limb_sprite[0] = sWilliamDS_Heavy_Arms;  // Right Arm
 limb_sprite[1] = sWilliamDS_Heavy_Arms;  // Left Arm
 
+limb_normal_sprite[0] = sWilliamDS_Heavy_Arms_NormalMap;  // Right Arm
+limb_normal_sprite[1] = sWilliamDS_Heavy_Arms_NormalMap;  // Left Arm
+
 // Inventory Settings
+add_item_inventory(inventory, 7, 20);
 //add_item_inventory(inventory, 6);
-add_item_inventory(inventory, 12);
+add_item_inventory(inventory, 6);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

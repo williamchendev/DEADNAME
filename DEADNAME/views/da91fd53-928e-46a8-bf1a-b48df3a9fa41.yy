@@ -4,8 +4,10 @@
     "mvc": "1.1",
     "name": "da91fd53-928e-46a8-bf1a-b48df3a9fa41",
     "children": [
-        "9fa8515a-6cc6-49fa-896c-71f150766bbf",
-        "99ac8eb9-3827-4408-ab1c-945643909b17"
+        "d02fd811-53a3-488a-a552-46e11a576976",
+        "e55f6d5e-5eb5-4397-825d-c2be167f566d",
+        "b2368cbb-9dfd-4651-94fa-d1eb689346e9",
+        "cfcbd816-6de9-4d7c-a192-c2e9cf595d00"
     ],
     "filterType": "GMSprite",
     "folderName": "Base",

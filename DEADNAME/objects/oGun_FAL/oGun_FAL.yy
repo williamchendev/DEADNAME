@@ -20,16 +20,66 @@
     "parentObjectId": "72c6038b-c68d-4deb-a931-976a431fd900",
     "persistent": false,
     "physicsAngularDamping": 0.1,
-    "physicsDensity": 0.5,
-    "physicsFriction": 0.2,
+    "physicsDensity": 1.5,
+    "physicsFriction": 0.8,
     "physicsGroup": 0,
     "physicsKinematic": false,
     "physicsLinearDamping": 0.1,
-    "physicsObject": false,
+    "physicsObject": true,
     "physicsRestitution": 0.1,
     "physicsSensor": false,
-    "physicsShape": 1,
-    "physicsShapePoints": null,
+    "physicsShape": 2,
+    "physicsShapePoints": [
+        {
+            "id": "eae0b3d4-1301-4ad4-9e19-35b244b1723b",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 12.6895523,
+            "y": 0.4399376
+        },
+        {
+            "id": "781d4b9d-21b8-4a7b-a9bf-693644878fcc",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 31.45086,
+            "y": 0.755069733
+        },
+        {
+            "id": "a6f755e2-f894-4bb5-a5fd-4a82c48224ad",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 39.0109177,
+            "y": 1.24961
+        },
+        {
+            "id": "f75452fb-8c9c-463d-af2c-c39ad46efaad",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 30.71451,
+            "y": 3.56318188
+        },
+        {
+            "id": "d0a85841-c252-4512-9075-d89ef7d9d86a",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 12.0436821,
+            "y": 7.86895466
+        },
+        {
+            "id": "43975a9d-f289-4c5e-af9c-d26bfcdc6049",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 2.99532032,
+            "y": 7.806552
+        },
+        {
+            "id": "f7d5bc9b-5585-4915-ac46-07a8655752eb",
+            "modelName": "GMPoint",
+            "mvc": "1.0",
+            "x": 3.12012482,
+            "y": 3.12636471
+        }
+    ],
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,

@@ -3,12 +3,14 @@
 /// @param {real} x The x position of the point to check
 /// @param {real} y The y position of the point to check
 /// @param {real} solid The Solid Object instance's id to check the angle of the point resting on its surface
-/// @return {real} angle The direction/angle of the object sitting on the solid instance surface
+/// @return {array} An Array of the direction/angle of the object sitting on the solid instance surface along with the x and y coordinate of the nearest point on the given solid
 
 // Establish Variables
 var temp_x = argument0;
 var temp_y = argument1;
 var temp_solid_inst = argument2;
+
+var temp_return_array = noone;
 
 // Hitbox
 var temp_sprite_index = temp_solid_inst.sprite_index;
@@ -17,7 +19,7 @@ var temp_object_y_scale = temp_solid_inst.image_yscale;
 var temp_object_angle = temp_solid_inst.image_angle;
 
 var temp_bbox_left = sprite_get_bbox_left(temp_sprite_index) * temp_object_x_scale;
-var temp_bbox_right = sprite_get_bbox_right(temp_sprite_index) * temp_object_x_scale;
+var temp_bbox_right = (sprite_get_bbox_right(temp_sprite_index) + 1) * temp_object_x_scale;
 var temp_bbox_top = sprite_get_bbox_top(temp_sprite_index) * temp_object_y_scale;
 var temp_bbox_bottom = sprite_get_bbox_bottom(temp_sprite_index) * temp_object_y_scale;
 	
@@ -68,22 +70,34 @@ switch(min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_c
 		if (min(temp_point_closest_left_dis, temp_point_closest_right_dis, temp_point_closest_bottom_dis) == temp_point_closest_top_dis) {
 			break;
 		}
-		return point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+		temp_return_array[0] = point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+		temp_return_array[1] = temp_point_closest_top[0];
+		temp_return_array[2] = temp_point_closest_top[1];
+		return temp_return_array;
 	case temp_point_closest_left_dis:
 		if (min(temp_point_closest_top_dis, temp_point_closest_right_dis, temp_point_closest_bottom_dis) == temp_point_closest_left_dis) {
 			break;
 		}
-		return point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+		temp_return_array[0] = point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+		temp_return_array[1] = temp_point_closest_left[0];
+		temp_return_array[2] = temp_point_closest_left[1];
+		return temp_return_array;
 	case temp_point_closest_right_dis:
 		if (min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_closest_bottom_dis) == temp_point_closest_right_dis) {
 			break;
 		}
-		return point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+		temp_return_array[0] = point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+		temp_return_array[1] = temp_point_closest_right[0];
+		temp_return_array[2] = temp_point_closest_right[1];
+		return temp_return_array;
 	case temp_point_closest_bottom_dis:
 		if (min(temp_point_closest_top_dis, temp_point_closest_left_dis, temp_point_closest_right_dis) == temp_point_closest_bottom_dis) {
 			break;
 		}
-		return point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
+		temp_return_array[0] = point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
+		temp_return_array[1] = temp_point_closest_bottom[0];
+		temp_return_array[2] = temp_point_closest_bottom[1];
+		return temp_return_array;
 	default:
 		break;
 }
@@ -99,32 +113,53 @@ var temp_left_bottom_angle = point_direction(temp_hitbox_center_x, temp_hitbox_c
 // Check if Point is relative to the Solid's Top Side
 if (temp_left_top_angle > temp_right_top_angle) {
 	if ((temp_point_angle <= temp_left_top_angle) and (temp_point_angle >= temp_right_top_angle)) {
-		return point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+		temp_return_array[0] = point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+		temp_return_array[1] = temp_point_closest_top[0];
+		temp_return_array[2] = temp_point_closest_top[1];
+		return temp_return_array;
 	}
 }
 else if ((temp_point_angle <= temp_left_top_angle) or (temp_point_angle >= temp_right_top_angle)) {
-	return point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+	temp_return_array[0] = point_direction(temp_left_top_x_offset, temp_left_top_y_offset, temp_right_top_x_offset, temp_right_top_y_offset);
+	temp_return_array[1] = temp_point_closest_top[0];
+	temp_return_array[2] = temp_point_closest_top[1];
+	return temp_return_array;
 }
 
 // Check if Point is relative to the Solid's Left Side
 if (temp_left_bottom_angle > temp_left_top_angle) {
 	if ((temp_point_angle <= temp_left_bottom_angle) and (temp_point_angle >= temp_left_top_angle)) {
-		return point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+		temp_return_array[0] = point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+		temp_return_array[1] = temp_point_closest_left[0];
+		temp_return_array[2] = temp_point_closest_left[1];
+		return temp_return_array;
 	}
 }
 else if ((temp_point_angle <= temp_left_bottom_angle) or (temp_point_angle >= temp_left_top_angle)) {
-	return point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+	temp_return_array[0] = point_direction(temp_left_bottom_x_offset, temp_left_bottom_y_offset, temp_left_top_x_offset, temp_left_top_y_offset);
+	temp_return_array[1] = temp_point_closest_left[0];
+	temp_return_array[2] = temp_point_closest_left[1];
+	return temp_return_array;
 }
 
 // Check if Point is relative to the Solid's Right Side
 if (temp_right_top_angle > temp_right_bottom_angle) {
 	if ((temp_point_angle <= temp_right_top_angle) and (temp_point_angle >= temp_right_bottom_angle)) {
-		return point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+		temp_return_array[0] = point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+		temp_return_array[1] = temp_point_closest_right[0];
+		temp_return_array[2] = temp_point_closest_right[1];
+		return temp_return_array;
 	}
 }
 else if ((temp_point_angle <= temp_right_top_angle) or (temp_point_angle >= temp_right_bottom_angle)) {
-	return point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+	temp_return_array[0] = point_direction(temp_right_top_x_offset, temp_right_top_y_offset, temp_right_bottom_x_offset, temp_right_bottom_y_offset);
+	temp_return_array[1] = temp_point_closest_right[0];
+	temp_return_array[2] = temp_point_closest_right[1];
+	return temp_return_array;
 }
 
 // Point is relative to the Solid's Bottom Side
-return point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
+temp_return_array[0] = point_direction(temp_right_bottom_x_offset, temp_right_bottom_y_offset, temp_left_bottom_x_offset, temp_left_bottom_y_offset);
+temp_return_array[1] = temp_point_closest_bottom[0];
+temp_return_array[2] = temp_point_closest_bottom[1];
+return temp_return_array;

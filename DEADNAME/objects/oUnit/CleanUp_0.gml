@@ -14,7 +14,12 @@ if (ds_exists(blood_list, ds_type_list)) {
 blood_list = -1;
 
 // Clear Universal Physics Object
-instance_destroy(universal_physics_object);
+if (universal_physics_object != noone) {
+	if (instance_exists(universal_physics_object)) {
+		instance_destroy(universal_physics_object);
+	}
+}
+universal_physics_object = noone;
 
 // Clear instance from Game Manager instantiated unit objects
 if (instance_exists(game_manager)) {

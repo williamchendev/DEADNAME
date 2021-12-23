@@ -103,6 +103,34 @@ if (!normal_draw_event and !lit_draw_event) {
 			}
 		}
 	}
+	
+	// Interate Through Colliding Corpses
+	for (var i = 0; i < corpse_collision_num; i++) {
+		// Find Corpse Instance
+		var temp_corpse_inst = ds_list_find_value(corpse_collision_list, i);
+		
+		// Record Corpse Position
+		var temp_corpse_x = temp_corpse_inst.x;
+		var temp_corpse_y = temp_corpse_inst.y;
+		
+		// Offset Corpse Position
+		temp_corpse_inst.x = (temp_corpse_inst.x - x) + (sprite_get_width(colors_sprite_index) / 2);
+		temp_corpse_inst.y = (temp_corpse_inst.y - y) + (sprite_get_height(colors_sprite_index) / 2);
+				
+		// Draw Corpse
+		with (temp_corpse_inst) {
+			// Basic Lighting Colors Draw Event
+			lit_draw_event = true;
+			event_perform(ev_draw, 0);
+			lit_draw_event = false;
+		}
+		
+		// Reset Corpse Position
+		temp_corpse_inst.x = temp_corpse_x;
+		temp_corpse_inst.y = temp_corpse_y;
+	}
+	
+	// Reset Surface Target
 	surface_reset_target();
 	
 	// Draw Occlusion Remove Map

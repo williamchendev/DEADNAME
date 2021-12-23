@@ -32,6 +32,7 @@ inventory_y = -30;
 
 weapon_ambient_move_spd = 0.027;
 weapon_ambient_move_size = 2;
+weapon_holster_ambient_move_size = 2;
 
 // Limb Settings
 limbs = 2;
@@ -90,3 +91,6 @@ limb[1] = instance_create_layer(x, y, layers[1], oArm);
 
 limb_sprite[0] = sWilliam_Arms;  // Right Arm
 limb_sprite[1] = sWilliamDS_Arms;  // Left Arm
+
+limb_normal_sprite[0] = sWolf_Arms_NormalMap;  // Right Arm
+limb_normal_sprite[1] = sWolf_Arms_NormalMap;  // Left Arm
