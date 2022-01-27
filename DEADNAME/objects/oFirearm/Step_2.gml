@@ -518,7 +518,7 @@ if (bullet_cases != 0) {
 					
 					with (temp_case) {
 						case_direction = degtorad(case_direction);
-						physics_apply_local_impulse(0, 0, cos(case_direction) * other.case_spd, -sin(case_direction) * other.case_spd);
+						physics_apply_impulse(x, y, cos(case_direction) * other.case_spd, -sin(case_direction) * other.case_spd);
 						physics_apply_angular_impulse(sign(image_xscale) * other.case_angle_spd);
 					}
 				}

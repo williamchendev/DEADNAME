@@ -16,6 +16,7 @@ if (random(1) > 0.5) {
 image_index = irandom(sprite_get_number(sprite_index) - 1);
 
 // Blood Layer Behaviour
+depth = -5;
 blood_draw_end = false;
 if (collision_point(x, y, oSolid, true, true)) {
 	blood_draw_end = true;

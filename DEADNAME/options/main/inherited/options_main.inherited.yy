@@ -66,6 +66,21 @@
                     "mipsToGenerate": 0,
                     "scaled": true
                 }
+            },
+            {
+                "Key": 5,
+                "Value": {
+                    "id": "87fcb198-63f8-47ce-bb4f-aaac574a8eb3",
+                    "modelName": "GMTextureGroup",
+                    "mvc": "1.0",
+                    "groupName": "AdobeHouse_Desert",
+                    "targets": 461609314234257646,
+                    "autocrop": true,
+                    "border": 2,
+                    "groupParent": "00000000-0000-0000-0000-000000000000",
+                    "mipsToGenerate": 0,
+                    "scaled": true
+                }
             }
         ],
         "Checksum": "ࢺ懜璙ᓆ锯翋꤯맫",

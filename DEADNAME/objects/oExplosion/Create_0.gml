@@ -62,8 +62,8 @@ if (temp_unit_num > 0) {
 ds_list_destroy(temp_unit_list);
 
 // Explosion Depth Calculation
-var temp_explosion_back_depth = 1;
-var temp_explosion_front_depth = -3999;
+var temp_explosion_back_depth = -3999;
+var temp_explosion_front_depth = 3999;
 
 var temp_highest_unit_layer_id = -1;
 for (var i = 0; i < instance_number(oUnit); i++) {
@@ -114,6 +114,7 @@ temp_smoke_inst.velocity_wall_slowdown = temp_smoke_wall_slowdown;
 temp_smoke_inst.colors_sprite_index = smoke_sprite_large;
 temp_smoke_inst.normals_sprite_index = smoke_normalmap_large;
 temp_smoke_inst.image_index = irandom(sprite_get_number(temp_smoke_inst.colors_sprite_index) - 1);
+temp_smoke_inst.background_layer = true;
 
 ds_list_add(explosion_objects, temp_smoke_inst.id);
 	
@@ -128,6 +129,7 @@ for (var i = 0; i < temp_smoke_num; i++) {
 	temp_smoke_inst.colors_sprite_index = smoke_sprite_large;
 	temp_smoke_inst.normals_sprite_index = smoke_normalmap_large;
 	temp_smoke_inst.image_index = irandom(sprite_get_number(temp_smoke_inst.colors_sprite_index) - 1);
+	temp_smoke_inst.background_layer = true;
 	
 	ds_list_add(explosion_objects, temp_smoke_inst.id);
 }
@@ -143,6 +145,7 @@ for (var i = 0; i < temp_smoke_num; i++) {
 	temp_smoke_inst.colors_sprite_index = smoke_sprite_large;
 	temp_smoke_inst.normals_sprite_index = smoke_normalmap_large;
 	temp_smoke_inst.image_index = irandom(sprite_get_number(temp_smoke_inst.colors_sprite_index) - 1);
+	temp_smoke_inst.foreground_layer = true;
 	
 	ds_list_add(explosion_objects, temp_smoke_inst.id);
 }
@@ -162,6 +165,7 @@ for (var i = 0; i < temp_smoke_num; i++) {
 	temp_smoke_inst.colors_sprite_index = smoke_sprite_small;
 	temp_smoke_inst.normals_sprite_index = smoke_normalmap_small;
 	temp_smoke_inst.image_index = irandom(sprite_get_number(temp_smoke_inst.colors_sprite_index) - 1);
+	temp_smoke_inst.foreground_layer = true;
 	
 	ds_list_add(explosion_objects, temp_smoke_inst.id);
 }

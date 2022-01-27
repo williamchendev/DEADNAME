@@ -36,6 +36,9 @@ alpha_delay_timer = lerp(alpha_delay_timer, 1.5, alpha_delay_timer_spd * global.
 if (alpha_delay_timer >= 0.99) {
 	image_alpha = lerp(image_alpha, 0, alpha_transition_spd * global.deltatime);
 	if (image_alpha <= alpha_destroy_threshold) {
-		instance_destroy();
+		sprite_size *= power(size_transition_spd, global.deltatime);
+		if (sprite_size < size_destroy_threshold) {
+			instance_destroy();
+		}
 	}
 }

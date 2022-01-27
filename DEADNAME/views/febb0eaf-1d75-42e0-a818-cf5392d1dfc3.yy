@@ -4,8 +4,8 @@
     "mvc": "1.1",
     "name": "febb0eaf-1d75-42e0-a818-cf5392d1dfc3",
     "children": [
-        "754e8f0f-e51a-4ae3-98de-1ed582b6805a",
-        "534da4af-7e1f-49bb-9605-f9ce4392ff8b"
+        "5dab52ea-774d-43b7-8657-0ccd08088321",
+        "04bba8c5-a5a2-4abc-830b-450cd5004a1f"
     ],
     "filterType": "GMSprite",
     "folderName": "Shotgun",

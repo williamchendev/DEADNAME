@@ -136,7 +136,7 @@ limb_normal_sprite[1] = sWilliamDS_Heavy_Arms_NormalMap;  // Left Arm
 // Inventory Settings
 add_item_inventory(inventory, 7, 20);
 //add_item_inventory(inventory, 6);
-add_item_inventory(inventory, 6);
+add_item_inventory(inventory, 12);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

@@ -89,6 +89,48 @@
             "value": "0",
             "varName": "normal_draw_event",
             "varType": 3
+        },
+        {
+            "id": "25bfcc5a-6356-4e29-8d2b-23e14eec10c2",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": false,
+            "rangeMax": 10,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "False",
+            "varName": "background_layer",
+            "varType": 3
+        },
+        {
+            "id": "9a7af806-c799-4c33-a0dc-b6dc6f2aefa2",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": false,
+            "rangeMax": 10,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "True",
+            "varName": "instance_layer",
+            "varType": 3
+        },
+        {
+            "id": "388776ce-6195-4896-accf-801c22785d23",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": false,
+            "rangeMax": 10,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "False",
+            "varName": "foreground_layer",
+            "varType": 3
         }
     ],
     "solid": false,

@@ -4,11 +4,30 @@
     "mvc": "1.0",
     "name": "oDirectionalLight",
     "eventList": [
-        
+        {
+            "id": "0ce85761-1dfd-40fa-b0b8-7530a04877de",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4"
+        },
+        {
+            "id": "11e2d43d-de63-40f3-89a6-05db08df56e4",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 3,
+            "m_owner": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,
-    "parentObjectId": "00000000-0000-0000-0000-000000000000",
+    "parentObjectId": "008bfae1-30f1-453b-b93c-5349b2562df4",
     "persistent": false,
     "physicsAngularDamping": 0.1,
     "physicsDensity": 0.5,

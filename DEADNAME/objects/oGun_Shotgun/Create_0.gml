@@ -35,11 +35,11 @@ magazine_obj = noone;
 // Arm Settings
 swap_action_hand = true;
 
-arm_x[0] = 4;
+arm_x[0] = 3;
 arm_y[0] = 2;
 
 arm_x[1] = 14;
-arm_y[1] = 1;
+arm_y[1] = 2;
 
 // Bullet Case Settings
 bulletcase_obj = oBulletCase_Shotgun_Medium;
@@ -49,7 +49,7 @@ case_direction = 30;
 
 // Behaviour Settings
 aim_spd = 0.1;
-lerp_spd = 0.1;
+lerp_spd = 0.15;
 angle_adjust_spd = 0.1;
 
 recoil_spd = 2.5;

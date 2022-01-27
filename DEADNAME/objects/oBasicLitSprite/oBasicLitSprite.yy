@@ -42,7 +42,20 @@
     "physicsShapePoints": null,
     "physicsStartAwake": true,
     "properties": [
-        
+        {
+            "id": "dd259c7a-c7a0-441a-89f0-7e769609a2a5",
+            "modelName": "GMObjectProperty",
+            "mvc": "1.0",
+            "listItems": null,
+            "multiselect": false,
+            "rangeEnabled": true,
+            "rangeMax": 1,
+            "rangeMin": 0,
+            "resourceFilter": 1023,
+            "value": "1",
+            "varName": "normalmap_level",
+            "varType": 0
+        }
     ],
     "solid": false,
     "spriteId": "6c0e27f3-fe4e-4fa2-81df-618327412454",

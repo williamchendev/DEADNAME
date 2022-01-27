@@ -31,6 +31,22 @@
     },
     "resources": [
         {
+            "Key": "0031ae4f-5478-4c7b-94f0-e9e4fdeccdfe",
+            "Value": {
+                "id": "2e9319ec-734a-453a-bd35-20f365d62d69",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRock\\oAdobeHouse_BrownDesertRock.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "008bfae1-30f1-453b-b93c-5349b2562df4",
+            "Value": {
+                "id": "b359ec0e-1fe4-4bbb-9268-0611719d2526",
+                "resourcePath": "objects\\oLight\\oLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "0176fa84-6af9-4d5b-9f89-04e3f0613c43",
             "Value": {
                 "id": "7d983476-a1cd-475d-a734-137e8001787f",
@@ -103,10 +119,26 @@
             }
         },
         {
+            "Key": "04bba8c5-a5a2-4abc-830b-450cd5004a1f",
+            "Value": {
+                "id": "d2d28fac-04e8-452e-8045-edba7f90c9ab",
+                "resourcePath": "sprites\\sShotgun_NormalMap\\sShotgun_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0520b751-b704-4e84-89f6-51802d5f6e3c",
             "Value": {
                 "id": "80ee13ea-19aa-4af5-a0ae-250bfd0fc96e",
                 "resourcePath": "objects\\oTargetUI\\oTargetUI.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "055508f8-c483-4575-944c-05dd1942a2a8",
+            "Value": {
+                "id": "9975e45b-83a5-4467-b6bc-b9ccbc1e8748",
+                "resourcePath": "objects\\oAdobeHouse_CactusLargeB\\oAdobeHouse_CactusLargeB.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -135,6 +167,14 @@
             }
         },
         {
+            "Key": "06a0b537-611b-4775-93ae-87a18892d529",
+            "Value": {
+                "id": "83039c0d-3399-4430-bb0a-2e870d68f77d",
+                "resourcePath": "objects\\oBasicLitSpriteImageIndex\\oBasicLitSpriteImageIndex.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "06c72aa3-d8f5-4d47-88dc-ff192e06c971",
             "Value": {
                 "id": "73c2caac-55e5-4ea7-9094-36c11f51f695",
@@ -159,6 +199,22 @@
             }
         },
         {
+            "Key": "076d1ac9-fc5d-4c8f-bc9c-49c3de54d282",
+            "Value": {
+                "id": "1016869e-4440-4ded-8c40-27524152f97c",
+                "resourcePath": "sprites\\sAdobeHouse_DesertDeadShrub\\sAdobeHouse_DesertDeadShrub.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "079d0c76-f39b-4fea-a80e-10a2a6d27c18",
+            "Value": {
+                "id": "3d4c67d8-2114-457d-8504-686a8b7e8e31",
+                "resourcePath": "objects\\oAdobeHouse_CactusLargeA\\oAdobeHouse_CactusLargeA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "07b76bc0-fc76-4af2-a2b2-9d32105e2b3f",
             "Value": {
                 "id": "5b7a20d5-9a7e-4374-beab-f0a35d5d2f2a",
@@ -175,10 +231,26 @@
             }
         },
         {
+            "Key": "0882a1f2-a41b-4fb8-b7ed-0b35b5d36b7a",
+            "Value": {
+                "id": "f2463350-0da4-44e8-8863-5ec42cd96027",
+                "resourcePath": "objects\\oAdobeHouse_KivaRumfordFireplace\\oAdobeHouse_KivaRumfordFireplace.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "08a2bf9a-1935-4a3b-9285-330d5ae1f2f8",
             "Value": {
                 "id": "e039b43a-f6ed-4e19-a9d5-8952d948c593",
                 "resourcePath": "objects\\oFirearmProjectile\\oFirearmProjectile.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "0a127397-de93-4a2f-bbc5-091a92f1cc3d",
+            "Value": {
+                "id": "01fa8430-4955-41cc-993d-ff26024a3a0b",
+                "resourcePath": "objects\\oAdobeHouse_CactusHedgehogC\\oAdobeHouse_CactusHedgehogC.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -207,6 +279,14 @@
             }
         },
         {
+            "Key": "0b1e3034-5dc8-4f45-96eb-e649c1fe8107",
+            "Value": {
+                "id": "b7f47f2b-1f31-4e2b-9f66-daa786c74931",
+                "resourcePath": "objects\\oAdobeHouse_Door\\oAdobeHouse_Door.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "0c24b966-a495-4bbe-88b8-722eaba9347d",
             "Value": {
                 "id": "13ca56e2-47a3-45fe-b532-b6575b91a6f4",
@@ -231,6 +311,14 @@
             }
         },
         {
+            "Key": "0cc6842c-6a13-460d-bdc9-db336717089e",
+            "Value": {
+                "id": "9d7c1124-bc7d-464b-8e2c-4b40cdd07f87",
+                "resourcePath": "sprites\\sAdobeHouse_CactusHedgehog_NormalMap\\sAdobeHouse_CactusHedgehog_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0df6e074-d58f-4e69-8dcb-67d9b54d5c8c",
             "Value": {
                 "id": "f9de97d6-1d3b-40de-a7cb-a4dd74375ffd",
@@ -251,6 +339,14 @@
             "Value": {
                 "id": "cbb40066-360b-4e7d-86e6-e01d09caf4d3",
                 "resourcePath": "objects\\oDebugPathParent\\oDebugPathParent.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "0fc4ebe4-486e-4671-828f-e0e9438f00a4",
+            "Value": {
+                "id": "ad7170a9-d85a-4ada-a0d8-61735c1a41c9",
+                "resourcePath": "objects\\oAdobeHouse_SpecialBook\\oAdobeHouse_SpecialBook.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -295,6 +391,14 @@
             }
         },
         {
+            "Key": "12137dc1-6d0f-4ebc-a70c-04afdfafd3dc",
+            "Value": {
+                "id": "5cfe1c66-3f90-46d8-9328-8cc705ad9ab5",
+                "resourcePath": "sprites\\sBackgroundAdobeHouse1_C\\sBackgroundAdobeHouse1_C.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "132f3895-1b5f-4a17-afae-5f4a295465f2",
             "Value": {
                 "id": "110b1a6d-d5b3-4750-882b-c7c37fbc6ec0",
@@ -323,6 +427,14 @@
             "Value": {
                 "id": "73f28e52-e821-45a0-a349-ecd166b7a615",
                 "resourcePath": "sprites\\sCornfields_Platform\\sCornfields_Platform.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "15a15b5c-f237-4d2b-a356-3aad868ea5cf",
+            "Value": {
+                "id": "31c262fe-9f0c-4bbc-a1d0-804007b3a300",
+                "resourcePath": "sprites\\sItems4x2\\sItems4x2.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -511,11 +623,27 @@
             }
         },
         {
+            "Key": "1eb0dea9-6dfc-42e3-a894-dbba8ba5f406",
+            "Value": {
+                "id": "dc70f7ad-dc92-4258-932a-50dc67a08131",
+                "resourcePath": "objects\\oAdobeHouse_BigSageBrush\\oAdobeHouse_BigSageBrush.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "1f1ddf3f-9ffb-4515-b53d-7f2c3b9d9902",
             "Value": {
                 "id": "cca394c5-9722-4b95-ba03-d73463f3aba6",
                 "resourcePath": "views\\1f1ddf3f-9ffb-4515-b53d-7f2c3b9d9902.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "1f38007f-cf9b-4791-bc09-2db4c67e286a",
+            "Value": {
+                "id": "f2721042-dbea-47dc-a240-93d5c482fc60",
+                "resourcePath": "sprites\\sAdobeHouse_Back\\sAdobeHouse_Back.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -543,6 +671,22 @@
             }
         },
         {
+            "Key": "21571fb1-5b28-4d4a-98ef-87145282d586",
+            "Value": {
+                "id": "5039f67c-c264-44e5-8155-c3c153050c7e",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntiaB\\oAdobeHouse_CactusOpuntiaB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "218e46ec-685e-4a9d-8cab-860b3a01b458",
+            "Value": {
+                "id": "3261d6fb-f4dc-44bb-95bc-9f72d965a8be",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntia\\oAdobeHouse_CactusOpuntia.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "21bc2af6-50ba-4ec5-ae39-96457f8a2fe9",
             "Value": {
                 "id": "95b2aa83-9948-4f6d-b5c8-ca2954dbf494",
@@ -564,6 +708,14 @@
                 "id": "410a4ca3-48bb-42d9-8a46-2b34d705b290",
                 "resourcePath": "views\\22947368-c688-42b6-a954-57517c4b4273.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "22a68c0f-6040-4c5e-b4e8-dbdeb7156225",
+            "Value": {
+                "id": "5968a4f1-a06a-45ac-8617-0391a4dc3097",
+                "resourcePath": "objects\\oAdobeHouse_Ladder\\oAdobeHouse_Ladder.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -671,6 +823,14 @@
             }
         },
         {
+            "Key": "2873fc1d-02cd-4f28-a09a-c6055a597dc4",
+            "Value": {
+                "id": "a1f470a6-4c3c-4531-9ab7-0b4a1de8f238",
+                "resourcePath": "views\\2873fc1d-02cd-4f28-a09a-c6055a597dc4.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "28abf5b7-3d56-4df2-b978-d019b8537a45",
             "Value": {
                 "id": "b71fb73c-20ae-4df8-9058-ea4d2ec46f5e",
@@ -707,6 +867,14 @@
             "Value": {
                 "id": "951550fb-3ec5-4e3c-a32b-d00376865da8",
                 "resourcePath": "sprites\\sGrenadeLauncher\\sGrenadeLauncher.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "29adb1ad-322a-441b-95f0-10079e502748",
+            "Value": {
+                "id": "48ec19d4-2091-4ad0-b28d-48df4ee9edd5",
+                "resourcePath": "sprites\\sAdobeHouse_BrownDesertRocks_NormalMap\\sAdobeHouse_BrownDesertRocks_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -783,6 +951,22 @@
             }
         },
         {
+            "Key": "2ddb9f57-05cb-4383-8af8-1df0790938f2",
+            "Value": {
+                "id": "52940718-8b74-4a33-847e-8c80a3ce7683",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushI\\oAdobeHouse_SageBrushI.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "2de4529d-e001-470a-b8c7-798f2c2dec78",
+            "Value": {
+                "id": "d0d89880-3c6a-42ee-a5e7-292241cd246b",
+                "resourcePath": "sprites\\sAdobeHouse_DesertGround\\sAdobeHouse_DesertGround.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2e36d9c2-49f2-4b12-9210-46deddc59d93",
             "Value": {
                 "id": "99ef8493-a478-4814-ab1d-d0b2fe451a9e",
@@ -820,6 +1004,14 @@
                 "id": "5be70630-97f0-44ef-863d-61e098755a48",
                 "resourcePath": "sprites\\sBlackBlocking\\sBlackBlocking.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "300925e4-2023-4cdd-b0a2-4b7634213e44",
+            "Value": {
+                "id": "54205565-2eec-4893-9714-98b40700b3eb",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeG\\oAdobeHouse_PaleDesertRocksLargeG.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -879,6 +1071,14 @@
             }
         },
         {
+            "Key": "325c90fe-be57-4e20-9257-806deb4c8a36",
+            "Value": {
+                "id": "434f420c-3bb3-46af-b1cc-17e15181ac2f",
+                "resourcePath": "objects\\oAdobeHouse_DesertPath\\oAdobeHouse_DesertPath.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "32717d97-b827-4836-923c-978b07534371",
             "Value": {
                 "id": "7d20572a-a934-40fd-be7b-08e47a248a36",
@@ -900,6 +1100,14 @@
                 "id": "7f69c168-2f01-482c-91ae-44c186b45e48",
                 "resourcePath": "sprites\\sWilliamDS_AimWalk\\sWilliamDS_AimWalk.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "3300e961-ddbb-4abf-8afa-5569c1c5d071",
+            "Value": {
+                "id": "db8cc50c-59da-4745-9a76-b059170406fd",
+                "resourcePath": "views\\3300e961-ddbb-4abf-8afa-5569c1c5d071.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -1071,6 +1279,14 @@
             }
         },
         {
+            "Key": "3a901bc4-54c5-4d1c-9077-706ad998f6b0",
+            "Value": {
+                "id": "ac6cabb9-488d-4008-8251-987b082c70e8",
+                "resourcePath": "sprites\\sAdobeHouse_DesertPath_NormalMap\\sAdobeHouse_DesertPath_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "3a986a05-d1d6-4ce3-bc54-a2fcadf78d2b",
             "Value": {
                 "id": "d463be8c-88b6-486f-9197-b96bb09f93f2",
@@ -1183,6 +1399,14 @@
             }
         },
         {
+            "Key": "3f3d5208-e45b-4854-8bf3-8cbc3c23976c",
+            "Value": {
+                "id": "24e1ff4e-2d3a-48be-bbc6-e344265d6a0f",
+                "resourcePath": "sprites\\sAdobeHouse_Bed\\sAdobeHouse_Bed.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "3f692135-08d0-4696-99d3-03b5a3e7fb92",
             "Value": {
                 "id": "64441f8d-9370-4652-b074-1738730acfd6",
@@ -1231,6 +1455,14 @@
             }
         },
         {
+            "Key": "40d527b8-5281-4943-9063-ca99ebabd49b",
+            "Value": {
+                "id": "ecc31e52-da60-4ecd-a149-16a2899d0def",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntiaA\\oAdobeHouse_CactusOpuntiaA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "4130eba1-671d-4c80-8a5f-6584e2380105",
             "Value": {
                 "id": "20116030-3e22-437f-b673-eb045a869b90",
@@ -1239,11 +1471,27 @@
             }
         },
         {
+            "Key": "4194312f-d4be-4344-9e49-d97e29c75540",
+            "Value": {
+                "id": "536891e8-c073-4fa1-808a-4b70087d95e5",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushE\\oAdobeHouse_SageBrushE.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "4225780f-8079-4e94-bd45-0fef0e8b9b85",
             "Value": {
                 "id": "fedb86ea-5a0d-42d1-8538-61d86aef987d",
                 "resourcePath": "views\\4225780f-8079-4e94-bd45-0fef0e8b9b85.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "424b805c-e320-4c98-b451-496b88ecaed1",
+            "Value": {
+                "id": "50218798-9f21-41c5-a861-3480533f8f6a",
+                "resourcePath": "sprites\\sAdobeHouse_DesertFencing_NormalMap\\sAdobeHouse_DesertFencing_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1347,6 +1595,14 @@
             "Value": {
                 "id": "6174deff-751a-4bc3-9edd-752070a754a0",
                 "resourcePath": "objects\\oTeleport\\oTeleport.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "460adf5d-7377-4b0e-a078-d2a3fc97507b",
+            "Value": {
+                "id": "40b4caf5-6758-4aa1-99cb-edb740accaa9",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockC\\oAdobeHouse_BrownDesertRockC.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1455,6 +1711,14 @@
             }
         },
         {
+            "Key": "4aeb00da-5c48-402a-a468-8a0754ab7dbb",
+            "Value": {
+                "id": "969b0a41-8405-4287-b7bc-6781a5e0a478",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeA\\oAdobeHouse_PaleDesertRocksLargeA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
             "Value": {
                 "id": "f34dc549-bc58-4197-b25a-587c94e9094a",
@@ -1511,6 +1775,22 @@
             }
         },
         {
+            "Key": "4d8f9182-bb8d-4be8-9fdd-899e7a0b740e",
+            "Value": {
+                "id": "129dde80-0478-488e-b7ac-f68e85343bf1",
+                "resourcePath": "objects\\oAdobeHouse_Books\\oAdobeHouse_Books.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "4d939267-b315-4f6a-85ae-b2cc2c2fa3f3",
+            "Value": {
+                "id": "f12e9d94-53f5-4d36-9dae-dd601fa72c07",
+                "resourcePath": "sprites\\sAdobeHouse_CactusOpuntia_Sprite\\sAdobeHouse_CactusOpuntia_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "4db54435-c496-4f47-89a6-bdb027597d51",
             "Value": {
                 "id": "7ccd2684-33c8-41ea-82d8-d99ae55e021b",
@@ -1524,6 +1804,14 @@
                 "id": "f20b59c7-744b-4cff-82cd-9fd651ba23f6",
                 "resourcePath": "sprites\\sCornfields_TempGroundTexture\\sCornfields_TempGroundTexture.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "4ef1c0df-c97a-4b06-8322-91d14d27db98",
+            "Value": {
+                "id": "2f6ac323-1dee-4095-876a-961e97e3d5ea",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeE\\oAdobeHouse_PaleDesertRocksLargeE.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -1607,19 +1895,19 @@
             }
         },
         {
-            "Key": "534da4af-7e1f-49bb-9605-f9ce4392ff8b",
-            "Value": {
-                "id": "54b8a70e-67b9-43f0-9f3a-4c7cd90620bb",
-                "resourcePath": "sprites\\sShotgun_NormalMap\\sShotgun_NormalMap.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "5354edd1-501f-47ce-a3d7-e54c2738889f",
             "Value": {
                 "id": "9aa8ff89-adac-415a-9d4f-960972bc8491",
                 "resourcePath": "views\\5354edd1-501f-47ce-a3d7-e54c2738889f.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "535b789c-3311-4e58-b169-aa4f6ebf06b0",
+            "Value": {
+                "id": "b71f3803-a3f4-4fe7-a04e-b288e9bc8157",
+                "resourcePath": "sprites\\sAdobeHouse_Drawers\\sAdobeHouse_Drawers.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1635,6 +1923,14 @@
             "Value": {
                 "id": "0a678745-b2f3-41a7-a913-a9fc05eca7ff",
                 "resourcePath": "views\\53ef89d0-8be8-42a9-97c9-110f9f0f48f6.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "541d118b-14d1-4d20-962b-821c525aaf15",
+            "Value": {
+                "id": "9d501a5f-1d73-490a-a511-412722e81bf9",
+                "resourcePath": "views\\541d118b-14d1-4d20-962b-821c525aaf15.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -1767,6 +2063,22 @@
             }
         },
         {
+            "Key": "59742307-6b19-40a4-b609-e6c4f438043f",
+            "Value": {
+                "id": "636cf8f1-f6a4-427b-8b0e-dbf266fb1dc8",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockF\\oAdobeHouse_BrownDesertRockF.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "59b3ed2f-7284-4fdc-b94b-65bf5df1817d",
+            "Value": {
+                "id": "1cab47f9-037d-4ab3-901b-b51f384c430e",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushC\\oAdobeHouse_SageBrushC.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "5a053ac9-df4e-46c9-ba27-caeb4d5abfb4",
             "Value": {
                 "id": "d678e7ee-9c0b-4e2b-90bd-ef591cf71188",
@@ -1787,6 +2099,22 @@
             "Value": {
                 "id": "cc448c60-92fe-49ad-a8ca-dc50cce5e9c3",
                 "resourcePath": "objects\\oUnitPath\\oUnitPath.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "5bbf6dfc-8cee-4bb3-98ee-91d432120761",
+            "Value": {
+                "id": "33a60a32-149a-41e3-8587-851a9efacc2e",
+                "resourcePath": "objects\\oAdobeHouse_DesertGround\\oAdobeHouse_DesertGround.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "5c160ab1-6a34-4380-8c82-8c5bf3ce339f",
+            "Value": {
+                "id": "56064c38-f864-4d9d-b909-f5c1b5e110cf",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntiaE\\oAdobeHouse_CactusOpuntiaE.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1815,6 +2143,14 @@
             }
         },
         {
+            "Key": "5d72e08c-c651-4bb6-b66e-de05d82bc27b",
+            "Value": {
+                "id": "94413c80-0848-4b99-95f2-c6c36dd70784",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockA\\oAdobeHouse_BrownDesertRockA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "5d7521fd-0a8d-4c19-b213-50f0af8cc5a2",
             "Value": {
                 "id": "213d7ff5-89e3-460e-8b51-5c797c4eb009",
@@ -1827,6 +2163,14 @@
             "Value": {
                 "id": "b9720a9d-8d71-4f22-9f85-ae6de655e273",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_Run_NormalMap\\sWilliamDS_Heavy_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "5dab52ea-774d-43b7-8657-0ccd08088321",
+            "Value": {
+                "id": "e0709770-31e5-4fbf-99a4-16c569cad055",
+                "resourcePath": "sprites\\sShotgun\\sShotgun.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1855,6 +2199,22 @@
             }
         },
         {
+            "Key": "5e91d335-c4bd-4923-9570-3d9d061a49b6",
+            "Value": {
+                "id": "c9a376f9-871a-4d3e-b6ad-405c157b3806",
+                "resourcePath": "objects\\oBasicSimpleLighting\\oBasicSimpleLighting.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "5eafab39-1c78-42d3-a292-6606600a3fef",
+            "Value": {
+                "id": "da0549dc-842c-4876-890e-fe9d3b4a0ca0",
+                "resourcePath": "sprites\\sAdobeHouse_WoodCorbel\\sAdobeHouse_WoodCorbel.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "5f84e8ff-771a-426c-bbce-f20958995272",
             "Value": {
                 "id": "89923462-453b-4978-9f91-41d95439a9f0",
@@ -1876,6 +2236,22 @@
                 "id": "e792f7c1-74aa-4935-801c-1b92631a8a9a",
                 "resourcePath": "views\\5fd13c3c-6fc5-4b9d-8913-3da57c7f3aa5.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "5fda5996-086e-490a-a57f-1d4ba3deadf2",
+            "Value": {
+                "id": "92cf8426-d625-4755-ad64-583bc70403c9",
+                "resourcePath": "sprites\\sAdobeHouse_CactusOpuntia_NormalMap\\sAdobeHouse_CactusOpuntia_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "60544ce3-9318-4235-bf04-05be899d7af9",
+            "Value": {
+                "id": "447b1af8-d8ba-43e0-8e9b-453359f83c32",
+                "resourcePath": "shaders\\shd_forwardlightingbackground\\shd_forwardlightingbackground.yy",
+                "resourceType": "GMShader"
             }
         },
         {
@@ -2039,6 +2415,14 @@
             }
         },
         {
+            "Key": "68bcd915-90f4-4b48-a7b9-38eb67ed4d52",
+            "Value": {
+                "id": "efe89365-6ad9-4819-894b-9823739e9dff",
+                "resourcePath": "sprites\\sAdobeHouse_HorsesPainting\\sAdobeHouse_HorsesPainting.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "69082547-f22c-4fbd-a336-9dd1642b386b",
             "Value": {
                 "id": "955ff926-2978-499d-979a-c64c1af9151c",
@@ -2060,6 +2444,14 @@
                 "id": "6f8f0c7f-8601-4f83-9da3-06ce4deee13d",
                 "resourcePath": "objects\\oEditor\\oEditor.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "69883b88-9377-4212-a3d5-9673525a2106",
+            "Value": {
+                "id": "811cc99c-a513-4edb-ad31-8a097c0e70e3",
+                "resourcePath": "sprites\\sBackgroundAdobeHouse1_B\\sBackgroundAdobeHouse1_B.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2091,6 +2483,22 @@
             "Value": {
                 "id": "bafc6cd2-3e53-4927-a6a3-758e4636f855",
                 "resourcePath": "sprites\\sWolf_Aim_NormalMap\\sWolf_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6af1e2cb-0953-436f-9441-688062859e08",
+            "Value": {
+                "id": "79f0018f-c740-46c9-ad33-0c3f736a0b43",
+                "resourcePath": "sprites\\sAdobeHouse_SageBrush_Sprite\\sAdobeHouse_SageBrush_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6b4930e7-7f34-4e81-a5b7-98f9a743f892",
+            "Value": {
+                "id": "2e1c4af0-5ac0-40c0-828c-8f5b7c329cc0",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksLarge_Sprite\\sAdobeHouse_PaleDesertRocksLarge_Sprite.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2135,6 +2543,14 @@
             }
         },
         {
+            "Key": "6cedecbe-a42c-44c6-a8d6-b343ff2cf912",
+            "Value": {
+                "id": "7a2a57c9-aa32-4afe-b0a6-6b8b8e711f0e",
+                "resourcePath": "sprites\\sAdobeHouse_Books\\sAdobeHouse_Books.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6d4c2ae3-8550-4f1c-868e-d0bf15da4e32",
             "Value": {
                 "id": "25e2632d-064a-43b1-9cd3-73d91b8ecc10",
@@ -2148,6 +2564,14 @@
                 "id": "3ea81dd1-5daf-4302-9d5d-02562c547fba",
                 "resourcePath": "sprites\\sBoltActionRifle_NormalMap\\sBoltActionRifle_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6d81ce8a-9fc9-4a48-9a45-1b2e02ca3cf4",
+            "Value": {
+                "id": "2f247bc9-1bd1-4975-a040-60f98ffc2238",
+                "resourcePath": "objects\\oAdobeHouse_FeatherGrass\\oAdobeHouse_FeatherGrass.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2175,6 +2599,22 @@
             }
         },
         {
+            "Key": "6fb10ade-8a42-4466-8165-88b8909ba8cf",
+            "Value": {
+                "id": "8cabc59f-4075-460c-bbeb-a64f6ec6efed",
+                "resourcePath": "views\\6fb10ade-8a42-4466-8165-88b8909ba8cf.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "6fc16eae-9e13-4d56-a1a4-c1f9e9312da5",
+            "Value": {
+                "id": "c4396fed-a69e-48d8-a9c2-f24a088c7369",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockB\\oAdobeHouse_BrownDesertRockB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "70b4c9fb-ec44-42d7-a73b-4c82c8f0e2a6",
             "Value": {
                 "id": "c79d57e7-4d38-4670-8819-75b8c1e3d98d",
@@ -2195,6 +2635,14 @@
             "Value": {
                 "id": "dfb36e16-cd22-40fc-9657-e16c82161dc1",
                 "resourcePath": "objects\\oBloodEffect_Splatter\\oBloodEffect_Splatter.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "71e6d199-b0ce-462d-a0c5-e9557431aeef",
+            "Value": {
+                "id": "9930324c-8c10-4445-b5f0-ce3bb3ade928",
+                "resourcePath": "objects\\oAdobeHouse_DesertFencing\\oAdobeHouse_DesertFencing.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -2271,10 +2719,10 @@
             }
         },
         {
-            "Key": "754e8f0f-e51a-4ae3-98de-1ed582b6805a",
+            "Key": "75627ae7-3773-42de-8b67-37faba0928d8",
             "Value": {
-                "id": "b505ea48-5a16-4183-b697-0ed38077d138",
-                "resourcePath": "sprites\\sShotgun\\sShotgun.yy",
+                "id": "5d6a7186-8a12-4e52-8da1-dfff349fe5c6",
+                "resourcePath": "sprites\\sAdobeHouse_DesertFencing_Sprite\\sAdobeHouse_DesertFencing_Sprite.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2319,11 +2767,27 @@
             }
         },
         {
+            "Key": "77dc515b-ed4b-41f4-9b04-be239eae264e",
+            "Value": {
+                "id": "8a5bb60f-ed2b-4ad5-98a1-5714c297ab5d",
+                "resourcePath": "sprites\\sAdobeHouse_FeatherGrass\\sAdobeHouse_FeatherGrass.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "781e4def-9c6f-4acc-8626-fffe41dfaad2",
             "Value": {
                 "id": "dda839da-fa7d-46f5-bbdb-f776fc7a7066",
                 "resourcePath": "shaders\\shd_pointlightshadows\\shd_pointlightshadows.yy",
                 "resourceType": "GMShader"
+            }
+        },
+        {
+            "Key": "783a051c-6a72-4cb9-977d-42ee4d3212d3",
+            "Value": {
+                "id": "afd4d3e2-d680-4897-9c53-ca4155d455dc",
+                "resourcePath": "sprites\\sAdobeHouse_SageBrush_NormalMap\\sAdobeHouse_SageBrush_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2335,11 +2799,27 @@
             }
         },
         {
+            "Key": "78b26734-8097-4677-b6d5-30d5a78b64db",
+            "Value": {
+                "id": "205757b7-2f95-420b-af87-30e625a24ea8",
+                "resourcePath": "sprites\\sBackgroundAdobeHouse1_A\\sBackgroundAdobeHouse1_A.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "78ffb484-6b39-4316-98ee-110abc9b5beb",
             "Value": {
                 "id": "51728baa-d0b1-451c-a652-f397a0b6c201",
                 "resourcePath": "views\\78ffb484-6b39-4316-98ee-110abc9b5beb.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "79350dba-2d4a-4430-b29f-d8daaffc98a3",
+            "Value": {
+                "id": "03742013-6550-4d08-bb27-c6b42d7d59f3",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksLarge_NormalMap\\sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2375,6 +2855,14 @@
             }
         },
         {
+            "Key": "7b935ca8-5ff0-486c-b254-5b90876e37d6",
+            "Value": {
+                "id": "e51d64f0-c21f-481c-b9dd-2e85a002b27b",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeD\\oAdobeHouse_PaleDesertRocksLargeD.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "7c1cda12-001e-4aa1-a407-c79ff70cab4f",
             "Value": {
                 "id": "98dddc05-9a58-467a-9d37-f47498ecd038",
@@ -2396,6 +2884,14 @@
                 "id": "e00361c4-5b76-4ccd-bf94-8c6c775f6230",
                 "resourcePath": "views\\7d126167-84ab-4c97-80c6-e3b2b8ee6306.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "7db7080f-238d-4f44-9511-f59223b4cf06",
+            "Value": {
+                "id": "3e5b8d0b-a824-4542-9156-a2952e61dd6d",
+                "resourcePath": "objects\\oAdobeHouse_Bed\\oAdobeHouse_Bed.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2443,6 +2939,14 @@
             "Value": {
                 "id": "23234f6a-0d92-4ba7-8e96-0be32e4e82b4",
                 "resourcePath": "objects\\oEditorRibbon\\oEditorRibbon.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "80a1b26f-38af-48f8-95c1-354f0c02f514",
+            "Value": {
+                "id": "c531cafd-ab62-431f-8c1c-be4529bd18d3",
+                "resourcePath": "objects\\oAdobeHouse_Back\\oAdobeHouse_Back.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -2559,10 +3063,34 @@
             }
         },
         {
+            "Key": "85363f6f-6bfb-48a4-a10e-acb6518eb6ca",
+            "Value": {
+                "id": "3b1d3d3e-c994-4257-8ec5-e488203506c3",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushF\\oAdobeHouse_SageBrushF.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "855ae82f-5389-4e28-bd9c-d241b86a7f35",
+            "Value": {
+                "id": "89e26f65-a5e6-4243-ab8f-b2671292b713",
+                "resourcePath": "views\\855ae82f-5389-4e28-bd9c-d241b86a7f35.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "861967fc-3423-4f00-844e-02ffd153f6ca",
             "Value": {
                 "id": "23559a51-bfe9-495f-8663-fd7534d6118d",
                 "resourcePath": "objects\\oGun_M3\\oGun_M3.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "861b1685-2b4f-42eb-b344-22c83b039673",
+            "Value": {
+                "id": "1979f588-6b6a-4724-86ce-dc1197989b1b",
+                "resourcePath": "objects\\oAdobeHouse_DesertDeadShrub\\oAdobeHouse_DesertDeadShrub.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -2599,6 +3127,22 @@
             }
         },
         {
+            "Key": "87bf1b4e-6798-4f17-bcef-360f193f2c5c",
+            "Value": {
+                "id": "19d0c6ad-0ce2-4aac-9edc-4f3b49eee0ac",
+                "resourcePath": "sprites\\sAdobeHouse_Door\\sAdobeHouse_Door.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "8814968d-70b4-4c6c-8d68-b7bb8f5f2ba5",
+            "Value": {
+                "id": "281e411f-7bd3-4d79-83f2-f6e7001deb66",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushD\\oAdobeHouse_SageBrushD.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "88c192dc-b94e-42e6-8b94-1364659aaa74",
             "Value": {
                 "id": "71f948ae-1162-4f39-bbf2-0fa710ba0375",
@@ -2611,6 +3155,14 @@
             "Value": {
                 "id": "17391fab-896a-442e-b504-95280da0289e",
                 "resourcePath": "sprites\\sRevolver_NormalMap\\sRevolver_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "89b493b6-b71f-4a31-881d-65855edb8aa8",
+            "Value": {
+                "id": "930ee05f-391b-4628-9687-e488ca6a8735",
+                "resourcePath": "sprites\\sAdobeHouse_Ladder\\sAdobeHouse_Ladder.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2679,6 +3231,14 @@
             }
         },
         {
+            "Key": "8c51089c-9691-4da7-aadf-5286e5e1d90a",
+            "Value": {
+                "id": "ed39c882-d63e-44cd-a499-86f98f3e7883",
+                "resourcePath": "sprites\\sAdobeHouse_DesertPath_Sprite\\sAdobeHouse_DesertPath_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8c7ecaf3-7ceb-4c0d-8ac8-291e4f8f91ee",
             "Value": {
                 "id": "fda129e5-ccaa-415b-a4b0-406651a3e7dd",
@@ -2700,6 +3260,14 @@
                 "id": "ddbb4ac7-4a1b-4096-b2ef-fd1cabbadde3",
                 "resourcePath": "sprites\\sWilliam_AimWalk_NormalMap\\sWilliam_AimWalk_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "8d9daaab-ab6b-4a98-8eef-a11aedc3bd50",
+            "Value": {
+                "id": "adba24a8-634e-4fd4-9eb6-cbe4f77ec5ab",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushB\\oAdobeHouse_SageBrushB.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2735,6 +3303,14 @@
             }
         },
         {
+            "Key": "9025e959-da8b-4b35-a5ea-700624041ab6",
+            "Value": {
+                "id": "894e5cdc-032e-410a-9b3f-5a34ff3747ea",
+                "resourcePath": "views\\9025e959-da8b-4b35-a5ea-700624041ab6.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "90adff51-c0d4-4464-b4fa-d22ee103f4c1",
             "Value": {
                 "id": "ef37137b-c2b0-45b2-803b-b99b4923e696",
@@ -2756,6 +3332,14 @@
                 "id": "b03ee57e-8e57-4491-ba3a-5e505dc72b16",
                 "resourcePath": "sprites\\sBulletCase_Large\\sBulletCase_Large.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "91001f10-85a7-4072-a3f7-3bec01fe6c23",
+            "Value": {
+                "id": "56e3cf72-fd00-40cd-8e85-154a15f650d0",
+                "resourcePath": "objects\\oAdobeHouse_Bookshelf\\oAdobeHouse_Bookshelf.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2831,6 +3415,14 @@
             }
         },
         {
+            "Key": "943b5a25-d27c-43e2-8bb3-afa37ad6851b",
+            "Value": {
+                "id": "b4a942fd-9d5c-4295-b29a-82a2c0ed7d44",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushA\\oAdobeHouse_SageBrushA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "94485295-a0f6-4e0c-9aaf-ccd8f5289de2",
             "Value": {
                 "id": "4bbec448-e627-432e-a01b-174e44cbd55a",
@@ -2843,6 +3435,14 @@
             "Value": {
                 "id": "3834c406-4fb6-4da4-89a1-f9120dffb8e8",
                 "resourcePath": "views\\94875fe1-69ba-4439-9093-4d6ced9c7632.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "948e629b-6e05-4967-868e-1c7c58d74ff7",
+            "Value": {
+                "id": "476c4888-e202-4a1e-b8b6-9e60bd3122ad",
+                "resourcePath": "views\\948e629b-6e05-4967-868e-1c7c58d74ff7.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -2903,6 +3503,22 @@
             }
         },
         {
+            "Key": "98e8d7ab-76a0-4290-9fab-87d829548287",
+            "Value": {
+                "id": "f3b9acb8-16b3-4742-a593-3f7ce3588b01",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLarge\\oAdobeHouse_PaleDesertRocksLarge.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "99768218-595f-4654-b405-0ca090b5b114",
+            "Value": {
+                "id": "d512199a-201f-43f8-8b1f-161d819fb99c",
+                "resourcePath": "objects\\oSpotLight\\oSpotLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "99ac8eb9-3827-4408-ab1c-945643909b17",
             "Value": {
                 "id": "6fcf2af1-5114-42e1-ac94-ea5b15e9e02b",
@@ -2915,6 +3531,14 @@
             "Value": {
                 "id": "42768e3e-9b6d-459c-a3e8-8126c36d14a4",
                 "resourcePath": "views\\9aa8ae19-cfd6-48b8-9829-fc52840d1102.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "9b102a20-286e-4a50-ae22-c5a678274544",
+            "Value": {
+                "id": "1a53976a-d6f9-4188-b72b-6c91fa7aaca5",
+                "resourcePath": "views\\9b102a20-286e-4a50-ae22-c5a678274544.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -2940,6 +3564,14 @@
                 "id": "9a478e92-7abc-4f1b-becc-3549dfcf42e1",
                 "resourcePath": "views\\9cb272b3-3a3f-4cb6-95f7-ec3bde8bb2f8.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "9d190a4f-528f-49c4-8b29-7d60300e220e",
+            "Value": {
+                "id": "33344ac2-ab6c-402a-8d6d-59f2e0bb8e50",
+                "resourcePath": "sprites\\sAdobeHouse_KivaRumfordFireplace\\sAdobeHouse_KivaRumfordFireplace.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3039,6 +3671,14 @@
             }
         },
         {
+            "Key": "a2f2e375-fd77-43ff-8070-a7044985274a",
+            "Value": {
+                "id": "4d43251d-d41d-45ce-9957-d84f8290c241",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeF\\oAdobeHouse_PaleDesertRocksLargeF.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a3c22c20-db56-4302-aa63-8ec136afacc1",
             "Value": {
                 "id": "1c80dbd5-1266-468b-a632-8fe5ffce69d9",
@@ -3052,6 +3692,22 @@
                 "id": "161d377b-575f-40ca-bb69-058f3f40344e",
                 "resourcePath": "views\\a41e0f55-e2a5-45e5-af79-e05c66b42afa.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "a43f666d-f17f-4d94-bf34-9986e04532f3",
+            "Value": {
+                "id": "359cdc3e-e44e-4eb2-b4c0-96c831b99f11",
+                "resourcePath": "sprites\\sAdobeHouse_Bookshelf\\sAdobeHouse_Bookshelf.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a468b770-c020-45fc-8db5-85ca83697cbd",
+            "Value": {
+                "id": "d2da2e79-6aff-443f-8d25-f89724608cd9",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntiaD\\oAdobeHouse_CactusOpuntiaD.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3095,6 +3751,22 @@
             }
         },
         {
+            "Key": "a6ae11b8-1b04-41d2-9b1e-a5cf0ee558b1",
+            "Value": {
+                "id": "2ceff0ab-75b9-4045-a55a-9de6a7dac99d",
+                "resourcePath": "views\\a6ae11b8-1b04-41d2-9b1e-a5cf0ee558b1.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "a74b0a6c-a323-4b1e-93ce-81c37f446a3e",
+            "Value": {
+                "id": "034213fe-b384-423f-a18d-e76c142b03c0",
+                "resourcePath": "objects\\oAdobeHouse_CactusLarge\\oAdobeHouse_CactusLarge.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a81bb557-cab9-405c-9d49-60bf3ed69ccf",
             "Value": {
                 "id": "80d7ea4d-f897-426f-941c-644e117a0893",
@@ -3116,6 +3788,14 @@
                 "id": "17d3db22-37ed-4895-a9d0-ce3c3ad45d58",
                 "resourcePath": "objects\\oPathNode\\oPathNode.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "a90f2430-a975-44b7-a0f0-cffacc3b3be2",
+            "Value": {
+                "id": "fbfab243-eecb-4f04-a09d-9f48b3b637a9",
+                "resourcePath": "sprites\\sAdobeHouse_Front\\sAdobeHouse_Front.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3207,6 +3887,14 @@
             }
         },
         {
+            "Key": "acae7082-8c77-473d-a257-770aba4053f8",
+            "Value": {
+                "id": "6011c244-4d13-4b2c-87cc-35f0f8f0c8d6",
+                "resourcePath": "objects\\oAdobeHouse_HorsePainting\\oAdobeHouse_HorsePainting.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "acd445ea-7e00-4b1b-b5c6-83feb3516458",
             "Value": {
                 "id": "83f7bdd9-076f-4215-82ee-a79a497594c6",
@@ -3219,6 +3907,14 @@
             "Value": {
                 "id": "0b0fb9cf-9315-4af6-8bba-af61d042900d",
                 "resourcePath": "views\\ad0af7fe-e828-46af-8541-17caf2e0cde2.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "ad282750-92fa-4da5-89b0-b826d9177d27",
+            "Value": {
+                "id": "4b74912a-08eb-4aa4-a407-693135638aed",
+                "resourcePath": "views\\ad282750-92fa-4da5-89b0-b826d9177d27.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -3399,6 +4095,14 @@
             }
         },
         {
+            "Key": "b45bad88-b7e1-434c-baa6-7c1ea0dd9c74",
+            "Value": {
+                "id": "3cdcee29-d721-4a25-8a6a-f28b60fb5fa6",
+                "resourcePath": "sprites\\sAdobeHouse_SpecialBook\\sAdobeHouse_SpecialBook.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "b468e4a6-9058-4eda-b8eb-45e8eeeb255e",
             "Value": {
                 "id": "423bf8c1-9e17-483e-a9a9-ba51ea5f9161",
@@ -3419,6 +4123,14 @@
             "Value": {
                 "id": "7c83602c-e360-4b84-ab25-e77aab5a0410",
                 "resourcePath": "objects\\oEditorObjectSolid\\oEditorObjectSolid.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "b5c50473-4373-4f3f-bbce-e4fc68c43ac2",
+            "Value": {
+                "id": "c0198a71-8e27-4345-931e-1ada64c6034c",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeC\\oAdobeHouse_PaleDesertRocksLargeC.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -3500,6 +4212,14 @@
                 "id": "59755431-75e2-4845-8a0e-5d8a6b525872",
                 "resourcePath": "views\\b8cbd628-fb72-4c4d-a14e-c139c2656796.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "b939adc8-c991-408a-bde0-86fa1cc73c54",
+            "Value": {
+                "id": "2cadcc6a-dcf7-4dbf-9ef2-fb087d0fabbf",
+                "resourcePath": "sprites\\sBackgroundAdobeHouse1_D\\sBackgroundAdobeHouse1_D.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3671,6 +4391,14 @@
             }
         },
         {
+            "Key": "be704622-0e53-4530-8f06-ba64fdfe9d48",
+            "Value": {
+                "id": "a4ce775a-0f24-4652-9433-3c3683838faf",
+                "resourcePath": "shaders\\shd_pointconelightfade\\shd_pointconelightfade.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "bebfd0b5-20cf-4d34-8e80-06492a3d7e01",
             "Value": {
                 "id": "3c781898-a98f-4fbc-ba75-903969eff000",
@@ -3695,6 +4423,14 @@
             }
         },
         {
+            "Key": "bf9ed4e5-f349-4ef1-8ed2-12d4adfc1990",
+            "Value": {
+                "id": "2f6c7268-246c-4246-83a3-e40399db64fd",
+                "resourcePath": "objects\\oAdobeHouse_Drawers\\oAdobeHouse_Drawers.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "bff0883d-7ba8-4a35-a4d8-ddcdeaad9d2f",
             "Value": {
                 "id": "acdcb7ec-b26b-43f1-84e7-44030efa2bfc",
@@ -3703,10 +4439,26 @@
             }
         },
         {
+            "Key": "c019465f-3bda-4c0a-b311-1153e9ace2be",
+            "Value": {
+                "id": "d1453392-dd94-441e-aaee-7e7661d972b7",
+                "resourcePath": "sprites\\sAdobeHouse_BrownDesertRocks_Sprite\\sAdobeHouse_BrownDesertRocks_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c05c0d21-3f13-4cbb-a8ed-5bcb97dc1b65",
             "Value": {
                 "id": "df24628c-fbab-407c-ba18-591e719bb358",
                 "resourcePath": "sprites\\sGrenadeLauncher_BreakAction\\sGrenadeLauncher_BreakAction.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c1c1750c-a9cd-4d9d-9137-fda7e0e85665",
+            "Value": {
+                "id": "3e9200da-ae31-4b7d-889e-77858318ae1c",
+                "resourcePath": "sprites\\sAdobeHouse_BigSageBrush\\sAdobeHouse_BigSageBrush.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3719,11 +4471,27 @@
             }
         },
         {
+            "Key": "c211cf56-cc45-4f49-9296-670240db7c3a",
+            "Value": {
+                "id": "a3d80717-f9cb-442d-956f-49af72edbbee",
+                "resourcePath": "objects\\oAdobeHouse_WoodCorbel\\oAdobeHouse_WoodCorbel.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "c28bced3-f79c-4a94-b987-2bbd96a9771a",
             "Value": {
                 "id": "f8230600-2730-4ebb-8830-3c95b0324bca",
                 "resourcePath": "sprites\\sFAL_NormalMap\\sFAL_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c2bfa385-bce8-4294-b461-8e00dc87ef4b",
+            "Value": {
+                "id": "a40702ef-704c-4117-be8d-88187783cecc",
+                "resourcePath": "objects\\oAdobeHouse_CactusHedgehogB\\oAdobeHouse_CactusHedgehogB.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3823,6 +4591,14 @@
             }
         },
         {
+            "Key": "c514c62c-fb57-45bd-811c-c9812501ca96",
+            "Value": {
+                "id": "24b008ae-a8be-4717-8e95-20b7813d23da",
+                "resourcePath": "sprites\\sAdobeHouse_CactusLarge_Sprite\\sAdobeHouse_CactusLarge_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c529c3b8-3907-421b-b3a2-ffcc11cbb9a6",
             "Value": {
                 "id": "e08b844d-1bfd-41cb-b0db-dbae89907225",
@@ -3860,6 +4636,14 @@
                 "id": "c30507de-a8f9-4e4b-9494-e4bb9ec8a2b6",
                 "resourcePath": "views\\c637b875-d7f7-4a68-a70c-83ffde30a40e.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c66a45bd-99a1-4669-bbc6-31859a91baf1",
+            "Value": {
+                "id": "0605326c-d82e-4b02-ab98-8000989c4a33",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockE\\oAdobeHouse_BrownDesertRockE.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3935,6 +4719,14 @@
             }
         },
         {
+            "Key": "cafea60b-2e86-493d-885c-8031d3e27f3d",
+            "Value": {
+                "id": "fd9247a0-37f6-4a85-bee4-ce3603c974fe",
+                "resourcePath": "shaders\\shd_pointconelightvector\\shd_pointconelightvector.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "cba479bc-eb1d-4b92-9b16-444d931f7e15",
             "Value": {
                 "id": "05cc5f28-cf13-449c-ab21-201643604693",
@@ -4007,6 +4799,14 @@
             }
         },
         {
+            "Key": "ceae1d7b-c8db-4d45-87fc-d01f1d49d3cc",
+            "Value": {
+                "id": "b40b45b6-8e87-4e24-bd91-42daa9dd165f",
+                "resourcePath": "sprites\\sBackgroundAdobeHouse1_E\\sBackgroundAdobeHouse1_E.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ced73938-0ad1-47fa-b5c0-7bb8558369c1",
             "Value": {
                 "id": "3c3899da-9b9f-40e0-9c78-6180bc5423e0",
@@ -4052,6 +4852,14 @@
                 "id": "9a4ef9fc-e27b-490e-ad50-2cb10c060d1a",
                 "resourcePath": "views\\d02fd811-53a3-488a-a552-46e11a576976.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "d0b3cdc7-f3be-453c-9193-62ce7c552733",
+            "Value": {
+                "id": "c955b6b6-fc1e-4509-8c2e-c9d77ea99b96",
+                "resourcePath": "objects\\oAdobeHouse_Front\\oAdobeHouse_Front.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -4287,6 +5095,14 @@
             }
         },
         {
+            "Key": "de6b8302-76da-43d8-ab89-9442ac8ce667",
+            "Value": {
+                "id": "5de86b5f-a431-455f-945a-cf6656e97059",
+                "resourcePath": "objects\\oAdobeHouse_CactusHedgehogA\\oAdobeHouse_CactusHedgehogA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "de9cb49c-24e4-48a2-b049-39e2b0598915",
             "Value": {
                 "id": "1367cae0-09c3-45ff-b89e-115a12d9fbf1",
@@ -4375,6 +5191,14 @@
             }
         },
         {
+            "Key": "e47f68f0-967f-4b22-8d9b-de0a807e0d60",
+            "Value": {
+                "id": "dbddc405-4603-4cc0-9fb5-238439279a91",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushH\\oAdobeHouse_SageBrushH.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "e4f0de28-6708-4313-8c30-7ba062214dca",
             "Value": {
                 "id": "fe89a72b-867f-4766-912d-4f75fb8a2e2e",
@@ -4396,6 +5220,14 @@
                 "id": "3002bf2f-4549-4189-8bf2-48d7564df9c0",
                 "resourcePath": "views\\e55f6d5e-5eb5-4397-825d-c2be167f566d.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e57af63a-7fbb-4f80-9737-e090fb9b6ccb",
+            "Value": {
+                "id": "91f32eaf-cf28-4ce0-8986-c7f5ca8328da",
+                "resourcePath": "sprites\\sAdobeHouse_CactusLarge_NormalMap\\sAdobeHouse_CactusLarge_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4695,6 +5527,22 @@
             }
         },
         {
+            "Key": "f10da4be-4b5b-4188-b0e7-c148bf4e3302",
+            "Value": {
+                "id": "ed330cd8-4104-4601-b4dc-3e88408ac4c6",
+                "resourcePath": "objects\\oAdobeHouse_BrownDesertRockD\\oAdobeHouse_BrownDesertRockD.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f113e109-632b-49d2-b5a5-5aecf5f6ca65",
+            "Value": {
+                "id": "b9d0816b-868a-40ad-a986-646c4196730b",
+                "resourcePath": "sprites\\sAdobeHouse_CactusHedgehog_Sprite\\sAdobeHouse_CactusHedgehog_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "f13ec92f-9b7a-4714-88d3-73db07e971c7",
             "Value": {
                 "id": "2bec3896-9ec2-451c-b82c-770e8400d469",
@@ -4711,11 +5559,27 @@
             }
         },
         {
+            "Key": "f1c6246f-6d95-4698-9b8e-cca92ef84d15",
+            "Value": {
+                "id": "45dbc769-2db9-464c-b0ce-63d01435b282",
+                "resourcePath": "objects\\oAdobeHouse_SageBrushG\\oAdobeHouse_SageBrushG.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "f261dc50-b3ae-490b-aeae-2a5c92d70bcc",
             "Value": {
                 "id": "2bb0de06-ff67-4a4f-b15b-e8ca6148dc8b",
                 "resourcePath": "sprites\\sCornfields_WelcomeSign\\sCornfields_WelcomeSign.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f359819e-1a02-41a8-a360-94a75d42df6f",
+            "Value": {
+                "id": "9a19fd21-0277-4387-ac05-ec18c6a87e88",
+                "resourcePath": "views\\f359819e-1a02-41a8-a360-94a75d42df6f.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -4767,11 +5631,27 @@
             }
         },
         {
+            "Key": "f6a54f5b-eaa3-4d80-b443-e7958edbeb02",
+            "Value": {
+                "id": "131561da-29c0-4566-a66f-121c5aff985d",
+                "resourcePath": "objects\\oAdobeHouse_SageBrush\\oAdobeHouse_SageBrush.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "f7372e58-ebbb-48fe-a8df-6fcf5e602c81",
             "Value": {
                 "id": "06320826-c413-47f7-9e2e-de6c823a305f",
                 "resourcePath": "sprites\\sWolf_Arms_NormalMap\\sWolf_Arms_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f74c6493-43b1-47a5-a590-c2fb1d42e5e3",
+            "Value": {
+                "id": "670a013a-9706-4166-a2b9-30c74a1bce52",
+                "resourcePath": "objects\\oAdobeHouse_CactusHedgehog\\oAdobeHouse_CactusHedgehog.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -4895,6 +5775,14 @@
             }
         },
         {
+            "Key": "fe6db26e-abb8-4fe8-8160-c4a01f648776",
+            "Value": {
+                "id": "ae96de1f-2e13-43df-aace-426f16a557b1",
+                "resourcePath": "objects\\oAdobeHouse_CactusOpuntiaC\\oAdobeHouse_CactusOpuntiaC.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "feaa8645-e987-4b3e-81b3-c70ce7e7477e",
             "Value": {
                 "id": "96445248-c132-4df0-8780-c4c0cf9b0876",
@@ -4916,6 +5804,14 @@
                 "id": "218018cb-a047-41d4-a252-6e22a2d20b45",
                 "resourcePath": "scripts\\place_item_inventory\\place_item_inventory.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "ff4c14b8-d20e-4b2e-aaea-3982d9be5095",
+            "Value": {
+                "id": "c7495336-810f-4241-b824-e42eae0c9ba4",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeB\\oAdobeHouse_PaleDesertRocksLargeB.yy",
+                "resourceType": "GMObject"
             }
         }
     ],

@@ -31,12 +31,7 @@ event_inherited();
 
 // Draw Val
 leg_draw_val += global.deltatime * leg_spd * sign(x_velocity) * sign(image_xscale);
-while (leg_draw_val >= 1) {
-	leg_draw_val--;
-}
-while (leg_draw_val < 0) {
-	leg_draw_val++;
-}
+leg_draw_val = leg_draw_val mod 1;
 
 // Calculate Leg Behaviour
 for (var i = 0; i < array_height_2d(leg_anchor); i++) {

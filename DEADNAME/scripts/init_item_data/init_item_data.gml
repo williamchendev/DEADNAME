@@ -167,3 +167,80 @@ global.item_data[12, itemstats.height_space] = 2;
 global.item_data[12, itemstats.stack_limit] = 1;
 global.item_data[12, itemstats.type] = itemtypes.weapon;
 global.item_data[12, itemstats.type_index] = 7;
+
+// Item Slot 13
+global.item_data[13, itemstats.name] = "DebugItem13";
+global.item_data[13, itemstats.description] = "Debug";
+global.item_data[13, itemstats.sprite_index] = sItems2x2;
+global.item_data[13, itemstats.image_index] = 0;
+global.item_data[13, itemstats.width_space] = 2;
+global.item_data[13, itemstats.height_space] = 2;
+global.item_data[13, itemstats.stack_limit] = 1;
+global.item_data[13, itemstats.type] = itemtypes.key_item;
+global.item_data[13, itemstats.type_index] = 0;
+
+// Item Slot 14
+global.item_data[14, itemstats.name] = "DebugItem14";
+global.item_data[14, itemstats.description] = "Debug";
+global.item_data[14, itemstats.sprite_index] = sItems2x2;
+global.item_data[14, itemstats.image_index] = 0;
+global.item_data[14, itemstats.width_space] = 2;
+global.item_data[14, itemstats.height_space] = 2;
+global.item_data[14, itemstats.stack_limit] = 1;
+global.item_data[14, itemstats.type] = itemtypes.key_item;
+global.item_data[14, itemstats.type_index] = 0;
+
+// Item Slot 15
+global.item_data[15, itemstats.name] = "DebugItem15";
+global.item_data[15, itemstats.description] = "Debug";
+global.item_data[15, itemstats.sprite_index] = sItems2x2;
+global.item_data[15, itemstats.image_index] = 0;
+global.item_data[15, itemstats.width_space] = 2;
+global.item_data[15, itemstats.height_space] = 2;
+global.item_data[15, itemstats.stack_limit] = 1;
+global.item_data[15, itemstats.type] = itemtypes.key_item;
+global.item_data[15, itemstats.type_index] = 0;
+
+// Item Slot 16
+global.item_data[16, itemstats.name] = "DebugItem16";
+global.item_data[16, itemstats.description] = "Debug";
+global.item_data[16, itemstats.sprite_index] = sItems2x2;
+global.item_data[16, itemstats.image_index] = 0;
+global.item_data[16, itemstats.width_space] = 2;
+global.item_data[16, itemstats.height_space] = 2;
+global.item_data[16, itemstats.stack_limit] = 1;
+global.item_data[16, itemstats.type] = itemtypes.key_item;
+global.item_data[16, itemstats.type_index] = 0;
+
+// Item Slot 17
+global.item_data[17, itemstats.name] = "DebugItem17";
+global.item_data[17, itemstats.description] = "Debug";
+global.item_data[17, itemstats.sprite_index] = sItems2x2;
+global.item_data[17, itemstats.image_index] = 0;
+global.item_data[17, itemstats.width_space] = 2;
+global.item_data[17, itemstats.height_space] = 2;
+global.item_data[17, itemstats.stack_limit] = 1;
+global.item_data[17, itemstats.type] = itemtypes.key_item;
+global.item_data[17, itemstats.type_index] = 0;
+
+// Item Slot 18
+global.item_data[18, itemstats.name] = "DebugItem18";
+global.item_data[18, itemstats.description] = "Debug";
+global.item_data[18, itemstats.sprite_index] = sItems2x2;
+global.item_data[18, itemstats.image_index] = 0;
+global.item_data[18, itemstats.width_space] = 2;
+global.item_data[18, itemstats.height_space] = 2;
+global.item_data[18, itemstats.stack_limit] = 1;
+global.item_data[18, itemstats.type] = itemtypes.key_item;
+global.item_data[18, itemstats.type_index] = 0;
+
+// Item Slot 19
+global.item_data[19, itemstats.name] = "DebugItem19";
+global.item_data[19, itemstats.description] = "Debug";
+global.item_data[19, itemstats.sprite_index] = sItems2x2;
+global.item_data[19, itemstats.image_index] = 0;
+global.item_data[19, itemstats.width_space] = 2;
+global.item_data[19, itemstats.height_space] = 2;
+global.item_data[19, itemstats.stack_limit] = 1;
+global.item_data[19, itemstats.type] = itemtypes.key_item;
+global.item_data[19, itemstats.type_index] = 0;

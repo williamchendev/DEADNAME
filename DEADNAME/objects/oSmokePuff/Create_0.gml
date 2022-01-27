@@ -25,6 +25,9 @@ alpha_delay_timer_spd = 0.015;
 alpha_transition_spd = 0.01;
 alpha_destroy_threshold = 0.05;
 
+size_transition_spd = 0.95;
+size_destroy_threshold = 0.05;
+
 // Sprite Settings
 colors_sprite_index = sSmokePuff_Large_Sprite1;
 normals_sprite_index = sSmokePuff_Large_NormalMap1;
