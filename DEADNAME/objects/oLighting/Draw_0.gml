@@ -63,7 +63,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_black, 1);
 	}
 }
@@ -98,7 +98,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 	}
 }
@@ -133,7 +133,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_black, 1);
 	}
 }
@@ -168,7 +168,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 	}
 }
@@ -203,7 +203,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_black, 1);
 	}
 }
@@ -238,7 +238,7 @@ for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 
 gpu_set_blendmode_ext(bm_zero, bm_zero);
 with(oSolid) {
-	if (shadows_enabled) {
+	if (shadows_enabled and box_shadows_enabled) {
 		draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 	}
 }
@@ -294,7 +294,7 @@ for (var i = 0; i < instance_number(oGlobalLight); i++) {
 	surface_set_target(surface_shadows);
 	draw_clear_alpha(c_white, 0);
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -357,7 +357,7 @@ for (var i = 0; i < instance_number(oDirectionalLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -429,7 +429,7 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -508,7 +508,7 @@ for (var i = 0; i < instance_number(oSpotLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -581,7 +581,7 @@ for (var i = 0; i < instance_number(oGlobalLight); i++) {
 	surface_set_target(surface_shadows);
 	draw_clear_alpha(c_white, 0);
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -644,7 +644,7 @@ for (var i = 0; i < instance_number(oDirectionalLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -716,7 +716,7 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -795,7 +795,7 @@ for (var i = 0; i < instance_number(oSpotLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -816,6 +816,28 @@ for (var i = 0; i < instance_number(oSpotLight); i++) {
 	surface_reset_target();
 	
 	shader_reset();
+}
+
+// Draw Interact Object Outlines
+for (var i = 0; i < instance_number(oInteract); i++) {
+	// Iterate through Interactable Objects
+	var temp_interact_inst = instance_find(oInteract, i);
+	if (temp_interact_inst != noone) {
+		// Check if Interactable Object Exists
+		if (instance_exists(temp_interact_inst)) {
+			// Interactable Object Draw Behaviour
+			var temp_outline_draw_event = temp_interact_inst.outline_draw_event;
+			temp_interact_inst.outline_draw_event = true;
+			
+			// Interactable Draw Event
+			with(temp_interact_inst) {
+				event_perform(ev_draw, 0);
+			}
+			
+			// Reset
+			temp_interact_inst.outline_draw_event = temp_outline_draw_event;
+		}
+	}
 }
 
 // Draw Lighting Surface
@@ -868,7 +890,7 @@ for (var i = 0; i < instance_number(oGlobalLight); i++) {
 	surface_set_target(surface_shadows);
 	draw_clear_alpha(c_white, 0);
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -931,7 +953,7 @@ for (var i = 0; i < instance_number(oDirectionalLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -1003,7 +1025,7 @@ for (var i = 0; i < instance_number(oPointLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}
@@ -1082,7 +1104,7 @@ for (var i = 0; i < instance_number(oSpotLight); i++) {
 	shader_reset();
 	
 	with(oSolid) {
-		if (shadows_enabled) {
+		if (shadows_enabled and box_shadows_enabled) {
 			draw_sprite_ext(sDebugSolidShadow, 0, x - other.x, y - other.y, image_xscale, image_yscale, image_angle, c_white, 1);
 		}
 	}

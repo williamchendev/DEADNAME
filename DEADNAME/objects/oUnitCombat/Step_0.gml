@@ -732,7 +732,7 @@ else if (temp_weapon.weapon_type == "firearm") {
 	var temp_weapon_direction = point_direction(0, 0, (draw_xscale * image_xscale * weapon_x), (draw_yscale * image_yscale * weapon_y));
 	temp_weapon.x_position = x + lengthdir_x(temp_weapon_distance, temp_weapon_direction + draw_angle);
 	temp_weapon.y_position = y + lengthdir_y(temp_weapon_distance, temp_weapon_direction + draw_angle) - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2);
-	temp_weapon.phy_position_x += x_velocity;
+	temp_weapon.phy_position_x += x_velocity * global.deltatime;
 	
 	// Establish Arm Variables
 	var temp_arm_direction = 0;

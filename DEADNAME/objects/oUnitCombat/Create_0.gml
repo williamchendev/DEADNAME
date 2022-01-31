@@ -34,6 +34,9 @@ weapon_ambient_move_spd = 0.027;
 weapon_ambient_move_size = 2;
 weapon_holster_ambient_move_size = 2;
 
+weapon_cursor_ambient_range = 72;
+weapon_cursor_range_lerp_spd = 0.1;
+
 // Limb Settings
 limbs = 2;
 
@@ -82,6 +85,8 @@ old_target_angle = 0;
 reload = false;
 bolt_action_load = false;
 bolt_action_reload = false;
+
+weapon_cursor_range = 50;
 
 // Limb Variables
 limb_ambient_anim_val = 0;

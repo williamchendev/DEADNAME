@@ -8,6 +8,5 @@ door_color = c_white;
 panel_sprite = sCornfields_Construct_DoorPanel;
 end_panel_sprite = sCornfields_Construct_DoorEndPanel;
 
-door_solid.sprite_index = end_panel_sprite;
 door_material.sprite_index = end_panel_sprite;
 door_material.material_sprite = end_panel_sprite;

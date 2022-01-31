@@ -75,6 +75,25 @@ else {
 	return;
 }
 
+// Infinite Range Interact Select
+if (canmove and interact_active) {
+	// Check Interact Objects with Infinite Range
+	if (position_meeting(cursor_x, cursor_y, oInteract)) {
+		var temp_interact_number = array_length_1d(interact_collision_list);
+		var temp_interact_ir_list = ds_list_create();
+		var temp_interact_ir_number = collision_point_list(cursor_x, cursor_y, oInteract, false, true, temp_interact_ir_list, false);
+		for (var i = 0; i < temp_interact_ir_number; i++) {
+			var temp_interact_object = ds_list_find_value(temp_interact_ir_list, i);
+			if (temp_interact_object.active and temp_interact_object.interact_unit == noone) {
+				if (temp_interact_object.infinite_range) {
+					interact_collision_list[i + temp_interact_number] = temp_interact_object;
+				}
+			}
+		}
+		ds_list_destroy(temp_interact_ir_list);
+	}
+}
+
 // Reset Interact Section
 with (oInteract) {
 	interact_select = false;
@@ -264,27 +283,39 @@ if (canmove) {
 		if (interact_collision_list != noone) {
 			// Interate Through Interact Objects
 			for (var q = 0; q < array_length_1d(interact_collision_list); q++) {
+				// Check if Object Exists
+				var temp_interact_exists = false;
+				if (interact_collision_list[q] != noone) {
+					if (instance_exists(interact_collision_list[q])) {
+						temp_interact_exists = true;
+					}
+				}	
+						
 				// Teleport Interaction Check
-				if (interact_collision_list[q].interact_obj.object_index != oTeleport) {
-					// Check Cursor Collider
-					if (position_meeting(cursor_x, cursor_y, interact_collision_list[q])) {
-						// Cursor Hover
-						interact_collision_list[q].interact_select = true;
+				if (temp_interact_exists) {
+					if (interact_collision_list[q].interact_obj.object_index != oTeleport) {
+						// Check Cursor Collider
+						if (position_meeting(cursor_x, cursor_y, interact_collision_list[q])) {
+							// Cursor Hover
+							cursor_icon = true;
+							cursor_index = interact_collision_list[q].interact_icon_index;
+							interact_collision_list[q].interact_select = true;
 					
+							// Interaction Input
+							if (key_interact_press) {
+								interact_collision_list[q].interact_unit = id;
+							}
+					
+							// Break Loop
+							break;
+						}
+					}
+					else {
 						// Interaction Input
-						if (key_interact_press) {
+						if (key_up_press) {
+							// Teleport Interact Object Behaviour
 							interact_collision_list[q].interact_unit = id;
 						}
-					
-						// Break Loop
-						break;
-					}
-				}
-				else {
-					// Interaction Input
-					if (key_up_press) {
-						// Teleport Interact Object Behaviour
-						interact_collision_list[q].interact_unit = id;
 					}
 				}
 			}

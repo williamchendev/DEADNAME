@@ -14,3 +14,6 @@ game_set_speed(60, gamespeed_fps);
 
 // Vsync
 display_reset(0, true);
+
+// Cursor
+window_set_cursor(cr_none);

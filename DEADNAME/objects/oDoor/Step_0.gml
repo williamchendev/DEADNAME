@@ -1,27 +1,50 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Door Interactable Update
+// Calculates the behaviour of the oDoor Object
 
 // Door Interact Behaviour
-if (interact.interact_action) {
-	// Check if Unit Exists in Door Solid Space
-	var temp_door_unit_check = collision_rectangle(x - (sprite_get_width(end_panel_sprite) / 2), y - sprite_get_height(end_panel_sprite), x + (sprite_get_width(end_panel_sprite) / 2), y, oUnit, false, true);
-	if (temp_door_unit_check == noone) {
-		// Set Door Behaviour
-		if (!door_touched) {
-			door_material.material_team_id = interact.interact_unit.team_id;
+if (door_velocity == 0) {
+	// Door Interaction requires Door to be Still
+	if (interact.interact_action) {
+		// Check if Unit Exists in Door Solid Space
+		var temp_door_unit_check = collision_rectangle(x - (sprite_get_width(end_panel_sprite) / 2), y - sprite_get_height(end_panel_sprite), x + (sprite_get_width(end_panel_sprite) / 2), y, oUnit, false, true);
+		if (temp_door_unit_check == noone) {
+			// Set Door Behaviour
+			if (!door_touched) {
+				// Door Smash Behaviour
+				door_material.material_team_id = interact.interact_unit.team_id;
 			
-			door_velocity = door_kick_velocity * -sign(interact.interact_unit.x - x);
-			door_open = true;
+				door_velocity = door_kick_velocity * -sign(interact.interact_unit.x - x);
+				door_open = true;
+			}
+			else {
+				door_open = false;
+			}
+			door_touched = true;
 		}
-		else {
-			door_open = false;
-		}
-		door_touched = true;
+	
+		// Reset Interact Behaviour
+		interact.interact_action = false;
+		interact.interact_unit = noone;
 	}
+}
+else {
+	// Disable Selection
+	interact.interact_select = false;
+	interact.interact_select_draw_value = 0;
 	
 	// Reset Interact Behaviour
 	interact.interact_action = false;
 	interact.interact_unit = noone;
+}
+
+// Door Interact Icon & Color
+if (door_open and (door_value == 0)) {
+	interact.interact_icon_index = 2;
+	interact.interact_select_outline_color = make_color_rgb(172, 50, 50);
+}
+else {
+	interact.interact_icon_index = 3;
+	interact.interact_select_outline_color = make_color_rgb(99, 155, 255);
 }
 
 // Door Physics
@@ -108,6 +131,7 @@ else {
 	if (door_value != 0) {
 		door_value = lerp(door_value, 0, global.deltatime * door_lerp_close_spd);
 		if (abs(door_value) < 0.01) {
+			// Door Close Reset
 			door_value = 0;
 			door_open = true;
 		}
@@ -167,4 +191,19 @@ else {
 		// Set Door Material team_id
 		door_material.material_team_id = "unassigned";
 	}
+}
+
+// Door Solid Dimensions
+if (door_solid_active) {
+	var temp_door_solid_height = sprite_get_height(end_panel_sprite);
+	door_solid.phy_position_x = x - 0.5;
+	door_solid.phy_position_y = (y - temp_door_solid_height) + 1;
+	door_solid.image_xscale = (1 / 48.0);
+	door_solid.image_yscale = temp_door_solid_height / 48.0;
+}
+
+// Door Material Position
+if (door_material_active) {
+	door_material_x = door_material.x;
+	door_material_y = door_material.y;
 }

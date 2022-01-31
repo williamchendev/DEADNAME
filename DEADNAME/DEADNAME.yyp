@@ -303,6 +303,14 @@
             }
         },
         {
+            "Key": "0c8a6efd-ea89-435f-9640-8f9a6025b995",
+            "Value": {
+                "id": "398a9687-20ff-4ad2-a878-d932c7852ac5",
+                "resourcePath": "sprites\\sAdobeHouse_ArkovianTruckStill\\sAdobeHouse_ArkovianTruckStill.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0c9b009a-dbcb-4801-89dc-186f4ba6a47b",
             "Value": {
                 "id": "56373250-9e29-4cae-8b6c-6bf542c26b0e",
@@ -316,6 +324,22 @@
                 "id": "9d7c1124-bc7d-464b-8e2c-4b40cdd07f87",
                 "resourcePath": "sprites\\sAdobeHouse_CactusHedgehog_NormalMap\\sAdobeHouse_CactusHedgehog_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "0d710304-32df-41e2-90af-0dd13e4869b1",
+            "Value": {
+                "id": "95663284-b266-4483-884f-04ad38741b53",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksMedium_NormalMap\\sAdobeHouse_PaleDesertRocksMedium_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "0d7ee993-c8f0-4153-8402-1daa40092b80",
+            "Value": {
+                "id": "c01137d3-bae8-4fa2-a29b-96a866b99bb0",
+                "resourcePath": "objects\\oMaterialSimpleLighting\\oMaterialSimpleLighting.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -364,6 +388,14 @@
                 "id": "99f04e6c-c7f1-4170-a675-ac8a876f547a",
                 "resourcePath": "views\\10d7d7de-d8d0-414e-a678-ff750593e371.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "10deb11e-d850-4c75-9404-b7e50f65d803",
+            "Value": {
+                "id": "f589f874-b2e9-4a87-a227-2948b1dca8e4",
+                "resourcePath": "objects\\oAdobeHouse_FrontPassthrough\\oAdobeHouse_FrontPassthrough.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -791,6 +823,14 @@
             }
         },
         {
+            "Key": "2608f7da-0d88-4b92-87cd-74e285a1d658",
+            "Value": {
+                "id": "d03c32fc-cdd4-4e91-8909-0f36dac870ca",
+                "resourcePath": "views\\2608f7da-0d88-4b92-87cd-74e285a1d658.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "2617afc6-53e2-4821-b0a5-bed4757b4690",
             "Value": {
                 "id": "e76ed945-f948-429a-8e1d-16059f88fe41",
@@ -916,6 +956,14 @@
                 "id": "5b17eebf-b816-4c6e-b2b6-f62dfd86de02",
                 "resourcePath": "rooms\\rDefaultLevel\\rDefaultLevel.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "2bb027e1-2fa8-4126-9e1e-68502cbd25ba",
+            "Value": {
+                "id": "ef57aab7-e219-4ac3-ba2b-0acaa3a67778",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksMediumC\\oAdobeHouse_PaleDesertRocksMediumC.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -1191,6 +1239,14 @@
             }
         },
         {
+            "Key": "3696bd3d-2c94-4a1c-bf4d-566674f5b197",
+            "Value": {
+                "id": "0a4b29d9-97a3-4370-a689-9f6056c84ea7",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksMediumD\\oAdobeHouse_PaleDesertRocksMediumD.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "36aa4368-c219-44ea-93a6-344b32ab276e",
             "Value": {
                 "id": "ff200748-6110-48f6-a0d4-ebbfdef77280",
@@ -1367,6 +1423,14 @@
             }
         },
         {
+            "Key": "3ce72cb5-859d-4bc7-a066-a1aaa6bab72b",
+            "Value": {
+                "id": "4e8b9378-3bac-42d3-8376-3de01f1852c4",
+                "resourcePath": "sprites\\sCursorCrosshairIcons\\sCursorCrosshairIcons.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "3d3afc03-6fc4-4e7b-841b-003a0c53f65f",
             "Value": {
                 "id": "a2c1c517-6666-4a8d-a75d-351daf711852",
@@ -1539,6 +1603,14 @@
             "Value": {
                 "id": "98661b6c-b588-4ce1-82b6-985ad411fafb",
                 "resourcePath": "objects\\oGun_Revolver\\oGun_Revolver.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "439f0351-16b5-4040-bc73-b910226dbd5f",
+            "Value": {
+                "id": "bdd991be-4b9b-4d00-82dd-e4da2975c02c",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRockSmall\\oAdobeHouse_PaleDesertRockSmall.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1975,6 +2047,14 @@
             }
         },
         {
+            "Key": "56687101-acd3-41bc-8977-8fa1a1d6c5eb",
+            "Value": {
+                "id": "5868e840-6de5-4d70-840e-a26a81f2f3b7",
+                "resourcePath": "objects\\oAdobeHouse_ArkovianTruckStill\\oAdobeHouse_ArkovianTruckStill.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "5673b58d-052a-4268-ba86-8af180901475",
             "Value": {
                 "id": "1e3e686a-0753-42c1-abc0-81f0beb9f829",
@@ -2255,6 +2335,14 @@
             }
         },
         {
+            "Key": "60c19a4d-30ea-4cba-a264-76ad45eff636",
+            "Value": {
+                "id": "d687c90a-c5dc-4964-a18d-412b15617aa8",
+                "resourcePath": "sprites\\sAdobeHouse_FrontPassthrough\\sAdobeHouse_FrontPassthrough.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6128ceb5-97c6-4bed-bfa1-5fa74c2dd64b",
             "Value": {
                 "id": "75588bac-2e9b-4445-8b74-43c5059bf49d",
@@ -2380,6 +2468,14 @@
                 "id": "549399dd-02f8-4b19-9556-fdb777eaba74",
                 "resourcePath": "views\\65f0c2e4-dbf5-43a1-9e81-59b2ae0d5924.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "6601108a-4c4b-45a3-b166-49b38605e61c",
+            "Value": {
+                "id": "51b6b972-a813-4e84-98fe-e63c4e916e61",
+                "resourcePath": "rooms\\rAdobeHouse_House\\rAdobeHouse_House.yy",
+                "resourceType": "GMRoom"
             }
         },
         {
@@ -2967,6 +3063,14 @@
             }
         },
         {
+            "Key": "8174c96e-9a80-4416-9383-36911dc681ed",
+            "Value": {
+                "id": "0bf3ca2d-33e0-4a8a-8146-e1277e1d74fe",
+                "resourcePath": "sprites\\sAdobeHouse_CornCrate_NormalMap\\sAdobeHouse_CornCrate_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8251215e-19d2-4f96-9435-1d3ad5b5c21f",
             "Value": {
                 "id": "3db94115-e811-4b41-9703-cf8a0c7e0d4a",
@@ -3079,6 +3183,14 @@
             }
         },
         {
+            "Key": "8618b754-2bb3-4c79-ac61-1161d88814e1",
+            "Value": {
+                "id": "54e0a928-f3e8-4c75-9794-f4fee41f419b",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksSmall_Sprite\\sAdobeHouse_PaleDesertRocksSmall_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "861967fc-3423-4f00-844e-02ffd153f6ca",
             "Value": {
                 "id": "23559a51-bfe9-495f-8663-fd7534d6118d",
@@ -3108,6 +3220,14 @@
                 "id": "7cb38e99-86b3-4c6b-b8f2-e52db93ad7f2",
                 "resourcePath": "sprites\\sDebugEnemy_ChestTop\\sDebugEnemy_ChestTop.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "86adf38e-104f-4916-b4db-578fd0dd279b",
+            "Value": {
+                "id": "ec29cc8f-7a0a-45fb-ab37-977782bd1c96",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRockSmall_RandomIndex\\oAdobeHouse_PaleDesertRockSmall_RandomIndex.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3255,6 +3375,14 @@
             }
         },
         {
+            "Key": "8ce0174e-b2f0-4de5-89f0-2e723073ee53",
+            "Value": {
+                "id": "c6e501a6-75a9-442b-b147-64101e1b03ef",
+                "resourcePath": "sprites\\sCursorMenu\\sCursorMenu.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8d062626-616c-44d1-9c90-347b333ac11a",
             "Value": {
                 "id": "ddbb4ac7-4a1b-4096-b2ef-fd1cabbadde3",
@@ -3324,6 +3452,14 @@
                 "id": "bab53f0b-e78d-4ea9-81ff-d148bc5b8fbe",
                 "resourcePath": "views\\90e02568-b73e-4906-b769-c53d9f7ca750.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "90e7621a-8cb6-4ffd-a0d2-8b2dcda16516",
+            "Value": {
+                "id": "33826718-f6c7-4273-826c-b8c343bf8351",
+                "resourcePath": "sprites\\sInteractCursorIcons\\sInteractCursorIcons.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3527,6 +3663,14 @@
             }
         },
         {
+            "Key": "9a39a356-ab88-4884-94b2-522b18d58d12",
+            "Value": {
+                "id": "5e6acf89-09f8-4cbc-92d1-c0e52d0434d9",
+                "resourcePath": "objects\\oAdobeHouse_CornCrateMaterial\\oAdobeHouse_CornCrateMaterial.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "9aa8ae19-cfd6-48b8-9829-fc52840d1102",
             "Value": {
                 "id": "42768e3e-9b6d-459c-a3e8-8126c36d14a4",
@@ -3548,6 +3692,14 @@
                 "id": "799dc24f-df22-479f-9dc3-f0a6dc94482d",
                 "resourcePath": "sprites\\sWolf_Idle_NormalMap\\sWolf_Idle_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "9c031f68-77a1-457a-83b9-c021781ada49",
+            "Value": {
+                "id": "35bd29b6-436a-4ed3-8966-240e3ad90ce0",
+                "resourcePath": "views\\9c031f68-77a1-457a-83b9-c021781ada49.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -4031,6 +4183,14 @@
             }
         },
         {
+            "Key": "b16471be-36ba-4171-8e6a-3071e9ecf6dd",
+            "Value": {
+                "id": "fe32130c-ac6d-4196-96c9-b10ff320d800",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksMedium\\oAdobeHouse_PaleDesertRocksMedium.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "b18f1518-a86c-4677-8387-9d69d52c1d7c",
             "Value": {
                 "id": "32a9c9e9-1203-4169-a9d7-1430243b83ca",
@@ -4375,6 +4535,14 @@
             }
         },
         {
+            "Key": "bd88907e-2083-42ef-b474-5c54fb03f08f",
+            "Value": {
+                "id": "89bc97ce-6d44-4f6e-a7fd-72dfed2dbf56",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksMedium_Sprite\\sAdobeHouse_PaleDesertRocksMedium_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "bdf24cfd-bc0e-4281-9856-ab8e9cdeea68",
             "Value": {
                 "id": "6e0445a7-aae4-4927-b8cf-6c0eed318573",
@@ -4667,6 +4835,14 @@
             "Value": {
                 "id": "d924b825-9055-46bd-8c1b-dda5d5a3689d",
                 "resourcePath": "views\\c7e3055e-71fd-4d64-a8fc-6c3ee9044a8b.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c7f97897-eb24-4592-9653-ede7249a0d5b",
+            "Value": {
+                "id": "b18fa397-d6e5-4754-9094-576783bcd78d",
+                "resourcePath": "views\\c7f97897-eb24-4592-9653-ede7249a0d5b.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -5047,6 +5223,14 @@
             }
         },
         {
+            "Key": "daf9b835-8397-44b4-8b93-a7a3567f22c2",
+            "Value": {
+                "id": "6227f1d0-7eea-4f74-bc6d-ca499b1aa81f",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksMediumB\\oAdobeHouse_PaleDesertRocksMediumB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "db4d9bb3-de50-4c0e-b125-7fd8476375dc",
             "Value": {
                 "id": "49f360ca-dc49-46a8-a06b-f52b1c61fec2",
@@ -5196,6 +5380,14 @@
                 "id": "dbddc405-4603-4cc0-9fb5-238439279a91",
                 "resourcePath": "objects\\oAdobeHouse_SageBrushH\\oAdobeHouse_SageBrushH.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "e49abfbf-fbdd-48bb-88a5-9183f9d76b0c",
+            "Value": {
+                "id": "b3d1ce1f-a384-472b-a5ed-13c4e0535638",
+                "resourcePath": "views\\e49abfbf-fbdd-48bb-88a5-9183f9d76b0c.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -5503,6 +5695,14 @@
             }
         },
         {
+            "Key": "f0182ecb-d0f4-4883-aaeb-ff877211afd8",
+            "Value": {
+                "id": "5151418b-2f37-4384-b8f4-9bbb35abe647",
+                "resourcePath": "views\\f0182ecb-d0f4-4883-aaeb-ff877211afd8.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "f018591b-9c39-443d-b4b9-29195a1ac01e",
             "Value": {
                 "id": "2643febc-9e88-45f1-8749-fa8c43a21929",
@@ -5615,6 +5815,14 @@
             }
         },
         {
+            "Key": "f5095438-9f92-4efc-973d-cf6e2627d337",
+            "Value": {
+                "id": "83d4c50c-c05b-4903-885a-517ee7e4bfb4",
+                "resourcePath": "sprites\\sAdobeHouse_CornCrate_Sprite\\sAdobeHouse_CornCrate_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "f51ed53e-077c-44c4-90e7-d29c4f20cd85",
             "Value": {
                 "id": "17210f48-4d49-40da-ba4d-e6181290f2cd",
@@ -5667,6 +5875,14 @@
             "Value": {
                 "id": "8a9e95b7-a90c-44ca-b050-9cbe60ed2648",
                 "resourcePath": "objects\\oDebugPointLight\\oDebugPointLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f8001e98-7da3-4f12-bcb6-88e1376d4e44",
+            "Value": {
+                "id": "22994fd9-2f77-42ed-b406-e5f64de557a1",
+                "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksMediumA\\oAdobeHouse_PaleDesertRocksMediumA.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -5812,6 +6028,14 @@
                 "id": "c7495336-810f-4241-b824-e42eae0c9ba4",
                 "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeB\\oAdobeHouse_PaleDesertRocksLargeB.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "ff732002-d466-4003-ae93-be179ff6a92b",
+            "Value": {
+                "id": "24f01efc-ce73-4fd4-95a5-36ea3e5e81b9",
+                "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksSmall_NormalMap\\sAdobeHouse_PaleDesertRocksSmall_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         }
     ],

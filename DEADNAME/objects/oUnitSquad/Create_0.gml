@@ -80,6 +80,9 @@ cursor_y = 0;
 old_fire_press = false;
 old_aim_press = false;
 
+cursor_icon = false;
+cursor_index = 0;
+
 // Camera Variables
 camera_screen_shake_x = 0;
 camera_screen_shake_y = 0;

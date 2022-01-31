@@ -26,20 +26,12 @@
             "value": "False"
         },
         {
-            "id": "2d7f0229-2ca1-467b-a56e-8767ec9a5419",
-            "modelName": "GMOverriddenProperty",
-            "mvc": "1.0",
-            "objectId": "b2fde96f-8381-41a5-a614-1599615cb056",
-            "propertyId": "388776ce-6195-4896-accf-801c22785d23",
-            "value": "True"
-        },
-        {
             "id": "409b2633-417a-455a-a011-ca55694c0b23",
             "modelName": "GMOverriddenProperty",
             "mvc": "1.0",
             "objectId": "b2fde96f-8381-41a5-a614-1599615cb056",
             "propertyId": "25bfcc5a-6356-4e29-8d2b-23e14eec10c2",
-            "value": "False"
+            "value": "True"
         },
         {
             "id": "99860b46-7e0b-462e-b7a1-a425b1c52566",

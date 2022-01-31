@@ -16,14 +16,12 @@ else {
 }
 
 // Basic Draw Behaviour
-var temp_image_alpha = image_alpha;
 var temp_image_blend = image_blend;
 if (lit_draw_event) {
 	gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 }
 if (normal_draw_event) {
 	// Set Normal Vector Scaling Shader
-	image_alpha = 1;
 	image_blend = c_white;
 	shader_set(shd_vectortransform);
 	var temp_normalscale_x = sign(image_xscale);
@@ -40,6 +38,5 @@ if (lit_draw_event) {
 if (normal_draw_event) {
 	// Reset Normal Vector Scaling Shader
 	shader_reset();
-	image_alpha = temp_image_alpha;
 	image_blend = temp_image_blend;
 }

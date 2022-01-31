@@ -298,6 +298,7 @@ hitbox_right_bottom_y_offset = max(temp_left_top_y_offset, temp_right_top_y_offs
 // Interact Behaviour
 interact_collision_list = noone;
 if (canmove and interact_active) {
+	// Check Interact Objects within reach
 	var temp_interact_list = ds_list_create();
 	var temp_interact_number = collision_rectangle_list(x + hitbox_left_top_x_offset - interact_reach, y + hitbox_left_top_y_offset - interact_reach, x + hitbox_right_bottom_x_offset + interact_reach, y + hitbox_right_bottom_y_offset + interact_reach, oInteract, false, true, temp_interact_list, true);
 	for (var i = 0; i < temp_interact_number; i++) {

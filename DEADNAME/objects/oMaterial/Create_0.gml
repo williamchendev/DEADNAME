@@ -1,8 +1,14 @@
 /// @description Material Instantiation
 // Instantiates the Settings for the Material
 
+// Basic Lighting Inheritance
+event_inherited();
+
 // Material Settings
-material_sprite = sprite_index;
+material_sprite = sDebugMaterial;
+material_normalmap = sDebugMaterial;
+material_front_image_index = 0;
+material_back_image_index = 1;
 
 // Material Variables
 material_damage = 0;

@@ -26,11 +26,11 @@
             "value": "False"
         },
         {
-            "id": "82194a0b-73e7-400d-b2b2-3df77b32d37a",
+            "id": "f1fe006c-4ede-4bc2-86f9-321dfa6e486c",
             "modelName": "GMOverriddenProperty",
             "mvc": "1.0",
             "objectId": "b2fde96f-8381-41a5-a614-1599615cb056",
-            "propertyId": "388776ce-6195-4896-accf-801c22785d23",
+            "propertyId": "25bfcc5a-6356-4e29-8d2b-23e14eec10c2",
             "value": "True"
         }
     ],

@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Material Clean Up
+// Destroys unused data structures and surfaces for the Material
 
 // Data Structures Garbage Collection
 if (ds_exists(material_damage_sprite_index, ds_type_list)) {

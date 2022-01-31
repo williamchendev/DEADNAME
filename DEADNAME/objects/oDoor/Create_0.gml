@@ -1,9 +1,14 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Door Interactable Init
+// Creates the Variables and Settings of the oDoor Object
+
+// Basic Lighting Behaviour
+event_inherited();
 
 // Interact Settings
 interact = instance_create_layer(x, y, layer, oInteract);
 interact.interact_obj = id;
+interact.interact_icon_index = 2;
+interact.interact_select_outline_color = make_color_rgb(172, 50, 50);
 
 // Door Settings
 door_open = true;
@@ -39,14 +44,21 @@ door_touched = false;
 // Instance Variables
 door_solid_active = true;
 door_material_active = true;
-door_solid = instance_create_layer(x, y, layer_get_id("Solids"), oSolid);
-door_material = instance_create_layer(x, y, layer_get_id("Instances"), oMaterial);
-door_solid.sprite_index = end_panel_sprite;
+door_solid = instance_create_layer(x, y, layer, oSolid);
+door_material = instance_create_layer(x, y, layer, oMaterialSimpleLighting);
 door_solid.visible = false;
+door_solid.box_shadows_enabled = false;
 door_material.sprite_index = end_panel_sprite;
 door_material.material_sprite = end_panel_sprite;
+door_material.skip_draw_event = true;
 door_material.material_team_id = "unassigned";
 //door_material.visible = false;
+
+door_material_x = 0;
+door_material_y = 0;
+
+// Shader Variables
+shader_forcecolor = shader_get_uniform(shd_color_ceilalpha, "forcedColor");
 
 // Door Solid Fixture
 door_solid_fix = physics_fixture_create();

@@ -4,7 +4,26 @@
     "mvc": "1.0",
     "name": "oAdobeHouse_Front",
     "eventList": [
-        
+        {
+            "id": "cdf8b42f-a9aa-4c93-acf2-b4eb78fb7a25",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "d0b3cdc7-f3be-453c-9193-62ce7c552733"
+        },
+        {
+            "id": "45c71333-255b-4790-b340-ad3c38f154fd",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 3,
+            "m_owner": "d0b3cdc7-f3be-453c-9193-62ce7c552733"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": [

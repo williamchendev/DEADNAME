@@ -5,6 +5,7 @@
     "name": "855ae82f-5389-4e28-bd9c-d241b86a7f35",
     "children": [
         "a90f2430-a975-44b7-a0f0-cffacc3b3be2",
+        "60c19a4d-30ea-4cba-a264-76ad45eff636",
         "1f38007f-cf9b-4791-bc09-2db4c67e286a",
         "87bf1b4e-6798-4f17-bcef-360f193f2c5c",
         "89b493b6-b71f-4a31-881d-65855edb8aa8",
@@ -29,13 +30,18 @@
         "29adb1ad-322a-441b-95f0-10079e502748",
         "6b4930e7-7f34-4e81-a5b7-98f9a743f892",
         "79350dba-2d4a-4430-b29f-d8daaffc98a3",
+        "bd88907e-2083-42ef-b474-5c54fb03f08f",
+        "0d710304-32df-41e2-90af-0dd13e4869b1",
+        "8618b754-2bb3-4c79-ac61-1161d88814e1",
+        "ff732002-d466-4003-ae93-be179ff6a92b",
         "77dc515b-ed4b-41f4-9b04-be239eae264e",
         "076d1ac9-fc5d-4c8f-bc9c-49c3de54d282",
         "75627ae7-3773-42de-8b67-37faba0928d8",
         "424b805c-e320-4c98-b451-496b88ecaed1",
         "8c51089c-9691-4da7-aadf-5286e5e1d90a",
         "3a901bc4-54c5-4d1c-9077-706ad998f6b0",
-        "2de4529d-e001-470a-b8c7-798f2c2dec78"
+        "2de4529d-e001-470a-b8c7-798f2c2dec78",
+        "0c8a6efd-ea89-435f-9640-8f9a6025b995"
     ],
     "filterType": "GMSprite",
     "folderName": "AdobeHouse",

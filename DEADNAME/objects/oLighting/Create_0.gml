@@ -55,3 +55,10 @@ light_shadows = shader_get_sampler_index(shd_forwardlighting, "lightShadowsTex")
 light_render = shader_get_sampler_index(shd_forwardlighting, "lightRenderTex");
 
 light_texture = shader_get_sampler_index(shd_drawlitsurface, "lightTex");
+
+// GameManager Behaviour
+if (instance_exists(oGameManager)) {
+	var temp_gamemanager = instance_find(oGameManager, 0);
+	screen_width = temp_gamemanager.game_width + 1;
+	screen_height = temp_gamemanager.game_height + 1;
+}

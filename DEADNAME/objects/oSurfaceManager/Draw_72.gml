@@ -1,7 +1,12 @@
 /// @description Surface Manager Skip Draw
 // Skips the Draw Event as to not draw itself to the screen
 
+// Draw Overlay Surface
+draw_x = game_manager.camera_x - camera_offset_width;
+draw_y = game_manager.camera_y - camera_offset_height;
+
 // Draw Interact Overlay
+/*
 if (calc_interact_overlay) {
 	// Check Surface Exists
 	if (!surface_exists(interact_outline_surface)) {
@@ -16,6 +21,7 @@ if (calc_interact_overlay) {
 	// Interate Through Selected Units
 	var temp_interact_outline_index = ds_map_find_first(interacts_outline);
 	var temp_interact_outline_map_size = ds_map_size(interacts_outline);
+	show_debug_message(temp_interact_outline_map_size);
 	for (var k = 0; k < temp_interact_outline_map_size; k++) {
 		// Unit Variables
 		var temp_interact_outline_color = ds_map_find_value(interacts_outline, temp_interact_outline_index);
@@ -38,15 +44,23 @@ if (calc_interact_overlay) {
 		// Draw Instance
 		with (temp_interact_outline_index.interact_obj) {
 			// Set Position
-			x = x - (other.game_manager.camera_x - other.camera_offset_width);
-			y = y - (other.game_manager.camera_y - other.camera_offset_height);
+			x = x - other.draw_x;
+			y = y - other.draw_y;
 					
 			// Draw Object
-			event_perform(ev_draw, 0);
+			if (object_is_ancestor(object_index, oBasic) or object_index == oBasic) {
+				var temp_lit_draw_event = lit_draw_event;
+				lit_draw_event = true;
+				event_perform(ev_draw, 0);
+				lit_draw_event = temp_lit_draw_event;
+			}
+			else {
+				event_perform(ev_draw, 0);
+			}
 					
 			// Reset Position
-			x = x + (other.game_manager.camera_x - other.camera_offset_width);
-			y = y + (other.game_manager.camera_y - other.camera_offset_height);
+			x = x + other.draw_x;
+			y = y + other.draw_y;
 		}
 	
 		// Reset Surface Target
@@ -70,6 +84,7 @@ if (calc_interact_overlay) {
 	// Clear DS Map
 	ds_map_clear(interacts_outline);
 }
+*/
 
 // Draw Unit Overlay
 if (calc_unit_overlay) {
@@ -217,7 +232,3 @@ if (calc_unit_overlay) {
 	// Clear DS Map
 	ds_map_clear(units_outline);
 }
-
-// Draw Overlay Surface
-draw_x = game_manager.camera_x - camera_offset_width;
-draw_y = game_manager.camera_y - camera_offset_height;

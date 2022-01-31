@@ -4,6 +4,19 @@
 // Draw Unit Knockout (Perform Inherited Event);
 event_inherited();
 
+// Draw Cursor
+if (player_input and canmove) {
+	if (cursor_icon) {
+		// Draw Cursor Icon
+		draw_sprite(sInteractCursorIcons, cursor_index, round(cursor_x), round(cursor_y));
+		cursor_icon = false;
+	}
+	else {
+		// Draw Cursor Crosshair
+		draw_sprite(sCursorCrosshairIcons, 1, round(cursor_x), round(cursor_y));
+	}
+}
+
 // Command Mode
 if (canmove and player_input) {
 	if (command or command_lerp_time) {

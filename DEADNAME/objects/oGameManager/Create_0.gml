@@ -61,5 +61,9 @@ camera_height = 360;
 camera_x = 0;
 camera_y = 0;
 
+// Cursor Variables
+cursor_icon = false;
+cursor_index = 0;
+
 // Surface Manager Variables
 surface_manager = noone;

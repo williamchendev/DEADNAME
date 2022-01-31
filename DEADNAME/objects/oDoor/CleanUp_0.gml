@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Door Interactable CleanUp
+// Cleans up unnecessary data structures of the oDoor Object
 
 // Destroy Instances
 if (instance_exists(door_solid)) {
