@@ -6,6 +6,7 @@ event_inherited();
 
 // Ai Behaviour Settings
 ai_behaviour = true;
+force_pathing = false;
 
 // Sight Settings
 sight = true;
@@ -27,6 +28,8 @@ sight_alert_arc = 30;
 path_x_delta_tolerance = 3;
 path_teleporter_delta_tolerance = 30;
 path_increment_index_radius = 5;
+
+path_interact_delta_tolerance = 5;
 
 // Sight Variables
 sight_angle = 0;
@@ -64,6 +67,9 @@ path_jump_range_height = 0;
 path_jump_up = false;
 path_jump_down = false;
 path_double_jump = false;
+
+path_interact = false;
+path_interact_inst = noone;
 
 // Debug Variables
 path_debug_draw = false;

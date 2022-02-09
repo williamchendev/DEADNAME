@@ -1,6 +1,14 @@
 /// @description Lighting Step Event
 // Caches the oSolid Vertices for use in the Shadow Shader
 
+// Game Manager Screen Size
+if (game_manager != noone) {
+	if (instance_exists(game_manager)) {
+		screen_width = game_manager.game_width + 1;
+		screen_height = game_manager.game_height + 1;
+	}
+}
+
 // Stick to Camera Position
 if (instance_exists(oCamera)) {
 	var temp_camera = instance_find(oCamera, 0);

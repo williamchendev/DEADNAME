@@ -456,10 +456,13 @@ else if (temp_weapon.weapon_type == "firearm") {
 	
 	// Reload Behaviour
 	if (reload) {
+		// Reset Weapon Aim
+		temp_weapon.aim = 0;
+		
 		// Reload Gun Animation & Behaviour
+		var temp_time = 0;
 		var temp_hand_x = 0;
 		var temp_hand_y = 0;
-		var temp_time = 0;
 		if (bolt_action_load) {
 			// Bolt Action Behaviour
 			switch (action_index) {
@@ -946,7 +949,6 @@ if (health_points <= 0) {
 	if (temp_destroy_check) {
 		// Destroy Unit Object
 		instance_destroy();
-		instance_destroy(inventory);
 		
 		// Restart Room
 		if (!can_die) {

@@ -7,17 +7,19 @@ if (skip_draw_event) {
 }
 
 // Basic Normal/Lit Sprite Split
-image_index = material_front_image_index;
+sprite_index = material_sprite;
 if (instance_exists(oLighting)) {
 	if (lit_draw_event) {
 		// Draw Material Backing Sprite
-		sprite_index = material_sprite;
-		draw_sprite_ext(material_sprite, material_back_image_index, x, y, image_xscale, 1, 0, image_blend, image_alpha);
+		draw_sprite_ext(material_sprite, image_index, x, y, image_xscale, 1, 0, c_dkgray, image_alpha);
 	}
 	else if (normal_draw_event) {
 		// Draw Material Backing NormalMap
-		sprite_index = material_normalmap;
-		draw_sprite_ext(material_normalmap, material_back_image_index, x, y, image_xscale, 1, 0, image_blend, image_alpha);
+		shader_set(shd_color_ceilalpha);
+		shader_set_uniform_f(shader_forcecolor, 0.5, 0.5, 1.0);
+		draw_sprite_ext(material_sprite, image_index, x, y, image_xscale, 1, 0, image_blend, image_alpha);
+		shader_reset();
+		return;
 	}
 	else {
 		// Skip Draw Event
@@ -26,8 +28,7 @@ if (instance_exists(oLighting)) {
 }
 else {
 	// Draw Material Backing Sprite
-	sprite_index = material_sprite;
-	draw_sprite_ext(material_sprite, material_back_image_index, x, y, image_xscale, 1, 0, image_blend, image_alpha);
+	draw_sprite_ext(material_sprite, image_index, x, y, image_xscale, 1, 0, c_dkgray, image_alpha);
 }
 
 // Create Surface

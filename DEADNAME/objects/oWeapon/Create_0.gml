@@ -8,6 +8,8 @@ basic_reindex_depth = true;
 // Instance Settings
 game_manager = instance_find(oGameManager, 0);
 
+active = true;
+
 // Weapon Settings
 weapon_type = "firearm";
 weapon_sprite = sMarinda308;
@@ -33,6 +35,10 @@ damage = 1;
 // Behaviour Variables
 aim = 0;
 click_old = false;
+
+weapon_reindex = false;
+weapon_reindex_item_id = -1;
+weapon_reindex_inventory = -1;
 
 // Deltatime Physics Variables
 old_delta_time = global.deltatime;

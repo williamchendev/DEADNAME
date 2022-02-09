@@ -1,6 +1,11 @@
 /// @description Firearm Weapon Draw End
 // Draws the Firearm Weapon Effects to the screen
 
+// Inactive Skip
+if (!active) {
+	return;
+}
+
 // Draw Hit Effect
 if (ds_list_size(hit_effect_timer) > 0) {
 	for (var i = 0; i < ds_list_size(hit_effect_timer); i++) {

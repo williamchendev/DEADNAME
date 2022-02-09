@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "oAdobeHouse_Drawers",
     "eventList": [
-        
+        {
+            "id": "a22b4e10-91b4-4f27-9bd4-f7bfd4b16a40",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "bf9ed4e5-f349-4ef1-8ed2-12d4adfc1990"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": [

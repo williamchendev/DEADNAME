@@ -310,6 +310,23 @@ if (canmove and interact_active) {
 	ds_list_destroy(temp_interact_list);
 }
 
+// Material Behaviour
+material_inst = noone;
+if (place_meeting(x, y, oMaterial)) {
+	material_inst = instance_place(x, y, oMaterial);
+	if (material_inst.material_health > 0) {
+		if (armor_bar_value != material_inst.material_health) {
+			armor_bar_value = lerp(armor_bar_value, material_inst.material_health, armor_bar_lerp_spd * global.realdeltatime);
+		}
+	}
+	else {
+		material_inst = noone;
+	}
+}
+else {
+	armor_bar_value = 0;
+}
+
 // Death & Ragdoll
 if (health_points <= 0) {
 	// Ragdoll
@@ -348,6 +365,17 @@ if (health_points <= 0) {
 	
 		// Instantiate Ragdoll and the Ragdoll Limbs Array
 		var temp_ragdoll_limbs = create_ragdoll(x, y, image_xscale, layer_get_id("Instances"), temp_ragdoll_sprites);
+		if (ragdoll_lootable_corpse) {
+			var temp_lootable_corpse_inst = instance_create_layer(x, y, layer_get_id("Instances"), oInteractCorpse);
+			temp_lootable_corpse_inst.interact_inventory_obj = inventory;
+			for (var l = 0; l < array_length_1d(temp_ragdoll_limbs); l++) {
+				ds_list_add(temp_lootable_corpse_inst.interact_inventory_obj_mask_list, temp_ragdoll_limbs[l]);
+				ds_list_add(temp_lootable_corpse_inst.interact_inventory_obj_outline_list, temp_ragdoll_limbs[l]);
+			}
+			for (var l = 0; l < ds_list_size(inventory.weapons); l++) {
+				ds_list_add(temp_lootable_corpse_inst.interact_inventory_obj_outline_list, ds_list_find_value(inventory.weapons, l));
+			}
+		}
 	
 		// Move Arms
 		with (temp_ragdoll_limbs[2]) {
@@ -444,6 +472,8 @@ if (health_points <= 0) {
 	}
 	
 	// Death Drop Weapons Behaviour
+	var temp_weapon_remove_index = 0;
+	var temp_weapon_remove_array = noone;
 	for (var i = ds_list_size(inventory.weapons) - 1; i >= 0; i--) {
 		// Find Inventory Weapon Data
 		var temp_weapon_inst = ds_list_find_value(inventory.weapons, i);
@@ -477,8 +507,18 @@ if (health_points <= 0) {
 		}
 	
 		// Remove Weapon from Inventory Weapon DS Lists
-		ds_list_delete(inventory.weapons, i);
-		ds_list_delete(inventory.weapons_index, i);
+		var temp_inventory_weapon_x = ds_list_find_value(inventory.weapons_index, i) % inventory.inventory_width;
+		var temp_inventory_weapon_y = ds_list_find_value(inventory.weapons_index, i) div inventory.inventory_width;
+		temp_weapon_remove_array[temp_weapon_remove_index] = inventory.inventory[temp_inventory_weapon_x, temp_inventory_weapon_y];
+		
+		// Weapon Reindex Behaviour
+		temp_weapon_inst.weapon_reindex = true;
+		temp_weapon_inst.weapon_reindex_item_id = temp_weapon_remove_array[temp_weapon_remove_index];
+		temp_weapon_inst.weapon_reindex_inventory = inventory;
+		temp_weapon_remove_index++;
+	}
+	for (var i = 0; i < array_length_1d(temp_weapon_remove_array); i++) {
+		remove_item_inventory(inventory, temp_weapon_remove_array[i]);
 	}
 }
 

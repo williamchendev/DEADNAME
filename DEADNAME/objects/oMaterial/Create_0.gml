@@ -5,10 +5,10 @@
 event_inherited();
 
 // Material Settings
-material_sprite = sDebugMaterial;
-material_normalmap = sDebugMaterial;
-material_front_image_index = 0;
-material_back_image_index = 1;
+material_sprite = sprite_index;
+
+material_health = 5;
+material_max_health = 5;
 
 // Material Variables
 material_damage = 0;
@@ -33,3 +33,6 @@ material_buffer = noone;
 
 // Shader Textures
 material_alpha_tex = shader_get_sampler_index(shd_subtract_alpha, "alphaTex");
+
+// Shader Settings
+shader_forcecolor = shader_get_uniform(shd_color_ceilalpha, "forcedColor");

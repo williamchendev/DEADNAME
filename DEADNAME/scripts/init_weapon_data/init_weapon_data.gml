@@ -72,3 +72,17 @@ global.weapon_data[7, weaponstats.image_index] = 5;
 global.weapon_data[7, weaponstats.object] = oGun_GrenadeLauncher;
 global.weapon_data[7, weaponstats.type] = weapontype.firearm;
 global.weapon_data[7, weaponstats.ammo] = 7;
+
+// Corso Rifle
+global.weapon_data[8, weaponstats.action_title] = "Corso Rifle";
+global.weapon_data[8, weaponstats.image_index] = 5;
+global.weapon_data[8, weaponstats.object] = oGun_Arkov_CorsoRifle;
+global.weapon_data[8, weaponstats.type] = weapontype.firearm;
+global.weapon_data[8, weaponstats.ammo] = 7;
+
+// Dernov Needle Rifle
+global.weapon_data[9, weaponstats.action_title] = "Corso Rifle";
+global.weapon_data[9, weaponstats.image_index] = 5;
+global.weapon_data[9, weaponstats.object] = oGun_Arkov_DernosNeedleRifle;
+global.weapon_data[9, weaponstats.type] = weapontype.firearm;
+global.weapon_data[9, weaponstats.ammo] = 7;

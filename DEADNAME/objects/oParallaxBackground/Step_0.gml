@@ -33,6 +33,8 @@ if (instance_exists(temp_camera)) {
 
 var temp_target_x = temp_camera_x + (game_manager.game_width / 2);
 var temp_target_y = temp_camera_y + game_manager.game_height;
+temp_target_x = player_follow.x;
+temp_target_y = (-player_follow.y / 8) + (game_manager.game_height * 2) - 240;
 
 for (var i = 0; i < array_length_1d(background_sprite); i++) {
 	background_scroll_value[i] += global.deltatime * background_scroll_spd[i];

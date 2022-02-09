@@ -3,7 +3,9 @@
         "Value": 4278190080
     },
     "option_gameguid": "3a058f33-6ac4-4244-b2b0-b83eae78ad3e",
-    "option_game_speed": 60
+    "option_game_speed": 60,
+    "option_lastchanged": "01 February 2022 3:35:42",
+    "option_author": "Inno Spelman"
 }←be5f1418-b31b-48af-a023-f04cdf6e5121|{
     "textureGroups": {
         "Additions": [

@@ -9,6 +9,7 @@ interact = instance_create_layer(x, y, layer, oInteract);
 interact.interact_obj = id;
 interact.interact_icon_index = 2;
 interact.interact_select_outline_color = make_color_rgb(172, 50, 50);
+interact.interact_select_second_outline_color = c_black;
 
 // Door Settings
 door_open = true;
@@ -45,7 +46,7 @@ door_touched = false;
 door_solid_active = true;
 door_material_active = true;
 door_solid = instance_create_layer(x, y, layer, oSolid);
-door_material = instance_create_layer(x, y, layer, oMaterialSimpleLighting);
+door_material = instance_create_layer(x, y, layer, oMaterial);
 door_solid.visible = false;
 door_solid.box_shadows_enabled = false;
 door_material.sprite_index = end_panel_sprite;

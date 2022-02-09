@@ -3,6 +3,7 @@
 
 // Key Checks (Player Input)
 if (player_input) {
+	// Preset Player Controls
 	if (game_manager != noone) {
 		key_left = keyboard_check(game_manager.left_check);
 		key_right = keyboard_check(game_manager.right_check);
@@ -29,11 +30,19 @@ if (player_input) {
 		cursor_x = mouse_get_x();
 		cursor_y = mouse_get_y();
 	}
+	
+	// Player Input break from Interact Pathing
+	if (path_interact) {
+		if (key_left or key_right or key_jump_press) {
+			path_interact_inst = noone;
+		}
+	}
 }
 else {
 	// Squad Behaviour
 	var temp_ai_follow_valid = false;
 	if (ai_behaviour) {
+		// Squad Follow Behaviour
 		if (ai_follow) {
 			if (ai_follow_unit != noone) {
 				if (instance_exists(ai_follow_unit)) {
@@ -208,8 +217,12 @@ if (canmove) {
 		}
 		else {
 			// Command Inventory Mode Behaviour
+			if (player_input) {
+				game_manager.cursor_inventory = true;
+			}
+			
+			// Disable Command Mode & Inventory
 			if (key_inventory_press) {
-				// Disable Command Mode & Inventory
 				command = false;
 				command_lerp_time = true;
 				inventory_show = false;
@@ -287,7 +300,9 @@ if (canmove) {
 				var temp_interact_exists = false;
 				if (interact_collision_list[q] != noone) {
 					if (instance_exists(interact_collision_list[q])) {
-						temp_interact_exists = true;
+						if (object_is_ancestor(interact_collision_list[q].object_index, oInteract) or interact_collision_list[q].object_index == oInteract) {
+							temp_interact_exists = true;
+						}
 					}
 				}	
 						
@@ -296,14 +311,33 @@ if (canmove) {
 					if (interact_collision_list[q].interact_obj.object_index != oTeleport) {
 						// Check Cursor Collider
 						if (position_meeting(cursor_x, cursor_y, interact_collision_list[q])) {
-							// Cursor Hover
-							cursor_icon = true;
-							cursor_index = interact_collision_list[q].interact_icon_index;
+							// Toggle Interaction Select
 							interact_collision_list[q].interact_select = true;
+							
+							// Cursor Hover
+							if (player_input) {
+								if (interact_collision_list[q].interact_select_draw_value > 0) {
+									game_manager.cursor_icon = true;
+									game_manager.cursor_index = interact_collision_list[q].interact_icon_index;
+								}
+								interact_collision_list[q].interact_description_show = true;
+							}
 					
 							// Interaction Input
 							if (key_interact_press) {
-								interact_collision_list[q].interact_unit = id;
+								// Interaction Action & Unit Behaviour
+								if (!interact_collision_list[q].interact_walk) {
+									// Engage Interaction
+									interact_collision_list[q].interact_unit = id;
+								}
+								else {
+									// Interaction Walk Behaviour
+									path_interact = true;
+									path_interact_inst = interact_collision_list[q];
+									if (player_input) {
+										force_pathing = true;
+									}
+								}
 							}
 					
 							// Break Loop

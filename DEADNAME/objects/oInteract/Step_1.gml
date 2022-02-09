@@ -1,16 +1,16 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Action & Destroy
+// Calculates the Interaction's Behaviour
 
 // Interact Behaviour
 interact_destroy = true;
-var temp_interact_behaviour_active = false
+interact_action = false;
 if (interact_obj != noone) {
 	if (instance_exists(interact_obj)) {
 		// Check if Interact Unit is Active
 		if (interact_unit != noone) {
 			if (instance_exists(interact_unit)) {
-				// Interact Behaviour
-				temp_interact_behaviour_active = true;
+				// Perform Interact Behaviour
+				interact_action = true;
 			}
 			else {
 				// Remove Unit
@@ -22,5 +22,3 @@ if (interact_obj != noone) {
 		interact_destroy = false;
 	}
 }
-
-interact_action = temp_interact_behaviour_active;

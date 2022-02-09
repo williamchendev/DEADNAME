@@ -73,6 +73,8 @@ ragdoll_chest_bot_normalmap = sWilliamDS_ChestBot_NormalMap;
 ragdoll_leg_left_normalmap = sWilliamDS_LeftLeg_NormalMap;
 ragdoll_leg_right_normalmap = sWilliamDS_RightLeg_NormalMap;
 
+ragdoll_lootable_corpse = true;
+
 // Death Dialogue Settings
 death_dialogue = false;
 death_dialogue_chance = 1;
@@ -180,11 +182,32 @@ key_reload_press = false;
 
 key_command = false;
 
+// Material Variables
+material_inst = noone;
+
 // Lighting Variables
 event_inherited();
 
 vectortransform_shader_angle = shader_get_uniform(shd_vectortransform, "vectorAngle");
 vectortransform_shader_scale = shader_get_uniform(shd_vectortransform, "vectorScale");
+
+// UI Variables
+health_bar_width = 48;
+armor_bar_yoffset = -3;
+
+armor_bar_lerp_spd = 0.1;
+armor_bar_value = 0;
+
+health_bar_back_color_1 = make_color_rgb(92, 25, 37);
+health_bar_back_color_2 = make_color_rgb(222, 213, 215);
+
+health_bar_color_1 = make_color_rgb(209, 19, 54);
+health_bar_color_2 = make_color_rgb(181, 24, 52);
+health_bar_color_3 = make_color_rgb(150, 30, 52);
+
+armor_bar_color_1 = make_color_rgb(70, 164, 239);
+armor_bar_color_2 = make_color_rgb(59, 139, 204);
+armor_bar_color_3 = make_color_rgb(52, 122, 178);
 
 // Inventory
 inventory = create_empty_inventory(id, 6, 4);

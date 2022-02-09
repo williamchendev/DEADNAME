@@ -287,6 +287,14 @@
             }
         },
         {
+            "Key": "0b815e16-91ca-49f3-afc8-fa7d8c3cbe0f",
+            "Value": {
+                "id": "7a002aea-febc-4bb3-9fe9-9423d39978fb",
+                "resourcePath": "sprites\\sArkov_CorsoRifle_NormalMap\\sArkov_CorsoRifle_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0c24b966-a495-4bbe-88b8-722eaba9347d",
             "Value": {
                 "id": "13ca56e2-47a3-45fe-b532-b6575b91a6f4",
@@ -338,7 +346,7 @@
             "Key": "0d7ee993-c8f0-4153-8402-1daa40092b80",
             "Value": {
                 "id": "c01137d3-bae8-4fa2-a29b-96a866b99bb0",
-                "resourcePath": "objects\\oMaterialSimpleLighting\\oMaterialSimpleLighting.yy",
+                "resourcePath": "objects\\oMaterialAdvancedLighting\\oMaterialAdvancedLighting.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -618,7 +626,7 @@
             "Key": "1bb8b3af-27eb-4651-82ca-d2ab75dae726",
             "Value": {
                 "id": "ef4b7159-159e-4e53-a8bd-4d5cc425f87e",
-                "resourcePath": "sprites\\sMarinda308SS\\sMarinda308SS.yy",
+                "resourcePath": "sprites\\sMarinda308Scout\\sMarinda308Scout.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -915,6 +923,14 @@
             "Value": {
                 "id": "48ec19d4-2091-4ad0-b28d-48df4ee9edd5",
                 "resourcePath": "sprites\\sAdobeHouse_BrownDesertRocks_NormalMap\\sAdobeHouse_BrownDesertRocks_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "29c87cf2-7d0f-4c5d-a2bc-ccea54b865b2",
+            "Value": {
+                "id": "2b868ff5-a187-4740-ab4b-2f58c7054682",
+                "resourcePath": "sprites\\sArkov_DernosNeedleRifle_NormalMap\\sArkov_DernosNeedleRifle_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1879,6 +1895,14 @@
             }
         },
         {
+            "Key": "4ea0e14e-c1f4-4b86-81fd-32178b915f95",
+            "Value": {
+                "id": "4e554a42-1d38-43d8-af7a-1eb64db3d644",
+                "resourcePath": "shaders\\shd_remove_color\\shd_remove_color.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "4ef1c0df-c97a-4b06-8322-91d14d27db98",
             "Value": {
                 "id": "2f6ac323-1dee-4095-876a-961e97e3d5ea",
@@ -1924,6 +1948,14 @@
                 "id": "29973b6f-0963-4098-8a76-58f98906505c",
                 "resourcePath": "scripts\\tileset_fill\\tileset_fill.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "50fbbc4b-aa71-423f-ae79-f049600050ee",
+            "Value": {
+                "id": "41f6bc62-e08a-42af-a184-aee5d1efccf3",
+                "resourcePath": "sprites\\sMaterial_ArmorIcon\\sMaterial_ArmorIcon.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3039,6 +3071,14 @@
             }
         },
         {
+            "Key": "80a13ada-6ba8-4001-9daa-513315cbaf2f",
+            "Value": {
+                "id": "4536d1c7-b5d3-4c6e-b969-f09b66088b07",
+                "resourcePath": "datafiles_yy\\Data\\AdobeHouse_BigSageBrush.txt.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "80a1b26f-38af-48f8-95c1-354f0c02f514",
             "Value": {
                 "id": "c531cafd-ab62-431f-8c1c-be4529bd18d3",
@@ -3607,6 +3647,14 @@
             }
         },
         {
+            "Key": "973d6373-81bf-411c-b45d-79592418cbba",
+            "Value": {
+                "id": "588b460c-cd53-440f-a565-4518b7da0868",
+                "resourcePath": "objects\\oInteractCorpse\\oInteractCorpse.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "981645a9-72f9-4ca0-954f-e885d7201ec2",
             "Value": {
                 "id": "6b2896a2-0d7a-49b6-81ee-9ef9d2bdcc37",
@@ -3983,6 +4031,14 @@
             }
         },
         {
+            "Key": "ab357148-db7a-4bc8-9487-abd68e0d7867",
+            "Value": {
+                "id": "bccb3d80-5c25-4f7d-8e47-11437ec262c8",
+                "resourcePath": "objects\\oInteractCutscene\\oInteractCutscene.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "ab36f4a1-bd39-4eb8-b691-a78de55bfee5",
             "Value": {
                 "id": "607503d6-b4b4-4d01-b971-165e5fa9c014",
@@ -4027,6 +4083,14 @@
             "Value": {
                 "id": "f59c572c-3f06-49bf-ae88-a2b367f84cd5",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_AimWalk_NormalMap\\sWilliamDS_Heavy_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ac843c8a-eeb3-484c-896c-02683180ce7f",
+            "Value": {
+                "id": "e3e96c95-16c6-428b-8063-0cd40dd923e9",
+                "resourcePath": "sprites\\sArkov_CorsoRifle\\sArkov_CorsoRifle.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4516,6 +4580,14 @@
                 "id": "bbe2ed4a-0627-46cd-8a3f-edfaf676057b",
                 "resourcePath": "sprites\\sGrenadeLauncher_BreakAction_NormalMap\\sGrenadeLauncher_BreakAction_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "bd73bdbc-8601-4606-a75e-0679ed3e67c7",
+            "Value": {
+                "id": "9696ca8e-4e2e-4ff0-b007-90f9b5caa359",
+                "resourcePath": "objects\\oGun_Arkov_DernosNeedleRifle\\oGun_Arkov_DernosNeedleRifle.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -5031,6 +5103,14 @@
             }
         },
         {
+            "Key": "d06ea50c-d2f2-4c77-bee2-2b60d40b5745",
+            "Value": {
+                "id": "b718a74f-eb8e-4a8f-aa6a-b0e2382c0953",
+                "resourcePath": "objects\\oInteractDialogue\\oInteractDialogue.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "d0b3cdc7-f3be-453c-9193-62ce7c552733",
             "Value": {
                 "id": "c955b6b6-fc1e-4509-8c2e-c9d77ea99b96",
@@ -5148,6 +5228,14 @@
                 "id": "10792ce4-9e54-42ae-880b-ec36ab50bf80",
                 "resourcePath": "rooms\\rLightingTestLevel\\rLightingTestLevel.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "d6a6e463-ac01-4dfb-93dc-4390bf27647d",
+            "Value": {
+                "id": "5d94b186-95db-40e2-a816-c672dc65b432",
+                "resourcePath": "datafiles_yy\\Data\\AdobeHouse_NPC.txt.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -5276,6 +5364,14 @@
                 "id": "b8972635-e7b5-4196-8f86-03a104c92b7e",
                 "resourcePath": "sprites\\sWilliamDS_ChestBot_NormalMap\\sWilliamDS_ChestBot_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "de60dc5b-f4ad-4e4e-8823-98bef569cdf4",
+            "Value": {
+                "id": "8a94e214-ab43-4f2b-9e94-7be11ecbb0b9",
+                "resourcePath": "objects\\oInteractInventory\\oInteractInventory.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -5447,6 +5543,14 @@
             }
         },
         {
+            "Key": "e6de1107-735b-4dc1-93ef-0eb11df5238b",
+            "Value": {
+                "id": "03672e6f-d897-4c87-b7b6-8c4410138fb7",
+                "resourcePath": "objects\\oGun_Arkov_CorsoRifle\\oGun_Arkov_CorsoRifle.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "e6f9272f-3565-4e63-985a-92e3b39ff342",
             "Value": {
                 "id": "2a7e6a3c-2136-4d58-97d4-acca78655de5",
@@ -5572,6 +5676,14 @@
                 "id": "d126c55d-7cea-4164-83ed-1af09c6e6aa7",
                 "resourcePath": "objects\\oEditorStartMenuWindow\\oEditorStartMenuWindow.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "eab29750-4e4e-4623-b924-61f4aa9f77a3",
+            "Value": {
+                "id": "d071b772-1624-4988-a434-e40d97aee224",
+                "resourcePath": "sprites\\sArkov_DernosNeedleRifle\\sArkov_DernosNeedleRifle.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5747,6 +5859,14 @@
             "Value": {
                 "id": "2bec3896-9ec2-451c-b82c-770e8400d469",
                 "resourcePath": "views\\f13ec92f-9b7a-4714-88d3-73db07e971c7.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "f1602176-e721-48d3-a97e-59846caeb603",
+            "Value": {
+                "id": "c9b069da-3b6d-4b24-b2d6-ebf4afae8c91",
+                "resourcePath": "views\\f1602176-e721-48d3-a97e-59846caeb603.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -6020,6 +6140,14 @@
                 "id": "218018cb-a047-41d4-a252-6e22a2d20b45",
                 "resourcePath": "scripts\\place_item_inventory\\place_item_inventory.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "fed60d91-4725-4836-9f74-dd691311a6fc",
+            "Value": {
+                "id": "9e168b54-2e5a-42f5-8464-d3a22d7e4057",
+                "resourcePath": "objects\\oInteractInspect\\oInteractInspect.yy",
+                "resourceType": "GMObject"
             }
         },
         {

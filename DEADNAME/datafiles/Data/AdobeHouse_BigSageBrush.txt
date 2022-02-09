@@ -1,0 +1,12 @@
+// Cutscene File
+player = find("unit_player")
+unit1 = find("unit", "friend2")
+
+interrupt(player)
+
+player :: Looks like a tree.
+unit1 :: Well you would be wrong.
+unit1 :: That is simply another sage brush.
+unit1 :: Only older, branches intertwined with several others.
+unit1 :: Probably took the better half of the last two centuries to achieve.
+unit1 :: When the drought hadn't strangled the countryside.

@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Outline Surfaces
+// Calculates and draws the outline of the interaction when selected
 
 // Draw Outline Active Check
 if (instance_exists(oLighting)) {
@@ -41,32 +41,79 @@ if (interact_select_draw_value > 0) {
 	draw_clear_alpha(interact_select_outline_color, 0);
 	
 	// Draw Instance
-	with (interact_obj) {
-		// Set Position
-		x = x - temp_surface_x;
-		y = y - temp_surface_y;
+	if (object_is_ancestor(interact_obj.object_index, oBasic) or interact_obj.object_index == oBasic) {
+		// Combat Unit Draw Behaviour
+		if (object_is_ancestor(interact_obj.object_index, oUnitCombat) or (interact_obj.object_index == oUnitCombat)) {
+			// Limb Draw Behaviour
+			for (var q = 0; q < interact_obj.limbs; q++) {
+				// Draw Limbs
+				with (interact_obj.limb[q]) {
+					var temp_lit_draw_event = lit_draw_event;
+					lit_draw_event = true;
+					event_perform(ev_draw, 0);
+					lit_draw_event = temp_lit_draw_event;
+				}
+			}
+			
+			// Weapon Draw Behaviour
+			for (var i = 0; i < ds_list_size(interact_obj.inventory.weapons); i++) {
+				// Find Indexed Weapon
+				var temp_weapon_index = ds_list_find_value(interact_obj.inventory.weapons, i);
+				with (temp_weapon_index) {
+					// Set Position
+					x = x - temp_surface_x;
+					y = y - temp_surface_y;
+			
+					var temp_lit_draw_event = lit_draw_event;
+					lit_draw_event = true;
+					event_perform(ev_draw, 0);
+					lit_draw_event = temp_lit_draw_event;
 					
-		// Draw Object
-		if (object_is_ancestor(object_index, oBasic) or object_index == oBasic) {
+					// Reset Position
+					x = x + temp_surface_x;
+					y = y + temp_surface_y;
+				}
+			}
+		}
+				
+		// Draw All Unit Elements
+		with (interact_obj) {
+			// Set Position
+			x = x - temp_surface_x;
+			y = y - temp_surface_y;
+					
+			// Draw Object
 			var temp_lit_draw_event = lit_draw_event;
 			lit_draw_event = true;
 			event_perform(ev_draw, 0);
 			lit_draw_event = temp_lit_draw_event;
-		}
-		else {
-			event_perform(ev_draw, 0);
-		}
 					
-		// Reset Position
-		x = x + temp_surface_x;
-		y = y + temp_surface_y;
+			// Reset Position
+			x = x + temp_surface_x;
+			y = y + temp_surface_y;
+		}
+	}
+	else {
+		// Draw Unlit Interact Object
+		with (interact_obj) {
+			// Set Position
+			x = x - temp_surface_x;
+			y = y - temp_surface_y;
+				
+			// Draw Interact
+			event_perform(ev_draw, 0);
+			
+			// Reset Position
+			x = x + temp_surface_x;
+			y = y + temp_surface_y;
+		}
 	}
 	
 	surface_reset_target();
 	
 	// Draw Interact Object Outline Surface
 	surface_set_target(temp_surface);
-	draw_clear_alpha(c_black, 0);
+	draw_clear_alpha(interact_select_second_outline_color, 0);
 	
 	// Generate First Outline
 	var temp_outline_texel_width = texture_get_texel_width(surface_get_texture(interact_surface));
@@ -88,6 +135,11 @@ if (interact_select_draw_value > 0) {
 	// Reset Shader
 	shader_reset();
 	
+	// Redraw unoutlined Sprite to Temp Surface
+	surface_set_target(temp_surface);
+	draw_surface(interact_surface, 0, 0);
+	surface_reset_target();
+	
 	// Generate Second Outline
 	temp_outline_texel_width = texture_get_texel_width(surface_get_texture(temp_surface));
 	temp_outline_texel_height = texture_get_texel_height(surface_get_texture(temp_surface));
@@ -97,7 +149,7 @@ if (interact_select_draw_value > 0) {
 	shader_set_uniform_f(uniform_pixel_height, temp_outline_texel_height);
 	
 	// Draw Outer Outline
-	draw_set_color(c_black);
+	draw_set_color(interact_select_second_outline_color);
 	draw_set_alpha(interact_select_draw_value * interact_select_draw_value);
 	draw_surface(temp_surface, temp_surface_x, temp_surface_y);
 	draw_set_color(c_white);

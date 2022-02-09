@@ -43,6 +43,7 @@ bullet_path_line_width = 1;
 
 // Combat Settings
 damage = 1;
+material_damage = 0.1;
 material_damage_sprite = sMatDmg_Small_2;
 
 // Hit Effect Settings

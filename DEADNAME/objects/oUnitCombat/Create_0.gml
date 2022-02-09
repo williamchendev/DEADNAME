@@ -55,7 +55,7 @@ limb_ambient_anim_spd = 0.017;
 limb_ambient_idle_rotate_radius = 1;
 limb_ambient_move_rotate_radius = 3.5;
 
-limb_ambient_idle_length_offset = 0.1;
+limb_ambient_idle_length_offset = 0.2;
 limb_ambient_move_length_offset = 0.35;
 
 limb_aim_move_offset_x = -1;

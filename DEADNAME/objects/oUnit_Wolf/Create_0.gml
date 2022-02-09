@@ -44,6 +44,8 @@ action_spd = 0.30;
 squash_stretch = 0.6;
 scale_reset_spd = 0.15;
 
+limb_ambient_idle_length_offset = 0.1;
+
 stats_y_offset = 8;
 
 knockout = true;
@@ -118,7 +120,7 @@ limb_sprite[1] = sWolf_Arms;  // Left Arm
 // Inventory Settings
 //add_item_inventory(inventory, 6);
 //add_item_inventory(inventory, 4);
-add_item_inventory(inventory, 6);
+add_item_inventory(inventory, 10);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

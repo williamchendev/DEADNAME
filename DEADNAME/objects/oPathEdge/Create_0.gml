@@ -9,3 +9,6 @@ teleport = false;
 
 // Weight Settings
 distance = 0;
+
+// Debug
+sprite_index = -1;

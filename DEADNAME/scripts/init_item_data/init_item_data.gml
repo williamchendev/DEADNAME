@@ -168,27 +168,27 @@ global.item_data[12, itemstats.stack_limit] = 1;
 global.item_data[12, itemstats.type] = itemtypes.weapon;
 global.item_data[12, itemstats.type_index] = 7;
 
-// Item Slot 13
-global.item_data[13, itemstats.name] = "DebugItem13";
-global.item_data[13, itemstats.description] = "Debug";
-global.item_data[13, itemstats.sprite_index] = sItems2x2;
-global.item_data[13, itemstats.image_index] = 0;
-global.item_data[13, itemstats.width_space] = 2;
+// Corso Rifle
+global.item_data[13, itemstats.name] = "Corso Rifle";
+global.item_data[13, itemstats.description] = "It works";
+global.item_data[13, itemstats.sprite_index] = sItems6x2;
+global.item_data[13, itemstats.image_index] = 1;
+global.item_data[13, itemstats.width_space] = 6;
 global.item_data[13, itemstats.height_space] = 2;
 global.item_data[13, itemstats.stack_limit] = 1;
-global.item_data[13, itemstats.type] = itemtypes.key_item;
-global.item_data[13, itemstats.type_index] = 0;
+global.item_data[13, itemstats.type] = itemtypes.weapon;
+global.item_data[13, itemstats.type_index] = 8;
 
 // Item Slot 14
-global.item_data[14, itemstats.name] = "DebugItem14";
-global.item_data[14, itemstats.description] = "Debug";
-global.item_data[14, itemstats.sprite_index] = sItems2x2;
+global.item_data[14, itemstats.name] = "Dernos Needle Rifle";
+global.item_data[14, itemstats.description] = "Shit";
+global.item_data[14, itemstats.sprite_index] = sItems6x2;
 global.item_data[14, itemstats.image_index] = 0;
-global.item_data[14, itemstats.width_space] = 2;
+global.item_data[14, itemstats.width_space] = 6;
 global.item_data[14, itemstats.height_space] = 2;
 global.item_data[14, itemstats.stack_limit] = 1;
-global.item_data[14, itemstats.type] = itemtypes.key_item;
-global.item_data[14, itemstats.type_index] = 0;
+global.item_data[14, itemstats.type] = itemtypes.weapon;
+global.item_data[14, itemstats.type_index] = 9;
 
 // Item Slot 15
 global.item_data[15, itemstats.name] = "DebugItem15";

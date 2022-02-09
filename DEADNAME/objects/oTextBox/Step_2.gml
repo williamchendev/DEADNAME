@@ -110,8 +110,8 @@ font_contrast_color = merge_color(font_color, c_black, 0.8);
 // Follow Unit
 if (unit != noone) {
 	if (instance_exists(unit)) {
-		unit_draw_x = unit.x - (sin(degtorad(unit.draw_angle)) * (unit.hitbox_right_bottom_y_offset - unit.hitbox_left_top_y_offset));
-		unit_draw_y = unit.y - (unit.hitbox_right_bottom_y_offset - unit.hitbox_left_top_y_offset) - (unit.stats_y_offset * unit.draw_yscale);
+		unit_draw_x = round(unit.x) - (sin(degtorad(unit.draw_angle)) * (unit.hitbox_right_bottom_y_offset - unit.hitbox_left_top_y_offset));
+		unit_draw_y = round(unit.y) - (unit.hitbox_right_bottom_y_offset - unit.hitbox_left_top_y_offset) - (unit.stats_y_offset * unit.draw_yscale);
 	}
 	else {
 		unit = noone;

@@ -1,6 +1,11 @@
 /// @description Firearm Update
 // Calculates the behaviour of the firearm object
 
+// Inactive Skip
+if (!active) {
+	return;
+}
+
 // Inherit the parent event
 event_inherited();
 
@@ -358,6 +363,7 @@ if (bursts > 0) {
 						}
 					
 						// Add Material Damage
+						temp_raycast_data[4].material_health = max(0, temp_raycast_data[4].material_health - material_damage);
 						material_add_damage(temp_raycast_data[4], material_damage_sprite, irandom(sprite_get_number(material_damage_sprite)), temp_raycast_data[1], temp_raycast_data[2], 1, 1, random(360));
 					}
 				}

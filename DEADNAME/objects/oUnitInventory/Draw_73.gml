@@ -39,57 +39,59 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
 // Draw Select Cursor
-var temp_cursor_x = temp_x + select_xpos;
-var temp_cursor_y = temp_y + select_ypos;
-if (select_item_id != 0) {
-	// Draw Select Cursor with Item
-	var temp_can_place_alpha = 0.8;
-	var temp_can_place_color = c_white;
-	if (!select_can_place) {
-		var temp_can_place_alpha = 0.9;
-		temp_can_place_color = make_color_rgb(224,18,95);
-	}
-	var temp_item_offset = 2;
-	draw_sprite_ext(global.item_data[select_item_id, itemstats.sprite_index], global.item_data[select_item_id, itemstats.image_index], temp_cursor_x + temp_item_offset, temp_cursor_y + temp_item_offset, 1, 1, 0, temp_can_place_color, temp_can_place_alpha * draw_alpha);
+if (select_show_cursor) {
+	var temp_cursor_x = temp_x + select_xpos;
+	var temp_cursor_y = temp_y + select_ypos;
+	if (select_item_id != 0) {
+		// Draw Select Cursor with Item
+		var temp_can_place_alpha = 0.8;
+		var temp_can_place_color = c_white;
+		if (!select_can_place) {
+			var temp_can_place_alpha = 0.9;
+			temp_can_place_color = make_color_rgb(224,18,95);
+		}
+		var temp_item_offset = 2;
+		draw_sprite_ext(global.item_data[select_item_id, itemstats.sprite_index], global.item_data[select_item_id, itemstats.image_index], temp_cursor_x + temp_item_offset, temp_cursor_y + temp_item_offset, 1, 1, 0, temp_can_place_color, temp_can_place_alpha * draw_alpha);
 	
-	// Draw placing stacks in inventory
-	if (select_place) {
+		// Draw placing stacks in inventory
+		if (select_place) {
+			var temp_cursor_y_h = temp_y + select_ypos + select_height;
+			draw_set_font(fHeartBit);
+			draw_text_outline(temp_cursor_x + temp_item_offset, temp_cursor_y_h + temp_item_offset, c_white, c_black, "How many to place?\n" + string(select_place_num) + " out of " + string(select_item_stacks));
+		}
+		else if (select_item_stacks > 1) {
+			var temp_item_width = global.item_data[select_item_id, itemstats.width_space] * inventory_grid_size;
+			var temp_item_height = global.item_data[select_item_id, itemstats.height_space] * inventory_grid_size;
+		
+			draw_set_halign(fa_right);
+			draw_set_valign(fa_bottom);
+			draw_set_font(fHeartBit);
+			draw_text_outline(temp_cursor_x + temp_item_offset + temp_item_width - 1, temp_cursor_y + temp_item_offset + temp_item_height, c_white, c_black, string(select_item_stacks));
+		
+			draw_set_halign(fa_left);
+			draw_set_valign(fa_top);
+		}
+	}
+	else {
+		// Draw Four Cornered Cursor
+		var temp_cursor_x_w = temp_x + select_xpos + select_width;
 		var temp_cursor_y_h = temp_y + select_ypos + select_height;
-		draw_set_font(fHeartBit);
-		draw_text_outline(temp_cursor_x + temp_item_offset, temp_cursor_y_h + temp_item_offset, c_white, c_black, "How many to place?\n" + string(select_place_num) + " out of " + string(select_item_stacks));
-	}
-	else if (select_item_stacks > 1) {
-		var temp_item_width = global.item_data[select_item_id, itemstats.width_space] * inventory_grid_size;
-		var temp_item_height = global.item_data[select_item_id, itemstats.height_space] * inventory_grid_size;
-		
-		draw_set_halign(fa_right);
-		draw_set_valign(fa_bottom);
-		draw_set_font(fHeartBit);
-		draw_text_outline(temp_cursor_x + temp_item_offset + temp_item_width - 1, temp_cursor_y + temp_item_offset + temp_item_height, c_white, c_black, string(select_item_stacks));
-		
-		draw_set_halign(fa_left);
-		draw_set_valign(fa_top);
-	}
-}
-else {
-	// Draw Four Cornered Cursor
-	var temp_cursor_x_w = temp_x + select_xpos + select_width;
-	var temp_cursor_y_h = temp_y + select_ypos + select_height;
-	draw_sprite_ext(sInventorySelect, 0, temp_cursor_x, temp_cursor_y, 1, 1, 0, c_white, draw_alpha * draw_alpha * draw_alpha);
-	draw_sprite_ext(sInventorySelect, 0, temp_cursor_x_w, temp_cursor_y, 1, 1, 270, c_white, draw_alpha * draw_alpha * draw_alpha);
-	draw_sprite_ext(sInventorySelect, 0, temp_cursor_x_w, temp_cursor_y_h, 1, 1, 180, c_white, draw_alpha * draw_alpha * draw_alpha);
-	draw_sprite_ext(sInventorySelect, 0, temp_cursor_x, temp_cursor_y_h, 1, 1, 90, c_white, draw_alpha * draw_alpha * draw_alpha);
+		draw_sprite_ext(sInventorySelect, 0, temp_cursor_x, temp_cursor_y, 1, 1, 0, c_white, draw_alpha * draw_alpha * draw_alpha);
+		draw_sprite_ext(sInventorySelect, 0, temp_cursor_x_w, temp_cursor_y, 1, 1, 270, c_white, draw_alpha * draw_alpha * draw_alpha);
+		draw_sprite_ext(sInventorySelect, 0, temp_cursor_x_w, temp_cursor_y_h, 1, 1, 180, c_white, draw_alpha * draw_alpha * draw_alpha);
+		draw_sprite_ext(sInventorySelect, 0, temp_cursor_x, temp_cursor_y_h, 1, 1, 90, c_white, draw_alpha * draw_alpha * draw_alpha);
 	
-	// Draw Name and Description of Item being hovered over
-	var select_xi = select_index % inventory_width;
-	var select_yi = select_index div inventory_width;
-	if (inventory[select_xi, select_yi] > 0) {
-		//var temp_desc_x = ((select_index % inventory_width) * inventory_grid_size) + temp_x;
-		//var temp_desc_length = (game_manager.camera_x + game_manager.camera_width) - temp_desc_x - 16;
+		// Draw Name and Description of Item being hovered over
+		var select_xi = select_index % inventory_width;
+		var select_yi = select_index div inventory_width;
+		if (inventory[select_xi, select_yi] > 0) {
+			var temp_desc_x = ((select_index % inventory_width) * inventory_grid_size) + temp_x;
+			var temp_desc_length = (game_manager.camera_x + game_manager.camera_width) - temp_desc_x - 16;
 		
-		draw_set_font(fHeartBit);
-		draw_text_outline(temp_cursor_x, temp_cursor_y_h, c_white, c_black, global.item_data[inventory[select_xi, select_yi], itemstats.name]);
-		//draw_text_outline(temp_cursor_x, temp_cursor_y_h + 14, c_white, c_black, "\"" + format_string_width(global.item_data[inventory[select_xi, select_yi], itemstats.description] + "\"", temp_desc_length));
+			draw_set_font(fHeartBit);
+			draw_text_outline(temp_cursor_x, temp_cursor_y_h, c_white, c_black, global.item_data[inventory[select_xi, select_yi], itemstats.name]);
+			draw_text_outline(temp_cursor_x, temp_cursor_y_h + 14, c_white, c_black, "\"" + format_string_width(global.item_data[inventory[select_xi, select_yi], itemstats.description] + "\"", temp_desc_length));
+		}
 	}
 }
 

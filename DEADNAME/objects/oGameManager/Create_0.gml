@@ -63,6 +63,7 @@ camera_y = 0;
 
 // Cursor Variables
 cursor_icon = false;
+cursor_inventory = false;
 cursor_index = 0;
 
 // Surface Manager Variables

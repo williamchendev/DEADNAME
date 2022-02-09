@@ -44,33 +44,58 @@ if (!temp_skip_sprite) {
 var temp_stats_x = x - (sin(degtorad(draw_angle)) * (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset));
 var temp_stats_y = y - (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset) - (stats_y_offset * draw_yscale);
 
-// Draw Health Bar
+// Draw Unit Health and Armor Stats
 if (canmove and health_show) {
 	if (health_points > 0) {
-		var temp_health_width = 48;
+		// Health Bar Variables
+		var temp_health_width = health_bar_width;
 		var temp_health_percent_width = (health_points / max_health_points) * temp_health_width;
-		
-		var health_color_1 = make_color_rgb(209, 19, 54);
-		var health_color_2 = make_color_rgb(181, 24, 52);
-		var health_color_3 = make_color_rgb(150, 30, 52);
 
-		var health_color_4 = make_color_rgb(92, 25, 37);
-		var health_color_5 = make_color_rgb(222, 213, 215);
-
-		draw_set_color(health_color_4);
+		draw_set_color(health_bar_back_color_1);
 		draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x + (temp_health_width / 2)), temp_stats_y, false);
 
 		if (health_points < max_health_points) {
-			draw_set_color(health_color_5);
+			draw_set_color(health_bar_back_color_2);
 			draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x - (temp_health_width / 2)) + temp_health_percent_width + 1, temp_stats_y, false);
 		}
 
-		draw_set_color(health_color_1);
+		draw_set_color(health_bar_color_1);
 		draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x - (temp_health_width / 2)) + temp_health_percent_width, temp_stats_y, false);
-		draw_set_color(health_color_3);
+		draw_set_color(health_bar_color_3);
 		draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 1, (temp_stats_x - (temp_health_width / 2)) + temp_health_percent_width, temp_stats_y, false);
-		draw_set_color(health_color_2);
+		draw_set_color(health_bar_color_2);
 		draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 2, (temp_stats_x - (temp_health_width / 2)) + temp_health_percent_width, temp_stats_y - 1, false);
+		
+		// Armor Bar
+		if (material_inst != noone) {
+			if (instance_exists(material_inst)) {
+				// Armor Bar Variables
+				temp_stats_y += armor_bar_yoffset;
+				var temp_armor_percent_width = (armor_bar_value / material_inst.material_max_health) * temp_health_width;
+				
+				draw_set_color(health_bar_back_color_1);
+				draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x + (temp_health_width / 2)), temp_stats_y, false);
+				
+				if (armor_bar_value < material_inst.material_max_health) {
+					if (temp_armor_percent_width + 1 <= health_bar_width) {
+						draw_set_color(health_bar_back_color_2);
+						draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x - (temp_health_width / 2)) + temp_armor_percent_width + 1, temp_stats_y, false);
+					}
+					else {
+						temp_armor_percent_width = health_bar_width;
+					}
+				}
+				
+				draw_set_color(armor_bar_color_1);
+				draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 3, (temp_stats_x - (temp_health_width / 2)) + temp_armor_percent_width, temp_stats_y, false);
+				draw_set_color(armor_bar_color_3);
+				draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 1, (temp_stats_x - (temp_health_width / 2)) + temp_armor_percent_width, temp_stats_y, false);
+				draw_set_color(armor_bar_color_2);
+				draw_rectangle(temp_stats_x - (temp_health_width / 2), temp_stats_y - 2, (temp_stats_x - (temp_health_width / 2)) + temp_armor_percent_width, temp_stats_y - 1, false);
+				
+				draw_sprite(sMaterial_ArmorIcon, 0, temp_stats_x - (temp_health_width / 2), temp_stats_y - 2);
+			}
+		}
 	
 		// Debug
 		/*

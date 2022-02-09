@@ -1,6 +1,11 @@
 /// @description Melee Weapon Draw
 // Draws the Melee Weapon object to the screen
 
+// Inactive Skip
+if (!active) {
+	return;
+}
+
 // Inherit the parent event
 event_inherited();
 

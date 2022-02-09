@@ -1,6 +1,11 @@
 /// @description Firearm Draw
 // Draws the firearm object to the screen
 
+// Inactive Skip
+if (!active) {
+	return;
+}
+
 // Lighting Draw Behaviour
 var temp_draw_gui = true;
 var temp_draw_sprite = true;
@@ -219,15 +224,6 @@ if (temp_draw_sprite) {
 			}
 		}
 	}
-	
-	// Set Normal Vector Scaling Shader
-	if (normal_draw_event) {
-		shader_set(shd_vectortransform);
-		shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_weapon_rotation));
-		var temp_normalscale_x = sign(weapon_xscale);
-		var temp_normalscale_y = sign(weapon_yscale);
-		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
-	}
 
 	// Gun Spin Behaviour
 	if (gun_spin) {
@@ -241,9 +237,15 @@ if (temp_draw_sprite) {
 		temp_weapon_rotation += gun_spin_angle;
 		temp_x -= lengthdir_x(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift + gun_spin_angle);
 		temp_y -= lengthdir_y(temp_limb_distance, temp_limb_direction + weapon_rotation + recoil_angle_shift + gun_spin_angle);
-		
-		// Reset Gun Spin
-		gun_spin = false;
+	}
+	
+	// Set Normal Vector Scaling Shader
+	if (normal_draw_event) {
+		shader_set(shd_vectortransform);
+		shader_set_uniform_f(vectortransform_shader_angle, degtorad(temp_weapon_rotation));
+		var temp_normalscale_x = sign(weapon_xscale);
+		var temp_normalscale_y = sign(weapon_yscale);
+		shader_set_uniform_f(vectortransform_shader_scale, temp_normalscale_x, temp_normalscale_y, 1.0);
 	}
 
 	// Draw the Firearm

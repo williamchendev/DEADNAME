@@ -38,13 +38,15 @@ else {
 }
 
 // Door Interact Icon & Color
-if (door_open and (door_value == 0)) {
+if (!door_open or (door_value == 0)) {
 	interact.interact_icon_index = 2;
 	interact.interact_select_outline_color = make_color_rgb(172, 50, 50);
+	interact.interact_description = "Smash Door Open";
 }
 else {
 	interact.interact_icon_index = 3;
 	interact.interact_select_outline_color = make_color_rgb(99, 155, 255);
+	interact.interact_description = "Close Door";
 }
 
 // Door Physics

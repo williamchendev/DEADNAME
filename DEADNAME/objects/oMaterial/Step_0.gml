@@ -4,10 +4,6 @@
 // Reset Material Units
 ds_list_clear(material_units);
 
-// Set Material Image
-sprite_index = material_sprite;
-image_index = material_front_image_index;
-
 // Collect Material Units team_ids
 var temp_material_units = ds_list_create();
 var temp_material_units_num = instance_place_list(x, y, oUnit, temp_material_units, false);

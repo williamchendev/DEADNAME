@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Clean Up Surfaces
+// Frees surface memory in use
 
 // Clean Up Surfaces
 if (surface_exists(temp_surface)) {

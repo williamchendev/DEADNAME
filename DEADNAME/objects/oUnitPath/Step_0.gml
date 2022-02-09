@@ -2,10 +2,79 @@
 // Performs calculations necessary for the Pathfinding Unit's behaviour
 
 // Ai Behaviour Check
-if (!ai_behaviour) {
+if (!ai_behaviour and !force_pathing) {
 	// Unit Physics & Behaviour Event
 	event_inherited();
 	return;
+}
+
+// Interaction Pathing Behaviour
+if (path_interact) {
+	// Interaction Exists
+	var temp_interact_exists = false;
+	if (path_interact_inst != noone) {
+		if (instance_exists(path_interact_inst)) {
+			temp_interact_exists = true;
+		}
+	}
+	
+	// Find Interaction Path
+	if (temp_interact_exists) {
+		// Path Recalculation
+		var temp_path_interact_dis = point_distance(path_end_x, path_end_y, path_interact_inst.interact_walk_x, path_interact_inst.interact_walk_y);
+		if (path_interact_delta_tolerance < temp_path_interact_dis) {
+			path_create = true;
+			path_end_x = path_interact_inst.interact_walk_x;
+			path_end_y = path_interact_inst.interact_walk_y;
+		}
+		else if (!pathing) {
+			path_create = true;
+		}
+		
+		// Check if in Range
+		var temp_path_interact_contact = false;
+		if (path_interact_inst.interact_walk_range) {
+			if (collision_circle(path_interact_inst.interact_walk_x, path_interact_inst.interact_walk_y, path_interact_inst.interact_walk_radius, id, false, false)) {
+				temp_path_interact_contact = true;
+			}
+		}
+		else {
+			if (place_meeting(x, y, path_interact_inst)) {
+				temp_path_interact_contact = true;
+			}
+		}
+		
+		// Finished Pathing to Interaction
+		if (temp_path_interact_contact) {
+			// Interaction Engage Behaviour
+			path_interact_inst.interact_unit = id;
+			if (path_interact_inst.interact_walk_face_xdirection) {
+				var temp_interact_face_direction = sign(path_interact_inst.interact_obj.x - x);
+				if (temp_interact_face_direction == 0) {
+					temp_interact_face_direction = 1;
+				}
+				image_xscale = temp_interact_face_direction;
+			}
+			
+			// Reset Pathing
+			pathing = false;
+			path_create = false;
+			path_interact = false;
+			path_interact_inst = noone;
+			if (canmove and player_input) {
+				force_pathing = false;
+			}
+		}
+	}
+	else {
+		// Reset Pathing
+		pathing = false;
+		path_interact = false;
+		path_interact_inst = noone;
+		if (canmove and player_input) {
+			force_pathing = false;
+		}
+	}
 }
 
 // Path Array Creation
@@ -275,6 +344,11 @@ while (temp_pathfind_active) {
 
 // Unit Physics & Behaviour Event
 event_inherited();
+
+// End Force Pathing Behaviour
+if (force_pathing and !ai_behaviour) {
+	return;
+}
 
 // Interact Behaviour
 if (interact_collision_list != noone) {
