@@ -24,8 +24,14 @@ if (interact_mirror_select_obj) {
 	temp_xscale_offset = ((temp_xscale_offset - 0.5) * 2.0) * ((sprite_get_width(sprite_index) * 0.5) * (image_xscale - interact_obj.image_xscale));
 	temp_yscale_offset = ((temp_yscale_offset - 0.5) * 2.0) * ((sprite_get_height(sprite_index) * 0.5) * (image_yscale - interact_obj.image_yscale));
 
-	x = interact_obj.x + temp_xscale_offset;
-	y = interact_obj.y + temp_yscale_offset;
+	if (interact_obj.phy_active) {
+		x = interact_obj.phy_position_x + temp_xscale_offset;
+		y = interact_obj.phy_position_y + temp_yscale_offset;
+	}
+	else {
+		x = interact_obj.x + temp_xscale_offset;
+		y = interact_obj.y + temp_yscale_offset;
+	}
 }
 
 // Interact Selection

@@ -8,7 +8,7 @@
         "88dc1ebd-622c-48d0-9d3d-e79560abaa7f"
     ],
     "filterType": "GMSprite",
-    "folderName": "Revolver",
+    "folderName": "PlanetsideRevolver",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

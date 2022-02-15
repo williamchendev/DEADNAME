@@ -8,7 +8,7 @@
         "04bba8c5-a5a2-4abc-830b-450cd5004a1f"
     ],
     "filterType": "GMSprite",
-    "folderName": "Shotgun",
+    "folderName": "Devotion",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

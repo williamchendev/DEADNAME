@@ -29,5 +29,13 @@ temp_inventory_obj.inventory_stacks = temp_inventory_stacks;
 temp_inventory_obj.inventory_width = temp_inven_width;
 temp_inventory_obj.inventory_height = temp_inven_height;
 
+// Position
+if (temp_inven_unit != noone) {
+	if (instance_exists(temp_inven_unit)) {
+		temp_inventory_obj.x = temp_inven_unit.x;
+		temp_inventory_obj.y = lerp(temp_inven_unit.bbox_top, temp_inven_unit.bbox_bottom, 0.5);
+	}
+}
+
 // Returns empty inventory game object
 return temp_inventory_obj;

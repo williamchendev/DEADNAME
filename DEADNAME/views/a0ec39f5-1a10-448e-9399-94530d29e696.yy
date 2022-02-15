@@ -9,7 +9,8 @@
         "fed60d91-4725-4836-9f74-dd691311a6fc",
         "d06ea50c-d2f2-4c77-bee2-2b60d40b5745",
         "de60dc5b-f4ad-4e4e-8823-98bef569cdf4",
-        "973d6373-81bf-411c-b45d-79592418cbba"
+        "973d6373-81bf-411c-b45d-79592418cbba",
+        "e6cb03ab-ecf1-4685-b45c-70465e43e287"
     ],
     "filterType": "GMObject",
     "folderName": "Interactions",

@@ -9,7 +9,7 @@
         "94485295-a0f6-4e0c-9aaf-ccd8f5289de2"
     ],
     "filterType": "GMSprite",
-    "folderName": "GreaseGun",
+    "folderName": "OilerSubmachineGun",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

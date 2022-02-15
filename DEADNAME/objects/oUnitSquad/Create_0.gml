@@ -96,7 +96,7 @@ camera_y = camera_get_view_y(temp_camera);
 camera_debug_gif_mode = false;
 
 //addItemInventory(inventory, 8);
-add_item_inventory(inventory, 7, 32);
+//add_item_inventory(inventory, 7, 32);
 //var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 //temp_weapon.equip = true;
 //inventory.debug = true;

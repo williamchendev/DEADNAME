@@ -4,7 +4,16 @@
     "mvc": "1.0",
     "name": "oBulletCase_Shotgun_Medium",
     "eventList": [
-        
+        {
+            "id": "2f219967-d7dc-491a-86bd-1ed8411214fa",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 0,
+            "m_owner": "84f60f18-80a2-4756-a53a-243071e11635"
+        }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
     "overriddenProperties": null,

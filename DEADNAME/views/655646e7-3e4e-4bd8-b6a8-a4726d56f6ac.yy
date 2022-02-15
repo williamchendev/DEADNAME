@@ -8,7 +8,7 @@
         "6182ad8f-ff31-46fb-85e2-0efdd04cd7c9"
     ],
     "filterType": "GMObject",
-    "folderName": "M3",
+    "folderName": "OilerSubmachineGun",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

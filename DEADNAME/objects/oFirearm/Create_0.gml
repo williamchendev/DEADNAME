@@ -6,7 +6,7 @@ event_inherited();
 
 // Weapon Settings
 weapon_type = "firearm";
-weapon_ammo_id = 7;
+weapon_ammo_id = 6;
 
 bulletcase_obj = oBulletCase;
 projectile_obj = noone;
@@ -19,8 +19,8 @@ mid_range_radius = 220;
 far_range_radius = 400;
 
 // Sprite Settings
-weapon_sprite = sMarinda308;
-weapon_normal_sprite = sMarinda308_NormalMap;
+weapon_sprite = sArkov_ParagonRifle;
+weapon_normal_sprite = sArkov_ParagonRifle_NormalMap;
 muzzle_flash_sprite = sMuzzleFlash_Small;
 
 break_action_sprite = noone;

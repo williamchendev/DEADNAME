@@ -19,6 +19,10 @@ if (instance_exists(inventory)) {
 		// Set Equipped Weapon
 		if (temp_weapon_index.equip) {
 			temp_weapon = temp_weapon_index;
+			if (screen_shake_weapon != temp_weapon_index) {
+				screen_shake_weapon = temp_weapon_index;
+				screen_shake_shots = screen_shake_weapon.bullets - ds_list_size(screen_shake_weapon.flash_timer);
+			}
 		}
 	}
 }

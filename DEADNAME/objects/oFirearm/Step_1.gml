@@ -9,5 +9,6 @@ if (!active) {
 	return;
 }
 
-// Reset Gun Spin
+// Reset Gun Properties
+aiming = false;
 gun_spin = false;

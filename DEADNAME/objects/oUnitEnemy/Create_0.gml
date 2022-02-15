@@ -33,6 +33,3 @@ health_show = false;
 death_dialogue = true;
 death_dialogue_chance = 0.4;
 death_dialogue_text = noone;
-
-// Inventory
-add_item_inventory(inventory, 7, 10);

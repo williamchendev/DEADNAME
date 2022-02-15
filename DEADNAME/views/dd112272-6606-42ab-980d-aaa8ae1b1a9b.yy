@@ -9,7 +9,7 @@
         "4130eba1-671d-4c80-8a5f-6584e2380105"
     ],
     "filterType": "GMSprite",
-    "folderName": "Marinda",
+    "folderName": "Paragon",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

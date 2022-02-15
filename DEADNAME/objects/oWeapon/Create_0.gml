@@ -12,7 +12,7 @@ active = true;
 
 // Weapon Settings
 weapon_type = "firearm";
-weapon_sprite = sMarinda308;
+weapon_sprite = sArkov_ParagonRifle;
 
 weapon_rotation = 0;
 weapon_xscale = 1;

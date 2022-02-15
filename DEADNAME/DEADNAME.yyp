@@ -47,6 +47,14 @@
             }
         },
         {
+            "Key": "014b05d2-e081-4758-927a-20fe5247f242",
+            "Value": {
+                "id": "b7c7046c-95ff-4313-946f-42a6bd98a8f4",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Jump\\sWilliam_HorizonBlue_MaskUpHat_Jump.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0176fa84-6af9-4d5b-9f89-04e3f0613c43",
             "Value": {
                 "id": "7d983476-a1cd-475d-a734-137e8001787f",
@@ -60,6 +68,14 @@
                 "id": "a9e2275f-e21b-4449-8bc7-6aa0d447d79c",
                 "resourcePath": "views\\02821824-20de-4142-8281-6357825e19da.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "02862ee2-60c4-46b2-93ca-0bed22531223",
+            "Value": {
+                "id": "deb64ec1-f124-4cb6-b22c-dce8fe624250",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Arms\\sWilliam_HorizonBlue_Arms.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -103,6 +119,22 @@
             }
         },
         {
+            "Key": "03df24ee-cdb5-48c4-bdf9-39c7e7ce64e7",
+            "Value": {
+                "id": "c9bd46ab-5bbc-498c-8568-a3ea315f3742",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_ChestBot\\sWilliam_HorizonBlue_ChestBot.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "03f05b32-71ec-411c-a57a-22700c85fa79",
+            "Value": {
+                "id": "ef01d808-a3b9-4491-afe9-84efe0694e90",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Jump_NormalMap\\sWilliam_HorizonBlue_MaskHat_Jump_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0414dc28-73a2-4f7e-a732-abcea864ea9d",
             "Value": {
                 "id": "dc12d4bb-bcc6-4d58-b9df-fa80b7898514",
@@ -122,7 +154,7 @@
             "Key": "04bba8c5-a5a2-4abc-830b-450cd5004a1f",
             "Value": {
                 "id": "d2d28fac-04e8-452e-8045-edba7f90c9ab",
-                "resourcePath": "sprites\\sShotgun_NormalMap\\sShotgun_NormalMap.yy",
+                "resourcePath": "sprites\\sArkov_DevotionShotgun_NormalMap\\sArkov_DevotionShotgun_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -220,6 +252,14 @@
                 "id": "5b7a20d5-9a7e-4374-beab-f0a35d5d2f2a",
                 "resourcePath": "views\\07b76bc0-fc76-4af2-a2b2-9d32105e2b3f.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "07b9dcaf-dfba-4c0e-8742-bf67a43f4d5e",
+            "Value": {
+                "id": "45381853-08e5-448b-8ca9-5a1264b3501c",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_RightLeg\\sWilliam_HorizonBlue_RightLeg.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -463,6 +503,22 @@
             }
         },
         {
+            "Key": "1417fcdc-538b-4491-bad8-9b0025b8b580",
+            "Value": {
+                "id": "d5520316-4273-44a6-900a-b458350cf694",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Run_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "151374a4-adc7-4069-8e94-4dcdba862489",
+            "Value": {
+                "id": "58fba435-9cde-46de-b198-2cc56e2786d8",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Run\\sWilliam_HorizonBlue_MaskHat_Run.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "1552a08c-c703-491e-8bc9-c083152e9e6c",
             "Value": {
                 "id": "73f28e52-e821-45a0-a349-ecd166b7a615",
@@ -498,8 +554,16 @@
             "Key": "1672132a-f969-42a2-b931-e5dc2c921080",
             "Value": {
                 "id": "c2ada320-9daf-470d-8bd9-51a20f6b57ff",
-                "resourcePath": "objects\\oGun_GrenadeLauncher\\oGun_GrenadeLauncher.yy",
+                "resourcePath": "objects\\oGun_Arkov_ImperialGrenadeLauncher\\oGun_Arkov_ImperialGrenadeLauncher.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "1680739d-c100-41b7-af50-6bf9bf3c9ab3",
+            "Value": {
+                "id": "7cc82e0a-e75f-4ef3-97d6-b4c9115da2ac",
+                "resourcePath": "views\\1680739d-c100-41b7-af50-6bf9bf3c9ab3.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -527,6 +591,14 @@
             }
         },
         {
+            "Key": "1798cdbc-067c-4230-9a3d-e6f66d27875c",
+            "Value": {
+                "id": "4b9799dd-3032-4d5a-a6ff-64685055ee60",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_ChestTop_NormalMap\\sWilliam_HorizonBlue_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "17d9a7f1-4730-4442-a23a-d0618449f68b",
             "Value": {
                 "id": "a12ab09f-f984-4fed-93ee-f8cf9817bf8b",
@@ -548,6 +620,14 @@
                 "id": "09a1b788-091d-4b9d-a2c2-6552e3c13048",
                 "resourcePath": "datafiles_yy\\Data\\TestCutscene.txt.yy",
                 "resourceType": "GMIncludedFile"
+            }
+        },
+        {
+            "Key": "18ee9f89-e220-467c-ae47-52c57394e54c",
+            "Value": {
+                "id": "68f081f4-390f-4b4b-bfac-8251709b7c1b",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Jump_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_Jump_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -627,6 +707,14 @@
             "Value": {
                 "id": "ef4b7159-159e-4e53-a8bd-4d5cc425f87e",
                 "resourcePath": "sprites\\sMarinda308Scout\\sMarinda308Scout.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "1bf2c8e9-38d8-448e-8c07-a719793f36ee",
+            "Value": {
+                "id": "b0def02d-1e4a-433a-8503-a81b27a139d7",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Head\\sWilliam_HorizonBlue_MaskHat_Head.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -711,6 +799,14 @@
             }
         },
         {
+            "Key": "21221d11-4626-453d-9ef3-e645505bf2a0",
+            "Value": {
+                "id": "21fc7adf-f038-4434-942b-397a48642d4d",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_AimWalk\\sWilliam_HorizonBlue_MaskHat_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "21571fb1-5b28-4d4a-98ef-87145282d586",
             "Value": {
                 "id": "5039f67c-c264-44e5-8155-c3c153050c7e",
@@ -724,6 +820,14 @@
                 "id": "3261d6fb-f4dc-44bb-95bc-9f72d965a8be",
                 "resourcePath": "objects\\oAdobeHouse_CactusOpuntia\\oAdobeHouse_CactusOpuntia.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "21bb97d7-8706-4315-8963-09232400253f",
+            "Value": {
+                "id": "36d61648-dab1-46fe-9486-9be833e01679",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Run\\sWilliam_HorizonBlue_Hat_Run.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -796,6 +900,14 @@
                 "id": "33d8dcaa-ad95-4913-86aa-2497b6cbe222",
                 "resourcePath": "views\\2471373a-84f4-4226-a1e1-ca5ab57ec02a.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "2476c613-4f32-412a-9078-ebf8a0c43c4b",
+            "Value": {
+                "id": "6a5f8311-e830-463d-b6c0-ff66bcbab123",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Jump\\sWilliam_HorizonBlue_MaskHat_Jump.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -882,7 +994,7 @@
             "Key": "28abf5b7-3d56-4df2-b978-d019b8537a45",
             "Value": {
                 "id": "b71fb73c-20ae-4df8-9058-ea4d2ec46f5e",
-                "resourcePath": "objects\\oGun_FAL\\oGun_FAL.yy",
+                "resourcePath": "objects\\oGun_Arkov_FAL\\oGun_Arkov_FAL.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -892,14 +1004,6 @@
                 "id": "8c8c0fa3-94f8-4291-99ab-a9d99e10a50f",
                 "resourcePath": "sprites\\sCornfields_Rock1\\sCornfields_Rock1.yy",
                 "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "28c644c0-d83c-4ddb-805e-feb125824a3c",
-            "Value": {
-                "id": "f847b9b6-feb4-4370-9715-b10db7032b06",
-                "resourcePath": "views\\28c644c0-d83c-4ddb-805e-feb125824a3c.yy",
-                "resourceType": "GMFolder"
             }
         },
         {
@@ -914,7 +1018,7 @@
             "Key": "2983a50a-0bb0-4d07-984f-326ee3da52f7",
             "Value": {
                 "id": "951550fb-3ec5-4e3c-a32b-d00376865da8",
-                "resourcePath": "sprites\\sGrenadeLauncher\\sGrenadeLauncher.yy",
+                "resourcePath": "sprites\\sArkov_ImperialGrenadeLauncher\\sArkov_ImperialGrenadeLauncher.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -975,6 +1079,22 @@
             }
         },
         {
+            "Key": "2b65f133-cf4a-41f0-b773-8135771f0893",
+            "Value": {
+                "id": "1aded79d-50db-4a7c-8aab-47ef39f84725",
+                "resourcePath": "views\\2b65f133-cf4a-41f0-b773-8135771f0893.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "2b985115-4298-4379-b3d6-7c3a2f9ba0b7",
+            "Value": {
+                "id": "7cf91ff1-b807-4657-a862-21d13428c461",
+                "resourcePath": "sprites\\sItems_Drop_1x1\\sItems_Drop_1x1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2bb027e1-2fa8-4126-9e1e-68502cbd25ba",
             "Value": {
                 "id": "ef57aab7-e219-4ac3-ba2b-0acaa3a67778",
@@ -991,6 +1111,14 @@
             }
         },
         {
+            "Key": "2c4e986e-8a6f-4dea-9b89-7dac74d34caf",
+            "Value": {
+                "id": "123828f7-2cc2-44c4-8833-d5b34dcb78db",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_AimWalk_NormalMap\\sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2cf22a2a-0954-4ec0-8cd6-b8798f072b18",
             "Value": {
                 "id": "6be52252-744d-4e91-9c72-d2f6bfde4ab4",
@@ -1004,6 +1132,14 @@
                 "id": "aa2487ad-9986-45a8-b1f2-ca1208fe01a8",
                 "resourcePath": "views\\2cf91d32-3cbb-483c-a502-01c56b0290e5.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "2d5f42a5-0d52-476f-aa85-afc1ba741fbd",
+            "Value": {
+                "id": "99a67437-8857-42f6-abf5-724f02fb95a4",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_LeftLeg_NormalMap\\sWilliam_HorizonBlue_LeftLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1079,6 +1215,14 @@
             }
         },
         {
+            "Key": "30ece6a3-9ecb-4d42-9001-8a70785ae8f6",
+            "Value": {
+                "id": "530fe4cb-6c5f-41b4-b696-785afefa9c9b",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Aim\\sWilliam_HorizonBlue_Hat_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "30fed496-d00d-4997-bd9f-a2e289e1191c",
             "Value": {
                 "id": "96ec909b-2504-46a2-89b6-72fecb477182",
@@ -1111,6 +1255,14 @@
             }
         },
         {
+            "Key": "31a72950-3fd9-4ede-9484-fbd8bd37f60d",
+            "Value": {
+                "id": "2b8a1207-de11-4d8f-a7c9-7e82090c953c",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_ChestTop\\sWilliam_HorizonBlue_ChestTop.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "31db392c-f665-4e98-9082-7026ca301901",
             "Value": {
                 "id": "3a4c79e7-f110-4ceb-b24b-b48e58b28593",
@@ -1123,6 +1275,14 @@
             "Value": {
                 "id": "6089bb73-8a48-41a3-a15b-71fc9a9945b4",
                 "resourcePath": "views\\31e70659-c24d-43f4-8c31-a93f10ae9a66.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "31f93819-e0c9-4607-80de-ba3f35b26d1d",
+            "Value": {
+                "id": "643180f5-f254-4dbf-b5a0-1dd18986daf4",
+                "resourcePath": "views\\31f93819-e0c9-4607-80de-ba3f35b26d1d.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -1154,7 +1314,7 @@
             "Key": "3297d16b-79b7-45cd-97aa-7fa602a71ef4",
             "Value": {
                 "id": "d7c445ba-dfa7-4444-a6c9-dec3612e596e",
-                "resourcePath": "sprites\\sMarinda308\\sMarinda308.yy",
+                "resourcePath": "sprites\\sArkov_ParagonRifle\\sArkov_ParagonRifle.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1179,6 +1339,14 @@
             "Value": {
                 "id": "e8c805bf-ad80-44f9-a011-b967e905bc6e",
                 "resourcePath": "sprites\\sDebugMaterial\\sDebugMaterial.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "341eca0e-0afe-4b21-b761-62d6f0af5a54",
+            "Value": {
+                "id": "170488dd-cc1a-4455-969b-8fcef92091e7",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Idle\\sWilliam_HorizonBlue_Hat_Idle.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1362,7 +1530,7 @@
             "Key": "3a986a05-d1d6-4ce3-bc54-a2fcadf78d2b",
             "Value": {
                 "id": "d463be8c-88b6-486f-9197-b96bb09f93f2",
-                "resourcePath": "sprites\\sFAL_Magazine\\sFAL_Magazine.yy",
+                "resourcePath": "sprites\\sArkov_FAL_Magazine\\sArkov_FAL_Magazine.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1404,6 +1572,22 @@
                 "id": "76b8afbc-0dc1-4915-a8a9-b4190df422a8",
                 "resourcePath": "views\\3bd0b61f-cef1-4643-91cf-d3de04b08385.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "3bfe798f-2ff2-468a-b65b-562d79d390e6",
+            "Value": {
+                "id": "82a919db-7df7-4b48-941e-0bf887dbcafe",
+                "resourcePath": "views\\3bfe798f-2ff2-468a-b65b-562d79d390e6.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "3c0f7661-9ff8-48c7-b791-8383599c2589",
+            "Value": {
+                "id": "39daa351-21f3-4fb4-9b3a-5651a4ecc7ea",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Run_NormalMap\\sWilliam_HorizonBlue_Hat_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1468,6 +1652,14 @@
                 "id": "a3553669-2fd3-4826-9fe6-6738b07a1005",
                 "resourcePath": "rooms\\rTutorialLevel_Houses\\rTutorialLevel_Houses.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "3ec17bb0-67b0-4c9e-8c0c-46768831ed13",
+            "Value": {
+                "id": "3b283bf5-07f9-4daf-b754-1877de37b78a",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Head\\sWilliam_HorizonBlue_MaskUpHat_Head.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1546,7 +1738,7 @@
             "Key": "4130eba1-671d-4c80-8a5f-6584e2380105",
             "Value": {
                 "id": "20116030-3e22-437f-b673-eb045a869b90",
-                "resourcePath": "sprites\\sMarinda308_Magazine\\sMarinda308_Magazine.yy",
+                "resourcePath": "sprites\\sArkov_ParagonRifle_Magazine\\sArkov_ParagonRifle_Magazine.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1618,7 +1810,7 @@
             "Key": "4379c0b3-6d6f-43d6-bf26-c0acdc0bf9d2",
             "Value": {
                 "id": "98661b6c-b588-4ce1-82b6-985ad411fafb",
-                "resourcePath": "objects\\oGun_Revolver\\oGun_Revolver.yy",
+                "resourcePath": "objects\\oGun_BlackMarket_PlanetsideRevolver\\oGun_BlackMarket_PlanetsideRevolver.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1634,7 +1826,7 @@
             "Key": "449f8470-399a-44d5-af7c-3b3669929719",
             "Value": {
                 "id": "8cf75068-8b59-4c7b-a4a2-aea8f60f6ab0",
-                "resourcePath": "sprites\\sGreaseGun\\sGreaseGun.yy",
+                "resourcePath": "sprites\\sBlackMarket_OilerSubmachineGun\\sBlackMarket_OilerSubmachineGun.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1708,6 +1900,14 @@
                 "id": "473dfea0-a159-45e3-9326-51cfc3d9addc",
                 "resourcePath": "objects\\oTextBox\\oTextBox.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "46ceae70-1f64-4713-97d8-7d58c42e86b0",
+            "Value": {
+                "id": "c86afd90-1d17-4331-8bf6-29ffc53e4f13",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1895,6 +2095,14 @@
             }
         },
         {
+            "Key": "4de3c7f6-07f9-4f30-a83b-16661ea7d1c0",
+            "Value": {
+                "id": "d0aeb33c-86ee-4ca3-ac24-ae7185c4c332",
+                "resourcePath": "views\\4de3c7f6-07f9-4f30-a83b-16661ea7d1c0.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "4ea0e14e-c1f4-4b86-81fd-32178b915f95",
             "Value": {
                 "id": "4e554a42-1d38-43d8-af7a-1eb64db3d644",
@@ -1908,6 +2116,14 @@
                 "id": "2f6ac323-1dee-4095-876a-961e97e3d5ea",
                 "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeE\\oAdobeHouse_PaleDesertRocksLargeE.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "4f279777-d881-43ac-beae-3a6a160026ad",
+            "Value": {
+                "id": "c4fe629b-e12e-490c-8bea-7afe5b65ba9c",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_LeftLeg\\sWilliam_HorizonBlue_LeftLeg.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2146,7 +2362,7 @@
             "Key": "582c74e3-a395-4296-b48a-9441a6e31984",
             "Value": {
                 "id": "1b1a9b98-9abe-444c-83e7-6ec37f7858a3",
-                "resourcePath": "objects\\oGun_Shotgun\\oGun_Shotgun.yy",
+                "resourcePath": "objects\\oGun_Arkov_DevotionShotgun\\oGun_Arkov_DevotionShotgun.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -2172,6 +2388,14 @@
                 "id": "0fc6f24f-4ace-4b19-8931-ddaef2816d6f",
                 "resourcePath": "scripts\\create_empty_inventory\\create_empty_inventory.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "5947796e-b337-4787-9c1b-3f0b13220db9",
+            "Value": {
+                "id": "2bd669d4-3d7f-4dce-b8ea-d6859902e0d8",
+                "resourcePath": "views\\5947796e-b337-4787-9c1b-3f0b13220db9.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -2282,7 +2506,7 @@
             "Key": "5dab52ea-774d-43b7-8657-0ccd08088321",
             "Value": {
                 "id": "e0709770-31e5-4fbf-99a4-16c569cad055",
-                "resourcePath": "sprites\\sShotgun\\sShotgun.yy",
+                "resourcePath": "sprites\\sArkov_DevotionShotgun\\sArkov_DevotionShotgun.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2323,6 +2547,14 @@
             "Value": {
                 "id": "da0549dc-842c-4876-890e-fe9d3b4a0ca0",
                 "resourcePath": "sprites\\sAdobeHouse_WoodCorbel\\sAdobeHouse_WoodCorbel.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "5f250d07-44a3-49ac-bdad-2052a47d0760",
+            "Value": {
+                "id": "18316541-08ae-415f-89ab-bbe6c944fb57",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Head_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_Head_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2394,7 +2626,7 @@
             "Key": "6182ad8f-ff31-46fb-85e2-0efdd04cd7c9",
             "Value": {
                 "id": "8806aa29-fe14-406e-856c-585222cb45c2",
-                "resourcePath": "objects\\oGun_M3_Mag\\oGun_M3_Mag.yy",
+                "resourcePath": "objects\\oGun_BlackMarket_OilerSubmachineGun_Mag\\oGun_BlackMarket_OilerSubmachineGun_Mag.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -2444,6 +2676,14 @@
                 "id": "c7309826-12ad-453e-9f4e-7720a084e9e0",
                 "resourcePath": "shaders\\shd_color_ceilalpha\\shd_color_ceilalpha.yy",
                 "resourceType": "GMShader"
+            }
+        },
+        {
+            "Key": "63d7de84-1c5c-4e04-9c01-4b57f6332bcd",
+            "Value": {
+                "id": "b9dd1ae2-6fba-44ba-b8a0-471fde5d2a44",
+                "resourcePath": "views\\63d7de84-1c5c-4e04-9c01-4b57f6332bcd.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -2535,6 +2775,14 @@
             }
         },
         {
+            "Key": "68016508-559f-4f37-bb0d-b9422dccde80",
+            "Value": {
+                "id": "a606d216-7f7c-48a3-9ec2-9578fd011359",
+                "resourcePath": "views\\68016508-559f-4f37-bb0d-b9422dccde80.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "6808a18c-3b9f-4e95-b64c-f985f3fde44e",
             "Value": {
                 "id": "b31edf11-b4bd-4caa-8d3d-e82549e08ae3",
@@ -2599,6 +2847,14 @@
             }
         },
         {
+            "Key": "6a54f0bf-883f-4e78-a408-e8e419783dd5",
+            "Value": {
+                "id": "d4c1447f-c462-47bb-bf6f-7dbc043570a8",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Jump\\sWilliam_HorizonBlue_Hat_Jump.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6a8be42f-cff2-429e-8581-d522b4c10e1b",
             "Value": {
                 "id": "ccba6738-91f6-4b5d-a849-c54fb58fe854",
@@ -2619,6 +2875,14 @@
             "Value": {
                 "id": "79f0018f-c740-46c9-ad33-0c3f736a0b43",
                 "resourcePath": "sprites\\sAdobeHouse_SageBrush_Sprite\\sAdobeHouse_SageBrush_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6b3e1059-7f34-4969-874c-dc4b5ac35620",
+            "Value": {
+                "id": "2299b081-a40e-4f33-915c-d12dfa7336f0",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Jump_NormalMap\\sWilliam_HorizonBlue_Hat_Jump_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2652,6 +2916,14 @@
                 "id": "9d652fed-1bfd-452b-975d-2abab68e0c5e",
                 "resourcePath": "scripts\\keyboard_check_number\\keyboard_check_number.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "6c3c406d-8d3e-4847-9522-e1ff920a40f2",
+            "Value": {
+                "id": "30625cb7-7c0f-41c1-a9b9-b7ec87e55d58",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_ChestBot_NormalMap\\sWilliam_HorizonBlue_ChestBot_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2823,6 +3095,14 @@
             }
         },
         {
+            "Key": "73cad9a0-1488-4c14-a4ea-de550febb909",
+            "Value": {
+                "id": "0ffa3cc0-d334-4626-8ee2-edbb7b00940c",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Idle\\sWilliam_HorizonBlue_MaskHat_Idle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "73fdadfb-c863-438e-8232-da3dfd79adaf",
             "Value": {
                 "id": "d67430fd-04f0-4553-b3d8-3257ad9d0905",
@@ -2863,6 +3143,14 @@
             }
         },
         {
+            "Key": "75e47611-10aa-416a-9fe9-520c0f85787a",
+            "Value": {
+                "id": "e08e96e0-4e3b-4fe4-9dc6-b4d428667db8",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_AimWalk_NormalMap\\sWilliam_HorizonBlue_MaskHat_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "76560f07-4120-4d86-b0b2-8728b531b30a",
             "Value": {
                 "id": "996ecece-186b-4a14-b9bf-0e7ab17d8259",
@@ -2891,6 +3179,14 @@
             "Value": {
                 "id": "996f66e2-0a71-47e8-9e76-2122a3e0035c",
                 "resourcePath": "sprites\\sWilliam_Aim\\sWilliam_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "77c4637d-c818-4b78-8493-7589e9cd58fc",
+            "Value": {
+                "id": "d8ac0653-afc2-4f2d-96d2-79b6e271f1f6",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Run\\sWilliam_HorizonBlue_MaskUpHat_Run.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2943,6 +3239,14 @@
             }
         },
         {
+            "Key": "79069a41-69d0-471e-9420-0c3e379653b3",
+            "Value": {
+                "id": "79d1c6d1-31e2-476f-a149-eb7f68ea42ad",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Aim_NormalMap\\sWilliam_HorizonBlue_MaskHat_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "79350dba-2d4a-4430-b29f-d8daaffc98a3",
             "Value": {
                 "id": "03742013-6550-4d08-bb27-c6b42d7d59f3",
@@ -2959,11 +3263,27 @@
             }
         },
         {
+            "Key": "7a66dbd1-ff55-4d02-af65-26ada61a8b14",
+            "Value": {
+                "id": "8359ae47-ba70-4dcc-b344-6783d941e73c",
+                "resourcePath": "views\\7a66dbd1-ff55-4d02-af65-26ada61a8b14.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "7a7ac01a-2e31-4d18-b222-2cb84e72e52a",
             "Value": {
                 "id": "01fc37bb-4a10-4daf-be82-1827fe623733",
                 "resourcePath": "views\\7a7ac01a-2e31-4d18-b222-2cb84e72e52a.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "7ab0b469-0e09-4d4b-8ccb-19a0b068b0f8",
+            "Value": {
+                "id": "77d562e9-8a7a-45b2-89f3-607dba534dd9",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Idle\\sWilliam_HorizonBlue_MaskUpHat_Idle.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3111,6 +3431,14 @@
             }
         },
         {
+            "Key": "81a1b33b-3616-4dbb-b3b9-79793c357a82",
+            "Value": {
+                "id": "c2bae872-e810-4a9d-b3fd-bfa2f083e20f",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Aim\\sWilliam_HorizonBlue_MaskUpHat_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8251215e-19d2-4f96-9435-1d3ad5b5c21f",
             "Value": {
                 "id": "3db94115-e811-4b41-9703-cf8a0c7e0d4a",
@@ -3194,7 +3522,7 @@
             "Key": "850304bc-303c-4c29-a8b5-ba2d0783b5ce",
             "Value": {
                 "id": "9ec0767c-19a0-43af-890e-6dba8e8ea020",
-                "resourcePath": "sprites\\sGrenadeLauncher_NormalMap\\sGrenadeLauncher_NormalMap.yy",
+                "resourcePath": "sprites\\sArkov_ImperialGrenadeLauncher_NormalMap\\sArkov_ImperialGrenadeLauncher_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3212,6 +3540,14 @@
                 "id": "3b1d3d3e-c994-4257-8ec5-e488203506c3",
                 "resourcePath": "objects\\oAdobeHouse_SageBrushF\\oAdobeHouse_SageBrushF.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "85473660-bf37-4fb1-8a63-a4d796fff686",
+            "Value": {
+                "id": "8402c72a-95cd-4251-b734-b666fa81311e",
+                "resourcePath": "views\\85473660-bf37-4fb1-8a63-a4d796fff686.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3234,7 +3570,7 @@
             "Key": "861967fc-3423-4f00-844e-02ffd153f6ca",
             "Value": {
                 "id": "23559a51-bfe9-495f-8663-fd7534d6118d",
-                "resourcePath": "objects\\oGun_M3\\oGun_M3.yy",
+                "resourcePath": "objects\\oGun_BlackMarket_OilerSubmachineGun\\oGun_BlackMarket_OilerSubmachineGun.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -3268,6 +3604,14 @@
                 "id": "ec29cc8f-7a0a-45fb-ab37-977782bd1c96",
                 "resourcePath": "objects\\oAdobeHouse_PaleDesertRockSmall_RandomIndex\\oAdobeHouse_PaleDesertRockSmall_RandomIndex.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "8767e5cf-ef00-4500-8021-1cec0ab7d2f4",
+            "Value": {
+                "id": "39ffb355-ea6d-47c2-becd-e8239af692fc",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Aim_NormalMap\\sWilliam_HorizonBlue_Hat_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3314,7 +3658,7 @@
             "Key": "88dc1ebd-622c-48d0-9d3d-e79560abaa7f",
             "Value": {
                 "id": "17391fab-896a-442e-b504-95280da0289e",
-                "resourcePath": "sprites\\sRevolver_NormalMap\\sRevolver_NormalMap.yy",
+                "resourcePath": "sprites\\sBlackMarket_PlanetsideRevolver_NormalMap\\sBlackMarket_PlanetsideRevolver_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3364,6 +3708,14 @@
                 "id": "e13d8957-acca-461a-ad21-668f4239c803",
                 "resourcePath": "sprites\\sWilliamDS_Run\\sWilliamDS_Run.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "8b98f448-bd3a-4aeb-8114-43793c3ab88b",
+            "Value": {
+                "id": "f6853bb8-09c9-44c1-b002-e559fb0d9a77",
+                "resourcePath": "views\\8b98f448-bd3a-4aeb-8114-43793c3ab88b.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3538,7 +3890,7 @@
             "Key": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
             "Value": {
                 "id": "dc98625f-5df8-4454-a8eb-4de938074a16",
-                "resourcePath": "sprites\\sRevolver\\sRevolver.yy",
+                "resourcePath": "sprites\\sBlackMarket_PlanetsideRevolver\\sBlackMarket_PlanetsideRevolver.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3602,7 +3954,7 @@
             "Key": "94485295-a0f6-4e0c-9aaf-ccd8f5289de2",
             "Value": {
                 "id": "4bbec448-e627-432e-a01b-174e44cbd55a",
-                "resourcePath": "sprites\\sGreaseGun_Magazine\\sGreaseGun_Magazine.yy",
+                "resourcePath": "sprites\\sBlackMarket_OilerSubmachineGun_Magazine\\sBlackMarket_OilerSubmachineGun_Magazine.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3767,6 +4119,14 @@
             }
         },
         {
+            "Key": "9cc8ebfb-42fd-4a99-a097-1cd611cd0c60",
+            "Value": {
+                "id": "8db950ca-6b92-41cc-a640-9180bbc835a5",
+                "resourcePath": "views\\9cc8ebfb-42fd-4a99-a097-1cd611cd0c60.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "9d190a4f-528f-49c4-8b29-7d60300e220e",
             "Value": {
                 "id": "33344ac2-ab6c-402a-8d6d-59f2e0bb8e50",
@@ -3855,6 +4215,14 @@
             }
         },
         {
+            "Key": "a10368cd-2617-44b3-bb73-a98c8f6f237d",
+            "Value": {
+                "id": "dd47d359-9883-4afc-bce7-51849826ba8b",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_RightLeg_NormalMap\\sWilliam_HorizonBlue_RightLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a144d855-54bf-46ed-8760-76cf2384a888",
             "Value": {
                 "id": "11c533af-0ec5-4e00-bc2d-efd03d8a738f",
@@ -3899,6 +4267,14 @@
             "Value": {
                 "id": "359cdc3e-e44e-4eb2-b4c0-96c831b99f11",
                 "resourcePath": "sprites\\sAdobeHouse_Bookshelf\\sAdobeHouse_Bookshelf.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a44f4ccf-84a1-49fa-8ef7-276e344e3740",
+            "Value": {
+                "id": "04021ef7-630b-4a71-a040-c2954fdb7aad",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Head_NormalMap\\sWilliam_HorizonBlue_MaskHat_Head_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3967,6 +4343,14 @@
             }
         },
         {
+            "Key": "a7b599eb-4e3b-4fff-9fa3-067f14e0b50e",
+            "Value": {
+                "id": "0ff9bcb8-4250-4387-91ce-b35d02c71488",
+                "resourcePath": "views\\a7b599eb-4e3b-4fff-9fa3-067f14e0b50e.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "a81bb557-cab9-405c-9d49-60bf3ed69ccf",
             "Value": {
                 "id": "80d7ea4d-f897-426f-941c-644e117a0893",
@@ -4018,7 +4402,7 @@
             "Key": "aa2f1a3d-2f17-4c3e-8568-fcc121ee1e02",
             "Value": {
                 "id": "1d2bb7a7-767f-4539-9936-2559388fd484",
-                "resourcePath": "objects\\oGun_M14_Mag\\oGun_M14_Mag.yy",
+                "resourcePath": "objects\\oGun_Arkov_ParagonRifle_Mag\\oGun_Arkov_ParagonRifle_Mag.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -4083,6 +4467,14 @@
             "Value": {
                 "id": "f59c572c-3f06-49bf-ae88-a2b367f84cd5",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_AimWalk_NormalMap\\sWilliamDS_Heavy_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ac657923-11c5-4b98-a8ea-aefe6e70072a",
+            "Value": {
+                "id": "1df59ee3-66e9-4380-aed4-3f77183db09f",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Idle_NormalMap\\sWilliam_HorizonBlue_MaskHat_Idle_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4351,6 +4743,22 @@
             }
         },
         {
+            "Key": "b5378b30-65f6-489a-a946-9e959f8451ed",
+            "Value": {
+                "id": "2d8dfe36-e458-47ee-85d4-f0b39fb25913",
+                "resourcePath": "views\\b5378b30-65f6-489a-a946-9e959f8451ed.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "b5af190f-8f52-413c-8ad3-0376e5a79780",
+            "Value": {
+                "id": "63bf8f29-669a-4c24-9e41-e2646166dc0d",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_Aim_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "b5c50473-4373-4f3f-bbce-e4fc68c43ac2",
             "Value": {
                 "id": "c0198a71-8e27-4345-931e-1ada64c6034c",
@@ -4426,16 +4834,8 @@
             "Key": "b8bd923a-1ca0-47d9-a9cf-ffe0d712f7a8",
             "Value": {
                 "id": "fd8c316a-4275-4d30-a862-595c5019e6fc",
-                "resourcePath": "sprites\\sGreaseGun_NormalMap\\sGreaseGun_NormalMap.yy",
+                "resourcePath": "sprites\\sBlackMarket_OilerSubmachineGun_NormalMap\\sBlackMarket_OilerSubmachineGun_NormalMap.yy",
                 "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "b8cbd628-fb72-4c4d-a14e-c139c2656796",
-            "Value": {
-                "id": "59755431-75e2-4845-8a0e-5d8a6b525872",
-                "resourcePath": "views\\b8cbd628-fb72-4c4d-a14e-c139c2656796.yy",
-                "resourceType": "GMFolder"
             }
         },
         {
@@ -4460,6 +4860,14 @@
                 "id": "b1ea09be-bd1f-45aa-a4e7-40d68b0f4657",
                 "resourcePath": "objects\\oDebugTeleportParent\\oDebugTeleportParent.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "b95aed1b-949a-48cb-8d02-b5aaa96930f5",
+            "Value": {
+                "id": "295d1017-b9f3-4bf6-9095-e7989bf3540f",
+                "resourcePath": "sprites\\sItems_Drop\\sItems_Drop.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4492,6 +4900,14 @@
                 "id": "2738e3e8-8ebf-4c11-91f5-7675bde8ae58",
                 "resourcePath": "sprites\\sItems2x2\\sItems2x2.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ba31a3c6-ed4e-4429-b95d-d685975184d7",
+            "Value": {
+                "id": "bcdb80d5-f995-4bd3-8166-6bec7d8851e0",
+                "resourcePath": "views\\ba31a3c6-ed4e-4429-b95d-d685975184d7.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -4578,7 +4994,7 @@
             "Key": "bcf5d7f1-8558-49c3-b0d2-d818a72bf45b",
             "Value": {
                 "id": "bbe2ed4a-0627-46cd-8a3f-edfaf676057b",
-                "resourcePath": "sprites\\sGrenadeLauncher_BreakAction_NormalMap\\sGrenadeLauncher_BreakAction_NormalMap.yy",
+                "resourcePath": "sprites\\sArkov_ImperialGrenadeLauncher_BAction_NormalMap\\sArkov_ImperialGrenadeLauncher_BAction_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4639,6 +5055,14 @@
             }
         },
         {
+            "Key": "beb923a1-c195-402e-be7d-559751bd63e5",
+            "Value": {
+                "id": "3bf5f7fd-b67e-435f-b4f9-860261463b7a",
+                "resourcePath": "objects\\oItem_DropContainer\\oItem_DropContainer.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "bebfd0b5-20cf-4d34-8e80-06492a3d7e01",
             "Value": {
                 "id": "3c781898-a98f-4fbc-ba75-903969eff000",
@@ -4671,6 +5095,14 @@
             }
         },
         {
+            "Key": "bfeb931c-694b-4f4c-98c0-ed680e5de009",
+            "Value": {
+                "id": "9b46f312-d8df-46fb-9fc4-14fa7eb61070",
+                "resourcePath": "views\\bfeb931c-694b-4f4c-98c0-ed680e5de009.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "bff0883d-7ba8-4a35-a4d8-ddcdeaad9d2f",
             "Value": {
                 "id": "acdcb7ec-b26b-43f1-84e7-44030efa2bfc",
@@ -4690,7 +5122,7 @@
             "Key": "c05c0d21-3f13-4cbb-a8ed-5bcb97dc1b65",
             "Value": {
                 "id": "df24628c-fbab-407c-ba18-591e719bb358",
-                "resourcePath": "sprites\\sGrenadeLauncher_BreakAction\\sGrenadeLauncher_BreakAction.yy",
+                "resourcePath": "sprites\\sArkov_ImperialGrenadeLauncher_BAction\\sArkov_ImperialGrenadeLauncher_BAction.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4722,7 +5154,7 @@
             "Key": "c28bced3-f79c-4a94-b987-2bbd96a9771a",
             "Value": {
                 "id": "f8230600-2730-4ebb-8830-3c95b0324bca",
-                "resourcePath": "sprites\\sFAL_NormalMap\\sFAL_NormalMap.yy",
+                "resourcePath": "sprites\\sArkov_FAL_NormalMap\\sArkov_FAL_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4759,6 +5191,14 @@
             }
         },
         {
+            "Key": "c34ab9b4-7995-4cb7-b5c7-273d59521f36",
+            "Value": {
+                "id": "60a3544a-fa76-4c46-ad18-68fcd997b163",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Head_NormalMap\\sWilliam_HorizonBlue_Hat_Head_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c3d62596-986c-4281-bf7c-e78831117ad2",
             "Value": {
                 "id": "01ae0f6d-874b-4ee3-8547-5b580a16bd4e",
@@ -4791,18 +5231,26 @@
             }
         },
         {
-            "Key": "c4bd4f8f-431a-4aea-9df4-e8915fa8d4d2",
+            "Key": "c446e27e-2072-4c3d-a752-39f493232cc4",
             "Value": {
-                "id": "52a13b04-8562-4e61-853e-a7a8e172f8fc",
-                "resourcePath": "views\\c4bd4f8f-431a-4aea-9df4-e8915fa8d4d2.yy",
+                "id": "89142d3d-5231-4a31-a747-147cb7906278",
+                "resourcePath": "views\\c446e27e-2072-4c3d-a752-39f493232cc4.yy",
                 "resourceType": "GMFolder"
             }
         },
         {
-            "Key": "c4bf3853-cff9-4fbe-95a7-8e30d1224f30",
+            "Key": "c48f1f4b-4380-4690-8171-f94f655e7b0f",
             "Value": {
-                "id": "1eb46117-344c-4fdb-bf07-099b27c5be6a",
-                "resourcePath": "views\\c4bf3853-cff9-4fbe-95a7-8e30d1224f30.yy",
+                "id": "92146f21-230c-4116-8ed6-b1b7da179f1a",
+                "resourcePath": "views\\c48f1f4b-4380-4690-8171-f94f655e7b0f.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c4bd4f8f-431a-4aea-9df4-e8915fa8d4d2",
+            "Value": {
+                "id": "52a13b04-8562-4e61-853e-a7a8e172f8fc",
+                "resourcePath": "views\\c4bd4f8f-431a-4aea-9df4-e8915fa8d4d2.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -4879,6 +5327,14 @@
             }
         },
         {
+            "Key": "c63de64f-c932-4f89-913d-554f8e4c2d3c",
+            "Value": {
+                "id": "d5501ffe-edb9-4640-aa8d-4d5f737df5b2",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Head\\sWilliam_HorizonBlue_Hat_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c66a45bd-99a1-4669-bbc6-31859a91baf1",
             "Value": {
                 "id": "0605326c-d82e-4b02-ab98-8000989c4a33",
@@ -4932,6 +5388,14 @@
                 "id": "3efe10be-dd1e-4659-819a-e1995490c3bb",
                 "resourcePath": "objects\\oEditorStartMenuButton\\oEditorStartMenuButton.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "c9123c2d-c700-4b02-82fa-416350ad6302",
+            "Value": {
+                "id": "a5bd7c26-b663-48e9-b13c-a071136eb64e",
+                "resourcePath": "views\\c9123c2d-c700-4b02-82fa-416350ad6302.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -5135,6 +5599,14 @@
             }
         },
         {
+            "Key": "d136d0ac-5439-4071-8584-f301e084e472",
+            "Value": {
+                "id": "51451eec-2113-44d8-bd4b-32588528dfee",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Arms_NormalMap\\sWilliam_HorizonBlue_Arms_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "d1bcdf4b-ffb6-49ed-a86b-3beb586095b7",
             "Value": {
                 "id": "6ddaf064-2e50-406b-ab98-d316c5eb1c5d",
@@ -5223,6 +5695,22 @@
             }
         },
         {
+            "Key": "d565893f-e447-463b-a3b1-687cddfddaec",
+            "Value": {
+                "id": "8cfcb0af-6825-4333-bd72-67868e81000d",
+                "resourcePath": "views\\d565893f-e447-463b-a3b1-687cddfddaec.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "d5a87411-e503-4444-977d-a170199bab70",
+            "Value": {
+                "id": "cd5597df-9410-425c-97f0-822ad4554ac8",
+                "resourcePath": "views\\d5a87411-e503-4444-977d-a170199bab70.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "d648145c-8202-4313-b99e-8352802cef52",
             "Value": {
                 "id": "10792ce4-9e54-42ae-880b-ec36ab50bf80",
@@ -5236,6 +5724,14 @@
                 "id": "5d94b186-95db-40e2-a816-c672dc65b432",
                 "resourcePath": "datafiles_yy\\Data\\AdobeHouse_NPC.txt.yy",
                 "resourceType": "GMIncludedFile"
+            }
+        },
+        {
+            "Key": "d743d685-36d3-49dd-968d-6080a9eed67f",
+            "Value": {
+                "id": "8ad6984c-d1a7-4801-9e86-f22d9cd7cb7b",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Idle_NormalMap\\sWilliam_HorizonBlue_Hat_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5268,6 +5764,14 @@
                 "id": "05c30a4a-de9e-45d1-987a-07c2ba597ef4",
                 "resourcePath": "sprites\\sBulletCase_Medium\\sBulletCase_Medium.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "d94ae5f1-4e12-497a-998e-a51d639388a5",
+            "Value": {
+                "id": "4b514265-25a3-46a9-91ae-1264198cc859",
+                "resourcePath": "views\\d94ae5f1-4e12-497a-998e-a51d639388a5.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -5463,6 +5967,14 @@
             }
         },
         {
+            "Key": "e3e89282-8991-4066-b37f-313d92665ccb",
+            "Value": {
+                "id": "cf794328-160a-4cbe-af7c-00fca404e478",
+                "resourcePath": "views\\e3e89282-8991-4066-b37f-313d92665ccb.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "e3eb4f29-c3cc-435d-9cff-ad2dfcea7794",
             "Value": {
                 "id": "9f2fd90f-1e59-47ae-a89d-99a6461c122f",
@@ -5543,6 +6055,14 @@
             }
         },
         {
+            "Key": "e6cb03ab-ecf1-4685-b45c-70465e43e287",
+            "Value": {
+                "id": "1c447f96-7b8b-47f5-ab25-cf29716ade1d",
+                "resourcePath": "objects\\oInteractItem\\oInteractItem.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "e6de1107-735b-4dc1-93ef-0eb11df5238b",
             "Value": {
                 "id": "03672e6f-d897-4c87-b7b6-8c4410138fb7",
@@ -5578,7 +6098,7 @@
             "Key": "e761ccad-0c72-4e17-b007-706073eade60",
             "Value": {
                 "id": "4caef89e-759d-4145-9559-956f9a810c5d",
-                "resourcePath": "objects\\oGun_M14\\oGun_M14.yy",
+                "resourcePath": "objects\\oGun_Arkov_ParagonRifle\\oGun_Arkov_ParagonRifle.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -5663,6 +6183,14 @@
             }
         },
         {
+            "Key": "e9e56b79-47a9-4f3b-b8a6-74a3da57d40c",
+            "Value": {
+                "id": "7e93210f-9295-4091-9148-50aac2539769",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Aim\\sWilliam_HorizonBlue_MaskHat_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ea29e6f6-2bae-4ff4-8ce3-ea7fd4098123",
             "Value": {
                 "id": "ac5a81cd-e853-4146-bb16-d087e965de32",
@@ -5691,6 +6219,14 @@
             "Value": {
                 "id": "01651e92-1a5c-415b-9a46-d78cde2ed1e5",
                 "resourcePath": "sprites\\sCornfields_HouseWall1\\sCornfields_HouseWall1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "eb205522-6f3a-4253-9dbf-e345dffe1a73",
+            "Value": {
+                "id": "21f28467-b6c6-4764-98e6-9eb036680e06",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Run_NormalMap\\sWilliam_HorizonBlue_MaskHat_Run_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5746,7 +6282,7 @@
             "Key": "ed7fbcf2-da34-4c2a-aeb2-10c2cb23b340",
             "Value": {
                 "id": "d8a6d556-a8f2-4cd0-9ca8-787f0d79879e",
-                "resourcePath": "objects\\oGun_FAL_Mag\\oGun_FAL_Mag.yy",
+                "resourcePath": "objects\\oGun_Arkov_FAL_Mag\\oGun_Arkov_FAL_Mag.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -5754,7 +6290,7 @@
             "Key": "edffe961-699c-4045-b582-8ded38b1b142",
             "Value": {
                 "id": "6ad4c0ed-0f71-4718-af97-c9be2a382b2f",
-                "resourcePath": "sprites\\sFAL\\sFAL.yy",
+                "resourcePath": "sprites\\sArkov_FAL\\sArkov_FAL.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5887,6 +6423,22 @@
             }
         },
         {
+            "Key": "f1e2c730-da31-4327-9db5-3e87f019d2fe",
+            "Value": {
+                "id": "ec846ce2-9762-4eca-871c-7268064147ec",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_AimWalk\\sWilliam_HorizonBlue_Hat_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f24b232b-db0e-4f2d-8415-4b4ae946f8bb",
+            "Value": {
+                "id": "64db6c6c-7c30-413a-9387-0110bbb57f11",
+                "resourcePath": "objects\\oUnit_William_BlueHorizon_Test\\oUnit_William_BlueHorizon_Test.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "f261dc50-b3ae-490b-aeae-2a5c92d70bcc",
             "Value": {
                 "id": "2bb0de06-ff67-4a4f-b15b-e8ca6148dc8b",
@@ -5951,11 +6503,11 @@
             }
         },
         {
-            "Key": "f585e282-9d49-4f9e-8e42-e8a67820ee08",
+            "Key": "f5342ad8-98ee-40f6-bd31-b584e83d6202",
             "Value": {
-                "id": "3873300f-7918-4609-ada8-0c3ebaf88592",
-                "resourcePath": "views\\f585e282-9d49-4f9e-8e42-e8a67820ee08.yy",
-                "resourceType": "GMFolder"
+                "id": "095b509c-ca79-4fb1-bfab-2017fba593f3",
+                "resourcePath": "objects\\oUnitEnemy_HorizonBlue\\oUnitEnemy_HorizonBlue.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -5964,6 +6516,14 @@
                 "id": "131561da-29c0-4566-a66f-121c5aff985d",
                 "resourcePath": "objects\\oAdobeHouse_SageBrush\\oAdobeHouse_SageBrush.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f71adf88-11c0-4ee7-bf68-a6091972e2dd",
+            "Value": {
+                "id": "acd78e82-4a1a-46f9-9cd7-8cdf8f79f312",
+                "resourcePath": "views\\f71adf88-11c0-4ee7-bf68-a6091972e2dd.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -6026,7 +6586,7 @@
             "Key": "f99b0f56-1f61-4f38-a876-af3dd8a5385c",
             "Value": {
                 "id": "ae386b70-c8c1-4134-b2af-af5f26bfe82c",
-                "resourcePath": "sprites\\sMarinda308_NormalMap\\sMarinda308_NormalMap.yy",
+                "resourcePath": "sprites\\sArkov_ParagonRifle_NormalMap\\sArkov_ParagonRifle_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -6044,6 +6604,14 @@
                 "id": "e21bff3c-ebb5-4139-af07-eee814e7e35d",
                 "resourcePath": "objects\\oDebug_ExplosionSpawner\\oDebug_ExplosionSpawner.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "fa1af46b-3e48-4149-913d-7f5cfdb7f1d7",
+            "Value": {
+                "id": "64f2d3bf-120c-41c0-87d2-a5980c649d78",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_AimWalk\\sWilliam_HorizonBlue_MaskUpHat_AimWalk.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6091,6 +6659,14 @@
             "Value": {
                 "id": "b546f7b7-50f4-426b-94e6-894da676ad45",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_Head\\sWilliamDS_Heavy_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "fc03310a-f35c-4d46-b409-f13dd6eb8a2f",
+            "Value": {
+                "id": "dc28e9cb-a7e4-4abc-843d-9f980a9267ad",
+                "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap\\sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },

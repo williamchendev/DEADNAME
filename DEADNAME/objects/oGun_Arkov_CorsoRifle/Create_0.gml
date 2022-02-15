@@ -3,6 +3,13 @@
 // Inherit the parent event
 event_inherited();
 
+// Weapon Settings
+weapon_ammo_id = 8;
+
+bullets_max = 5;
+
+bulletcase_obj = oBulletCase_Medium;
+
 // Sprite Settings
 weapon_sprite = sArkov_CorsoRifle;
 weapon_normal_sprite = sArkov_CorsoRifle_NormalMap;
@@ -51,7 +58,6 @@ arm_x[1] = 17;
 arm_y[1] = 1;
 
 // Bullet Case Settings
-bulletcase_obj = oBulletCase_Medium;
 case_eject_x = 6;
 case_eject_y = -1;
 case_spd = 0.45;

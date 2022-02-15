@@ -3,12 +3,17 @@
 // Inherit the parent event
 event_inherited();
 
+// Weapon Settings
+weapon_ammo_id = 6;
+
+bulletcase_obj = noone;
+projectile_obj = noone;
+
+bullets_max = 1;
+
 // Sprite Settings
 weapon_sprite = sArkov_DernosNeedleRifle;
 weapon_normal_sprite = sArkov_DernosNeedleRifle_NormalMap;
-
-// Weapon Settings
-bullets_max = 1;
 
 image_index = 0;
 

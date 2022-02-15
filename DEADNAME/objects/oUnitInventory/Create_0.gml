@@ -4,7 +4,9 @@
 debug = false;
 unit_id = noone;
 
-hide_weapons = false;
+no_placement = false;
+no_placement_allow_id = -1;
+hide_items = false;
 
 console_input = false;
 
