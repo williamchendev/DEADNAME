@@ -183,6 +183,14 @@
             }
         },
         {
+            "Key": "057baecc-fde6-41c6-80e1-d5d29f8e161d",
+            "Value": {
+                "id": "d5d90c53-4489-4fea-b7b9-9ac20b50ac45",
+                "resourcePath": "sprites\\sWilliam_Knives_Arms_NormalMap\\sWilliam_Knives_Arms_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "059d8d5f-e532-4068-833f-85dff25a3450",
             "Value": {
                 "id": "d4c468f6-1bbf-46fe-85be-9c734ea60f20",
@@ -199,6 +207,14 @@
             }
         },
         {
+            "Key": "05e6dd9a-d7ef-4ee1-93d1-dfbfdc91028c",
+            "Value": {
+                "id": "b0b8a496-2ab2-4905-8207-7eca981115b3",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_AimWalk_NormalMap\\sWilliam_NorthernBrigade_Mercenary_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "06a0b537-611b-4775-93ae-87a18892d529",
             "Value": {
                 "id": "83039c0d-3399-4430-bb0a-2e870d68f77d",
@@ -211,6 +227,14 @@
             "Value": {
                 "id": "73c2caac-55e5-4ea7-9094-36c11f51f695",
                 "resourcePath": "views\\06c72aa3-d8f5-4d47-88dc-ff192e06c971.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "06c7de14-e262-4eef-a1ab-b0dab1beb77c",
+            "Value": {
+                "id": "8763c988-8e4f-42a9-929c-63c10c1a13db",
+                "resourcePath": "views\\06c7de14-e262-4eef-a1ab-b0dab1beb77c.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -331,6 +355,14 @@
             "Value": {
                 "id": "7a002aea-febc-4bb3-9fe9-9423d39978fb",
                 "resourcePath": "sprites\\sArkov_CorsoRifle_NormalMap\\sArkov_CorsoRifle_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "0be50c8c-4fe8-44e6-9aba-2af5ec935500",
+            "Value": {
+                "id": "db337e67-1243-4890-bccb-bd24f228d9d6",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_ChestTop_NormalMap\\sWilliam_NorthernBrigade_Soldat_ChestTop_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -591,6 +623,14 @@
             }
         },
         {
+            "Key": "176ce373-6034-4ec2-ae9b-351d54548744",
+            "Value": {
+                "id": "956ca8ff-0152-4d15-b4b8-99a731a21528",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Aim\\sWilliam_NorthernBrigade_Soldat_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "1798cdbc-067c-4230-9a3d-e6f66d27875c",
             "Value": {
                 "id": "4b9799dd-3032-4d5a-a6ff-64685055ee60",
@@ -695,6 +735,14 @@
             }
         },
         {
+            "Key": "1b63c767-fa58-4321-81be-a886e8da8dc9",
+            "Value": {
+                "id": "6b862bd6-c0ef-45f7-9803-7b3b5bca6474",
+                "resourcePath": "sprites\\sWilliam_Knives_Jump\\sWilliam_Knives_Jump.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "1bad8966-3b27-45c5-a699-c64a449f7549",
             "Value": {
                 "id": "d43d0a00-2df7-47fc-b069-c008877fe2f8",
@@ -715,6 +763,22 @@
             "Value": {
                 "id": "b0def02d-1e4a-433a-8503-a81b27a139d7",
                 "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Head\\sWilliam_HorizonBlue_MaskHat_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "1c425fed-1c0c-4e0c-895b-f7cdf6c80fbf",
+            "Value": {
+                "id": "016a6ee3-7723-4027-bda8-80d79357fa54",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Run_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "1d005cd3-c127-4b2e-8427-55ae8eb92264",
+            "Value": {
+                "id": "1ceba38e-d499-40db-8314-3ffc3534654e",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_ChestBot_NormalMap\\sWilliam_NorthernBrigade_Soldat_ChestBot_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -759,6 +823,14 @@
             }
         },
         {
+            "Key": "1eedcbc0-2983-4f0f-89c6-0ff829118897",
+            "Value": {
+                "id": "5d670e2d-c1d4-451f-af58-48a685fc21f1",
+                "resourcePath": "objects\\oUnitEnemy_NorthernBrigade_Komissar\\oUnitEnemy_NorthernBrigade_Komissar.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "1f1ddf3f-9ffb-4515-b53d-7f2c3b9d9902",
             "Value": {
                 "id": "cca394c5-9722-4b95-ba03-d73463f3aba6",
@@ -791,11 +863,27 @@
             }
         },
         {
+            "Key": "2038fe89-d1ae-4e6b-b18c-c22ae5d2bdd5",
+            "Value": {
+                "id": "55fefba3-4b64-4e23-8524-79f98f2cdb28",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_ChestBot_NormalMap\\sWilliam_NorthernBrigade_ChestBot_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "207bab83-e67e-4e85-b08d-4203238fcaa4",
             "Value": {
                 "id": "ed5a4dd6-b8c0-4587-8cc2-4a4a2cada952",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_LeftLeg\\sWilliamDS_Heavy_LeftLeg.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "210b377e-3c90-408c-a275-fad8a90182b1",
+            "Value": {
+                "id": "395d173d-4333-4c38-a776-c74558dd402f",
+                "resourcePath": "views\\210b377e-3c90-408c-a275-fad8a90182b1.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -967,6 +1055,22 @@
             }
         },
         {
+            "Key": "26f5e49b-e722-41ba-8a05-765a4d31616e",
+            "Value": {
+                "id": "73c8d69f-48e8-4944-995d-5afadc2eba44",
+                "resourcePath": "views\\26f5e49b-e722-41ba-8a05-765a4d31616e.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "27071f1f-a49a-462e-a9d7-f57463d22d5c",
+            "Value": {
+                "id": "d9e2a0d9-5030-49db-adc6-3ced34268032",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_AimWalk_NormalMap\\sWilliam_NorthernBrigade_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "27cfc8b6-3c6c-4f06-86da-c5117735332b",
             "Value": {
                 "id": "d872754a-d103-4bc4-b6c7-f333b5f2fdf8",
@@ -1115,6 +1219,14 @@
             "Value": {
                 "id": "123828f7-2cc2-44c4-8833-d5b34dcb78db",
                 "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_AimWalk_NormalMap\\sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "2c9c38e7-0a2e-47ec-ba10-de2ebe09e211",
+            "Value": {
+                "id": "4b5351e6-b422-4dbf-aac6-7e6ed21bc45f",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Run\\sWilliam_NorthernBrigade_Soldat_Run.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1292,6 +1404,14 @@
                 "id": "9771b2a7-8680-4afa-9b8a-47fb0e68511d",
                 "resourcePath": "views\\322023bc-e66c-4ece-8483-4b9358c1b3a8.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "32354380-8a23-4ea2-8727-0c4e6eaaf9ca",
+            "Value": {
+                "id": "b8c51e89-fbbd-48bd-a4d9-dfdf7952351c",
+                "resourcePath": "sprites\\sWilliam_Knives_Aim\\sWilliam_Knives_Aim.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1527,6 +1647,14 @@
             }
         },
         {
+            "Key": "3a970cd3-2860-4736-9161-06de0b57c514",
+            "Value": {
+                "id": "6cf61394-f5ab-43c3-a94e-b9c9cdfcdbd2",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Aim\\sWilliam_NorthernBrigade_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "3a986a05-d1d6-4ce3-bc54-a2fcadf78d2b",
             "Value": {
                 "id": "d463be8c-88b6-486f-9197-b96bb09f93f2",
@@ -1631,6 +1759,14 @@
             }
         },
         {
+            "Key": "3d0023a7-d751-41b3-b354-e4cb4bbc6c36",
+            "Value": {
+                "id": "fe9d82e8-634f-47ce-be45-00f38762a98b",
+                "resourcePath": "views\\3d0023a7-d751-41b3-b354-e4cb4bbc6c36.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "3d3afc03-6fc4-4e7b-841b-003a0c53f65f",
             "Value": {
                 "id": "a2c1c517-6666-4a8d-a75d-351daf711852",
@@ -1652,6 +1788,14 @@
                 "id": "a3553669-2fd3-4826-9fe6-6738b07a1005",
                 "resourcePath": "rooms\\rTutorialLevel_Houses\\rTutorialLevel_Houses.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "3e281971-7a19-483e-9ba4-7c69be812409",
+            "Value": {
+                "id": "55bec06f-dfd4-42ed-b6e7-584fcb73025d",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Jump\\sWilliam_NorthernBrigade_Mercenary_Jump.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1839,6 +1983,14 @@
             }
         },
         {
+            "Key": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
+            "Value": {
+                "id": "4a6699ba-d531-4cb3-84bc-4659bc50c9ac",
+                "resourcePath": "sprites\\sWilliam_Knives_Jump_NormalMap\\sWilliam_Knives_Jump_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "44fef93f-25c7-43a7-895e-92031daa772f",
             "Value": {
                 "id": "fd60722c-5216-4d39-9c47-d261d0cd3bbd",
@@ -1859,6 +2011,22 @@
             "Value": {
                 "id": "bb92d508-1d4e-42cd-a57d-547fef3efb7b",
                 "resourcePath": "views\\454a2267-237b-452b-abb0-4163db57c823.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "45b85857-7d00-4fe7-888e-6c86b338a7b6",
+            "Value": {
+                "id": "333a706d-c07a-45c4-8577-aad156af5831",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_RightLeg\\sWilliam_NorthernBrigade_RightLeg.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "45e284ef-de4d-498f-9608-dcc5ced868cd",
+            "Value": {
+                "id": "52ac50d7-95d3-448e-9e9b-ea2609e491e4",
+                "resourcePath": "views\\45e284ef-de4d-498f-9608-dcc5ced868cd.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -1911,6 +2079,14 @@
             }
         },
         {
+            "Key": "46fe4268-0798-4fac-a048-1bff46876ff8",
+            "Value": {
+                "id": "8c388ddc-456c-4d87-8e33-259d66f18276",
+                "resourcePath": "views\\46fe4268-0798-4fac-a048-1bff46876ff8.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "479055de-8d2a-42eb-8e40-fcb1633dff31",
             "Value": {
                 "id": "600f6618-9e17-4648-b848-70c9e6713e97",
@@ -1931,6 +2107,14 @@
             "Value": {
                 "id": "29040ec6-4cd0-4aba-9006-b437cf592a36",
                 "resourcePath": "sprites\\sWolf_Run\\sWolf_Run.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "47ec5430-4573-4708-88a0-4ea3c2877d57",
+            "Value": {
+                "id": "4aa35e33-f7a5-49e9-88fb-1f783c08643e",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Arms_NormalMap\\sWilliam_NorthernBrigade_Arms_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1959,6 +2143,14 @@
             }
         },
         {
+            "Key": "48758d7a-1248-4167-87d2-15c8abb8ea0a",
+            "Value": {
+                "id": "2cf1e0b1-d60a-4a0f-bd8e-5bb917c0f5db",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Head\\sWilliam_NorthernBrigade_Soldat_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "48987033-63c1-4e4f-b73a-701dd30de577",
             "Value": {
                 "id": "f422ddcf-49d8-4ec7-b930-9d1ce26a2a3d",
@@ -1975,6 +2167,14 @@
             }
         },
         {
+            "Key": "4985bf15-9815-4582-9cfe-b8f9b4d6be7b",
+            "Value": {
+                "id": "1ffd6f06-5792-4910-b680-b39fd3dbadd0",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Jump_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Jump_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "4a0d905c-e5e3-4e3d-8755-9a1ccd3890f1",
             "Value": {
                 "id": "93c4748a-32a5-4a6f-8b2c-80225fd7c7d8",
@@ -1987,6 +2187,14 @@
             "Value": {
                 "id": "6b31682f-e43a-4b7a-88fb-bb6270ef7a7a",
                 "resourcePath": "sprites\\sDebugRagdoll\\sDebugRagdoll.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "4a9caf52-6676-4ce8-b788-3954791e62fe",
+            "Value": {
+                "id": "86836e79-dc69-4874-9f9c-b5c6c232b12e",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Jump_NormalMap\\sWilliam_NorthernBrigade_Soldat_Jump_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2060,6 +2268,14 @@
                 "id": "bfa801a6-ef33-4eee-867b-059fc2ffad7f",
                 "resourcePath": "sprites\\sWolf_Run_NormalMap\\sWolf_Run_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "4d80f6d6-dbef-4ece-a896-ac67d47d2872",
+            "Value": {
+                "id": "384a26d2-5961-4b01-916c-919adc58ec11",
+                "resourcePath": "objects\\oUnitEnemy_NorthernBrigade_Mercenary\\oUnitEnemy_NorthernBrigade_Mercenary.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2211,6 +2427,14 @@
             "Value": {
                 "id": "6ac57b36-1729-48db-af1d-4bd328e85a02",
                 "resourcePath": "sprites\\sItems1x1\\sItems1x1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "52b1a297-c66c-4c98-94cb-ecd1fe5dc966",
+            "Value": {
+                "id": "bab1bb74-6fb8-4bbc-b2a6-be3dc4808cfa",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Aim_NormalMap\\sWilliam_NorthernBrigade_Aim_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2479,6 +2703,14 @@
             }
         },
         {
+            "Key": "5d6e16d9-95bd-4b74-840b-dee5c1814a3e",
+            "Value": {
+                "id": "0e985da7-e5af-410e-95ec-781880d6540b",
+                "resourcePath": "views\\5d6e16d9-95bd-4b74-840b-dee5c1814a3e.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "5d72e08c-c651-4bb6-b66e-de05d82bc27b",
             "Value": {
                 "id": "94413c80-0848-4b99-95f2-c6c36dd70784",
@@ -2639,6 +2871,14 @@
             }
         },
         {
+            "Key": "6250d098-f03f-41bd-a1af-67cad5603581",
+            "Value": {
+                "id": "86a5c105-8b10-4abb-9889-5db0429f6f48",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Head\\sWilliam_NorthernBrigade_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "62d06d9b-9381-405b-9b1c-0587e2765778",
             "Value": {
                 "id": "1e58a298-c6d0-4380-a958-0dad69051030",
@@ -2735,6 +2975,14 @@
             }
         },
         {
+            "Key": "65d1aad6-7de7-421a-9769-2917cc62b965",
+            "Value": {
+                "id": "88d770ee-4284-45c7-82c5-a59c0cc1aefb",
+                "resourcePath": "views\\65d1aad6-7de7-421a-9769-2917cc62b965.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "65f0c2e4-dbf5-43a1-9e81-59b2ae0d5924",
             "Value": {
                 "id": "549399dd-02f8-4b19-9556-fdb777eaba74",
@@ -2791,6 +3039,14 @@
             }
         },
         {
+            "Key": "68567b5c-aeac-456b-9ac9-913a58d9086c",
+            "Value": {
+                "id": "3779088c-de74-47d3-b344-b98f2298d284",
+                "resourcePath": "views\\68567b5c-aeac-456b-9ac9-913a58d9086c.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "68bcd915-90f4-4b48-a7b9-38eb67ed4d52",
             "Value": {
                 "id": "efe89365-6ad9-4819-894b-9823739e9dff",
@@ -2836,6 +3092,14 @@
                 "id": "388e2a32-0315-40d5-99cf-0543cb2b19a3",
                 "resourcePath": "sprites\\sDoorPanel\\sDoorPanel.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "69df43bc-e9f6-4ac8-8054-2e410acb68f6",
+            "Value": {
+                "id": "8b47be32-763c-4df4-b560-2c2971fd6dd9",
+                "resourcePath": "views\\69df43bc-e9f6-4ac8-8054-2e410acb68f6.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -2891,6 +3155,14 @@
             "Value": {
                 "id": "2e1c4af0-5ac0-40c0-828c-8f5b7c329cc0",
                 "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksLarge_Sprite\\sAdobeHouse_PaleDesertRocksLarge_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6bce28e0-da94-4bb8-8276-25a4130f0591",
+            "Value": {
+                "id": "b32a3758-cf79-403d-a4ec-fa4125af825f",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_ChestTop\\sWilliam_NorthernBrigade_Merc_ChestTop.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2975,6 +3247,14 @@
             }
         },
         {
+            "Key": "6e63f008-954c-4315-92c8-f223c5cc3737",
+            "Value": {
+                "id": "3bb0ce10-d1f9-4cfc-b049-d92c3384c198",
+                "resourcePath": "views\\6e63f008-954c-4315-92c8-f223c5cc3737.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "6e72f5ca-c57c-4105-91d5-94218a27b2ee",
             "Value": {
                 "id": "29bf60df-082d-4798-985b-2701ba1f1cbe",
@@ -2988,6 +3268,14 @@
                 "id": "82d67aef-d993-4659-8893-68917e029c9a",
                 "resourcePath": "views\\6ed37801-5a18-45ac-bd27-081aea009fb3.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "6f106f11-6805-48cf-879f-dc4e7b9e33cc",
+            "Value": {
+                "id": "c89e732c-d20c-467e-aaeb-4e7e83e71c97",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_ChestTop_NormalMap\\sWilliam_NorthernBrigade_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3031,11 +3319,27 @@
             }
         },
         {
+            "Key": "717fc853-f19b-4175-ac8a-26355f45afe8",
+            "Value": {
+                "id": "72d5425f-e6bc-4308-a489-5d7c6e1a4b48",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_ChestTop\\sWilliam_NorthernBrigade_Soldat_ChestTop.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "71a24bdd-88c9-420a-a1fe-e0e311874225",
             "Value": {
                 "id": "dfb36e16-cd22-40fc-9657-e16c82161dc1",
                 "resourcePath": "objects\\oBloodEffect_Splatter\\oBloodEffect_Splatter.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "71bca1ac-bf86-46d9-a866-41b293e745b9",
+            "Value": {
+                "id": "5f17eb08-0462-4f86-b16a-d9e74b7b8e04",
+                "resourcePath": "views\\71bca1ac-bf86-46d9-a866-41b293e745b9.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3159,6 +3463,14 @@
             }
         },
         {
+            "Key": "76eb2da2-a746-4f74-a982-17365ea2dc27",
+            "Value": {
+                "id": "c8ff1780-a7f1-4561-bee8-a5d4a6072016",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_AimWalk\\sWilliam_NorthernBrigade_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "7706cecb-1765-461e-ad77-a18211a21783",
             "Value": {
                 "id": "896b0394-cf10-4793-9d37-871d125d972b",
@@ -3172,6 +3484,14 @@
                 "id": "cefe3148-a405-40e2-90fa-4dbc6ddf9554",
                 "resourcePath": "views\\77095b43-010b-4cdb-acc6-fac20add6d0a.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "7736464a-b93c-49ad-81a4-eb9f22cc758c",
+            "Value": {
+                "id": "b07a7864-8ec6-44c1-bdab-b64732222565",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Head_NormalMap\\sWilliam_NorthernBrigade_Soldat_Head_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3251,6 +3571,14 @@
             "Value": {
                 "id": "03742013-6550-4d08-bb27-c6b42d7d59f3",
                 "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksLarge_NormalMap\\sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "799a6fea-334b-495b-bb69-8fb626098521",
+            "Value": {
+                "id": "1aa5690f-8dd3-4fa0-9b9e-fb12983870d7",
+                "resourcePath": "sprites\\sWilliam_Knives_AimWalk_NormalMap\\sWilliam_Knives_AimWalk_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3335,11 +3663,27 @@
             }
         },
         {
+            "Key": "7da0bb00-4c21-4153-9d6f-1f56850ea982",
+            "Value": {
+                "id": "3aa09f61-6846-47eb-bbdf-f10a19db4fb9",
+                "resourcePath": "views\\7da0bb00-4c21-4153-9d6f-1f56850ea982.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "7db7080f-238d-4f44-9511-f59223b4cf06",
             "Value": {
                 "id": "3e5b8d0b-a824-4542-9156-a2952e61dd6d",
                 "resourcePath": "objects\\oAdobeHouse_Bed\\oAdobeHouse_Bed.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "7dc269d6-4a21-4cc3-87b5-8f769a524bdb",
+            "Value": {
+                "id": "faf2a465-6592-447a-9a45-59d3c02d6a51",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_LeftLeg_NormalMap\\sWilliam_NorthernBrigade_LeftLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3363,6 +3707,22 @@
             "Value": {
                 "id": "4a302f55-68d7-4ee6-a4aa-b4f90e60d769",
                 "resourcePath": "sprites\\sCornfields_MetalSupport\\sCornfields_MetalSupport.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "7f29b334-a68b-4b28-8a91-c1edbdf03a09",
+            "Value": {
+                "id": "ceec6b7d-0978-478d-b4b5-3b836eaa16f4",
+                "resourcePath": "sprites\\sWilliam_Knives_Aim_NormalMap\\sWilliam_Knives_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "7f6a80f0-00f8-4cbf-bb60-3ba2d1914520",
+            "Value": {
+                "id": "a516a6d4-e980-433b-a69b-a85b022b91c0",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_ChestBot_NormalMap\\sWilliam_NorthernBrigade_Merc_ChestBot_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3671,6 +4031,14 @@
             }
         },
         {
+            "Key": "8a02971f-3479-448d-a29d-8609ae73949b",
+            "Value": {
+                "id": "1f9a52fc-6c5e-4dc2-bfb0-8405239fb029",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_Head\\sWilliam_NorthernBrigade_Merc_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8a1e7315-f68c-4068-b258-51749b1a350e",
             "Value": {
                 "id": "64bae6a9-8902-4c3b-aaf6-6305b57a9a72",
@@ -3895,6 +4263,14 @@
             }
         },
         {
+            "Key": "91e7409b-b933-48e4-9347-56d0b738ef12",
+            "Value": {
+                "id": "7817a1c1-9816-4801-8769-1bab6f3f5000",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Aim_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "925bdca4-a100-401f-be4b-0bf619a661f0",
             "Value": {
                 "id": "1084597e-b1cd-4c41-bf92-6481f20838ce",
@@ -4055,6 +4431,14 @@
             }
         },
         {
+            "Key": "99797f11-5eb2-40b0-ad6e-50e496c5e615",
+            "Value": {
+                "id": "1d85e53e-106d-4712-a93e-d45806de900b",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_RightLeg_NormalMap\\sWilliam_NorthernBrigade_RightLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "99ac8eb9-3827-4408-ab1c-945643909b17",
             "Value": {
                 "id": "6fcf2af1-5114-42e1-ac94-ea5b15e9e02b",
@@ -4111,6 +4495,14 @@
             }
         },
         {
+            "Key": "9ca8eb9a-4871-440a-8308-2bc497114fbd",
+            "Value": {
+                "id": "6e01c1f1-ec1f-4936-b23f-4da134479e31",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Aim_NormalMap\\sWilliam_NorthernBrigade_Soldat_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "9cb272b3-3a3f-4cb6-95f7-ec3bde8bb2f8",
             "Value": {
                 "id": "9a478e92-7abc-4f1b-becc-3549dfcf42e1",
@@ -4159,6 +4551,14 @@
             }
         },
         {
+            "Key": "9e6609c1-6064-469c-bae1-724e3644bbb5",
+            "Value": {
+                "id": "b756cdfc-94b1-4ccf-b078-b427be87aed1",
+                "resourcePath": "objects\\oUnitEnemy_NorthernBrigade_Soldat\\oUnitEnemy_NorthernBrigade_Soldat.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "9f39263c-bc38-4411-90d1-7fb5aaff914f",
             "Value": {
                 "id": "10043c2c-2404-4370-8989-43dcc595b37b",
@@ -4203,6 +4603,14 @@
             "Value": {
                 "id": "4d47c04c-6c10-4d90-b97d-2def6399b0fe",
                 "resourcePath": "sprites\\sWolf_Aim\\sWolf_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a07daf00-1e53-41b5-a208-c59fed8b658b",
+            "Value": {
+                "id": "770bd4b4-613a-4900-9c67-296f0b80424e",
+                "resourcePath": "sprites\\sWilliam_Knives_Hair\\sWilliam_Knives_Hair.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4327,6 +4735,14 @@
             }
         },
         {
+            "Key": "a651158b-f3f8-42c2-887d-e06daf82de79",
+            "Value": {
+                "id": "cd87436a-b569-4918-a90f-4aa1af273224",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Aim\\sWilliam_NorthernBrigade_Mercenary_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a6ae11b8-1b04-41d2-9b1e-a5cf0ee558b1",
             "Value": {
                 "id": "2ceff0ab-75b9-4045-a55a-9de6a7dac99d",
@@ -4340,6 +4756,14 @@
                 "id": "034213fe-b384-423f-a18d-e76c142b03c0",
                 "resourcePath": "objects\\oAdobeHouse_CactusLarge\\oAdobeHouse_CactusLarge.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "a794adb1-8bc6-43a5-8637-08666dfab545",
+            "Value": {
+                "id": "8a76df8b-3c8d-46a1-b2dd-970841372717",
+                "resourcePath": "sprites\\sWilliam_Knives_AimWalk\\sWilliam_Knives_AimWalk.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4375,6 +4799,14 @@
             }
         },
         {
+            "Key": "a87afd4b-4976-4087-920f-1125f835c4ac",
+            "Value": {
+                "id": "aedcf802-4466-4e06-946c-6575190ee19a",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_AimWalk\\sWilliam_NorthernBrigade_Soldat_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a90f2430-a975-44b7-a0f0-cffacc3b3be2",
             "Value": {
                 "id": "fbfab243-eecb-4f04-a09d-9f48b3b637a9",
@@ -4399,6 +4831,14 @@
             }
         },
         {
+            "Key": "aa1d14f2-509d-4503-ba78-8086e47baabe",
+            "Value": {
+                "id": "d4f1dd4e-ae90-42b1-af05-62f82567e7fb",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_ChestBot\\sWilliam_NorthernBrigade_Soldat_ChestBot.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "aa2f1a3d-2f17-4c3e-8568-fcc121ee1e02",
             "Value": {
                 "id": "1d2bb7a7-767f-4539-9936-2559388fd484",
@@ -4412,6 +4852,14 @@
                 "id": "5c5c0dd7-4f8a-4dfc-9453-e99bc7fe289c",
                 "resourcePath": "shaders\\shd_basicocclusion\\shd_basicocclusion.yy",
                 "resourceType": "GMShader"
+            }
+        },
+        {
+            "Key": "ab0c8ae0-3f72-449b-acb6-4da469a57712",
+            "Value": {
+                "id": "c64bfb0e-a62d-4923-86ba-079a68f55af0",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Idle_NormalMap\\sWilliam_NorthernBrigade_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4467,6 +4915,22 @@
             "Value": {
                 "id": "f59c572c-3f06-49bf-ae88-a2b367f84cd5",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_AimWalk_NormalMap\\sWilliamDS_Heavy_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ac5b20fd-ca9d-48c9-aa7c-e2c1bfd03272",
+            "Value": {
+                "id": "2a437fb2-32df-4244-ac00-e961bef3449f",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Run\\sWilliam_NorthernBrigade_Run.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ac5bfbd6-cee4-4e1d-a347-29542439ad5d",
+            "Value": {
+                "id": "05b1dd0d-d09d-400a-979e-355b30c63e3c",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_Head_NormalMap\\sWilliam_NorthernBrigade_Merc_Head_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4548,6 +5012,14 @@
                 "id": "3d1de172-7bf3-40a6-93c4-1052b8148c41",
                 "resourcePath": "views\\add122ab-c7d7-41dd-a85c-a33055c66294.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "adfd4930-bb2d-49cf-a5d5-79485d848550",
+            "Value": {
+                "id": "0ec6111e-3674-4646-a28f-72a70234e948",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Run_NormalMap\\sWilliam_NorthernBrigade_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4659,6 +5131,14 @@
             "Value": {
                 "id": "418ef2f6-8fb8-4141-8d35-cdebff832702",
                 "resourcePath": "sprites\\sItems2x1\\sItems2x1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "b1e96394-d8e4-41d3-bef7-55c96b21547f",
+            "Value": {
+                "id": "cc48864e-02f8-4b04-a2aa-08e52f869c62",
+                "resourcePath": "sprites\\sWilliam_Knives_Idle\\sWilliam_Knives_Idle.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4799,6 +5279,14 @@
             }
         },
         {
+            "Key": "b7112114-b2b4-4dcc-a2c2-accb2ff9b947",
+            "Value": {
+                "id": "f3eda37e-2e4c-4df1-8852-7038d37d4c5c",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Run_NormalMap\\sWilliam_NorthernBrigade_Soldat_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "b7219a11-e017-4edc-b1b9-8a0df659578d",
             "Value": {
                 "id": "92053829-644f-4583-8af0-ed9789670c76",
@@ -4919,6 +5407,14 @@
             }
         },
         {
+            "Key": "ba85ec4b-8be3-410f-94a3-a01420538602",
+            "Value": {
+                "id": "95baee89-891c-44d5-ac66-eab8bbdb7633",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_ChestTop_NormalMap\\sWilliam_NorthernBrigade_Merc_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ba9f2b95-00e0-46c0-a94b-f5a00b8933c1",
             "Value": {
                 "id": "9c20b2af-3f40-4fd0-88f9-a5205dd96387",
@@ -4972,6 +5468,14 @@
                 "id": "77a7e21e-e0f6-4395-942e-2a63b38936ec",
                 "resourcePath": "views\\bbdc92ae-c1ff-4b7c-81bc-4f2996095bf4.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "bbfca3e7-3e62-4769-a0ce-e339c46d7c91",
+            "Value": {
+                "id": "ca1acf0e-e028-493f-aa4d-7ab5d3ae6781",
+                "resourcePath": "sprites\\sWilliam_Knives_Run_NormalMap\\sWilliam_Knives_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5036,6 +5540,14 @@
                 "id": "6e0445a7-aae4-4927-b8cf-6c0eed318573",
                 "resourcePath": "objects\\oPhysics\\oPhysics.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "bdf71fc3-f38d-4b0f-b44f-dc876c1a4fe6",
+            "Value": {
+                "id": "99e0a67c-e8b3-4f48-b1fd-cfa862e97283",
+                "resourcePath": "sprites\\sWilliam_Knives_Arms\\sWilliam_Knives_Arms.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5255,6 +5767,14 @@
             }
         },
         {
+            "Key": "c4c7bc9e-6bd8-45b7-852f-173c2e4f6bbf",
+            "Value": {
+                "id": "24861fc1-90b2-4737-9692-29728c84f088",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Idle\\sWilliam_NorthernBrigade_Idle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c4ed009f-6aa8-4708-bdb1-0a52f49cdf52",
             "Value": {
                 "id": "fc2e5559-88e9-41ce-8134-5b9f82a67f10",
@@ -5367,6 +5887,14 @@
             }
         },
         {
+            "Key": "c7f48416-7d50-42f8-9c91-2b0dbb77a3c2",
+            "Value": {
+                "id": "1763ad01-7eb1-480f-9517-3fe2dd8cc21a",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Arms\\sWilliam_NorthernBrigade_Arms.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c7f97897-eb24-4592-9653-ede7249a0d5b",
             "Value": {
                 "id": "b18fa397-d6e5-4754-9094-576783bcd78d",
@@ -5391,11 +5919,27 @@
             }
         },
         {
+            "Key": "c9015261-d8eb-4d2e-a101-82d504fff068",
+            "Value": {
+                "id": "11fff85e-8665-49a6-818d-1b2d18d14060",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_AimWalk\\sWilliam_NorthernBrigade_Mercenary_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c9123c2d-c700-4b02-82fa-416350ad6302",
             "Value": {
                 "id": "a5bd7c26-b663-48e9-b13c-a071136eb64e",
                 "resourcePath": "views\\c9123c2d-c700-4b02-82fa-416350ad6302.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c954a324-f8d0-4fcd-a321-3f1663a4911e",
+            "Value": {
+                "id": "7e0184ab-8ffa-420a-8747-8178aa1a146b",
+                "resourcePath": "sprites\\sWilliam_Knives_Idle_NormalMap\\sWilliam_Knives_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5439,6 +5983,14 @@
             }
         },
         {
+            "Key": "cb6ad91e-4725-4aff-b7a7-bb9443193ce1",
+            "Value": {
+                "id": "3043d5d3-8188-40d8-b951-2acf33dd9b43",
+                "resourcePath": "views\\cb6ad91e-4725-4aff-b7a7-bb9443193ce1.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "cba479bc-eb1d-4b92-9b16-444d931f7e15",
             "Value": {
                 "id": "05cc5f28-cf13-449c-ab21-201643604693",
@@ -5476,6 +6028,14 @@
                 "id": "41d7fb83-4646-4c40-9a27-1f2fa63799bc",
                 "resourcePath": "sprites\\sDebugEnemy_Aim\\sDebugEnemy_Aim.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "cc92eda7-f6c1-4810-b817-16966d986568",
+            "Value": {
+                "id": "1b4b874b-1a60-4838-9738-b2a2bee9b676",
+                "resourcePath": "views\\cc92eda7-f6c1-4810-b817-16966d986568.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -5663,6 +6223,14 @@
             }
         },
         {
+            "Key": "d413e3c0-7b77-4cdd-a1ab-3960ed68c148",
+            "Value": {
+                "id": "51b0da09-4d4a-43a8-94b9-6874433177f9",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_AimWalk_NormalMap\\sWilliam_NorthernBrigade_Soldat_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "d425156e-55a3-4937-ad9b-2f045a04b60c",
             "Value": {
                 "id": "7f9c355f-8e66-4461-b7cc-0b3bd071e8ec",
@@ -5675,6 +6243,14 @@
             "Value": {
                 "id": "35860454-6566-4757-8cec-e0919e3843f8",
                 "resourcePath": "sprites\\sWilliamDS_Heavy_ChestTop_NormalMap\\sWilliamDS_Heavy_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "d48cfd1f-2031-4a10-b0a2-7d82f42c11d0",
+            "Value": {
+                "id": "de7a980e-f1cf-4a42-a51e-9f45ed062a74",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Idle\\sWilliam_NorthernBrigade_Mercenary_Idle.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5711,6 +6287,14 @@
             }
         },
         {
+            "Key": "d5d7df66-37c6-4093-8bd3-95cea934b0fa",
+            "Value": {
+                "id": "0828952f-c904-4824-b1f8-8fc12c5d6128",
+                "resourcePath": "views\\d5d7df66-37c6-4093-8bd3-95cea934b0fa.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "d648145c-8202-4313-b99e-8352802cef52",
             "Value": {
                 "id": "10792ce4-9e54-42ae-880b-ec36ab50bf80",
@@ -5735,11 +6319,27 @@
             }
         },
         {
+            "Key": "d7a2b6bf-dbf5-4fda-ba74-7a2766cec026",
+            "Value": {
+                "id": "3dd63bbe-6170-4d35-b992-b7f3fb468330",
+                "resourcePath": "views\\d7a2b6bf-dbf5-4fda-ba74-7a2766cec026.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "d8211ca3-c832-4853-a53f-3768b5ae6b99",
             "Value": {
                 "id": "ceec746d-1afa-46af-94c4-d2d17e907569",
                 "resourcePath": "views\\d8211ca3-c832-4853-a53f-3768b5ae6b99.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "d8865d5c-8164-47d0-a129-dacdb1ef3557",
+            "Value": {
+                "id": "6b0bcae8-9fc2-487e-a1ac-907f473f66e6",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_ChestBot\\sWilliam_NorthernBrigade_ChestBot.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5823,6 +6423,14 @@
             }
         },
         {
+            "Key": "db0c514c-7be0-422f-9df2-e75bba69d19a",
+            "Value": {
+                "id": "3bfa061e-e5ad-4ce7-9176-d16a795e933e",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "db4d9bb3-de50-4c0e-b125-7fd8476375dc",
             "Value": {
                 "id": "49f360ca-dc49-46a8-a06b-f52b1c61fec2",
@@ -5855,6 +6463,14 @@
             }
         },
         {
+            "Key": "dd4defe3-8bb5-4751-8d3b-d7150e877a8e",
+            "Value": {
+                "id": "190dad26-185d-48e5-a053-2a00ca535bb4",
+                "resourcePath": "views\\dd4defe3-8bb5-4751-8d3b-d7150e877a8e.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "dd81efcf-96cf-4add-85cd-e47e33e2242b",
             "Value": {
                 "id": "9ca7bc14-52b3-4010-affd-5a4e646d2736",
@@ -5867,6 +6483,14 @@
             "Value": {
                 "id": "b8972635-e7b5-4196-8f86-03a104c92b7e",
                 "resourcePath": "sprites\\sWilliamDS_ChestBot_NormalMap\\sWilliamDS_ChestBot_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "de5b4746-3cd7-49eb-9184-afc140388a3b",
+            "Value": {
+                "id": "43e0c04a-0729-4a26-add5-388407108b26",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Jump_NormalMap\\sWilliam_NorthernBrigade_Jump_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5964,6 +6588,22 @@
                 "id": "1fdce26e-f1db-49bb-9ac0-3bf7528883dc",
                 "resourcePath": "objects\\oUnitSquad\\oUnitSquad.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "e3c3e61d-05b4-430e-9dee-cdd7128770f4",
+            "Value": {
+                "id": "6d2bcb96-484a-4eec-b311-dc900806a6b3",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Merc_ChestBot\\sWilliam_NorthernBrigade_Merc_ChestBot.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "e3de28b9-9707-4041-aa16-49f9c0fbadd5",
+            "Value": {
+                "id": "3a953406-4d8c-49da-b910-cb7877c7d987",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Jump\\sWilliam_NorthernBrigade_Soldat_Jump.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6135,11 +6775,27 @@
             }
         },
         {
+            "Key": "e8852839-36a1-4972-82c4-bd7367dcf3dc",
+            "Value": {
+                "id": "b9479abe-2e89-4a5d-ae95-2f8aca4fb073",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_LeftLeg\\sWilliam_NorthernBrigade_LeftLeg.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e8a8f871-3717-4134-aac4-f3ea48fa25f0",
             "Value": {
                 "id": "69d7aa43-d694-4423-b379-e0a3d33e3f8b",
                 "resourcePath": "views\\e8a8f871-3717-4134-aac4-f3ea48fa25f0.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e9085eea-da85-4ede-97ef-157c615c863d",
+            "Value": {
+                "id": "b0171b71-7eed-47de-96ca-a98caecfe076",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Run\\sWilliam_NorthernBrigade_Mercenary_Run.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6171,6 +6827,14 @@
             "Value": {
                 "id": "a14bffe1-9226-4737-8577-47319af9e5e6",
                 "resourcePath": "sprites\\sBloodEffect_UnitSplatter_Blur\\sBloodEffect_UnitSplatter_Blur.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "e9ab88af-84e3-4343-be55-9c67429082ee",
+            "Value": {
+                "id": "9fe21013-edca-47f1-aaa7-44a615eca047",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Jump\\sWilliam_NorthernBrigade_Jump.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -6367,6 +7031,14 @@
             }
         },
         {
+            "Key": "f08b2327-3cda-47b2-ad00-84a7b6d5141c",
+            "Value": {
+                "id": "4eb1c32d-1adb-435c-914b-a5d3a2bb6e07",
+                "resourcePath": "views\\f08b2327-3cda-47b2-ad00-84a7b6d5141c.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "f0e49e0d-ca01-44ca-b35a-4b16d37b1c28",
             "Value": {
                 "id": "b83be07a-a4c5-4234-b355-0628bf41a483",
@@ -6434,7 +7106,7 @@
             "Key": "f24b232b-db0e-4f2d-8415-4b4ae946f8bb",
             "Value": {
                 "id": "64db6c6c-7c30-413a-9387-0110bbb57f11",
-                "resourcePath": "objects\\oUnit_William_BlueHorizon_Test\\oUnit_William_BlueHorizon_Test.yy",
+                "resourcePath": "objects\\oUnit_William_NorthernBrigade_Test\\oUnit_William_NorthernBrigade_Test.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -6527,6 +7199,14 @@
             }
         },
         {
+            "Key": "f72753e0-bf7f-4194-87c6-9e0b9ac72dc9",
+            "Value": {
+                "id": "1349f3b5-4612-4249-b182-416f2377fc50",
+                "resourcePath": "views\\f72753e0-bf7f-4194-87c6-9e0b9ac72dc9.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "f7372e58-ebbb-48fe-a8df-6fcf5e602c81",
             "Value": {
                 "id": "06320826-c413-47f7-9e2e-de6c823a305f",
@@ -6567,11 +7247,43 @@
             }
         },
         {
+            "Key": "f8083afd-47dc-4cf1-87e5-86ad5b789588",
+            "Value": {
+                "id": "c67bc11e-e20e-4ce7-9bac-2c521078d066",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_ChestTop\\sWilliam_NorthernBrigade_ChestTop.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f8476893-7e4e-4614-9d14-862b6cc2f1e9",
+            "Value": {
+                "id": "fc3ba8fb-bc1e-471a-8b0b-fdf261d7c186",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Head_NormalMap\\sWilliam_NorthernBrigade_Head_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "f86e77b3-1d6c-4964-ac3c-bc6863b01cda",
             "Value": {
                 "id": "61dc68b0-ed0c-4dfd-a52b-cbbaf76218f2",
                 "resourcePath": "scripts\\pathfind_recursive\\pathfind_recursive.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "f8c1cdaa-90f1-4f88-8f64-52d5ad1fcb44",
+            "Value": {
+                "id": "6315480d-d8cb-4539-84c9-fa070c8a62f5",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Idle_NormalMap\\sWilliam_NorthernBrigade_Soldat_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f9599a14-1b9e-47be-ab82-d50e187bce87",
+            "Value": {
+                "id": "eeeb3eac-d986-4e8d-85fe-ffac33dbaf82",
+                "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Idle\\sWilliam_NorthernBrigade_Soldat_Idle.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6604,6 +7316,14 @@
                 "id": "e21bff3c-ebb5-4139-af07-eee814e7e35d",
                 "resourcePath": "objects\\oDebug_ExplosionSpawner\\oDebug_ExplosionSpawner.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f9e0a720-8890-4537-9a70-8647817a7d4b",
+            "Value": {
+                "id": "4545df55-ed5f-4850-bb28-9ddc8992f1fa",
+                "resourcePath": "sprites\\sWilliam_Knives_Run\\sWilliam_Knives_Run.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6676,6 +7396,14 @@
                 "id": "d4f85f30-37ab-47b1-ada0-2608635e9edd",
                 "resourcePath": "sprites\\sEditorUtil\\sEditorUtil.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "fceea86c-5d47-4951-a3d4-a7dddaf0157e",
+            "Value": {
+                "id": "ecea2f16-2e80-438d-9d57-07c921b5d6a5",
+                "resourcePath": "views\\fceea86c-5d47-4951-a3d4-a7dddaf0157e.yy",
+                "resourceType": "GMFolder"
             }
         },
         {

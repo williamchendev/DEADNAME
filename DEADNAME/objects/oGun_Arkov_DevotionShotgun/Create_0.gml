@@ -29,9 +29,9 @@ muzzle_x = 23;
 muzzle_y = -2;
 
 reload_x = 7;
-reload_y = 1;
+reload_y = -1;
 
-reload_offset_y = 6;
+reload_offset_y = 8;
 
 // Reload Settings
 reload_individual_rounds = true;

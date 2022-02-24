@@ -6,7 +6,7 @@ spd = 3; // Running Speed
 walk_spd = 1; // Walk Speed
 
 jump_spd = 1.4; // Jumping Speed
-double_jump_spd = 3; // Double Jumping Seed
+double_jump_spd = 3; // Double Jumping Speed
 hold_jump_spd = 0.45; // Added Jump Speed when the Jump Button is held
 jump_decay = 0.81; // Decay of the Jumping Upwards Velocity
 
@@ -119,6 +119,8 @@ action = noone;
 action_index = 0;
 action_timer = 0;
 action_anim_timer = 0;
+action_travel = false;
+action_travel_timer = 0;
 action_target_x = 0;
 action_target_y = 0;
 

@@ -48,15 +48,16 @@ limb_x[1] = 2;
 limb_y[1] = -32;
 limb_angle[1] = 20;
 
-limb_ambient_move_angle_offset = 35;
-
+limb_action_radius = 1.5;
 limb_ambient_anim_spd = 0.017;
 
 limb_ambient_idle_rotate_radius = 1;
-limb_ambient_move_rotate_radius = 3.5;
-
 limb_ambient_idle_length_offset = 0.2;
-limb_ambient_move_length_offset = 0.35;
+
+limb_ambient_move_width = 4;
+limb_ambient_move_height = 4;
+limb_ambient_move_angle_offset = 0;
+limb_ambient_move_length_offset = 0.2;
 
 limb_aim_move_offset_x = -1;
 limb_aim_offset_y = 2;

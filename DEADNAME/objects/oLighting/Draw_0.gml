@@ -143,7 +143,7 @@ surface_reset_target();
 
 // Establish Surface Normals
 surface_set_target(surface_normals);
-draw_clear_alpha(c_black, 0);
+draw_clear_alpha(make_color_rgb(127, 127, 255), 1);
 
 for (var i = 0; i < ds_list_size(basic_object_depth_list); i++) {
 	var temp_sprite = ds_list_find_value(basic_object_depth_list, i);

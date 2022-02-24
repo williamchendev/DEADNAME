@@ -80,6 +80,7 @@ if (platform_free(x, y + 1, platform_list)) {
 }
 else {
 	grav_velocity = 0;
+	y = round(y);
 }
 	
 // Delta Time
@@ -491,7 +492,6 @@ if (health_points <= 0) {
 		temp_weapon_inst.attack = false;
 		temp_weapon_inst.equip = false;
 		temp_weapon_inst.aiming = false;
-		temp_weapon_inst.click = false;
 		temp_weapon_inst.use_realdeltatime = false;
 		temp_weapon_inst.basic_reindex_depth = true;
 		

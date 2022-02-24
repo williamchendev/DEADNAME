@@ -318,6 +318,11 @@ else if (temp_weapon.weapon_type == "firearm") {
 		if (temp_weapon.bullets <= 0) {
 			key_fire_press = false;
 			key_reload_press = true;
+			if (temp_weapon.reload_individual_rounds) {
+				key_aim_press = false;
+				key_fire_press = false;
+				targeting = false;
+			}
 		}
 		else if (!squad_aim) {
 			// Check Aiming
@@ -359,6 +364,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 			
 				// Bolt Action Load Animation Settings
 				action = "boltaction";
+				action_travel = true;
+				action_travel_timer = 0;
 				action_index = 0;
 				action_target_x = limb[0].limb_target_x;
 				action_target_y = limb[0].limb_target_y;
@@ -393,6 +400,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 						// Set Variables
 						reload = true;
 						action = "reload";
+						action_travel = true;
+						action_travel_timer = 0;
 						action_index = 0;
 						action_timer = 30 / (action_spd / 0.15);
 						action_target_x = limb[0].limb_target_x;
@@ -543,6 +552,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 					temp_hand_y = limb[1].limb_target_y;
 					if (temp_weapon.gun_spin_timer >= temp_weapon.gun_spin_reload_spin_times) {
 						action = "reload";
+						action_travel = true;
+						action_travel_timer = 0;
 						action_timer = 0;
 						action_anim_timer = 0;
 						action_index = 0;
@@ -648,7 +659,7 @@ else if (temp_weapon.weapon_type == "firearm") {
 		}
 			
 		// Move Hands
-		if (point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y) < 1) {
+		if (!action_travel) {
 			action_timer -= global.deltatime;
 			action_anim_timer -= global.deltatime;
 			if (action_anim_timer < 0) {
@@ -659,11 +670,19 @@ else if (temp_weapon.weapon_type == "firearm") {
 			if (action_timer < 0) {
 				action_index++;
 				action_timer = temp_time;
+				action_travel = true;
+				action_travel_timer = 0;
 			}
 		}
 		else {
-			action_target_x = lerp(action_target_x, temp_hand_x, action_spd * global.deltatime);
-			action_target_y = lerp(action_target_y, temp_hand_y, action_spd * global.deltatime);
+			var temp_action_travel_dis = point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y);
+			action_travel_timer += (action_spd / temp_action_travel_dis) * global.deltatime;
+			action_travel_timer = clamp(action_travel_timer, 0, 1);
+			action_target_x = lerp(action_target_x, temp_hand_x, action_travel_timer);
+			action_target_y = lerp(action_target_y, temp_hand_y, action_travel_timer);
+			if (action_travel_timer >= 1) {
+				action_travel = false;
+			}
 		}
 		
 		// Repeat Event & Exit
@@ -674,11 +693,13 @@ else if (temp_weapon.weapon_type == "firearm") {
 		
 		// Animation Cancel Behaviour
 		if (!bolt_action_load) {
-			if (temp_weapon.reload_individual_rounds and (key_fire_press or key_aim_press)) {
-				reload = false;
-				action = noone;
-				temp_weapon.image_index = 0;
-				return;
+			if (!ai_behaviour) {
+				if (temp_weapon.reload_individual_rounds and (key_fire_press or key_aim_press)) {
+					reload = false;
+					action = noone;
+					temp_weapon.image_index = 0;
+					return;
+				}
 			}
 			
 			// Reset Behaviour Variables
@@ -854,13 +875,14 @@ if (temp_default_behaviour) {
 // Ambient Arm Behaviour
 if (temp_limb_ambient_animation != noone) {
 	// Ambient Arm Settings
+	var temp_limb_ambient_move = false;
 	var temp_limb_ambient_angle_offset = 0;
 	var temp_limb_target_length_offset = limb_ambient_idle_length_offset;
 	var temp_limb_ambient_rotate_radius = limb_ambient_idle_rotate_radius;
 	if (x_velocity != 0 or y_velocity != 0) {
+		temp_limb_ambient_move = true;
 		temp_limb_ambient_angle_offset = limb_ambient_move_angle_offset;
 		temp_limb_target_length_offset = limb_ambient_move_length_offset;
-		temp_limb_ambient_rotate_radius = limb_ambient_move_rotate_radius;
 		limb_ambient_anim_val = image_index / sprite_get_number(sprite_index);
 	}
 	else {
@@ -881,8 +903,14 @@ if (temp_limb_ambient_animation != noone) {
 			var temp_limb_target_length = (limb[i].limb_length - (temp_limb_ambient_rotate_radius + (temp_limb_target_length_offset * limb[i].limb_length))) * abs(draw_yscale);
 			temp_limb_target_x += lengthdir_x(temp_limb_target_length, temp_limb_target_angle + draw_angle) * abs(draw_xscale);
 			temp_limb_target_y += lengthdir_y(temp_limb_target_length, temp_limb_target_angle + draw_angle);
-			temp_limb_target_x += lengthdir_x(temp_limb_ambient_rotate_radius, -(limb_ambient_anim_val + (i / array_length_1d(temp_limb_ambient_animation))) * 360 * sign(image_xscale));
-			temp_limb_target_y += lengthdir_y(temp_limb_ambient_rotate_radius, -(limb_ambient_anim_val + (i / array_length_1d(temp_limb_ambient_animation))) * 360 * sign(image_xscale));
+			if (!temp_limb_ambient_move) {
+				temp_limb_target_x += lengthdir_x(temp_limb_ambient_rotate_radius, -(limb_ambient_anim_val + (i / array_length_1d(temp_limb_ambient_animation))) * 360 * sign(image_xscale));
+				temp_limb_target_y += lengthdir_y(temp_limb_ambient_rotate_radius, -(limb_ambient_anim_val + (i / array_length_1d(temp_limb_ambient_animation))) * 360 * sign(image_xscale));
+			}
+			else {
+				temp_limb_target_x += lengthdir_x(limb_ambient_move_width, (limb_ambient_anim_val + (i / array_length_1d(temp_limb_ambient_animation))) * 360 * sign(image_xscale));
+				temp_limb_target_y += limb_ambient_anim_val * limb_ambient_move_height;
+			}
 			
 			// Set Limb Targets
 			limb[i].limb_target_x = temp_limb_target_x;

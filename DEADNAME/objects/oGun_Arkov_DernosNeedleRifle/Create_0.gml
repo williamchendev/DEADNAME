@@ -58,7 +58,7 @@ arm_x[0] = 4;
 arm_y[0] = 3;
 
 arm_x[1] = 17;
-arm_y[1] = 1;
+arm_y[1] = 3;
 
 // Bullet Case Settings
 bulletcase_obj = noone;
