@@ -34,9 +34,9 @@ var chest_bot_normalmap = temp_sprites[11];
 var legs_left_normalmap = temp_sprites[12];
 var legs_right_normalmap = temp_sprites[13];
 
-var head_offset = -4;
-var arm_offset = 5;
-var leg_offset = 3;
+var head_offset = 0;
+var arm_offset = 0;
+var leg_offset = 0;
 if (argument_count > 5) {
 	head_offset = argument[5];
 	arm_offset = argument[6];

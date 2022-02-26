@@ -4,7 +4,7 @@
 // Inherit the parent event
 event_inherited();
 
-team_id = "enemy";
+team_id = "player";
 
 // Debug
 idle_animation = sWilliamDS_Idle;

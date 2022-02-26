@@ -13,7 +13,67 @@ if (canmove and player_input) {
 		draw_rectangle(game_manager.camera_x - 50, game_manager.camera_y - 50, game_manager.camera_x + game_manager.camera_width + 50, game_manager.camera_y + game_manager.camera_height + 50, false);
 		draw_set_alpha(1);
 		
-		// Draw Character Overlay
+		// Skip Drawing Player Units
+		if (!command) {
+			return;
+		}
+		
+		// Draw Player Units Overlay
+		for (var i = 0; i < instance_number(oSquad); i++) {
+			// Find Squad Object
+			var temp_squad_inst = instance_find(oSquad, i);
+					
+			// Draw Squad Units
+			if (temp_squad_inst.player_squad) {
+				for (var l = 0; l < ds_list_size(temp_squad_inst.squad_units_list); l++) {
+					// Iterate through Squad units
+					var temp_squad_unit_inst = ds_list_find_value(temp_squad_inst.squad_units_list, l);
+					for (var q = 0; q < array_length_1d(temp_squad_unit_inst.layers); q++) {
+						// Find Layer Elements
+						var temp_layer_elements = layer_get_all_elements(temp_squad_unit_inst.layers[q]);
+						for (var p = 0; p < array_length_1d(temp_layer_elements); p++) {
+							// Check if Element is an Instance
+						    if (layer_get_element_type(temp_layer_elements[p]) == layerelementtype_instance) {
+								// Draw Instance
+							    var temp_inst = layer_instance_get_instance(temp_layer_elements[p]);
+								if (object_is_ancestor(temp_inst.object_index, oArm) or temp_inst.object_index == oArm) {
+									with (temp_inst) {
+										var temp_lit_draw_event = lit_draw_event;
+										manual_surface_offset = true;
+										surface_x_offset = 0;
+										surface_y_offset = 0;
+										lit_draw_event = true;
+										event_perform(ev_draw, 0);
+										lit_draw_event = temp_lit_draw_event;
+									}
+								}
+								else if (object_is_ancestor(temp_inst.object_index, oBasic) or temp_inst.object_index == oBasic) {
+									with (temp_inst) {
+										var temp_lit_draw_event = lit_draw_event;
+										lit_draw_event = true;
+										event_perform(ev_draw, 0);
+										lit_draw_event = temp_lit_draw_event;
+									}
+								}
+								else {
+									with (temp_inst) {
+										event_perform(ev_draw, 0);
+									}
+								}
+						    }
+						}
+					}
+				}
+			}
+			
+			// Draw Squad Outlines
+			temp_squad_inst.outline_draw_event = true;
+			with (temp_squad_inst) {
+				event_perform(ev_draw, 0);
+			}
+		}
+		
+		// Draw Player Character Overlay
 		for (var l = 0; l < array_length_1d(layers); l++) {
 			// Find Layer Elements
 			var temp_layer_elements = layer_get_all_elements(layers[l]);
@@ -22,67 +82,32 @@ if (canmove and player_input) {
 			    if (layer_get_element_type(temp_layer_elements[i]) == layerelementtype_instance) {
 					// Draw Instance
 				    var temp_inst = layer_instance_get_instance(temp_layer_elements[i]);
-				    with (temp_inst) {
-						event_perform(ev_draw, 0);
+					if (object_is_ancestor(temp_inst.object_index, oArm) or temp_inst.object_index == oArm) {
+						with (temp_inst) {
+							var temp_lit_draw_event = lit_draw_event;
+							manual_surface_offset = true;
+							surface_x_offset = 0;
+							surface_y_offset = 0;
+							lit_draw_event = true;
+							event_perform(ev_draw, 0);
+							lit_draw_event = temp_lit_draw_event;
+						}
+					}
+					else if (object_is_ancestor(temp_inst.object_index, oBasic) or temp_inst.object_index == oBasic) {
+						with (temp_inst) {
+							var temp_lit_draw_event = lit_draw_event;
+							lit_draw_event = true;
+							event_perform(ev_draw, 0);
+							lit_draw_event = temp_lit_draw_event;
+						}
+					}
+					else {
+						with (temp_inst) {
+							event_perform(ev_draw, 0);
+						}
 					}
 			    }
 			}
-		}
-		
-		// Draw Unit Select Overlay
-		if (!inventory_show and command) {
-			// Draw Unit Outlines Overlay
-			if (instance_exists(game_manager)) {
-				if (surface_exists(game_manager.surface_manager.unit_outline_overlay_surface)) {
-					draw_surface(game_manager.surface_manager.unit_outline_overlay_surface, game_manager.surface_manager.draw_x, game_manager.surface_manager.draw_y);
-				}
-			}
-			
-			// Draw Unit Select Cursor
-			if (unit_select_hover != noone) {
-				with (unit_select_hover) {
-					var temp_health_show = health_show;
-					health_show = false;
-					for (var l = 0; l < array_length_1d(layers); l++) {
-						// Find Layer Elements
-						var temp_layer_elements = layer_get_all_elements(layers[l]);
-						for (var i = 0; i < array_length_1d(temp_layer_elements); i++) {
-							// Check if Element is an Instance
-						    if (layer_get_element_type(temp_layer_elements[i]) == layerelementtype_instance) {
-								// Draw Instance
-							    var temp_inst = layer_instance_get_instance(temp_layer_elements[i]);
-							    with (temp_inst) {
-									event_perform(ev_draw, 0);
-								}
-						    }
-						}
-					}
-					health_show = temp_health_show;
-				}
-			}
-			
-			// Draw Squad Lines
-			draw_set_color(squad_outline_color);
-			for (var q = 0; q < instance_number(oUnitSquad); q++) {
-				// Find Unit
-				var temp_unit_squad_index = instance_find(oUnitSquad, q);
-				with (temp_unit_squad_index) {
-					// Check if Unit is Viables
-					if (ai_behaviour) {
-						if (ai_follow) {
-							if (ai_follow_unit != noone) {
-								if (instance_exists(ai_follow_unit)) {
-									var temp_unit_squad_height = (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset) / 2;
-									var temp_unit_squad_follow_height = (ai_follow_unit.hitbox_right_bottom_y_offset - ai_follow_unit.hitbox_left_top_y_offset) / 2;
-									draw_circle(ai_follow_unit.x, ai_follow_unit.y - temp_unit_squad_follow_height, 3, false);
-									draw_line(x, y - temp_unit_squad_height, ai_follow_unit.x, ai_follow_unit.y - temp_unit_squad_follow_height);
-								}
-							}
-						}
-					}
-				}
-			}
-			draw_set_color(c_white);
 		}
 	}
 }

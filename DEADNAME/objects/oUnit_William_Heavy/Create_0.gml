@@ -46,6 +46,7 @@ aim_walk_normals = sWilliamDS_Heavy_AimWalk_NormalMap;
 animation_spd = 0.18;
 
 action_spd = 0.20;
+action_travel_spd = 0.5;
 
 squash_stretch = 0.6;
 scale_reset_spd = 0.15;
@@ -134,9 +135,9 @@ limb_normal_sprite[0] = sWilliamDS_Heavy_Arms_NormalMap;  // Right Arm
 limb_normal_sprite[1] = sWilliamDS_Heavy_Arms_NormalMap;  // Left Arm
 
 // Inventory Settings
-add_item_inventory(inventory, 7, 20);
+add_item_inventory(inventory, 8, 20);
 //add_item_inventory(inventory, 6);
-add_item_inventory(inventory, 12);
+add_item_inventory(inventory, 7);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

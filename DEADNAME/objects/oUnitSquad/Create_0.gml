@@ -7,8 +7,6 @@ event_inherited();
 // Animation Settings
 knockout = true;
 
-squad_outline_color = make_color_rgb(212, 175, 55);
-
 // Command Settings
 command = false;
 
@@ -19,9 +17,8 @@ command_lerp_time = false;
 // Player Settings
 player_input = false;
 
-unit_select = noone;
-unit_select_hover = noone;
-unit_select_hitbox_offset = 8;
+// Squad Settings
+squads_selected_list = ds_list_create();
 
 // AI Settings
 ai_behaviour = true;

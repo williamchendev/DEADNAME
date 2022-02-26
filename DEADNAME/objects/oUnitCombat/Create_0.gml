@@ -48,7 +48,7 @@ limb_x[1] = 2;
 limb_y[1] = -32;
 limb_angle[1] = 20;
 
-limb_action_radius = 1.5;
+limb_action_radius = 1;
 limb_ambient_anim_spd = 0.017;
 
 limb_ambient_idle_rotate_radius = 1;
@@ -100,3 +100,6 @@ limb_sprite[1] = sWilliamDS_Arms;  // Left Arm
 
 limb_normal_sprite[0] = sWolf_Arms_NormalMap;  // Right Arm
 limb_normal_sprite[1] = sWolf_Arms_NormalMap;  // Left Arm
+
+action_target_x_offset = 0;
+action_target_y_offset = 0;

@@ -427,8 +427,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 							if (temp_weapon.magazine_obj != noone) {
 								var temp_mag_distance = point_distance(0, 0, temp_weapon.reload_x, temp_weapon.reload_y * sign(image_xscale));
 								var temp_mag_direction = point_direction(0, 0, temp_weapon.reload_x, temp_weapon.reload_y * sign(image_xscale));
-								var temp_mag_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-								var temp_mag_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+								var temp_mag_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+								var temp_mag_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_mag_distance, temp_mag_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 								var temp_mag = instance_create_depth(temp_mag_x, temp_mag_y, layer_get_depth(temp_weapon.layer) - 5, temp_weapon.magazine_obj);
 								with (temp_mag) {
 									if (!place_free(temp_mag_x + sign(other.image_xscale * (sprite_get_bbox_right(sprite_index) - sprite_get_xoffset(sprite_index))), temp_mag_y)) {
@@ -479,8 +479,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 					// Hand Reaches to Bolt
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.bolt_action_start_x, temp_weapon.bolt_action_start_y * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.bolt_action_start_x, temp_weapon.bolt_action_start_y * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					//temp_time = 20 / (action_spd / 0.15);
 					break;
 				case 1:
@@ -488,8 +488,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 					temp_weapon.image_index = 1;
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.bolt_action_end_x, temp_weapon.bolt_action_end_y * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.bolt_action_end_x, temp_weapon.bolt_action_end_y * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					//temp_time = 20 / (action_spd / 0.15);
 					break;
 				case 2:
@@ -497,8 +497,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 					temp_weapon.image_index = 1;
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.bolt_action_start_x, temp_weapon.bolt_action_start_y * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.bolt_action_start_x, temp_weapon.bolt_action_start_y * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					
 					// Bolt Action Reload Behaviour
 					temp_weapon.bolt_action_loaded = true;
@@ -514,8 +514,8 @@ else if (temp_weapon.weapon_type == "firearm") {
 					temp_weapon.image_index = 0;
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					break;
 				default:
 					// Set Bolt Action Loaded to True
@@ -573,16 +573,16 @@ else if (temp_weapon.weapon_type == "firearm") {
 					// Hand Reaches Above Gun Reload Position
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.reload_x, (temp_weapon.reload_y + temp_weapon.reload_offset_y) * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.reload_x, (temp_weapon.reload_y + temp_weapon.reload_offset_y) * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					temp_time = 20 / (action_spd / 0.15);
 					break;
 				case 2:
 					// Hand Reaches into Gun Mechanism Position
 					var temp_limb_distance = point_distance(0, 0, temp_weapon.reload_x, temp_weapon.reload_y * sign(image_xscale));
 					var temp_limb_direction = point_direction(0, 0, temp_weapon.reload_x, temp_weapon.reload_y * sign(image_xscale));
-					temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-					temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+					temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					break;
 				case 3:
 					// Gun Reloads Behaviour
@@ -630,15 +630,15 @@ else if (temp_weapon.weapon_type == "firearm") {
 						// Single Handed Weapon Return Position
 						var temp_limb_distance = point_distance(0, 0, temp_weapon.arm_x[1], temp_weapon.arm_y[1] * sign(image_xscale));
 						var temp_limb_direction = point_direction(0, 0, temp_weapon.arm_x[1], temp_weapon.arm_y[1] * sign(image_xscale));
-						temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-						temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+						temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+						temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					}
 					else {
 						// Double Handed Weapon Return Position
 						var temp_limb_distance = point_distance(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
 						var temp_limb_direction = point_direction(0, 0, temp_weapon.arm_x[0], temp_weapon.arm_y[0] * sign(image_xscale));
-						temp_hand_x = temp_weapon.x + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
-						temp_hand_y = temp_weapon.y + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+						temp_hand_x = temp_weapon.x_position + temp_weapon.recoil_offset_x + lengthdir_x(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
+						temp_hand_y = temp_weapon.y_position + temp_weapon.recoil_offset_y + lengthdir_y(temp_limb_distance, temp_limb_direction + temp_weapon.weapon_rotation + temp_weapon.recoil_angle_shift);
 					}
 					break;
 				default:
@@ -662,6 +662,44 @@ else if (temp_weapon.weapon_type == "firearm") {
 		if (!action_travel) {
 			action_timer -= global.deltatime;
 			action_anim_timer -= global.deltatime;
+			action_target_x = temp_hand_x + action_target_x_offset;
+			action_target_y = temp_hand_y + action_target_y_offset;
+			if (action_anim_timer < 0) {
+				if (random(1) > 0.35) {
+					action_timer += 0.5;
+				}
+				action_target_x_offset += random_range(-1, 1);
+				action_target_y_offset += random_range(-1, 1);
+				action_anim_timer = 6;
+			}
+			if (action_timer < 0) {
+				action_index++;
+				action_timer = temp_time;
+				
+				action_travel = true;
+				action_travel_timer = 0;
+			}
+		}
+		else {
+			var temp_action_travel_dis = point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y);
+			action_travel_timer += (action_travel_spd / temp_action_travel_dis) * global.deltatime;
+			action_travel_timer = clamp(action_travel_timer, 0, 1);
+			action_target_x = lerp(action_target_x, temp_hand_x, action_travel_timer);
+			action_target_y = lerp(action_target_y, temp_hand_y, action_travel_timer);
+			if (point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y) < limb_action_radius) {
+				action_travel = false;
+				action_target_x = temp_hand_x;
+				action_target_y = temp_hand_y;
+				action_target_x_offset = 0;
+				action_target_y_offset = 0;
+			}
+		}
+		/*
+		var temp_action_target_dis = point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y);
+		show_debug_message(temp_action_target_dis);
+		if (temp_action_target_dis < limb_action_radius) {
+			action_timer -= global.deltatime;
+			action_anim_timer -= global.deltatime;
 			if (action_anim_timer < 0) {
 				action_target_x += random_range(-1, 1);
 				action_target_y += random_range(-1, 1);
@@ -670,20 +708,18 @@ else if (temp_weapon.weapon_type == "firearm") {
 			if (action_timer < 0) {
 				action_index++;
 				action_timer = temp_time;
-				action_travel = true;
-				action_travel_timer = 0;
 			}
 		}
 		else {
-			var temp_action_travel_dis = point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y);
-			action_travel_timer += (action_spd / temp_action_travel_dis) * global.deltatime;
-			action_travel_timer = clamp(action_travel_timer, 0, 1);
-			action_target_x = lerp(action_target_x, temp_hand_x, action_travel_timer);
-			action_target_y = lerp(action_target_y, temp_hand_y, action_travel_timer);
-			if (action_travel_timer >= 1) {
-				action_travel = false;
+			action_target_x = lerp(action_target_x, temp_hand_x, action_spd * global.deltatime);
+			action_target_y = lerp(action_target_y, temp_hand_y, action_spd * global.deltatime);
+			temp_action_target_dis = point_distance(action_target_x, action_target_y, temp_hand_x, temp_hand_y);
+			if (temp_action_target_dis < limb_action_radius) {
+				action_target_x = lerp(action_target_x, temp_hand_x, 0.8);
+				action_target_y = lerp(action_target_y, temp_hand_y, 0.8);
 			}
 		}
+		*/
 		
 		// Repeat Event & Exit
 		if (!reload) {

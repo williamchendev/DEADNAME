@@ -38,6 +38,7 @@ aim_walk_normals = sWilliam_NorthernBrigade_AimWalk_NormalMap;
 
 animation_spd = 0.18;
 action_spd = 0.17;
+action_travel_spd = 0.25;
 squash_stretch = 0.3;
 scale_reset_spd = 0.15;
 

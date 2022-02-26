@@ -365,7 +365,7 @@ if (health_points <= 0) {
 		temp_ragdoll_sprites[13] = ragdoll_leg_right_normalmap;
 	
 		// Instantiate Ragdoll and the Ragdoll Limbs Array
-		var temp_ragdoll_limbs = create_ragdoll(x, y, image_xscale, layer_get_id("Instances"), temp_ragdoll_sprites);
+		var temp_ragdoll_limbs = create_ragdoll(x, y, image_xscale, layer_get_id("Instances"), temp_ragdoll_sprites, ragdoll_head_offset, ragdoll_arm_offset, ragdoll_leg_offset);
 		if (ragdoll_lootable_corpse) {
 			var temp_lootable_corpse_inst = instance_create_layer(x, y, layer_get_id("Instances"), oInteractCorpse);
 			temp_lootable_corpse_inst.interact_inventory_obj = inventory;

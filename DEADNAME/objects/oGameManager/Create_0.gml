@@ -46,7 +46,7 @@ reload_check = ord("R");
 interact_check = ord("E");
 inventory_check = ord("I");
 
-command_check = vk_control;
+command_check = ord("Q");
 
 // Time Settings
 time_spd = 1;
@@ -66,5 +66,5 @@ cursor_icon = false;
 cursor_inventory = false;
 cursor_index = 0;
 
-// Surface Manager Variables
-surface_manager = noone;
+// Squad Variables
+generated_squads = 0;

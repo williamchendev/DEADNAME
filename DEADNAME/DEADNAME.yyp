@@ -135,6 +135,14 @@
             }
         },
         {
+            "Key": "0407c75d-a194-444d-b91d-f75acee86804",
+            "Value": {
+                "id": "04858564-32e5-4c26-aea8-6adb5c3258fa",
+                "resourcePath": "sprites\\sWilliam_Knives_RightLeg_NormalMap\\sWilliam_Knives_RightLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0414dc28-73a2-4f7e-a732-abcea864ea9d",
             "Value": {
                 "id": "dc12d4bb-bcc6-4d58-b9df-fa80b7898514",
@@ -455,6 +463,14 @@
             }
         },
         {
+            "Key": "10499d62-debf-4c31-9d03-7fe943099db5",
+            "Value": {
+                "id": "bfc42b67-50c9-4217-90a7-2c4b5c6febe4",
+                "resourcePath": "views\\10499d62-debf-4c31-9d03-7fe943099db5.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "10ca8450-3472-4349-bd20-eb7721f08451",
             "Value": {
                 "id": "ba540276-32fb-44a7-9d2a-0ba40e5df836",
@@ -724,6 +740,14 @@
                 "id": "4c39424a-b4eb-46b7-a26a-100ff1bcdb30",
                 "resourcePath": "objects\\oBulletCase\\oBulletCase.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "1a8e83d2-3623-4ac7-8f93-20e9e81f7fec",
+            "Value": {
+                "id": "afe995b3-dd14-4f4d-a430-514c47bc7372",
+                "resourcePath": "sprites\\sWilliam_Knives_ChestBot_NormalMap\\sWilliam_Knives_ChestBot_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1207,6 +1231,14 @@
             }
         },
         {
+            "Key": "2bfc21c8-3bd8-4fa0-884e-d5c878a7939e",
+            "Value": {
+                "id": "310bc29c-d789-45d1-a6cd-945b19dad362",
+                "resourcePath": "sprites\\sWilliam_Knives_Head_NormalMap\\sWilliam_Knives_Head_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2c33a1c5-03d1-4e97-9303-0a627b3fce90",
             "Value": {
                 "id": "5c85c761-d2f0-4a5c-ac66-bd95d2c9989b",
@@ -1527,10 +1559,26 @@
             }
         },
         {
+            "Key": "35836961-9c7d-451c-a9e1-6f81d6a7fe0a",
+            "Value": {
+                "id": "e8eac2dc-59f6-4661-81c6-2ae8669c6f4e",
+                "resourcePath": "sprites\\sWilliam_Knives_ChestBot\\sWilliam_Knives_ChestBot.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "35e5164e-050d-4ecc-b860-3563a0b0edc7",
             "Value": {
                 "id": "b5debce6-8574-453c-956d-13d45b12d721",
                 "resourcePath": "objects\\oEditorUtilBar\\oEditorUtilBar.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "35eea43b-70eb-4f97-a547-c75d547ea780",
+            "Value": {
+                "id": "c971b075-168a-4afe-b33a-27fc92fb77af",
+                "resourcePath": "objects\\oRagdollEntity\\oRagdollEntity.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1556,6 +1604,14 @@
                 "id": "ff200748-6110-48f6-a0d4-ebbfdef77280",
                 "resourcePath": "objects\\oEditorObjectSelectMenu\\oEditorObjectSelectMenu.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "36c78340-194c-434f-b86c-f4e3b05dfdda",
+            "Value": {
+                "id": "2a37596f-100f-4e90-b6e8-2e84337c48bc",
+                "resourcePath": "sprites\\sSquadIcons\\sSquadIcons.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2172,6 +2228,14 @@
                 "id": "1ffd6f06-5792-4910-b680-b39fd3dbadd0",
                 "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Jump_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Jump_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "49d17323-06af-405d-a1e3-2500bebd6d94",
+            "Value": {
+                "id": "d647981b-cc47-4ab9-b0ba-eb553a60e924",
+                "resourcePath": "views\\49d17323-06af-405d-a1e3-2500bebd6d94.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3103,6 +3167,22 @@
             }
         },
         {
+            "Key": "69ea5a5a-27bd-4b32-a127-d677caabd483",
+            "Value": {
+                "id": "1675120a-8c4e-453c-b88f-145ddfe97315",
+                "resourcePath": "sprites\\sWilliam_Knives_Head\\sWilliam_Knives_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "69ee68ab-514b-4437-a821-dc4882095872",
+            "Value": {
+                "id": "ecd5013e-8e26-4090-ae14-6b668851e354",
+                "resourcePath": "objects\\oRagdoll_Limb_Hair\\oRagdoll_Limb_Hair.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "6a36bce0-2b57-480e-b59d-4ac99a51d5e6",
             "Value": {
                 "id": "b42fcd74-7a28-4844-be69-79098f1ba968",
@@ -3155,6 +3235,14 @@
             "Value": {
                 "id": "2e1c4af0-5ac0-40c0-828c-8f5b7c329cc0",
                 "resourcePath": "sprites\\sAdobeHouse_PaleDesertRocksLarge_Sprite\\sAdobeHouse_PaleDesertRocksLarge_Sprite.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "6b5f93ef-a9fd-42ce-a07b-629e14a26514",
+            "Value": {
+                "id": "db397f93-1111-467f-bb8c-0b653cf42035",
+                "resourcePath": "sprites\\sWilliam_Knives_RightLeg\\sWilliam_Knives_RightLeg.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3335,6 +3423,14 @@
             }
         },
         {
+            "Key": "71b4cc6b-c640-495a-8fa3-ff1b6e87a1c0",
+            "Value": {
+                "id": "d298af39-0c59-40d8-9228-5b9b920a66a8",
+                "resourcePath": "sprites\\sWilliam_Knives_LeftLeg\\sWilliam_Knives_LeftLeg.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "71bca1ac-bf86-46d9-a866-41b293e745b9",
             "Value": {
                 "id": "5f17eb08-0462-4f86-b16a-d9e74b7b8e04",
@@ -3410,7 +3506,7 @@
             "Key": "73fdadfb-c863-438e-8232-da3dfd79adaf",
             "Value": {
                 "id": "d67430fd-04f0-4553-b3d8-3257ad9d0905",
-                "resourcePath": "objects\\oRagdollEntity\\oRagdollEntity.yy",
+                "resourcePath": "objects\\oRagdollEntity_Collision\\oRagdollEntity_Collision.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -3836,14 +3932,6 @@
                 "id": "f352fa14-2cb9-4329-b30e-175c2a07ed89",
                 "resourcePath": "shaders\\shd_subtract_alpha\\shd_subtract_alpha.yy",
                 "resourceType": "GMShader"
-            }
-        },
-        {
-            "Key": "84243f2f-4c73-4579-b7bd-58c9a93b1aae",
-            "Value": {
-                "id": "8cf6cd18-4afb-4503-a186-bc8a90a0bd53",
-                "resourcePath": "views\\84243f2f-4c73-4579-b7bd-58c9a93b1aae.yy",
-                "resourceType": "GMFolder"
             }
         },
         {
@@ -4655,6 +4743,14 @@
             }
         },
         {
+            "Key": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
+            "Value": {
+                "id": "9ce1e4bf-aaef-4ac9-81fd-01e6576e3fb3",
+                "resourcePath": "sprites\\sWilliam_Knives_Hair_NormalMap\\sWilliam_Knives_Hair_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a3c22c20-db56-4302-aa63-8ec136afacc1",
             "Value": {
                 "id": "1c80dbd5-1266-468b-a632-8fe5ffce69d9",
@@ -4820,6 +4916,14 @@
                 "id": "0fe70f1c-3213-4f53-b187-10378bb1bbf2",
                 "resourcePath": "options\\linux\\options_linux.yy",
                 "resourceType": "GMLinuxOptions"
+            }
+        },
+        {
+            "Key": "a97ba112-8f91-40dc-b470-64eefb9ec5b2",
+            "Value": {
+                "id": "34e1e0e1-ba6a-4725-bba7-f09b4fb639a0",
+                "resourcePath": "sprites\\sWilliam_Knives_ChestTop_NormalMap\\sWilliam_Knives_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5183,6 +5287,14 @@
             }
         },
         {
+            "Key": "b32960f9-aadb-4733-af9e-35d1e0fefdc6",
+            "Value": {
+                "id": "caa56dba-6489-4cb3-b26a-a5a8973f9b2a",
+                "resourcePath": "objects\\oSquad\\oSquad.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "b41450bd-e1ba-4e94-ae16-7716405b1cf6",
             "Value": {
                 "id": "87ca875e-1bf7-4180-ac17-1049d95f65d5",
@@ -5439,6 +5551,14 @@
             }
         },
         {
+            "Key": "bb026bd4-130f-4c5d-a538-ab46316da3c0",
+            "Value": {
+                "id": "8d9df92d-6f9b-4fdc-8da9-401238bb2ef0",
+                "resourcePath": "sprites\\sWilliam_Knives_ChestTop\\sWilliam_Knives_ChestTop.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "bb5fc51a-acd2-4f48-b997-14dcd5c866d7",
             "Value": {
                 "id": "2d6fa634-10f4-4951-9c63-6278b44078aa",
@@ -5476,6 +5596,14 @@
                 "id": "ca1acf0e-e028-493f-aa4d-7ab5d3ae6781",
                 "resourcePath": "sprites\\sWilliam_Knives_Run_NormalMap\\sWilliam_Knives_Run_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "bbfcac8c-25d7-4a26-ace3-dd64c3b2c1ca",
+            "Value": {
+                "id": "f036566c-8f21-4fa2-a2c7-497cdad0a21d",
+                "resourcePath": "objects\\oAutoCreateSquad\\oAutoCreateSquad.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -5572,14 +5700,6 @@
                 "id": "3bf5f7fd-b67e-435f-b4f9-860261463b7a",
                 "resourcePath": "objects\\oItem_DropContainer\\oItem_DropContainer.yy",
                 "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "bebfd0b5-20cf-4d34-8e80-06492a3d7e01",
-            "Value": {
-                "id": "3c781898-a98f-4fbc-ba75-903969eff000",
-                "resourcePath": "views\\bebfd0b5-20cf-4d34-8e80-06492a3d7e01.yy",
-                "resourceType": "GMFolder"
             }
         },
         {
@@ -5812,6 +5932,14 @@
                 "id": "e08b844d-1bfd-41cb-b0db-dbae89907225",
                 "resourcePath": "views\\c529c3b8-3907-421b-b3a2-ffcc11cbb9a6.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c54a76df-6a6e-4291-b9c3-f915bb7fcd36",
+            "Value": {
+                "id": "e27ec0cf-53bb-4bd8-af8c-63376b08f924",
+                "resourcePath": "objects\\oUnitEnemy_Knives\\oUnitEnemy_Knives.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -6087,14 +6215,6 @@
             }
         },
         {
-            "Key": "ceee3f7d-44f4-4c61-8b62-8837ded92608",
-            "Value": {
-                "id": "019a59ea-d0d7-47fc-b11c-3dffd7740018",
-                "resourcePath": "views\\ceee3f7d-44f4-4c61-8b62-8837ded92608.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "cf969c40-9cd7-441c-bf7b-99c3f85294e6",
             "Value": {
                 "id": "d51cd30d-bb01-414e-abcf-e2ef075e7f53",
@@ -6204,14 +6324,6 @@
                 "id": "8c0d9375-bcfe-45f7-9c9d-2bbedddf3b93",
                 "resourcePath": "sprites\\sWolf_AimWalk\\sWolf_AimWalk.yy",
                 "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "d3ea79b5-a179-4587-a624-115fb8c95887",
-            "Value": {
-                "id": "e1986145-02ce-4e8a-87fb-064749655a86",
-                "resourcePath": "objects\\oSurfaceManager\\oSurfaceManager.yy",
-                "resourceType": "GMObject"
             }
         },
         {
@@ -6980,6 +7092,14 @@
                 "id": "73e23287-106c-473d-a7b6-ee9b232b905c",
                 "resourcePath": "objects\\oDebugTeleport\\oDebugTeleport.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "ef3f290e-ac86-4140-8361-8772774bf826",
+            "Value": {
+                "id": "134fc6d7-ae7a-4d43-883e-67fcea112731",
+                "resourcePath": "sprites\\sWilliam_Knives_LeftLeg_NormalMap\\sWilliam_Knives_LeftLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {

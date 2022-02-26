@@ -22,29 +22,15 @@ if (generate) {
 	global.editor_data = noone;
 	
 	// Reset Instantiated Units List
-	//ds_list_destroy(instantiated_units);
-	//instantiated_units = ds_list_create();
+	ds_list_destroy(instantiated_units);
+	instantiated_units = ds_list_create();
 }
 
 // Reset Generate Function
 generate = false;
 
-// Init Surface Manager
-var temp_sm_exists = false;
-if (surface_manager != noone) {
-	if (instance_exists(surface_manager)) {
-		temp_sm_exists = true;
-	}
-}
-
-if (!temp_sm_exists) {
-	if (instance_number(oSurfaceManager) > 0) {
-		surface_manager = instance_find(oSurfaceManager, 0);
-	}
-	else {
-		surface_manager = instance_create_layer(0, 0, layer_get_id("Instances"), oSurfaceManager);
-	}
-}
+// Reset Generated Squad Counter
+generated_squads = 0;
 
 // Reset Room Speed
 time_spd = 1.0;

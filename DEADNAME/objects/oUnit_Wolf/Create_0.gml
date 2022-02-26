@@ -40,6 +40,7 @@ hurt_animation = sWilliam_Hurt;
 animation_spd = 0.18;
 
 action_spd = 0.30;
+action_travel_spd = 0.5;
 
 squash_stretch = 0.6;
 scale_reset_spd = 0.15;

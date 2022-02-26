@@ -44,11 +44,3 @@ else {
 	interact_select_draw_value = lerp(interact_select_draw_value, 0, global.realdeltatime * interact_select_draw_spd);
 }
 interact_select_draw_value = clamp(interact_select_draw_value, 0, 1);
-
-// Interact Outline Behaviour
-if (interact_select_draw_value > 0) {
-	// Debug
-	if (is_undefined(ds_map_find_value(game_manager.surface_manager.interacts_outline, id))) {
-		ds_map_add(game_manager.surface_manager.interacts_outline, id, interact_select_outline_color);
-	}
-}

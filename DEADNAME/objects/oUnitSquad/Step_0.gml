@@ -25,7 +25,7 @@ if (player_input) {
 		key_aim_press = mouse_check_button(mb_right);
 		key_reload_press = keyboard_check_pressed(game_manager.reload_check);
 		
-		key_command = keyboard_check(game_manager.command_check);
+		key_command = keyboard_check_pressed(game_manager.command_check);
 		
 		cursor_x = mouse_get_x();
 		cursor_y = mouse_get_y();
@@ -61,23 +61,7 @@ else {
 	// Physics & Combat & Unit Behaviour Inheritance
 	event_inherited();
 	
-	// Set Squad Unit Outline
-	if (temp_ai_follow_valid) {		
-		// Set Unit to have Squad Outline
-		if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, id))) {
-			ds_map_add(game_manager.surface_manager.units_outline, id, squad_outline_color);
-		}
-		else if (ds_map_find_value(game_manager.surface_manager.units_outline, id) != c_white) {
-			ds_map_replace(game_manager.surface_manager.units_outline, id, squad_outline_color);
-		}
-		// Set Following Unit to have Squad Outline
-		if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, ai_follow_unit))) {
-			ds_map_add(game_manager.surface_manager.units_outline, ai_follow_unit, squad_outline_color);
-		}
-		else if (ds_map_find_value(game_manager.surface_manager.units_outline, ai_follow_unit) != c_white) {
-			ds_map_replace(game_manager.surface_manager.units_outline, ai_follow_unit, squad_outline_color);
-		}
-	}
+	// Reset Squad Aim
 	squad_aim = false;
 	
 	// End Event
@@ -125,92 +109,74 @@ if (canmove) {
 		
 		// Command Mode Behaviour
 		if (!inventory_show) {
-			// Select Unit
-			unit_select_hover = noone;
-			for (var i = 0; i < instance_number(oUnitSquad); i++) {
-				// Iterate Through Squad Units
-				var temp_unit_squad = instance_find(oUnitSquad, i);
-				
-				// Hitbox Variables
-				var temp_hitbox_p1_x = temp_unit_squad.x + temp_unit_squad.hitbox_left_top_x_offset - unit_select_hitbox_offset;
-				var temp_hitbox_p1_y = temp_unit_squad.y + temp_unit_squad.hitbox_left_top_y_offset - unit_select_hitbox_offset;
-				var temp_hitbox_p2_x = temp_unit_squad.x + temp_unit_squad.hitbox_right_bottom_x_offset + unit_select_hitbox_offset;
-				var temp_hitbox_p2_y = temp_unit_squad.y + temp_unit_squad.hitbox_right_bottom_y_offset + unit_select_hitbox_offset;
+			// Squad Cursor Behaviour
+			var temp_squad_selected = false;
+			var temp_squad_selected_inst = noone;
+			var temp_squad_selection_list = ds_list_create();
+			var temp_squad_selection_num = instance_position_list(cursor_x, cursor_y, oSquad, temp_squad_selection_list, true);
+			for (var i = 0; i < temp_squad_selection_num; i++) {
+				// Find Squad Object
+				var temp_squad_inst = ds_list_find_value(temp_squad_selection_list, i);
 					
-				if (point_in_rectangle(cursor_x, cursor_y, temp_hitbox_p1_x, temp_hitbox_p1_y, temp_hitbox_p2_x, temp_hitbox_p2_y)) {
-					if (key_aim_press and !old_aim_press) {
-						if (unit_select != noone and unit_select != temp_unit_squad) {
-							with (unit_select) {
-								path_create = true;
-								path_end_x = temp_unit_squad.x;
-								path_end_y = temp_unit_squad.y;
-								
-								ai_follow = true;
-								ai_command = false;
-								ai_follow_unit = temp_unit_squad;
-								ai_follow_combat_timer = 0;
-							}
-							unit_select = noone;
-							key_aim_press = false;
-						}
-					}
-					else if (key_fire_press and !old_fire_press) {
-						if (temp_unit_squad != id) {
-							unit_select = temp_unit_squad;
-							key_fire_press = false;
-						}
-					}
-					else {
-						unit_select_hover = temp_unit_squad;
-					}
-						
+				// Check Through Squad Units
+				if (temp_squad_inst.player_squad) {
+					temp_squad_selected_inst = temp_squad_inst;
+					temp_squad_selected_inst.squad_hover = true;
+					temp_squad_selected = true;
 					break;
 				}
 			}
+			ds_list_destroy(temp_squad_selection_list);
 			
-			// Deselect Unit
+			// Squad Command Behaviour
+			var temp_move_squads = false;
 			if (key_fire_press and !old_fire_press) {
-				unit_select = noone;
-			}
-			
-			// Move Unit
-			if (key_aim_press and !old_aim_press) {
-				if (unit_select != noone) {
-					with (unit_select) {
-						path_create = true;
-						path_end_x = other.cursor_x;
-						path_end_y = other.cursor_y;
-						
-						ai_command = true;
-						ai_follow = false;
-						ai_follow_unit = noone;
-						ai_follow_active = false;
+				// Squad Selection Behaviour
+				if (temp_squad_selected) {
+					var temp_squad_select_list_index = ds_list_find_index(squads_selected_list, temp_squad_selected_inst);
+					if (temp_squad_select_list_index != -1) {
+						ds_list_delete(squads_selected_list, temp_squad_select_list_index);
+					}
+					else {
+						ds_list_add(squads_selected_list, temp_squad_selected_inst);
 					}
 				}
+				else {
+					// Selection Empty
+					ds_list_clear(squads_selected_list);
+				}
+			}
+			else if (key_aim_press and !old_aim_press) {
+				// Move Selected Squads Behaviour
+				temp_move_squads = true;
 			}
 			
-			// Set Outline Overlay
-			var temp_unit_select_array = noone;
-			if (unit_select != noone) {
-				// Set Units Selected
-				temp_unit_select_array[0] = unit_select;
-			}
-			if (instance_exists(game_manager)) {
-				// Set Unit Outline
-				if (temp_unit_select_array != noone) {
-					for (var q = 0; q < array_length_1d(temp_unit_select_array); q++) {
-						if (is_undefined(ds_map_find_value(game_manager.surface_manager.units_outline, temp_unit_select_array[q]))) {
-							ds_map_add(game_manager.surface_manager.units_outline, temp_unit_select_array[q], c_white);
-						}
-						else {
-							ds_map_replace(game_manager.surface_manager.units_outline, temp_unit_select_array[q], c_white);
+			// Squad Selected List Behaviour
+			for (var i = ds_list_size(squads_selected_list) - 1; i >= 0; i--) {
+				var temp_squad_inst = ds_list_find_value(squads_selected_list, i);
+				var temp_squad_exists = false;
+				if (temp_squad_inst != noone) {
+					if (instance_exists(temp_squad_inst)) {
+						// Squad Selected
+						temp_squad_exists = true;
+						temp_squad_inst.squad_selected = true;
+						temp_squad_inst.squad_select_draw_value = 1;
+						
+						// Move Squads
+						if (temp_move_squads) {
+							temp_squad_inst.squad_path_create = true;
+							temp_squad_inst.squad_path_end_x = cursor_x;
+							temp_squad_inst.squad_path_end_y = cursor_y;
 						}
 					}
+				}
+				if (!temp_squad_exists) {
+					ds_list_delete(squads_selected_list, i);
 				}
 			}
 			
 			// Disable Command Mode
-			if (!key_command) {
+			if (key_command) {
 				command = false;
 				command_lerp_time = true;
 			}
@@ -264,11 +230,6 @@ if (canmove) {
 			if (game_manager.time_spd > 0.95) {
 				command_lerp_time = false;
 				game_manager.time_spd = 1;
-				
-				// Disable Unit Select Surface
-				if (instance_exists(game_manager)) {
-					game_manager.surface_manager.calc_unit_overlay = false;
-				}
 			}
 		}
 		
@@ -278,17 +239,15 @@ if (canmove) {
 			command = true;
 			command_lerp_time = true;
 			
-			// Reset Unit Select
-			unit_select = noone;
+			// Reset Squad Select
+			with (oSquad) {
+				squad_select_draw_value = 0;
+			}
+			ds_list_clear(squads_selected_list);
 			
 			// Enable Inventory
 			if (key_inventory_press) {
 				inventory_show = true;
-			}
-			
-			// Enable Unit Select Surface
-			if (instance_exists(game_manager)) {
-				game_manager.surface_manager.calc_unit_overlay = true;
 			}
 		}
 		

@@ -21,6 +21,7 @@ slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player i
 canmove = true;
 
 team_id = "unassigned";
+squad_id = "unassigned";
 
 health_show = true;
 health_points = 6;
@@ -42,6 +43,7 @@ aim_walk_normals = sWolf_AimWalk_NormalMap;
 animation_spd = 0.18;
 
 action_spd = 0.20;
+action_travel_spd = 0.5;
 
 squash_stretch = 0.4;
 scale_reset_spd = 0.15;
@@ -72,6 +74,10 @@ ragdoll_chest_top_normalmap = sWilliamDS_ChestTop_NormalMap;
 ragdoll_chest_bot_normalmap = sWilliamDS_ChestBot_NormalMap;
 ragdoll_leg_left_normalmap = sWilliamDS_LeftLeg_NormalMap;
 ragdoll_leg_right_normalmap = sWilliamDS_RightLeg_NormalMap;
+
+ragdoll_head_offset = -4;
+ragdoll_arm_offset = 5;
+ragdoll_leg_offset = 3;
 
 ragdoll_lootable_corpse = true;
 
