@@ -18,58 +18,78 @@ if (canmove and player_input) {
 			return;
 		}
 		
-		// Draw Player Units Overlay
-		for (var i = 0; i < instance_number(oSquad); i++) {
-			// Find Squad Object
-			var temp_squad_inst = instance_find(oSquad, i);
-					
-			// Draw Squad Units
-			if (temp_squad_inst.player_squad) {
-				for (var l = 0; l < ds_list_size(temp_squad_inst.squad_units_list); l++) {
-					// Iterate through Squad units
-					var temp_squad_unit_inst = ds_list_find_value(temp_squad_inst.squad_units_list, l);
-					for (var q = 0; q < array_length_1d(temp_squad_unit_inst.layers); q++) {
-						// Find Layer Elements
-						var temp_layer_elements = layer_get_all_elements(temp_squad_unit_inst.layers[q]);
-						for (var p = 0; p < array_length_1d(temp_layer_elements); p++) {
-							// Check if Element is an Instance
-						    if (layer_get_element_type(temp_layer_elements[p]) == layerelementtype_instance) {
-								// Draw Instance
-							    var temp_inst = layer_instance_get_instance(temp_layer_elements[p]);
-								if (object_is_ancestor(temp_inst.object_index, oArm) or temp_inst.object_index == oArm) {
-									with (temp_inst) {
-										var temp_lit_draw_event = lit_draw_event;
-										manual_surface_offset = true;
-										surface_x_offset = 0;
-										surface_y_offset = 0;
-										lit_draw_event = true;
-										event_perform(ev_draw, 0);
-										lit_draw_event = temp_lit_draw_event;
-									}
-								}
-								else if (object_is_ancestor(temp_inst.object_index, oBasic) or temp_inst.object_index == oBasic) {
-									with (temp_inst) {
-										var temp_lit_draw_event = lit_draw_event;
-										lit_draw_event = true;
-										event_perform(ev_draw, 0);
-										lit_draw_event = temp_lit_draw_event;
-									}
-								}
-								else {
-									with (temp_inst) {
-										event_perform(ev_draw, 0);
-									}
-								}
-						    }
-						}
+		// Draw Command Mode Specific UI
+		if (!inventory_show) {
+			// Draw Materials & Cover
+			for (var i = 0; i < instance_number(oMaterial); i++) {
+				// Find Material Object
+				var temp_material_inst = instance_find(oMaterial, i);
+			
+				// Draw Material Sprite
+				if ((temp_material_inst.object_index != oMaterialDoor) and (!object_is_ancestor(temp_material_inst.object_index, oMaterialDoor))) {
+					if (position_meeting(cursor_x, cursor_y, temp_material_inst)) {
+						draw_sprite_ext(temp_material_inst.material_sprite, 0, temp_material_inst.x, temp_material_inst.y, temp_material_inst.image_xscale, temp_material_inst.image_yscale, temp_material_inst.image_angle, c_aqua, temp_material_inst.image_alpha);
+					}
+					else {
+						draw_sprite_ext(temp_material_inst.material_sprite, 0, temp_material_inst.x, temp_material_inst.y, temp_material_inst.image_xscale, temp_material_inst.image_yscale, temp_material_inst.image_angle, temp_material_inst.image_blend, temp_material_inst.image_alpha);
 					}
 				}
 			}
+		
+		
+			// Draw Player Units Overlay
+			for (var i = 0; i < instance_number(oSquad); i++) {
+				// Find Squad Object
+				var temp_squad_inst = instance_find(oSquad, i);
+					
+				// Draw Squad Units
+				if (team_id == temp_squad_inst.team_id) {
+					for (var l = 0; l < ds_list_size(temp_squad_inst.squad_units_list); l++) {
+						// Iterate through Squad units
+						var temp_squad_unit_inst = ds_list_find_value(temp_squad_inst.squad_units_list, l);
+						for (var q = 0; q < array_length_1d(temp_squad_unit_inst.layers); q++) {
+							// Find Layer Elements
+							var temp_layer_elements = layer_get_all_elements(temp_squad_unit_inst.layers[q]);
+							for (var p = 0; p < array_length_1d(temp_layer_elements); p++) {
+								// Check if Element is an Instance
+							    if (layer_get_element_type(temp_layer_elements[p]) == layerelementtype_instance) {
+									// Draw Instance
+								    var temp_inst = layer_instance_get_instance(temp_layer_elements[p]);
+									if (object_is_ancestor(temp_inst.object_index, oArm) or temp_inst.object_index == oArm) {
+										with (temp_inst) {
+											var temp_lit_draw_event = lit_draw_event;
+											manual_surface_offset = true;
+											surface_x_offset = 0;
+											surface_y_offset = 0;
+											lit_draw_event = true;
+											event_perform(ev_draw, 0);
+											lit_draw_event = temp_lit_draw_event;
+										}
+									}
+									else if (object_is_ancestor(temp_inst.object_index, oBasic) or temp_inst.object_index == oBasic) {
+										with (temp_inst) {
+											var temp_lit_draw_event = lit_draw_event;
+											lit_draw_event = true;
+											event_perform(ev_draw, 0);
+											lit_draw_event = temp_lit_draw_event;
+										}
+									}
+									else {
+										with (temp_inst) {
+											event_perform(ev_draw, 0);
+										}
+									}
+							    }
+							}
+						}
+					}
+				}
 			
-			// Draw Squad Outlines
-			temp_squad_inst.outline_draw_event = true;
-			with (temp_squad_inst) {
-				event_perform(ev_draw, 0);
+				// Draw Squad Outlines
+				temp_squad_inst.outline_draw_event = true;
+				with (temp_squad_inst) {
+					event_perform(ev_draw, 0);
+				}
 			}
 		}
 		

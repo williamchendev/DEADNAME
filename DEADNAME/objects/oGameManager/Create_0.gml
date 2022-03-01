@@ -43,6 +43,7 @@ right_check = ord("D");
 jump_check = vk_space;
 reload_check = ord("R");
 
+shift_check = vk_shift;
 interact_check = ord("E");
 inventory_check = ord("I");
 

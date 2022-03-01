@@ -124,8 +124,8 @@ if (temp_weapon != noone) {
 // Ragdoll Hair Behaviour
 if (ragdoll_hair_inst != noone) {
 	if (instance_exists(ragdoll_hair_inst)) {
-		var temp_ragdoll_hair_distance = point_distance(0, 0, ragdoll_hair_x * sign(image_xscale * draw_xscale), ragdoll_hair_y);
-		var temp_ragdoll_hair_direction = point_direction(0, 0, ragdoll_hair_x * sign(image_xscale * draw_xscale), ragdoll_hair_y);
+		var temp_ragdoll_hair_distance = point_distance(0, 0, ragdoll_hair_x * sign(image_xscale), ragdoll_hair_y * draw_yscale);
+		var temp_ragdoll_hair_direction = point_direction(0, 0, ragdoll_hair_x * sign(image_xscale), ragdoll_hair_y * draw_yscale);
 		var temp_ragdoll_hair_x = x + lengthdir_x(temp_ragdoll_hair_distance, temp_ragdoll_hair_direction + draw_angle);
 		var temp_ragdoll_hair_y = y + lengthdir_y(temp_ragdoll_hair_distance, temp_ragdoll_hair_direction + draw_angle);
 

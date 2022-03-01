@@ -18,6 +18,7 @@ if (player_input) {
 		key_jump = keyboard_check(game_manager.jump_check);
 		key_jump_press = keyboard_check_pressed(game_manager.jump_check);
 		
+		key_shift = keyboard_check(game_manager.shift_check);
 		key_interact_press = keyboard_check_pressed(game_manager.interact_check);
 		key_inventory_press = keyboard_check_pressed(game_manager.inventory_check);
 		
@@ -119,7 +120,7 @@ if (canmove) {
 				var temp_squad_inst = ds_list_find_value(temp_squad_selection_list, i);
 					
 				// Check Through Squad Units
-				if (temp_squad_inst.player_squad) {
+				if (team_id == temp_squad_inst.team_id) {
 					temp_squad_selected_inst = temp_squad_inst;
 					temp_squad_selected_inst.squad_hover = true;
 					temp_squad_selected = true;
@@ -167,6 +168,19 @@ if (canmove) {
 							temp_squad_inst.squad_path_create = true;
 							temp_squad_inst.squad_path_end_x = cursor_x;
 							temp_squad_inst.squad_path_end_y = cursor_y;
+							
+							// Squad Follow Player
+							var temp_squad_move_follow_player_command = point_in_circle(cursor_x, cursor_y, lerp(bbox_left, bbox_right, 0.5), lerp(bbox_top, bbox_bottom, 0.5), (bbox_bottom - bbox_top) / 2);
+							for (var l = 0; l < ds_list_size(temp_squad_inst.squad_units_list); l++) {
+								var temp_squad_unit_follow_inst = ds_list_find_value(temp_squad_inst.squad_units_list, l);
+								temp_squad_unit_follow_inst.ai_follow = false;
+								temp_squad_unit_follow_inst.ai_follow_unit = noone;
+								temp_squad_unit_follow_inst.ai_follow_active = false;
+								if (temp_squad_move_follow_player_command) {
+									temp_squad_unit_follow_inst.ai_follow = true;
+									temp_squad_unit_follow_inst.ai_follow_unit = id;
+								}
+							}
 						}
 					}
 				}
@@ -174,9 +188,13 @@ if (canmove) {
 					ds_list_delete(squads_selected_list, i);
 				}
 			}
+			if (temp_move_squads) {
+				ds_list_clear(squads_selected_list);
+			}
 			
 			// Disable Command Mode
-			if (key_command) {
+			game_manager.cursor_inventory = true;
+			if (key_command or key_inventory_press) {
 				command = false;
 				command_lerp_time = true;
 			}
@@ -188,7 +206,7 @@ if (canmove) {
 			}
 			
 			// Disable Command Mode & Inventory
-			if (key_inventory_press) {
+			if (key_command or key_inventory_press) {
 				command = false;
 				command_lerp_time = true;
 				inventory_show = false;

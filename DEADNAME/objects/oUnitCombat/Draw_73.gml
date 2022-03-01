@@ -73,6 +73,15 @@ if (instance_exists(oKnockout)) {
 			}
 		}
 		shader_reset();
+		
+		// Draw Restart Text
+		var temp_knockout_inst = instance_find(oKnockout, 0);
+		if (temp_knockout_inst.restart_screen) {
+			if (instance_exists(oCamera)) {
+				var temp_camera_inst = instance_find(oCamera, 0);
+				draw_sprite(sMenu_Restart_Text, 0, temp_camera_inst.x, temp_camera_inst.y);
+			}
+		}
 	}
 }
 

@@ -463,6 +463,11 @@ else if (temp_weapon.weapon_type == "firearm") {
 	aim_ambient_x = lerp(aim_ambient_x, x + (draw_xscale * image_xscale * 50), temp_weapon.lerp_spd * global.deltatime);
 	aim_ambient_y = lerp(aim_ambient_y, y + weapon_hip_y, temp_weapon.lerp_spd * global.deltatime);
 	
+	// Player Weapon Setting
+	if (player_input) {
+		temp_weapon.player_mode = true;
+	}
+	
 	// Reload Behaviour
 	if (reload) {
 		// Reset Weapon Aim
@@ -955,14 +960,6 @@ if (temp_limb_ambient_animation != noone) {
 	}
 }
 
-// Reset Combat Action Variables
-squad_key_fire_press = key_fire_press;
-squad_key_aim_press = key_aim_press;
-
-key_fire_press = false;
-key_aim_press = false;
-key_reload_press = false;
-
 // Knockout
 if (knockout) {
 	if (!knockout_active) {
@@ -977,24 +974,34 @@ if (knockout) {
 				temp_combat_unit.canmove = false;
 			}
 			if (!instance_exists(oKnockout)) {
-				instance_create_depth(x, y, -6000, oKnockout);
+				var temp_knockout_inst = instance_create_depth(x, y, -6000, oKnockout);
+				if (!can_die) {
+					temp_knockout_inst.restart_screen = true;
+				}
 			}
 		}
 	}
 	else {
 		knockout_timer -= (global.realdeltatime / 60);
 		if (knockout_timer <= 0) {
-			knockout = false;
-			knockout_active = false;
-			game_manager.time_spd = 1;
-			for (var u = 0; u < instance_number(oUnitCombat); u++) {
-				var temp_combat_unit = instance_find(oUnitCombat, u);
-				temp_combat_unit.canmove = true;
+			if (!can_die and !key_reload_press) {
+				knockout_timer = 0.001;
+				game_manager.time_spd = 0;
 			}
-			if (instance_exists(oKnockout)) {
-				instance_destroy(oKnockout);
+			else {
+				knockout = false;
+				knockout_active = false;
+				game_manager.time_spd = 1;
+				for (var u = 0; u < instance_number(oUnitCombat); u++) {
+					var temp_combat_unit = instance_find(oUnitCombat, u);
+					temp_combat_unit.canmove = true;
+				}
+				if (instance_exists(oKnockout)) {
+					instance_destroy(oKnockout);
+				}
 			}
 		}
+		knockout_timer = max(knockout_timer, 0);
 	}
 }
 
@@ -1022,3 +1029,11 @@ if (health_points <= 0) {
 		}
 	}
 }
+
+// Reset Combat Action Variables
+squad_key_fire_press = key_fire_press;
+squad_key_aim_press = key_aim_press;
+
+key_fire_press = false;
+key_aim_press = false;
+key_reload_press = false;

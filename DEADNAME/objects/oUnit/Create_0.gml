@@ -181,6 +181,7 @@ key_down_press = false;
 key_jump = false;
 key_jump_press = false;
 
+key_shift = false;
 key_interact_press = false;
 key_inventory_press = false;
 

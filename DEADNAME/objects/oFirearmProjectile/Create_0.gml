@@ -12,6 +12,8 @@ bullet_gravity = 0.1;
 bullet_impact_damage = 3;
 bullet_impact_ragdoll_force_mult = 5;
 
+bullet_sound_radius = 240;
+
 bullet_impact_fuse = true;
 bullet_platform_check = false;
 
@@ -28,6 +30,9 @@ distance_traveled = 0;
 bullet_gravity_velocity = 0;
 
 bullet_trail_list = ds_list_create();
+
+bullet_alert_x = x;
+bullet_alert_y = y;
 
 // Platform Behaviour
 platform_check = false;

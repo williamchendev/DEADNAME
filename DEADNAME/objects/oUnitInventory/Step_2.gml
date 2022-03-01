@@ -50,6 +50,7 @@ if (draw_inventory) {
 	var key_select_press = false;
 	var key_halfselect_press = false;
 	
+	var key_shift = false;
 	var key_interact_press = false;
 	var key_drop_press = false;
 	
@@ -66,6 +67,7 @@ if (draw_inventory) {
 			key_select_press = false;
 			key_halfselect_press = false;
 			key_drop_press = keyboard_check_pressed(game_manager.reload_check);
+			key_shift = keyboard_check(game_manager.shift_check);
 			
 			key_interact_press = keyboard_check_pressed(game_manager.interact_check);
 		}
@@ -171,6 +173,82 @@ if (draw_inventory) {
 								}
 							}
 						}
+						
+						// Shift Click move to other Inventory
+						if (key_shift and inventory_other_swap) {
+							// Inventory Index
+							var temp_shift_swap_inventory = id;
+							if (inventory_other_swap_master) {
+								temp_shift_swap_inventory = inventory_other_swap_sub_obj;
+							}
+							else {
+								temp_shift_swap_inventory = inventory_other_swap_master_obj;
+							}
+							
+							if (!temp_shift_swap_inventory.no_placement or (temp_shift_swap_inventory.no_placement_allow_id == select_item_id)) {
+								// Check how many to place in Slot
+								select_place_num = select_item_stacks;
+								select_item_stacks = 0;
+		
+								// Put down Item into Slot
+								var temp_shift_swap_stack = add_item_inventory(temp_shift_swap_inventory, select_item_id, select_place_num);
+								if (temp_shift_swap_stack > 0) {
+									if (global.item_data[select_item_id, itemstats.type] != itemtypes.weapon) {
+										add_item_inventory(id, select_item_id, temp_shift_swap_stack);
+									}
+									else {
+										place_item_inventory(id, select_item_id, select_x, select_y, temp_shift_swap_stack);
+									}
+								}
+							
+								// Weapon Swap Behaviour
+								if (temp_shift_swap_stack < select_place_num) {
+									// Weapon Placement Behaviour
+									if (global.item_data[select_item_id, itemstats.type] == itemtypes.weapon) {
+										var temp_weapon_other_obj = ds_list_find_value(weapons, weapon_place_index);
+										temp_weapon_other_obj.equip = false;
+										if (!temp_shift_swap_inventory.hide_items) {
+											var temp_swap_unit_exists = false;
+											if (temp_shift_swap_inventory.unit_id != noone) {
+												if (instance_exists(temp_shift_swap_inventory.unit_id)) {
+													temp_swap_unit_exists = true;
+												}
+											}
+										
+											if (temp_swap_unit_exists) {
+												temp_weapon_other_obj.phy_position_x = lerp(temp_shift_swap_inventory.unit_id.bbox_left, temp_shift_swap_inventory.unit_id.bbox_right, 0.5);
+												temp_weapon_other_obj.phy_position_y = lerp(temp_shift_swap_inventory.unit_id.bbox_top, temp_shift_swap_inventory.unit_id.bbox_bottom, 0.5);
+												temp_weapon_other_obj.x_position = lerp(temp_shift_swap_inventory.unit_id.bbox_left, temp_shift_swap_inventory.unit_id.bbox_right, 0.5);
+												temp_weapon_other_obj.y_position = lerp(temp_shift_swap_inventory.unit_id.bbox_top, temp_shift_swap_inventory.unit_id.bbox_bottom, 0.5);
+												temp_weapon_other_obj.phy_active = true;
+											}
+										}
+										else {
+											temp_weapon_other_obj.active = false;
+										}
+										var temp_shift_swap_weapon_destroy = ds_list_find_value(temp_shift_swap_inventory.weapons, ds_list_size(temp_shift_swap_inventory.weapons) - 1);
+										ds_list_replace(temp_shift_swap_inventory.weapons, ds_list_size(temp_shift_swap_inventory.weapons) - 1, temp_weapon_other_obj);
+										if (temp_shift_swap_stack <= 0) {
+											ds_list_delete(weapons, weapon_place_index);
+											ds_list_delete(weapons_index, weapon_place_index);
+										}
+										instance_destroy(temp_shift_swap_weapon_destroy);
+									}
+								}
+							
+								// Reset select item properties
+								if (select_item_stacks <= 0) {
+									select_item_id = 0;
+									select_item_stacks = 0;
+					
+									select_item_width = 0;
+									select_item_height = 0;
+								}
+								select_place = false;
+								select_place_num = 0;
+							}
+						}
+						
 						update_inventory = true;
 					}
 				}

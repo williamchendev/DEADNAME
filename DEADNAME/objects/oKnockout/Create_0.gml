@@ -9,3 +9,6 @@ if (instance_exists(oLighting)) {
 	}
 	lighting_effect = true;
 }
+
+// Variables
+restart_screen = false;

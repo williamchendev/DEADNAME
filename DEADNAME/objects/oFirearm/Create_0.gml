@@ -114,6 +114,8 @@ gun_spin_reload_spin_times = 3;
 
 click = true;
 
+player_mode = false;
+
 // Aiming Settings
 sniper = true;
 
@@ -136,7 +138,7 @@ projectile_trajectory_aim_reticle_space = 6;
 
 // Sound Settings
 silent = false;
-sound_radius = 360;
+sound_radius = 480;
 
 // Firearm Variables
 x_position = x;

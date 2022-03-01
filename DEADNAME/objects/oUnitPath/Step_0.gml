@@ -468,6 +468,11 @@ if (sight) {
 	if (sight_unit_nearest != noone) {
 		// Raise Alertness
 		alert += global.deltatime * alert_spd;
+		
+		// Instanst Alert Radius
+		if (collision_circle(lerp(bbox_left, bbox_right, 0.5), lerp(bbox_top, bbox_bottom, 0.5), sight_instant_alert_radius, sight_unit_nearest, false, true) != noone) {
+			alert = 1;
+		}
 			
 		// Check if Hidden
 		if (alert >= alert_threshold) {
@@ -479,6 +484,20 @@ if (sight) {
 		var temp_sight_unit_nearest_height = sight_unit_nearest.hitbox_right_bottom_y_offset - sight_unit_nearest.hitbox_left_top_y_offset;
 		sight_unit_seen_x = sight_unit_nearest.x;
 		sight_unit_seen_y = sight_unit_nearest.y - (temp_sight_unit_nearest_height / 2);
+		
+		// Alert Squad
+		if (sight_unit_seen) {
+			// Alert Unit Squad
+			for (var s = 0; s < instance_number(oSquadAI); s++) {
+				var temp_squad_inst = instance_find(oSquadAI, s);
+				if (temp_squad_inst.squad_id == squad_id) {
+					temp_squad_inst.squad_alert = true;
+					temp_squad_inst.squad_alert_x = sight_unit_seen_x;
+					temp_squad_inst.squad_alert_y = sight_unit_seen_y;
+					break;
+				}
+			}
+		}
 		
 		// Look At Unit
 		sight_angle = point_direction(temp_sight_x, temp_sight_y, sight_unit_seen_x, sight_unit_seen_y);
@@ -497,7 +516,7 @@ if (sight) {
 			}
 		}
 		else {
-			// Raise Alertness
+			// Ambiently Lower Alertness
 			alert -= global.deltatime * alert_spd;
 		}
 		
@@ -527,4 +546,6 @@ key_down_press = false;
 key_jump = false;
 key_jump_press = false;
 
+key_shift = false;
 key_interact_press = false;
+key_inventory_press = false;

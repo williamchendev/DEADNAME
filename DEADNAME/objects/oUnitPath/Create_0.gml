@@ -24,6 +24,8 @@ sight_unalert_arc = 15;
 sight_alert_radius = 340;
 sight_alert_arc = 30;
 
+sight_instant_alert_radius = 30;
+
 // Pathfinding Settings
 path_x_delta_tolerance = 3;
 path_teleporter_delta_tolerance = 30;

@@ -196,6 +196,9 @@ if (bursts > 0) {
 			if (projectile_obj == noone) {
 				// Raycast
 				var temp_hit_diceroll = random(1);
+				if (player_mode) {
+					temp_hit_diceroll = 0;
+				}
 			
 				var temp_collision_array_miss = noone;
 				if (random(1) <= 0.5) {
@@ -381,6 +384,8 @@ if (bursts > 0) {
 				temp_bullet_obj.bullet_direction = temp_hitscan_angle;
 				temp_bullet_obj.bullet_gravity = projectile_gravity;
 				temp_bullet_obj.bullet_realdeltatime = use_realdeltatime;
+				temp_bullet_obj.bullet_alert_x = x_position;
+				temp_bullet_obj.bullet_alert_y = y_position;
 				
 				// Raycast Flash
 				ds_list_add(flash_xposition, temp_muzzle_x);
@@ -416,10 +421,26 @@ if (bursts > 0) {
 			for (var q = 0; q < temp_sound_radius_units_num; q++) {
 				var temp_sound_unit = ds_list_find_value(temp_sound_radius_unit_list, q);
 				if (temp_sound_unit.team_id != ignore_id) {
-					temp_sound_unit.sight_unit_seen = true;
-					temp_sound_unit.sight_unit_seen_x = temp_x;
-					temp_sound_unit.sight_unit_seen_y = temp_y;
-					temp_sound_unit.alert = 1;
+					// Alert Unit Squad
+					var temp_squad_alerted = false;
+					for (var s = 0; s < instance_number(oSquadAI); s++) {
+						var temp_squad_inst = instance_find(oSquadAI, s);
+						if (temp_squad_inst.squad_id == temp_sound_unit.squad_id) {
+							temp_squad_alerted = true;
+							temp_squad_inst.squad_alert = true;
+							temp_squad_inst.squad_alert_x = temp_x;
+							temp_squad_inst.squad_alert_y = temp_y;
+							break;
+						}
+					}
+					
+					// Alert Unit Individual
+					if (!temp_squad_alerted) {
+						temp_sound_unit.sight_unit_seen = true;
+						temp_sound_unit.sight_unit_seen_x = temp_x;
+						temp_sound_unit.sight_unit_seen_y = temp_y;
+						temp_sound_unit.alert = 1;
+					}
 				}
 			}
 			
@@ -445,6 +466,7 @@ if (bursts > 0) {
 		}
 	}
 }
+player_mode = false;
 
 // Flash
 for (var f = ds_list_size(flash_timer) - 1; f >= 0; f--) {

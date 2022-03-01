@@ -74,7 +74,7 @@ sniper = false;
 accuracy = 10;
 accuracy_peak = 1;
 
-close_range_hit_chance = 1.0;
-mid_range_hit_chance = 1.0;
-far_range_hit_chance = 1.0;
-sniper_range_hit_chance = 1.0;
+close_range_hit_chance = 0.8;
+mid_range_hit_chance = 0.6;
+far_range_hit_chance = 0.2;
+sniper_range_hit_chance = 0.05;

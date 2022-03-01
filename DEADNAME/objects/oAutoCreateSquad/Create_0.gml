@@ -3,7 +3,6 @@
 
 // Inherit the parent event
 event_inherited();
-player_squad = true;
 
 // Create Squad ID
 squad_id = "auto_generated_squad_" + string(game_manager.generated_squads + 1);
@@ -19,8 +18,7 @@ for (var i = 0; i < temp_squad_num; i++) {
 }
 ds_list_destroy(temp_squad_list);
 
-// Reset Sprite Index
-sprite_index = sSquadIcons;
+// Reset Squad Icon Mask
 image_xscale = 1;
 image_yscale = 1;
 image_angle = 0;

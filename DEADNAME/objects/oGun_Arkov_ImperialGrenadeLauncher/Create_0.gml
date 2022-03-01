@@ -33,6 +33,8 @@ bullet_path_line_width = 2;
 damage = 100;
 material_damage_sprite = sMatDmg_Small_3;
 
+silent = true;
+
 // Hit Effect Settings
 hit_effect = false;
 

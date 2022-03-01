@@ -1471,6 +1471,14 @@
             }
         },
         {
+            "Key": "32a65f98-0fd3-4266-a5af-03bfd27852f7",
+            "Value": {
+                "id": "634b022e-fcba-4787-b922-23ec8d4eef70",
+                "resourcePath": "views\\32a65f98-0fd3-4266-a5af-03bfd27852f7.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "32c861c3-5a96-4973-9dd5-03cdeceda9e3",
             "Value": {
                 "id": "7f69c168-2f01-482c-91ae-44c186b45e48",
@@ -4879,6 +4887,14 @@
             }
         },
         {
+            "Key": "a83135c6-0521-40a1-8769-7ea9f122779c",
+            "Value": {
+                "id": "24817b54-bffe-4bbe-89ae-3d9cdfd90a61",
+                "resourcePath": "sprites\\sMenu_Restart_Text\\sMenu_Restart_Text.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a86c74b3-a087-49a7-bb3a-024819b9d7f0",
             "Value": {
                 "id": "59b3f4d3-976f-4e63-a815-74ee0a23ef91",
@@ -6311,6 +6327,14 @@
             }
         },
         {
+            "Key": "d2b53c1b-fddc-4886-a200-da6293709e11",
+            "Value": {
+                "id": "edece913-9e02-4e8a-90ad-286035c6d8e0",
+                "resourcePath": "objects\\oMaterialDoor\\oMaterialDoor.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "d2c8c967-924d-413c-a737-866e16af5903",
             "Value": {
                 "id": "51d2ab08-d019-49df-9501-b2b7f3a6b55b",
@@ -6540,6 +6564,14 @@
                 "id": "3bfa061e-e5ad-4ce7-9176-d16a795e933e",
                 "resourcePath": "sprites\\sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap\\sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "db402ccd-d53e-47d0-bfb4-e4128b66606c",
+            "Value": {
+                "id": "2cea029e-0322-4226-8dfc-280825b07794",
+                "resourcePath": "objects\\oSquadAI\\oSquadAI.yy",
+                "resourceType": "GMObject"
             }
         },
         {

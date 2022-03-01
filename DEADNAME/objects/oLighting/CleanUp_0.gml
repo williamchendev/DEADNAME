@@ -2,7 +2,9 @@
 // Destroys unused variables and cleans up memory
 
 // Destroy oBasic Depth List
-ds_list_destroy(basic_object_depth_list);
+if (basic_object_depth_list != noone) {
+	ds_list_destroy(basic_object_depth_list);
+}
 basic_object_depth_list = -1;
 
 // Free Surfaces

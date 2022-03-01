@@ -73,5 +73,5 @@ accuracy_peak = 30;
 
 close_range_hit_chance = 1.0;
 mid_range_hit_chance = 0.80;
-far_range_hit_chance = 0.10;
-sniper_range_hit_chance = 0.02;
+far_range_hit_chance = 0.30;
+sniper_range_hit_chance = 0.05;
