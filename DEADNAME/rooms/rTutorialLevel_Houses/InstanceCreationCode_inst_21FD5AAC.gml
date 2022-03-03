@@ -1,5 +1,6 @@
 // Inventory Settings
-add_item_inventory(inventory, 5);
+add_item_inventory(inventory, 9);
+add_item_inventory(inventory, 10, 24);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

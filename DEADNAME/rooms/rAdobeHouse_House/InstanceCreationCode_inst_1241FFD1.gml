@@ -1,1 +1,0 @@
-squad_ai_behaviour = false;

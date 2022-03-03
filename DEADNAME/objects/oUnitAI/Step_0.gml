@@ -40,14 +40,17 @@ if (ai_behaviour and canmove) {
 							// Check Timer
 							ai_follow_combat_timer -= global.deltatime;
 							if (ai_follow_combat_timer <= 0) {
+								sight_unit_seen = noone;
 								ai_follow_active = true;
 							}
 						}
 						else {
+							sight_unit_seen = noone;
 							ai_follow_active = true;
 						}
 					}
 					else {
+						sight_unit_seen = noone;
 						ai_follow_active = true;
 					}
 				}
@@ -67,9 +70,10 @@ if (ai_behaviour and canmove) {
 	
 	// AI Behaviour Switch
 	var temp_aggro_behaviour_active = false;
-	if (pathing and ai_command) {
+	if (ai_command) {
 		// Targeting Behaviour
-		key_aim_press = false; // REMOVE REDUNDANCY
+		key_aim_press = false;
+		sight_unit_seen = false;
 	}
 	else if (ai_follow_active) {
 		// Follow Behaviour
@@ -158,7 +162,7 @@ if (ai_behaviour and canmove) {
 		// Attack Behaviour Active
 		temp_aggro_behaviour_active = true;
 	}
-	else if (sight_unit_seen and ai_hunt) {
+	else if (sight_unit_seen and ai_hunt and !ai_follow) {
 		// Last Seen AI Variables
 		var temp_combat_unit_height = hitbox_right_bottom_y_offset - hitbox_left_top_y_offset;
 		

@@ -1,5 +1,5 @@
-/// @description Outline Surfaces
-// Calculates and draws the outline of the Squad when selected
+/// @description Outline & UI Surfaces
+// Calculates and draws the outline and UI of the Squad when selected
 
 // Draw Outline Active Check
 if (!outline_draw_event) {
@@ -177,6 +177,26 @@ else {
 	if (surface_exists(squad_surface)) {
 		surface_free(squad_surface);
 		squad_surface = -1;
+	}
+}
+
+// Draw Following Unit
+if (squad_follow) {
+	if (squad_units_list != -1) {
+		if (squad_follow_unit != noone) {
+			if (instance_exists(squad_follow_unit)) {
+				var temp_squad_unit_inst = ds_list_find_value(squad_units_list, 0);
+				var temp_squad_follow_unit_x = lerp(squad_follow_unit.bbox_left, squad_follow_unit.bbox_right, 0.5);
+				var temp_squad_follow_unit_y = lerp(squad_follow_unit.bbox_top, squad_follow_unit.bbox_bottom, 0.5);
+				var temp_squad_center_unit_x = lerp(temp_squad_unit_inst.bbox_left, temp_squad_unit_inst.bbox_right, 0.5);
+				var temp_squad_center_unit_y = lerp(temp_squad_unit_inst.bbox_top, temp_squad_unit_inst.bbox_bottom, 0.5);
+				draw_set_color(squad_selected_outline_color);
+				draw_line(temp_squad_follow_unit_x, temp_squad_follow_unit_y, temp_squad_center_unit_x, temp_squad_center_unit_y);
+				draw_circle(temp_squad_follow_unit_x, temp_squad_follow_unit_y, 3.5, false);
+				draw_circle(temp_squad_center_unit_x, temp_squad_center_unit_y, 3.5, false);
+				draw_set_color(c_white);
+			}
+		}
 	}
 }
 

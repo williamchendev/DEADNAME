@@ -43,7 +43,7 @@ bullet_path_line_width = 1;
 
 // Combat Settings
 damage = 1;
-material_damage = 0.1;
+material_damage = 0.5;
 material_damage_sprite = sMatDmg_Small_2;
 
 // Hit Effect Settings
@@ -138,6 +138,7 @@ projectile_trajectory_aim_reticle_space = 6;
 
 // Sound Settings
 silent = false;
+//sound_radius = 360;
 sound_radius = 480;
 
 // Firearm Variables

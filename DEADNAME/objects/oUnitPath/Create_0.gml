@@ -10,6 +10,7 @@ force_pathing = false;
 
 // Sight Settings
 sight = true;
+sight_omnipotent = false;
 
 alert = 0;
 alert_spd = 0.005;

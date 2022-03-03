@@ -1,6 +1,11 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+// Knockout Skip Behaviour
+if (instance_exists(oKnockout)) {
+	return;
+}
+
 // Check if Text Exists
 if (string_length(display_text) <= 0) {
 	return;

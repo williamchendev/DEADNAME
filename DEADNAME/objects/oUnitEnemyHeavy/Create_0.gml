@@ -5,7 +5,8 @@
 event_inherited();
 
 // Inventory
-add_item_inventory(inventory, 9);
+add_item_inventory(inventory, 18);
+add_item_inventory(inventory, 19, 48);
 var temp_weapon = ds_list_find_value(inventory.weapons, 0);
 temp_weapon.equip = true;
 

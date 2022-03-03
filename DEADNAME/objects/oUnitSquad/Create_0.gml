@@ -22,7 +22,7 @@ squads_selected_list = ds_list_create();
 
 // AI Settings
 ai_behaviour = true;
-ai_command = true;
+ai_command = false;
 ai_hunt = false;
 
 alert = 1;

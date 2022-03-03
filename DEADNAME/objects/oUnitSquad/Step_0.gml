@@ -173,13 +173,26 @@ if (canmove) {
 							var temp_squad_move_follow_player_command = point_in_circle(cursor_x, cursor_y, lerp(bbox_left, bbox_right, 0.5), lerp(bbox_top, bbox_bottom, 0.5), (bbox_bottom - bbox_top) / 2);
 							for (var l = 0; l < ds_list_size(temp_squad_inst.squad_units_list); l++) {
 								var temp_squad_unit_follow_inst = ds_list_find_value(temp_squad_inst.squad_units_list, l);
+								
+								// Force Movement
+								temp_squad_unit_follow_inst.ai_command = true;
+								
+								// AI Follow
 								temp_squad_unit_follow_inst.ai_follow = false;
 								temp_squad_unit_follow_inst.ai_follow_unit = noone;
 								temp_squad_unit_follow_inst.ai_follow_active = false;
 								if (temp_squad_move_follow_player_command) {
+									temp_squad_unit_follow_inst.ai_command = false
 									temp_squad_unit_follow_inst.ai_follow = true;
 									temp_squad_unit_follow_inst.ai_follow_unit = id;
+									temp_squad_unit_follow_inst.ai_follow_active = true;
 								}
+							}
+							temp_squad_inst.squad_follow = false;
+							temp_squad_inst.squad_follow_unit = noone;
+							if (temp_squad_move_follow_player_command) {
+								temp_squad_inst.squad_follow = true;
+								temp_squad_inst.squad_follow_unit = id;
 							}
 						}
 					}

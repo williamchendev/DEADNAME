@@ -129,6 +129,31 @@ if (canmove and player_input) {
 			    }
 			}
 		}
+		
+		// Squad Follow UI
+		if (!ds_list_empty(squads_selected_list)) {
+			if (point_in_circle(cursor_x, cursor_y, lerp(bbox_left, bbox_right, 0.5), lerp(bbox_top, bbox_bottom, 0.5), (bbox_bottom - bbox_top) / 2)) {
+				// Draw Squad Lines
+				draw_set_color(c_white);
+				var temp_unit_mid_x = lerp(bbox_left, bbox_right, 0.5);
+				var temp_unit_mid_y = lerp(bbox_top, bbox_bottom, 0.5);
+				for (var i = 0; i < ds_list_size(squads_selected_list); i++) {
+					// Find Squad Object
+					var temp_squad_inst = ds_list_find_value(squads_selected_list, i);
+					var temp_squad_unit_inst = ds_list_find_value(temp_squad_inst.squad_units_list, 0);
+					var temp_squad_unit_mid_x = lerp(temp_squad_unit_inst.bbox_left, temp_squad_unit_inst.bbox_right, 0.5);
+					var temp_squad_unit_mid_y = lerp(temp_squad_unit_inst.bbox_top, temp_squad_unit_inst.bbox_bottom, 0.5);
+					draw_circle(temp_squad_unit_mid_x, temp_squad_unit_mid_y, 4, false);
+					draw_line(temp_unit_mid_x, temp_unit_mid_y, temp_squad_unit_mid_x, temp_squad_unit_mid_y);
+				}
+				
+				// Draw Center
+				draw_set_color(c_black);
+				draw_circle(temp_unit_mid_x, temp_unit_mid_y, 5, false);
+				draw_set_color(c_white);
+				draw_circle(temp_unit_mid_x, temp_unit_mid_y, 4, false);
+			}
+		}
 	}
 }
 

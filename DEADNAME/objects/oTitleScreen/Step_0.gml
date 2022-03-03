@@ -121,6 +121,9 @@ if (button_move_timer >= 1) {
 	button_move_offset_y2 = random_range(-title_button_move_range, title_button_move_range);
 }
 
+// Cursor Icon
+game_manager.cursor_inventory = true;
+
 // Debug
 if (keyboard_check_pressed(ord("L"))) {
 	room_restart();

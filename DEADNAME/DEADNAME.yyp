@@ -431,6 +431,14 @@
             }
         },
         {
+            "Key": "0dd960e3-923e-4dd4-b549-c1d1497fa5a7",
+            "Value": {
+                "id": "f1b9ff32-56f0-4700-91db-775594edd773",
+                "resourcePath": "objects\\oGodKingBunker_SnowForeground\\oGodKingBunker_SnowForeground.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "0df6e074-d58f-4e69-8dcb-67d9b54d5c8c",
             "Value": {
                 "id": "f9de97d6-1d3b-40de-a7cb-a4dd74375ffd",
@@ -532,6 +540,14 @@
                 "id": "110b1a6d-d5b3-4750-882b-c7c37fbc6ec0",
                 "resourcePath": "views\\132f3895-1b5f-4a17-afae-5f4a295465f2.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "1330e88d-392d-446a-b746-02eb41bbd33e",
+            "Value": {
+                "id": "fc4f10d7-77e3-47d6-9167-dc6ca1f75951",
+                "resourcePath": "objects\\oGodKingBunker_SnowBackground\\oGodKingBunker_SnowBackground.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -668,6 +684,14 @@
                 "id": "20640c56-c920-4d39-a473-73eaef3376cb",
                 "resourcePath": "views\\18672b21-0dc1-4599-8906-a0ce4074e543.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "18b8882d-4307-4f75-9c70-4f8a775c985b",
+            "Value": {
+                "id": "63d370ec-2c8d-48bc-a058-ec347c0ec962",
+                "resourcePath": "fonts\\fNoirtheticCabrideRegular\\fNoirtheticCabrideRegular.yy",
+                "resourceType": "GMFont"
             }
         },
         {
@@ -2175,6 +2199,14 @@
             }
         },
         {
+            "Key": "47e3ad40-d905-4c17-a705-67a978ea4df4",
+            "Value": {
+                "id": "d14eb43d-b8dc-434f-942f-c71e95419d6f",
+                "resourcePath": "rooms\\rGodKingBunker_Intro\\rGodKingBunker_Intro.yy",
+                "resourceType": "GMRoom"
+            }
+        },
+        {
             "Key": "47ec5430-4573-4708-88a0-4ea3c2877d57",
             "Value": {
                 "id": "4aa35e33-f7a5-49e9-88fb-1f783c08643e",
@@ -2459,6 +2491,14 @@
             "Value": {
                 "id": "41f6bc62-e08a-42af-a184-aee5d1efccf3",
                 "resourcePath": "sprites\\sMaterial_ArmorIcon\\sMaterial_ArmorIcon.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "51617e85-104e-4533-a723-5ca82bbcc783",
+            "Value": {
+                "id": "e0b8ebbd-fffe-44e0-8453-af91d2cc23fd",
+                "resourcePath": "sprites\\sGodKingBunker_SnowBackground\\sGodKingBunker_SnowBackground.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2900,6 +2940,14 @@
                 "id": "447b1af8-d8ba-43e0-8e9b-453359f83c32",
                 "resourcePath": "shaders\\shd_forwardlightingbackground\\shd_forwardlightingbackground.yy",
                 "resourceType": "GMShader"
+            }
+        },
+        {
+            "Key": "60adc25e-0c70-483f-bbc9-6b14ce43bee4",
+            "Value": {
+                "id": "47683dad-7f85-4e79-ab38-cf9d6fc01f9c",
+                "resourcePath": "views\\60adc25e-0c70-483f-bbc9-6b14ce43bee4.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -4919,6 +4967,14 @@
             }
         },
         {
+            "Key": "a8a95274-6fc9-4ae8-93a4-ed8833835a54",
+            "Value": {
+                "id": "410055f0-9e29-425c-9f70-aa2193632ab9",
+                "resourcePath": "sprites\\sGodKingBunker_SnowForeground\\sGodKingBunker_SnowForeground.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a90f2430-a975-44b7-a0f0-cffacc3b3be2",
             "Value": {
                 "id": "fbfab243-eecb-4f04-a09d-9f48b3b637a9",
@@ -5116,6 +5172,14 @@
                 "id": "bb2dbf2d-2114-48a2-a85f-11f2e6bec314",
                 "resourcePath": "sprites\\sDebugTileSet\\sDebugTileSet.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "ada0c436-4b72-4b5c-93a8-d827ae0c0eea",
+            "Value": {
+                "id": "6c3fc1a8-47c3-4464-8108-7ae75e524c26",
+                "resourcePath": "views\\ada0c436-4b72-4b5c-93a8-d827ae0c0eea.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -5844,6 +5908,14 @@
                 "id": "60a3544a-fa76-4c46-ad18-68fcd997b163",
                 "resourcePath": "sprites\\sWilliam_HorizonBlue_Hat_Head_NormalMap\\sWilliam_HorizonBlue_Hat_Head_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c3500056-1328-491c-b64a-bbb3a4df5ec1",
+            "Value": {
+                "id": "37901268-7af0-46c8-8627-f9ba6e6b5d93",
+                "resourcePath": "rooms\\rGodKingBunker_Switch\\rGodKingBunker_Switch.yy",
+                "resourceType": "GMRoom"
             }
         },
         {

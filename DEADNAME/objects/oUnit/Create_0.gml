@@ -27,6 +27,9 @@ health_show = true;
 health_points = 6;
 max_health_points = 6;
 
+// AI Settings
+ai_command = false;
+
 // Animation Settings
 idle_animation = sWilliamDS_Idle;
 walk_animation = sWilliamDS_Run;

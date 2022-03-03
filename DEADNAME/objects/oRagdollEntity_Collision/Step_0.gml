@@ -1,6 +1,7 @@
 /// @description Ragdoll Entity Update Event
 // Performs calculations for the Ragdoll Entity Object
 
+/*
 if (held) {
 	var px = (mouse_get_x() - x);
 	var py = (mouse_get_y() - y);
@@ -21,6 +22,7 @@ else {
 		}
 	}
 }
+*/
 
 // Deltatime Physics
 event_inherited();

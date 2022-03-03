@@ -20,6 +20,10 @@ squad_selected_outline_color = make_color_rgb(212, 175, 55);
 
 squad_select_draw_spd = 0.15;
 
+// AI Settings
+squad_follow = false;
+squad_follow_unit = noone;
+
 // Pathing Settings
 squad_path_unit_slots = 5;
 squad_path_unit_spacing = 26;

@@ -246,6 +246,7 @@ while (temp_pathfind_active) {
 			// End Pathing
 			pathing = false;
 			path_edge = noone;
+			ai_command = false;
 			break;
 		}
 		else {
@@ -410,7 +411,7 @@ if (sight) {
 		
 		// Check if Unit is in Sight Arc
 		var temp_sight_unit_valid = false;
-		if (rectangle_in_triangle(temp_unit_top_left_x, temp_unit_top_left_y, temp_unit_bot_right_x, temp_unit_bot_right_y, temp_sight_x, temp_sight_y, temp_sight_x + temp_sight_point_1_x, temp_sight_y + temp_sight_point_1_y, temp_sight_x + temp_sight_point_2_x, temp_sight_y + temp_sight_point_2_y)) {
+		if (sight_omnipotent or rectangle_in_triangle(temp_unit_top_left_x, temp_unit_top_left_y, temp_unit_bot_right_x, temp_unit_bot_right_y, temp_sight_x, temp_sight_y, temp_sight_x + temp_sight_point_1_x, temp_sight_y + temp_sight_point_1_y, temp_sight_x + temp_sight_point_2_x, temp_sight_y + temp_sight_point_2_y)) {
 			// Find Unit Height
 			var temp_sight_unit_height = temp_unit_bot_right_y - temp_unit_top_left_y;
 			

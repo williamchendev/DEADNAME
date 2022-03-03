@@ -64,7 +64,7 @@ if (canmove) {
 	// Jumping Down (Platforms)
 	if (key_down_press) {
 		if (place_free(x, y + 1) and !platform_free(x, y + 1, platform_list)) {
-			y += 1;
+			y += 2;
 			y_velocity += 0.05;
 		}
 	}

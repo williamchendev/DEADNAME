@@ -323,6 +323,28 @@ else if (temp_weapon.weapon_type == "firearm") {
 				key_fire_press = false;
 				targeting = false;
 			}
+			
+			// Swap Weapon
+			if (ds_list_size(inventory.weapons) > 1) {
+				if (count_item_inventory(inventory, temp_weapon.weapon_ammo_id) <= 0) {
+					var temp_weapon_index = ds_list_find_index(inventory.weapons, temp_weapon);
+					for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
+						if (i != temp_weapon_index) {
+							var temp_new_equip_weapon = ds_list_find_value(inventory.weapons, i);
+							if (temp_new_equip_weapon.weapon_type == "firearm") {
+								if (count_item_inventory(inventory, temp_new_equip_weapon.weapon_ammo_id) > 0) {
+									temp_new_equip_weapon.equip = true;
+									break;
+								}
+							}
+							else {
+								temp_new_equip_weapon.equip = true;
+							}
+						}
+					}
+					temp_weapon.equip = false;
+				}
+			}
 		}
 		else if (!squad_aim) {
 			// Check Aiming
