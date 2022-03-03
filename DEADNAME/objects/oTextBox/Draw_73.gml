@@ -11,6 +11,18 @@ if (string_length(display_text) <= 0) {
 	return;
 }
 
+// Camera GUI Layer
+var temp_camera_x = 0;
+var temp_camera_y = 0;
+var temp_camera_exists = instance_exists(oCamera);
+if (temp_camera_exists) {
+	var temp_camera_inst = instance_find(oCamera, 0);
+	temp_camera_x = temp_camera_inst.x;
+	temp_camera_y = temp_camera_inst.y;
+	surface_set_target(temp_camera_inst.gui_surface);
+	gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+}
+
 // Set Font Properties
 draw_set_font(font);
 
@@ -44,21 +56,23 @@ if (unit != noone) {
 		y = temp_y;
 	}
 	
+	// Camera Offset
+	x -= temp_camera_x;
+	y -= temp_camera_y;
+	
 	// Draw Triangle
 	var temp_triangle_y = y + ((string_height_ext(display_text, temp_text_separation, text_wrap_width) / 2) + (box_vertical_padding / 2) + temp_breath_padding);
 	draw_sprite(sTextboxTriangle, 0, x, temp_triangle_y);
+}
+else {
+	// Camera Offset
+	x -= temp_camera_x;
+	y -= temp_camera_y;
 }
 
 // Draw Roundrect behind Text
 draw_set_color(c_black);
 draw_roundrect(x - temp_text_width, y - temp_text_height, x + temp_text_width, y + temp_text_height, false);
-
-// Draw Display Text
-draw_set_color(font_contrast_color);
-draw_text_ext(x, y + 1, display_text, temp_text_separation, text_wrap_width);
-draw_text_ext(x + 1, y + 1, display_text, temp_text_separation, text_wrap_width);
-draw_set_color(font_color);
-draw_text_ext(x, y, display_text, temp_text_separation, text_wrap_width);
 
 // Draw Input Advance Triangle
 if (input_advance and !destroy) {
@@ -84,8 +98,17 @@ if (input_advance and !destroy) {
 	}
 }
 
+// Reset Camera Offset
+x += temp_camera_x;
+y += temp_camera_y;
+
 // Reset Draw Properties
 draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_alpha(1);
+
+// Reset Camera GUI Layer
+if (temp_camera_exists) {
+	surface_reset_target();
+}

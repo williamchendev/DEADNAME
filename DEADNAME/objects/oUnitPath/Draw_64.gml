@@ -10,10 +10,25 @@ if (!global.debug) {
 if (ai_behaviour) {
 	// Sight Behaviour
 	if (sight) {
+		// Camera GUI Layer
+		var temp_camera_x = 0;
+		var temp_camera_y = 0;
+		var temp_camera_width = 640;
+		var temp_camera_height = 360;
+		var temp_camera_exists = instance_exists(oCamera);
+		if (temp_camera_exists) {
+			var temp_camera_inst = instance_find(oCamera, 0);
+			temp_camera_x = temp_camera_inst.x;
+			temp_camera_y = temp_camera_inst.y;
+			temp_camera_width = temp_camera_inst.camera_width;
+			temp_camera_height = temp_camera_inst.camera_height;
+			display_set_gui_size(temp_camera_width, temp_camera_height);
+		}
+		
 		// Draw Alertness
 		draw_set_font(fHeartBit);
 		draw_set_halign(fa_center);
-		draw_text_outline(x, y - (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset) - ((stats_y_offset * draw_yscale) * 2), c_white, c_black, "[Alert: " + string(alert) + "]");
+		draw_text_outline(x - temp_camera_x, y - (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset) - ((stats_y_offset * draw_yscale) * 2) - temp_camera_y, c_white, c_black, "[Alert: " + string(alert) + "]");
 		draw_set_halign(fa_left);
 		
 		// Draw Vision
@@ -33,9 +48,9 @@ if (ai_behaviour) {
 			var temp_sight_point_2_x = lengthdir_x(sight_radius, temp_sight_angle + sight_interpolate);
 			var temp_sight_point_2_y = lengthdir_y(sight_radius, temp_sight_angle + sight_interpolate);
 	
-			draw_vertex(temp_sight_x, temp_sight_y);
-			draw_vertex(temp_sight_x + temp_sight_point_1_x, temp_sight_y + temp_sight_point_1_y);
-			draw_vertex(temp_sight_x + temp_sight_point_2_x, temp_sight_y + temp_sight_point_2_y);
+			draw_vertex(temp_sight_x - temp_camera_x, temp_sight_y - temp_camera_y);
+			draw_vertex(temp_sight_x + temp_sight_point_1_x - temp_camera_x, temp_sight_y + temp_sight_point_1_y - temp_camera_y);
+			draw_vertex(temp_sight_x + temp_sight_point_2_x - temp_camera_x, temp_sight_y + temp_sight_point_2_y - temp_camera_y);
 		}
 
 		draw_primitive_end();
@@ -43,7 +58,7 @@ if (ai_behaviour) {
 
 		// Draw Vision Point
 		draw_set_color(c_red);
-		draw_circle(temp_sight_x, temp_sight_y, 2, false);
+		draw_circle(temp_sight_x - temp_camera_x, temp_sight_y - temp_camera_y, 2, false);
 	}
 
 	// Draw Path
@@ -89,13 +104,13 @@ if (ai_behaviour) {
 				}
 				
 				// Draw Path Line
-				draw_line(temp_path_x, temp_path_y, temp_path_next_x, temp_path_next_y);
+				draw_line(temp_path_x - temp_camera_x, temp_path_y - temp_camera_y, temp_path_next_x - temp_camera_x, temp_path_next_y - temp_camera_y);
 			}
 			
 			// Draw Path Point
-			draw_circle(temp_path_ground_x, temp_path_ground_y, 3, false);
-			draw_line(temp_path_x, temp_path_y, temp_path_ground_x, temp_path_ground_y);
-			draw_circle(temp_path_x, temp_path_y, 5, false);
+			draw_circle(temp_path_ground_x - temp_camera_x, temp_path_ground_y - temp_camera_y, 3, false);
+			draw_line(temp_path_x - temp_camera_x, temp_path_y - temp_camera_y, temp_path_ground_x - temp_camera_x, temp_path_ground_y - temp_camera_y);
+			draw_circle(temp_path_x - temp_camera_x, temp_path_y - temp_camera_y, 5, false);
 		}
 		
 		// Draw Current Target Point
@@ -118,7 +133,7 @@ if (ai_behaviour) {
 			}
 		
 			draw_set_color(c_blue);
-			draw_circle(temp_path_target_x, temp_path_target_y, 5, false);
+			draw_circle(temp_path_target_x - temp_camera_x, temp_path_target_y - temp_camera_y, 5, false);
 		}
 	}
 	
@@ -132,8 +147,8 @@ if (ai_behaviour) {
 	
 	// Draw Movement Indexing Radius
 	draw_set_color(c_purple);
-	draw_circle(x, y, path_increment_index_radius / 2, false);
-	draw_circle(x, y, path_increment_index_radius, true);
+	draw_circle(x - temp_camera_x, y - temp_camera_y, path_increment_index_radius / 2, false);
+	draw_circle(x - temp_camera_x, y - temp_camera_y, path_increment_index_radius, true);
 	
 	var temp_x = x;
 	var temp_y = y;
@@ -157,7 +172,7 @@ if (ai_behaviour) {
 		temp_x += spd * sign(image_xscale);
 		temp_y += temp_sim_velocity;
 		
-		draw_point(temp_x, temp_y);
+		draw_point(temp_x - temp_camera_x, temp_y - temp_camera_y);
 		
 		if (!temp_sim_djump) {
 			if (temp_sim_velocity >= -double_jump_spd) {

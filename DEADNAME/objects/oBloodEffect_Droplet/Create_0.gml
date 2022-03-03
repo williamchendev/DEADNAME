@@ -1,6 +1,9 @@
 /// @description Blood Init Event
 // Creates the variables and settings of the Blood Effect for the Droplets
 
+// Basic Lighting Inheritance
+event_inherited();
+
 // Settings
 unit_inst = noone;
 corpse_inst = noone;

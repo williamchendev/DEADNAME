@@ -148,6 +148,22 @@ if (!normal_draw_event and !lit_draw_event) {
 	shader_reset();
 	surface_reset_target();
 	
+	// Camera GUI Layer
+	var temp_camera_x = 0;
+	var temp_camera_y = 0;
+	var temp_camera_exists = instance_exists(oCamera);
+	if (temp_camera_exists) {
+		var temp_camera_inst = instance_find(oCamera, 0);
+		temp_camera_x = round(temp_camera_inst.x);
+		temp_camera_y = round(temp_camera_inst.y);
+		surface_set_target(temp_camera_inst.gui_surface);
+	}
+	
 	// Draw Final Smoke Effect with Alpha
-	draw_surface_ext(smoke_final_surface, x - (sprite_get_width(colors_sprite_index) / 2), y - (sprite_get_height(colors_sprite_index) / 2), 1, 1, 0, c_white, image_alpha);
+	draw_surface_ext(smoke_final_surface, x - (sprite_get_width(colors_sprite_index) / 2) - temp_camera_x, y - (sprite_get_height(colors_sprite_index) / 2) - temp_camera_y, 1, 1, 0, c_white, image_alpha);
+	
+	// Reset Camera GUI Surface
+	if (temp_camera_exists) {
+		surface_reset_target();
+	}
 }

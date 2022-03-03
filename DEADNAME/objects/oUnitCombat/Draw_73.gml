@@ -7,6 +7,16 @@ if (temp_draw_combat_gui and canmove) {
 	// Draw Player GUI
 	var temp_reset_combat_cursor = true;
 	if (player_input) {
+		// Camera GUI Layer
+		var temp_camera_inst = instance_find(oCamera, 0);
+		var temp_camera_x = 0;
+		var temp_camera_y = 0;
+		if (temp_camera_inst != noone) {
+			temp_camera_x = temp_camera_inst.x;
+			temp_camera_y = temp_camera_inst.y;
+			surface_set_target(temp_camera_inst.gui_surface);
+		}
+		
 		for (var i = 0; i < ds_list_size(inventory.weapons); i++) {
 			// Find Indexed Weapon
 			var temp_weapon_index = ds_list_find_value(inventory.weapons, i);
@@ -30,7 +40,7 @@ if (temp_draw_combat_gui and canmove) {
 					
 					// Draw Cursor
 					if (!reload) {
-						draw_sprite(sCursorCrosshairIcons, 0, temp_weapon_x, temp_weapon_y);
+						draw_sprite(sCursorCrosshairIcons, 0, temp_weapon_x - temp_camera_x, temp_weapon_y - temp_camera_y);
 						/*
 						if (object_is_ancestor(temp_weapon_index.object_index, oFirearm) or (temp_weapon_index.object_index == oFirearm)) {
 							if (temp_weapon_index.aim >= 0.95) {
@@ -44,6 +54,11 @@ if (temp_draw_combat_gui and canmove) {
 					break;
 				}
 			}
+		}
+		
+		// Reset Camera Surface
+		if (temp_camera_inst != noone) {
+			surface_reset_target();
 		}
 	}
 	
@@ -79,7 +94,9 @@ if (instance_exists(oKnockout)) {
 		if (temp_knockout_inst.restart_screen) {
 			if (instance_exists(oCamera)) {
 				var temp_camera_inst = instance_find(oCamera, 0);
-				draw_sprite(sMenu_Restart_Text, 0, temp_camera_inst.x, temp_camera_inst.y);
+				surface_set_target(temp_camera_inst.gui_surface);
+				draw_sprite(sMenu_Restart_Text, 0, 0, 0);
+				surface_reset_target();
 			}
 		}
 	}

@@ -3,6 +3,19 @@
 
 // Check if Debugging mode is active 
 if (global.debug) {
+	// Camera GUI Layer
+	var temp_camera_x = 0;
+	var temp_camera_y = 0;
+	var temp_camera_exists = instance_exists(oCamera);
+	if (temp_camera_exists) {
+		var temp_camera_inst = instance_find(oCamera, 0);
+		temp_camera_x = camera_x;
+		temp_camera_y = camera_y;
+		camera_x = 0;
+		camera_y = 0;
+		surface_set_target(temp_camera_inst.gui_surface);
+	}
+	
 	// Draw Set Font
 	draw_set_font(fNormalFont);
 	
@@ -25,4 +38,11 @@ if (global.debug) {
 	}
 	draw_text_outline(camera_x + debug_x_offset, camera_y + debug_y_offset + 17, c_white, c_black, "Time: " + string(time_spd));
 	draw_text_outline(camera_x + debug_x_offset, camera_y + debug_y_offset + 28, c_white, c_black, "FPS: " + string(debug_fps));
+	
+	// Reset Camera
+	if (temp_camera_exists) {
+		camera_x = temp_camera_x;
+		camera_y = temp_camera_y;
+		surface_reset_target();
+	}
 }

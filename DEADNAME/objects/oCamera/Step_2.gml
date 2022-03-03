@@ -13,7 +13,13 @@ if (game_manager != noone) {
 camera_set_view_pos(view_camera[0], floor(x), floor(y));
 
 // Set Camera View Surface
+if (!surface_exists(background_surface)) {
+    background_surface = surface_create(camera_width, camera_height);
+}
 if (!surface_exists(view_surface)) {
     view_surface = surface_create(camera_width + 1, camera_height + 1);
+}
+if (!surface_exists(gui_surface)) {
+    gui_surface = surface_create(camera_width, camera_height);
 }
 view_surface_id[0] = view_surface;

@@ -537,7 +537,9 @@ shader_set(shd_drawlitsurface);
 texture_set_stage(light_texture, surface_get_texture(surface_light));
 
 draw_set_color(tint);
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 draw_surface(surface_background_color, x, y);
+gpu_set_blendmode(bm_normal);
 draw_set_color(c_white);
 
 shader_reset();
@@ -846,7 +848,9 @@ shader_set(shd_drawlitsurface);
 texture_set_stage(light_texture, surface_get_texture(surface_light));
 
 draw_set_color(tint);
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 draw_surface(surface_color, x, y);
+gpu_set_blendmode(bm_normal);
 draw_set_color(c_white);
 
 shader_reset();
@@ -1133,7 +1137,9 @@ shader_set(shd_drawlitsurface);
 texture_set_stage(light_texture, surface_get_texture(surface_light));
 
 draw_set_color(tint);
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 draw_surface(surface_foreground_color, x, y);
+gpu_set_blendmode(bm_normal);
 draw_set_color(c_white);
 
 shader_reset();

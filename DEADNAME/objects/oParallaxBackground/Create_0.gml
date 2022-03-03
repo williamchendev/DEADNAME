@@ -1,6 +1,9 @@
 /// @description Parallax Background Init
 // Initializes variables and settings for the Parallax Background
 
+// Background Inheritance
+event_inherited();
+
 // Settings
 background_sprite[0] = sBackgroundMiddaySky1_A;
 background_sprite[1] = sBackgroundMiddaySky1_B;

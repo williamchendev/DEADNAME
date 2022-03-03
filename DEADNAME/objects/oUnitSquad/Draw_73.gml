@@ -8,10 +8,12 @@ event_inherited();
 if (canmove and player_input) {
 	if (command or command_lerp_time) {
 		// Draw Transparent Layer
+		gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 		draw_set_alpha(0.4 * (1 - ((game_manager.time_spd - 0.2) / 0.8)));
 		draw_set_color(make_color_rgb(50, 50, 50));
-		draw_rectangle(game_manager.camera_x - 50, game_manager.camera_y - 50, game_manager.camera_x + game_manager.camera_width + 50, game_manager.camera_y + game_manager.camera_height + 50, false);
+		draw_rectangle(game_manager.camera_x - 150, game_manager.camera_y - 150, game_manager.camera_x + game_manager.camera_width + 150, game_manager.camera_y + game_manager.camera_height + 150, false);
 		draw_set_alpha(1);
+		gpu_set_blendmode(bm_normal);
 		
 		// Skip Drawing Player Units
 		if (!command) {
