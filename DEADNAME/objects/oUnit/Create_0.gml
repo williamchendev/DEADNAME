@@ -53,6 +53,9 @@ scale_reset_spd = 0.15;
 
 stats_y_offset = 8;
 
+// Command Settings
+command = false;
+
 // Player Settings
 player_input = false;
 

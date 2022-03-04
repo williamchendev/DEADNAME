@@ -18,6 +18,9 @@ if (instance_exists(oLighting)) {
 	else if (!lit_draw_event) {
 		temp_draw_gui = true;
 		temp_draw_sprite = false;
+		if (!draw_gun_effects) {
+			return;
+		}
 	}
 }
 

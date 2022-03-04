@@ -5,10 +5,6 @@
 camera_width = 640;
 camera_height = 360;
 
-// Camera Variables
-camera_lerp_x = camera_get_view_x(view_camera[0]);
-camera_lerp_y = camera_get_view_y(view_camera[0]);
-
 // Camera Surface
 background_surface = -1;
 view_surface = -1;

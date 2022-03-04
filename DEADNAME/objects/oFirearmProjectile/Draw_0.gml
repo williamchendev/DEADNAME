@@ -1,6 +1,13 @@
 /// @description Firearm Projectile Draw Event
 // Draws the Firearm Projectile to the Screen
 
+// Lighting Skip
+if (instance_exists(oLighting)) {
+	if (!draw_gun_effects) {
+		return;
+	}
+}
+
 // Draw Bullet Trail
 var temp_trail_x = x;
 var temp_trail_y = y;

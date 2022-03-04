@@ -623,7 +623,7 @@ else if (temp_weapon.weapon_type == "firearm") {
 										temp_weapon.bullets++;
 										remove_item_inventory(inventory, temp_weapon.weapon_ammo_id, 1);
 									}
-									if (temp_weapon.bullets < temp_weapon.bullets_max) {
+									if ((temp_weapon.bullets < temp_weapon.bullets_max) and ((temp_ammo - 1) > 0)) {
 										action_index = 1;
 										action_target_x += sign(draw_xscale * image_xscale) * -4;
 										action_target_y += 4;

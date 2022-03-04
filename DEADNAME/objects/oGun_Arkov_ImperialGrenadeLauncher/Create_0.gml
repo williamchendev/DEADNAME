@@ -38,6 +38,9 @@ silent = true;
 // Hit Effect Settings
 hit_effect = false;
 
+// Lighting Settings
+light_muzzle_flash = false;
+
 // Position Settings
 muzzle_x = 20;
 muzzle_y = 3;

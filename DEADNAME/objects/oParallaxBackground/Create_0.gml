@@ -26,8 +26,9 @@ background_scroll_spd[2] = 0.0003;
 background_scroll_spd[3] = 0;
 background_scroll_spd[4] = 0;
 
+background_darken_value = 0;
+
 // Variables
-game_manager = instance_find(oGameManager, 0);
 player_follow = noone;
 
 background_x_offset = noone;

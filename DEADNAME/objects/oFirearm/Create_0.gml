@@ -55,6 +55,13 @@ hit_effect_scale_min = 0.75;
 hit_effect_scale_max = 1.25;
 hit_effect_random_angle = -1;
 
+// Light Settings
+light_muzzle_flash = true;
+light_muzzle_flash_spd = 0.1;
+light_muzzle_flash_intensity = 0.7;
+light_muzzle_flash_radius = 64;
+light_muzzle_flash_color = make_color_rgb(255, 185, 135);
+
 // Position Settings
 muzzle_x = 28;
 muzzle_y = -2;
@@ -181,6 +188,8 @@ hit_effect_xscale = ds_list_create();
 hit_effect_yscale = ds_list_create();
 hit_effect_rotation = ds_list_create();
 
+light_muzzle_flash_inst = noone;
+
 projectile_obj_x_trajectory = ds_list_create();
 projectile_obj_y_trajectory = ds_list_create();
 projectile_trajectory_distance = 0;
@@ -197,6 +206,8 @@ gun_spin_angle = 0;
 gun_spin_timer = 0;
 
 break_action_angle_val = 0;
+
+draw_gun_effects = false;
 
 // Collider Variables
 collider_array_hit = noone;

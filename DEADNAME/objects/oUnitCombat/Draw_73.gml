@@ -39,7 +39,7 @@ if (temp_draw_combat_gui and canmove) {
 					temp_weapon_y += lengthdir_y(weapon_cursor_range, temp_weapon_rotation);
 					
 					// Draw Cursor
-					if (!reload) {
+					if (!reload and !command) {
 						draw_sprite(sCursorCrosshairIcons, 0, temp_weapon_x - temp_camera_x, temp_weapon_y - temp_camera_y);
 						/*
 						if (object_is_ancestor(temp_weapon_index.object_index, oFirearm) or (temp_weapon_index.object_index == oFirearm)) {

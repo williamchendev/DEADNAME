@@ -15,3 +15,26 @@ if (interact_inventory_obj != noone) {
 		}
 	}
 }
+
+// Outline Check
+if (!interact_mirror_select_obj) {
+	for (var i = ds_list_size(interact_inventory_obj_outline_list) - 1; i >= 0; i--) {
+		var temp_outline_inst = ds_list_find_value(interact_inventory_obj_outline_list, i);
+		if (temp_outline_inst != noone) {
+			if (instance_exists(temp_outline_inst)) {
+				// Remove Weapon from Inventory Outline
+				if (temp_outline_inst.object_index == oWeapon or object_is_ancestor(temp_outline_inst.object_index, oWeapon)) {
+					if (!temp_outline_inst.phy_active) {
+						ds_list_delete(interact_inventory_obj_outline_list, i);
+					}
+				}
+			}
+			else {
+				ds_list_delete(interact_inventory_obj_outline_list, i);
+			}
+		}
+		else {
+			ds_list_delete(interact_inventory_obj_outline_list, i);
+		}
+	}
+}

@@ -2055,6 +2055,14 @@
             }
         },
         {
+            "Key": "446fd456-bd83-4f6c-aba2-327a17ab231f",
+            "Value": {
+                "id": "0437c626-bfeb-40be-a9a2-7eaa1e93a50f",
+                "resourcePath": "views\\446fd456-bd83-4f6c-aba2-327a17ab231f.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "449f8470-399a-44d5-af7c-3b3669929719",
             "Value": {
                 "id": "8cf75068-8b59-4c7b-a4a2-aea8f60f6ab0",
@@ -2932,6 +2940,14 @@
                 "id": "92cf8426-d625-4755-ad64-583bc70403c9",
                 "resourcePath": "sprites\\sAdobeHouse_CactusOpuntia_NormalMap\\sAdobeHouse_CactusOpuntia_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "600a27f1-e35f-4ac9-9bac-b7677f7714c3",
+            "Value": {
+                "id": "3ef0dff3-e9a3-4405-88ce-cf8b0feff08b",
+                "resourcePath": "objects\\oTitle\\oTitle.yy",
+                "resourceType": "GMObject"
             }
         },
         {

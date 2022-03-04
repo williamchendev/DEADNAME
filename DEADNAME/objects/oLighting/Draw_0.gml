@@ -855,6 +855,40 @@ draw_set_color(c_white);
 
 shader_reset();
 
+// Draw Firearm Effects
+for (var i = 0; i < instance_number(oFirearm); i++) {
+	// Iterate through Firearm Objects
+	var temp_firearm_inst = instance_find(oFirearm, i);
+	if (temp_firearm_inst != noone) {
+		// Check if Firearm Object Exists
+		if (instance_exists(temp_firearm_inst)) {
+			// Firearm Draw Event
+			with(temp_firearm_inst) {
+				draw_gun_effects = true;
+				event_perform(ev_draw, 0);
+				draw_gun_effects = false;
+			}
+		}
+	}
+}
+
+// Draw Firearm Projectile Effects
+for (var i = 0; i < instance_number(oFirearmProjectile); i++) {
+	// Iterate through Firearm Objects
+	var temp_firearm_inst = instance_find(oFirearmProjectile, i);
+	if (temp_firearm_inst != noone) {
+		// Check if Firearm Object Exists
+		if (instance_exists(temp_firearm_inst)) {
+			// Firearm Draw Event
+			with(temp_firearm_inst) {
+				draw_gun_effects = true;
+				event_perform(ev_draw, 0);
+				draw_gun_effects = false;
+			}
+		}
+	}
+}
+
 // Establish Surface Foreground Lighting
 surface_set_target(surface_light);
 draw_clear_alpha(c_black, 1);

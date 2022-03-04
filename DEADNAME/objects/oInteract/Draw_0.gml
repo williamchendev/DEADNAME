@@ -128,7 +128,9 @@ if (interact_select_draw_value > 0) {
 	draw_surface(interact_surface, 0, 0);
 	surface_reset_target();
 	
+	gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 	draw_surface(interact_surface, temp_surface_x, temp_surface_y);
+	gpu_set_blendmode(bm_normal);
 	draw_set_color(c_white);
 	draw_set_alpha(1);
 	
@@ -151,7 +153,9 @@ if (interact_select_draw_value > 0) {
 	// Draw Outer Outline
 	draw_set_color(interact_select_second_outline_color);
 	draw_set_alpha(interact_select_draw_value * interact_select_draw_value);
+	gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 	draw_surface(temp_surface, temp_surface_x, temp_surface_y);
+	gpu_set_blendmode(bm_normal);
 	draw_set_color(c_white);
 	draw_set_alpha(1);
 			

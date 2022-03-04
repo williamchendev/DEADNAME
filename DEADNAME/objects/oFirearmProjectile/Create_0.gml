@@ -34,6 +34,8 @@ bullet_trail_list = ds_list_create();
 bullet_alert_x = x;
 bullet_alert_y = y;
 
+draw_gun_effects = false;
+
 // Platform Behaviour
 platform_check = false;
 platform_list = ds_list_create();

@@ -192,6 +192,23 @@ if (bursts > 0) {
 				}
 			}
 			
+			// Muzzle Flash Light Source
+			if (light_muzzle_flash) {
+				var temp_light_muzzle_flash_exists = false;
+				if (light_muzzle_flash_inst != noone) {
+					if (instance_exists(light_muzzle_flash)) {
+						temp_light_muzzle_flash_exists = true;
+					}
+				}
+				if (!temp_light_muzzle_flash_exists) {
+					light_muzzle_flash_inst = instance_create_layer(temp_muzzle_x, temp_muzzle_y, layer, oSpotLight);
+				}
+				light_muzzle_flash_inst.intensity = light_muzzle_flash_intensity;
+				light_muzzle_flash_inst.range = light_muzzle_flash_radius;
+				light_muzzle_flash_inst.fov = 270;
+				light_muzzle_flash_inst.color = light_muzzle_flash_color;
+			}
+			
 			// Bullet-Object/Raycast Behaviour
 			if (projectile_obj == noone) {
 				// Raycast
