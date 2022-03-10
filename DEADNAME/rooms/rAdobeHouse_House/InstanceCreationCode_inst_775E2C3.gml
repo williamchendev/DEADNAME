@@ -18,3 +18,5 @@ background_scroll_spd[1] = 0;
 background_scroll_spd[2] = 0;
 background_scroll_spd[3] = 0;
 background_scroll_spd[4] = 0.0003;
+
+background_darken_value = 0.3;

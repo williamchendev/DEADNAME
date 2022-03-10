@@ -207,6 +207,7 @@ if (bursts > 0) {
 				light_muzzle_flash_inst.range = light_muzzle_flash_radius;
 				light_muzzle_flash_inst.fov = 270;
 				light_muzzle_flash_inst.color = light_muzzle_flash_color;
+				light_muzzle_flash_inst.foreground_layer = false;
 			}
 			
 			// Bullet-Object/Raycast Behaviour

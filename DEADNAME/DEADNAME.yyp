@@ -415,6 +415,22 @@
             }
         },
         {
+            "Key": "0d3d7f8e-7b86-49ee-93d8-35d9fa7c2b4f",
+            "Value": {
+                "id": "c9c87383-ee58-4431-b185-b64c7fd59b22",
+                "resourcePath": "objects\\oGodKingBunker_TreeE\\oGodKingBunker_TreeE.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "0d461b1b-87cf-4877-9b5b-80dafc2e668c",
+            "Value": {
+                "id": "9bcf9459-2317-4984-bb40-c589adc2cc2e",
+                "resourcePath": "sprites\\sDebugPatrolPathfinding\\sDebugPatrolPathfinding.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0d710304-32df-41e2-90af-0dd13e4869b1",
             "Value": {
                 "id": "95663284-b266-4483-884f-04ad38741b53",
@@ -519,6 +535,14 @@
             }
         },
         {
+            "Key": "11a840f5-75dd-4c9f-84df-6c7a1161d8e8",
+            "Value": {
+                "id": "fa84552a-1af7-414f-b869-3913200944c5",
+                "resourcePath": "sprites\\sGodKingBunker_FrontPost_Ground\\sGodKingBunker_FrontPost_Ground.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "11ba9726-e2f9-43b5-91ac-8a62b19da1b9",
             "Value": {
                 "id": "eece389b-3dc1-4240-9d75-06e6f0061f15",
@@ -595,6 +619,14 @@
             "Value": {
                 "id": "31c262fe-9f0c-4bbc-a1d0-804007b3a300",
                 "resourcePath": "sprites\\sItems4x2\\sItems4x2.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "15fb25d2-06a8-4ab1-b8c2-55f2ad324eee",
+            "Value": {
+                "id": "dfafb733-1800-41ec-b826-ce526fc6c484",
+                "resourcePath": "sprites\\sGodKingBunker_RedTree\\sGodKingBunker_RedTree.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -839,6 +871,14 @@
             }
         },
         {
+            "Key": "1d4b8990-90b3-406c-91ae-fa747339a96f",
+            "Value": {
+                "id": "d7b239d8-97c6-4876-87de-40a6a25926d7",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_Table\\oGodKingBunker_FrontPost_Table.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "1d91b137-d993-4597-8e67-7b791908185f",
             "Value": {
                 "id": "92276e96-4181-4c0f-9338-2d4e2283a4b3",
@@ -975,6 +1015,14 @@
             }
         },
         {
+            "Key": "21fa4db1-2d2c-449e-a4d7-191a2e1fcc1f",
+            "Value": {
+                "id": "3f8bae34-6e15-45a3-b96b-60e060866168",
+                "resourcePath": "objects\\oGodKingBunker_MilitaryLightFixture\\oGodKingBunker_MilitaryLightFixture.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "22570019-b4cf-4089-ab37-d11b73da6d91",
             "Value": {
                 "id": "2838633d-a813-46ce-8c8c-7a6de6c66f1d",
@@ -1079,6 +1127,14 @@
             }
         },
         {
+            "Key": "25d0c6a3-eaea-4c54-aa48-ae843ca42335",
+            "Value": {
+                "id": "a09121b2-b78d-4e28-b75b-8be04719f086",
+                "resourcePath": "objects\\oGodKingBunker_TreeC\\oGodKingBunker_TreeC.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "2608f7da-0d88-4b92-87cd-74e285a1d658",
             "Value": {
                 "id": "d03c32fc-cdd4-4e91-8909-0f36dac870ca",
@@ -1164,6 +1220,14 @@
                 "id": "1136783f-7a78-4cc7-a35e-e0fb687aee90",
                 "resourcePath": "datafiles_yy\\Data\\Cornfields_HousesCutscene3.txt.yy",
                 "resourceType": "GMIncludedFile"
+            }
+        },
+        {
+            "Key": "296d1379-6ec1-4802-b8d4-5f88eb1e9c95",
+            "Value": {
+                "id": "c107f492-4917-4fe2-a823-97b09c9abed4",
+                "resourcePath": "sprites\\sGodKingBunker_TreeC\\sGodKingBunker_TreeC.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1279,11 +1343,27 @@
             }
         },
         {
+            "Key": "2c73fb9a-f722-48fa-b09f-af854fd97f78",
+            "Value": {
+                "id": "5944177b-3eae-487e-9744-42d40cb215f3",
+                "resourcePath": "objects\\oGodKingBunker_RocksA\\oGodKingBunker_RocksA.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "2c9c38e7-0a2e-47ec-ba10-de2ebe09e211",
             "Value": {
                 "id": "4b5351e6-b422-4dbf-aac6-7e6ed21bc45f",
                 "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Run\\sWilliam_NorthernBrigade_Soldat_Run.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "2cda2a5f-7cf8-409d-9828-7f5da1cc45c6",
+            "Value": {
+                "id": "95fbac72-2e55-4aa6-8024-b4290c534969",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_Ground\\oGodKingBunker_FrontPost_Ground.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -1335,6 +1415,14 @@
             }
         },
         {
+            "Key": "2dee864e-8d80-4fe9-96a9-1e846a48d064",
+            "Value": {
+                "id": "9d2d42b6-00c1-444f-8e44-f28c997c957a",
+                "resourcePath": "sprites\\sGodKingBunker_RedBushA\\sGodKingBunker_RedBushA.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2e36d9c2-49f2-4b12-9210-46deddc59d93",
             "Value": {
                 "id": "99ef8493-a478-4814-ab1d-d0b2fe451a9e",
@@ -1375,10 +1463,26 @@
             }
         },
         {
+            "Key": "2fc7e773-be8e-4cbd-b9e8-019063bf50c0",
+            "Value": {
+                "id": "527b34e7-7b81-4b58-91d3-457d2ed43204",
+                "resourcePath": "sprites\\sGodKingBunker_BackgroundD\\sGodKingBunker_BackgroundD.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "300925e4-2023-4cdd-b0a2-4b7634213e44",
             "Value": {
                 "id": "54205565-2eec-4893-9714-98b40700b3eb",
                 "resourcePath": "objects\\oAdobeHouse_PaleDesertRocksLargeG\\oAdobeHouse_PaleDesertRocksLargeG.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "30ecdbfb-c2c9-4824-8387-5d2cd18d586b",
+            "Value": {
+                "id": "5ce7ac84-3074-4d58-b692-7c26fde767d6",
+                "resourcePath": "objects\\oGodKingBunker_TreeA\\oGodKingBunker_TreeA.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1591,10 +1695,26 @@
             }
         },
         {
+            "Key": "357da15b-203c-4ac9-a43a-7d6327aad43d",
+            "Value": {
+                "id": "d8e7e11c-d897-4e32-a52a-e476e85d8459",
+                "resourcePath": "objects\\oGodKingBunker_RocksB\\oGodKingBunker_RocksB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "35836961-9c7d-451c-a9e1-6f81d6a7fe0a",
             "Value": {
                 "id": "e8eac2dc-59f6-4661-81c6-2ae8669c6f4e",
                 "resourcePath": "sprites\\sWilliam_Knives_ChestBot\\sWilliam_Knives_ChestBot.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "35e41030-c718-4f1f-a2ff-39986ecb8d58",
+            "Value": {
+                "id": "75ef8418-b3db-41cc-b87d-f31560375860",
+                "resourcePath": "sprites\\sGodKingBunker_FrontPost_ControlPanel\\sGodKingBunker_FrontPost_ControlPanel.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1651,6 +1771,14 @@
             "Value": {
                 "id": "c4abab77-db2a-41dc-bbfa-4cf552995a7a",
                 "resourcePath": "sprites\\sDebugLights\\sDebugLights.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "37196d6e-d2ec-4595-9d65-6a6df8e68dde",
+            "Value": {
+                "id": "954d9da0-e9a7-4b4c-aff4-7641a2f104d6",
+                "resourcePath": "sprites\\sGodKingBunker_MilitaryLightFixture\\sGodKingBunker_MilitaryLightFixture.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1879,6 +2007,14 @@
             }
         },
         {
+            "Key": "3df57f4e-1990-4215-8a51-0b141a509324",
+            "Value": {
+                "id": "278c06e9-8559-4efb-a868-8b28449e2baa",
+                "resourcePath": "views\\3df57f4e-1990-4215-8a51-0b141a509324.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "3e281971-7a19-483e-9ba4-7c69be812409",
             "Value": {
                 "id": "55bec06f-dfd4-42ed-b6e7-584fcb73025d",
@@ -1927,6 +2063,14 @@
             }
         },
         {
+            "Key": "3faeb251-296e-453c-8036-51749481862e",
+            "Value": {
+                "id": "b87e26dc-67ad-4193-a8c7-ab607b66c948",
+                "resourcePath": "objects\\oGodKingBunker_Cliffside\\oGodKingBunker_Cliffside.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "402984dd-0205-4e6e-b3f4-9663ea3f71ab",
             "Value": {
                 "id": "e9bf93df-f11a-46ed-a756-0308a0471822",
@@ -1972,6 +2116,14 @@
                 "id": "20116030-3e22-437f-b673-eb045a869b90",
                 "resourcePath": "sprites\\sArkov_ParagonRifle_Magazine\\sArkov_ParagonRifle_Magazine.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "418da7d2-cf6c-469f-b3e2-25ce63c336af",
+            "Value": {
+                "id": "f6c2767a-f5ff-46d7-bac8-62bb9cae5d75",
+                "resourcePath": "objects\\oLantern\\oLantern.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -2159,6 +2311,14 @@
             }
         },
         {
+            "Key": "468874b8-024f-4cba-8197-a9d716879b63",
+            "Value": {
+                "id": "9060af26-b733-44ce-b291-731347858123",
+                "resourcePath": "sprites\\sGodKingBunker_BackgroundE\\sGodKingBunker_BackgroundE.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "46b0561d-58e8-458f-94d6-cf317704c3e1",
             "Value": {
                 "id": "473dfea0-a159-45e3-9326-51cfc3d9addc",
@@ -2335,6 +2495,14 @@
             }
         },
         {
+            "Key": "4b5c47cf-8074-492b-981f-305bf78bb701",
+            "Value": {
+                "id": "0ab79ff2-cf50-4b56-b62a-3c48a1b6d3f1",
+                "resourcePath": "sprites\\sGodKingBunker_TreeA\\sGodKingBunker_TreeA.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "4b6165d7-9ea4-424c-b516-2c6819beea16",
             "Value": {
                 "id": "faa908c8-e225-4ad1-97e7-4f477894e8a0",
@@ -2452,6 +2620,22 @@
                 "id": "c4fe629b-e12e-490c-8bea-7afe5b65ba9c",
                 "resourcePath": "sprites\\sWilliam_HorizonBlue_LeftLeg\\sWilliam_HorizonBlue_LeftLeg.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "4f4bde11-6156-4b45-845c-09d883edd134",
+            "Value": {
+                "id": "f3c61feb-308b-4277-bb4f-a237b523919c",
+                "resourcePath": "sprites\\sGodKingBunker_Ground\\sGodKingBunker_Ground.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "4f589522-1be4-4eef-a7cd-831eddfa5836",
+            "Value": {
+                "id": "04df121a-6644-4491-a2bc-80f30f3d547d",
+                "resourcePath": "objects\\oGodKingBunker_Ground\\oGodKingBunker_Ground.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3015,6 +3199,14 @@
             }
         },
         {
+            "Key": "62cd4479-9816-4db5-a31b-ab0b73962cda",
+            "Value": {
+                "id": "4bb612d1-25b7-46e3-8869-cb6dcb1df60f",
+                "resourcePath": "datafiles_yy\\Data\\GodKingBunker_FrontPost_ButtonConversation.txt.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "62d06d9b-9381-405b-9b1c-0587e2765778",
             "Value": {
                 "id": "1e58a298-c6d0-4380-a958-0dad69051030",
@@ -3124,6 +3316,14 @@
                 "id": "549399dd-02f8-4b19-9556-fdb777eaba74",
                 "resourcePath": "views\\65f0c2e4-dbf5-43a1-9e81-59b2ae0d5924.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "66001c7d-1038-4d58-9a62-756c66be9d7b",
+            "Value": {
+                "id": "60f92a93-72f7-4755-bbd2-07816ffd12bb",
+                "resourcePath": "objects\\oGodKingBunker_RedBushA\\oGodKingBunker_RedBushA.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -3279,6 +3479,14 @@
             }
         },
         {
+            "Key": "6aefef91-b6f7-408e-b50d-a9c260fbbac1",
+            "Value": {
+                "id": "807747d5-4cfb-43b8-8b7e-e320a331b7a9",
+                "resourcePath": "sprites\\sLantern_Default\\sLantern_Default.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6af0a257-e5bb-4032-94b6-f65b3321dfe6",
             "Value": {
                 "id": "bafc6cd2-3e53-4927-a6a3-758e4636f855",
@@ -3407,6 +3615,14 @@
             }
         },
         {
+            "Key": "6e293197-cc84-4ab6-b585-65fbde5ab678",
+            "Value": {
+                "id": "b979dbe8-5ce8-4521-80de-45cedf67ac4a",
+                "resourcePath": "views\\6e293197-cc84-4ab6-b585-65fbde5ab678.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "6e63f008-954c-4315-92c8-f223c5cc3737",
             "Value": {
                 "id": "3bb0ce10-d1f9-4cfc-b049-d92c3384c198",
@@ -3428,6 +3644,14 @@
                 "id": "82d67aef-d993-4659-8893-68917e029c9a",
                 "resourcePath": "views\\6ed37801-5a18-45ac-bd27-081aea009fb3.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "6f013ea9-5003-4f99-9be7-4d4637cb1a41",
+            "Value": {
+                "id": "d25ce7c1-a377-4823-b92a-59b3df7c3d63",
+                "resourcePath": "sprites\\sGodKingBunker_TreeB\\sGodKingBunker_TreeB.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -3631,6 +3855,14 @@
             }
         },
         {
+            "Key": "76afb977-9e9b-45c6-9680-937b444e7bc5",
+            "Value": {
+                "id": "e3bce35a-dc48-4c41-89f2-d17b3b804a5f",
+                "resourcePath": "objects\\oGodKingBunker_Bushes\\oGodKingBunker_Bushes.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "76eb2da2-a746-4f74-a982-17365ea2dc27",
             "Value": {
                 "id": "c8ff1780-a7f1-4561-bee8-a5d4a6072016",
@@ -3660,6 +3892,14 @@
                 "id": "b07a7864-8ec6-44c1-bdab-b64732222565",
                 "resourcePath": "sprites\\sWilliam_NorthernBrigade_Soldat_Head_NormalMap\\sWilliam_NorthernBrigade_Soldat_Head_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "773754b1-4997-4e71-a01e-24b531f1c93b",
+            "Value": {
+                "id": "5834cbdd-6c37-4e0f-be52-7f7f08cdf46f",
+                "resourcePath": "views\\773754b1-4997-4e71-a01e-24b531f1c93b.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3828,6 +4068,14 @@
                 "id": "e00361c4-5b76-4ccd-bf94-8c6c775f6230",
                 "resourcePath": "views\\7d126167-84ab-4c97-80c6-e3b2b8ee6306.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "7d29942c-ebd9-433f-8a6b-92d2d5178d35",
+            "Value": {
+                "id": "ebbb442a-96f5-4360-b081-60f9d7c86ced",
+                "resourcePath": "sprites\\sGodKingBunker_BackgroundA\\sGodKingBunker_BackgroundA.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4007,6 +4255,14 @@
             }
         },
         {
+            "Key": "84281826-9ce9-4b1e-ba3f-a8d8d6f02c98",
+            "Value": {
+                "id": "40fd397a-3c78-4bf6-9b8a-ba2987c63a5d",
+                "resourcePath": "objects\\oGodKingBunker_TreeB\\oGodKingBunker_TreeB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "8428b5ab-4c20-47df-aec6-a09256b6ee27",
             "Value": {
                 "id": "42206cb6-be8b-4e26-af39-4f91b6994815",
@@ -4124,6 +4380,14 @@
                 "id": "ec29cc8f-7a0a-45fb-ab37-977782bd1c96",
                 "resourcePath": "objects\\oAdobeHouse_PaleDesertRockSmall_RandomIndex\\oAdobeHouse_PaleDesertRockSmall_RandomIndex.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "872e614c-1545-49e7-a6f2-c1a47ae3d4e6",
+            "Value": {
+                "id": "4bbce587-ab6a-46b6-ac96-1fa11931c40a",
+                "resourcePath": "sprites\\sGodKingBunker_Rocks_NormalMap\\sGodKingBunker_Rocks_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4295,6 +4559,14 @@
             }
         },
         {
+            "Key": "8cd213e3-b25d-4b71-adfa-85eceee97829",
+            "Value": {
+                "id": "2827f9e4-df32-48b9-a23b-664d4322c92d",
+                "resourcePath": "sprites\\sGodKingBunker_TreeD\\sGodKingBunker_TreeD.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "8ce0174e-b2f0-4de5-89f0-2e723073ee53",
             "Value": {
                 "id": "c6e501a6-75a9-442b-b147-64101e1b03ef",
@@ -4332,6 +4604,22 @@
                 "id": "930cac5d-3730-44fd-952b-0406bd0a74be",
                 "resourcePath": "rooms\\rTutorialLevel_Movement\\rTutorialLevel_Movement.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "8f54ca81-b4ce-4a5e-8b52-fe693a093132",
+            "Value": {
+                "id": "878f695a-e83c-44d1-9a58-215913b9daec",
+                "resourcePath": "objects\\oGodKingBunker_RedBushB\\oGodKingBunker_RedBushB.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "8fc52286-aeb2-4739-982c-756ac695d76c",
+            "Value": {
+                "id": "82ef0ec1-7f19-4e86-a5f0-d0f19647ac7d",
+                "resourcePath": "sprites\\sGodKingBunker_Bushes_NormalMap\\sGodKingBunker_Bushes_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4511,6 +4799,14 @@
             }
         },
         {
+            "Key": "960c06f2-496c-471d-a75d-03df0a9e03c8",
+            "Value": {
+                "id": "086829d5-4095-4183-a7fd-a74ac6bafd8b",
+                "resourcePath": "objects\\oGodKingBunker_TreeD\\oGodKingBunker_TreeD.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "96534aa1-2dfc-4348-b146-3cd8ecfce44e",
             "Value": {
                 "id": "f9357ff9-7cc2-4925-8326-91d1e7e691db",
@@ -4603,6 +4899,14 @@
             "Value": {
                 "id": "6fcf2af1-5114-42e1-ac94-ea5b15e9e02b",
                 "resourcePath": "sprites\\sFirearmHitEffect1\\sFirearmHitEffect1.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "99e02ad8-32e8-47d1-a791-4d189ecdce23",
+            "Value": {
+                "id": "70a0da74-5f73-4516-901e-9304b4520a16",
+                "resourcePath": "sprites\\sGodKingBunker_Rocks\\sGodKingBunker_Rocks.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4780,6 +5084,14 @@
                 "id": "0a76db13-d23e-4408-b990-9e2171478c65",
                 "resourcePath": "views\\a0ec39f5-1a10-448e-9399-94530d29e696.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "a0f22502-eb02-423b-ae60-6d5e0b71fa0e",
+            "Value": {
+                "id": "9233f038-8d8f-4e44-82a6-758c6910c114",
+                "resourcePath": "sprites\\sGodKingBunker_RedBushB\\sGodKingBunker_RedBushB.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5035,6 +5347,14 @@
             "Value": {
                 "id": "1d2bb7a7-767f-4539-9936-2559388fd484",
                 "resourcePath": "objects\\oGun_Arkov_ParagonRifle_Mag\\oGun_Arkov_ParagonRifle_Mag.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "aa42a4a5-774f-41e7-8291-e900c35bf089",
+            "Value": {
+                "id": "06ddf642-d6a8-4c1c-aeae-26bc38f907bb",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_ControlPanel_Light\\oGodKingBunker_FrontPost_ControlPanel_Light.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -5503,6 +5823,14 @@
             }
         },
         {
+            "Key": "b78574eb-f016-4eb8-a501-bcc4cb400f84",
+            "Value": {
+                "id": "932cf87b-8feb-4f67-9fb1-4547ba88ad70",
+                "resourcePath": "sprites\\sGodKingBunker_Bushes\\sGodKingBunker_Bushes.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "b7cf3947-4dbb-4c55-a58b-fb0f1d41e85e",
             "Value": {
                 "id": "deae7211-c96b-4072-8651-621e3b414a60",
@@ -5623,6 +5951,14 @@
             }
         },
         {
+            "Key": "ba87d80e-e11f-4768-b8ec-ccf8cc09984e",
+            "Value": {
+                "id": "abd89fcf-7f44-4e15-af57-ce428c5f6466",
+                "resourcePath": "sprites\\sGodKingBunker_TreeE\\sGodKingBunker_TreeE.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ba9f2b95-00e0-46c0-a94b-f5a00b8933c1",
             "Value": {
                 "id": "9c20b2af-3f40-4fd0-88f9-a5205dd96387",
@@ -5651,6 +5987,14 @@
             "Value": {
                 "id": "8d9df92d-6f9b-4fdc-8da9-401238bb2ef0",
                 "resourcePath": "sprites\\sWilliam_Knives_ChestTop\\sWilliam_Knives_ChestTop.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "bb42d66d-f07e-439a-be55-af4f4f0b0e5f",
+            "Value": {
+                "id": "6c6c8018-6c5a-4e66-835c-510402d7e107",
+                "resourcePath": "sprites\\sGodKingBunker_BackgroundB\\sGodKingBunker_BackgroundB.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5863,6 +6207,14 @@
             }
         },
         {
+            "Key": "c1d7e195-c524-48f1-93b9-1660480ad31d",
+            "Value": {
+                "id": "e6245293-48f8-406f-b174-0e43657a8dea",
+                "resourcePath": "sprites\\sGodKingBunker_FrontPost_Table\\sGodKingBunker_FrontPost_Table.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c1f03445-7b94-4f8a-adf3-3d8d19d4e00e",
             "Value": {
                 "id": "3466821c-e72c-4f8c-b6f1-4c76fb573020",
@@ -5884,6 +6236,14 @@
                 "id": "f8230600-2730-4ebb-8830-3c95b0324bca",
                 "resourcePath": "sprites\\sArkov_FAL_NormalMap\\sArkov_FAL_NormalMap.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c2bcf4bc-d74f-4172-91bf-1db532e4659f",
+            "Value": {
+                "id": "c830cedf-baf1-4052-8c79-28cabdbe06c6",
+                "resourcePath": "objects\\oGodKingBunker_RocksD\\oGodKingBunker_RocksD.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -6055,11 +6415,27 @@
             }
         },
         {
+            "Key": "c597cbae-a6f7-4d51-a814-312bab9e1080",
+            "Value": {
+                "id": "d6177da4-ed64-47cf-982b-1311ed753cd3",
+                "resourcePath": "sprites\\sGodKingBunker_Cliffside_Snow\\sGodKingBunker_Cliffside_Snow.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "c5bc090f-f9ff-4b3d-955c-db78f9f63c51",
             "Value": {
                 "id": "a6c3cf56-03a3-4dcf-b19e-df696cd9cba0",
                 "resourcePath": "views\\c5bc090f-f9ff-4b3d-955c-db78f9f63c51.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "c5ea3cef-af10-4832-a486-74ed3ba7141d",
+            "Value": {
+                "id": "5ba9d7ee-01a6-4b7d-afae-39762563d7b8",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_ControlPanel\\oGodKingBunker_FrontPost_ControlPanel.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -6107,6 +6483,14 @@
             "Value": {
                 "id": "399e538e-04d2-40e7-959e-18457c038b10",
                 "resourcePath": "sprites\\sOptionsIconTitle\\sOptionsIconTitle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c78c7ebf-a687-488b-a36f-2416eab13cdb",
+            "Value": {
+                "id": "8153d41c-4c57-492b-91a7-bd627e93c28f",
+                "resourcePath": "sprites\\sGodKingBunker_Cliffside\\sGodKingBunker_Cliffside.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -6551,6 +6935,14 @@
             }
         },
         {
+            "Key": "d7d7d5a3-b516-43ff-89e6-4a1fdb9aa049",
+            "Value": {
+                "id": "60b58042-0084-4cae-a132-f8100b7d13d4",
+                "resourcePath": "sprites\\sGodKingBunker_BlackDither\\sGodKingBunker_BlackDither.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "d8211ca3-c832-4853-a53f-3768b5ae6b99",
             "Value": {
                 "id": "ceec746d-1afa-46af-94c4-d2d17e907569",
@@ -6603,6 +6995,14 @@
             "Value": {
                 "id": "74638cb4-73a7-4a73-b3d5-43dfc548eb5d",
                 "resourcePath": "objects\\oCutsceneTrigger\\oCutsceneTrigger.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "d962e909-5dac-4384-9bcd-920828664248",
+            "Value": {
+                "id": "97b09fdd-9381-486c-9e8f-254bb9f81d08",
+                "resourcePath": "objects\\oGodKingBunker_RocksC\\oGodKingBunker_RocksC.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -6671,11 +7071,27 @@
             }
         },
         {
+            "Key": "db5c5e78-0624-4a23-aa06-97c157b63895",
+            "Value": {
+                "id": "c26fb9ce-5997-48c0-b668-d0a22b283311",
+                "resourcePath": "views\\db5c5e78-0624-4a23-aa06-97c157b63895.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "db938c39-6ee4-4916-9022-9c2ad9422663",
             "Value": {
                 "id": "3fc36a37-7aaf-4165-a653-7110d787f355",
                 "resourcePath": "scripts\\mouse_get_y\\mouse_get_y.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "dc250155-84e6-4f11-b99a-cd60167347dc",
+            "Value": {
+                "id": "8492fc9f-f674-4ac6-a2ea-871450d137dc",
+                "resourcePath": "objects\\oGodKingBunker_Cliffside_Snow\\oGodKingBunker_Cliffside_Snow.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -6799,6 +7215,14 @@
             }
         },
         {
+            "Key": "e1a8a820-b436-494b-aec1-ffe44a621d25",
+            "Value": {
+                "id": "b6f617c5-808e-4ab9-83f0-8f557f1eb0b7",
+                "resourcePath": "sprites\\sGodKingBunker_FrontPost_Background\\sGodKingBunker_FrontPost_Background.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e292c3b8-4026-4398-8ebb-a9070c068af6",
             "Value": {
                 "id": "028a5275-f63b-4369-96d8-85b05c3887a0",
@@ -6919,6 +7343,14 @@
             }
         },
         {
+            "Key": "e6546f16-679e-41f0-abde-cb490d42aea3",
+            "Value": {
+                "id": "d78539db-0455-41c0-a1b6-d4cf7a61c0ec",
+                "resourcePath": "objects\\oGodKingBunker_Rocks\\oGodKingBunker_Rocks.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "e66ff74e-6749-41d6-abab-46b90b439201",
             "Value": {
                 "id": "a1f6c166-679d-4cfe-9ca1-d7acaea76e4e",
@@ -6940,6 +7372,14 @@
                 "id": "03672e6f-d897-4c87-b7b6-8c4410138fb7",
                 "resourcePath": "objects\\oGun_Arkov_CorsoRifle\\oGun_Arkov_CorsoRifle.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "e6eea9fc-497a-478b-9cf3-e8858baf9402",
+            "Value": {
+                "id": "12cd21dc-1cc6-4aec-a4cd-dda0e234f755",
+                "resourcePath": "sprites\\sGodKingBunker_FrontPost_Chair\\sGodKingBunker_FrontPost_Chair.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6980,6 +7420,14 @@
                 "id": "228089b3-c196-4413-a277-94976561097d",
                 "resourcePath": "sprites\\sBulletCase_Pistol_Small\\sBulletCase_Pistol_Small.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "e7ed8478-4557-47b2-9a93-c2abc9e11143",
+            "Value": {
+                "id": "5fc68608-8c9f-499c-beba-0bacee166333",
+                "resourcePath": "views\\e7ed8478-4557-47b2-9a93-c2abc9e11143.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -7191,6 +7639,14 @@
             }
         },
         {
+            "Key": "edab3d51-d6f5-4db1-8524-024112bb1aac",
+            "Value": {
+                "id": "1527b9c6-4100-41e2-99f9-233f21b0a9cc",
+                "resourcePath": "sprites\\sGodKingBunker_BackgroundC\\sGodKingBunker_BackgroundC.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "edffe961-699c-4045-b582-8ded38b1b142",
             "Value": {
                 "id": "6ad4c0ed-0f71-4718-af97-c9be2a382b2f",
@@ -7271,6 +7727,14 @@
             }
         },
         {
+            "Key": "f0315eda-4b67-40e0-ba73-00387fc80a86",
+            "Value": {
+                "id": "06642e50-daa9-4abb-aa5e-bed291183898",
+                "resourcePath": "objects\\oGodKingBunker_RedTree\\oGodKingBunker_RedTree.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "f0866c95-bb2c-439d-946d-f60d47a473dd",
             "Value": {
                 "id": "96eded80-47a7-4819-9ba0-0ae686a5f9ba",
@@ -7291,6 +7755,14 @@
             "Value": {
                 "id": "b83be07a-a4c5-4234-b355-0628bf41a483",
                 "resourcePath": "objects\\oGlobalLight\\oGlobalLight.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f10b4ed2-bf60-428e-8457-dd27cac1eccc",
+            "Value": {
+                "id": "8821e645-a49c-4b48-8dfc-7d667950057e",
+                "resourcePath": "objects\\oPatrolNode\\oPatrolNode.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -7332,6 +7804,14 @@
                 "id": "b8844799-2f88-4d1e-b83a-6ef5f96b0d9f",
                 "resourcePath": "views\\f17c8b60-12ad-4022-a4ac-75975a6aa07c.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "f17f2301-e902-4c45-8d86-3cd56989d376",
+            "Value": {
+                "id": "7ceeb6b7-5a31-4445-b99d-933e43806b86",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_Background\\oGodKingBunker_FrontPost_Background.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -7652,6 +8132,14 @@
                 "id": "ecea2f16-2e80-438d-9d57-07c921b5d6a5",
                 "resourcePath": "views\\fceea86c-5d47-4951-a3d4-a7dddaf0157e.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "fded3c05-987b-48a9-b04d-d5c1f1e27a84",
+            "Value": {
+                "id": "6364b5bb-f9e5-42c3-8972-4472407e17d1",
+                "resourcePath": "objects\\oGodKingBunker_FrontPost_Chair\\oGodKingBunker_FrontPost_Chair.yy",
+                "resourceType": "GMObject"
             }
         },
         {

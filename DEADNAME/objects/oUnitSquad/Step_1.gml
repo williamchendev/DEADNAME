@@ -116,10 +116,10 @@ if (camera_follow) {
 		var temp_camera_set_x_pos = cam_target_x + camera_screen_shake_x;
 		var temp_camera_set_y_pos = cam_target_y + camera_screen_shake_y;
 		if (camera_room_clamp_x) {
-			temp_camera_set_x_pos = clamp(temp_camera_set_x_pos, 0, room_width - game_manager.game_width);
+			temp_camera_set_x_pos = clamp(temp_camera_set_x_pos, camera_room_clamp_x_min, camera_room_clamp_x_max - game_manager.game_width);
 		}
 		if (camera_room_clamp_y) {
-			temp_camera_set_x_pos = clamp(temp_camera_set_y_pos, 0, room_height - game_manager.game_height);
+			temp_camera_set_y_pos = clamp(temp_camera_set_y_pos, camera_room_clamp_y_min, camera_room_clamp_y_max - game_manager.game_height);
 		}
 	
 		// Update Camera Object Positions

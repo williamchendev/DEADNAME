@@ -356,6 +356,19 @@ else if (temp_weapon.weapon_type == "firearm") {
 						// Click Attack
 						key_fire_press = true;
 					}
+					
+					// AI Patrol Behaviour
+					if (ai_patrol and ai_patrol_active) {
+						temp_weapon.aim = target_aim_threshold;
+						if (sight_unit_nearest != noone) {
+							if (!instance_exists(sight_unit_nearest)) {
+								key_fire_press = false;
+							}
+						}
+						else {
+							key_fire_press = false;
+						}
+					}
 				}
 				else {
 					// Hold Attack

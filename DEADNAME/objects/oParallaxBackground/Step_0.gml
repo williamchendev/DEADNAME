@@ -38,9 +38,7 @@ var temp_target_y = temp_camera_y + game_manager.game_height;
 
 for (var i = 0; i < array_length_1d(background_sprite); i++) {
 	background_scroll_value[i] += global.deltatime * background_scroll_spd[i];
-	while (background_scroll_value[i] >= 1) {
-		background_scroll_value[i]--;
-	}
+	background_scroll_value[i] = background_scroll_value[i] mod 1;
 	background_x_offset[i] = (background_move_spd[i] * temp_target_x) + (background_scroll_value[i] * sprite_get_width(background_sprite[i]));
 }
 background_y_offset = clamp((temp_target_y - game_manager.game_height) * -background_move_y_spd, 0, sprite_get_height(background_sprite[0]) - game_manager.game_height) + background_y;

@@ -35,6 +35,10 @@ if (squad_alert) {
 				temp_squad_unit_inst.path_create = true;
 				temp_squad_unit_inst.path_end_x = squad_alert_x + irandom_range(-squad_alert_random_spread_range, squad_alert_random_spread_range);
 				temp_squad_unit_inst.path_end_y = squad_alert_y;
+				
+				if (temp_squad_unit_inst.ai_patrol) {
+					temp_squad_unit_inst.ai_patrol_active = false;
+				}
 			}
 		}
 	}

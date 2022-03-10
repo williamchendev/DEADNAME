@@ -62,6 +62,10 @@ camera_lock_y = 0;
 
 camera_room_clamp_x = false;
 camera_room_clamp_y = false;
+camera_room_clamp_x_min = 0;
+camera_room_clamp_x_max = 640;
+camera_room_clamp_y_min = 0;
+camera_room_clamp_y_max = 360;
 
 camera_screen_shake = false;
 camera_screen_shake_spd = 0.8;

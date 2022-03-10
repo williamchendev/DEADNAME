@@ -187,6 +187,68 @@ if (ai_behaviour and canmove) {
 			target_y = sight_unit_seen_y;
 		}
 	}
+	else if (ai_patrol) {
+		// Patrol Behaviour
+		if (ai_patrol_active) {
+			// AI Patrol Active
+			if (ai_patrol_sustain_timer > 0) {
+				// Patrol Sustain Timer
+				if (!pathing) {
+					ai_patrol_sustain_timer -= global.deltatime;
+				}
+			}
+			else {
+				// Find New Patrol Location
+				var temp_patrol_node_list = ds_list_create();
+				for (var i = 0; i < instance_number(oPatrolNode); i++) {
+					var temp_patrol_node_inst = instance_find(oPatrolNode, i);
+					if (ai_patrol_id == temp_patrol_node_inst.patrol_id) {
+						ds_list_add(temp_patrol_node_list, temp_patrol_node_inst);
+					}
+				}
+				if (!ds_list_empty(temp_patrol_node_list)) {
+					while(ds_list_size(temp_patrol_node_list) > 0) {
+						var temp_patrol_node_random_index = irandom(ds_list_size(temp_patrol_node_list) - 1);
+						var temp_patrol_node_inst = ds_list_find_value(temp_patrol_node_list, temp_patrol_node_random_index);
+						if (temp_patrol_node_inst != ai_patrol_node) {
+							ai_patrol_node = temp_patrol_node_inst;
+							break;
+						}
+						else {
+							ds_list_delete(temp_patrol_node_list, temp_patrol_node_random_index);
+						}
+					}
+				}
+				else {
+					ai_patrol_node = noone;
+				}
+				ds_list_destroy(temp_patrol_node_list);
+				temp_patrol_node_list = -1;
+			
+				// Patrol Pathfinding
+				var temp_patrol_path_exists = false;
+				if (ai_patrol_node != noone) {
+					if (instance_exists(ai_patrol_node)) {
+						temp_patrol_path_exists = true;
+						path_create = true;
+						path_end_x = ai_patrol_node.x;
+						path_end_y = ai_patrol_node.y;
+						ai_patrol_sustain_timer = ai_patrol_sustain_time + irandom(ai_patrol_sustain_random_time);
+					}
+				}
+				if (!temp_patrol_path_exists) {
+					ai_patrol = false;
+				}
+			}
+		}
+		else {
+			// AI Patrol Inactive Timer
+			ai_patrol_inactive_timer -= global.deltatime;
+			if (ai_patrol_inactive_timer <= 0) {
+				ai_patrol_active = true;
+			}
+		}
+	}
 	
 	// Attack Behaviour
 	if (temp_aggro_behaviour_active) {
@@ -204,6 +266,31 @@ if (ai_behaviour and canmove) {
 				// Set Aim Behaviour
 				key_aim_press = true;
 			}
+		}
+		
+		// Reset AI Patrol
+		ai_patrol_active = false;
+		ai_patrol_inactive_timer = ai_patrol_inactive_time;
+	}
+	else if (ai_patrol and ai_patrol_active) {
+		// Patrol Alert
+		alert = clamp(alert, alert_threshold * 0.5, 1.0);
+		
+		// Patrol Target Position
+		var temp_weapon_distance = point_distance(0, 0, (draw_xscale * image_xscale * weapon_aim_x), (draw_yscale * image_yscale * weapon_aim_y));
+		var temp_weapon_direction = point_direction(0, 0, (draw_xscale * image_xscale * weapon_aim_x), (draw_yscale * image_yscale * weapon_aim_y));
+		target_x = x + lengthdir_x(temp_weapon_distance, temp_weapon_direction + draw_angle) + (sign(image_xscale) * 200);
+		target_y = y + lengthdir_y(temp_weapon_distance, temp_weapon_direction + draw_angle) - ((sin(degtorad(draw_angle)) * (bbox_left - bbox_right)) / 2);
+		
+		// Aim Walk Targeting
+		if (pathing) {
+			targeting = true;
+			key_aim_press = true;
+		}
+		
+		// Alert set Patrol Inactive
+		if (alert >= alert_threshold) {
+			ai_patrol_active = false;
 		}
 	}
 }

@@ -29,6 +29,8 @@ max_health_points = 6;
 
 // AI Settings
 ai_command = false;
+ai_patrol = false;
+ai_patrol_active = false;
 
 // Animation Settings
 idle_animation = sWilliamDS_Idle;

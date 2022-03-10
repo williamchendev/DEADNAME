@@ -10,7 +10,7 @@ draw_set_color(temp_color);
 
 // Draw Background
 var temp_game_manager = instance_find(oGameManager, 0);
-draw_rectangle(temp_game_manager.camera_x - 10, temp_game_manager.camera_y - 10, temp_game_manager.camera_x + temp_game_manager.camera_width + 10, temp_game_manager.camera_y + temp_game_manager.camera_height + 10, false);
+draw_rectangle(temp_game_manager.camera_x - 150, temp_game_manager.camera_y - 150, temp_game_manager.camera_x + temp_game_manager.camera_width + 150, temp_game_manager.camera_y + temp_game_manager.camera_height + 150, false);
 
 // Reset Color
 draw_set_color(c_white);
