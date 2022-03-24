@@ -268,3 +268,14 @@ global.item_data[21, itemstats.height_space] = 1;
 global.item_data[21, itemstats.stack_limit] = 6;
 global.item_data[21, itemstats.type] = itemtypes.ammo;
 global.item_data[21, itemstats.type_index] = 0;
+
+// Nathan's Root Beer
+global.item_data[22, itemstats.name] = "Nathan's Root Beer";
+global.item_data[22, itemstats.description] = "Nathan's description text goes here";
+global.item_data[22, itemstats.sprite_index] = sItems1x2;
+global.item_data[22, itemstats.image_index] = 0;
+global.item_data[22, itemstats.width_space] = 1;
+global.item_data[22, itemstats.height_space] = 2;
+global.item_data[22, itemstats.stack_limit] = 1;
+global.item_data[22, itemstats.type] = itemtypes.consumable;
+global.item_data[22, itemstats.type_index] = 0;

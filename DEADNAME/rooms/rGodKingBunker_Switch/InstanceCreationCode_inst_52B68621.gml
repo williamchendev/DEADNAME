@@ -21,4 +21,4 @@ background_scroll_spd[4] = 0;
 
 background_y = -20;
 
-background_darken_value = 0.7;
+background_darken_value = 0.6;

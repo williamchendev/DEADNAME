@@ -2,7 +2,7 @@
 // Creates the variables and settings of the Title
 
 // Settings
-title_text = "CHAPTER 1 FUCK YOU";
+title_text = "CHAPTER 1: NECROPOLITICS";
 
 title_font = fNoirtheticCabrideRegular;
 title_color = c_white;

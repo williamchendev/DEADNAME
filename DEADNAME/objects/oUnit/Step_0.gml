@@ -26,6 +26,7 @@ if (canmove) {
 	}
 	else {
 		x_velocity = 0;
+		x = round(x);
 	}
 	
 	// Vertical Movement (Jumping)

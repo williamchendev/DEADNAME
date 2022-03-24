@@ -1,5 +1,13 @@
 // Cutscene File
 
-Borefish
+unit1 = find("unit", "npc1")
+unit2 = find("unit", "npc2")
 
-borefish
+interrupt(unit1, unit2)
+
+unit1 : A whole career built off immeasurable human suffering.
+wait()
+unit1 : I'm just some deputized bandit.
+wait()
+unit2 : At least you're not broke.
+wait()
