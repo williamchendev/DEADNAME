@@ -7143,6 +7143,14 @@
             }
         },
         {
+            "Key": "db72722f-ab62-45a3-9520-1edbe051afdb",
+            "Value": {
+                "id": "2fffb26f-8cc6-4b1b-b876-af33aa6c1f59",
+                "resourcePath": "sprites\\sWilliam_Director_Arms\\sWilliam_Director_Arms.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "db938c39-6ee4-4916-9022-9c2ad9422663",
             "Value": {
                 "id": "3fc36a37-7aaf-4165-a653-7110d787f355",
@@ -7388,6 +7396,14 @@
                 "id": "b3d1ce1f-a384-472b-a5ed-13c4e0535638",
                 "resourcePath": "views\\e49abfbf-fbdd-48bb-88a5-9183f9d76b0c.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e4cfc06e-5790-419f-a994-c0e5cfa0676e",
+            "Value": {
+                "id": "3598e2ad-8ac3-4b07-a373-bd101bc5fb77",
+                "resourcePath": "sprites\\sWilliam_Director_Run\\sWilliam_Director_Run.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -7719,11 +7735,27 @@
             }
         },
         {
+            "Key": "ec071c85-3e76-4f8a-88d8-43ce8d3738db",
+            "Value": {
+                "id": "90ee8149-49c4-46ce-9b68-b3a25fbf5b1f",
+                "resourcePath": "objects\\oUnit_William_NorthernBrigade_Test1\\oUnit_William_NorthernBrigade_Test1.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "eca1f0f5-947c-4d1f-a3e6-f74df638533d",
             "Value": {
                 "id": "e8bffca1-aa6d-405a-9468-168f62792ad7",
                 "resourcePath": "scripts\\init_item_data\\init_item_data.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "eca8ec87-2ff4-43a1-b1ac-33a4c7c9ce93",
+            "Value": {
+                "id": "f876aaa2-9ad2-4569-91fa-b1973a5b2917",
+                "resourcePath": "views\\eca8ec87-2ff4-43a1-b1ac-33a4c7c9ce93.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
