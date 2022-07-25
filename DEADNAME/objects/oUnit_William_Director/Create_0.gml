@@ -32,11 +32,11 @@ max_health_points = 12;
 can_die = false;
 
 // Animation Settings
-idle_animation = sWilliam_Knives_Idle;
+idle_animation = sWilliam_Director_Idle_Debug;
 walk_animation = sWilliam_Director_Run;
-jump_animation = sWilliam_Knives_Jump;
-aim_animation = sWilliam_Knives_Aim;
-aim_walk_animation = sWilliam_Knives_AimWalk;
+jump_animation = sWilliam_Director_Jump;
+aim_animation = sWilliam_Director_Aim;
+aim_walk_animation = sWilliam_Director_AimWalk;
 
 idle_normals = sWilliam_Knives_Idle_NormalMap;
 walk_normals = sWilliam_Knives_Run_NormalMap;
@@ -104,26 +104,26 @@ squad_key_fire_press = false;
 squad_key_aim_press = false;
 
 // Weapon Settings
-weapon_hip_x = -1;
+weapon_hip_x = -2;
 weapon_hip_y = -30;
 
 weapon_aim_x = 5;
-weapon_aim_y = -38;
+weapon_aim_y = -41;
 
-inventory_x = -5;
-inventory_y = -21;
+inventory_x = -3;
+inventory_y = -28;
 
 weapon_holster_ambient_move_size = 2;
 
 // Limb Settings
 limbs = 2;
 
-limb_x[0] = -4;
-limb_y[0] = -38;
+limb_x[0] = -5;
+limb_y[0] = -37;
 limb_angle[0] = -5;
 
-limb_x[1] = 5;
-limb_y[1] = -38;
+limb_x[1] = 4;
+limb_y[1] = -35;
 limb_angle[1] = 18;
 
 limb_ambient_idle_rotate_radius = 1;
@@ -135,7 +135,7 @@ limb_ambient_move_angle_offset = -14;
 limb_ambient_move_length_offset = 0.4;
 
 limb_aim_move_offset_x = 0;
-limb_aim_offset_y = -1;
+limb_aim_offset_y = 0;
 
 limb_sprite[0] = sWilliam_Director_Arms;  // Right Arm
 limb_sprite[1] = sWilliam_Director_Arms;  // Left Arm

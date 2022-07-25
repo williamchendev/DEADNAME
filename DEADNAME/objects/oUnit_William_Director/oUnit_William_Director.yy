@@ -2,7 +2,7 @@
     "id": "ec071c85-3e76-4f8a-88d8-43ce8d3738db",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "oUnit_William_NorthernBrigade_Test1",
+    "name": "oUnit_William_Director",
     "eventList": [
         {
             "id": "9c6190fb-773c-48da-b85c-421a41b26655",
@@ -45,6 +45,6 @@
     "physicsStartAwake": true,
     "properties": null,
     "solid": false,
-    "spriteId": "d48cfd1f-2031-4a10-b0a2-7d82f42c11d0",
+    "spriteId": "7322ec63-095b-46c1-934f-a2565c7d0a41",
     "visible": true
 }

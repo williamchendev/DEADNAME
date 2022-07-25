@@ -33,7 +33,7 @@ can_die = false;
 
 // Animation Settings
 idle_animation = sWilliam_Knives_Idle;
-walk_animation = sWilliam_Director_Run;
+walk_animation = sWilliam_Knives_Run;
 jump_animation = sWilliam_Knives_Jump;
 aim_animation = sWilliam_Knives_Aim;
 aim_walk_animation = sWilliam_Knives_AimWalk;

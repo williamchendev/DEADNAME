@@ -3823,6 +3823,14 @@
             }
         },
         {
+            "Key": "7322ec63-095b-46c1-934f-a2565c7d0a41",
+            "Value": {
+                "id": "3f98d2d1-378a-4c6a-a70b-7fcc2a85e02a",
+                "resourcePath": "sprites\\sWilliam_Director_Idle_Debug\\sWilliam_Director_Idle_Debug.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "7337ed7d-ba28-48bf-856a-f847c9002073",
             "Value": {
                 "id": "36784a4b-b8fb-4146-8c65-e21df6daf58e",
@@ -7159,6 +7167,14 @@
             }
         },
         {
+            "Key": "dbdd1a0f-f70b-4ce8-b36d-bc2618f0ce10",
+            "Value": {
+                "id": "42d5da9f-03f5-41d2-921a-e040516d4b1b",
+                "resourcePath": "sprites\\sWilliam_Director_Aim\\sWilliam_Director_Aim.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "dc250155-84e6-4f11-b99a-cd60167347dc",
             "Value": {
                 "id": "8492fc9f-f674-4ac6-a2ea-871450d137dc",
@@ -7292,6 +7308,14 @@
                 "id": "3df36b64-95ed-46c5-988c-568d12362aa3",
                 "resourcePath": "views\\e00cf9b9-8921-4f18-bebb-7d843cb17763.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e0916bca-ea0a-4009-bfd4-99a0fa791262",
+            "Value": {
+                "id": "6ff73af0-25ac-44c0-ab3c-52d3f421f220",
+                "resourcePath": "sprites\\sWilliam_Director_Jump\\sWilliam_Director_Jump.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -7738,7 +7762,7 @@
             "Key": "ec071c85-3e76-4f8a-88d8-43ce8d3738db",
             "Value": {
                 "id": "90ee8149-49c4-46ce-9b68-b3a25fbf5b1f",
-                "resourcePath": "objects\\oUnit_William_NorthernBrigade_Test1\\oUnit_William_NorthernBrigade_Test1.yy",
+                "resourcePath": "objects\\oUnit_William_Director\\oUnit_William_Director.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -7987,6 +8011,14 @@
             "Value": {
                 "id": "2bb0de06-ff67-4a4f-b15b-e8ca6148dc8b",
                 "resourcePath": "sprites\\sCornfields_WelcomeSign\\sCornfields_WelcomeSign.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f3304fc3-47cc-47b8-9942-4a07c9626d22",
+            "Value": {
+                "id": "d6f04f0b-adec-4375-a5f3-b53b34ccfa07",
+                "resourcePath": "sprites\\sWilliam_Director_AimWalk\\sWilliam_Director_AimWalk.yy",
                 "resourceType": "GMSprite"
             }
         },
