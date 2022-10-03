@@ -967,6 +967,14 @@
             }
         },
         {
+            "Key": "2002362b-91e8-4264-856e-343f1f592153",
+            "Value": {
+                "id": "c9cdfed9-cf9f-48fc-96d2-0ecf881adfe7",
+                "resourcePath": "sprites\\sWilliam_Director_Jump_NormalMap\\sWilliam_Director_Jump_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "200ab8fa-43c2-4fee-a213-d18b1fcfad13",
             "Value": {
                 "id": "c424c34e-878f-4ac6-8492-53082cf39bca",
@@ -1956,6 +1964,14 @@
                 "id": "744dadc8-6d9d-40f9-a46d-a7a9f251e122",
                 "resourcePath": "scripts\\point_check_closest_position_line\\point_check_closest_position_line.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "3c87b23f-d9f7-43bf-a238-055b530236d3",
+            "Value": {
+                "id": "d35c0bee-1f40-42e3-9adb-09a8ad25597b",
+                "resourcePath": "views\\3c87b23f-d9f7-43bf-a238-055b530236d3.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -3143,6 +3159,14 @@
             }
         },
         {
+            "Key": "5f46edff-85b2-4f3a-aaac-1516f87314fe",
+            "Value": {
+                "id": "a8201cbe-593f-4a82-92f9-5193e1c1f87b",
+                "resourcePath": "sprites\\sWilliam_Director_Run_NormalMap\\sWilliam_Director_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "5f84e8ff-771a-426c-bbce-f20958995272",
             "Value": {
                 "id": "89923462-453b-4978-9f91-41d95439a9f0",
@@ -3819,14 +3843,6 @@
             "Value": {
                 "id": "6a23a041-e1da-43a1-9d06-5e288508d72a",
                 "resourcePath": "sprites\\sDebugPathfinding\\sDebugPathfinding.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "7322ec63-095b-46c1-934f-a2565c7d0a41",
-            "Value": {
-                "id": "3f98d2d1-378a-4c6a-a70b-7fcc2a85e02a",
-                "resourcePath": "sprites\\sWilliam_Director_Idle_Debug\\sWilliam_Director_Idle_Debug.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -4743,6 +4759,14 @@
             }
         },
         {
+            "Key": "9196332a-4e59-42dc-b246-f42a94679450",
+            "Value": {
+                "id": "0107c635-1499-4b72-94f9-5d930bbfc244",
+                "resourcePath": "views\\9196332a-4e59-42dc-b246-f42a94679450.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
             "Value": {
                 "id": "dc98625f-5df8-4454-a8eb-4de938074a16",
@@ -5412,6 +5436,14 @@
                 "id": "06ddf642-d6a8-4c1c-aeae-26bc38f907bb",
                 "resourcePath": "objects\\oGodKingBunker_FrontPost_ControlPanel_Light\\oGodKingBunker_FrontPost_ControlPanel_Light.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "aaf80a91-1a43-483c-8ae7-fca0d54258a3",
+            "Value": {
+                "id": "c2250866-96bb-47e2-98ba-2a70625dda7e",
+                "resourcePath": "datafiles_yy\\Data\\CuffingSeason.txt.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -6119,6 +6151,14 @@
             }
         },
         {
+            "Key": "bd70ea54-7628-42dd-9051-b396d1d5db0f",
+            "Value": {
+                "id": "9ba193a0-0ba5-420f-8feb-64dc48d24a35",
+                "resourcePath": "sprites\\sWilliam_Director_Idle\\sWilliam_Director_Idle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "bd73bdbc-8601-4606-a75e-0679ed3e67c7",
             "Value": {
                 "id": "9696ca8e-4e2e-4ff0-b007-90f9b5caa359",
@@ -6703,6 +6743,14 @@
             }
         },
         {
+            "Key": "cc77f7bc-1363-4a49-93cf-5115b9f6ef49",
+            "Value": {
+                "id": "6544ef6c-67b3-41da-aa85-ff14d2011640",
+                "resourcePath": "sprites\\sWilliam_Director_Arms_NormalMap\\sWilliam_Director_Arms_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "cc7f64aa-7803-4e13-a156-f9162042af79",
             "Value": {
                 "id": "41d7fb83-4646-4c40-9a27-1f2fa63799bc",
@@ -6852,6 +6900,14 @@
                 "id": "6ddaf064-2e50-406b-ab98-d316c5eb1c5d",
                 "resourcePath": "views\\d1bcdf4b-ffb6-49ed-a86b-3beb586095b7.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "d1c70a9c-6a7c-4747-b8c6-ba5cc11c6017",
+            "Value": {
+                "id": "13c016bf-6ff7-4517-87a2-1d8c00a0cbb7",
+                "resourcePath": "sprites\\sWilliam_Director_Aim_NormalMap\\sWilliam_Director_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -8271,6 +8327,14 @@
             }
         },
         {
+            "Key": "fb0bc113-89aa-4845-bee4-76fd616ca179",
+            "Value": {
+                "id": "66c54345-cdcc-4282-ba32-67677a7e0bfc",
+                "resourcePath": "sprites\\sWilliam_Director_AimWalk_NormalMap\\sWilliam_Director_AimWalk_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "fb61676d-4152-412e-8344-84547207f229",
             "Value": {
                 "id": "eff98084-9e6b-468b-9ec2-7c71efa8ac29",
@@ -8372,6 +8436,14 @@
                 "id": "3d3860ee-91e9-450a-af73-a58a4ea676fb",
                 "resourcePath": "views\\fee189c1-e135-428b-b45b-ca49b42b2376.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "ff35e0c2-02c5-4dc6-81b4-8a0eb02598f9",
+            "Value": {
+                "id": "5abce68d-4a35-4def-a8c4-8034bf7c41fd",
+                "resourcePath": "sprites\\sWilliam_Director_Idle_NormalMap\\sWilliam_Director_Idle_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {

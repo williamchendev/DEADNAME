@@ -32,17 +32,17 @@ max_health_points = 12;
 can_die = false;
 
 // Animation Settings
-idle_animation = sWilliam_Director_Idle_Debug;
+idle_animation = sWilliam_Director_Idle;
 walk_animation = sWilliam_Director_Run;
 jump_animation = sWilliam_Director_Jump;
 aim_animation = sWilliam_Director_Aim;
 aim_walk_animation = sWilliam_Director_AimWalk;
 
-idle_normals = sWilliam_Knives_Idle_NormalMap;
-walk_normals = sWilliam_Knives_Run_NormalMap;
-jump_normals = sWilliam_Knives_Jump_NormalMap;
-aim_normals = sWilliam_Knives_Aim_NormalMap;
-aim_walk_normals = sWilliam_Knives_AimWalk_NormalMap;
+idle_normals = sWilliam_Director_Idle_NormalMap;
+walk_normals = sWilliam_Director_Run_NormalMap;
+jump_normals = sWilliam_Director_Jump_NormalMap;
+aim_normals = sWilliam_Director_Aim_NormalMap;
+aim_walk_normals = sWilliam_Director_AimWalk_NormalMap;
 
 animation_spd = 0.18;
 action_spd = 0.18;
@@ -124,10 +124,10 @@ limb_angle[0] = -5;
 
 limb_x[1] = 4;
 limb_y[1] = -35;
-limb_angle[1] = 18;
+limb_angle[1] = 15;
 
 limb_ambient_idle_rotate_radius = 1;
-limb_ambient_idle_length_offset = 0.1;
+limb_ambient_idle_length_offset = 0.15;
 
 limb_ambient_move_width = 5;
 limb_ambient_move_height = 7;
