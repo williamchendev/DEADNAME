@@ -2399,6 +2399,14 @@
             }
         },
         {
+            "Key": "4795e948-cbd8-4a07-9d4f-6d0f1263c8dc",
+            "Value": {
+                "id": "829c5642-5f5e-408e-9e30-a93f488f1155",
+                "resourcePath": "sprites\\sWilliam_CatLoyalist_Run\\sWilliam_CatLoyalist_Run.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "479d4b16-d8d9-413b-a0ca-b10a5c2c1b3a",
             "Value": {
                 "id": "43242062-f35c-4186-a50b-cf5bb3a128d8",
@@ -4076,6 +4084,14 @@
                 "id": "e6a4d458-1b4a-4fff-b9ee-2553fa5cf79b",
                 "resourcePath": "sprites\\sCornfields_WoodSupport\\sCornfields_WoodSupport.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "7a2cd04f-7de8-4294-9ea1-e2afa56a5071",
+            "Value": {
+                "id": "2586bff4-0791-4ccf-b24a-4b1eec2f0e60",
+                "resourcePath": "views\\7a2cd04f-7de8-4294-9ea1-e2afa56a5071.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -6587,6 +6603,14 @@
             "Value": {
                 "id": "399e538e-04d2-40e7-959e-18457c038b10",
                 "resourcePath": "sprites\\sOptionsIconTitle\\sOptionsIconTitle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c7529d62-e36b-4524-8e83-7737722d988e",
+            "Value": {
+                "id": "f70d944d-61d7-4955-9d56-97d616478074",
+                "resourcePath": "sprites\\sWilliam_CatLoyalist_Run_NormalMap\\sWilliam_CatLoyalist_Run_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },

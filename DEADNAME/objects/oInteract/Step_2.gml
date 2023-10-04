@@ -13,24 +13,26 @@ if (interact_destroy) {
 
 // Mirror Interact Object Properties
 if (interact_mirror_select_obj) {
-	sprite_index = interact_obj.sprite_index;
-	image_index = interact_obj.image_index;
-	image_xscale = interact_obj.image_xscale * interact_image_xscale;
-	image_yscale = interact_obj.image_yscale * interact_image_yscale;
-	image_angle = interact_obj.image_angle;
+	if (instance_exists(interact_obj)) {
+		sprite_index = interact_obj.sprite_index;
+		image_index = interact_obj.image_index;
+		image_xscale = interact_obj.image_xscale * interact_image_xscale;
+		image_yscale = interact_obj.image_yscale * interact_image_yscale;
+		image_angle = interact_obj.image_angle;
 
-	var temp_xscale_offset = sprite_get_xoffset(sprite_index) / sprite_get_width(sprite_index);
-	var temp_yscale_offset = sprite_get_yoffset(sprite_index) / sprite_get_height(sprite_index);
-	temp_xscale_offset = ((temp_xscale_offset - 0.5) * 2.0) * ((sprite_get_width(sprite_index) * 0.5) * (image_xscale - interact_obj.image_xscale));
-	temp_yscale_offset = ((temp_yscale_offset - 0.5) * 2.0) * ((sprite_get_height(sprite_index) * 0.5) * (image_yscale - interact_obj.image_yscale));
+		var temp_xscale_offset = sprite_get_xoffset(sprite_index) / sprite_get_width(sprite_index);
+		var temp_yscale_offset = sprite_get_yoffset(sprite_index) / sprite_get_height(sprite_index);
+		temp_xscale_offset = ((temp_xscale_offset - 0.5) * 2.0) * ((sprite_get_width(sprite_index) * 0.5) * (image_xscale - interact_obj.image_xscale));
+		temp_yscale_offset = ((temp_yscale_offset - 0.5) * 2.0) * ((sprite_get_height(sprite_index) * 0.5) * (image_yscale - interact_obj.image_yscale));
 
-	if (interact_obj.phy_active) {
-		x = interact_obj.phy_position_x + temp_xscale_offset;
-		y = interact_obj.phy_position_y + temp_yscale_offset;
-	}
-	else {
-		x = interact_obj.x + temp_xscale_offset;
-		y = interact_obj.y + temp_yscale_offset;
+		if (interact_obj.phy_active) {
+			x = interact_obj.phy_position_x + temp_xscale_offset;
+			y = interact_obj.phy_position_y + temp_yscale_offset;
+		}
+		else {
+			x = interact_obj.x + temp_xscale_offset;
+			y = interact_obj.y + temp_yscale_offset;
+		}
 	}
 }
 
