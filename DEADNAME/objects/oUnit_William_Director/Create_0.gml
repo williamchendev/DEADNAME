@@ -140,8 +140,8 @@ limb_aim_offset_y = 0;
 limb_sprite[0] = sWilliam_Director_Arms;  // Right Arm
 limb_sprite[1] = sWilliam_Director_Arms;  // Left Arm
 
-limb_normal_sprite[0] = sWilliam_Knives_Arms_NormalMap;  // Right Arm
-limb_normal_sprite[1] = sWilliam_Knives_Arms_NormalMap;  // Left Arm
+limb_normal_sprite[0] = sWilliam_Director_Arms_NormalMap;  // Right Arm
+limb_normal_sprite[1] = sWilliam_Director_Arms_NormalMap;  // Left Arm
 
 // Inventory Settings
 add_item_inventory(inventory, 5);

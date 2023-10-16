@@ -335,6 +335,14 @@
             }
         },
         {
+            "Key": "08c0d0a3-da3a-4b56-9e32-540cc6c25712",
+            "Value": {
+                "id": "c27eb8ec-57d4-4272-9816-18f3efb88b3b",
+                "resourcePath": "views\\08c0d0a3-da3a-4b56-9e32-540cc6c25712.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "0a127397-de93-4a2f-bbc5-091a92f1cc3d",
             "Value": {
                 "id": "01fa8430-4955-41cc-993d-ff26024a3a0b",
@@ -915,6 +923,14 @@
             "Value": {
                 "id": "92276e96-4181-4c0f-9338-2d4e2283a4b3",
                 "resourcePath": "sprites\\sDebugEnemy_Aim_Walk\\sDebugEnemy_Aim_Walk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "1dd501e2-99c3-46f0-ac3b-7f23dc8be98a",
+            "Value": {
+                "id": "e65c766e-d70a-4813-a24b-e3439895b27f",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Arms_NormalMap\\sWilliam_CapitalLoyalist_Arms_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -1556,6 +1572,14 @@
                 "id": "4d44745f-a4c1-4d44-8237-8c3975345121",
                 "resourcePath": "sprites\\sWilliam_Arms\\sWilliam_Arms.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "3191b447-4a29-4d6d-a1a3-6c467e78fd93",
+            "Value": {
+                "id": "7f44bf70-6fa1-4a64-aca6-5190ae775f71",
+                "resourcePath": "views\\3191b447-4a29-4d6d-a1a3-6c467e78fd93.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -2402,7 +2426,7 @@
             "Key": "4795e948-cbd8-4a07-9d4f-6d0f1263c8dc",
             "Value": {
                 "id": "829c5642-5f5e-408e-9e30-a93f488f1155",
-                "resourcePath": "sprites\\sWilliam_CatLoyalist_Run\\sWilliam_CatLoyalist_Run.yy",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Run\\sWilliam_CapitalLoyalist_Run.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -2915,6 +2939,14 @@
             "Value": {
                 "id": "43e44245-e30b-4379-9d5d-7c32d2c233d2",
                 "resourcePath": "sprites\\sMatDmg_Small_2\\sMatDmg_Small_2.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "574f9199-081f-4523-8241-09067b9223c6",
+            "Value": {
+                "id": "20e67b8a-291b-4243-8593-978b2b68222f",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Idle_NormalMap\\sWilliam_CapitalLoyalist_Idle_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -3559,6 +3591,14 @@
             }
         },
         {
+            "Key": "6a78251f-75ba-4a8d-afe3-c8035d9f018b",
+            "Value": {
+                "id": "35ccd1d3-33c7-4041-9d55-e3c79dfd4255",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Idle\\sWilliam_CapitalLoyalist_Idle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "6a8be42f-cff2-429e-8581-d522b4c10e1b",
             "Value": {
                 "id": "ccba6738-91f6-4b5d-a849-c54fb58fe854",
@@ -3772,6 +3812,14 @@
                 "id": "c4396fed-a69e-48d8-a9c2-f24a088c7369",
                 "resourcePath": "objects\\oAdobeHouse_BrownDesertRockB\\oAdobeHouse_BrownDesertRockB.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "6fc9c1d6-cec4-42e4-b744-2c0d0a7e91bd",
+            "Value": {
+                "id": "d33488fa-872c-423f-8e15-2e88e2bbbe5a",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Aim_NormalMap\\sWilliam_CapitalLoyalist_Aim_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -4348,6 +4396,14 @@
                 "id": "f352fa14-2cb9-4329-b30e-175c2a07ed89",
                 "resourcePath": "shaders\\shd_subtract_alpha\\shd_subtract_alpha.yy",
                 "resourceType": "GMShader"
+            }
+        },
+        {
+            "Key": "8427047f-9ef8-4c77-89f3-9c20623d07b6",
+            "Value": {
+                "id": "07432786-d831-4189-97f1-b0c4048fae4f",
+                "resourcePath": "options\\ios\\options_ios.yy",
+                "resourceType": "GMiOSOptions"
             }
         },
         {
@@ -5271,6 +5327,14 @@
             }
         },
         {
+            "Key": "a517ba04-e558-4db8-a6d4-f92b42760ba6",
+            "Value": {
+                "id": "f9f31e31-6b7f-4a6b-9ed7-bac6ca71e315",
+                "resourcePath": "objects\\oUnit_William_CapitalLoyalist\\oUnit_William_CapitalLoyalist.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a56230aa-26e1-4b4c-899e-968d6f80fab9",
             "Value": {
                 "id": "ca91d023-730b-4e8a-9fe3-a915d640eba0",
@@ -5395,6 +5459,14 @@
             "Value": {
                 "id": "410055f0-9e29-425c-9f70-aa2193632ab9",
                 "resourcePath": "sprites\\sGodKingBunker_SnowForeground\\sGodKingBunker_SnowForeground.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "a8ec5d53-451d-4366-bc36-17730bcb04ec",
+            "Value": {
+                "id": "3751d9a0-d681-4a7c-801d-dbd4a644406c",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Jump_NormalMap\\sWilliam_CapitalLoyalist_Jump_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -5700,6 +5772,14 @@
                 "id": "c7684f5d-486b-49ce-a0d5-471d0b6f4a62",
                 "resourcePath": "views\\afed7eaa-abc0-4409-a261-0d988db35e42.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "b0076141-d4d2-4712-902b-63fe01058c95",
+            "Value": {
+                "id": "3648e221-efe6-49bf-beee-1ef2d126fa89",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Arms\\sWilliam_CapitalLoyalist_Arms.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6610,7 +6690,7 @@
             "Key": "c7529d62-e36b-4524-8e83-7737722d988e",
             "Value": {
                 "id": "f70d944d-61d7-4955-9d56-97d616478074",
-                "resourcePath": "sprites\\sWilliam_CatLoyalist_Run_NormalMap\\sWilliam_CatLoyalist_Run_NormalMap.yy",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Run_NormalMap\\sWilliam_CapitalLoyalist_Run_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -7487,6 +7567,14 @@
             }
         },
         {
+            "Key": "e42bf5cc-3f46-4d67-a6d0-a4885a11ac3f",
+            "Value": {
+                "id": "910f7c32-13b5-4e70-b8c8-ead6aef6a7ee",
+                "resourcePath": "options\\android\\options_android.yy",
+                "resourceType": "GMAndroidOptions"
+            }
+        },
+        {
             "Key": "e47f68f0-967f-4b22-8d9b-de0a807e0d60",
             "Value": {
                 "id": "dbddc405-4603-4cc0-9fb5-238439279a91",
@@ -7795,6 +7883,14 @@
             "Value": {
                 "id": "21f28467-b6c6-4764-98e6-9eb036680e06",
                 "resourcePath": "sprites\\sWilliam_HorizonBlue_MaskHat_Run_NormalMap\\sWilliam_HorizonBlue_MaskHat_Run_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "eb25435f-f298-4480-9568-56d9281d0c25",
+            "Value": {
+                "id": "22403a44-8282-4c58-a980-207bc12ffe26",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Jump\\sWilliam_CapitalLoyalist_Jump.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -8140,6 +8236,14 @@
                 "id": "e6d623d5-64dc-473b-ad14-c05a9e8eb885",
                 "resourcePath": "scripts\\tileset_change\\tileset_change.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "f4689e81-fc96-4ceb-b9d2-b62f0e5ad7ce",
+            "Value": {
+                "id": "aec716d9-16bf-4763-b893-07c39d2b5bee",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Aim\\sWilliam_CapitalLoyalist_Aim.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
