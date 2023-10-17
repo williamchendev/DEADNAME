@@ -36,13 +36,13 @@ idle_animation = sWilliam_CapitalLoyalist_Idle;
 walk_animation = sWilliam_CapitalLoyalist_Run;
 jump_animation = sWilliam_CapitalLoyalist_Jump;
 aim_animation = sWilliam_CapitalLoyalist_Aim;
-aim_walk_animation = sWilliam_Director_AimWalk;
+aim_walk_animation = sWilliam_CapitalLoyalist_AimWalk;
 
 idle_normals = sWilliam_CapitalLoyalist_Idle_NormalMap;
 walk_normals = sWilliam_CapitalLoyalist_Run_NormalMap;
 jump_normals = sWilliam_CapitalLoyalist_Jump_NormalMap;
 aim_normals = sWilliam_CapitalLoyalist_Aim_NormalMap;
-aim_walk_normals = sWilliam_Director_AimWalk_NormalMap;
+aim_walk_normals = sWilliam_CapitalLoyalist_AimWalk_NormalMap;
 
 animation_spd = 0.18;
 action_spd = 0.18;
@@ -129,8 +129,8 @@ limb_angle[1] = 25;
 limb_ambient_idle_rotate_radius = 1;
 limb_ambient_idle_length_offset = 0.15;
 
-limb_ambient_move_width = 2;
-limb_ambient_move_height = 1;
+limb_ambient_move_width = 3;
+limb_ambient_move_height = 2;
 limb_ambient_move_angle_offset = -6;
 limb_ambient_move_length_offset = 0.1;
 

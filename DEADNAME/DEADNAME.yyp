@@ -3423,6 +3423,14 @@
             }
         },
         {
+            "Key": "65d2296f-0cb5-4e56-99a3-14119942ed67",
+            "Value": {
+                "id": "a209afc7-11e5-4ffa-af66-f2af8daf4589",
+                "resourcePath": "objects\\oUnitAlliedSquad\\oUnitAlliedSquad.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "65f0c2e4-dbf5-43a1-9e81-59b2ae0d5924",
             "Value": {
                 "id": "549399dd-02f8-4b19-9556-fdb777eaba74",
@@ -7063,6 +7071,14 @@
             }
         },
         {
+            "Key": "d3de2722-7f14-4816-b136-0912f29d5851",
+            "Value": {
+                "id": "0cfe3914-b226-480b-9056-54bae9f5ad07",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_AimWalk\\sWilliam_CapitalLoyalist_AimWalk.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "d4121c29-e5dd-4f33-b349-a3be7e4c13d3",
             "Value": {
                 "id": "d7ebd70c-2ce1-486d-a42f-a55a8b15b8fb",
@@ -7475,6 +7491,14 @@
             "Value": {
                 "id": "6ff73af0-25ac-44c0-ab3c-52d3f421f220",
                 "resourcePath": "sprites\\sWilliam_Director_Jump\\sWilliam_Director_Jump.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "e0cf7af7-8291-42ae-8379-d386c75ae978",
+            "Value": {
+                "id": "1ec79066-209d-4490-bf67-25c17f35cb83",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_AimWalk_NormalMap\\sWilliam_CapitalLoyalist_AimWalk_NormalMap.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -8500,6 +8524,14 @@
                 "id": "ecea2f16-2e80-438d-9d57-07c921b5d6a5",
                 "resourcePath": "views\\fceea86c-5d47-4951-a3d4-a7dddaf0157e.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "fd69b670-2c70-4b01-9a0d-e4c1f98c1542",
+            "Value": {
+                "id": "b075615d-e3a9-4490-a888-ad1ae17687d6",
+                "resourcePath": "objects\\oUnitSquad_CapitalLoyalist\\oUnitSquad_CapitalLoyalist.yy",
+                "resourceType": "GMObject"
             }
         },
         {
