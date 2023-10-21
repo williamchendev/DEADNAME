@@ -56,20 +56,22 @@ knockout = false;
 
 // Ragdoll Settings
 ragdoll = true;
-ragdoll_head_sprite = sWilliam_Knives_Head;
-ragdoll_arm_left_sprite = sWilliam_Knives_Arms;
-ragdoll_arm_right_sprite = sWilliam_Knives_Arms;
-ragdoll_chest_top_sprite = sWilliam_Knives_ChestTop;
-ragdoll_chest_bot_sprite = sWilliam_Knives_ChestBot;
-ragdoll_leg_left_sprite = sWilliam_Knives_LeftLeg;
-ragdoll_leg_right_sprite = sWilliam_Knives_RightLeg;
-ragdoll_head_normalmap = sWilliam_Knives_Head_NormalMap;
-ragdoll_arm_left_normalmap = sWilliam_Knives_Arms_NormalMap;
-ragdoll_arm_right_normalmap = sWilliam_Knives_Arms_NormalMap;
-ragdoll_chest_top_normalmap = sWilliam_Knives_ChestTop_NormalMap;
-ragdoll_chest_bot_normalmap = sWilliam_Knives_ChestBot_NormalMap;
-ragdoll_leg_left_normalmap = sWilliam_Knives_LeftLeg_NormalMap;
-ragdoll_leg_right_normalmap = sWilliam_Knives_RightLeg_NormalMap;
+ragdoll_head_sprite = sWilliam_CapitalLoyalist_Head;
+ragdoll_arm_left_sprite = sWilliam_CapitalLoyalist_Arms;
+ragdoll_arm_right_sprite = sWilliam_CapitalLoyalist_Arms;
+ragdoll_chest_top_sprite = sWilliam_CapitalLoyalist_ChestTop;
+ragdoll_chest_bot_sprite = sWilliam_CapitalLoyalist_ChestBot;
+ragdoll_leg_left_sprite = sWilliam_CapitalLoyalist_LeftLeg;
+ragdoll_leg_right_sprite = sWilliam_CapitalLoyalist_RightLeg;
+ragdoll_head_normalmap = sWilliam_CapitalLoyalist_Head_NormalMap;
+ragdoll_arm_left_normalmap = sWilliam_CapitalLoyalist_Arms_NormalMap;
+ragdoll_arm_right_normalmap = sWilliam_CapitalLoyalist_Arms_NormalMap;
+ragdoll_chest_top_normalmap = sWilliam_CapitalLoyalist_ChestTop_NormalMap;
+ragdoll_chest_bot_normalmap = sWilliam_CapitalLoyalist_ChestBot_NormalMap;
+ragdoll_leg_left_normalmap = sWilliam_CapitalLoyalist_LeftLeg_NormalMap;
+ragdoll_leg_right_normalmap = sWilliam_CapitalLoyalist_RightLeg_NormalMap;
+
+ragdoll_leg_offset = 4;
 
 // Sight Settings
 sight = true;

@@ -39,6 +39,14 @@
             }
         },
         {
+            "Key": "003db23f-7bde-4a2a-8e2b-15b016a1753a",
+            "Value": {
+                "id": "a59ace50-8c2f-40d4-b5e7-1c10ca0b4371",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Head\\sWilliam_CapitalLoyalist_Head.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "008bfae1-30f1-453b-b93c-5349b2562df4",
             "Value": {
                 "id": "b359ec0e-1fe4-4bbb-9268-0611719d2526",
@@ -503,11 +511,27 @@
             }
         },
         {
+            "Key": "0fe3e12a-42ce-41fe-94cc-fcc073629643",
+            "Value": {
+                "id": "9475088d-7e1f-4f01-ad33-7d89fd5643d8",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_LeftLeg_NormalMap\\sWilliam_CapitalLoyalist_LeftLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "10499d62-debf-4c31-9d03-7fe943099db5",
             "Value": {
                 "id": "bfc42b67-50c9-4217-90a7-2c4b5c6febe4",
                 "resourcePath": "views\\10499d62-debf-4c31-9d03-7fe943099db5.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "10aed0e5-07b1-4beb-83b2-4ca4d61ad0b1",
+            "Value": {
+                "id": "be120b23-fc13-4a6f-88cd-6e20bec8cd96",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_ChestBot_NormalMap\\sWilliam_CapitalLoyalist_ChestBot_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -916,6 +940,14 @@
                 "id": "d7b239d8-97c6-4876-87de-40a6a25926d7",
                 "resourcePath": "objects\\oGodKingBunker_FrontPost_Table\\oGodKingBunker_FrontPost_Table.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "1d78b70c-104f-4470-a294-10c83f0fefaf",
+            "Value": {
+                "id": "95e8318a-bced-4d79-adfd-acd6d2c49648",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_ChestTop\\sWilliam_CapitalLoyalist_ChestTop.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1391,6 +1423,14 @@
             }
         },
         {
+            "Key": "2c4726d4-98d8-477f-bdc5-6b78d84d468f",
+            "Value": {
+                "id": "5b3407ba-d787-4a49-8de2-86e474618b20",
+                "resourcePath": "views\\2c4726d4-98d8-477f-bdc5-6b78d84d468f.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "2c4e986e-8a6f-4dea-9b89-7dac74d34caf",
             "Value": {
                 "id": "123828f7-2cc2-44c4-8833-d5b34dcb78db",
@@ -1492,6 +1532,14 @@
                 "id": "97e34043-eb28-4265-bc69-e923def11aa9",
                 "resourcePath": "views\\2ed9c1f4-49ab-4d1b-a1d5-d2ec4dadc1ab.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "2f2c6578-677b-4a84-97f9-d1fd4ab50923",
+            "Value": {
+                "id": "b90c995c-ac57-4cda-b02d-f205979800d4",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_RightLeg_NormalMap\\sWilliam_CapitalLoyalist_RightLeg_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2500,6 +2548,14 @@
                 "id": "f422ddcf-49d8-4ec7-b930-9d1ce26a2a3d",
                 "resourcePath": "scripts\\draw_text_outline\\draw_text_outline.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "48efeee3-c5d9-4c8d-bc44-35ad18491865",
+            "Value": {
+                "id": "44231fb8-9ec0-4583-88a4-a74fb72f90aa",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_LeftLeg\\sWilliam_CapitalLoyalist_LeftLeg.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -5279,6 +5335,14 @@
             }
         },
         {
+            "Key": "a3a1374b-0346-4646-8036-4a2a7a3d891c",
+            "Value": {
+                "id": "2198d5a7-0ebd-4c9a-8d6d-151ca77f4953",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_Head_NormalMap\\sWilliam_CapitalLoyalist_Head_NormalMap.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "a3c22c20-db56-4302-aa63-8ec136afacc1",
             "Value": {
                 "id": "1c80dbd5-1266-468b-a632-8fe5ffce69d9",
@@ -5532,6 +5596,14 @@
                 "id": "06ddf642-d6a8-4c1c-aeae-26bc38f907bb",
                 "resourcePath": "objects\\oGodKingBunker_FrontPost_ControlPanel_Light\\oGodKingBunker_FrontPost_ControlPanel_Light.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "aa740a43-bcb4-4245-954e-b9b8ab2f4222",
+            "Value": {
+                "id": "869b65a0-dc86-4e84-8dea-7acaa9b1d460",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_ChestBot\\sWilliam_CapitalLoyalist_ChestBot.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -6196,6 +6268,14 @@
                 "id": "481d4d4f-d7fa-445b-b035-bb2ac5536e2a",
                 "resourcePath": "views\\bb7323be-5dc9-4a98-a19d-5183d41dd6bb.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "bbade430-3a50-41a5-a6ea-bd7a867f3946",
+            "Value": {
+                "id": "452c26e3-a67b-409f-8796-8f10a5746c19",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_RightLeg\\sWilliam_CapitalLoyalist_RightLeg.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -7511,6 +7591,14 @@
             }
         },
         {
+            "Key": "e105f7cf-00de-4d24-be5d-b07602e887fa",
+            "Value": {
+                "id": "f2310693-02a8-4d43-a03d-c9a391c06429",
+                "resourcePath": "views\\e105f7cf-00de-4d24-be5d-b07602e887fa.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "e12fd81c-0e64-43b2-a38b-c8968bc52cbf",
             "Value": {
                 "id": "63b1533b-92ba-4f32-960d-241872d677fb",
@@ -8332,6 +8420,14 @@
                 "id": "670a013a-9706-4166-a2b9-30c74a1bce52",
                 "resourcePath": "objects\\oAdobeHouse_CactusHedgehog\\oAdobeHouse_CactusHedgehog.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "f7b00983-65cd-43af-b6dc-08de6e8e1629",
+            "Value": {
+                "id": "662d85ed-de3c-409f-be0a-9c6060b9c3c0",
+                "resourcePath": "sprites\\sWilliam_CapitalLoyalist_ChestTop_NormalMap\\sWilliam_CapitalLoyalist_ChestTop_NormalMap.yy",
+                "resourceType": "GMSprite"
             }
         },
         {

@@ -9,7 +9,7 @@
         "a8ec5d53-451d-4366-bc36-17730bcb04ec",
         "6fc9c1d6-cec4-42e4-b744-2c0d0a7e91bd",
         "e0cf7af7-8291-42ae-8379-d386c75ae978",
-        "1dd501e2-99c3-46f0-ac3b-7f23dc8be98a"
+        "e105f7cf-00de-4d24-be5d-b07602e887fa"
     ],
     "filterType": "GMSprite",
     "folderName": "Normals",
