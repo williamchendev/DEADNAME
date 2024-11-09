@@ -1,92 +1,76 @@
 {
-    "id": "47ec5430-4573-4708-88a0-4ea3c2877d57",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_NorthernBrigade_Arms_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 9,
-    "bbox_left": 0,
-    "bbox_right": 3,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "bc38dacc-9772-4b34-a713-7f739f1c2e1e",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "47ec5430-4573-4708-88a0-4ea3c2877d57",
-            "compositeImage": {
-                "id": "4af5389c-705a-4174-a908-987aeefb6623",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "bc38dacc-9772-4b34-a713-7f739f1c2e1e",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "24dad187-3453-48b8-a225-c338c064230c",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "bc38dacc-9772-4b34-a713-7f739f1c2e1e",
-                    "LayerId": "277d0b7c-f1f6-4008-bcb0-ca87a54204ef"
-                }
-            ]
-        },
-        {
-            "id": "e4f40611-da96-4d96-aad2-261fccd4fac3",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "47ec5430-4573-4708-88a0-4ea3c2877d57",
-            "compositeImage": {
-                "id": "5e722f18-9d66-4605-bda2-ae3f7474ef91",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "e4f40611-da96-4d96-aad2-261fccd4fac3",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "5123f7a5-0e40-47f8-a11e-0c8aabfe26f4",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "e4f40611-da96-4d96-aad2-261fccd4fac3",
-                    "LayerId": "277d0b7c-f1f6-4008-bcb0-ca87a54204ef"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 10,
-    "layers": [
-        {
-            "id": "277d0b7c-f1f6-4008-bcb0-ca87a54204ef",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "47ec5430-4573-4708-88a0-4ea3c2877d57",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_NorthernBrigade_Arms_NormalMap",
+  "bbox_bottom": 9,
+  "bbox_left": 0,
+  "bbox_right": 3,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"bc38dacc-9772-4b34-a713-7f739f1c2e1e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e4f40611-da96-4d96-aad2-261fccd4fac3",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 10,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"277d0b7c-f1f6-4008-bcb0-ca87a54204ef","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Bodyparts",
+    "path": "folders/Sprites/Characters/WilliamNorthernBrigade/Komissar/Normals/Bodyparts.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 4,
-    "xorig": 1,
-    "yorig": 0
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"bc38dacc-9772-4b34-a713-7f739f1c2e1e","path":"sprites/sWilliam_NorthernBrigade_Arms_NormalMap/sWilliam_NorthernBrigade_Arms_NormalMap.yy",},},},"Disabled":false,"id":"d7d6ca10-0f70-495c-8d91-559a51c0f08b","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e4f40611-da96-4d96-aad2-261fccd4fac3","path":"sprites/sWilliam_NorthernBrigade_Arms_NormalMap/sWilliam_NorthernBrigade_Arms_NormalMap.yy",},},},"Disabled":false,"id":"28f2ae1b-72a9-4b30-b6c0-3156d56fce00","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 1,
+    "yorigin": 0,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 4,
 }

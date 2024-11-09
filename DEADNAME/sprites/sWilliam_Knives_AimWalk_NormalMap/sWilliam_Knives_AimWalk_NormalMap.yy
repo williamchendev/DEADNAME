@@ -1,158 +1,82 @@
 {
-    "id": "799a6fea-334b-495b-bb69-8fb626098521",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_Knives_AimWalk_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 52,
-    "bbox_left": 19,
-    "bbox_right": 28,
-    "bbox_top": 5,
-    "bboxmode": 2,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "34015511-80d2-4725-94f5-28491f6c1de9",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "compositeImage": {
-                "id": "07b818a0-fcb1-4e12-b9d7-6158d94bba4e",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "34015511-80d2-4725-94f5-28491f6c1de9",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "98203527-0021-4eda-8dd5-6631e29bd4d3",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "34015511-80d2-4725-94f5-28491f6c1de9",
-                    "LayerId": "56971df8-c6a8-482d-b97b-c545a2a476c0"
-                }
-            ]
-        },
-        {
-            "id": "2d65d8e1-e089-4b04-99da-b4f7b4bbb72a",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "compositeImage": {
-                "id": "6ee747b3-ab32-4c27-b714-21b5eff84b78",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "2d65d8e1-e089-4b04-99da-b4f7b4bbb72a",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "d891531f-e55f-48c2-bd4a-b9127c7a5fc2",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "2d65d8e1-e089-4b04-99da-b4f7b4bbb72a",
-                    "LayerId": "56971df8-c6a8-482d-b97b-c545a2a476c0"
-                }
-            ]
-        },
-        {
-            "id": "56d7a911-c54b-4b0c-ab60-c13cf3e62509",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "compositeImage": {
-                "id": "62563e78-25ab-4781-80ce-dce8c6afbfbe",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "56d7a911-c54b-4b0c-ab60-c13cf3e62509",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "3a97fea6-7a96-495f-b1e3-88f78cd2fffd",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "56d7a911-c54b-4b0c-ab60-c13cf3e62509",
-                    "LayerId": "56971df8-c6a8-482d-b97b-c545a2a476c0"
-                }
-            ]
-        },
-        {
-            "id": "83de131b-27b9-4dcb-8fe5-591abb3beff1",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "compositeImage": {
-                "id": "4c065a2d-c465-4a7b-8d5b-81d5c14290d3",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "83de131b-27b9-4dcb-8fe5-591abb3beff1",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "51700465-213a-4342-9b6f-1a594f53e285",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "83de131b-27b9-4dcb-8fe5-591abb3beff1",
-                    "LayerId": "56971df8-c6a8-482d-b97b-c545a2a476c0"
-                }
-            ]
-        },
-        {
-            "id": "a2c75dfa-aeb9-4101-ac08-9f5757606915",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "compositeImage": {
-                "id": "e77ca496-2428-44e6-bd8a-620e26f9edb5",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "a2c75dfa-aeb9-4101-ac08-9f5757606915",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "91377bc6-2570-4c41-aaa8-e53913439f43",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "a2c75dfa-aeb9-4101-ac08-9f5757606915",
-                    "LayerId": "56971df8-c6a8-482d-b97b-c545a2a476c0"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 54,
-    "layers": [
-        {
-            "id": "56971df8-c6a8-482d-b97b-c545a2a476c0",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "799a6fea-334b-495b-bb69-8fb626098521",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_Knives_AimWalk_NormalMap",
+  "bbox_bottom": 52,
+  "bbox_left": 19,
+  "bbox_right": 28,
+  "bbox_top": 5,
+  "bboxMode": 2,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"34015511-80d2-4725-94f5-28491f6c1de9",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2d65d8e1-e089-4b04-99da-b4f7b4bbb72a",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"56d7a911-c54b-4b0c-ab60-c13cf3e62509",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"83de131b-27b9-4dcb-8fe5-591abb3beff1",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a2c75dfa-aeb9-4101-ac08-9f5757606915",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 54,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"56971df8-c6a8-482d-b97b-c545a2a476c0","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Normals",
+    "path": "folders/Sprites/Characters/WilliamKnives/Normals.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 5.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 48,
-    "xorig": 24,
-    "yorig": 53
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"34015511-80d2-4725-94f5-28491f6c1de9","path":"sprites/sWilliam_Knives_AimWalk_NormalMap/sWilliam_Knives_AimWalk_NormalMap.yy",},},},"Disabled":false,"id":"44f6a494-931d-4e4f-901c-3d1e0388eb18","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2d65d8e1-e089-4b04-99da-b4f7b4bbb72a","path":"sprites/sWilliam_Knives_AimWalk_NormalMap/sWilliam_Knives_AimWalk_NormalMap.yy",},},},"Disabled":false,"id":"af074580-ba58-4772-8d63-0a1b79c7bcd0","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"56d7a911-c54b-4b0c-ab60-c13cf3e62509","path":"sprites/sWilliam_Knives_AimWalk_NormalMap/sWilliam_Knives_AimWalk_NormalMap.yy",},},},"Disabled":false,"id":"1ec4bd5c-40c8-4ad4-a679-881017a0ffd7","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"83de131b-27b9-4dcb-8fe5-591abb3beff1","path":"sprites/sWilliam_Knives_AimWalk_NormalMap/sWilliam_Knives_AimWalk_NormalMap.yy",},},},"Disabled":false,"id":"b52b2d3c-615b-432b-ab66-637f2fcd5e8e","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a2c75dfa-aeb9-4101-ac08-9f5757606915","path":"sprites/sWilliam_Knives_AimWalk_NormalMap/sWilliam_Knives_AimWalk_NormalMap.yy",},},},"Disabled":false,"id":"ccc5baec-8736-47f6-afe9-e0583f22a433","IsCreationKey":false,"Key":4.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 24,
+    "yorigin": 53,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

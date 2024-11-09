@@ -1,114 +1,78 @@
 {
-    "id": "641fe7c4-93eb-4968-9d01-06a524cbf6b6",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sCornfields_MossGround",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 12,
-    "bbox_left": 0,
-    "bbox_right": 47,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "1eec6c85-246f-4052-b771-b911715ccf00",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "641fe7c4-93eb-4968-9d01-06a524cbf6b6",
-            "compositeImage": {
-                "id": "dcfa9e4c-6b8f-4e28-827a-8463ac211312",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "1eec6c85-246f-4052-b771-b911715ccf00",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "7d774eab-8695-4c07-b99d-6c61c6695537",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "1eec6c85-246f-4052-b771-b911715ccf00",
-                    "LayerId": "3b5bc8e4-5210-4357-b4ab-8fd6875b3b65"
-                }
-            ]
-        },
-        {
-            "id": "5080519d-aecd-4886-b676-2bc34cc55746",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "641fe7c4-93eb-4968-9d01-06a524cbf6b6",
-            "compositeImage": {
-                "id": "f7db9d50-8805-478c-a321-fc9df13adfcb",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "5080519d-aecd-4886-b676-2bc34cc55746",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "ac1e0ecd-b69b-417b-afe5-a7326ba7b6d6",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "5080519d-aecd-4886-b676-2bc34cc55746",
-                    "LayerId": "3b5bc8e4-5210-4357-b4ab-8fd6875b3b65"
-                }
-            ]
-        },
-        {
-            "id": "18092585-4e1a-4693-a8f6-f842f031e29e",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "641fe7c4-93eb-4968-9d01-06a524cbf6b6",
-            "compositeImage": {
-                "id": "73d61129-3276-4274-830e-06ec76d2eeeb",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "18092585-4e1a-4693-a8f6-f842f031e29e",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "b9911910-ff27-475c-9991-c8874024ca0c",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "18092585-4e1a-4693-a8f6-f842f031e29e",
-                    "LayerId": "3b5bc8e4-5210-4357-b4ab-8fd6875b3b65"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 20,
-    "layers": [
-        {
-            "id": "3b5bc8e4-5210-4357-b4ab-8fd6875b3b65",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "641fe7c4-93eb-4968-9d01-06a524cbf6b6",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sCornfields_MossGround",
+  "bbox_bottom": 12,
+  "bbox_left": 0,
+  "bbox_right": 47,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1eec6c85-246f-4052-b771-b911715ccf00",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"5080519d-aecd-4886-b676-2bc34cc55746",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"18092585-4e1a-4693-a8f6-f842f031e29e",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 20,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"3b5bc8e4-5210-4357-b4ab-8fd6875b3b65","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Vegetation",
+    "path": "folders/Sprites/Assets/Levels/Cornfields/Vegetation.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 3.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "1225f6b0-ac20-43bd-a82e-be73fa0b6f4f",
-    "type": 0,
-    "width": 48,
-    "xorig": 0,
-    "yorig": 1
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1eec6c85-246f-4052-b771-b911715ccf00","path":"sprites/sCornfields_MossGround/sCornfields_MossGround.yy",},},},"Disabled":false,"id":"d5284bee-2f5f-4fe4-9f5e-19491a695692","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"5080519d-aecd-4886-b676-2bc34cc55746","path":"sprites/sCornfields_MossGround/sCornfields_MossGround.yy",},},},"Disabled":false,"id":"e5db6fdb-a15f-4938-8efd-3eb1b6f41de4","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"18092585-4e1a-4693-a8f6-f842f031e29e","path":"sprites/sCornfields_MossGround/sCornfields_MossGround.yy",},},},"Disabled":false,"id":"685e84e6-171b-49b8-ae12-47d0d7447e50","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 0,
+    "yorigin": 1,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

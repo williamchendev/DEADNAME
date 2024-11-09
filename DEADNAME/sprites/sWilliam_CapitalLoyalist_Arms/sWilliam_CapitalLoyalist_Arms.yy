@@ -1,92 +1,76 @@
 {
-    "id": "b0076141-d4d2-4712-902b-63fe01058c95",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_CapitalLoyalist_Arms",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 8,
-    "bbox_left": 0,
-    "bbox_right": 3,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "e5874d5c-8061-4bb0-9bb2-796d8a5cef56",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "b0076141-d4d2-4712-902b-63fe01058c95",
-            "compositeImage": {
-                "id": "c97b486b-ae06-47a6-86ca-9f7c37197fc2",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "e5874d5c-8061-4bb0-9bb2-796d8a5cef56",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "76493a47-7fa8-4361-bf7d-3bd88610286b",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "e5874d5c-8061-4bb0-9bb2-796d8a5cef56",
-                    "LayerId": "e5a82c00-1061-4c55-b0a5-577c29fde079"
-                }
-            ]
-        },
-        {
-            "id": "6091bed8-93b3-4060-a593-908b93a85598",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "b0076141-d4d2-4712-902b-63fe01058c95",
-            "compositeImage": {
-                "id": "87cc6653-63eb-47e3-98b5-30d8c757b46a",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "6091bed8-93b3-4060-a593-908b93a85598",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "301b973d-aca9-4fb2-b581-81d4bbea24c4",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "6091bed8-93b3-4060-a593-908b93a85598",
-                    "LayerId": "e5a82c00-1061-4c55-b0a5-577c29fde079"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 9,
-    "layers": [
-        {
-            "id": "e5a82c00-1061-4c55-b0a5-577c29fde079",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "b0076141-d4d2-4712-902b-63fe01058c95",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_CapitalLoyalist_Arms",
+  "bbox_bottom": 8,
+  "bbox_left": 0,
+  "bbox_right": 3,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e5874d5c-8061-4bb0-9bb2-796d8a5cef56",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6091bed8-93b3-4060-a593-908b93a85598",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 9,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e5a82c00-1061-4c55-b0a5-577c29fde079","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Bodyparts",
+    "path": "folders/Sprites/Characters/WilliamCapitalLoyalist/Sprites/Bodyparts.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 4,
-    "xorig": 1,
-    "yorig": 0
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e5874d5c-8061-4bb0-9bb2-796d8a5cef56","path":"sprites/sWilliam_CapitalLoyalist_Arms/sWilliam_CapitalLoyalist_Arms.yy",},},},"Disabled":false,"id":"4eab7942-06d7-48aa-871e-a84b99a97bff","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6091bed8-93b3-4060-a593-908b93a85598","path":"sprites/sWilliam_CapitalLoyalist_Arms/sWilliam_CapitalLoyalist_Arms.yy",},},},"Disabled":false,"id":"fdf52d9a-b136-4c53-8c8b-7fb824cb73b2","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 1,
+    "yorigin": 0,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 4,
 }

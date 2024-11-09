@@ -1,1 +1,0 @@
-camera_room_clamp_x = true;

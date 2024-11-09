@@ -1,114 +1,78 @@
 {
-    "id": "e9ab88af-84e3-4343-be55-9c67429082ee",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_NorthernBrigade_Jump",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 52,
-    "bbox_left": 19,
-    "bbox_right": 28,
-    "bbox_top": 6,
-    "bboxmode": 2,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "76b6e63e-29cb-443f-ab27-f07f788a3d5f",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "e9ab88af-84e3-4343-be55-9c67429082ee",
-            "compositeImage": {
-                "id": "4dd9e6c8-fe9f-4b55-bbd7-a12d88eeff8c",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "76b6e63e-29cb-443f-ab27-f07f788a3d5f",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "12ba98d5-3d77-4342-b9c8-607d8d99e810",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "76b6e63e-29cb-443f-ab27-f07f788a3d5f",
-                    "LayerId": "876994f4-fc03-4d2d-9929-8f8191079ac4"
-                }
-            ]
-        },
-        {
-            "id": "aa5d34db-fe01-419c-8271-048533ba63ed",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "e9ab88af-84e3-4343-be55-9c67429082ee",
-            "compositeImage": {
-                "id": "a06f1eef-6821-46da-9acb-227938d2459b",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "aa5d34db-fe01-419c-8271-048533ba63ed",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "4c327b06-2334-4add-8564-931bbad93c33",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "aa5d34db-fe01-419c-8271-048533ba63ed",
-                    "LayerId": "876994f4-fc03-4d2d-9929-8f8191079ac4"
-                }
-            ]
-        },
-        {
-            "id": "89d33695-ce40-48d3-84b7-fd6ec23b0d46",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "e9ab88af-84e3-4343-be55-9c67429082ee",
-            "compositeImage": {
-                "id": "621802ab-8532-44de-b89c-2fd2bec976b7",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "89d33695-ce40-48d3-84b7-fd6ec23b0d46",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "c357f9ba-f213-421c-bf0f-075669a2f706",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "89d33695-ce40-48d3-84b7-fd6ec23b0d46",
-                    "LayerId": "876994f4-fc03-4d2d-9929-8f8191079ac4"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 54,
-    "layers": [
-        {
-            "id": "876994f4-fc03-4d2d-9929-8f8191079ac4",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "e9ab88af-84e3-4343-be55-9c67429082ee",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_NorthernBrigade_Jump",
+  "bbox_bottom": 52,
+  "bbox_left": 19,
+  "bbox_right": 28,
+  "bbox_top": 6,
+  "bboxMode": 2,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"76b6e63e-29cb-443f-ab27-f07f788a3d5f",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"aa5d34db-fe01-419c-8271-048533ba63ed",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"89d33695-ce40-48d3-84b7-fd6ec23b0d46",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 54,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"876994f4-fc03-4d2d-9929-8f8191079ac4","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Sprites",
+    "path": "folders/Sprites/Characters/WilliamNorthernBrigade/Komissar/Sprites.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 3.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 48,
-    "xorig": 24,
-    "yorig": 53
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"76b6e63e-29cb-443f-ab27-f07f788a3d5f","path":"sprites/sWilliam_NorthernBrigade_Jump/sWilliam_NorthernBrigade_Jump.yy",},},},"Disabled":false,"id":"380dbaab-3ad8-4497-b1e3-c51772796b37","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"aa5d34db-fe01-419c-8271-048533ba63ed","path":"sprites/sWilliam_NorthernBrigade_Jump/sWilliam_NorthernBrigade_Jump.yy",},},},"Disabled":false,"id":"5c481dd6-433a-4f51-8965-cb8ae7223ded","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"89d33695-ce40-48d3-84b7-fd6ec23b0d46","path":"sprites/sWilliam_NorthernBrigade_Jump/sWilliam_NorthernBrigade_Jump.yy",},},},"Disabled":false,"id":"8dc36670-b0b4-4445-873e-cfdb75ea546f","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 24,
+    "yorigin": 53,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

@@ -1,92 +1,76 @@
 {
-    "id": "ac843c8a-eeb3-484c-896c-02683180ce7f",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sArkov_CorsoRifle",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 7,
-    "bbox_left": 1,
-    "bbox_right": 36,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "dc55ac6b-e61e-482a-a295-f63aae9ba39c",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "ac843c8a-eeb3-484c-896c-02683180ce7f",
-            "compositeImage": {
-                "id": "ab57aee9-0c52-4b7e-875b-1059c6b1751d",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "dc55ac6b-e61e-482a-a295-f63aae9ba39c",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "10e309f8-2e5a-4e62-b98d-d4b8fefe9787",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "dc55ac6b-e61e-482a-a295-f63aae9ba39c",
-                    "LayerId": "0846d0a7-2c99-47ab-b22f-1f07268805e9"
-                }
-            ]
-        },
-        {
-            "id": "7465f25d-65d3-430a-ba37-9e4a641b36ef",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "ac843c8a-eeb3-484c-896c-02683180ce7f",
-            "compositeImage": {
-                "id": "42dc612f-a6b7-4312-84fb-199c1edaa400",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "7465f25d-65d3-430a-ba37-9e4a641b36ef",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "c4b2f60b-08e0-42e3-9079-4f619b2620b1",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "7465f25d-65d3-430a-ba37-9e4a641b36ef",
-                    "LayerId": "0846d0a7-2c99-47ab-b22f-1f07268805e9"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 8,
-    "layers": [
-        {
-            "id": "0846d0a7-2c99-47ab-b22f-1f07268805e9",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "ac843c8a-eeb3-484c-896c-02683180ce7f",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sArkov_CorsoRifle",
+  "bbox_bottom": 7,
+  "bbox_left": 1,
+  "bbox_right": 36,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"dc55ac6b-e61e-482a-a295-f63aae9ba39c",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"7465f25d-65d3-430a-ba37-9e4a641b36ef",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 8,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"0846d0a7-2c99-47ab-b22f-1f07268805e9","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Corso",
+    "path": "folders/Sprites/Weapons/Arkov/Firearm/Corso.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 38,
-    "xorig": 7,
-    "yorig": 2
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dc55ac6b-e61e-482a-a295-f63aae9ba39c","path":"sprites/sArkov_CorsoRifle/sArkov_CorsoRifle.yy",},},},"Disabled":false,"id":"b5c792dd-9a9c-4e57-a280-ec6272dbaef3","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7465f25d-65d3-430a-ba37-9e4a641b36ef","path":"sprites/sArkov_CorsoRifle/sArkov_CorsoRifle.yy",},},},"Disabled":false,"id":"6a35f5fa-16e4-4002-8c21-935d34ae7657","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 7,
+    "yorigin": 2,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 38,
 }

@@ -1,92 +1,76 @@
 {
-    "id": "e6eea9fc-497a-478b-9cf3-e8858baf9402",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sGodKingBunker_FrontPost_Chair",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 41,
-    "bbox_left": 2,
-    "bbox_right": 21,
-    "bbox_top": 5,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "c10b490c-6ad6-4d1a-8c1d-1fac2611926e",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "e6eea9fc-497a-478b-9cf3-e8858baf9402",
-            "compositeImage": {
-                "id": "8dcc6021-2a50-44ab-8ff4-0f271692d6eb",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "c10b490c-6ad6-4d1a-8c1d-1fac2611926e",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "b329d0b8-c6cf-4ab9-b172-54d13d946478",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "c10b490c-6ad6-4d1a-8c1d-1fac2611926e",
-                    "LayerId": "15be02c6-49d5-4563-9a8e-a9696ce6c586"
-                }
-            ]
-        },
-        {
-            "id": "fc8e2c9e-fe84-4424-b3e6-0f4dcf709d74",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "e6eea9fc-497a-478b-9cf3-e8858baf9402",
-            "compositeImage": {
-                "id": "fd793db5-d4fd-4017-ae9a-88e93a95336a",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "fc8e2c9e-fe84-4424-b3e6-0f4dcf709d74",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "0bcbd255-31ae-4489-b0bf-e1295e91efa4",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "fc8e2c9e-fe84-4424-b3e6-0f4dcf709d74",
-                    "LayerId": "15be02c6-49d5-4563-9a8e-a9696ce6c586"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 42,
-    "layers": [
-        {
-            "id": "15be02c6-49d5-4563-9a8e-a9696ce6c586",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "e6eea9fc-497a-478b-9cf3-e8858baf9402",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sGodKingBunker_FrontPost_Chair",
+  "bbox_bottom": 41,
+  "bbox_left": 2,
+  "bbox_right": 21,
+  "bbox_top": 5,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c10b490c-6ad6-4d1a-8c1d-1fac2611926e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"fc8e2c9e-fe84-4424-b3e6-0f4dcf709d74",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 42,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"15be02c6-49d5-4563-9a8e-a9696ce6c586","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "GodKingBunker",
+    "path": "folders/Sprites/Assets/Levels/GodKingBunker.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "7703960f-88f4-41f3-af48-c172650371cd",
-    "type": 0,
-    "width": 24,
-    "xorig": 12,
-    "yorig": 41
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c10b490c-6ad6-4d1a-8c1d-1fac2611926e","path":"sprites/sGodKingBunker_FrontPost_Chair/sGodKingBunker_FrontPost_Chair.yy",},},},"Disabled":false,"id":"7f9573c1-fc6e-4330-a689-0c6b62ee47c1","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"fc8e2c9e-fe84-4424-b3e6-0f4dcf709d74","path":"sprites/sGodKingBunker_FrontPost_Chair/sGodKingBunker_FrontPost_Chair.yy",},},},"Disabled":false,"id":"38273419-af6c-49cb-9132-4efae7c06874","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 12,
+    "yorigin": 41,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 24,
 }

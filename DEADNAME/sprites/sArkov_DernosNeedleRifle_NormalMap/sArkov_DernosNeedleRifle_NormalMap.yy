@@ -1,92 +1,76 @@
 {
-    "id": "29c87cf2-7d0f-4c5d-a2bc-ccea54b865b2",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sArkov_DernosNeedleRifle_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 7,
-    "bbox_left": 0,
-    "bbox_right": 37,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "f035867b-799d-49cf-a266-20f3a872fd45",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "29c87cf2-7d0f-4c5d-a2bc-ccea54b865b2",
-            "compositeImage": {
-                "id": "b4046fec-6f8b-4c19-a557-5fc168000185",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "f035867b-799d-49cf-a266-20f3a872fd45",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "e1c5a7a6-cd32-4369-88a2-de8dfb801339",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "f035867b-799d-49cf-a266-20f3a872fd45",
-                    "LayerId": "95fa8cec-3308-45f4-b78a-647f33a5e6d4"
-                }
-            ]
-        },
-        {
-            "id": "677af9ef-7f14-47b5-90d9-30da9a8a1522",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "29c87cf2-7d0f-4c5d-a2bc-ccea54b865b2",
-            "compositeImage": {
-                "id": "aec7e04f-3afe-481f-b586-3b0c8a938a17",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "677af9ef-7f14-47b5-90d9-30da9a8a1522",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "cabf0d98-68dd-4c10-830b-10b0282089aa",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "677af9ef-7f14-47b5-90d9-30da9a8a1522",
-                    "LayerId": "95fa8cec-3308-45f4-b78a-647f33a5e6d4"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 8,
-    "layers": [
-        {
-            "id": "95fa8cec-3308-45f4-b78a-647f33a5e6d4",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "29c87cf2-7d0f-4c5d-a2bc-ccea54b865b2",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sArkov_DernosNeedleRifle_NormalMap",
+  "bbox_bottom": 7,
+  "bbox_left": 0,
+  "bbox_right": 37,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f035867b-799d-49cf-a266-20f3a872fd45",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"677af9ef-7f14-47b5-90d9-30da9a8a1522",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 8,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"95fa8cec-3308-45f4-b78a-647f33a5e6d4","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "DernosNeedle",
+    "path": "folders/Sprites/Weapons/Arkov/Firearm/DernosNeedle.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 38,
-    "xorig": 7,
-    "yorig": 2
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f035867b-799d-49cf-a266-20f3a872fd45","path":"sprites/sArkov_DernosNeedleRifle_NormalMap/sArkov_DernosNeedleRifle_NormalMap.yy",},},},"Disabled":false,"id":"7a7daf8e-f712-4b26-82a2-01274b023d6f","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"677af9ef-7f14-47b5-90d9-30da9a8a1522","path":"sprites/sArkov_DernosNeedleRifle_NormalMap/sArkov_DernosNeedleRifle_NormalMap.yy",},},},"Disabled":false,"id":"e55423be-8448-4790-ab34-0e3ed6a8fe5c","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 7,
+    "yorigin": 2,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 38,
 }

@@ -36,4 +36,3 @@ generated_squads = 0;
 time_spd = 1.0;
 
 // Init Camera
-instance_create_layer(camera_get_view_x(view_camera[0]), camera_get_view_y(view_camera[0]), layer_get_id("Instances"), oCamera);

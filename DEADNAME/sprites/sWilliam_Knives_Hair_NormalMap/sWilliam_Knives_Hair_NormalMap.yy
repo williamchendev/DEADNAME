@@ -1,158 +1,82 @@
 {
-    "id": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_Knives_Hair_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 3,
-    "bbox_left": 0,
-    "bbox_right": 2,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "2aa8bea9-08f4-48c3-aed4-dab8483759d3",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "compositeImage": {
-                "id": "c60e84c2-54b3-4e75-b410-650242ddbf23",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "2aa8bea9-08f4-48c3-aed4-dab8483759d3",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "8e91857c-a96b-40d9-a52f-593560780294",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "2aa8bea9-08f4-48c3-aed4-dab8483759d3",
-                    "LayerId": "6952044b-8541-43f0-8c94-745423af116d"
-                }
-            ]
-        },
-        {
-            "id": "324744e4-be9c-4143-aa6c-96d219217298",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "compositeImage": {
-                "id": "a6803cbc-d81a-4512-a7d3-81c95fd876de",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "324744e4-be9c-4143-aa6c-96d219217298",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "fe0ebb78-57eb-47d7-b22b-1037af053b47",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "324744e4-be9c-4143-aa6c-96d219217298",
-                    "LayerId": "6952044b-8541-43f0-8c94-745423af116d"
-                }
-            ]
-        },
-        {
-            "id": "c1ea2487-dc3d-469e-9271-4535c5d6b9e5",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "compositeImage": {
-                "id": "908370b1-bd67-4f20-9077-78c79f714a6d",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "c1ea2487-dc3d-469e-9271-4535c5d6b9e5",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "3ae59204-15a0-46af-a1f9-aeda1e033177",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "c1ea2487-dc3d-469e-9271-4535c5d6b9e5",
-                    "LayerId": "6952044b-8541-43f0-8c94-745423af116d"
-                }
-            ]
-        },
-        {
-            "id": "1902b566-cec2-4f57-8e2b-d41b760727ab",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "compositeImage": {
-                "id": "2bd938e8-b8f2-4d0e-aadc-76a826fef3db",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "1902b566-cec2-4f57-8e2b-d41b760727ab",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "ab17be8c-6561-46d6-8f7a-661b6ed806e4",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "1902b566-cec2-4f57-8e2b-d41b760727ab",
-                    "LayerId": "6952044b-8541-43f0-8c94-745423af116d"
-                }
-            ]
-        },
-        {
-            "id": "f31fecf5-2121-4e10-98c6-3c95e8327677",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "compositeImage": {
-                "id": "3f5949df-20a5-440e-bae9-2ea8d5896596",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "f31fecf5-2121-4e10-98c6-3c95e8327677",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "05f98f8f-5e92-4409-8f7d-ed9d491d00db",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "f31fecf5-2121-4e10-98c6-3c95e8327677",
-                    "LayerId": "6952044b-8541-43f0-8c94-745423af116d"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 4,
-    "layers": [
-        {
-            "id": "6952044b-8541-43f0-8c94-745423af116d",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "a2fc1eac-8b8a-4522-b22b-7d1287f71aa3",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 1,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_Knives_Hair_NormalMap",
+  "bbox_bottom": 3,
+  "bbox_left": 0,
+  "bbox_right": 2,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2aa8bea9-08f4-48c3-aed4-dab8483759d3",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"324744e4-be9c-4143-aa6c-96d219217298",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c1ea2487-dc3d-469e-9271-4535c5d6b9e5",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1902b566-cec2-4f57-8e2b-d41b760727ab",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f31fecf5-2121-4e10-98c6-3c95e8327677",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 4,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"6952044b-8541-43f0-8c94-745423af116d","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 1,
+  "parent": {
+    "name": "Bodyparts",
+    "path": "folders/Sprites/Characters/WilliamKnives/Normals/Bodyparts.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 5.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 3,
-    "xorig": 1,
-    "yorig": 0
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2aa8bea9-08f4-48c3-aed4-dab8483759d3","path":"sprites/sWilliam_Knives_Hair_NormalMap/sWilliam_Knives_Hair_NormalMap.yy",},},},"Disabled":false,"id":"88698d7e-9149-41d4-99a4-1ec340b60aec","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"324744e4-be9c-4143-aa6c-96d219217298","path":"sprites/sWilliam_Knives_Hair_NormalMap/sWilliam_Knives_Hair_NormalMap.yy",},},},"Disabled":false,"id":"fc712bf4-ec3f-4c74-9642-24af4bab56ad","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c1ea2487-dc3d-469e-9271-4535c5d6b9e5","path":"sprites/sWilliam_Knives_Hair_NormalMap/sWilliam_Knives_Hair_NormalMap.yy",},},},"Disabled":false,"id":"829fd5f5-05e8-4adb-bd3c-35e7948d9c62","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1902b566-cec2-4f57-8e2b-d41b760727ab","path":"sprites/sWilliam_Knives_Hair_NormalMap/sWilliam_Knives_Hair_NormalMap.yy",},},},"Disabled":false,"id":"62cecb26-0173-4134-9dbd-fe6aee9d1ce6","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f31fecf5-2121-4e10-98c6-3c95e8327677","path":"sprites/sWilliam_Knives_Hair_NormalMap/sWilliam_Knives_Hair_NormalMap.yy",},},},"Disabled":false,"id":"3d0d8af5-8299-4df6-8a69-6406b32170e5","IsCreationKey":false,"Key":4.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 1,
+    "yorigin": 0,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 3,
 }

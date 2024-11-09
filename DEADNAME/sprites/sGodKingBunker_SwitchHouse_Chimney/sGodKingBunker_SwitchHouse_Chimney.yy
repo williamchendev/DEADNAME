@@ -1,92 +1,76 @@
 {
-    "id": "b7cb0c17-ad66-4086-89c3-fad18ad93e0d",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sGodKingBunker_SwitchHouse_Chimney",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 139,
-    "bbox_left": 2,
-    "bbox_right": 30,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "67b7774d-3592-4dfa-9bf6-b83c6850aa47",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "b7cb0c17-ad66-4086-89c3-fad18ad93e0d",
-            "compositeImage": {
-                "id": "bfb61991-27df-4ba1-aac7-5b9732412d9b",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "67b7774d-3592-4dfa-9bf6-b83c6850aa47",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "d7f89ef2-a2ba-43b6-99e6-57d26fd945b8",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "67b7774d-3592-4dfa-9bf6-b83c6850aa47",
-                    "LayerId": "663675d4-e688-49a7-8833-aa6b09c28b1f"
-                }
-            ]
-        },
-        {
-            "id": "d3159ef0-dee9-4174-aa7d-ab6452da95c3",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "b7cb0c17-ad66-4086-89c3-fad18ad93e0d",
-            "compositeImage": {
-                "id": "31444b09-ab37-48f2-8f1d-18170667071e",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "d3159ef0-dee9-4174-aa7d-ab6452da95c3",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "61793c42-d992-474b-8ae2-770de405c657",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "d3159ef0-dee9-4174-aa7d-ab6452da95c3",
-                    "LayerId": "663675d4-e688-49a7-8833-aa6b09c28b1f"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 140,
-    "layers": [
-        {
-            "id": "663675d4-e688-49a7-8833-aa6b09c28b1f",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "b7cb0c17-ad66-4086-89c3-fad18ad93e0d",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sGodKingBunker_SwitchHouse_Chimney",
+  "bbox_bottom": 139,
+  "bbox_left": 2,
+  "bbox_right": 30,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"67b7774d-3592-4dfa-9bf6-b83c6850aa47",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d3159ef0-dee9-4174-aa7d-ab6452da95c3",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 140,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"663675d4-e688-49a7-8833-aa6b09c28b1f","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "SwitchHouse",
+    "path": "folders/Sprites/Assets/Levels/GodKingBunker/SwitchHouse.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "7703960f-88f4-41f3-af48-c172650371cd",
-    "type": 0,
-    "width": 32,
-    "xorig": 16,
-    "yorig": 139
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"67b7774d-3592-4dfa-9bf6-b83c6850aa47","path":"sprites/sGodKingBunker_SwitchHouse_Chimney/sGodKingBunker_SwitchHouse_Chimney.yy",},},},"Disabled":false,"id":"5dd5bc5e-f55d-4ce0-8daa-b736f2dc6988","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"d3159ef0-dee9-4174-aa7d-ab6452da95c3","path":"sprites/sGodKingBunker_SwitchHouse_Chimney/sGodKingBunker_SwitchHouse_Chimney.yy",},},},"Disabled":false,"id":"2f7f9e87-d234-42c4-9acf-0f246178e946","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 16,
+    "yorigin": 139,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 32,
 }

@@ -1,92 +1,76 @@
 {
-    "id": "5dab52ea-774d-43b7-8657-0ccd08088321",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sArkov_DevotionShotgun",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 6,
-    "bbox_left": 1,
-    "bbox_right": 29,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "89c21d96-cf48-4d13-be50-3119b83649b4",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "5dab52ea-774d-43b7-8657-0ccd08088321",
-            "compositeImage": {
-                "id": "1a3e43fa-40ec-4ac5-85ae-83e773d4db86",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "89c21d96-cf48-4d13-be50-3119b83649b4",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "49280240-d056-4a65-9ab7-ebbffe15ea51",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "89c21d96-cf48-4d13-be50-3119b83649b4",
-                    "LayerId": "e824bd28-5db3-4d9e-9222-66511bed7318"
-                }
-            ]
-        },
-        {
-            "id": "1fdae687-f778-4ff9-9b07-023657084564",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "5dab52ea-774d-43b7-8657-0ccd08088321",
-            "compositeImage": {
-                "id": "2dda5dd6-4353-47e0-a7e9-27533b1d2796",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "1fdae687-f778-4ff9-9b07-023657084564",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "23af7555-4fca-456e-8efe-370f28c643d1",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "1fdae687-f778-4ff9-9b07-023657084564",
-                    "LayerId": "e824bd28-5db3-4d9e-9222-66511bed7318"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 8,
-    "layers": [
-        {
-            "id": "e824bd28-5db3-4d9e-9222-66511bed7318",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "5dab52ea-774d-43b7-8657-0ccd08088321",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sArkov_DevotionShotgun",
+  "bbox_bottom": 6,
+  "bbox_left": 1,
+  "bbox_right": 29,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"89c21d96-cf48-4d13-be50-3119b83649b4",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1fdae687-f778-4ff9-9b07-023657084564",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 8,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e824bd28-5db3-4d9e-9222-66511bed7318","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Devotion",
+    "path": "folders/Sprites/Weapons/Arkov/Firearm/Devotion.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 31,
-    "xorig": 5,
-    "yorig": 2
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"89c21d96-cf48-4d13-be50-3119b83649b4","path":"sprites/sArkov_DevotionShotgun/sArkov_DevotionShotgun.yy",},},},"Disabled":false,"id":"e214d92f-337a-4739-bcce-8817dfb2e19d","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1fdae687-f778-4ff9-9b07-023657084564","path":"sprites/sArkov_DevotionShotgun/sArkov_DevotionShotgun.yy",},},},"Disabled":false,"id":"98e914e1-acd2-41f1-b008-232f2e1c84d7","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 5,
+    "yorigin": 2,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 31,
 }

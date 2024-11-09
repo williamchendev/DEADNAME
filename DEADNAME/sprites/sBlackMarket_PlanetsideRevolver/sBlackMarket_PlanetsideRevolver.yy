@@ -1,92 +1,76 @@
 {
-    "id": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sBlackMarket_PlanetsideRevolver",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 6,
-    "bbox_left": 4,
-    "bbox_right": 19,
-    "bbox_top": 0,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "8621400a-14a5-4330-8240-85f8a85db32e",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
-            "compositeImage": {
-                "id": "b325edcc-96e0-4750-a2aa-6d33234bdd24",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "8621400a-14a5-4330-8240-85f8a85db32e",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "5dea915f-1d6b-4c6e-a15f-161458c5466f",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "8621400a-14a5-4330-8240-85f8a85db32e",
-                    "LayerId": "8269e0f1-ebf4-43ac-bb23-b3979e07a048"
-                }
-            ]
-        },
-        {
-            "id": "3d7873f9-50a6-4b60-b2a8-e0216d01654f",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
-            "compositeImage": {
-                "id": "aa2f9ab7-bab3-4858-98bf-bd107e3e54f0",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "3d7873f9-50a6-4b60-b2a8-e0216d01654f",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "1934a376-ef86-4089-aa1e-d5984f4aad89",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "3d7873f9-50a6-4b60-b2a8-e0216d01654f",
-                    "LayerId": "8269e0f1-ebf4-43ac-bb23-b3979e07a048"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 7,
-    "layers": [
-        {
-            "id": "8269e0f1-ebf4-43ac-bb23-b3979e07a048",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "91b5abbb-c92d-4ab2-94b1-a70fc8baa12f",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 3,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sBlackMarket_PlanetsideRevolver",
+  "bbox_bottom": 6,
+  "bbox_left": 4,
+  "bbox_right": 19,
+  "bbox_top": 0,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8621400a-14a5-4330-8240-85f8a85db32e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"3d7873f9-50a6-4b60-b2a8-e0216d01654f",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 7,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"8269e0f1-ebf4-43ac-bb23-b3979e07a048","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 3,
+  "parent": {
+    "name": "PlanetsideRevolver",
+    "path": "folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 20,
-    "xorig": 0,
-    "yorig": 3
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8621400a-14a5-4330-8240-85f8a85db32e","path":"sprites/sBlackMarket_PlanetsideRevolver/sBlackMarket_PlanetsideRevolver.yy",},},},"Disabled":false,"id":"facc15d1-590f-4d75-825d-3f1106a4039f","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"3d7873f9-50a6-4b60-b2a8-e0216d01654f","path":"sprites/sBlackMarket_PlanetsideRevolver/sBlackMarket_PlanetsideRevolver.yy",},},},"Disabled":false,"id":"1d166313-992a-42fe-94ce-8f01379b906b","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 0,
+    "yorigin": 3,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 20,
 }

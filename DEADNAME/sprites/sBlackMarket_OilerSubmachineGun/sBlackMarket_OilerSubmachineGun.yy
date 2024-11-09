@@ -1,92 +1,76 @@
 {
-    "id": "449f8470-399a-44d5-af7c-3b3669929719",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sBlackMarket_OilerSubmachineGun",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 9,
-    "bbox_left": 1,
-    "bbox_right": 20,
-    "bbox_top": 1,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "f23c9a9c-cca7-459c-b573-3542ee63eb01",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "449f8470-399a-44d5-af7c-3b3669929719",
-            "compositeImage": {
-                "id": "00845525-b4c2-40e1-b3de-0e3432d6cd2f",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "f23c9a9c-cca7-459c-b573-3542ee63eb01",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "0074f735-d229-47c3-9838-7812f6078ecc",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "f23c9a9c-cca7-459c-b573-3542ee63eb01",
-                    "LayerId": "3deffdd8-252b-420b-93ac-436635cb5257"
-                }
-            ]
-        },
-        {
-            "id": "351bf48d-74d8-4e4e-baee-90b85fdc6daa",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "449f8470-399a-44d5-af7c-3b3669929719",
-            "compositeImage": {
-                "id": "0ea87929-8071-4eae-915e-ac029822d3f7",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "351bf48d-74d8-4e4e-baee-90b85fdc6daa",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "4d051ca4-21a8-4328-b274-b5f1a872d23f",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "351bf48d-74d8-4e4e-baee-90b85fdc6daa",
-                    "LayerId": "3deffdd8-252b-420b-93ac-436635cb5257"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 11,
-    "layers": [
-        {
-            "id": "3deffdd8-252b-420b-93ac-436635cb5257",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "449f8470-399a-44d5-af7c-3b3669929719",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sBlackMarket_OilerSubmachineGun",
+  "bbox_bottom": 9,
+  "bbox_left": 1,
+  "bbox_right": 20,
+  "bbox_top": 1,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f23c9a9c-cca7-459c-b573-3542ee63eb01",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"351bf48d-74d8-4e4e-baee-90b85fdc6daa",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 11,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"3deffdd8-252b-420b-93ac-436635cb5257","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "OilerSubmachineGun",
+    "path": "folders/Sprites/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 22,
-    "xorig": 5,
-    "yorig": 2
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f23c9a9c-cca7-459c-b573-3542ee63eb01","path":"sprites/sBlackMarket_OilerSubmachineGun/sBlackMarket_OilerSubmachineGun.yy",},},},"Disabled":false,"id":"06e2e6ff-4c61-4217-99da-f6cabb8ab223","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"351bf48d-74d8-4e4e-baee-90b85fdc6daa","path":"sprites/sBlackMarket_OilerSubmachineGun/sBlackMarket_OilerSubmachineGun.yy",},},},"Disabled":false,"id":"46e31084-40bf-4b7f-a5bc-ff0979c2cd6a","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 5,
+    "yorigin": 2,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 22,
 }

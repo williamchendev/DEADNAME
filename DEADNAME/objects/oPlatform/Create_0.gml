@@ -3,3 +3,4 @@
 
 // Platform Variables
 units = ds_list_create();
+collision_units_list = ds_list_create();

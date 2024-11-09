@@ -1,114 +1,78 @@
 {
-    "id": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_Knives_Jump_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 52,
-    "bbox_left": 19,
-    "bbox_right": 28,
-    "bbox_top": 5,
-    "bboxmode": 2,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "e1cd4183-1620-4d83-b90a-829b7749357c",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
-            "compositeImage": {
-                "id": "6a5e4acf-218c-4213-be33-93eb2dee73b9",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "e1cd4183-1620-4d83-b90a-829b7749357c",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "91f4a8f9-a3ca-4d13-bdc7-63857152a78a",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "e1cd4183-1620-4d83-b90a-829b7749357c",
-                    "LayerId": "2b228f55-412f-4d7c-aa5c-4db590baabd7"
-                }
-            ]
-        },
-        {
-            "id": "b7a81dcd-2eb9-41f0-b522-aa72805af2b0",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
-            "compositeImage": {
-                "id": "6f424fd5-14e5-4a05-b2d6-c824aaa8a1df",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "b7a81dcd-2eb9-41f0-b522-aa72805af2b0",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "86889de6-f078-468b-8094-971bed3f61b5",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "b7a81dcd-2eb9-41f0-b522-aa72805af2b0",
-                    "LayerId": "2b228f55-412f-4d7c-aa5c-4db590baabd7"
-                }
-            ]
-        },
-        {
-            "id": "6a138d0f-0b79-402f-8333-10914d4e2140",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
-            "compositeImage": {
-                "id": "fab63521-d84a-4352-9ca6-5629e41721ae",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "6a138d0f-0b79-402f-8333-10914d4e2140",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "93903d59-f505-41e7-a43d-c9317176337d",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "6a138d0f-0b79-402f-8333-10914d4e2140",
-                    "LayerId": "2b228f55-412f-4d7c-aa5c-4db590baabd7"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 54,
-    "layers": [
-        {
-            "id": "2b228f55-412f-4d7c-aa5c-4db590baabd7",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "44bb0eb9-6f6a-4c48-9788-70ef2979f81c",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_Knives_Jump_NormalMap",
+  "bbox_bottom": 52,
+  "bbox_left": 19,
+  "bbox_right": 28,
+  "bbox_top": 5,
+  "bboxMode": 2,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e1cd4183-1620-4d83-b90a-829b7749357c",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b7a81dcd-2eb9-41f0-b522-aa72805af2b0",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6a138d0f-0b79-402f-8333-10914d4e2140",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 54,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"2b228f55-412f-4d7c-aa5c-4db590baabd7","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Normals",
+    "path": "folders/Sprites/Characters/WilliamKnives/Normals.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 3.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 48,
-    "xorig": 24,
-    "yorig": 53
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e1cd4183-1620-4d83-b90a-829b7749357c","path":"sprites/sWilliam_Knives_Jump_NormalMap/sWilliam_Knives_Jump_NormalMap.yy",},},},"Disabled":false,"id":"77b2edc5-7a43-4710-86b5-31e04d1cdb97","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"b7a81dcd-2eb9-41f0-b522-aa72805af2b0","path":"sprites/sWilliam_Knives_Jump_NormalMap/sWilliam_Knives_Jump_NormalMap.yy",},},},"Disabled":false,"id":"63cc3486-ddd1-4e4c-a001-7ec0cda06ff1","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6a138d0f-0b79-402f-8333-10914d4e2140","path":"sprites/sWilliam_Knives_Jump_NormalMap/sWilliam_Knives_Jump_NormalMap.yy",},},},"Disabled":false,"id":"4017fcbc-5641-4870-94d8-a506b63b64c3","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 24,
+    "yorigin": 53,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

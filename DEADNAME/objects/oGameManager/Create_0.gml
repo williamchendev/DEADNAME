@@ -20,9 +20,6 @@ blocks = noone;
 instantiated_units = ds_list_create();
 
 // Global Item Data
-init_item_data();
-init_consumable_data();
-init_weapon_data();
 
 // Debug Settings
 global.debug = false;

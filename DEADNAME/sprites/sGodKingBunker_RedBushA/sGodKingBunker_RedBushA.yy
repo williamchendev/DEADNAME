@@ -1,92 +1,76 @@
 {
-    "id": "2dee864e-8d80-4fe9-96a9-1e846a48d064",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sGodKingBunker_RedBushA",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 126,
-    "bbox_left": 0,
-    "bbox_right": 141,
-    "bbox_top": 2,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "e9ac705c-ad98-48ef-bd60-e5ce8aa5841b",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "2dee864e-8d80-4fe9-96a9-1e846a48d064",
-            "compositeImage": {
-                "id": "d8b239b7-db20-47ab-b1ff-c5d92fdde07c",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "e9ac705c-ad98-48ef-bd60-e5ce8aa5841b",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "3eb7a963-53f4-4f22-9804-09a9bf599fcb",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "e9ac705c-ad98-48ef-bd60-e5ce8aa5841b",
-                    "LayerId": "58bb5dc1-0a26-4422-8afe-2dcdb28b2469"
-                }
-            ]
-        },
-        {
-            "id": "99bae032-e57c-4ffb-9197-1485e9a71f59",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "2dee864e-8d80-4fe9-96a9-1e846a48d064",
-            "compositeImage": {
-                "id": "c1360a41-c3a9-4b2f-aab8-28d2e11e13ee",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "99bae032-e57c-4ffb-9197-1485e9a71f59",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "b5b71656-26bc-4236-8174-42a05024bd0a",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "99bae032-e57c-4ffb-9197-1485e9a71f59",
-                    "LayerId": "58bb5dc1-0a26-4422-8afe-2dcdb28b2469"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 128,
-    "layers": [
-        {
-            "id": "58bb5dc1-0a26-4422-8afe-2dcdb28b2469",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "2dee864e-8d80-4fe9-96a9-1e846a48d064",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sGodKingBunker_RedBushA",
+  "bbox_bottom": 126,
+  "bbox_left": 0,
+  "bbox_right": 141,
+  "bbox_top": 2,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e9ac705c-ad98-48ef-bd60-e5ce8aa5841b",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"99bae032-e57c-4ffb-9197-1485e9a71f59",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 128,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"58bb5dc1-0a26-4422-8afe-2dcdb28b2469","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "GodKingBunker",
+    "path": "folders/Sprites/Assets/Levels/GodKingBunker.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "7703960f-88f4-41f3-af48-c172650371cd",
-    "type": 0,
-    "width": 142,
-    "xorig": 71,
-    "yorig": 127
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e9ac705c-ad98-48ef-bd60-e5ce8aa5841b","path":"sprites/sGodKingBunker_RedBushA/sGodKingBunker_RedBushA.yy",},},},"Disabled":false,"id":"d249746d-68c5-4bc8-b0b0-80621c6f679e","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"99bae032-e57c-4ffb-9197-1485e9a71f59","path":"sprites/sGodKingBunker_RedBushA/sGodKingBunker_RedBushA.yy",},},},"Disabled":false,"id":"425ff2d9-f430-451d-b9ec-babaf44e9dba","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 71,
+    "yorigin": 127,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 142,
 }

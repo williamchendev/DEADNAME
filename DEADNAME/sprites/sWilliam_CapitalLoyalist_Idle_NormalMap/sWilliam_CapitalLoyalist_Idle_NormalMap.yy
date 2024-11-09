@@ -1,136 +1,80 @@
 {
-    "id": "574f9199-081f-4523-8241-09067b9223c6",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_CapitalLoyalist_Idle_NormalMap",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 52,
-    "bbox_left": 19,
-    "bbox_right": 28,
-    "bbox_top": 5,
-    "bboxmode": 2,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "d466c6e2-02b0-46b1-b3be-e57b88f2a7aa",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "574f9199-081f-4523-8241-09067b9223c6",
-            "compositeImage": {
-                "id": "5041704e-30a7-413f-8bb3-749cc84a1794",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "d466c6e2-02b0-46b1-b3be-e57b88f2a7aa",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "e5bbad30-f35a-4502-a643-009e37778ff3",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "d466c6e2-02b0-46b1-b3be-e57b88f2a7aa",
-                    "LayerId": "85110182-57b7-4814-a519-ba9955284737"
-                }
-            ]
-        },
-        {
-            "id": "b90b6469-8264-4571-9004-9fc697c757c3",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "574f9199-081f-4523-8241-09067b9223c6",
-            "compositeImage": {
-                "id": "0e5a0842-375c-49dc-8dc6-e018e94ea0dc",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "b90b6469-8264-4571-9004-9fc697c757c3",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "7ff140c0-0a2b-4e4e-9b7a-9ef2c47da5bc",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "b90b6469-8264-4571-9004-9fc697c757c3",
-                    "LayerId": "85110182-57b7-4814-a519-ba9955284737"
-                }
-            ]
-        },
-        {
-            "id": "037c3f92-d87d-4a00-b137-568658d5f947",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "574f9199-081f-4523-8241-09067b9223c6",
-            "compositeImage": {
-                "id": "a798c61d-1556-48ef-9574-4d7fd8e0fc35",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "037c3f92-d87d-4a00-b137-568658d5f947",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "d072d9bc-6839-4758-baf4-fba9548efe48",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "037c3f92-d87d-4a00-b137-568658d5f947",
-                    "LayerId": "85110182-57b7-4814-a519-ba9955284737"
-                }
-            ]
-        },
-        {
-            "id": "27c92114-cb21-4e65-8eef-8bd7819a6259",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "574f9199-081f-4523-8241-09067b9223c6",
-            "compositeImage": {
-                "id": "a14bb91a-5cc2-4825-abce-fc1de74bf021",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "27c92114-cb21-4e65-8eef-8bd7819a6259",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "a65ce587-2d99-41d8-9ef0-70b560e36a37",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "27c92114-cb21-4e65-8eef-8bd7819a6259",
-                    "LayerId": "85110182-57b7-4814-a519-ba9955284737"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 54,
-    "layers": [
-        {
-            "id": "85110182-57b7-4814-a519-ba9955284737",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "574f9199-081f-4523-8241-09067b9223c6",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_CapitalLoyalist_Idle_NormalMap",
+  "bbox_bottom": 52,
+  "bbox_left": 19,
+  "bbox_right": 28,
+  "bbox_top": 5,
+  "bboxMode": 2,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d466c6e2-02b0-46b1-b3be-e57b88f2a7aa",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b90b6469-8264-4571-9004-9fc697c757c3",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"037c3f92-d87d-4a00-b137-568658d5f947",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"27c92114-cb21-4e65-8eef-8bd7819a6259",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 54,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"85110182-57b7-4814-a519-ba9955284737","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Normals",
+    "path": "folders/Sprites/Characters/WilliamCapitalLoyalist/Normals.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 4.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "1225f6b0-ac20-43bd-a82e-be73fa0b6f4f",
-    "type": 0,
-    "width": 48,
-    "xorig": 24,
-    "yorig": 53
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"d466c6e2-02b0-46b1-b3be-e57b88f2a7aa","path":"sprites/sWilliam_CapitalLoyalist_Idle_NormalMap/sWilliam_CapitalLoyalist_Idle_NormalMap.yy",},},},"Disabled":false,"id":"5d3456e0-951a-46d7-9ec8-7739a913d212","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"b90b6469-8264-4571-9004-9fc697c757c3","path":"sprites/sWilliam_CapitalLoyalist_Idle_NormalMap/sWilliam_CapitalLoyalist_Idle_NormalMap.yy",},},},"Disabled":false,"id":"2e0e752b-88f7-47a8-aaa2-c71c3163dfee","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"037c3f92-d87d-4a00-b137-568658d5f947","path":"sprites/sWilliam_CapitalLoyalist_Idle_NormalMap/sWilliam_CapitalLoyalist_Idle_NormalMap.yy",},},},"Disabled":false,"id":"0f5f997a-1988-428c-9a1e-2daad5dfe6cd","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"27c92114-cb21-4e65-8eef-8bd7819a6259","path":"sprites/sWilliam_CapitalLoyalist_Idle_NormalMap/sWilliam_CapitalLoyalist_Idle_NormalMap.yy",},},},"Disabled":false,"id":"130aa175-71e1-4530-a411-b346f76050fa","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 24,
+    "yorigin": 53,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

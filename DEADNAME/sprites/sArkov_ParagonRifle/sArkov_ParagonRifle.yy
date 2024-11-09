@@ -1,92 +1,76 @@
 {
-    "id": "3297d16b-79b7-45cd-97aa-7fa602a71ef4",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sArkov_ParagonRifle",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 7,
-    "bbox_left": 1,
-    "bbox_right": 38,
-    "bbox_top": 1,
-    "bboxmode": 0,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "debf3cf6-0070-4fbb-9a53-e867aef61557",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "3297d16b-79b7-45cd-97aa-7fa602a71ef4",
-            "compositeImage": {
-                "id": "b2e2eac8-3706-4dea-9722-88e2caa44575",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "debf3cf6-0070-4fbb-9a53-e867aef61557",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "8ed7b9c6-ab4f-4c75-a531-b2b5d7c1337b",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "debf3cf6-0070-4fbb-9a53-e867aef61557",
-                    "LayerId": "1ce5980a-7c54-430a-8665-922dff2c597a"
-                }
-            ]
-        },
-        {
-            "id": "99523494-a6f0-44e7-80d7-8e8078cea468",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "3297d16b-79b7-45cd-97aa-7fa602a71ef4",
-            "compositeImage": {
-                "id": "6a18a71c-57fa-45f7-a510-c9b627f8cfc3",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "99523494-a6f0-44e7-80d7-8e8078cea468",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "e566dc14-cf5a-479c-85ad-ac42d8bc1b35",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "99523494-a6f0-44e7-80d7-8e8078cea468",
-                    "LayerId": "1ce5980a-7c54-430a-8665-922dff2c597a"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 8,
-    "layers": [
-        {
-            "id": "1ce5980a-7c54-430a-8665-922dff2c597a",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "3297d16b-79b7-45cd-97aa-7fa602a71ef4",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 0,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sArkov_ParagonRifle",
+  "bbox_bottom": 7,
+  "bbox_left": 1,
+  "bbox_right": 38,
+  "bbox_top": 1,
+  "bboxMode": 0,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"debf3cf6-0070-4fbb-9a53-e867aef61557",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"99523494-a6f0-44e7-80d7-8e8078cea468",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 8,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"1ce5980a-7c54-430a-8665-922dff2c597a","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Paragon",
+    "path": "folders/Sprites/Weapons/Arkov/Firearm/Paragon.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 2.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 0.0,
     "playbackSpeedType": 1,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 40,
-    "xorig": 10,
-    "yorig": 4
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"debf3cf6-0070-4fbb-9a53-e867aef61557","path":"sprites/sArkov_ParagonRifle/sArkov_ParagonRifle.yy",},},},"Disabled":false,"id":"0417640f-de1b-4e5f-9205-83f7ce13b37b","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"99523494-a6f0-44e7-80d7-8e8078cea468","path":"sprites/sArkov_ParagonRifle/sArkov_ParagonRifle.yy",},},},"Disabled":false,"id":"3b8385cb-1f0d-4dd9-a70e-ddd67673154a","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 10,
+    "yorigin": 4,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 40,
 }

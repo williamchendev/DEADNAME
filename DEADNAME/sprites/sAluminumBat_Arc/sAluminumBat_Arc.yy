@@ -1,202 +1,86 @@
 {
-    "id": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sAluminumBat_Arc",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 8,
-    "bbox_left": 1,
-    "bbox_right": 34,
-    "bbox_top": 4,
-    "bboxmode": 2,
-    "colkind": 5,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "5abb8661-d67c-4f7f-9f98-34b6e9441944",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "de108188-2348-4f5f-837f-e23c47842de7",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "5abb8661-d67c-4f7f-9f98-34b6e9441944",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "247d56e3-ea40-45e4-85cb-d1a1216c49bf",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "5abb8661-d67c-4f7f-9f98-34b6e9441944",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "e498f938-ee3a-45a1-98d5-b0c87fc8249a",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "52c65049-b2a8-40cc-b834-9e355400f7ca",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "e498f938-ee3a-45a1-98d5-b0c87fc8249a",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "c324afdf-22c3-4a71-ba48-4741f14ebfa0",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "e498f938-ee3a-45a1-98d5-b0c87fc8249a",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "74979d31-ad8e-4a8b-aa6a-93c97730eff0",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "6f75ad96-7643-46d2-a950-35d4c6219bb5",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "74979d31-ad8e-4a8b-aa6a-93c97730eff0",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "9559ed19-577e-4c82-ba67-b6f8e9fd0722",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "74979d31-ad8e-4a8b-aa6a-93c97730eff0",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "2c4dda52-74bc-4629-afaa-10f8bfa6881d",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "e7a84df2-d931-4227-91e1-be15579ff5a8",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "2c4dda52-74bc-4629-afaa-10f8bfa6881d",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "dc7d249a-531e-4725-b718-cfcdbda54e4b",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "2c4dda52-74bc-4629-afaa-10f8bfa6881d",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "695c7974-e77c-4784-8a34-f38a095a9485",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "f2ba4426-4439-42d6-97af-07c87f5c585a",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "695c7974-e77c-4784-8a34-f38a095a9485",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "a248afc5-f404-43dc-a845-64ca5fdf2c9a",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "695c7974-e77c-4784-8a34-f38a095a9485",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "1e8ce645-6ea0-4b4b-af85-11a200d6efad",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "e41c7469-831f-4f79-8d7e-e5581c8d7558",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "1e8ce645-6ea0-4b4b-af85-11a200d6efad",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "84d8adbd-e971-402e-bb68-63025baf51b9",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "1e8ce645-6ea0-4b4b-af85-11a200d6efad",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        },
-        {
-            "id": "dff3c3d8-7f61-4c04-a66a-f3394354eb45",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "compositeImage": {
-                "id": "fc4f0e5b-0c36-4a9a-992a-73468375f571",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "dff3c3d8-7f61-4c04-a66a-f3394354eb45",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "58a2f41c-2b16-490c-9eaa-918d114f96fa",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "dff3c3d8-7f61-4c04-a66a-f3394354eb45",
-                    "LayerId": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 10,
-    "layers": [
-        {
-            "id": "6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "4afcc6be-f80c-400d-aed6-f4099d0e5235",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 9,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sAluminumBat_Arc",
+  "bbox_bottom": 8,
+  "bbox_left": 1,
+  "bbox_right": 34,
+  "bbox_top": 4,
+  "bboxMode": 2,
+  "collisionKind": 5,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"5abb8661-d67c-4f7f-9f98-34b6e9441944",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e498f938-ee3a-45a1-98d5-b0c87fc8249a",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"74979d31-ad8e-4a8b-aa6a-93c97730eff0",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2c4dda52-74bc-4629-afaa-10f8bfa6881d",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"695c7974-e77c-4784-8a34-f38a095a9485",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1e8ce645-6ea0-4b4b-af85-11a200d6efad",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"dff3c3d8-7f61-4c04-a66a-f3394354eb45",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 10,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"6e84b7f6-6ea6-423b-ac3e-b25ab8c46c4f","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "BaseballBat",
+    "path": "folders/Sprites/Weapons/Arkov/Melee/BaseballBat.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 7.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "33973231-4b09-4e7f-b16b-cf877283fb2c",
-    "type": 0,
-    "width": 36,
-    "xorig": 4,
-    "yorig": 6
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"5abb8661-d67c-4f7f-9f98-34b6e9441944","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"e32df2d2-6355-4c59-a57f-e6aa7b5dc9dd","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e498f938-ee3a-45a1-98d5-b0c87fc8249a","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"73d60d44-c46e-4f58-bb1e-bfd24f0dd7df","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"74979d31-ad8e-4a8b-aa6a-93c97730eff0","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"ab3a4cc4-098d-4f82-beaa-39c5949a964d","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2c4dda52-74bc-4629-afaa-10f8bfa6881d","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"10f1f10c-e8a7-453c-8bbd-a7dd2478f258","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"695c7974-e77c-4784-8a34-f38a095a9485","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"b39b0ccd-6e58-4755-a41a-ade45c132b9b","IsCreationKey":false,"Key":4.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1e8ce645-6ea0-4b4b-af85-11a200d6efad","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"07ef9168-4619-4063-bb0b-cdd81201c6b6","IsCreationKey":false,"Key":5.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dff3c3d8-7f61-4c04-a66a-f3394354eb45","path":"sprites/sAluminumBat_Arc/sAluminumBat_Arc.yy",},},},"Disabled":false,"id":"a2f28e76-21d2-45bc-a748-02821fd79e7e","IsCreationKey":false,"Key":6.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 4,
+    "yorigin": 6,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 36,
 }

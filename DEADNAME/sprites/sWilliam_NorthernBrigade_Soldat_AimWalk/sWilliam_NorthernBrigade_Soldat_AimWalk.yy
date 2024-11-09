@@ -1,158 +1,82 @@
 {
-    "id": "a87afd4b-4976-4087-920f-1125f835c4ac",
-    "modelName": "GMSprite",
-    "mvc": "1.12",
-    "name": "sWilliam_NorthernBrigade_Soldat_AimWalk",
-    "For3D": false,
-    "HTile": false,
-    "VTile": false,
-    "bbox_bottom": 52,
-    "bbox_left": 19,
-    "bbox_right": 28,
-    "bbox_top": 6,
-    "bboxmode": 2,
-    "colkind": 1,
-    "coltolerance": 0,
-    "edgeFiltering": false,
-    "frames": [
-        {
-            "id": "529c46ed-b8b8-4a70-b409-3e6942a7fc8c",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "compositeImage": {
-                "id": "7dda5df5-28ec-43c3-8c19-1707ccd223fa",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "529c46ed-b8b8-4a70-b409-3e6942a7fc8c",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "43342e43-ae08-4c3a-9ab8-4a10c17be50b",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "529c46ed-b8b8-4a70-b409-3e6942a7fc8c",
-                    "LayerId": "e15a4518-025b-4d70-8310-08ad3d4b5478"
-                }
-            ]
-        },
-        {
-            "id": "6cec22ab-c81d-42f2-8998-fbe64f29d0fd",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "compositeImage": {
-                "id": "c98945c4-ee81-42ca-a2b0-93d1688fc33f",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "6cec22ab-c81d-42f2-8998-fbe64f29d0fd",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "2a468366-81e5-4e49-8fa4-44942b11594d",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "6cec22ab-c81d-42f2-8998-fbe64f29d0fd",
-                    "LayerId": "e15a4518-025b-4d70-8310-08ad3d4b5478"
-                }
-            ]
-        },
-        {
-            "id": "25c19627-c285-4c12-9360-907538c802fb",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "compositeImage": {
-                "id": "a3ec8388-d608-441c-83db-abe08ea91a78",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "25c19627-c285-4c12-9360-907538c802fb",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "6190f22d-cc04-4758-876d-3499ea54b68c",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "25c19627-c285-4c12-9360-907538c802fb",
-                    "LayerId": "e15a4518-025b-4d70-8310-08ad3d4b5478"
-                }
-            ]
-        },
-        {
-            "id": "f5e865c5-2623-45c8-ac4b-9277d657d914",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "compositeImage": {
-                "id": "a24b9aab-fdee-4ab9-b51a-e151bc420d6c",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "f5e865c5-2623-45c8-ac4b-9277d657d914",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "969b05c5-5202-4cba-908b-083853ffbe3f",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "f5e865c5-2623-45c8-ac4b-9277d657d914",
-                    "LayerId": "e15a4518-025b-4d70-8310-08ad3d4b5478"
-                }
-            ]
-        },
-        {
-            "id": "3b02dd93-a054-4a87-ba75-343a129e7948",
-            "modelName": "GMSpriteFrame",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "compositeImage": {
-                "id": "fbb26bf1-1b39-4c28-ae9d-cefc73c06977",
-                "modelName": "GMSpriteImage",
-                "mvc": "1.0",
-                "FrameId": "3b02dd93-a054-4a87-ba75-343a129e7948",
-                "LayerId": "00000000-0000-0000-0000-000000000000"
-            },
-            "images": [
-                {
-                    "id": "59061301-7f8a-42d0-b9e2-39347a2a8a0c",
-                    "modelName": "GMSpriteImage",
-                    "mvc": "1.0",
-                    "FrameId": "3b02dd93-a054-4a87-ba75-343a129e7948",
-                    "LayerId": "e15a4518-025b-4d70-8310-08ad3d4b5478"
-                }
-            ]
-        }
-    ],
-    "gridX": 0,
-    "gridY": 0,
-    "height": 54,
-    "layers": [
-        {
-            "id": "e15a4518-025b-4d70-8310-08ad3d4b5478",
-            "modelName": "GMImageLayer",
-            "mvc": "1.0",
-            "SpriteId": "a87afd4b-4976-4087-920f-1125f835c4ac",
-            "blendMode": 0,
-            "isLocked": false,
-            "name": "default",
-            "opacity": 100,
-            "visible": true
-        }
-    ],
-    "origin": 7,
-    "originLocked": false,
-    "playbackSpeed": 15,
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "sWilliam_NorthernBrigade_Soldat_AimWalk",
+  "bbox_bottom": 52,
+  "bbox_left": 19,
+  "bbox_right": 28,
+  "bbox_top": 6,
+  "bboxMode": 2,
+  "collisionKind": 1,
+  "collisionTolerance": 0,
+  "DynamicTexturePage": false,
+  "edgeFiltering": false,
+  "For3D": false,
+  "frames": [
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"529c46ed-b8b8-4a70-b409-3e6942a7fc8c",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6cec22ab-c81d-42f2-8998-fbe64f29d0fd",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"25c19627-c285-4c12-9360-907538c802fb",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f5e865c5-2623-45c8-ac4b-9277d657d914",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"3b02dd93-a054-4a87-ba75-343a129e7948",},
+  ],
+  "gridX": 0,
+  "gridY": 0,
+  "height": 54,
+  "HTile": false,
+  "layers": [
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e15a4518-025b-4d70-8310-08ad3d4b5478","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+  ],
+  "nineSlice": null,
+  "origin": 9,
+  "parent": {
+    "name": "Sprites",
+    "path": "folders/Sprites/Characters/WilliamNorthernBrigade/Soldat/Sprites.yy",
+  },
+  "preMultiplyAlpha": false,
+  "sequence": {
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "",
+    "autoRecord": true,
+    "backdropHeight": 1080,
+    "backdropImageOpacity": 0.5,
+    "backdropImagePath": "",
+    "backdropWidth": 1920,
+    "backdropXOffset": 0.0,
+    "backdropYOffset": 0.0,
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "eventStubScript": null,
+    "eventToFunction": {},
+    "length": 5.0,
+    "lockOrigin": false,
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "playback": 1,
+    "playbackSpeed": 15.0,
     "playbackSpeedType": 0,
-    "premultiplyAlpha": false,
-    "sepmasks": false,
-    "swatchColours": null,
-    "swfPrecision": 2.525,
-    "textureGroupId": "266a3965-1317-43f8-96e7-26babb08efa9",
-    "type": 0,
-    "width": 48,
-    "xorig": 24,
-    "yorig": 53
+    "showBackdrop": true,
+    "showBackdropImage": false,
+    "timeUnits": 1,
+    "tracks": [
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"529c46ed-b8b8-4a70-b409-3e6942a7fc8c","path":"sprites/sWilliam_NorthernBrigade_Soldat_AimWalk/sWilliam_NorthernBrigade_Soldat_AimWalk.yy",},},},"Disabled":false,"id":"75b904d1-056e-452f-8104-b0941b53d619","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6cec22ab-c81d-42f2-8998-fbe64f29d0fd","path":"sprites/sWilliam_NorthernBrigade_Soldat_AimWalk/sWilliam_NorthernBrigade_Soldat_AimWalk.yy",},},},"Disabled":false,"id":"04385fc1-67bb-474f-8cc4-d3c128132e31","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"25c19627-c285-4c12-9360-907538c802fb","path":"sprites/sWilliam_NorthernBrigade_Soldat_AimWalk/sWilliam_NorthernBrigade_Soldat_AimWalk.yy",},},},"Disabled":false,"id":"1b51f9fa-2b01-42b8-8491-f8836b76a974","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f5e865c5-2623-45c8-ac4b-9277d657d914","path":"sprites/sWilliam_NorthernBrigade_Soldat_AimWalk/sWilliam_NorthernBrigade_Soldat_AimWalk.yy",},},},"Disabled":false,"id":"912b6149-5b01-47bb-abcc-e9726af97957","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"3b02dd93-a054-4a87-ba75-343a129e7948","path":"sprites/sWilliam_NorthernBrigade_Soldat_AimWalk/sWilliam_NorthernBrigade_Soldat_AimWalk.yy",},},},"Disabled":false,"id":"c5377d49-c482-4c8d-a653-a107bf01b34b","IsCreationKey":false,"Key":4.0,"Length":1.0,"Stretch":false,},
+          ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
+    ],
+    "visibleRange": null,
+    "volume": 1.0,
+    "xorigin": 24,
+    "yorigin": 53,
+  },
+  "swatchColours": null,
+  "swfPrecision": 2.525,
+  "textureGroupId": {
+    "name": "Default",
+    "path": "texturegroups/Default",
+  },
+  "type": 0,
+  "VTile": false,
+  "width": 48,
 }

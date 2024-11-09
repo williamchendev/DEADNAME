@@ -1,1 +1,0 @@
-ragdoll_lootable_corpse = false;

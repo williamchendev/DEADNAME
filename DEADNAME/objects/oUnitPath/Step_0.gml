@@ -354,9 +354,6 @@ if (force_pathing and !ai_behaviour) {
 // Interact Behaviour
 if (interact_collision_list != noone) {
 	// Interate Through Interact Objects
-	for (var q = 0; q < array_length_1d(interact_collision_list); q++) {
-		
-	}
 }
 
 // Sight Behaviour
