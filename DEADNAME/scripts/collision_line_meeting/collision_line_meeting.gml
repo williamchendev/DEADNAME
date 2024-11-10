@@ -4,8 +4,8 @@
 /// @param			{real}				x2
 /// @param			{real}				y2
 /// @param			{object|instance}	obj
-/// @param			{boolean}			prec
-/// @param			{boolean}			notme
+/// @param			{bool}			prec
+/// @param			{bool}			notme
 /// @description	Finds the exact point of collision between two sets of coordinates and an
 ///					input object. Results are returned as a struct containing three keys: the
 ///					nearest colliding instance `id`, plus the `x` and `y` values of the exact
@@ -40,10 +40,10 @@
 function collision_line_meeting(_x1, _y1, _x2, _y2, _obj, _prec, _notme) {
 	// Find nearest colliding instance
 	var ds_inst = ds_list_create();
-	collision_line_list(_x1, _y1, _x2, _y2, _obj, _prec, _notme, ds_inst, true);
+	var collisions_num = collision_line_list(_x1, _y1, _x2, _y2, _obj, _prec, _notme, ds_inst, true);
 	
 	// Return target coord if not found
-	if (ds_list_size(ds_inst) == 0) {
+	if (collisions_num == 0) {
 		ds_list_destroy(ds_inst);
 		return {
 			id: noone,

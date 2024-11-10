@@ -20,6 +20,8 @@ grav_spd = 0.026; // Force of Downward Gravity
 grav_multiplier = 0.93; // Dampening Multiplyer of the Downward Velocity (Makes gravity smoother)
 max_grav_spd = 2; // Max Speed of Unit's Downward Velocity
 
+slope_tolerance = 3; // Tolerance for walking up slopes in pixels
+slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player is standing on
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
@@ -29,7 +31,6 @@ jump_peak_threshold = 0.8;
 squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
-
 
 // Unit Behaviour Variables
 

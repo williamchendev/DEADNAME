@@ -77,64 +77,129 @@ else
 	y_velocity = 0;
 }
 
-// Physics
-if (!grounded) 
+// Collision & Physics Behaviour
+
+
+if (grounded)
 {
-	//Gravity
+	// Disable Gravity
+	grav_velocity = 0;
+	y_velocity = 0;
+	y = round(y);
+	
+	// Delta Time Adjustment
+	var hspd = x_velocity * frame_delta;
+	var vspd = y_velocity * frame_delta;
+	
+	// Grounded Physics (Horizontal) Collisions
+	if (hspd != 0)
+	{
+		if (place_free(x + hspd, y)) 
+		{
+			// Move Unit with horizontal velocity
+			x_velocity = hspd;
+			draw_xscale = abs(draw_xscale) * sign(x_velocity);
+			x += x_velocity;
+			
+			// Grounded Slope Hugging Logic
+			if (platform_free(x, y + 1, platform_list)) 
+			{
+				// Downward Slope Collision Check
+				if (!place_free(x, y + slope_tolerance)) 
+				{
+					for (var v = slope_tolerance - 1; v >= 0; v--) 
+					{
+						if (place_free(x, y + v)) 
+						{
+							// GROUND CONTACT
+							y_velocity = v;
+							y += y_velocity;
+							break;
+						}
+					}
+				}
+				else
+				{
+					// End Grounded Condition - Walked off side of Platform
+					y += 1;
+					grounded = false;
+				}
+			}
+		}
+		else 
+		{
+			draw_xscale = abs(draw_xscale) * sign(hspd);
+		}
+	}
+	
+	// Grounded Physics (Vertical) Collisions
+	/*
+	if (platform_free(x, y + 1, platform_list)) 
+	{
+		y += 1;
+		grounded = false;
+	}
+	*/
+}
+else
+{
+	// Gravity
 	grav_velocity += (grav_spd * frame_delta);
 	grav_velocity *= power(grav_multiplier, frame_delta);
 	grav_velocity = min(grav_velocity, max_grav_spd);
 	y_velocity += (grav_velocity * frame_delta);
-}
-else 
-{
-	grav_velocity = 0;
-	y = round(y);
-}
-
-// Collision & Physics Behaviour
-if (x_velocity != 0)
-{
-	if (place_free(x + x_velocity, y))
+	
+	// Delta Time Adjustment
+	var hspd = x_velocity * frame_delta;
+	var vspd = y_velocity * frame_delta;
+	
+	// Airborne Physics (Horizontal) Collisions
+	if (hspd != 0)
 	{
-		draw_xscale = abs(draw_xscale) * sign(x_velocity);
-		x += x_velocity;
-		x = round(x);
-	}
-	else
-	{
-		for (var h = abs(x_velocity); h >= 0; h--)
+		if (place_free(x + hspd, y))
 		{
-			var hspd = (sign(x_velocity) * h);
-			
-			if (place_free(x + hspd, y))
+			x_velocity = hspd;
+			draw_xscale = abs(draw_xscale) * sign(x_velocity);
+			x += x_velocity;
+			x = round(x);
+		}
+		else
+		{
+			for (var h = abs(hspd); h >= 0; h--)
 			{
-				draw_xscale = abs(draw_xscale) * sign(x_velocity);
-				x_velocity = hspd;
-				x += x_velocity;
-				x = round(x);
-				break;
+				var temp_hspd = (sign(x_velocity) * h);
+				
+				if (place_free(x + temp_hspd, y))
+				{
+					// GROUND CONTACT
+					draw_xscale = abs(draw_xscale) * sign(x_velocity);
+					x_velocity = temp_hspd;
+					
+					x += x_velocity;
+					x = round(x);
+					break;
+				}
 			}
 		}
 	}
-}
-
-if (!grounded)
-{
-	if (platform_free(x, y + y_velocity, platform_list))
+	
+	// Airborne Physics (Vertical) Collisions
+	if (platform_free(x, y + vspd, platform_list))
 	{
+		y_velocity = vspd;
 		y += y_velocity;
 		y = round(y);
 	}
 	else
 	{
-		for (var v = 1; v < abs(y_velocity); v++)
+		for (var v = 1; v < abs(vspd); v++)
 		{
-			var vspd = (sign(y_velocity) * v);
+			var temp_vspd = (sign(y_velocity) * v);
 			
-			if (!platform_free(x, y + vspd, platform_list))
+			if (!platform_free(x, y + temp_vspd, platform_list))
 			{
-				y_velocity = vspd - sign(y_velocity);
+				// GROUND CONTACT
+				y_velocity = temp_vspd - sign(y_velocity);
 				y += y_velocity;
 				y = round(y);
 				
@@ -146,14 +211,6 @@ if (!grounded)
 				break;
 			}
 		}
-	}
-}
-else
-{
-	if (platform_free(x, y + 1, platform_list)) 
-	{
-		y += 1;
-		grounded = false;
 	}
 }
 

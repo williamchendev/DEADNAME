@@ -51,13 +51,13 @@ function device_mouse_check_region() {
 	if (argument_count == 6) or (argument_count == 8) {
 		var reg_shape = reg_shape_rectangle;
 		var reg_height = argument[5];
-		var reg_xorig = reg_width*0.5;
-		var reg_yorig = reg_height*0.5;
+		reg_xorig = reg_width*0.5;
+		reg_yorig = reg_height*0.5;
 	} else {
 		var reg_shape = reg_shape_circle;
 		var reg_height = argument[4];
-		var reg_xorig = 0;
-		var reg_yorig = 0;
+		reg_xorig = 0;
+		reg_yorig = 0;
 	}
 
 	// Get custom alignment, if specified
@@ -191,13 +191,13 @@ function device_mouse_check_region_gui() {
 	if (argument_count == 6) or (argument_count == 8) {
 		var reg_shape = reg_shape_rectangle;
 		var reg_height = argument[5];
-		var reg_xorig = reg_width*0.5;
-		var reg_yorig = reg_height*0.5;
+		reg_xorig = reg_width*0.5;
+		reg_yorig = reg_height*0.5;
 	} else {
 		var reg_shape = reg_shape_circle;
 		var reg_height = argument[4];
-		var reg_xorig = 0;
-		var reg_yorig = 0;
+		reg_xorig = 0;
+		reg_yorig = 0;
 	}
 
 	// Get custom alignment, if specified
