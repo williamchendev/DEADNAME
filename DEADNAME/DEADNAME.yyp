@@ -203,9 +203,11 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Firearms","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"OilerSubmachineGun","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"PlanetsideRevolver","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Singleton","folderPath":"folders/Scripts/Plugins/XGASOFT GML+/Singleton.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"gmlp-reference-guide.pdf","CopyToMask":0,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"gmlp-reference-guide.pdf","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "isEcma": false,
   "LibraryEmitters": [],

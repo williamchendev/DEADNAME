@@ -192,6 +192,7 @@
     {"name":"Firearms","order":1,"path":"folders/Sprites/Weapons/BlackMarket/Firearms.yy",},
     {"name":"OilerSubmachineGun","order":1,"path":"folders/Sprites/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy",},
     {"name":"PlanetsideRevolver","order":2,"path":"folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",},
+    {"name":"Singleton","order":13,"path":"folders/Scripts/Plugins/XGASOFT GML+/Singleton.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"sWilliam_NorthernBrigade_AimWalk_NormalMap","order":3,"path":"sprites/sWilliam_NorthernBrigade_AimWalk_NormalMap/sWilliam_NorthernBrigade_AimWalk_NormalMap.yy",},
@@ -244,7 +245,6 @@
     {"name":"oUnitCombat","order":6,"path":"objects/oUnitCombat/oUnitCombat.yy",},
     {"name":"sItems2x1","order":2,"path":"sprites/sItems2x1/sItems2x1.yy",},
     {"name":"sGodKingBunker_BlackDither","order":6,"path":"sprites/sGodKingBunker_BlackDither/sGodKingBunker_BlackDither.yy",},
-    {"name":"obj_server_gmlp","order":4,"path":"objects/obj_server_gmlp/obj_server_gmlp.yy",},
     {"name":"sWilliam_Knives_Run_NormalMap","order":6,"path":"sprites/sWilliam_Knives_Run_NormalMap/sWilliam_Knives_Run_NormalMap.yy",},
     {"name":"sWilliamDS_Jump","order":5,"path":"sprites/sWilliamDS_Jump/sWilliamDS_Jump.yy",},
     {"name":"sWilliam_Head","order":1,"path":"sprites/sWilliam_Head/sWilliam_Head.yy",},

@@ -13,15 +13,11 @@ function platform_free(pos_x, pos_y, platform_list)
 	}
 
 	// Check if touching a platform
-	for (var i = 0; i < ds_list_size(platform_list); i++) 
+	if (ds_list_find_index(platform_list, instance_place(pos_x, pos_y, oPlatform)) != -1)
 	{
-		var temp_platform = ds_list_find_value(platform_list, i);
-		
-		if (!place_empty(pos_x, pos_y, temp_platform)) 
-		{
-			return false;
-		}
+		return false;
 	}
-
+	
+	// Not Touching Platform or Solid: Space is Free
 	return true;
 }

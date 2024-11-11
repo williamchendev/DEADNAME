@@ -35,6 +35,8 @@ if (canmove)
 			// Squash and Stretch
 			draw_xscale = sign(draw_xscale) * (1 - squash_stretch_jump_intensity);
 			draw_yscale = 1 + squash_stretch_jump_intensity;
+			
+			// Reset Ground Contact
 			grounded = false;
 		}
 		else if (move_double_jump) 
@@ -78,8 +80,6 @@ else
 }
 
 // Collision & Physics Behaviour
-
-
 if (grounded)
 {
 	// Disable Gravity
@@ -98,7 +98,6 @@ if (grounded)
 		{
 			// Move Unit with horizontal velocity
 			x_velocity = hspd;
-			draw_xscale = abs(draw_xscale) * sign(x_velocity);
 			x += x_velocity;
 			
 			// Grounded Slope Hugging Logic
@@ -114,6 +113,8 @@ if (grounded)
 							// GROUND CONTACT
 							y_velocity = v;
 							y += y_velocity;
+							
+							unit_ground_contact_behaviour();
 							break;
 						}
 					}
@@ -125,21 +126,61 @@ if (grounded)
 					grounded = false;
 				}
 			}
+			else if (place_free(x, y + 1))
+			{
+				// Walking across Platform - Reset Ground Contact State
+				ground_contact_vertical_offset = 0;
+				draw_angle = 0;
+			}
 		}
-		else 
+		else if (place_free(x + hspd, y - slope_tolerance))
 		{
-			draw_xscale = abs(draw_xscale) * sign(hspd);
+			// Grounded Slope Hugging Logic
+			for (var v = 1; v <= slope_tolerance; v++) 
+			{
+				// Upwards Slope Collision Check
+				if (place_free(x + hspd, y - v)) 
+				{
+					// GROUND CONTACT
+					x_velocity = hspd;
+					x += x_velocity;
+					
+					y_velocity = -v;
+					y += y_velocity;
+					
+					unit_ground_contact_behaviour();
+					break;
+				}
+			}
+		}
+		else
+		{
+			// Horizontal Contact with Solid Collider
+			for (var h = abs(hspd); h > 0; h--)
+			{
+				var temp_hspd = (sign(x_velocity) * h);
+				
+				if (place_free(x + temp_hspd, y))
+				{
+					// GROUND CONTACT
+					x_velocity = temp_hspd;
+					
+					x += x_velocity;
+					x = round(x);
+					
+					// End Grounded Condition - Walked off side of Platform
+					if (platform_free(x, y + 1, platform_list)) 
+					{
+						y += 1;
+						grounded = false;
+					}
+					
+					unit_ground_contact_behaviour();
+					break;
+				}
+			}
 		}
 	}
-	
-	// Grounded Physics (Vertical) Collisions
-	/*
-	if (platform_free(x, y + 1, platform_list)) 
-	{
-		y += 1;
-		grounded = false;
-	}
-	*/
 }
 else
 {
@@ -153,13 +194,16 @@ else
 	var hspd = x_velocity * frame_delta;
 	var vspd = y_velocity * frame_delta;
 	
+	// Airborne Ground Contact Reset
+	ground_contact_vertical_offset = 0;
+	draw_angle = 0;
+	
 	// Airborne Physics (Horizontal) Collisions
 	if (hspd != 0)
 	{
 		if (place_free(x + hspd, y))
 		{
 			x_velocity = hspd;
-			draw_xscale = abs(draw_xscale) * sign(x_velocity);
 			x += x_velocity;
 			x = round(x);
 		}
@@ -172,9 +216,7 @@ else
 				if (place_free(x + temp_hspd, y))
 				{
 					// GROUND CONTACT
-					draw_xscale = abs(draw_xscale) * sign(x_velocity);
 					x_velocity = temp_hspd;
-					
 					x += x_velocity;
 					x = round(x);
 					break;
@@ -203,11 +245,21 @@ else
 				y += y_velocity;
 				y = round(y);
 				
-				grounded = true;
-				double_jump = true;
-				
-				draw_xscale = sign(draw_xscale) * (1 + squash_stretch_jump_intensity);
-				draw_yscale = 1 - squash_stretch_jump_intensity;
+				if (!platform_free(x, y + 1, platform_list))
+				{
+					grounded = true;
+					double_jump = true;
+					
+					draw_xscale = sign(draw_xscale) * (1 + squash_stretch_jump_intensity);
+					draw_yscale = 1 - squash_stretch_jump_intensity;
+					
+					unit_ground_contact_behaviour();
+				}
+				else
+				{
+					draw_xscale = sign(draw_xscale);
+					draw_yscale = 1;
+				}
 				break;
 			}
 		}
@@ -215,6 +267,11 @@ else
 }
 
 // Animation Behaviour
+if (x_velocity != 0)
+{
+	draw_xscale = abs(draw_xscale) * sign(x_velocity);
+}
+	
 if (!grounded)
 {
 	// Jump Animation
@@ -232,3 +289,5 @@ else
 
 draw_xscale = lerp(draw_xscale, sign(draw_xscale), squash_stretch_reset_spd * frame_delta);
 draw_yscale = lerp(draw_yscale, 1, squash_stretch_reset_spd * frame_delta);
+
+draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * frame_delta);

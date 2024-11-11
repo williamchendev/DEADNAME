@@ -33,8 +33,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "sCathIdle",
-    "path": "sprites/sCathIdle/sCathIdle.yy",
+    "name": "sWilliam_CapitalLoyalist_Idle",
+    "path": "sprites/sWilliam_CapitalLoyalist_Idle/sWilliam_CapitalLoyalist_Idle.yy",
   },
   "spriteMaskId": null,
   "visible": true,

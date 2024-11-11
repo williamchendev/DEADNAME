@@ -21,4 +21,6 @@ switch (unit_animation_state)
 }
 
 //
-draw_sprite_ext(sprite_index, image_index, x, y, draw_xscale, draw_yscale, image_angle, image_blend, image_alpha);
+draw_sprite_ext(sprite_index, image_index, x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
+
+draw_text(20, 20, $"X: {x}, Y: {y}, SCALE: {draw_xscale}");

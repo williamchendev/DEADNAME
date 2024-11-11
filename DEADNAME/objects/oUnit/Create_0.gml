@@ -21,6 +21,7 @@ grav_multiplier = 0.93; // Dampening Multiplyer of the Downward Velocity (Makes 
 max_grav_spd = 2; // Max Speed of Unit's Downward Velocity
 
 slope_tolerance = 3; // Tolerance for walking up slopes in pixels
+slope_raycast_distance = 8;
 slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player is standing on
 
 // Animation Settings
@@ -33,7 +34,17 @@ squash_stretch_jump_intensity = 0.5;
 squash_stretch_reset_spd = 0.15;
 
 // Unit Behaviour Variables
+for (var s = 0; s < array_length(global.unit_sprite_packs); s++)
+{
+	// Auto Assign Unit Sprite Pack from Unit Object's Idle Sprite Index
+	if (global.unit_sprite_packs[s].idle_sprite == sprite_index)
+	{
+		unit_sprite_pack = s;
+		break;
+	}
+}
 
+ground_contact_vertical_offset = 0;
 
 // Physics Variables
 platform_list = ds_list_create();
@@ -53,6 +64,9 @@ image_speed = 0.75;
 draw_xscale = 1;
 draw_yscale = 1;
 
+draw_angle = 0;
+draw_angle_value = 0;
+
 // Input Action Variables
 move_left = false;
 move_right = false;
@@ -61,3 +75,30 @@ move_drop_down = false;
 
 move_jump_hold = false;
 move_double_jump = false;
+
+// Unit Methods
+unit_ground_contact_behaviour = function()
+{
+	// Ground Contact Behaviour
+	if (ds_list_find_index(platform_list, collision_point(x, y + 1, oPlatform, false, true)) != -1)
+	{
+		// Contact with Platform
+		ground_contact_vertical_offset = 0;
+		draw_angle = 0;
+	}
+	else
+	{
+		// Raycast to Solid Collider
+		for (var i = 0; i < slope_raycast_distance; i++)
+		{
+			var temp_solid_rot_inst = collision_point(x, y + i, oSolid, false, true);
+			
+			if (temp_solid_rot_inst != noone)
+			{
+				ground_contact_vertical_offset = i;
+				draw_angle = temp_solid_rot_inst.image_angle;
+				return;
+			}
+		}
+	}
+}

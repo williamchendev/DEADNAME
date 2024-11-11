@@ -12,8 +12,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "System",
-    "path": "folders/Objects/System.yy",
+    "name": "Singleton",
+    "path": "folders/Scripts/Plugins/XGASOFT GML+/Singleton.yy",
   },
   "parentObjectId": null,
   "persistent": true,
