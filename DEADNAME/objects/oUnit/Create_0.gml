@@ -96,7 +96,7 @@ unit_ground_contact_behaviour = function()
 			if (temp_solid_rot_inst != noone)
 			{
 				ground_contact_vertical_offset = i;
-				draw_angle = temp_solid_rot_inst.image_angle;
+				draw_angle = point_check_solid_surface_angle(x, y, temp_solid_rot_inst);
 				return;
 			}
 		}

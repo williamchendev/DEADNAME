@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "platform_free",
+  "name": "point_check_solid_surface_angle",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

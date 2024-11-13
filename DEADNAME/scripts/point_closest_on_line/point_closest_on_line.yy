@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "platform_free",
+  "name": "point_closest_on_line",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
