@@ -19,7 +19,7 @@ for (var i = 0; i < ds_list_size(units); i++)
 
 // Unit Collision Check
 ds_list_clear(collision_units_list);
-var unit_num = collision_rectangle_list(x, y - 10, x + sprite_width, y, oUnit, false, true, collision_units_list, false);
+var unit_num = collision_rectangle_list(x, y - 32, x + sprite_width, y, oUnit, false, true, collision_units_list, false);
 
 if (unit_num > 0) 
 {

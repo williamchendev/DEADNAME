@@ -272,22 +272,94 @@ if (x_velocity != 0)
 	draw_xscale = abs(draw_xscale) * sign(x_velocity);
 }
 	
-if (!grounded)
+if (grounded)
+{
+	if (x_velocity != 0)
+	{
+		unit_animation_state = UnitAnimationState.Walking;
+	}
+	else
+	{
+		unit_animation_state = UnitAnimationState.Idle;
+	}
+}
+else 
 {
 	// Jump Animation
 	unit_animation_state = UnitAnimationState.Jumping;
-	image_index = ((abs(y_velocity) - jump_peak_threshold >= 0) * sign(y_velocity)) + 1;
-}
-else if (x_velocity != 0)
-{
-	unit_animation_state = UnitAnimationState.Walking;
-}
-else
-{
-	unit_animation_state = UnitAnimationState.Idle;
 }
 
 draw_xscale = lerp(draw_xscale, sign(draw_xscale), squash_stretch_reset_spd * frame_delta);
 draw_yscale = lerp(draw_yscale, 1, squash_stretch_reset_spd * frame_delta);
 
 draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * frame_delta);
+
+// Load Animation State
+switch (unit_animation_state)
+{
+	case UnitAnimationState.Idle:
+		sprite_index = global.unit_sprite_packs[unit_sprite_pack].idle_sprite;
+		draw_image_index_length = 4;
+		break;
+	case UnitAnimationState.Walking:
+		sprite_index = global.unit_sprite_packs[unit_sprite_pack].walk_sprite;
+		draw_image_index_length = 5;
+		break;
+	case UnitAnimationState.Jumping:
+		sprite_index = global.unit_sprite_packs[unit_sprite_pack].jump_sprite;
+		image_index = ((abs(y_velocity) - jump_peak_threshold >= 0) * sign(y_velocity)) + 1;
+		draw_image_index_length = -1;
+		break;
+	case UnitAnimationState.Aiming:
+		sprite_index = global.unit_sprite_packs[unit_sprite_pack].aim_sprite;
+		image_index = 0;
+		draw_image_index_length = -1;
+		break;
+	case UnitAnimationState.AimWalking:
+		sprite_index = global.unit_sprite_packs[unit_sprite_pack].aim_walk_sprite;
+		draw_image_index_length = 5;
+		break;
+}
+
+if (draw_image_index_length != -1)
+{
+	draw_image_index += (animation_speed * animation_speed_direction) * frame_delta;
+	
+	if (draw_image_index >= draw_image_index_length)
+	{
+		limb_animation_double_cycle = !limb_animation_double_cycle;
+	}
+	
+	draw_image_index = draw_image_index mod draw_image_index_length;
+	image_index = floor(draw_image_index);
+}
+
+// Limb Animation Behaviour
+switch (unit_equipment_animation_state)
+{
+	case UnitEquipmentAnimationState.Firearm:
+		limb_left_arm.update_pivot(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
+		limb_right_arm.update_pivot(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
+		break;
+	default:
+		
+		switch (unit_animation_state)
+		{
+			case UnitAnimationState.Idle:
+				var temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
+				limb_left_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage);
+				limb_right_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage);
+				break;
+			case UnitAnimationState.Walking:
+				var temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
+				var temp_walk_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
+				limb_left_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage, temp_walk_animation_percentage);
+				limb_right_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage, temp_walk_animation_percentage);
+				break;
+			case UnitAnimationState.Jumping:
+				limb_left_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
+				limb_right_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
+				break;
+		}
+		break;
+}

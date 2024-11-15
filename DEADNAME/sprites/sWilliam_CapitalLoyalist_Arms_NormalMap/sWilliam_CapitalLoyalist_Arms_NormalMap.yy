@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "sWilliam_CapitalLoyalist_Arms_NormalMap",
-  "bbox_bottom": 8,
+  "bbox_bottom": 9,
   "bbox_left": 0,
   "bbox_right": 3,
   "bbox_top": 0,
@@ -18,7 +18,7 @@
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 9,
+  "height": 10,
   "HTile": false,
   "layers": [
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"642e9acc-9bb9-4589-b1a3-b469ffc9d03b","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},

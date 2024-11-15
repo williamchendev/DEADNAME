@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "sWilliam_CapitalLoyalist_Arms",
-  "bbox_bottom": 8,
+  "bbox_bottom": 9,
   "bbox_left": 0,
   "bbox_right": 3,
   "bbox_top": 0,
@@ -18,7 +18,7 @@
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 9,
+  "height": 10,
   "HTile": false,
   "layers": [
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e5a82c00-1061-4c55-b0a5-577c29fde079","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},

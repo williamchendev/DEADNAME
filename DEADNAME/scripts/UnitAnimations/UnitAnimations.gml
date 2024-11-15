@@ -8,6 +8,12 @@ enum UnitAnimationState
     AimWalking
 }
 
+enum UnitEquipmentAnimationState
+{
+    None,
+    Firearm
+}
+
 // Unit Sprite Pack Enums
 enum UnitSpritePacks
 {
@@ -55,6 +61,42 @@ global.unit_sprite_packs[UnitSpritePacks.Default] =
     ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -7,
+    limb_anchor_left_arm_y: -35,
+    
+    limb_anchor_right_arm_x: 4,
+    limb_anchor_right_arm_y: -35,
+    
+    equipment_inventory_x: -3,
+    equipment_inventory_y: -28,
+    
+    equipment_firearm_hip_x: -2,
+    equipment_firearm_hip_y: -30,
+
+    equipment_firearm_aim_x: 3,
+    equipment_firearm_aim_y: -40,
+    
+    // Limb Animation Settings
+    limb_idle_animation_extension_percent: 0.95,
+	limb_idle_animation_ambient_move_width: 2,
+	limb_left_arm_idle_animation_angle: -10,
+	limb_right_arm_idle_animation_angle: 13,
+		
+	limb_left_arm_walk_animation_extension_percent: 0.5,
+	limb_left_arm_walk_animation_ambient_move_width: 4,
+	limb_left_arm_walk_animation_ambient_move_height: 1,
+	limb_left_arm_walk_animation_angle: 0,
+	
+	limb_right_arm_walk_animation_extension_percent: 0.6,
+	limb_right_arm_walk_animation_ambient_move_width: 2,
+	limb_right_arm_walk_animation_ambient_move_height: 1,
+	limb_right_arm_walk_animation_angle: 30,
+	
+	limb_jump_animation_extension_percent: 0.95,
+	limb_left_arm_jump_animation_angle: -15,
+	limb_right_arm_jump_animation_angle: 18,
 }
 
 // Moralist William
@@ -91,6 +133,28 @@ global.unit_sprite_packs[UnitSpritePacks.MoralistWilliam] =
     ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -8,
+    limb_anchor_left_arm_y: -35,
+	
+    limb_anchor_left_arm_idle_angle: -13,
+	limb_anchor_left_arm_walk_angle: -13,
+    
+    limb_anchor_right_arm_x: 4,
+    limb_anchor_right_arm_y: -34,
+	
+    limb_anchor_right_arm_idle_angle: 15,
+	limb_anchor_right_arm_walk_angle: 15,
+    
+    equipment_inventory_x: -3,
+    equipment_inventory_y: -28,
+    
+    equipment_firearm_hip_x: -2,
+    equipment_firearm_hip_y: -30,
+
+    equipment_firearm_aim_x: 3,
+    equipment_firearm_aim_y: -40,
 }
 
 // Wolf
@@ -127,6 +191,22 @@ global.unit_sprite_packs[UnitSpritePacks.Wolf] =
     ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -7,
+    limb_anchor_left_arm_y: -34,
+    
+    limb_anchor_right_arm_x: 3,
+    limb_anchor_right_arm_y: -34,
+    
+    equipment_inventory_x: -2,
+    equipment_inventory_y: -22,
+    
+    equipment_firearm_hip_x: -6,
+    equipment_firearm_hip_y: -22,
+
+    equipment_firearm_aim_x: 3,
+    equipment_firearm_aim_y: -29,
 }
 
 // Director
@@ -163,6 +243,22 @@ global.unit_sprite_packs[UnitSpritePacks.Director] =
     ragdoll_chest_bot_normalmap: sWilliam_Knives_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_Knives_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_Knives_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -5,
+    limb_anchor_left_arm_y: -37,
+    
+    limb_anchor_right_arm_x: 4,
+    limb_anchor_right_arm_y: -35,
+    
+    equipment_inventory_x: -3,
+    equipment_inventory_y: -28,
+    
+    equipment_firearm_hip_x: -2,
+    equipment_firearm_hip_y: -30,
+
+    equipment_firearm_aim_x: 5,
+    equipment_firearm_aim_y: -41,
 }
 
 // Knives
@@ -199,6 +295,22 @@ global.unit_sprite_packs[UnitSpritePacks.Knives] =
     ragdoll_chest_bot_normalmap: sWilliam_Knives_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_Knives_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_Knives_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -5,
+    limb_anchor_left_arm_y: -34,
+    
+    limb_anchor_right_arm_x: 5,
+    limb_anchor_right_arm_y: -34,
+    
+    equipment_inventory_x: -5,
+    equipment_inventory_y: -21,
+    
+    equipment_firearm_hip_x: -4,
+    equipment_firearm_hip_y: -28,
+
+    equipment_firearm_aim_x: 5,
+    equipment_firearm_aim_y: -38,
 }
 
 // Martyr
@@ -235,6 +347,22 @@ global.unit_sprite_packs[UnitSpritePacks.Martyr] =
     ragdoll_chest_bot_normalmap: sWilliamDS_Heavy_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliamDS_Heavy_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliamDS_Heavy_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -6,
+    limb_anchor_left_arm_y: -37,
+    
+    limb_anchor_right_arm_x: 5,
+    limb_anchor_right_arm_y: -37,
+    
+    equipment_inventory_x: -6,
+    equipment_inventory_y: -27,
+    
+    equipment_firearm_hip_x: -1,
+    equipment_firearm_hip_y: -30,
+
+    equipment_firearm_aim_x: 5,
+    equipment_firearm_aim_y: -38,
 }
 
 // Northern Brigade Soldier
@@ -271,6 +399,22 @@ global.unit_sprite_packs[UnitSpritePacks.NorthernBrigadeSoldier] =
     ragdoll_chest_bot_normalmap: sWilliam_NorthernBrigade_Soldat_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_NorthernBrigade_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_NorthernBrigade_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -6,
+    limb_anchor_left_arm_y: -32,
+    
+    limb_anchor_right_arm_x: 4,
+    limb_anchor_right_arm_y: -32,
+    
+    equipment_inventory_x: -8,
+    equipment_inventory_y: -21,
+    
+    equipment_firearm_hip_x: -4,
+    equipment_firearm_hip_y: -28,
+
+    equipment_firearm_aim_x: 5,
+    equipment_firearm_aim_y: -40,
 }
 
 // Northern Brigade Officer
@@ -307,6 +451,22 @@ global.unit_sprite_packs[UnitSpritePacks.NorthernBrigadeOfficer] =
     ragdoll_chest_bot_normalmap: sWilliam_NorthernBrigade_ChestBot_NormalMap,
     ragdoll_leg_left_normalmap: sWilliam_NorthernBrigade_LeftLeg_NormalMap,
     ragdoll_leg_right_normalmap: sWilliam_NorthernBrigade_RightLeg_NormalMap,
+    
+    // Limb & Equipment Positions
+    limb_anchor_left_arm_x: -6,
+    limb_anchor_left_arm_y: -32,
+    
+    limb_anchor_right_arm_x: 4,
+    limb_anchor_right_arm_y: -32,
+    
+    equipment_inventory_x: -8,
+    equipment_inventory_y: -21,
+    
+    equipment_firearm_hip_x: -4,
+    equipment_firearm_hip_y: -28,
+
+    equipment_firearm_aim_x: 5,
+    equipment_firearm_aim_y: -40,
 }
 
 

@@ -33,11 +33,7 @@ side_angle_cd = point_direction(center_xpos, center_ypos, lerp(corner_xpos_c, co
 side_angle_da = point_direction(center_xpos, center_ypos, lerp(corner_xpos_d, corner_xpos_a, 0.5), lerp(corner_ypos_d, corner_ypos_a, 0.5));
 
 // Rotations
-rotations = 0;
-
-var temp_smallest_value = min(corner_angle_a, corner_angle_b, corner_angle_c, corner_angle_d);
-
-switch (temp_smallest_value)
+switch (min(corner_angle_a, corner_angle_b, corner_angle_c, corner_angle_d))
 {
     case corner_angle_a:
         rotations = 3;
@@ -48,7 +44,6 @@ switch (temp_smallest_value)
     case corner_angle_c:
         rotations = 1;
         break;
-    case corner_angle_d:
     default:
         rotations = 2;
         break;

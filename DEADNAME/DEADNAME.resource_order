@@ -301,6 +301,7 @@
     {"name":"sWilliam_Hurt","order":2,"path":"sprites/sWilliam_Hurt/sWilliam_Hurt.yy",},
     {"name":"sWilliam_Knives_Hair","order":3,"path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},
     {"name":"sPraxisIconTitle","order":5,"path":"sprites/sPraxisIconTitle/sPraxisIconTitle.yy",},
+    {"name":"oDebugStressTest","order":3,"path":"objects/oDebugStressTest/oDebugStressTest.yy",},
     {"name":"sAdobeHouse_KivaRumfordFireplace","order":28,"path":"sprites/sAdobeHouse_KivaRumfordFireplace/sAdobeHouse_KivaRumfordFireplace.yy",},
     {"name":"sWilliam_NorthernBrigade_LeftLeg","order":4,"path":"sprites/sWilliam_NorthernBrigade_LeftLeg/sWilliam_NorthernBrigade_LeftLeg.yy",},
     {"name":"sWilliam_NorthernBrigade_Soldat_ChestTop_NormalMap","order":1,"path":"sprites/sWilliam_NorthernBrigade_Soldat_ChestTop_NormalMap/sWilliam_NorthernBrigade_Soldat_ChestTop_NormalMap.yy",},

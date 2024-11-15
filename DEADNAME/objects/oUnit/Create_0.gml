@@ -26,6 +26,7 @@ slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player i
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
+unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 unit_sprite_pack = UnitSpritePacks.MoralistWilliam;
 
 jump_peak_threshold = 0.8;
@@ -59,13 +60,29 @@ x_velocity = 0;
 y_velocity = 0;
 
 // Animation Variables
-image_speed = 0.75;
+image_speed = 0;
+
+animation_speed = 0.18;
+animation_speed_direction = 1;
+
+draw_image_index = 0;
+draw_image_index_length = 0;
 
 draw_xscale = 1;
 draw_yscale = 1;
 
 draw_angle = 0;
 draw_angle_value = 0;
+
+// Limbs
+limb_left_arm = NEW(LimbArmClass);
+limb_left_arm.init_arm(LimbType.LeftArm, unit_sprite_pack);
+
+limb_right_arm = NEW(LimbArmClass);
+limb_right_arm.init_arm(LimbType.RightArm, unit_sprite_pack);
+limb_right_arm.limb_animation_value_offset = 0.5;
+
+limb_animation_double_cycle = false;
 
 // Input Action Variables
 move_left = false;
