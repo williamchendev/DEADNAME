@@ -27,7 +27,7 @@ slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player i
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
-unit_sprite_pack = UnitSpritePacks.MoralistWilliam;
+unit_pack = UnitPack.MoralistWilliam;
 
 jump_peak_threshold = 0.8;
 squash_stretch_jump_intensity = 0.5;
@@ -35,12 +35,12 @@ squash_stretch_jump_intensity = 0.5;
 squash_stretch_reset_spd = 0.15;
 
 // Unit Behaviour Variables
-for (var s = 0; s < array_length(global.unit_sprite_packs); s++)
+for (var s = 0; s < array_length(global.unit_packs); s++)
 {
 	// Auto Assign Unit Sprite Pack from Unit Object's Idle Sprite Index
-	if (global.unit_sprite_packs[s].idle_sprite == sprite_index)
+	if (global.unit_packs[s].idle_sprite == sprite_index)
 	{
-		unit_sprite_pack = s;
+		unit_pack = s;
 		break;
 	}
 }
@@ -76,11 +76,10 @@ draw_angle_value = 0;
 
 // Limbs
 limb_left_arm = NEW(LimbArmClass);
-limb_left_arm.init_arm(LimbType.LeftArm, unit_sprite_pack);
+limb_left_arm.init_arm(LimbType.LeftArm, unit_pack);
 
 limb_right_arm = NEW(LimbArmClass);
-limb_right_arm.init_arm(LimbType.RightArm, unit_sprite_pack);
-limb_right_arm.limb_animation_value_offset = 0.5;
+limb_right_arm.init_arm(LimbType.RightArm, unit_pack);
 
 limb_animation_double_cycle = false;
 
@@ -113,7 +112,7 @@ unit_ground_contact_behaviour = function()
 			if (temp_solid_rot_inst != noone)
 			{
 				ground_contact_vertical_offset = i;
-				draw_angle = point_check_solid_surface_angle(x, y, temp_solid_rot_inst);
+				draw_angle = point_check_solid_surface_angle(x, y + i, temp_solid_rot_inst);
 				return;
 			}
 		}

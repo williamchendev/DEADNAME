@@ -15,7 +15,7 @@ enum UnitEquipmentAnimationState
 }
 
 // Unit Sprite Pack Enums
-enum UnitSpritePacks
+enum UnitPack
 {
     Default = 0,
     MoralistWilliam = 1,
@@ -28,7 +28,7 @@ enum UnitSpritePacks
 }
 
 // Default Unit Pack
-global.unit_sprite_packs[UnitSpritePacks.Default] = 
+global.unit_packs[UnitPack.Default] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_CapitalLoyalist_Idle,
@@ -100,7 +100,7 @@ global.unit_sprite_packs[UnitSpritePacks.Default] =
 }
 
 // Moralist William
-global.unit_sprite_packs[UnitSpritePacks.MoralistWilliam] = 
+global.unit_packs[UnitPack.MoralistWilliam] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_CapitalLoyalist_Idle,
@@ -135,17 +135,11 @@ global.unit_sprite_packs[UnitSpritePacks.MoralistWilliam] =
     ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
     
     // Limb & Equipment Positions
-    limb_anchor_left_arm_x: -8,
+    limb_anchor_left_arm_x: -7,
     limb_anchor_left_arm_y: -35,
-	
-    limb_anchor_left_arm_idle_angle: -13,
-	limb_anchor_left_arm_walk_angle: -13,
     
     limb_anchor_right_arm_x: 4,
-    limb_anchor_right_arm_y: -34,
-	
-    limb_anchor_right_arm_idle_angle: 15,
-	limb_anchor_right_arm_walk_angle: 15,
+    limb_anchor_right_arm_y: -35,
     
     equipment_inventory_x: -3,
     equipment_inventory_y: -28,
@@ -155,10 +149,30 @@ global.unit_sprite_packs[UnitSpritePacks.MoralistWilliam] =
 
     equipment_firearm_aim_x: 3,
     equipment_firearm_aim_y: -40,
+    
+    // Limb Animation Settings
+    limb_idle_animation_extension_percent: 0.95,
+	limb_idle_animation_ambient_move_width: 2,
+	limb_left_arm_idle_animation_angle: -10,
+	limb_right_arm_idle_animation_angle: 13,
+		
+	limb_left_arm_walk_animation_extension_percent: 0.5,
+	limb_left_arm_walk_animation_ambient_move_width: 4,
+	limb_left_arm_walk_animation_ambient_move_height: 1,
+	limb_left_arm_walk_animation_angle: 0,
+	
+	limb_right_arm_walk_animation_extension_percent: 0.6,
+	limb_right_arm_walk_animation_ambient_move_width: 2,
+	limb_right_arm_walk_animation_ambient_move_height: 1,
+	limb_right_arm_walk_animation_angle: 30,
+	
+	limb_jump_animation_extension_percent: 0.95,
+	limb_left_arm_jump_animation_angle: -15,
+	limb_right_arm_jump_animation_angle: 18,
 }
 
 // Wolf
-global.unit_sprite_packs[UnitSpritePacks.Wolf] = 
+global.unit_packs[UnitPack.Wolf] = 
 {
     // Animation Sprites
     idle_sprite: sWolf_Idle,
@@ -210,7 +224,7 @@ global.unit_sprite_packs[UnitSpritePacks.Wolf] =
 }
 
 // Director
-global.unit_sprite_packs[UnitSpritePacks.Director] = 
+global.unit_packs[UnitPack.Director] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_Director_Idle,
@@ -262,7 +276,7 @@ global.unit_sprite_packs[UnitSpritePacks.Director] =
 }
 
 // Knives
-global.unit_sprite_packs[UnitSpritePacks.Knives] = 
+global.unit_packs[UnitPack.Knives] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_Knives_Idle,
@@ -314,7 +328,7 @@ global.unit_sprite_packs[UnitSpritePacks.Knives] =
 }
 
 // Martyr
-global.unit_sprite_packs[UnitSpritePacks.Martyr] = 
+global.unit_packs[UnitPack.Martyr] = 
 {
     // Animation Sprites
     idle_sprite: sWilliamDS_Heavy_Idle,
@@ -366,7 +380,7 @@ global.unit_sprite_packs[UnitSpritePacks.Martyr] =
 }
 
 // Northern Brigade Soldier
-global.unit_sprite_packs[UnitSpritePacks.NorthernBrigadeSoldier] = 
+global.unit_packs[UnitPack.NorthernBrigadeSoldier] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_NorthernBrigade_Soldat_Idle,
@@ -418,7 +432,7 @@ global.unit_sprite_packs[UnitSpritePacks.NorthernBrigadeSoldier] =
 }
 
 // Northern Brigade Officer
-global.unit_sprite_packs[UnitSpritePacks.NorthernBrigadeOfficer] = 
+global.unit_packs[UnitPack.NorthernBrigadeOfficer] = 
 {
     // Animation Sprites
     idle_sprite: sWilliam_NorthernBrigade_Idle,

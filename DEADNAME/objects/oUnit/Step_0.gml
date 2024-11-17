@@ -298,25 +298,25 @@ draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * fra
 switch (unit_animation_state)
 {
 	case UnitAnimationState.Idle:
-		sprite_index = global.unit_sprite_packs[unit_sprite_pack].idle_sprite;
+		sprite_index = global.unit_packs[unit_pack].idle_sprite;
 		draw_image_index_length = 4;
 		break;
 	case UnitAnimationState.Walking:
-		sprite_index = global.unit_sprite_packs[unit_sprite_pack].walk_sprite;
+		sprite_index = global.unit_packs[unit_pack].walk_sprite;
 		draw_image_index_length = 5;
 		break;
 	case UnitAnimationState.Jumping:
-		sprite_index = global.unit_sprite_packs[unit_sprite_pack].jump_sprite;
+		sprite_index = global.unit_packs[unit_pack].jump_sprite;
 		image_index = ((abs(y_velocity) - jump_peak_threshold >= 0) * sign(y_velocity)) + 1;
 		draw_image_index_length = -1;
 		break;
 	case UnitAnimationState.Aiming:
-		sprite_index = global.unit_sprite_packs[unit_sprite_pack].aim_sprite;
+		sprite_index = global.unit_packs[unit_pack].aim_sprite;
 		image_index = 0;
 		draw_image_index_length = -1;
 		break;
 	case UnitAnimationState.AimWalking:
-		sprite_index = global.unit_sprite_packs[unit_sprite_pack].aim_walk_sprite;
+		sprite_index = global.unit_packs[unit_pack].aim_walk_sprite;
 		draw_image_index_length = 5;
 		break;
 }

@@ -1,9 +1,11 @@
+//
 enum LimbType
 {
 	LeftArm,
 	RightArm
 }
 
+//
 class LimbClass define
 {
 	// Init & Destroy Methods
@@ -29,9 +31,6 @@ class LimbArmClass extends LimbClass define
 	// Init & Destroy Methods
 	static _constructor = function() 
 	{
-		// Settings
-		limb_animation_value_offset = 0;
-		
 		// Variables
 		limb_xscale = 1;
 		
@@ -44,7 +43,7 @@ class LimbArmClass extends LimbClass define
 		limb_pivot_by = 0;
 		
 		limb_pivot_b_angle = 0;
-	
+		
 		// Constructor
 		super._constructor();
 	}
@@ -56,48 +55,52 @@ class LimbArmClass extends LimbClass define
 	}
 	
 	// Limb Properties Methods
-	static init_arm = function(limb_type, unit_sprite_pack) 
+	static init_arm = function(limb_type, unit_pack) 
 	{
 		//
 		switch (limb_type)
 		{
 			case LimbType.LeftArm:
-				anchor_offset_x = global.unit_sprite_packs[unit_sprite_pack].limb_anchor_left_arm_x;
-				anchor_offset_y = global.unit_sprite_packs[unit_sprite_pack].limb_anchor_left_arm_y;
+				limb_animation_value_offset = 0;
 				
-				limb_sprite = global.unit_sprite_packs[unit_sprite_pack].ragdoll_arm_left_sprite;
-				limb_normals = global.unit_sprite_packs[unit_sprite_pack].ragdoll_arm_left_normalmap;
+				anchor_offset_x = global.unit_packs[unit_pack].limb_anchor_left_arm_x;
+				anchor_offset_y = global.unit_packs[unit_pack].limb_anchor_left_arm_y;
 				
-				limb_anchor_idle_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_idle_animation_angle;
-				limb_anchor_walk_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_walk_animation_angle;
-				limb_anchor_jump_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_jump_animation_angle;
+				limb_sprite = global.unit_packs[unit_pack].ragdoll_arm_left_sprite;
+				limb_normals = global.unit_packs[unit_pack].ragdoll_arm_left_normalmap;
 				
-				var limb_walk_animation_extension_percent = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_walk_animation_extension_percent;
-				limb_walk_animation_ambient_move_width = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_walk_animation_ambient_move_width;
-				limb_walk_animation_ambient_move_height = global.unit_sprite_packs[unit_sprite_pack].limb_left_arm_walk_animation_ambient_move_height;
+				limb_anchor_idle_animation_angle = global.unit_packs[unit_pack].limb_left_arm_idle_animation_angle;
+				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_left_arm_walk_animation_angle;
+				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_left_arm_jump_animation_angle;
+				
+				var limb_walk_animation_extension_percent = global.unit_packs[unit_pack].limb_left_arm_walk_animation_extension_percent;
+				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_width;
+				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_height;
 				break;
 			case LimbType.RightArm:
-				anchor_offset_x = global.unit_sprite_packs[unit_sprite_pack].limb_anchor_right_arm_x;
-				anchor_offset_y = global.unit_sprite_packs[unit_sprite_pack].limb_anchor_right_arm_y;
+				limb_animation_value_offset = 0.5;
 				
-				limb_sprite = global.unit_sprite_packs[unit_sprite_pack].ragdoll_arm_right_sprite;
-				limb_normals = global.unit_sprite_packs[unit_sprite_pack].ragdoll_arm_right_normalmap;
+				anchor_offset_x = global.unit_packs[unit_pack].limb_anchor_right_arm_x;
+				anchor_offset_y = global.unit_packs[unit_pack].limb_anchor_right_arm_y;
 				
-				limb_anchor_idle_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_idle_animation_angle;
-				limb_anchor_walk_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_walk_animation_angle;
-				limb_anchor_jump_animation_angle = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_jump_animation_angle;
+				limb_sprite = global.unit_packs[unit_pack].ragdoll_arm_right_sprite;
+				limb_normals = global.unit_packs[unit_pack].ragdoll_arm_right_normalmap;
 				
-				var limb_walk_animation_extension_percent = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_walk_animation_extension_percent;
-				limb_walk_animation_ambient_move_width = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_walk_animation_ambient_move_width;
-				limb_walk_animation_ambient_move_height = global.unit_sprite_packs[unit_sprite_pack].limb_right_arm_walk_animation_ambient_move_height;
+				limb_anchor_idle_animation_angle = global.unit_packs[unit_pack].limb_right_arm_idle_animation_angle;
+				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_right_arm_walk_animation_angle;
+				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_right_arm_jump_animation_angle;
+				
+				var limb_walk_animation_extension_percent = global.unit_packs[unit_pack].limb_right_arm_walk_animation_extension_percent;
+				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_width;
+				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_height;
 				break;
 		}
 		
 		//
-		var limb_idle_animation_extension_percent = global.unit_sprite_packs[unit_sprite_pack].limb_idle_animation_extension_percent;
-		limb_idle_animation_ambient_move_width = global.unit_sprite_packs[unit_sprite_pack].limb_idle_animation_ambient_move_width;
+		var limb_idle_animation_extension_percent = global.unit_packs[unit_pack].limb_idle_animation_extension_percent;
+		limb_idle_animation_ambient_move_width = global.unit_packs[unit_pack].limb_idle_animation_ambient_move_width;
 		
-		limb_jump_animation_extension_percent = global.unit_sprite_packs[unit_sprite_pack].limb_jump_animation_extension_percent;
+		limb_jump_animation_extension_percent = global.unit_packs[unit_pack].limb_jump_animation_extension_percent;
 		
 		//
 		limb_length = sprite_get_height(limb_sprite) * 2;
