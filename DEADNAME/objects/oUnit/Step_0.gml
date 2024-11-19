@@ -1,18 +1,33 @@
 /// @description Unit Update Event
 
-// Movement & Input Behaviour
+// INPUT //
+#region Movement & Input Behaviour
 if (canmove)
 {
+	// UNIT AI WOULD GO HERE!!!!!
+	
+	// Weapon Aiming
+	if (input_aim)
+	{
+		weapon_aim = true;
+		weapon_aim_x = input_cursor_x;
+		weapon_aim_y = input_cursor_y;
+	}
+	else
+	{
+		weapon_aim = false;
+		weapon_aim_x = x + (sign(draw_xscale) * 320);
+		weapon_aim_y = y - global.unit_packs[unit_pack].equipment_firearm_hip_y;
+	}
+	
 	// Horizontal Movement Behaviour
-	var move_spd = run_spd;
+	var move_spd = weapon_aim ? walk_spd : run_spd;
 	
-	// PUT WALKING HERE!!!
-	
-	if (move_left) 
+	if (input_left) 
 	{
 		move_spd = -move_spd;
 	}
-	else if (!move_right) 
+	else if (!input_right)
 	{
 		move_spd = 0;
 		x_velocity = 0;
@@ -22,7 +37,7 @@ if (canmove)
 	x_velocity = move_spd;
 	
 	// Vertical Movement Behaviour
-	if (move_jump_hold) 
+	if (input_jump_hold) 
 	{
 		if (grounded) 
 		{
@@ -39,10 +54,10 @@ if (canmove)
 			// Reset Ground Contact
 			grounded = false;
 		}
-		else if (move_double_jump) 
+		else if (input_double_jump)
 		{
 			// Second Jump
-			if (double_jump) 
+			if (double_jump)
 			{
 				y_velocity = 0;
 				y_velocity -= double_jump_spd;
@@ -54,7 +69,7 @@ if (canmove)
 				draw_yscale += squash_stretch_jump_intensity;
 			}
 		}
-		else if (y_velocity < 0) 
+		else if (y_velocity < 0)
 		{
 			// Variable Jump Height
 			y_velocity -= jump_velocity * frame_delta;
@@ -63,9 +78,9 @@ if (canmove)
 	}
 	
 	// Jumping Down (Platforms)
-	if (move_drop_down && grounded) 
+	if (input_drop_down && grounded)
 	{
-		if (place_free(x, y + 1)) 
+		if (place_free(x, y + 1))
 		{
 			y += 2;
 			y_velocity += 0.05;
@@ -78,8 +93,10 @@ else
 	x_velocity = 0;
 	y_velocity = 0;
 }
+#endregion
 
-// Collision & Physics Behaviour
+// PHYSICS //
+#region Collision & Physics Behaviour
 if (grounded)
 {
 	// Disable Gravity
@@ -266,7 +283,16 @@ else
 	}
 }
 
-// Animation Behaviour
+// Update Unit Scale & Angle
+draw_xscale = lerp(draw_xscale, sign(draw_xscale), squash_stretch_reset_spd * frame_delta);
+draw_yscale = lerp(draw_yscale, 1, squash_stretch_reset_spd * frame_delta);
+draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * frame_delta);
+#endregion
+
+// ANIMATION //
+#region Animation Behaviour
+var temp_unit_animation_state = UnitAnimationState.Idle;
+
 if (x_velocity != 0)
 {
 	draw_xscale = abs(draw_xscale) * sign(x_velocity);
@@ -274,75 +300,138 @@ if (x_velocity != 0)
 	
 if (grounded)
 {
-	if (x_velocity != 0)
-	{
-		unit_animation_state = UnitAnimationState.Walking;
-	}
-	else
-	{
-		unit_animation_state = UnitAnimationState.Idle;
-	}
+	// Walking or Idle Animation
+	temp_unit_animation_state = x_velocity != 0 ? (weapon_aim ? UnitAnimationState.AimWalking : UnitAnimationState.Walking) : (weapon_aim ? UnitAnimationState.Aiming : UnitAnimationState.Idle);
 }
 else 
 {
 	// Jump Animation
-	unit_animation_state = UnitAnimationState.Jumping;
+	temp_unit_animation_state = UnitAnimationState.Jumping;
 }
-
-draw_xscale = lerp(draw_xscale, sign(draw_xscale), squash_stretch_reset_spd * frame_delta);
-draw_yscale = lerp(draw_yscale, 1, squash_stretch_reset_spd * frame_delta);
-
-draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * frame_delta);
 
 // Load Animation State
-switch (unit_animation_state)
+if (unit_animation_state != temp_unit_animation_state)
 {
-	case UnitAnimationState.Idle:
-		sprite_index = global.unit_packs[unit_pack].idle_sprite;
-		draw_image_index_length = 4;
-		break;
-	case UnitAnimationState.Walking:
-		sprite_index = global.unit_packs[unit_pack].walk_sprite;
-		draw_image_index_length = 5;
-		break;
-	case UnitAnimationState.Jumping:
-		sprite_index = global.unit_packs[unit_pack].jump_sprite;
-		image_index = ((abs(y_velocity) - jump_peak_threshold >= 0) * sign(y_velocity)) + 1;
-		draw_image_index_length = -1;
-		break;
-	case UnitAnimationState.Aiming:
-		sprite_index = global.unit_packs[unit_pack].aim_sprite;
-		image_index = 0;
-		draw_image_index_length = -1;
-		break;
-	case UnitAnimationState.AimWalking:
-		sprite_index = global.unit_packs[unit_pack].aim_walk_sprite;
-		draw_image_index_length = 5;
-		break;
-}
-
-if (draw_image_index_length != -1)
-{
-	draw_image_index += (animation_speed * animation_speed_direction) * frame_delta;
+	unit_animation_state = temp_unit_animation_state;
 	
-	if (draw_image_index >= draw_image_index_length)
+	switch (unit_animation_state)
 	{
-		limb_animation_double_cycle = !limb_animation_double_cycle;
+		case UnitAnimationState.Idle:
+			sprite_index = global.unit_packs[unit_pack].idle_sprite;
+			normalmap_index = global.unit_packs[unit_pack].idle_normalmap;
+			draw_image_index_length = 4;
+			break;
+		case UnitAnimationState.Walking:
+			sprite_index = global.unit_packs[unit_pack].walk_sprite;
+			normalmap_index = global.unit_packs[unit_pack].walk_normalmap;
+			draw_image_index_length = 5;
+			break;
+		case UnitAnimationState.Jumping:
+			sprite_index = global.unit_packs[unit_pack].jump_sprite;
+			normalmap_index = global.unit_packs[unit_pack].jump_normalmap;
+			image_index = ((abs(y_velocity) - jump_peak_threshold >= 0) * sign(y_velocity)) + 1;
+			draw_image_index_length = -1;
+			break;
+		case UnitAnimationState.Aiming:
+			sprite_index = global.unit_packs[unit_pack].aim_sprite;
+			normalmap_index = global.unit_packs[unit_pack].aim_normalmap;
+			image_index = 0;
+			draw_image_index_length = -1;
+			break;
+		case UnitAnimationState.AimWalking:
+			sprite_index = global.unit_packs[unit_pack].aim_walk_sprite;
+			normalmap_index = global.unit_packs[unit_pack].aim_walk_normalmap;
+			draw_image_index_length = 5;
+			break;
 	}
-	
-	draw_image_index = draw_image_index mod draw_image_index_length;
-	image_index = floor(draw_image_index);
 }
+#endregion
 
-// Limb Animation Behaviour
+// LIMBS //
+#region Limb Animation Behaviour
 switch (unit_equipment_animation_state)
 {
 	case UnitEquipmentAnimationState.Firearm:
-		limb_left_arm.update_pivot(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
-		limb_right_arm.update_pivot(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value);
+	case UnitEquipmentAnimationState.FirearmReload:
+		// Firearm Animation States
+		var temp_firearm_reload = unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload;
+		var temp_firearm_is_aimed = weapon_aim and !temp_firearm_reload;
+	
+		// Update Facing Direction
+		draw_xscale = temp_firearm_is_aimed ? (abs(draw_xscale) * ((weapon_aim_x - x >= 0) ? 1 : -1)) : draw_xscale;
+		var temp_weapon_facing_sign = sign(draw_xscale);
+		animation_speed_direction = 1;
+	
+		// Update Unit's Weapon Offset & Weapon's Position
+		firearm_aim_transition_value = temp_firearm_is_aimed ? lerp(firearm_aim_transition_value, 1, firearm_aiming_aim_transition_spd * frame_delta) : lerp(firearm_aim_transition_value, 0, firearm_aiming_hip_transition_spd * frame_delta);
+		
+		var temp_weapon_horizontal_offset = lerp(global.unit_packs[unit_pack].equipment_firearm_hip_x, global.unit_packs[unit_pack].equipment_firearm_aim_x, firearm_aim_transition_value) * draw_xscale;
+		var temp_weapon_vertical_offset = lerp(global.unit_packs[unit_pack].equipment_firearm_hip_y, global.unit_packs[unit_pack].equipment_firearm_aim_y, firearm_aim_transition_value) * draw_yscale;
+		
+		var temp_weapon_x = x + rot_point_x(temp_weapon_horizontal_offset, temp_weapon_vertical_offset, draw_angle_value);
+		var temp_weapon_y = y + ground_contact_vertical_offset + rot_point_y(temp_weapon_horizontal_offset, temp_weapon_vertical_offset);
+		
+		// Weapon Aiming & Behaviour
+		var temp_weapon_target_angle;
+		
+		if (temp_firearm_reload)
+		{
+			temp_weapon_target_angle = (draw_xscale < 0 ? 180 : 0) + (firearm_reload_safety_angle * temp_weapon_facing_sign);
+		}
+		else if (temp_firearm_is_aimed)
+		{
+			temp_weapon_target_angle = point_direction(temp_weapon_x, temp_weapon_y, weapon_aim_x, weapon_aim_y);
+			animation_speed_direction = ((x_velocity != 0) and (sign(x_velocity) != temp_weapon_facing_sign)) ? -1 : 1;
+		}
+		else
+		{
+			temp_weapon_target_angle = (draw_xscale < 0 ? 180 : 0) + ((x_velocity != 0) ? (firearm_moving_safety_angle * temp_weapon_facing_sign) : 0);
+		}
+		
+		// Update Weapon's Angle
+		var temp_weapon_angle = (equipped_weapon.weapon_angle - (angle_difference(equipped_weapon.weapon_angle, temp_weapon_target_angle) * firearm_aiming_angle_transition_spd * frame_delta)) mod 360;
+		temp_weapon_angle = temp_weapon_angle < 0 ? temp_weapon_angle + 360 : temp_weapon_angle;
+		
+		// Update Weapon Position & Angle Physics
+		equipped_weapon.update_weapon_physics(temp_weapon_x, temp_weapon_y, temp_weapon_angle, temp_weapon_facing_sign);
+		
+		// Update Limb Pivots
+		limb_left_arm.limb_xscale = temp_weapon_facing_sign;
+		limb_right_arm.limb_xscale = temp_weapon_facing_sign;
+		
+		var temp_left_arm_anchor_offset_x = limb_left_arm.anchor_offset_x * draw_xscale;
+		var temp_left_arm_anchor_offset_y = limb_left_arm.anchor_offset_y * draw_yscale;
+		
+		limb_left_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+		limb_left_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+		
+		var temp_right_arm_anchor_offset_x = limb_right_arm.anchor_offset_x * draw_xscale;
+		var temp_right_arm_anchor_offset_y = limb_right_arm.anchor_offset_y * draw_yscale;
+		
+		limb_right_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+		limb_right_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+		
+		// Update Weapon Limb Targets
+		var temp_weapon_left_hand_horizontal_offset = equipped_weapon.weapon_hand_position_trigger_x;
+		var temp_weapon_left_hand_vertical_offset = equipped_weapon.weapon_hand_position_trigger_y * equipped_weapon.weapon_facing_sign;
+		
+		var temp_weapon_right_hand_horizontal_offset = equipped_weapon.weapon_hand_position_offhand_x;
+		var temp_weapon_right_hand_vertical_offset = equipped_weapon.weapon_hand_position_offhand_y * equipped_weapon.weapon_facing_sign;
+		
+		var temp_weapon_left_hand_target_x = rot_point_x(temp_weapon_left_hand_horizontal_offset, temp_weapon_left_hand_vertical_offset, equipped_weapon.weapon_angle);
+		var temp_weapon_left_hand_target_y = rot_point_y(temp_weapon_left_hand_horizontal_offset, temp_weapon_left_hand_vertical_offset);
+		
+		var temp_weapon_right_hand_target_x = rot_point_x(temp_weapon_right_hand_horizontal_offset, temp_weapon_right_hand_vertical_offset);
+		var temp_weapon_right_hand_target_y = rot_point_y(temp_weapon_right_hand_horizontal_offset, temp_weapon_right_hand_vertical_offset);
+		
+		limb_left_arm.update_target(equipped_weapon.weapon_x + temp_weapon_left_hand_target_x, equipped_weapon.weapon_y + temp_weapon_left_hand_target_y);
+		limb_right_arm.update_target(equipped_weapon.weapon_x + temp_weapon_right_hand_target_x, equipped_weapon.weapon_y + temp_weapon_right_hand_target_y);
 		break;
 	default:
+		// Reset Animation Speed Direction
+		animation_speed_direction = 1;
 		
+		// Update Non-Weapon Unit Animations
 		switch (unit_animation_state)
 		{
 			case UnitAnimationState.Idle:
@@ -362,4 +451,19 @@ switch (unit_equipment_animation_state)
 				break;
 		}
 		break;
+}
+#endregion
+
+// Update Image Index
+if (draw_image_index_length != -1)
+{
+	draw_image_index += (animation_speed * animation_speed_direction) * frame_delta;
+	
+	if (draw_image_index >= draw_image_index_length)
+	{
+		limb_animation_double_cycle = !limb_animation_double_cycle;
+		draw_image_index = draw_image_index mod draw_image_index_length;
+	}
+	
+	image_index = floor(draw_image_index);
 }

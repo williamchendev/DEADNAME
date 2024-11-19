@@ -11,10 +11,11 @@ enum UnitAnimationState
 enum UnitEquipmentAnimationState
 {
     None,
-    Firearm
+    Firearm,
+    FirearmReload
 }
 
-// Unit Sprite Pack Enums
+// Unit Character Pack Enums
 enum UnitPack
 {
     Default = 0,

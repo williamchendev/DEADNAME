@@ -26,13 +26,20 @@ slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player i
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
-unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
 unit_pack = UnitPack.MoralistWilliam;
 
 jump_peak_threshold = 0.8;
 squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
+
+firearm_aiming_aim_transition_spd = 0.2;
+firearm_aiming_hip_transition_spd = 0.1;
+firearm_aiming_angle_transition_spd = 0.17;
+
+firearm_reload_safety_angle = -45;
+firearm_moving_safety_angle = -45;
 
 // Unit Behaviour Variables
 for (var s = 0; s < array_length(global.unit_packs); s++)
@@ -74,6 +81,21 @@ draw_yscale = 1;
 draw_angle = 0;
 draw_angle_value = 0;
 
+normalmap_index = noone;
+
+firearm_aim_transition_value = 0;
+
+// Weapons
+weapon_active = true;
+weapon_reload = false;
+weapon_aim = false;
+
+equipped_weapon = create_weapon_from_weapon_pack(WeaponPack.Default);
+equipped_weapon.init_weapon_physics();
+
+weapon_aim_x = 0;
+weapon_aim_y = 0;
+
 // Limbs
 limb_left_arm = NEW(LimbArmClass);
 limb_left_arm.init_arm(LimbType.LeftArm, unit_pack);
@@ -84,13 +106,19 @@ limb_right_arm.init_arm(LimbType.RightArm, unit_pack);
 limb_animation_double_cycle = false;
 
 // Input Action Variables
-move_left = false;
-move_right = false;
+input_left = false;
+input_right = false;
 
-move_drop_down = false;
+input_drop_down = false;
 
-move_jump_hold = false;
-move_double_jump = false;
+input_jump_hold = false;
+input_double_jump = false;
+
+input_attack = false;
+input_aim = false;
+
+input_cursor_x = 0;
+input_cursor_y = 0;
 
 // Unit Methods
 unit_ground_contact_behaviour = function()

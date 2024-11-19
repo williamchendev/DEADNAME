@@ -73,7 +73,6 @@ class LimbArmClass extends LimbClass define
 				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_left_arm_walk_animation_angle;
 				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_left_arm_jump_animation_angle;
 				
-				var limb_walk_animation_extension_percent = global.unit_packs[unit_pack].limb_left_arm_walk_animation_extension_percent;
 				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_width;
 				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_height;
 				break;
@@ -90,29 +89,28 @@ class LimbArmClass extends LimbClass define
 				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_right_arm_walk_animation_angle;
 				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_right_arm_jump_animation_angle;
 				
-				var limb_walk_animation_extension_percent = global.unit_packs[unit_pack].limb_right_arm_walk_animation_extension_percent;
 				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_width;
 				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_height;
 				break;
 		}
 		
 		//
-		var limb_idle_animation_extension_percent = global.unit_packs[unit_pack].limb_idle_animation_extension_percent;
 		limb_idle_animation_ambient_move_width = global.unit_packs[unit_pack].limb_idle_animation_ambient_move_width;
-		
-		limb_jump_animation_extension_percent = global.unit_packs[unit_pack].limb_jump_animation_extension_percent;
 		
 		//
 		limb_length = sprite_get_height(limb_sprite) * 2;
-				
-		limb_idle_animation_offset_x = lengthdir_x(limb_length * limb_idle_animation_extension_percent, limb_anchor_idle_animation_angle + 270);
-		limb_idle_animation_offset_y = lengthdir_y(limb_length * limb_idle_animation_extension_percent, limb_anchor_idle_animation_angle + 270);
 		
-		limb_walk_animation_offset_x = lengthdir_x(limb_length * limb_walk_animation_extension_percent, limb_anchor_walk_animation_angle + 270);
-		limb_walk_animation_offset_y = lengthdir_y(limb_length * limb_walk_animation_extension_percent, limb_anchor_walk_animation_angle + 270);
+		var limb_idle_animation_extension_percent = global.unit_packs[unit_pack].limb_idle_animation_extension_percent;
+		limb_idle_animation_offset_x = rot_dist_x(limb_length * limb_idle_animation_extension_percent, limb_anchor_idle_animation_angle + 270);
+		limb_idle_animation_offset_y = rot_dist_y(limb_length * limb_idle_animation_extension_percent);
 		
-		limb_jump_animation_offset_x = lengthdir_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
-		limb_jump_animation_offset_y = lengthdir_y(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
+		var limb_walk_animation_extension_percent = limb_type == LimbType.LeftArm ? global.unit_packs[unit_pack].limb_left_arm_walk_animation_extension_percent : global.unit_packs[unit_pack].limb_right_arm_walk_animation_extension_percent;
+		limb_walk_animation_offset_x = rot_dist_x(limb_length * limb_walk_animation_extension_percent, limb_anchor_walk_animation_angle + 270);
+		limb_walk_animation_offset_y = rot_dist_y(limb_length * limb_walk_animation_extension_percent);
+		
+		var limb_jump_animation_extension_percent = global.unit_packs[unit_pack].limb_jump_animation_extension_percent;
+		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
+		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 	}
 	
 	// Update Methods
@@ -146,7 +144,7 @@ class LimbArmClass extends LimbClass define
 		
 		// Update Idle Animation
 		var limb_animation_value = (animation_percentage + limb_animation_value_offset) mod 1;
-		var temp_idle_animation_offset_x = lengthdir_x(limb_idle_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
+		var temp_idle_animation_offset_x = rot_dist_x(limb_idle_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
 		
 		// Update Pivot
 		var temp_anchor_offset_x = anchor_offset_x * anchor_xscale;
@@ -174,8 +172,8 @@ class LimbArmClass extends LimbClass define
 		// Update Walk Animation
 		var limb_animation_value = (walk_animation_percentage + global.limb_walk_animation_percent_offset + limb_animation_value_offset) mod 1;
 		
-		var temp_idle_animation_offset_x = lengthdir_x(limb_walk_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
-		var temp_idle_animation_offset_y = lengthdir_y(limb_walk_animation_ambient_move_height, 360 - (limb_animation_value * 360));
+		var temp_idle_animation_offset_x = rot_dist_x(limb_walk_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
+		var temp_idle_animation_offset_y = rot_dist_y(limb_walk_animation_ambient_move_height);
 		
 		// Update Pivot
 		var temp_anchor_offset_x = anchor_offset_x * anchor_xscale;
@@ -227,8 +225,8 @@ class LimbArmClass extends LimbClass define
 		
 		limb_pivot_a_angle = temp_limb_direction + (-90 * temp_limb_extension_percent * limb_xscale);
 		
-		limb_pivot_bx = limb_pivot_ax + lengthdir_x(limb_length / 2, limb_pivot_a_angle);
-		limb_pivot_by = limb_pivot_ay + lengthdir_y(limb_length / 2, limb_pivot_a_angle);
+		limb_pivot_bx = limb_pivot_ax + rot_dist_x(limb_length / 2, limb_pivot_a_angle);
+		limb_pivot_by = limb_pivot_ay + rot_dist_y(limb_length / 2);
 		
 		limb_pivot_b_angle = temp_limb_direction + (90 * temp_limb_extension_percent * limb_xscale);
 	}
@@ -238,7 +236,6 @@ class LimbArmClass extends LimbClass define
 	{
 		draw_sprite_ext(limb_sprite, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
 		draw_sprite_ext(limb_sprite, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
-		super.render_behaviour();
 	}
 }
 
