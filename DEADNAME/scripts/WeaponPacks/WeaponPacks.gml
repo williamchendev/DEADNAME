@@ -52,18 +52,18 @@ global.weapon_packs[WeaponPack.Default] =
     firearm_cycle_delay: 10,
     
     // Weapon Recoil
-    firearm_reload_recovery_delay: 4,
+    firearm_reload_recovery_delay: 2,
     
-    firearm_random_recoil_horizontal_min: 6,
-    firearm_random_recoil_horizontal_max: 6,
+    firearm_random_recoil_horizontal_min: -2,
+    firearm_random_recoil_horizontal_max: -0.5,
     firearm_total_recoil_horizontal: 12,
     
-    firearm_random_recoil_vertical_min: 6,
-    firearm_random_recoil_vertical_max: 6,
+    firearm_random_recoil_vertical_min: -0.2,
+    firearm_random_recoil_vertical_max: -0.1,
     firearm_total_recoil_vertical: 12,
     
-    firearm_random_recoil_angle_min: 3,
-    firearm_random_recoil_angle_max: 8,
+    firearm_random_recoil_angle_min: 4,
+    firearm_random_recoil_angle_max: 4,
     firearm_total_recoil_angle: 20,
     
     // Weapon Positions

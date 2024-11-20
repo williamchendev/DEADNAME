@@ -87,7 +87,7 @@ class FirearmClass extends WeaponClass define
 		firearm_ammo = init_firearm_loaded_ammo;
 		
 		// Init Weapon Timers
-	    firearm_reload_recovery_delay = 0;
+	    firearm_recoil_recovery_delay = 0;
 	    firearm_cycle_delay = 0;
 	}
 	
@@ -100,6 +100,10 @@ class FirearmClass extends WeaponClass define
 	    weapon_horizontal_recoil = 0;
 	    weapon_vertical_recoil = 0;
 	    weapon_angle_recoil = 0;
+	    
+	    weapon_horizontal_recoil_target = 0;
+	    weapon_vertical_recoil_target = 0;
+	    weapon_angle_recoil_target = 0;
 	}
 	
 	// Update Methods
@@ -119,13 +123,25 @@ class FirearmClass extends WeaponClass define
 		// Cycle Weapon
 		firearm_cycle_delay = firearm_cycle_delay > 0 ? firearm_cycle_delay - frame_delta : firearm_cycle_delay;
 		
-		// Recoil Recovery
-		if (firearm_reload_recovery_delay > 0)
+		// Recoil Behaviour
+		if (firearm_recoil_recovery_delay > 0)
 		{
-			firearm_reload_recovery_delay -= frame_delta;
+			// Firearm Recoil
+			firearm_recoil_recovery_delay -= frame_delta;
+			
+			// Add Firearm Recoil
+			weapon_horizontal_recoil += weapon_horizontal_recoil_target * frame_delta;
+			weapon_vertical_recoil += weapon_vertical_recoil_target * frame_delta;
+			weapon_angle_recoil += weapon_angle_recoil_target * frame_delta;
+			
+			// Clamp Firearm Recoil
+			weapon_horizontal_recoil = clamp(weapon_horizontal_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_horizontal, global.weapon_packs[weapon_pack].firearm_total_recoil_horizontal);
+			weapon_vertical_recoil = clamp(weapon_vertical_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_vertical, global.weapon_packs[weapon_pack].firearm_total_recoil_vertical);
+			weapon_angle_recoil = clamp(weapon_angle_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_angle, global.weapon_packs[weapon_pack].firearm_total_recoil_angle);
 		}
 		else
 		{
+			// Weapon Recoil Recovery
 			weapon_horizontal_recoil = lerp(weapon_horizontal_recoil, 0, unit_firearm_recoil_recovery_spd * frame_delta);
 			weapon_vertical_recoil = lerp(weapon_vertical_recoil, 0, unit_firearm_recoil_recovery_spd * frame_delta);
 			weapon_angle_recoil = lerp(weapon_angle_recoil, 0, unit_firearm_recoil_angle_recovery_spd * frame_delta);
@@ -145,24 +161,19 @@ class FirearmClass extends WeaponClass define
 		var temp_firing_angle = (weapon_angle + (weapon_angle_recoil * weapon_facing_sign)) mod 360;
 		temp_firing_angle = temp_firing_angle < 0 ? temp_firing_angle + 360 : temp_firing_angle;
 		
-		// Set Weapon Recoil
-		var temp_firearm_recoil_horizontal_offset = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_horizontal_min, global.weapon_packs[weapon_pack].firearm_random_recoil_horizontal_max);
+		// Set Firearm Recoil Targets
+		var temp_firearm_recoil_horizontal_offset = -random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_horizontal_min, global.weapon_packs[weapon_pack].firearm_random_recoil_horizontal_max);
 		var temp_firearm_recoil_vertical_offset = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_vertical_min, global.weapon_packs[weapon_pack].firearm_random_recoil_vertical_max);
 		
-		rot_prefetch(temp_firing_angle);
+		rot_prefetch(weapon_facing_sign != -1 ? 360 - ((temp_firing_angle + 180) mod 360) : temp_firing_angle);
+		weapon_horizontal_recoil_target = rot_point_x(temp_firearm_recoil_horizontal_offset, temp_firearm_recoil_vertical_offset);
+		weapon_vertical_recoil_target = -rot_point_y(temp_firearm_recoil_horizontal_offset, temp_firearm_recoil_vertical_offset);
 		
-		weapon_horizontal_recoil += rot_point_x(temp_firearm_recoil_horizontal_offset, temp_firearm_recoil_vertical_offset);
-		weapon_horizontal_recoil = clamp(weapon_horizontal_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_horizontal, global.weapon_packs[weapon_pack].firearm_total_recoil_horizontal);
+		weapon_angle_recoil_target = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
 		
-		weapon_vertical_recoil += rot_point_y(temp_firearm_recoil_horizontal_offset, temp_firearm_recoil_vertical_offset);
-		weapon_vertical_recoil = clamp(weapon_vertical_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_vertical, global.weapon_packs[weapon_pack].firearm_total_recoil_vertical);
-		
-		weapon_angle_recoil += random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
-		weapon_angle_recoil = clamp(weapon_angle_recoil, -global.weapon_packs[weapon_pack].firearm_total_recoil_angle, global.weapon_packs[weapon_pack].firearm_total_recoil_angle);
-		
-		// Set Weapon Timers
+		// Set Firearm Timers
 		firearm_cycle_delay = global.weapon_packs[weapon_pack].firearm_cycle_delay;
-		firearm_reload_recovery_delay = global.weapon_packs[weapon_pack].firearm_reload_recovery_delay;
+		firearm_recoil_recovery_delay = global.weapon_packs[weapon_pack].firearm_reload_recovery_delay;
 	}
 	
 	// Render Methods
