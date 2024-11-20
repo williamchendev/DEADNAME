@@ -9,7 +9,7 @@ draw_sprite_ext(sprite_index, image_index, x, y + ground_contact_vertical_offset
 // 
 if (weapon_active)
 {
-	equipped_weapon.render_behaviour();
+	weapon_equipped.render_behaviour();
 }
 
 // 

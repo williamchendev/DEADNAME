@@ -46,6 +46,26 @@ global.weapon_packs[WeaponPack.Default] =
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
     
+    // Weapon Properties
+    firearm_max_ammo: 5,
+    
+    firearm_cycle_delay: 10,
+    
+    // Weapon Recoil
+    firearm_reload_recovery_delay: 4,
+    
+    firearm_random_recoil_horizontal_min: 6,
+    firearm_random_recoil_horizontal_max: 6,
+    firearm_total_recoil_horizontal: 12,
+    
+    firearm_random_recoil_vertical_min: 6,
+    firearm_random_recoil_vertical_max: 6,
+    firearm_total_recoil_vertical: 12,
+    
+    firearm_random_recoil_angle_min: 3,
+    firearm_random_recoil_angle_max: 8,
+    firearm_total_recoil_angle: 20,
+    
     // Weapon Positions
     weapon_hand_position_trigger_x: 4,
     weapon_hand_position_trigger_y: 3,

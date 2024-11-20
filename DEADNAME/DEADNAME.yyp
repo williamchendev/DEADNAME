@@ -602,6 +602,7 @@
     {"id":{"name":"sAdobeHouse_Bed","path":"sprites/sAdobeHouse_Bed/sAdobeHouse_Bed.yy",},},
     {"id":{"name":"sAdobeHouse_FeatherGrass","path":"sprites/sAdobeHouse_FeatherGrass/sAdobeHouse_FeatherGrass.yy",},},
     {"id":{"name":"sAdobeHouse_Ladder","path":"sprites/sAdobeHouse_Ladder/sAdobeHouse_Ladder.yy",},},
+    {"id":{"name":"oDebugOverlay","path":"objects/oDebugOverlay/oDebugOverlay.yy",},},
     {"id":{"name":"oUnitAI","path":"objects/oUnitAI/oUnitAI.yy",},},
     {"id":{"name":"sGodKingBunker_Cliffside_Snow","path":"sprites/sGodKingBunker_Cliffside_Snow/sGodKingBunker_Cliffside_Snow.yy",},},
     {"id":{"name":"sWilliam_CapitalLoyalist_ChestBot_NormalMap","path":"sprites/sWilliam_CapitalLoyalist_ChestBot_NormalMap/sWilliam_CapitalLoyalist_ChestBot_NormalMap.yy",},},

@@ -24,6 +24,8 @@ slope_tolerance = 3; // Tolerance for walking up slopes in pixels
 slope_raycast_distance = 8;
 slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player is standing on
 
+max_velocity = 10;
+
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
 unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
@@ -38,11 +40,15 @@ firearm_aiming_aim_transition_spd = 0.2;
 firearm_aiming_hip_transition_spd = 0.1;
 firearm_aiming_angle_transition_spd = 0.17;
 
+firearm_recoil_recovery_spd = 0.2;
+firearm_recoil_angle_recovery_spd = 0.1;
+
 firearm_reload_safety_angle = -45;
 firearm_moving_safety_angle = -45;
 
 // Unit Behaviour Variables
-for (var s = 0; s < array_length(global.unit_packs); s++)
+var s = 0;
+repeat (array_length(global.unit_packs))
 {
 	// Auto Assign Unit Sprite Pack from Unit Object's Idle Sprite Index
 	if (global.unit_packs[s].idle_sprite == sprite_index)
@@ -50,6 +56,7 @@ for (var s = 0; s < array_length(global.unit_packs); s++)
 		unit_pack = s;
 		break;
 	}
+	s++;
 }
 
 ground_contact_vertical_offset = 0;
@@ -90,8 +97,8 @@ weapon_active = true;
 weapon_reload = false;
 weapon_aim = false;
 
-equipped_weapon = create_weapon_from_weapon_pack(WeaponPack.Default);
-equipped_weapon.init_weapon_physics();
+weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
+weapon_equipped.init_weapon_physics();
 
 weapon_aim_x = 0;
 weapon_aim_y = 0;
@@ -121,7 +128,7 @@ input_cursor_x = 0;
 input_cursor_y = 0;
 
 // Unit Methods
-unit_ground_contact_behaviour = function()
+function unit_ground_contact_behaviour()
 {
 	// Ground Contact Behaviour
 	if (ds_list_find_index(platform_list, collision_point(x, y + 1, oPlatform, false, true)) != -1)

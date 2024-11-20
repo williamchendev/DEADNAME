@@ -512,6 +512,7 @@
     {"name":"sAdobeHouse_Bed","order":2,"path":"sprites/sAdobeHouse_Bed/sAdobeHouse_Bed.yy",},
     {"name":"sAdobeHouse_FeatherGrass","order":24,"path":"sprites/sAdobeHouse_FeatherGrass/sAdobeHouse_FeatherGrass.yy",},
     {"name":"sAdobeHouse_Ladder","order":29,"path":"sprites/sAdobeHouse_Ladder/sAdobeHouse_Ladder.yy",},
+    {"name":"oDebugOverlay","order":4,"path":"objects/oDebugOverlay/oDebugOverlay.yy",},
     {"name":"oUnitAI","order":5,"path":"objects/oUnitAI/oUnitAI.yy",},
     {"name":"sGodKingBunker_Cliffside_Snow","order":8,"path":"sprites/sGodKingBunker_Cliffside_Snow/sGodKingBunker_Cliffside_Snow.yy",},
     {"name":"sWilliam_CapitalLoyalist_ChestBot_NormalMap","order":1,"path":"sprites/sWilliam_CapitalLoyalist_ChestBot_NormalMap/sWilliam_CapitalLoyalist_ChestBot_NormalMap.yy",},
