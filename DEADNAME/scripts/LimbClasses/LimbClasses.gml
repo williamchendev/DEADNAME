@@ -1,4 +1,7 @@
 //
+global.limb_walk_animation_percent_offset = 0.18;
+
+//
 enum LimbType
 {
 	LeftArm,
@@ -238,5 +241,3 @@ class LimbArmClass extends LimbClass define
 		draw_sprite_ext(limb_sprite, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 	}
 }
-
-global.limb_walk_animation_percent_offset = 0.18;

@@ -84,7 +84,7 @@ class FirearmClass extends WeaponClass define
 		super.init_weapon_pack(init_weapon_pack);
 		
 		// Weapon
-		firearm_ammo = init_firearm_loaded_ammo;
+		firearm_ammo = 6;
 		
 		// Init Weapon Timers
 	    firearm_recoil_recovery_delay = 0;
@@ -150,12 +150,20 @@ class FirearmClass extends WeaponClass define
 	
 	static update_weapon_attack = function()
 	{
-		// Firing Cycle Incomplete
+		// Invalid Weapon Attack Behaviour
 		if (firearm_cycle_delay > 0)
 		{
-			// Early Return
+			// Firing Cycle Incomplete
 			return;
 		}
+		else if (firearm_ammo <= 0)
+		{
+			// Firearm Ammo Exhuasted
+			return;
+		}
+		
+		// Deplete Ammo
+		firearm_ammo--;
 		
 		// Firing Angle
 		var temp_firing_angle = (weapon_angle + (weapon_angle_recoil * weapon_facing_sign)) mod 360;

@@ -17,6 +17,8 @@ if (player_input)
 		input_attack = mouse_check_button(mb_left);
 		input_aim = mouse_check_button(mb_right);
 		
+		input_reload = keyboard_check_pressed(game_manager.reload_check);
+		
 		input_cursor_x = mouse_x;
 		input_cursor_y = mouse_y;
 	}

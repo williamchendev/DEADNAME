@@ -36,6 +36,9 @@ squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
 
+weapon_vertical_bobbing_height = 1;
+weapon_bobbing_animation_percent_offset = 0.18;
+
 firearm_aiming_aim_transition_spd = 0.2;
 firearm_aiming_hip_transition_spd = 0.1;
 firearm_aiming_angle_transition_spd = 0.17;
@@ -43,8 +46,9 @@ firearm_aiming_angle_transition_spd = 0.17;
 firearm_recoil_recovery_spd = 0.2;
 firearm_recoil_angle_recovery_spd = 0.1;
 
-firearm_reload_safety_angle = -45;
+firearm_idle_safety_angle = -15;
 firearm_moving_safety_angle = -45;
+firearm_reload_safety_angle = -45;
 
 // Unit Behaviour Variables
 var s = 0;
@@ -123,6 +127,8 @@ input_double_jump = false;
 
 input_attack = false;
 input_aim = false;
+
+input_reload = false;
 
 input_cursor_x = 0;
 input_cursor_y = 0;

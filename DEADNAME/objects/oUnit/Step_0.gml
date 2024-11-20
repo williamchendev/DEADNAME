@@ -7,23 +7,32 @@ if (canmove)
 	// UNIT AI WOULD GO HERE!!!!!
 	
 	// Weapon Aiming
-	if (input_aim)
-	{
-		weapon_aim = true;
-		weapon_aim_x = input_cursor_x;
-		weapon_aim_y = input_cursor_y;
-	}
-	else
-	{
-		weapon_aim = false;
-		weapon_aim_x = x + (sign(draw_xscale) * 320);
-		weapon_aim_y = y - global.unit_packs[unit_pack].equipment_firearm_hip_y;
-	}
+	
 	
 	// Weapon Attacking
-	if (input_attack and weapon_active)
+	if (weapon_active)
 	{
-		weapon_equipped.update_weapon_attack();
+		if (input_aim)
+		{
+			weapon_aim = true;
+			weapon_aim_x = input_cursor_x;
+			weapon_aim_y = input_cursor_y;
+		}
+		else
+		{
+			weapon_aim = false;
+			weapon_aim_x = x + (sign(draw_xscale) * 320);
+			weapon_aim_y = y - global.unit_packs[unit_pack].equipment_firearm_hip_y;
+		}
+	
+		if (input_reload)
+		{
+			
+		}
+		else if (input_attack)
+		{
+			weapon_equipped.update_weapon_attack();
+		}
 	}
 	
 	// Horizontal Movement Behaviour
@@ -389,6 +398,18 @@ switch (unit_equipment_animation_state)
 		var temp_weapon_horizontal_offset = lerp(global.unit_packs[unit_pack].equipment_firearm_hip_x, global.unit_packs[unit_pack].equipment_firearm_aim_x, firearm_aim_transition_value) * draw_xscale;
 		var temp_weapon_vertical_offset = lerp(global.unit_packs[unit_pack].equipment_firearm_hip_y, global.unit_packs[unit_pack].equipment_firearm_aim_y, firearm_aim_transition_value) * draw_yscale;
 		
+		// Update Unit Weapon Bob
+		switch (unit_animation_state)
+		{
+			case UnitAnimationState.Idle:
+			case UnitAnimationState.Walking:
+			case UnitAnimationState.AimWalking:
+				temp_weapon_vertical_offset += dsin((((floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2)) + weapon_bobbing_animation_percent_offset) * 360) * weapon_vertical_bobbing_height;
+				break;
+			default:
+				break;
+		}
+		
 		// Update Weapon Recoil
 		temp_weapon_horizontal_offset += weapon_equipped.weapon_horizontal_recoil * temp_weapon_facing_sign;
 		temp_weapon_vertical_offset += weapon_equipped.weapon_vertical_recoil;
@@ -428,7 +449,7 @@ switch (unit_equipment_animation_state)
 		}
 		else
 		{
-			temp_weapon_target_angle = (draw_xscale < 0 ? 180 : 0) + ((x_velocity != 0) ? (firearm_moving_safety_angle * temp_weapon_facing_sign) : 0);
+			temp_weapon_target_angle = (draw_xscale < 0 ? 180 : 0) + ((x_velocity == 0) ? (firearm_idle_safety_angle * temp_weapon_facing_sign) : (firearm_moving_safety_angle * temp_weapon_facing_sign));
 		}
 		
 		// Update Weapon's Angle
