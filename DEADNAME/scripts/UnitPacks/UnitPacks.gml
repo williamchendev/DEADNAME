@@ -15,6 +15,18 @@ enum UnitEquipmentAnimationState
     FirearmReload
 }
 
+enum UnitFirearmReloadAnimationState
+{
+	Reload_End,
+	Reload_ResetFirearmToReloadPosture,
+	Reload_MovePrimaryHandToUnitInventory,
+	Reload_InventoryHandFumbleAnimation,
+	Reload_MovePrimaryHandToFirearmReloadPosition,
+	ReloadMagazine_MagazineHandFumbleAnimation,
+	ReloadIndividualRounds_IndividualRoundLoadingAnimation,
+	Reload_MovePrimaryHandToFirearmPrimaryHandPosition
+}
+
 // Unit Character Pack Enums
 enum UnitPack
 {

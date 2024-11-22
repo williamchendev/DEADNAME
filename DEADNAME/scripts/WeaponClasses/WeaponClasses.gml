@@ -181,7 +181,13 @@ class FirearmClass extends WeaponClass define
 		
 		// Set Firearm Timers
 		firearm_cycle_delay = global.weapon_packs[weapon_pack].firearm_cycle_delay;
-		firearm_recoil_recovery_delay = global.weapon_packs[weapon_pack].firearm_reload_recovery_delay;
+		firearm_recoil_recovery_delay = global.weapon_packs[weapon_pack].firearm_recoil_recovery_delay;
+	}
+	
+	// Firearm Behaviours
+	static reload_firearm = function()
+	{
+		
 	}
 	
 	// Render Methods

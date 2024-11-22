@@ -28,7 +28,6 @@ max_velocity = 10;
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
-unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
 unit_pack = UnitPack.MoralistWilliam;
 
 jump_peak_threshold = 0.8;
@@ -94,27 +93,45 @@ draw_angle_value = 0;
 
 normalmap_index = noone;
 
+unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+//unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
+unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+
 firearm_aim_transition_value = 0;
+firearm_reload_hand_primary_animation_value = 0;
 
 // Weapons
-weapon_active = true;
+weapon_active = false;
 weapon_reload = false;
 weapon_aim = false;
 
-weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
-weapon_equipped.init_weapon_physics();
+weapon_equipped = noone;
+
+// Weapons DEBUG
+//weapon_active = true;
+//weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
+//weapon_equipped.init_weapon_physics();
 
 weapon_aim_x = 0;
 weapon_aim_y = 0;
 
-// Limbs
+// Unit Limb Arms
 limb_left_arm = NEW(LimbArmClass);
 limb_left_arm.init_arm(LimbType.LeftArm, unit_pack);
 
 limb_right_arm = NEW(LimbArmClass);
 limb_right_arm.init_arm(LimbType.RightArm, unit_pack);
 
+// Unit Limb Variables
 limb_animation_double_cycle = false;
+
+limb_left_arm_manual_position = false;
+limb_left_arm_manual_position_x = 0;
+limb_left_arm_manual_position_y = 0;
+
+limb_right_arm_manual_position = false;
+limb_right_arm_manual_position_x = 0;
+limb_right_arm_manual_position_y = 0;
 
 // Input Action Variables
 input_left = false;
@@ -132,30 +149,3 @@ input_reload = false;
 
 input_cursor_x = 0;
 input_cursor_y = 0;
-
-// Unit Methods
-function unit_ground_contact_behaviour()
-{
-	// Ground Contact Behaviour
-	if (ds_list_find_index(platform_list, collision_point(x, y + 1, oPlatform, false, true)) != -1)
-	{
-		// Contact with Platform
-		ground_contact_vertical_offset = 0;
-		draw_angle = 0;
-	}
-	else
-	{
-		// Raycast to Solid Collider
-		for (var i = 0; i < slope_raycast_distance; i++)
-		{
-			var temp_solid_rot_inst = collision_point(x, y + i, oSolid, false, true);
-			
-			if (temp_solid_rot_inst != noone)
-			{
-				ground_contact_vertical_offset = i;
-				draw_angle = point_check_solid_surface_angle(x, y + i, temp_solid_rot_inst);
-				return;
-			}
-		}
-	}
-}

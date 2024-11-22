@@ -34,7 +34,7 @@ class LimbArmClass extends LimbClass define
 	// Init & Destroy Methods
 	static _constructor = function() 
 	{
-		// Variables
+		// Limb Variables
 		limb_xscale = 1;
 		
 		limb_pivot_ax = 0;
@@ -47,6 +47,12 @@ class LimbArmClass extends LimbClass define
 		
 		limb_pivot_b_angle = 0;
 		
+		// Held Item Variables
+		limb_held_item = UnitHeldItem.None;
+		
+		limb_held_item_x = 0;
+		limb_held_item_y = 0;
+		
 		// Constructor
 		super._constructor();
 	}
@@ -58,60 +64,62 @@ class LimbArmClass extends LimbClass define
 	}
 	
 	// Limb Properties Methods
-	static init_arm = function(limb_type, unit_pack) 
+	static init_arm = function(init_limb_type, init_unit_pack) 
 	{
 		//
-		switch (limb_type)
+		limb_type = init_limb_type;
+		
+		switch (init_limb_type)
 		{
 			case LimbType.LeftArm:
 				limb_animation_value_offset = 0;
 				
-				anchor_offset_x = global.unit_packs[unit_pack].limb_anchor_left_arm_x;
-				anchor_offset_y = global.unit_packs[unit_pack].limb_anchor_left_arm_y;
+				anchor_offset_x = global.unit_packs[init_unit_pack].limb_anchor_left_arm_x;
+				anchor_offset_y = global.unit_packs[init_unit_pack].limb_anchor_left_arm_y;
 				
-				limb_sprite = global.unit_packs[unit_pack].ragdoll_arm_left_sprite;
-				limb_normals = global.unit_packs[unit_pack].ragdoll_arm_left_normalmap;
+				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_left_sprite;
+				limb_normals = global.unit_packs[init_unit_pack].ragdoll_arm_left_normalmap;
 				
-				limb_anchor_idle_animation_angle = global.unit_packs[unit_pack].limb_left_arm_idle_animation_angle;
-				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_left_arm_walk_animation_angle;
-				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_left_arm_jump_animation_angle;
+				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_idle_animation_angle;
+				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_angle;
+				limb_anchor_jump_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_jump_animation_angle;
 				
-				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_width;
-				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_left_arm_walk_animation_ambient_move_height;
+				limb_walk_animation_ambient_move_width = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_ambient_move_width;
+				limb_walk_animation_ambient_move_height = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_ambient_move_height;
 				break;
 			case LimbType.RightArm:
 				limb_animation_value_offset = 0.5;
 				
-				anchor_offset_x = global.unit_packs[unit_pack].limb_anchor_right_arm_x;
-				anchor_offset_y = global.unit_packs[unit_pack].limb_anchor_right_arm_y;
+				anchor_offset_x = global.unit_packs[init_unit_pack].limb_anchor_right_arm_x;
+				anchor_offset_y = global.unit_packs[init_unit_pack].limb_anchor_right_arm_y;
 				
-				limb_sprite = global.unit_packs[unit_pack].ragdoll_arm_right_sprite;
-				limb_normals = global.unit_packs[unit_pack].ragdoll_arm_right_normalmap;
+				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_right_sprite;
+				limb_normals = global.unit_packs[init_unit_pack].ragdoll_arm_right_normalmap;
 				
-				limb_anchor_idle_animation_angle = global.unit_packs[unit_pack].limb_right_arm_idle_animation_angle;
-				limb_anchor_walk_animation_angle = global.unit_packs[unit_pack].limb_right_arm_walk_animation_angle;
-				limb_anchor_jump_animation_angle = global.unit_packs[unit_pack].limb_right_arm_jump_animation_angle;
+				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_idle_animation_angle;
+				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_angle;
+				limb_anchor_jump_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_jump_animation_angle;
 				
-				limb_walk_animation_ambient_move_width = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_width;
-				limb_walk_animation_ambient_move_height = global.unit_packs[unit_pack].limb_right_arm_walk_animation_ambient_move_height;
+				limb_walk_animation_ambient_move_width = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_ambient_move_width;
+				limb_walk_animation_ambient_move_height = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_ambient_move_height;
 				break;
 		}
 		
 		//
-		limb_idle_animation_ambient_move_width = global.unit_packs[unit_pack].limb_idle_animation_ambient_move_width;
+		limb_idle_animation_ambient_move_width = global.unit_packs[init_unit_pack].limb_idle_animation_ambient_move_width;
 		
 		//
 		limb_length = sprite_get_height(limb_sprite) * 2;
 		
-		var limb_idle_animation_extension_percent = global.unit_packs[unit_pack].limb_idle_animation_extension_percent;
+		var limb_idle_animation_extension_percent = global.unit_packs[init_unit_pack].limb_idle_animation_extension_percent;
 		limb_idle_animation_offset_x = rot_dist_x(limb_length * limb_idle_animation_extension_percent, limb_anchor_idle_animation_angle + 270);
 		limb_idle_animation_offset_y = rot_dist_y(limb_length * limb_idle_animation_extension_percent);
 		
-		var limb_walk_animation_extension_percent = limb_type == LimbType.LeftArm ? global.unit_packs[unit_pack].limb_left_arm_walk_animation_extension_percent : global.unit_packs[unit_pack].limb_right_arm_walk_animation_extension_percent;
+		var limb_walk_animation_extension_percent = init_limb_type == LimbType.LeftArm ? global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_extension_percent : global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_extension_percent;
 		limb_walk_animation_offset_x = rot_dist_x(limb_length * limb_walk_animation_extension_percent, limb_anchor_walk_animation_angle + 270);
 		limb_walk_animation_offset_y = rot_dist_y(limb_length * limb_walk_animation_extension_percent);
 		
-		var limb_jump_animation_extension_percent = global.unit_packs[unit_pack].limb_jump_animation_extension_percent;
+		var limb_jump_animation_extension_percent = global.unit_packs[init_unit_pack].limb_jump_animation_extension_percent;
 		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 	}
@@ -228,10 +236,25 @@ class LimbArmClass extends LimbClass define
 		
 		limb_pivot_a_angle = temp_limb_direction + (-90 * temp_limb_extension_percent * limb_xscale);
 		
-		limb_pivot_bx = limb_pivot_ax + rot_dist_x(limb_length / 2, limb_pivot_a_angle);
+		rot_prefetch(limb_pivot_a_angle);
+		limb_pivot_bx = limb_pivot_ax + rot_dist_x(limb_length / 2);
 		limb_pivot_by = limb_pivot_ay + rot_dist_y(limb_length / 2);
 		
 		limb_pivot_b_angle = temp_limb_direction + (90 * temp_limb_extension_percent * limb_xscale);
+		
+		// Held Item
+		if (limb_held_item != UnitHeldItem.None)
+		{
+			rot_prefetch(limb_pivot_b_angle);
+			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - 1);
+			limb_held_item_y = limb_pivot_by + rot_dist_y((limb_length / 2) - 1);
+		}
+	}
+	
+	// Item Methods
+	static set_held_item = function(held_item = UnitHeldItem.None)
+	{
+		limb_held_item = held_item;
 	}
 	
 	// Render Methods
@@ -239,5 +262,34 @@ class LimbArmClass extends LimbClass define
 	{
 		draw_sprite_ext(limb_sprite, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
 		draw_sprite_ext(limb_sprite, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+		return;
+		
+		switch (limb_type)
+		{
+			case LimbType.LeftArm:
+				// Draw Held Item
+				if (limb_held_item != UnitHeldItem.None)
+				{
+					draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, 1, limb_xscale, limb_pivot_b_angle, c_white, 1);
+				}
+				
+				// Draw Limb
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				break;
+			case LimbType.RightArm:
+				// Draw Limb
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				
+				// Draw Held Item
+				if (limb_held_item != UnitHeldItem.None)
+				{
+					draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, 1, limb_xscale, limb_pivot_b_angle, c_white, 1);
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }

@@ -10,6 +10,7 @@ enum WeaponType
 enum WeaponPack
 {
     Default,
+    Corso,
     SMG
 }
 
@@ -43,16 +44,65 @@ global.weapon_packs[WeaponPack.Default] =
     weapon_type: WeaponType.DefaultFirearm,
     
     // Sprite & NormalMap
-    weapon_sprite: sArkov_CorsoRifle,
-    weapon_normalmap: sArkov_CorsoRifle_NormalMap,
+    weapon_sprite: sArkov_FAL,
+    weapon_normalmap: sArkov_FAL_NormalMap,
     
     // Weapon Properties
-    firearm_max_ammo: 5,
+    firearm_max_ammo_capacity: 15,
+    
+    firearm_reload_individual_rounds: true,
     
     firearm_cycle_delay: 10,
     
     // Weapon Recoil
-    firearm_reload_recovery_delay: 2,
+    firearm_recoil_recovery_delay: 2,
+    
+    firearm_random_recoil_horizontal_min: -2,
+    firearm_random_recoil_horizontal_max: -0.5,
+    firearm_total_recoil_horizontal: 12,
+    
+    firearm_random_recoil_vertical_min: -0.2,
+    firearm_random_recoil_vertical_max: -0.1,
+    firearm_total_recoil_vertical: 12,
+    
+    firearm_random_recoil_angle_min: 0,
+    firearm_random_recoil_angle_max: 10,
+    firearm_total_recoil_angle: 8,
+    
+    // Weapon Hand Positions
+    weapon_hand_position_primary_x: 5,
+    weapon_hand_position_primary_y: 1,
+    
+    weapon_hand_position_offhand_x: 19,
+    weapon_hand_position_offhand_y: 0,
+    
+    // Weapon Reload Positions
+    firearm_reload_x: 10,
+	firearm_reload_y: 2,
+
+	firearm_reload_offset_x: 0,
+	firearm_reload_offset_y: 6,
+}
+
+// Corso Bolt-Action Rifle Weapon Pack
+global.weapon_packs[WeaponPack.Corso] =
+{
+    // Weapon Type
+    weapon_type: WeaponType.DefaultFirearm,
+    
+    // Sprite & NormalMap
+    weapon_sprite: sArkov_CorsoRifle,
+    weapon_normalmap: sArkov_CorsoRifle_NormalMap,
+    
+    // Weapon Properties
+    firearm_max_ammo_capacity: 5,
+    
+    firearm_reload_individual_rounds: true,
+    
+    firearm_cycle_delay: 10,
+    
+    // Weapon Recoil
+    firearm_recoil_recovery_delay: 2,
     
     firearm_random_recoil_horizontal_min: -2,
     firearm_random_recoil_horizontal_max: -0.5,
@@ -66,12 +116,19 @@ global.weapon_packs[WeaponPack.Default] =
     firearm_random_recoil_angle_max: 4,
     firearm_total_recoil_angle: 20,
     
-    // Weapon Positions
-    weapon_hand_position_trigger_x: 4,
-    weapon_hand_position_trigger_y: 3,
+    // Weapon Hand Positions
+    weapon_hand_position_primary_x: 4,
+    weapon_hand_position_primary_y: 3,
 
     weapon_hand_position_offhand_x: 17,
     weapon_hand_position_offhand_y: 1,
+    
+    // Weapon Reload Positions
+    firearm_reload_x: 6,
+	firearm_reload_y: -1,
+
+	firearm_reload_offset_x: 0,
+	firearm_reload_offset_y: -9,
 }
 
 // SMG Weapon Pack
