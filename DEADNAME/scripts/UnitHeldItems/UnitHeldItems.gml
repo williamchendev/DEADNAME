@@ -29,8 +29,8 @@ global.unit_held_items[UnitHeldItem.DebugHeldItem] =
 global.unit_held_items[UnitHeldItem.FAL_Magazine] =
 {
     // Held Item Sprite
-    item_sprite_index: sArkov_FAL_Magazine,
-    item_normalmap_index: sArkov_FAL_Magazine,
+    item_sprite_index: sArkov_FAL_Magazine_HeldItem,
+    item_normalmap_index: sArkov_FAL_Magazine_NormalMap_HeldItem,
     item_image_index: 0
 }
 

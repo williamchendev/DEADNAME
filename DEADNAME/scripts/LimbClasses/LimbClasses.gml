@@ -53,6 +53,13 @@ class LimbArmClass extends LimbClass define
 		limb_held_item_x = 0;
 		limb_held_item_y = 0;
 		
+		// Trig Variables
+		trig_sine = 0;
+		trig_cosine = 1;
+		
+		anchor_trig_sine = 0;
+		anchor_trig_cosine = 1;
+		
 		// Constructor
 		super._constructor();
 	}
@@ -148,7 +155,7 @@ class LimbArmClass extends LimbClass define
 		calculate_limb_movement();
 	}
 	
-	static update_idle_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale, anchor_angle, animation_percentage)
+	static update_idle_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale, animation_percentage)
 	{
 		// Update Scale
 		limb_xscale = sign(anchor_xscale);
@@ -157,11 +164,15 @@ class LimbArmClass extends LimbClass define
 		var limb_animation_value = (animation_percentage + limb_animation_value_offset) mod 1;
 		var temp_idle_animation_offset_x = rot_dist_x(limb_idle_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
 		
+		// Update Trig Values
+		trig_sine = anchor_trig_sine;
+		trig_cosine = anchor_trig_cosine;
+		
 		// Update Pivot
 		var temp_anchor_offset_x = anchor_offset_x * anchor_xscale;
 		var temp_anchor_offset_y = (anchor_offset_y - (animation_percentage < 0.5)) * anchor_yscale;
 		
-		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y, anchor_angle);
+		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y);
 		limb_pivot_ay = anchor_y + rot_point_y(temp_anchor_offset_x, temp_anchor_offset_y);
 		
 		// Update Target
@@ -175,7 +186,7 @@ class LimbArmClass extends LimbClass define
 		calculate_limb_movement();
 	}
 	
-	static update_walk_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale, anchor_angle, animation_percentage, walk_animation_percentage)
+	static update_walk_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale, animation_percentage, walk_animation_percentage)
 	{
 		// Update Scale
 		limb_xscale = sign(anchor_xscale);
@@ -183,14 +194,19 @@ class LimbArmClass extends LimbClass define
 		// Update Walk Animation
 		var limb_animation_value = (walk_animation_percentage + global.limb_walk_animation_percent_offset + limb_animation_value_offset) mod 1;
 		
-		var temp_idle_animation_offset_x = rot_dist_x(limb_walk_animation_ambient_move_width * limb_xscale, 360 - (limb_animation_value * 360));
+		rot_prefetch(360 - (limb_animation_value * 360));
+		var temp_idle_animation_offset_x = rot_dist_x(limb_walk_animation_ambient_move_width * limb_xscale);
 		var temp_idle_animation_offset_y = rot_dist_y(limb_walk_animation_ambient_move_height);
+		
+		// Update Trig Values
+		trig_sine = anchor_trig_sine;
+		trig_cosine = anchor_trig_cosine;
 		
 		// Update Pivot
 		var temp_anchor_offset_x = anchor_offset_x * anchor_xscale;
 		var temp_anchor_offset_y = (anchor_offset_y - (animation_percentage > 0.5)) * anchor_yscale;
 		
-		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y, anchor_angle);
+		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y);
 		limb_pivot_ay = anchor_y + rot_point_y(temp_anchor_offset_x, temp_anchor_offset_y);
 		
 		// Update Target
@@ -204,16 +220,20 @@ class LimbArmClass extends LimbClass define
 		calculate_limb_movement();
 	}
 	
-	static update_jump_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale, anchor_angle)
+	static update_jump_animation = function(anchor_x, anchor_y, anchor_xscale, anchor_yscale)
 	{
 		// Update Scale
 		limb_xscale = sign(anchor_xscale);
+		
+		// Update Trig Values
+		trig_sine = anchor_trig_sine;
+		trig_cosine = anchor_trig_cosine;
 		
 		// Update Pivot
 		var temp_anchor_offset_x = anchor_offset_x * anchor_xscale;
 		var temp_anchor_offset_y = anchor_offset_y * anchor_yscale;
 		
-		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y, anchor_angle);
+		limb_pivot_ax = anchor_x + rot_point_x(temp_anchor_offset_x, temp_anchor_offset_y);
 		limb_pivot_ay = anchor_y + rot_point_y(temp_anchor_offset_x, temp_anchor_offset_y);
 		
 		// Update Target
@@ -246,8 +266,8 @@ class LimbArmClass extends LimbClass define
 		if (limb_held_item != UnitHeldItem.None)
 		{
 			rot_prefetch(limb_pivot_b_angle);
-			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - 1);
-			limb_held_item_y = limb_pivot_by + rot_dist_y((limb_length / 2) - 1);
+			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - 2);
+			limb_held_item_y = limb_pivot_by + rot_dist_y((limb_length / 2) - 2);
 		}
 	}
 	

@@ -35,10 +35,12 @@ squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
 
-hand_fumble_animation_travel_size = 1.8;
-hand_fumble_animation_travel_spd = 0.4;
+hand_movement_spd = 0.1;
+
+hand_fumble_animation_travel_size = 1.6;
+hand_fumble_animation_travel_spd = 0.5;
 hand_fumble_animation_delay_min = 2;
-hand_fumble_animation_delay_max = 16;
+hand_fumble_animation_delay_max = 12;
 
 weapon_vertical_bobbing_height = 1;
 weapon_bobbing_animation_percent_offset = 0.18;
@@ -99,6 +101,7 @@ draw_angle_value = 0;
 normalmap_index = noone;
 
 hand_fumble_animation_timer = 0;
+hand_fumble_animation_cycle_timer = 0;
 hand_fumble_animation_transition_value = 1;
 
 hand_fumble_animation_offset_ax = 0;
@@ -110,26 +113,31 @@ hand_fumble_animation_offset_x = 0;
 hand_fumble_animation_offset_y = 0;
 
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
-unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
 unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
 firearm_aim_transition_value = 0;
-firearm_reload_hand_primary_animation_value = 0; // EXPLAIN
+firearm_reload_hand_to_inventory_transition_value = 0;
+
+unit_equipment_inventory_position_x = 0;
+unit_equipment_inventory_position_y = 0;
 
 // Weapons
 weapon_active = false;
 weapon_reload = false;
 weapon_aim = false;
 
+weapon_aim_x = 0;
+weapon_aim_y = 0;
+
 weapon_equipped = noone;
 
 // Weapons DEBUG
+/*
 weapon_active = true;
 weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
 weapon_equipped.init_weapon_physics();
-
-weapon_aim_x = 0;
-weapon_aim_y = 0;
+unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
+*/
 
 // Unit Limb Arms
 limb_left_arm = NEW(LimbArmClass);
@@ -156,3 +164,7 @@ input_reload = false;
 
 input_cursor_x = 0;
 input_cursor_y = 0;
+
+// Trig Variables
+trig_sine = 0;
+trig_cosine = 1;
