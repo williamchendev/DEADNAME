@@ -79,12 +79,12 @@ class FirearmClass extends WeaponClass define
 	}
 	
 	// Init Methods
-	static init_weapon_pack = function(init_weapon_pack, init_firearm_loaded_ammo = 0)
+	static init_weapon_pack = function(init_weapon_pack, init_firearm_loaded_ammo = -1)
 	{
 		super.init_weapon_pack(init_weapon_pack);
 		
 		// Weapon
-		firearm_ammo = 6;
+		firearm_ammo = init_firearm_loaded_ammo < 0 ? global.weapon_packs[init_weapon_pack].firearm_max_ammo_capacity : init_firearm_loaded_ammo;
 		
 		// Init Weapon Timers
 	    firearm_recoil_recovery_delay = 0;
@@ -187,7 +187,8 @@ class FirearmClass extends WeaponClass define
 	// Firearm Behaviours
 	static reload_firearm = function()
 	{
-		
+		// DEBUG
+		firearm_ammo = global.weapon_packs[weapon_pack].firearm_max_ammo_capacity;
 	}
 	
 	// Render Methods
