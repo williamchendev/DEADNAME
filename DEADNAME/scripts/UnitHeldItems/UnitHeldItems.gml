@@ -2,6 +2,7 @@
 enum UnitHeldItem
 {
     None,
+    DebugHeldItem,
     FAL_Magazine,
     Sword
 }
@@ -15,12 +16,21 @@ global.unit_held_items[UnitHeldItem.None] =
     item_image_index: 0
 }
 
+// DebugItem
+global.unit_held_items[UnitHeldItem.DebugHeldItem] =
+{
+    // Held Item Sprite
+    item_sprite_index: sArkov_FAL_Magazine,
+    item_normalmap_index: sArkov_FAL_Magazine,
+    item_image_index: 0
+}
+
 // Magazine
 global.unit_held_items[UnitHeldItem.FAL_Magazine] =
 {
     // Held Item Sprite
-    item_sprite_index: sHeldItems,
-    item_normalmap_index: sHeldItems,
+    item_sprite_index: sArkov_FAL_Magazine,
+    item_normalmap_index: sArkov_FAL_Magazine,
     item_image_index: 0
 }
 

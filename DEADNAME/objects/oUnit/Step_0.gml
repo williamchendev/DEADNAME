@@ -189,14 +189,14 @@ if (grounded)
 		else
 		{
 			// Horizontal Contact with Solid Collider
-			for (var h = abs(hspd); h > 0; h--)
+			for (var h = 1; h <= abs(hspd); h++)
 			{
 				var temp_hspd = (sign(x_velocity) * h);
 				
-				if (place_free(x + temp_hspd, y))
+				if (!place_free(x + temp_hspd, y))
 				{
 					// GROUND CONTACT
-					x_velocity = temp_hspd;
+					x_velocity = temp_hspd - sign(x_velocity);
 					
 					x += x_velocity;
 					x = round(x);
@@ -501,15 +501,17 @@ switch (unit_equipment_animation_state)
 		animation_speed_direction = 1;
 		
 		// Update Non-Weapon Unit Animations
+		var temp_animation_percentage;
+		
 		switch (unit_animation_state)
 		{
 			case UnitAnimationState.Idle:
-				var temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
+				temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
 				limb_left_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage);
 				limb_right_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage);
 				break;
 			case UnitAnimationState.Walking:
-				var temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
+				temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
 				var temp_walk_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
 				limb_left_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage, temp_walk_animation_percentage);
 				limb_right_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, draw_angle_value, temp_animation_percentage, temp_walk_animation_percentage);

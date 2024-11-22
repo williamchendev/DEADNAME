@@ -181,6 +181,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"VerticalDoors","folderPath":"folders/Sprites/Interactions/VerticalDoors.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Items","folderPath":"folders/Sprites/Items.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Containers","folderPath":"folders/Sprites/Items/Containers.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Held","folderPath":"folders/Sprites/Items/Held.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Icons","folderPath":"folders/Sprites/Items/Icons.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Weapons","folderPath":"folders/Sprites/Weapons.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Arkov","folderPath":"folders/Sprites/Weapons/Arkov.yy",},
@@ -206,7 +207,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"PlanetsideRevolver","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Held","folderPath":"folders/Sprites/Items/Held.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"gmlp-reference-guide.pdf","CopyToMask":0,"filePath":"datafiles",},
