@@ -35,6 +35,11 @@ squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
 
+hand_fumble_animation_travel_size = 1.8;
+hand_fumble_animation_travel_spd = 0.4;
+hand_fumble_animation_delay_min = 2;
+hand_fumble_animation_delay_max = 16;
+
 weapon_vertical_bobbing_height = 1;
 weapon_bobbing_animation_percent_offset = 0.18;
 
@@ -93,12 +98,23 @@ draw_angle_value = 0;
 
 normalmap_index = noone;
 
+hand_fumble_animation_timer = 0;
+hand_fumble_animation_transition_value = 1;
+
+hand_fumble_animation_offset_ax = 0;
+hand_fumble_animation_offset_ay = 0;
+hand_fumble_animation_offset_bx = 0;
+hand_fumble_animation_offset_by = 0;
+
+hand_fumble_animation_offset_x = 0;
+hand_fumble_animation_offset_y = 0;
+
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
-//unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
+unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
 unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
 firearm_aim_transition_value = 0;
-firearm_reload_hand_primary_animation_value = 0;
+firearm_reload_hand_primary_animation_value = 0; // EXPLAIN
 
 // Weapons
 weapon_active = false;
@@ -108,9 +124,9 @@ weapon_aim = false;
 weapon_equipped = noone;
 
 // Weapons DEBUG
-//weapon_active = true;
-//weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
-//weapon_equipped.init_weapon_physics();
+weapon_active = true;
+weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
+weapon_equipped.init_weapon_physics();
 
 weapon_aim_x = 0;
 weapon_aim_y = 0;
@@ -122,16 +138,7 @@ limb_left_arm.init_arm(LimbType.LeftArm, unit_pack);
 limb_right_arm = NEW(LimbArmClass);
 limb_right_arm.init_arm(LimbType.RightArm, unit_pack);
 
-// Unit Limb Variables
 limb_animation_double_cycle = false;
-
-limb_left_arm_manual_position = false;
-limb_left_arm_manual_position_x = 0;
-limb_left_arm_manual_position_y = 0;
-
-limb_right_arm_manual_position = false;
-limb_right_arm_manual_position_x = 0;
-limb_right_arm_manual_position_y = 0;
 
 // Input Action Variables
 input_left = false;

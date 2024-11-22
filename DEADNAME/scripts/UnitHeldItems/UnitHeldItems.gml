@@ -20,8 +20,8 @@ global.unit_held_items[UnitHeldItem.None] =
 global.unit_held_items[UnitHeldItem.DebugHeldItem] =
 {
     // Held Item Sprite
-    item_sprite_index: sArkov_FAL_Magazine,
-    item_normalmap_index: sArkov_FAL_Magazine,
+    item_sprite_index: sHeldItems,
+    item_normalmap_index: sHeldItems,
     item_image_index: 0
 }
 

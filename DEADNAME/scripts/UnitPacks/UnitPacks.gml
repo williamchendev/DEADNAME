@@ -18,7 +18,6 @@ enum UnitEquipmentAnimationState
 enum UnitFirearmReloadAnimationState
 {
 	Reload_End,
-	Reload_ResetFirearmToReloadPosture,
 	Reload_MovePrimaryHandToUnitInventory,
 	Reload_InventoryHandFumbleAnimation,
 	Reload_MovePrimaryHandToFirearmReloadPosition,
