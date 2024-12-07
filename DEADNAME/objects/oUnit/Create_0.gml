@@ -20,8 +20,8 @@ grav_spd = 0.026; // Force of Downward Gravity
 grav_multiplier = 0.93; // Dampening Multiplyer of the Downward Velocity (Makes gravity smoother)
 max_grav_spd = 2; // Max Speed of Unit's Downward Velocity
 
-slope_tolerance = 3; // Tolerance for walking up slopes in pixels
-slope_raycast_distance = 8;
+slope_tolerance = 5; // Tolerance for walking up slopes in pixels
+slope_raycast_distance = 8; // Distance to raycast to solids beneath the unit to calculate slope angle
 slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player is standing on
 
 max_velocity = 10;
@@ -115,11 +115,17 @@ hand_fumble_animation_offset_y = 0;
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
-firearm_aim_transition_value = 0;
-firearm_reload_hand_to_inventory_transition_value = 0;
-
 unit_equipment_inventory_position_x = 0;
 unit_equipment_inventory_position_y = 0;
+
+firearm_weapon_primary_hand_pivot_offset_ax = 0;
+firearm_weapon_primary_hand_pivot_offset_ay = 0;
+firearm_weapon_primary_hand_pivot_offset_bx = 0;
+firearm_weapon_primary_hand_pivot_offset_by = 0;
+firearm_weapon_primary_hand_pivot_transition_value = 0;
+
+firearm_weapon_hip_pivot_to_aim_pivot_transition_value = 0;
+firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
 
 // Weapons
 weapon_active = false;

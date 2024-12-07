@@ -35,23 +35,23 @@ class LimbArmClass extends LimbClass define
 	static _constructor = function() 
 	{
 		// Limb Variables
-		limb_xscale = 1;
+		limb_xscale = 1;  // Facing Direction of Limb's Actor
 		
-		limb_pivot_ax = 0;
-		limb_pivot_ay = 0;
+		limb_pivot_ax = 0;  // X coordinate of Shoulder Pivot
+		limb_pivot_ay = 0;  // Y coordinate of Shoulder Pivot
 		
-		limb_pivot_a_angle = 0;
+		limb_pivot_a_angle = 0; // Angle of Shoulder Pivot
 		
-		limb_pivot_bx = 0;
-		limb_pivot_by = 0;
+		limb_pivot_bx = 0;  // X coordinate of Elbow Pivot
+		limb_pivot_by = 0;  // Y coordinate of Elbow Pivot
 		
-		limb_pivot_b_angle = 0;
+		limb_pivot_b_angle = 0;  // Angle of Elbow Pivot
 		
 		// Held Item Variables
-		limb_held_item = UnitHeldItem.None;
+		limb_held_item = UnitHeldItem.None;  // Held Item of Arm
 		
-		limb_held_item_x = 0;
-		limb_held_item_y = 0;
+		limb_held_item_x = 0;  // X coordinate of Temporary Hand Pivot
+		limb_held_item_y = 0;  // Y coordinate of Temporary Hand Pivot
 		
 		// Trig Variables
 		trig_sine = 0;

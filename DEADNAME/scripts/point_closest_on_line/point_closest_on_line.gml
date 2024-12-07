@@ -1,9 +1,11 @@
 /// point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y);
-/// @description Finds the closest coordinate between the two given oPathNode Nodes from the given position
+/// @description Finds the closest coordinate on a line segment created from the given coordinates from the given position
 /// @param {number} x_position The X position to check for the closest coordinate to
 /// @param {number} y_position The Y position to check for the closest coordinate to
-/// @param {number} start_node The oPathNode to draw an edge towards the end_node
-/// @param {number} end_node The oPathNode to draw an edge towards the start_node
+/// @param {number} first_point_x The X position of the first coordinate in a line segment to find the closest coordinate to
+/// @param {number} first_point_y The Y position of the first coordinate in a line segment to find the closest coordinate to
+/// @param {number} second_point_x The X position of the second coordinate in a line segment to find the closest coordinate to
+/// @param {number} second_point_y The Y position of the second coordinate in a line segment to find the closest coordinate to
 /// @returns {struct} A struct with the X coordinate (return_x) and Y coordinate (return_y)
 function point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y) 
 {

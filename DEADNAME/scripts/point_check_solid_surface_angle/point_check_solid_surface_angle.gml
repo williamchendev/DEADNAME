@@ -6,13 +6,13 @@
 /// @return {number} The direction/angle of the object sitting on the solid instance surface
 function point_check_solid_surface_angle(pos_x, pos_y, solid_inst) 
 {
-    //
+    // Find Angle from Solid Object's center to given position
     var temp_point_angle_from_center = point_direction(solid_inst.center_xpos, solid_inst.center_ypos, pos_x, pos_y);
 	
-	//
+	// Find Side of Solid Object the given position is relative to
 	var temp_side_angle = point_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
 	
-	// Find 
+	// Find Angle of Solid Object's Side
 	var temp_return_angle = solid_inst.image_angle;
 	
 	switch (temp_side_angle)
@@ -32,19 +32,25 @@ function point_check_solid_surface_angle(pos_x, pos_y, solid_inst)
 	        break;
 	}
 	
-	// Return Angle & 
+	// Return Angle of Solid Object Side that is relative to the given position
 	return (temp_return_angle - 90) mod 360;
 }
 
+/// point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_inst);
+/// @description Uses a point to check what angle and closest point the instance colliding with the given solid will be
+/// @param {number} pos_x The x position of the point to check
+/// @param {number} pos_y The y position of the point to check
+/// @param {oSolid} solid_inst The Solid Object instance's id to check the angle and closest point to its surface
+/// @return {struct} A struct with the X coordinate (return_x) and Y coordinate (return_y) of the closest point to the object's surface and the direction/angle (return_angle) of the object sitting on the solid instance surface
 function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_inst) 
 {
-    //
+    // Find Angle from Solid Object's center to given position
     var temp_point_angle_from_center = point_direction(solid_inst.center_xpos, solid_inst.center_ypos, pos_x, pos_y);
 	
-	//
+	// Find Side of Solid Object the given position is relative to
 	var temp_side_angle = point_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
 	
-	// Find 
+	// Find Angle of and Closest Point on Solid Object's Side relative to the given position
 	var temp_closest_point;
 	var temp_return_value = 
 	{
@@ -74,13 +80,19 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 	        break;
 	}
 	
-	// Return Angle & 
+	// Return Angle & Closest Point
 	temp_return_value.return_angle = (temp_return_value.return_angle - 90) mod 360;
 	temp_return_value.return_x = temp_closest_point.return_x;
 	temp_return_value.return_y = temp_closest_point.return_y;
 	return temp_return_value;
 }
 
+
+/// point_check_solid_surface_side(angle_from_center, solid_inst);
+/// @description Uses an angle from the center of the solid object and returns SolidSide enum relative to it
+/// @param {number} angle_from_center The angle from the center of the solid object
+/// @param {oSolid} solid_inst The Solid Object instance to check the side relative of
+/// @return {SolidSide} The enum of the side relative to the given angle from the center of the solid object
 function point_check_solid_surface_side(angle_from_center, solid_inst)
 {
 	var temp_side_angle = SolidSide.AB;
@@ -165,6 +177,7 @@ function point_check_solid_surface_side(angle_from_center, solid_inst)
 	return temp_side_angle;
 }
 
+// Solid Side Enum
 enum SolidSide
 {
     AB,
