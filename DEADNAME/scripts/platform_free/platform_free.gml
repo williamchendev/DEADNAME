@@ -1,4 +1,4 @@
-/// platform_free(pos_x, pos_y, platform_list);
+/// @function platform_free(pos_x, pos_y, platform_list);
 /// @description Checks if the object will collide with any platforms and solids at the given position
 /// @param {number} pos_x The x position to check
 /// @param {number} pos_y The y position to check

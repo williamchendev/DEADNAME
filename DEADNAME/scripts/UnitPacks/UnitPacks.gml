@@ -21,9 +21,9 @@ enum UnitFirearmReloadAnimationState
 	Reload_MovePrimaryHandToUnitInventory,
 	Reload_InventoryHandFumbleAnimation,
 	Reload_MovePrimaryHandToFirearmReloadPosition,
+	ReloadMagazine_MagazineInsertAnimation,
 	ReloadMagazine_MagazineHandFumbleAnimation,
-	ReloadIndividualRounds_IndividualRoundLoadingAnimation,
-	Reload_MovePrimaryHandToFirearmPrimaryHandPosition
+	ReloadIndividualRounds_IndividualRoundLoadingAnimation
 }
 
 // Unit Character Pack Enums

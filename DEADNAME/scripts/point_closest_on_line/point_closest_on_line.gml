@@ -1,4 +1,4 @@
-/// point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y);
+/// @function point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y);
 /// @description Finds the closest coordinate on a line segment created from the given coordinates from the given position
 /// @param {number} x_position The X position to check for the closest coordinate to
 /// @param {number} y_position The Y position to check for the closest coordinate to

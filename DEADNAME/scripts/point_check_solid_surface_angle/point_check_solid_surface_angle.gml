@@ -1,4 +1,4 @@
-/// point_check_solid_surface_angle(x, y, solid);
+/// @function point_check_solid_surface_angle(x, y, solid);
 /// @description Uses a point to check what angle the instance colliding with the given solid will be
 /// @param {number} pos_x The x position of the point to check
 /// @param {number} pos_y The y position of the point to check
@@ -36,7 +36,7 @@ function point_check_solid_surface_angle(pos_x, pos_y, solid_inst)
 	return (temp_return_angle - 90) mod 360;
 }
 
-/// point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_inst);
+/// @function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_inst);
 /// @description Uses a point to check what angle and closest point the instance colliding with the given solid will be
 /// @param {number} pos_x The x position of the point to check
 /// @param {number} pos_y The y position of the point to check
@@ -88,7 +88,7 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 }
 
 
-/// point_check_solid_surface_side(angle_from_center, solid_inst);
+/// @function point_check_solid_surface_side(angle_from_center, solid_inst);
 /// @description Uses an angle from the center of the solid object and returns SolidSide enum relative to it
 /// @param {number} angle_from_center The angle from the center of the solid object
 /// @param {oSolid} solid_inst The Solid Object instance to check the side relative of

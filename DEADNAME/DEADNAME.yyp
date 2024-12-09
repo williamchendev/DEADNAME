@@ -741,6 +741,7 @@
     {"id":{"name":"sDebugEmpty","path":"sprites/sDebugEmpty/sDebugEmpty.yy",},},
     {"id":{"name":"sWilliam_CapitalLoyalist_AimWalk","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},},
     {"id":{"name":"sAdobeHouse_CactusHedgehog_Sprite","path":"sprites/sAdobeHouse_CactusHedgehog_Sprite/sAdobeHouse_CactusHedgehog_Sprite.yy",},},
+    {"id":{"name":"unit_set_hand_fumble_animation","path":"scripts/unit_set_hand_fumble_animation/unit_set_hand_fumble_animation.yy",},},
     {"id":{"name":"sEndIconTitle","path":"sprites/sEndIconTitle/sEndIconTitle.yy",},},
     {"id":{"name":"sDoorPanel","path":"sprites/sDoorPanel/sDoorPanel.yy",},},
     {"id":{"name":"sWilliamDS_ChestBot","path":"sprites/sWilliamDS_ChestBot/sWilliamDS_ChestBot.yy",},},

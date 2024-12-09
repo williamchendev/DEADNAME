@@ -30,6 +30,8 @@ max_velocity = 10;
 unit_animation_state = UnitAnimationState.Idle;
 unit_pack = UnitPack.MoralistWilliam;
 
+animation_asymptotic_tolerance = 0.1;
+
 jump_peak_threshold = 0.8;
 squash_stretch_jump_intensity = 0.5;
 
@@ -54,7 +56,7 @@ firearm_recoil_angle_recovery_spd = 0.1;
 
 firearm_idle_safety_angle = -15;
 firearm_moving_safety_angle = -45;
-firearm_reload_safety_angle = -45;
+firearm_reload_safety_angle = 15;
 
 // Unit Behaviour Variables
 var s = 0;

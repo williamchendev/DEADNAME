@@ -621,6 +621,7 @@
     {"name":"sArkov_DernosNeedleRifle_NormalMap","order":1,"path":"sprites/sArkov_DernosNeedleRifle_NormalMap/sArkov_DernosNeedleRifle_NormalMap.yy",},
     {"name":"sWilliam_CapitalLoyalist_AimWalk","order":3,"path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},
     {"name":"sAdobeHouse_CactusHedgehog_Sprite","order":9,"path":"sprites/sAdobeHouse_CactusHedgehog_Sprite/sAdobeHouse_CactusHedgehog_Sprite.yy",},
+    {"name":"unit_set_hand_fumble_animation","order":2,"path":"scripts/unit_set_hand_fumble_animation/unit_set_hand_fumble_animation.yy",},
     {"name":"sEndIconTitle","order":2,"path":"sprites/sEndIconTitle/sEndIconTitle.yy",},
     {"name":"sDoorPanel","order":2,"path":"sprites/sDoorPanel/sDoorPanel.yy",},
     {"name":"sWilliamDS_ChestBot","order":1,"path":"sprites/sWilliamDS_ChestBot/sWilliamDS_ChestBot.yy",},
