@@ -31,6 +31,7 @@ class WeaponClass define
 	    weapon_x = init_weapon_x;
 	    weapon_y = init_weapon_y;
 	    weapon_angle = init_weapon_angle;
+	    weapon_old_angle = init_weapon_angle;
 	    
 	    // Init Weapon Scale
 	    weapon_xscale = 1;
@@ -88,7 +89,7 @@ class FirearmClass extends WeaponClass define
 		
 		// Init Weapon Timers
 	    firearm_recoil_recovery_delay = 0;
-	    firearm_cycle_delay = 0;
+	    firearm_attack_delay = 0;
 	}
 	
 	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = 0)
@@ -121,7 +122,7 @@ class FirearmClass extends WeaponClass define
 	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd, unit_firearm_recoil_angle_recovery_spd)
 	{
 		// Cycle Weapon
-		firearm_cycle_delay = firearm_cycle_delay > 0 ? firearm_cycle_delay - frame_delta : firearm_cycle_delay;
+		firearm_attack_delay = firearm_attack_delay > 0 ? firearm_attack_delay - frame_delta : firearm_attack_delay;
 		
 		// Recoil Behaviour
 		if (firearm_recoil_recovery_delay > 0)
@@ -151,15 +152,15 @@ class FirearmClass extends WeaponClass define
 	static update_weapon_attack = function()
 	{
 		// Invalid Weapon Attack Behaviour
-		if (firearm_cycle_delay > 0)
+		if (firearm_attack_delay > 0)
 		{
 			// Firing Cycle Incomplete
-			return;
+			return false;
 		}
 		else if (firearm_ammo <= 0)
 		{
 			// Firearm Ammo Exhuasted
-			return;
+			return false;
 		}
 		
 		// Deplete Ammo
@@ -180,15 +181,18 @@ class FirearmClass extends WeaponClass define
 		weapon_angle_recoil_target = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
 		
 		// Set Firearm Timers
-		firearm_cycle_delay = global.weapon_packs[weapon_pack].firearm_cycle_delay;
+		firearm_attack_delay = global.weapon_packs[weapon_pack].firearm_attack_delay;
 		firearm_recoil_recovery_delay = global.weapon_packs[weapon_pack].firearm_recoil_recovery_delay;
+		
+		// Firing Success
+		return true;
 	}
 	
 	// Firearm Behaviours
-	static reload_firearm = function()
+	static reload_firearm = function(reload_rounds_count = undefined)
 	{
 		// DEBUG
-		firearm_ammo = global.weapon_packs[weapon_pack].firearm_max_ammo_capacity;
+		firearm_ammo = is_undefined(reload_rounds_count) ? global.weapon_packs[weapon_pack].firearm_max_ammo_capacity : clamp(firearm_ammo + reload_rounds_count, 0, global.weapon_packs[weapon_pack].firearm_max_ammo_capacity);
 	}
 	
 	// Render Methods

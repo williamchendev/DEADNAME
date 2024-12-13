@@ -22,7 +22,7 @@ max_grav_spd = 2; // Max Speed of Unit's Downward Velocity
 
 slope_tolerance = 5; // Tolerance for walking up slopes in pixels
 slope_raycast_distance = 8; // Distance to raycast to solids beneath the unit to calculate slope angle
-slope_angle_lerp_spd = 0.1; // Speed to lerp the angle to the slope the player is standing on
+slope_angle_lerp_spd = 0.15; // Speed to lerp the angle to the slope the player is standing on
 
 max_velocity = 10;
 
@@ -37,7 +37,8 @@ squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
 
-hand_movement_spd = 0.1;
+hand_default_movement_spd = 0.1;
+hand_fast_movement_spd = 0.33;
 
 hand_fumble_animation_travel_size = 1.6;
 hand_fumble_animation_travel_spd = 0.5;
@@ -141,7 +142,7 @@ weapon_equipped = noone;
 
 // Weapons DEBUG
 weapon_active = true;
-weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Default);
+weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Corso);
 weapon_equipped.init_weapon_physics();
 unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
 

@@ -3,7 +3,8 @@ enum WeaponType
 {
     Default,
     DefaultMelee,
-    DefaultFirearm
+    DefaultFirearm,
+    BoltActionFirearm
 }
 
 // Weapon Pack Enums
@@ -26,6 +27,7 @@ function create_weapon_from_weapon_pack(weapon_pack)
 	switch (global.weapon_packs[weapon_pack].weapon_type)
 	{
 	    case WeaponType.DefaultFirearm:
+	    case WeaponType.BoltActionFirearm:
 	        temp_weapon_class = NEW(FirearmClass);
 	        break;
 	    default:
@@ -47,12 +49,12 @@ global.weapon_packs[WeaponPack.Default] =
     weapon_sprite: sArkov_FAL,
     weapon_normalmap: sArkov_FAL_NormalMap,
     
-    // Weapon Properties
+    // Weapon Ammo
     firearm_max_ammo_capacity: 15,
-    
     firearm_reload_individual_rounds: true,
     
-    firearm_cycle_delay: 10,
+    // Weapon Properties
+    firearm_attack_delay: 10,
     
     // Weapon Recoil
     firearm_recoil_recovery_delay: 2,
@@ -68,6 +70,13 @@ global.weapon_packs[WeaponPack.Default] =
     firearm_random_recoil_angle_min: 0,
     firearm_random_recoil_angle_max: 10,
     firearm_total_recoil_angle: 8,
+    
+    // Weapon Bolt Operation
+    firearm_bolt_handle_position_x: 0,
+    firearm_bolt_handle_position_y: 0,
+    
+    firearm_bolt_handle_charge_offset_x: 0,
+    firearm_bolt_handle_charge_offset_y: 0,
     
     // Weapon Hand Positions
     weapon_hand_position_primary_x: 5,
@@ -88,33 +97,40 @@ global.weapon_packs[WeaponPack.Default] =
 global.weapon_packs[WeaponPack.Corso] =
 {
     // Weapon Type
-    weapon_type: WeaponType.DefaultFirearm,
+    weapon_type: WeaponType.BoltActionFirearm,
     
     // Sprite & NormalMap
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
     
-    // Weapon Properties
+    // Weapon Ammo
     firearm_max_ammo_capacity: 5,
-    
     firearm_reload_individual_rounds: true,
     
-    firearm_cycle_delay: 10,
+    // Weapon Properties
+    firearm_attack_delay: 14,
     
     // Weapon Recoil
-    firearm_recoil_recovery_delay: 2,
+    firearm_recoil_recovery_delay: 9,
     
-    firearm_random_recoil_horizontal_min: -2,
-    firearm_random_recoil_horizontal_max: -0.5,
-    firearm_total_recoil_horizontal: 12,
+    firearm_random_recoil_horizontal_min: -4.5,
+    firearm_random_recoil_horizontal_max: -3,
+    firearm_total_recoil_horizontal: 4.5,
     
     firearm_random_recoil_vertical_min: -0.2,
-    firearm_random_recoil_vertical_max: -0.1,
-    firearm_total_recoil_vertical: 12,
+    firearm_random_recoil_vertical_max: -0.05,
+    firearm_total_recoil_vertical: 3,
     
-    firearm_random_recoil_angle_min: 4,
-    firearm_random_recoil_angle_max: 4,
-    firearm_total_recoil_angle: 20,
+    firearm_random_recoil_angle_min: 2,
+    firearm_random_recoil_angle_max: 3,
+    firearm_total_recoil_angle: 13,
+    
+    // Weapon Bolt Operation
+    firearm_bolt_handle_position_x: 3,
+    firearm_bolt_handle_position_y: 2,
+    
+    firearm_bolt_handle_charge_offset_x: -6,
+    firearm_bolt_handle_charge_offset_y: -2,
     
     // Weapon Hand Positions
     weapon_hand_position_primary_x: 4,
@@ -128,7 +144,7 @@ global.weapon_packs[WeaponPack.Corso] =
 	firearm_reload_y: -1,
 
 	firearm_reload_offset_x: 0,
-	firearm_reload_offset_y: -9,
+	firearm_reload_offset_y: -7,
 }
 
 // SMG Weapon Pack
