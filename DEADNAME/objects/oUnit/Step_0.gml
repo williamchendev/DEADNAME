@@ -564,7 +564,14 @@ switch (unit_equipment_animation_state)
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							default:
 								// End Reload Animation
-								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+								if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle)
+								{
+									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End;
+								}
+								else
+								{
+									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+								}
 							
 								//
 								weapon_equipped.weapon_image_index = 0;
@@ -814,6 +821,7 @@ switch (unit_equipment_animation_state)
 					}
 				}
 				break;
+			case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End:
 			case UnitFirearmReloadAnimationState.Reload_End:
 			default:
 				// Reload Animation Reset Behaviour
@@ -857,13 +865,17 @@ switch (unit_equipment_animation_state)
 			{
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
+				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End:
 					//
 					firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = lerp(firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value, 0, hand_fast_movement_spd * frame_delta);
 					
-					//
+					// Update Facing Direction
 					temp_firearm_is_aimed = weapon_aim;
 					draw_xscale = temp_firearm_is_aimed ? (abs(draw_xscale) * ((weapon_aim_x - x >= 0) ? 1 : -1)) : draw_xscale;
 					temp_firearm_facing_sign = sign(draw_xscale);
+					
+					// Walk Backwards while Aiming
+					animation_speed_direction = ((x_velocity != 0) and (sign(x_velocity) != temp_firearm_facing_sign)) ? -1 : 1;
 				case UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition:
 				case UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle:
 				case UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
