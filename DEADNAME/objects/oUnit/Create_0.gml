@@ -147,11 +147,11 @@ weapon_equipped.init_weapon_physics();
 unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
 
 // Unit Limb Arms
-limb_left_arm = NEW(LimbArmClass);
-limb_left_arm.init_arm(LimbType.LeftArm, unit_pack);
+limb_primary_arm = NEW(LimbArmClass);
+limb_primary_arm.init_arm(LimbType.LeftArm, unit_pack);
 
-limb_right_arm = NEW(LimbArmClass);
-limb_right_arm.init_arm(LimbType.RightArm, unit_pack);
+limb_secondary_arm = NEW(LimbArmClass);
+limb_secondary_arm.init_arm(LimbType.RightArm, unit_pack);
 
 limb_animation_double_cycle = false;
 

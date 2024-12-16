@@ -22,15 +22,14 @@ if (canmove)
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition;
 					
 					//
-					firearm_weapon_primary_hand_pivot_offset_ax = lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_x;
-					firearm_weapon_primary_hand_pivot_offset_ay = lerp(firearm_weapon_primary_hand_pivot_offset_ay, firearm_weapon_primary_hand_pivot_offset_by, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_y;
-					
-					//
-					firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x;
-					firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y;
-					
-					//
-					firearm_weapon_primary_hand_pivot_transition_value = 0;
+					unit_set_firearm_primary_hand_animation
+					(
+						lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_x, 
+						lerp(firearm_weapon_primary_hand_pivot_offset_ay, firearm_weapon_primary_hand_pivot_offset_by, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_y, 
+						global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y, 
+						0
+					);
 				}
 				else
 				{
@@ -38,15 +37,14 @@ if (canmove)
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 					
 					//
-					firearm_weapon_primary_hand_pivot_offset_bx = lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_x;
-					firearm_weapon_primary_hand_pivot_offset_by = lerp(firearm_weapon_primary_hand_pivot_offset_ay, firearm_weapon_primary_hand_pivot_offset_by, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_y;
-					
-					//
-					firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-					firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-					
-					//
-					firearm_weapon_primary_hand_pivot_transition_value = 1;
+					unit_set_firearm_primary_hand_animation
+					(
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y, 
+						lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_x, 
+						lerp(firearm_weapon_primary_hand_pivot_offset_ay, firearm_weapon_primary_hand_pivot_offset_by, firearm_weapon_primary_hand_pivot_transition_value) + hand_fumble_animation_offset_y, 
+						1
+					);
 				}
 				
 				//
@@ -78,23 +76,29 @@ if (canmove)
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition;
 					
 					// Weapon Primary Hand Animation: Hand reaches from current position to firearm bolt handle
-					firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-					firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-					firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-					firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
+					unit_set_firearm_primary_hand_animation
+					(
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y, 
+						global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y
+					);
 					break;
 				default:
 					// Default Firearm Reload
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToUnitInventory;
 					
-					// Set Firearm Unloaded
-					weapon_equipped.weapon_image_index = 1;
+					// Open Firearm Chamber
+					weapon_equipped.open_firearm_chamber();
 					
 					// Weapon Primary Hand Animation Reset
-					firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-					firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-					firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-					firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
+					unit_set_firearm_primary_hand_animation
+					(
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y, 
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
+						global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y
+					);
 					break;
 			}
 			
@@ -123,12 +127,7 @@ if (canmove)
 						unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition;
 						
 						// Weapon Primary Hand Animation: Hand reaches from current position to firearm bolt handle
-						firearm_weapon_primary_hand_pivot_transition_value = 0;
-						
-						firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-						firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-						firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-						firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
+						unit_set_firearm_primary_hand_animation(global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y, global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x, global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y, 0);
 					}
 				}
 			}
@@ -538,16 +537,18 @@ switch (unit_equipment_animation_state)
 								//
 								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle;
 								
-								//
-								weapon_equipped.weapon_image_index = 1;
+								// Open Firearm Chamber
+								weapon_equipped.open_firearm_chamber();
 								
 								//
-								firearm_weapon_primary_hand_pivot_transition_value = 0;
-								
-								firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x;
-								firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y;
-								firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-								firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
+								unit_set_firearm_primary_hand_animation
+								(
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x, 
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y,
+									0
+								);
 								break;
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle:
 								// 
@@ -556,8 +557,8 @@ switch (unit_equipment_animation_state)
 								// 
 								firearm_weapon_primary_hand_pivot_transition_value = 1;
 								
-								//
-								weapon_equipped.weapon_image_index = 1;
+								// Open Firearm Chamber
+								weapon_equipped.open_firearm_chamber();
 								break;
 							case UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
@@ -573,16 +574,18 @@ switch (unit_equipment_animation_state)
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 								}
 							
-								//
-								weapon_equipped.weapon_image_index = 0;
+								// Close Firearm Chamber
+								weapon_equipped.close_firearm_chamber();
 								
 								// 
-								firearm_weapon_primary_hand_pivot_transition_value = 1;
-								
-								firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-								firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-								firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-								firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
+								unit_set_firearm_primary_hand_animation
+								(
+									global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
+									global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y,
+									1
+								);
 								break;
 						}
 					}
@@ -620,12 +623,14 @@ switch (unit_equipment_animation_state)
 								}
 								
 								//
-								firearm_weapon_primary_hand_pivot_transition_value = 0;
-								
-								firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-								firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
-								firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x;
-								firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y;
+								unit_set_firearm_primary_hand_animation
+								(
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x, 
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y,
+									0
+								);
 								break;
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
@@ -639,14 +644,15 @@ switch (unit_equipment_animation_state)
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle;
 								}
 								
-								
 								//
-								firearm_weapon_primary_hand_pivot_transition_value = 0;
-								
-								firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x;
-								firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y;
-								firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x;
-								firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y;
+								unit_set_firearm_primary_hand_animation
+								(
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x, 
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x,
+									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y,
+									0
+								);
 								break;
 						}
 					}
@@ -706,7 +712,7 @@ switch (unit_equipment_animation_state)
 				}
 				break;
 			case UnitFirearmReloadAnimationState.ReloadIndividualRounds_MovePrimaryHandToFirearmReloadOffsetPosition:
-				// 
+				// Move Hand to Reload Individual Rounds into Firearm from Reload Offset Position - Extremely Fast Reload Animation
 				firearm_weapon_primary_hand_pivot_transition_value *= power(0.5, frame_delta);
 				
 				if (firearm_weapon_primary_hand_pivot_transition_value <= animation_asymptotic_tolerance)
@@ -744,6 +750,7 @@ switch (unit_equipment_animation_state)
 					}
 				}
 				
+				// Update Primary Hand Fumble Position
 				hand_fumble_animation_offset_x = lerp(hand_fumble_animation_offset_bx, hand_fumble_animation_offset_ax, hand_fumble_animation_transition_value);
 				hand_fumble_animation_offset_y = lerp(hand_fumble_animation_offset_by, hand_fumble_animation_offset_ay, hand_fumble_animation_transition_value);
 				
@@ -761,16 +768,18 @@ switch (unit_equipment_animation_state)
 					{
 						// Hand Grabs Item from Inventory
 						unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToFirearmReloadPosition;
-						limb_left_arm.set_held_item(UnitHeldItem.FAL_Magazine);
-						//limb_left_arm.set_held_item(UnitHeldItem.DebugHeldItem);
+						limb_primary_arm.set_held_item(UnitHeldItem.FAL_Magazine); // DEBUG!!!
+						//limb_primary_arm.set_held_item(UnitHeldItem.DebugHeldItem);
 						
 						// Configure Primary Hand Pivots to perform Magazine Animation
-						firearm_weapon_primary_hand_pivot_transition_value = 0;
-						
-						firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_offset_x;
-						firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_offset_y;
-						firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x;
-						firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y;
+						unit_set_firearm_primary_hand_animation
+						(
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_offset_x, 
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_offset_y,
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x,
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y,
+							0
+						);
 					}
 					else if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.ReloadMagazine_MagazineHandFumbleAnimation)
 					{
@@ -779,44 +788,49 @@ switch (unit_equipment_animation_state)
 						
 						// Magazine is loaded into Firearm 
 						weapon_equipped.reload_firearm();
-						limb_left_arm.set_held_item();
+						limb_primary_arm.set_held_item();
 						
-						//
-						weapon_equipped.weapon_image_index = 0;
+						// Close Firearm Chamber
+						weapon_equipped.close_firearm_chamber();
 						
-						// Configure Primary Hand Pivots to perform Magazine Animation
-						firearm_weapon_primary_hand_pivot_transition_value = 1;
-						
-						firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x;
-						firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y;
-						firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x;
-						firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y;
+						// Set Primary Hand's Firearm Animation Path - From Firearm's Hand Trigger Position to Firearm's Magazine Reload Position
+						unit_set_firearm_primary_hand_animation
+						(
+							global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x,
+							global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_y,
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x,
+							global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y,
+							1
+						);
 					}
 					else if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.ReloadIndividualRounds_IndividualRoundHandFumbleAnimation)
 					{
-						//
+						// Reload Firearm with One Round
 						weapon_equipped.reload_firearm(1);
 						
+						// Check if Firearm is finished being reloaded
 						if (weapon_equipped.firearm_ammo < global.weapon_packs[weapon_equipped.weapon_pack].firearm_max_ammo_capacity)
 						{
-							// 
+							// Firearm is not finished being reloaded - Begin reloading another round
 							unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadIndividualRounds_MovePrimaryHandToFirearmReloadOffsetPosition;
 						}
 						else
 						{
-							// 
+							// Firearm is finished being reloaded - Move hand to close Bolt Action Chamber
 							unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition;
 						
-							//
-							limb_left_arm.set_held_item();
+							// Reset Primary Hand's Held Item
+							limb_primary_arm.set_held_item();
 							
-							// 
-							firearm_weapon_primary_hand_pivot_transition_value = 0;
-							
-							firearm_weapon_primary_hand_pivot_offset_ax = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x;
-							firearm_weapon_primary_hand_pivot_offset_ay = global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y;
-							firearm_weapon_primary_hand_pivot_offset_bx = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x;
-							firearm_weapon_primary_hand_pivot_offset_by = global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y;
+							// Set Primary Hand's Firearm Animation Path - From Firearm's Reload Position to Firearm's Open Bolt Position
+							unit_set_firearm_primary_hand_animation
+							(
+								global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_x, 
+								global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_y,
+								global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x,
+								global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_y + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_y,
+								0
+							);
 						}
 					}
 				}
@@ -825,12 +839,12 @@ switch (unit_equipment_animation_state)
 			case UnitFirearmReloadAnimationState.Reload_End:
 			default:
 				// Reload Animation Reset Behaviour
-				limb_left_arm.set_held_item();
+				limb_primary_arm.set_held_item();
 				
-				//
+				// Reset Unit Equipment State to Firearm
 				unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
 				
-				//
+				// Reset Hand Fumble Animation Values
 				hand_fumble_animation_offset_x = 0;
 				hand_fumble_animation_offset_y = 0;
 				break;
@@ -866,10 +880,10 @@ switch (unit_equipment_animation_state)
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End:
-					//
+					// Reset Primary Hand to Firearm Operation Position - Reload Interrupt Hand Movement is Fast
 					firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = lerp(firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value, 0, hand_fast_movement_spd * frame_delta);
 					
-					// Update Facing Direction
+					// Refresh Facing Direction - Reload Interrupt Allows Firearm Aiming
 					temp_firearm_is_aimed = weapon_aim;
 					draw_xscale = temp_firearm_is_aimed ? (abs(draw_xscale) * ((weapon_aim_x - x >= 0) ? 1 : -1)) : draw_xscale;
 					temp_firearm_facing_sign = sign(draw_xscale);
@@ -893,8 +907,8 @@ switch (unit_equipment_animation_state)
 			}
 			
 			// Update Unit Equipment Inventory Position
-			unit_equipment_inventory_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_inventory_x, global.unit_packs[unit_pack].equipment_inventory_y) * draw_xscale);
-			unit_equipment_inventory_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_inventory_x, global.unit_packs[unit_pack].equipment_inventory_y) * draw_yscale);
+			unit_equipment_inventory_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y));
+			unit_equipment_inventory_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y) * draw_yscale);
 			
 			// Update Primary Hand Position
 			temp_firearm_primary_hand_horizontal_offset = lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value);
@@ -953,20 +967,20 @@ switch (unit_equipment_animation_state)
 		var temp_firearm_y = y + ground_contact_vertical_offset + rot_point_y(temp_firearm_horizontal_offset, temp_firearm_vertical_offset);
 		
 		// Update Limb Pivots
-		limb_left_arm.limb_xscale = temp_firearm_facing_sign;
-		limb_right_arm.limb_xscale = temp_firearm_facing_sign;
+		limb_primary_arm.limb_xscale = temp_firearm_facing_sign;
+		limb_secondary_arm.limb_xscale = temp_firearm_facing_sign;
 		
-		var temp_left_arm_anchor_offset_x = limb_left_arm.anchor_offset_x * draw_xscale;
-		var temp_left_arm_anchor_offset_y = limb_left_arm.anchor_offset_y * draw_yscale;
+		var temp_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
+		var temp_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
 		
-		limb_left_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
-		limb_left_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+		limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+		limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
 		
-		var temp_right_arm_anchor_offset_x = limb_right_arm.anchor_offset_x * draw_xscale;
-		var temp_right_arm_anchor_offset_y = limb_right_arm.anchor_offset_y * draw_yscale;
+		var temp_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
+		var temp_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
 		
-		limb_right_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
-		limb_right_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+		limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+		limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
 		
 		// Update Weapon's Angle
 		var temp_firearm_angle_difference = angle_difference(weapon_equipped.weapon_angle, temp_firearm_is_aimed ? point_direction(temp_firearm_x, temp_firearm_y, weapon_aim_x, weapon_aim_y) : temp_firearm_ambient_angle);
@@ -991,12 +1005,12 @@ switch (unit_equipment_animation_state)
 			temp_firearm_primary_hand_target_y = lerp(temp_firearm_primary_hand_target_y, unit_equipment_inventory_position_y, firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value) + hand_fumble_animation_offset_y;
 		}
 		
-		limb_left_arm.update_target(temp_firearm_primary_hand_target_x, temp_firearm_primary_hand_target_y);
+		limb_primary_arm.update_target(temp_firearm_primary_hand_target_x, temp_firearm_primary_hand_target_y);
 		
 		var temp_firearm_offhand_hand_target_x = weapon_equipped.weapon_x + rot_point_x(temp_firearm_offhand_hand_horizontal_offset, temp_firearm_offhand_hand_vertical_offset);
 		var temp_firearm_offhand_hand_target_y = weapon_equipped.weapon_y + rot_point_y(temp_firearm_offhand_hand_horizontal_offset, temp_firearm_offhand_hand_vertical_offset);
 		
-		limb_right_arm.update_target(temp_firearm_offhand_hand_target_x, temp_firearm_offhand_hand_target_y);
+		limb_secondary_arm.update_target(temp_firearm_offhand_hand_target_x, temp_firearm_offhand_hand_target_y);
 		break;
 	default:
 		// Reset Animation Speed Direction
@@ -1004,10 +1018,10 @@ switch (unit_equipment_animation_state)
 		
 		// Update Limb Anchor Trig Values
 		rot_prefetch(draw_angle_value);
-		limb_left_arm.anchor_trig_sine = trig_sine;
-		limb_left_arm.anchor_trig_cosine = trig_cosine;
-		limb_right_arm.anchor_trig_sine = trig_sine;
-		limb_right_arm.anchor_trig_cosine = trig_cosine;
+		limb_primary_arm.anchor_trig_sine = trig_sine;
+		limb_primary_arm.anchor_trig_cosine = trig_cosine;
+		limb_secondary_arm.anchor_trig_sine = trig_sine;
+		limb_secondary_arm.anchor_trig_cosine = trig_cosine;
 		
 		// Update Non-Weapon Unit Animations
 		var temp_animation_percentage;
@@ -1016,19 +1030,19 @@ switch (unit_equipment_animation_state)
 		{
 			case UnitAnimationState.Idle:
 				temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
-				limb_left_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
-				limb_right_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
+				limb_primary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
+				limb_secondary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
 				break;
 			case UnitAnimationState.Walking:
 			case UnitAnimationState.AimWalking:
 				temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
 				var temp_walk_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
-				limb_left_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
-				limb_right_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
+				limb_primary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
+				limb_secondary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
 				break;
 			case UnitAnimationState.Jumping:
-				limb_left_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
-				limb_right_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
+				limb_primary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
+				limb_secondary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
 				break;
 		}
 		break;

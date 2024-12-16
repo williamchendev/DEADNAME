@@ -1,4 +1,4 @@
-/// @function unit_set_hand_fumble_animation();
+/// @function unit_set_hand_fumble_animation(hand_fumble_animation_duration);
 /// @description Sets the duration for the unit's hand fumble animation and resets the animation properties
 /// @param {number} hand_fumble_animation_duration Duration for the fumble animation measured in 1/60ths of a second (frametime)
 function unit_set_hand_fumble_animation(hand_fumble_animation_duration)

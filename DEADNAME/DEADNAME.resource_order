@@ -480,6 +480,7 @@
     {"name":"sEditorUtil","order":6,"path":"sprites/sEditorUtil/sEditorUtil.yy",},
     {"name":"rot_point_","order":3,"path":"scripts/rot_point_/rot_point_.yy",},
     {"name":"sAdobeHouse_CactusLarge_Sprite","order":11,"path":"sprites/sAdobeHouse_CactusLarge_Sprite/sAdobeHouse_CactusLarge_Sprite.yy",},
+    {"name":"unit_set_firearm_primary_hand_animation","order":3,"path":"scripts/unit_set_firearm_primary_hand_animation/unit_set_firearm_primary_hand_animation.yy",},
     {"name":"sAluminumBat_Idle","order":1,"path":"sprites/sAluminumBat_Idle/sAluminumBat_Idle.yy",},
     {"name":"sWilliam_NorthernBrigade_Mercenary_Run","order":6,"path":"sprites/sWilliam_NorthernBrigade_Mercenary_Run/sWilliam_NorthernBrigade_Mercenary_Run.yy",},
     {"name":"sWilliam_NorthernBrigade_Soldat_Run_NormalMap","order":6,"path":"sprites/sWilliam_NorthernBrigade_Soldat_Run_NormalMap/sWilliam_NorthernBrigade_Soldat_Run_NormalMap.yy",},

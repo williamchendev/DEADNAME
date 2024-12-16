@@ -86,6 +86,7 @@ class FirearmClass extends WeaponClass define
 		
 		// Weapon
 		firearm_ammo = init_firearm_loaded_ammo < 0 ? global.weapon_packs[init_weapon_pack].firearm_max_ammo_capacity : init_firearm_loaded_ammo;
+		firearm_eject_cartridge_num = 0;
 		
 		// Init Weapon Timers
 	    firearm_recoil_recovery_delay = 0;
@@ -164,7 +165,9 @@ class FirearmClass extends WeaponClass define
 		}
 		
 		// Deplete Ammo
-		firearm_ammo--;
+		var temp_firearm_shots_fired = 1;
+		firearm_ammo -= temp_firearm_shots_fired;
+		firearm_eject_cartridge_num = temp_firearm_shots_fired;
 		
 		// Firing Angle
 		var temp_firing_angle = (weapon_angle + (weapon_angle_recoil * weapon_facing_sign)) mod 360;
@@ -193,6 +196,29 @@ class FirearmClass extends WeaponClass define
 	{
 		// DEBUG
 		firearm_ammo = is_undefined(reload_rounds_count) ? global.weapon_packs[weapon_pack].firearm_max_ammo_capacity : clamp(firearm_ammo + reload_rounds_count, 0, global.weapon_packs[weapon_pack].firearm_max_ammo_capacity);
+	}
+	
+	static close_firearm_chamber = function()
+	{
+		// Close Firearm Chamber
+		weapon_image_index = 0;
+	}
+	
+	static open_firearm_chamber = function()
+	{
+		// Open Firearm Chamber
+		weapon_image_index = 1;
+		
+		// Firearm Eject Spent Ammunition Cartridge Behaviour
+		if (firearm_eject_cartridge_num > 0)
+		{
+			for (var i = 0; i < firearm_eject_cartridge_num; i++)
+			{
+				
+			}
+			
+			firearm_eject_cartridge_num = 0;
+		}
 	}
 	
 	// Render Methods
