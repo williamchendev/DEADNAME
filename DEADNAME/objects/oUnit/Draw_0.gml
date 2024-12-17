@@ -14,3 +14,6 @@ if (weapon_active)
 
 // 
 limb_primary_arm.render_behaviour();
+
+//DEBUG
+draw_text(x, y+20, string(unit_firearm_reload_animation_state > 17));

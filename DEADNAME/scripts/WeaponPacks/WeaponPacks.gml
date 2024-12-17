@@ -51,7 +51,7 @@ global.weapon_packs[WeaponPack.Default] =
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 15,
-    firearm_reload_individual_rounds: true,
+    firearm_reload_individual_rounds: false,
     
     // Weapon Properties
     firearm_attack_delay: 10,

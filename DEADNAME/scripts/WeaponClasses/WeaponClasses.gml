@@ -212,11 +212,13 @@ class FirearmClass extends WeaponClass define
 		// Firearm Eject Spent Ammunition Cartridge Behaviour
 		if (firearm_eject_cartridge_num > 0)
 		{
+			// Eject Spent Ammunition Cartridges
 			for (var i = 0; i < firearm_eject_cartridge_num; i++)
 			{
 				
 			}
 			
+			// Reset Spent Ammunition Cartridge Counter
 			firearm_eject_cartridge_num = 0;
 		}
 	}
