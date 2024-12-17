@@ -622,14 +622,7 @@ switch (unit_equipment_animation_state)
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							default:
 								// End Bolt Action Reload Animation
-								if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle)
-								{
-									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End;
-								}
-								else
-								{
-									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
-								}
+								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End;
 							
 								// Close Firearm Chamber
 								weapon_equipped.close_firearm_chamber();
