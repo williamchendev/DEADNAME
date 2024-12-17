@@ -622,7 +622,7 @@ switch (unit_equipment_animation_state)
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							default:
 								// End Bolt Action Reload Animation
-								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End;
+								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadBoltHandle_End;
 							
 								// Close Firearm Chamber
 								weapon_equipped.close_firearm_chamber();
@@ -886,7 +886,7 @@ switch (unit_equipment_animation_state)
 					}
 				}
 				break;
-			case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End:
+			case UnitFirearmReloadAnimationState.ReloadBoltHandle_End:
 			case UnitFirearmReloadAnimationState.Reload_End:
 			default:
 				// Reload Animation Reset Behaviour
@@ -930,7 +930,7 @@ switch (unit_equipment_animation_state)
 			{
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenChamberPosition:
 				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
-				case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End:
+				case UnitFirearmReloadAnimationState.ReloadBoltHandle_End:
 					// Reset Primary Hand to Firearm Operation Position - Reload Interrupt Hand Movement is Fast
 					firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = lerp(firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value, 0, hand_fast_movement_spd * frame_delta);
 					

@@ -18,6 +18,7 @@ enum UnitEquipmentAnimationState
 enum UnitFirearmReloadAnimationState
 {
 	Reload_End,
+	ReloadBoltHandle_End,
 	Reload_MovePrimaryHandToUnitInventory,
 	Reload_InventoryHandFumbleAnimation,
 	Reload_MovePrimaryHandToFirearmReloadPosition,
@@ -36,7 +37,6 @@ enum UnitFirearmReloadAnimationState
 	ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle,
 	InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenChamberPosition,
 	InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle,
-	InterruptReloadChargeBoltHandle_End
 }
 
 // Unit Character Pack Enums
