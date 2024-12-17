@@ -519,28 +519,28 @@ switch (unit_equipment_animation_state)
 			case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle:
 			case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 			case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
-				// Bolt Action Reload Events
+				// Bolt Action Reload Events - Primary Hand operates Firearm's Bolt Handle sliding it backwards or forwards to open or close Firearm's Chamber
 				firearm_weapon_hip_pivot_to_aim_pivot_transition_value = lerp(firearm_weapon_hip_pivot_to_aim_pivot_transition_value, 1, firearm_aiming_hip_transition_spd * frame_delta);
 				
+				// Firearm must have finished its recoil animation cycle to perform Bolt Action Firearm's reload animation
 				if (weapon_equipped.firearm_recoil_recovery_delay <= 0 and weapon_equipped.firearm_attack_delay <= 0)
 				{
-					//
+					// Update Unit's Primary Hand Path Animation - Fast Hand Speed for opening and closing the Firearm's Bolt Handle
 					firearm_weapon_primary_hand_pivot_transition_value = lerp(firearm_weapon_primary_hand_pivot_transition_value, 1, hand_fast_movement_spd * frame_delta);
 					
-					//
+					// Firearm must be aimed and Unit must have finished their Primary Hand's Path Animation to perform next Animation Event
 					if (firearm_weapon_hip_pivot_to_aim_pivot_transition_value >= 1 - animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_transition_value >= 1 - animation_asymptotic_tolerance)
 					{
-						//
 						switch (unit_firearm_reload_animation_state)
 						{
 							case UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle:
-								//
+								// Bolt Action Firearm's Chamber is Opened (The Bolt Handle has been pulled backwards for the animation displayed between shots) - Begin pushing the Firearm's Bolt Handle forward to recharge for the next shot
 								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle;
 								
 								// Open Firearm Chamber
 								weapon_equipped.open_firearm_chamber();
 								
-								//
+								// Set Primary Hand's Firearm Animation Path - From Firearm's Opened Bolt Position to From Firearm's Closed Bolt Position
 								unit_set_firearm_primary_hand_animation
 								(
 									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x, 
@@ -551,10 +551,10 @@ switch (unit_equipment_animation_state)
 								);
 								break;
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle:
-								// 
+								// Bolt Action Firearm's Chamber is Opened (The Bolt Handle has been pulled backwards for a reload animation) - Begin moving primary hand to Unit's Inventory to grab individual ammo rounds
 								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToUnitInventory;
 								
-								// 
+								// Reset Primary Hand Animation's Path Interpolation Value to begin next animation (Inversed Path Interpolation Value) 
 								firearm_weapon_primary_hand_pivot_transition_value = 1;
 								
 								// Open Firearm Chamber
@@ -564,7 +564,7 @@ switch (unit_equipment_animation_state)
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle:
 							default:
-								// End Reload Animation
+								// End Bolt Action Reload Animation
 								if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle)
 								{
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_End;
@@ -577,7 +577,7 @@ switch (unit_equipment_animation_state)
 								// Close Firearm Chamber
 								weapon_equipped.close_firearm_chamber();
 								
-								// 
+								// Set Primary Hand's Firearm Animation Path - From Firearm's Closed Bolt Position to Firearm's Trigger Group (Inversed Path Interpolation Value)
 								unit_set_firearm_primary_hand_animation
 								(
 									global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x, 
@@ -595,15 +595,16 @@ switch (unit_equipment_animation_state)
 			case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition:
 			case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
 			case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
-				// Bolt Action Reload Events
+				// Bolt Action Reload Events - Primary Hand moves from ambient position to operate Firearm's Bolt Handle
 				firearm_weapon_hip_pivot_to_aim_pivot_transition_value = lerp(firearm_weapon_hip_pivot_to_aim_pivot_transition_value, 1, firearm_aiming_hip_transition_spd * frame_delta);
 				
+				// Firearm must have finished its recoil animation cycle to perform Bolt Action Firearm's reload animation
 				if (weapon_equipped.firearm_recoil_recovery_delay <= 0 and weapon_equipped.firearm_attack_delay <= 0)
 				{
-					//
+					// Update Unit's Primary Hand Path Animation - Default Hand Speed
 					firearm_weapon_primary_hand_pivot_transition_value = lerp(firearm_weapon_primary_hand_pivot_transition_value, 1, hand_default_movement_spd * frame_delta);
 					
-					//
+					// Firearm must be aimed and Unit must have finished their Primary Hand's Path Animation to perform next Animation Event
 					if (firearm_weapon_hip_pivot_to_aim_pivot_transition_value >= 1 - animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_transition_value >= 1 - animation_asymptotic_tolerance)
 					{
 						firearm_weapon_hip_pivot_to_aim_pivot_transition_value = 1;
@@ -612,7 +613,7 @@ switch (unit_equipment_animation_state)
 						{
 							case UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition:
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition:
-								//
+								// Bolt Action Primary Hand Animation for grabbing the Bolt Handle BACKWARDS to open the Firearm's Chamber
 								if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleOpenPosition)
 								{
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle;
@@ -622,7 +623,7 @@ switch (unit_equipment_animation_state)
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPullBackwardBoltHandle;
 								}
 								
-								//
+								// Set Primary Hand's Firearm Animation Path - From Firearm's Open Bolt Position to Firearm's Closed Bolt Position
 								unit_set_firearm_primary_hand_animation
 								(
 									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x, 
@@ -634,7 +635,7 @@ switch (unit_equipment_animation_state)
 								break;
 							case UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
 							case UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition:
-								//
+								// Bolt Action Primary Hand Animation for grabbing the Bolt Handle FORWARD to close the Firearm's Chamber
 								if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedPosition)
 								{
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle;
@@ -644,7 +645,7 @@ switch (unit_equipment_animation_state)
 									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle;
 								}
 								
-								//
+								// Set Primary Hand's Firearm Animation Path - From Firearm's Closed Bolt Position to Firearm's Open Bolt Position
 								unit_set_firearm_primary_hand_animation
 								(
 									global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_position_x + global.weapon_packs[weapon_equipped.weapon_pack].firearm_bolt_handle_charge_offset_x, 
@@ -707,7 +708,7 @@ switch (unit_equipment_animation_state)
 							break;
 					}
 					
-					// Configure Primary Hand Pivots to perform Reload Animation
+					// Reset Primary Hand Animation's Path Interpolation Value to begin next animation (Inversed Path Interpolation Value)
 					firearm_weapon_primary_hand_pivot_transition_value = 1;
 				}
 				break;
@@ -717,10 +718,10 @@ switch (unit_equipment_animation_state)
 				
 				if (firearm_weapon_primary_hand_pivot_transition_value <= animation_asymptotic_tolerance)
 				{
-					// 
+					// Primary Hand is positioned at Firearm's Reload Offset Position - Begin the animation to load another round into Firearm
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadIndividualRounds_MovePrimaryHandToFirearmReloadPosition;
 					
-					// 
+					// Reset Primary Hand Animation's Path Interpolation Value to begin next animation
 					firearm_weapon_primary_hand_pivot_transition_value = 0;
 				}
 				break;
@@ -793,7 +794,7 @@ switch (unit_equipment_animation_state)
 						// Close Firearm Chamber
 						weapon_equipped.close_firearm_chamber();
 						
-						// Set Primary Hand's Firearm Animation Path - From Firearm's Hand Trigger Position to Firearm's Magazine Reload Position
+						// Set Primary Hand's Firearm Animation Path - From Firearm's Magazine Reload Position to Firearm's Hand Trigger Position (Inversed Path Interpolation Value)
 						unit_set_firearm_primary_hand_animation
 						(
 							global.weapon_packs[weapon_equipped.weapon_pack].weapon_hand_position_primary_x,
