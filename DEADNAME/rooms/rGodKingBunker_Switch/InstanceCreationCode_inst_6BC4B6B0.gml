@@ -1,1 +1,0 @@
-lantern_light_source.foreground_layer = false;

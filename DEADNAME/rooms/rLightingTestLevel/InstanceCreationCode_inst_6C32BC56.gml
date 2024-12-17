@@ -1,1 +1,0 @@
-health_show = false;
