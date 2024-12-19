@@ -26,7 +26,7 @@ if (ai_behaviour) {
 		}
 		
 		// Draw Alertness
-		draw_set_font(fHeartBit);
+		draw_set_font(font_Small);
 		draw_set_halign(fa_center);
 		draw_text_outline(x - temp_camera_x, y - (hitbox_right_bottom_y_offset - hitbox_left_top_y_offset) - ((stats_y_offset * draw_yscale) * 2) - temp_camera_y, c_white, c_black, "[Alert: " + string(alert) + "]");
 		draw_set_halign(fa_left);

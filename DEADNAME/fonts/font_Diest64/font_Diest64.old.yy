@@ -1,6 +1,6 @@
 {
   "$GMFont":"",
-  "%Name":"fDiest64",
+  "%Name":"font_Diest64",
   "AntiAlias":0,
   "applyKerning":0,
   "ascender":0,
@@ -117,7 +117,7 @@
   "last":0,
   "lineHeight":0,
   "maintainGms1Font":false,
-  "name":"fDiest64",
+  "name":"font_Diest64",
   "parent":{
     "name":"Fonts",
     "path":"folders/Fonts.yy",
@@ -131,7 +131,7 @@
   "resourceType":"GMFont",
   "resourceVersion":"2.0",
   "sampleText":"abcdef ABCDEF\n0123456789 .,<>\"'&!?\nthe quick brown fox jumps over the lazy dog\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\n\nDefault Character(9647) ▯\n300Kcal\nCalories",
-  "sdfSpread":8,
+  "sdfSpread":2,
   "size":12.0,
   "styleName":"Medium",
   "textureGroupId":{
@@ -139,5 +139,5 @@
     "path":"texturegroups/Default",
   },
   "TTFName":"${project_dir}\\fonts\\fDiest64\\diest64Redux.ttf",
-  "usesSDF":false,
+  "usesSDF":true,
 }

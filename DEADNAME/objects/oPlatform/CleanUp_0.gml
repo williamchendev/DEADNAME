@@ -7,4 +7,4 @@ units = -1;
 ds_list_destroy(collision_units_list);
 collision_units_list = -1;
 
-return;
+exit;

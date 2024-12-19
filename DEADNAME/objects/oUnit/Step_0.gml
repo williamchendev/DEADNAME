@@ -435,7 +435,7 @@ else
 		var temp_vspd_sign = sign(vspd);
 		var v = 1;
 		
-		repeat(abs(vspd))
+		repeat(abs(vspd) - v)
 		{
 			var temp_vspd = (temp_vspd_sign * v);
 			

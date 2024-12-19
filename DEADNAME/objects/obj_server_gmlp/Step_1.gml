@@ -8,7 +8,8 @@ FRAME TRACKING
 #region Update frametime properties
 gmlp.frame.target	= (game_get_speed(gamespeed_microseconds)*0.000001);
 gmlp.frame.time		= (delta_time*0.000001);
-gmlp.frame.delta	= (gmlp.frame.time/gmlp.frame.target);
+//gmlp.frame.delta	= (gmlp.frame.time/gmlp.frame.target); DEFAULT
+gmlp.frame.delta	= min(gmlp.frame.time/gmlp.frame.target, 3); // EDITED TO PREVENT EXTREME DELTA TIME RELATED PHYSICS ISSUES
 #endregion
 
 

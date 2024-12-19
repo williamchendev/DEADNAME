@@ -1,8 +1,8 @@
 {
   "$GMSprite":"",
   "%Name":"sDebugPlatform",
-  "bboxMode":0,
-  "bbox_bottom":47,
+  "bboxMode":2,
+  "bbox_bottom":4,
   "bbox_left":0,
   "bbox_right":47,
   "bbox_top":0,

@@ -1,23 +1,19 @@
 /// @description Game Manager Initialization
 
+// Configure Game Manager - Global Init Event
+gml_pragma("global", @"room_instance_add(room_first, 0, 0, oGameManager);");
+
 // Singleton Function
 if (instance_number(object_index) > 1) {
 	instance_destroy();
 	exit;
 }
-persistent = true;
 
 // System Settings
 game_width = 640;
 game_height = 360;
 
 data_directory = string(program_directory +"\Data\\");
-
-// Level Generation Data
-generate = false;
-blocks = noone;
-
-instantiated_units = ds_list_create();
 
 // Global Item Data
 
@@ -46,23 +42,7 @@ inventory_check = ord("I");
 
 command_check = ord("Q");
 
-// Time Settings
-time_spd = 1;
-time_delta_clamp = 3;
-
-global.deltatime = 0;
-global.realdeltatime = 0;
-
-// Camera Variables
-camera_width = 640;
-camera_height = 360;
-camera_x = 0;
-camera_y = 0;
-
 // Cursor Variables
 cursor_icon = false;
 cursor_inventory = false;
 cursor_index = 0;
-
-// Squad Variables
-generated_squads = 0;

@@ -1,6 +1,6 @@
 {
   "$GMFont":"",
-  "%Name":"fNoirtheticCabrideRegular",
+  "%Name":"font_Title",
   "AntiAlias":0,
   "applyKerning":0,
   "ascender":0,
@@ -117,7 +117,7 @@
   "last":0,
   "lineHeight":0,
   "maintainGms1Font":false,
-  "name":"fNoirtheticCabrideRegular",
+  "name":"font_Title",
   "parent":{
     "name":"Fonts",
     "path":"folders/Fonts.yy",
@@ -130,14 +130,14 @@
   "regenerateBitmap":false,
   "resourceType":"GMFont",
   "resourceVersion":"2.0",
-  "sampleText":"abcdef ABCDEF\n0123456789 .,<>\"'&!?\nthe quick brown fox jumps over the lazy dog\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\nDefault character: ▯ (964",
+  "sampleText":"abcdef ABCDEF\n0123456789 .,<>\"'&!?\nthe quick brown fox jumps over the lazy dog\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\nDefault character: ▯ (964)",
   "sdfSpread":8,
-  "size":58.0,
+  "size":119.0,
   "styleName":"Regular",
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",
   },
   "TTFName":"${project_dir}\\fonts\\fNoirtheticCabrideRegular\\CABRIDE-Regular.otf",
-  "usesSDF":false,
+  "usesSDF":true,
 }
