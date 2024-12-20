@@ -4,6 +4,9 @@
 // Check if Debugging mode is active 
 if (global.debug) 
 {
+	//
+	surface_set_target(LightingEngine.diffuse_color_surface);
+	
 	// Camera GUI Layer
 	var temp_camera_x = 0;
 	var temp_camera_y = 0;
@@ -36,5 +39,9 @@ if (global.debug)
 	}
 	
 	draw_text(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 17, $"DeltaTime: {frame_delta}");
-	draw_text(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 28, $"FPS: {debug_fps}");
+	draw_text(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 28, $"Target FPS: {game_get_speed(gamespeed_fps)}");
+	draw_text(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 39, $"Real FPS: {debug_fps}");
+	
+	//
+	surface_reset_target();
 }

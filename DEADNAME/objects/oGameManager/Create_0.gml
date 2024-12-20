@@ -1,18 +1,27 @@
 /// @description Game Manager Initialization
 
+// Global Game Manager Properties
+#macro GameManager global.game_manager
+
 // Configure Game Manager - Global Init Event
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oGameManager);");
 
-// Singleton Function
-if (instance_number(object_index) > 1) {
-	instance_destroy();
+// Delete to prevent multiple Game Manager Instances
+if (instance_number(object_index) > 1) 
+{
+	instance_destroy(id, false);
 	exit;
 }
 
-// System Settings
+// Game Manager Singleton
+global.game_manager = id;
+
+// Resolution Settings
 game_width = 640;
 game_height = 360;
+game_scale = 1;
 
+// System Settings
 data_directory = string(program_directory +"\Data\\");
 
 // Global Item Data

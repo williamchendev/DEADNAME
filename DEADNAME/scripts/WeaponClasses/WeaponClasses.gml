@@ -227,6 +227,6 @@ class FirearmClass extends WeaponClass define
 	static render_behaviour = function() 
 	{
 		// Draw Weapon
-		draw_sprite_ext(weapon_sprite, weapon_image_index, weapon_x, weapon_y, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
+		lighting_engine_draw_sprite(weapon_sprite, weapon_normalmap, weapon_normalmap, weapon_image_index, weapon_x, weapon_y, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
 	}
 }

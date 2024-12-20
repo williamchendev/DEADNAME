@@ -4,7 +4,8 @@
 limb_secondary_arm.render_behaviour();
 
 //
-draw_sprite_ext(sprite_index, image_index, x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
+lighting_engine_draw_sprite(sprite_index, normalmap_index, normalmap_index, image_index, x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
+//draw_sprite_ext(sprite_index, image_index, x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
 
 // 
 if (weapon_active)

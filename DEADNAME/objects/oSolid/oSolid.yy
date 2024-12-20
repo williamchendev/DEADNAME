@@ -64,5 +64,5 @@
     "path":"sprites/sDebugSolid/sDebugSolid.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

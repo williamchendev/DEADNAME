@@ -40,5 +40,5 @@
     "path":"sprites/sDebugSolidRotation/sDebugSolidRotation.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

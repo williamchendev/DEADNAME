@@ -1,8 +1,14 @@
 /// @description Unit Initialization Event
 // Creates all the variables necessary for the Unit character
 
-// Singleton
-game_manager = instance_find(oGameManager, 0);
+// Lighting Engine
+if (LightingEngine.lighting_engine_layer_main_index == -1)
+{
+    lighting_engine_add_layer(LightingEngineUnitLayer, 0);
+}
+lighting_engine_add_unit(id);
+
+visible = false;
 
 // Unit Behaviour Settings
 canmove = true;

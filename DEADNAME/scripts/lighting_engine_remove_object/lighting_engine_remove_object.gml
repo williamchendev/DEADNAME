@@ -1,1 +1,0 @@
-function lighting_engine_remove_object() {}

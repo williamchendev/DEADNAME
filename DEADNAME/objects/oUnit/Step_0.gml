@@ -448,6 +448,7 @@ else
 				
 				if (!platform_free(x, y + 1, platform_list))
 				{
+					// Hit collider below Unit
 					grounded = true;
 					double_jump = true;
 					
@@ -458,6 +459,7 @@ else
 				}
 				else
 				{
+					// Hit collider above Unit
 					draw_xscale = sign(draw_xscale);
 					draw_yscale = 1;
 				}
