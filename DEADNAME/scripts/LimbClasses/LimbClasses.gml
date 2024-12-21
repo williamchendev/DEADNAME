@@ -85,7 +85,7 @@ class LimbArmClass extends LimbClass define
 				anchor_offset_y = global.unit_packs[init_unit_pack].limb_anchor_left_arm_y;
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_left_sprite;
-				limb_normals = global.unit_packs[init_unit_pack].ragdoll_arm_left_normalmap;
+				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_normalmap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_angle;
@@ -101,7 +101,7 @@ class LimbArmClass extends LimbClass define
 				anchor_offset_y = global.unit_packs[init_unit_pack].limb_anchor_right_arm_y;
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_right_sprite;
-				limb_normals = global.unit_packs[init_unit_pack].ragdoll_arm_right_normalmap;
+				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_normalmap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_angle;
@@ -129,6 +129,9 @@ class LimbArmClass extends LimbClass define
 		var limb_jump_animation_extension_percent = global.unit_packs[init_unit_pack].limb_jump_animation_extension_percent;
 		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
+		
+		//
+		limb_normalmap_spritepack = spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
 	}
 	
 	// Update Methods
@@ -283,8 +286,8 @@ class LimbArmClass extends LimbClass define
 		// Draw Arm
 		if (limb_held_item == UnitHeldItem.None)
 		{
-			lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-			lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+			lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+			lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 			return;
 		}
 		
@@ -296,13 +299,13 @@ class LimbArmClass extends LimbClass define
 				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
 				
 				// Draw Limb
-				lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-				lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+				lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 				break;
 			case LimbType.RightArm:
 				// Draw Limb
-				lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-				lighting_engine_draw_sprite(limb_sprite, limb_normals, limb_normals, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 0, limb_pivot_ax, limb_pivot_ay, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+				lighting_engine_draw_sprite(limb_sprite, limb_normalmap_spritepack, limb_normalmap_spritepack, 1, limb_pivot_bx, limb_pivot_by, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 				
 				// Draw Held Item
 				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);

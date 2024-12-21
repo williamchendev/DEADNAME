@@ -104,7 +104,8 @@ draw_yscale = 1;
 draw_angle = 0;
 draw_angle_value = 0;
 
-normalmap_index = noone;
+normalmap_spritepack = -1;
+specularmap_spritepack = -1;
 
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;

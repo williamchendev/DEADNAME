@@ -318,7 +318,6 @@
     {"id":{"name":"sprite_get_index","path":"scripts/sprite_get_index/sprite_get_index.yy",},},
     {"id":{"name":"sprite_get_speed_","path":"scripts/sprite_get_speed_/sprite_get_speed_.yy",},},
     {"id":{"name":"sprite_get_uvs_transformed","path":"scripts/sprite_get_uvs_transformed/sprite_get_uvs_transformed.yy",},},
-    {"id":{"name":"spritepack_destroy_buffers","path":"scripts/spritepack_destroy_buffers/spritepack_destroy_buffers.yy",},},
     {"id":{"name":"spritepack_get_uvs_transformed","path":"scripts/spritepack_get_uvs_transformed/spritepack_get_uvs_transformed.yy",},},
     {"id":{"name":"string_explode","path":"scripts/string_explode/string_explode.yy",},},
     {"id":{"name":"string_implode","path":"scripts/string_implode/string_implode.yy",},},

@@ -20,6 +20,7 @@ class WeaponClass define
 		// Init Weapon Properties
 		weapon_sprite = global.weapon_packs[init_weapon_pack].weapon_sprite;
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
+		weapon_normalmap_spritepack = global.weapon_packs[init_weapon_pack].weapon_normalmap_spritepack;
 		
 		// Init Weapon Image Index
 	    weapon_image_index = 0;
@@ -227,6 +228,6 @@ class FirearmClass extends WeaponClass define
 	static render_behaviour = function() 
 	{
 		// Draw Weapon
-		lighting_engine_draw_sprite(weapon_sprite, weapon_normalmap, weapon_normalmap, weapon_image_index, weapon_x, weapon_y, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
+		lighting_engine_draw_sprite(weapon_sprite, weapon_normalmap_spritepack, weapon_normalmap_spritepack, weapon_image_index, weapon_x, weapon_y, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
 	}
 }
