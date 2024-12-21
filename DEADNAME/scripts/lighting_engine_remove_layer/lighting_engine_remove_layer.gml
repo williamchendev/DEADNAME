@@ -12,8 +12,5 @@ function lighting_engine_remove_layer(layer_name)
         ds_list_delete(LightingEngine.lighting_engine_layer_name_list, temp_layer_index);
         ds_list_delete(LightingEngine.lighting_engine_layer_object_list, temp_layer_index);
         ds_list_delete(LightingEngine.lighting_engine_layer_depth_list, temp_layer_index);
-        
-        // Re-index Lighting Engine's Main Layer
-        LightingEngine.lighting_engine_layer_main_index = ds_list_find_index(LightingEngine.lighting_engine_layer_name_list, LightingEngineUnitLayer);
     }
 }

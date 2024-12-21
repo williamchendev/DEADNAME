@@ -2,10 +2,7 @@
 // Creates all the variables necessary for the Unit character
 
 // Lighting Engine
-if (LightingEngine.lighting_engine_layer_main_index == -1)
-{
-    lighting_engine_add_layer(LightingEngineUnitLayer, 0);
-}
+show_debug_message("adding unit to lighting engine");
 lighting_engine_add_unit(id);
 
 visible = false;

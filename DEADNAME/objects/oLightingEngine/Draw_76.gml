@@ -2,9 +2,6 @@
 // Creates the Surfaces for the Lighting Engine
 
 //
-surface_depth_disable(true);
-
-//
 if (!surface_exists(diffuse_color_surface))
 {
     diffuse_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
@@ -19,6 +16,3 @@ if (!surface_exists(depth_specular_stencil_surface))
 {
     depth_specular_stencil_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
-
-//
-surface_depth_disable(false);

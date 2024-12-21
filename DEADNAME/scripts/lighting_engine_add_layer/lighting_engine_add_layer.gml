@@ -32,8 +32,7 @@ function lighting_engine_add_layer(layer_name, layer_depth_value)
     ds_list_add(LightingEngine.lighting_engine_layer_object_list, ds_list_create());
     ds_list_add(LightingEngine.lighting_engine_layer_depth_list, layer_depth_value);
     
-    // Re-index Lighting Engine's Main Layer
-    lighting_engine_main_layer_index = ds_list_find_index(LightingEngine.lighting_engine_layer_name_list, LightingEngineUnitLayer);
+    show_debug_message(ds_list_find_value(LightingEngine.lighting_engine_layer_name_list, 0));
     
     // Layer Creation: Success
     return true;

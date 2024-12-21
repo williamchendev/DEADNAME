@@ -1,8 +1,16 @@
+//
 attribute vec3 in_Position; // (x, y, z)
 attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_TextureCoord; // (u, v)
 
+// UVs
+uniform vec4 normalMapUVs;
+uniform vec4 specularMapUVs;
+
+//
 varying vec2 v_vTexcoord;
+varying vec2 v_vTexcoordNormalMap;
+varying vec2 v_vTexcoordSpecularMap;
 varying vec4 v_vColour;
 
 void main() {
@@ -11,4 +19,6 @@ void main() {
 
 	v_vColour = in_Colour;
 	v_vTexcoord = in_TextureCoord;
+	v_vTexcoordNormalMap = (v_vTexcoord * normalMapUVs.xy) + normalMapUVs.zw;
+	v_vTexcoordSpecularMap = (v_vTexcoord - specularMapUVs.xy) * specularMapUVs.zw;
 }

@@ -93,8 +93,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Moralist_NormalMap",
+    "path":"texturegroups/Moralist_NormalMap",
   },
   "type":0,
   "VTile":false,

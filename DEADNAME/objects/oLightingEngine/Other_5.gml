@@ -15,5 +15,5 @@ ds_list_clear(lighting_engine_layer_name_list);
 ds_list_clear(lighting_engine_layer_object_list);
 ds_list_clear(lighting_engine_layer_depth_list);
 
-//
-lighting_engine_layer_main_index = -1;
+// Add Default Layers to Lighting Engine
+lighting_engine_create_default_layers();
