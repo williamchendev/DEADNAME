@@ -318,6 +318,8 @@
     {"id":{"name":"sprite_get_index","path":"scripts/sprite_get_index/sprite_get_index.yy",},},
     {"id":{"name":"sprite_get_speed_","path":"scripts/sprite_get_speed_/sprite_get_speed_.yy",},},
     {"id":{"name":"sprite_get_uvs_transformed","path":"scripts/sprite_get_uvs_transformed/sprite_get_uvs_transformed.yy",},},
+    {"id":{"name":"spritepack_destroy_buffers","path":"scripts/spritepack_destroy_buffers/spritepack_destroy_buffers.yy",},},
+    {"id":{"name":"spritepack_get_uvs_transformed","path":"scripts/spritepack_get_uvs_transformed/spritepack_get_uvs_transformed.yy",},},
     {"id":{"name":"string_explode","path":"scripts/string_explode/string_explode.yy",},},
     {"id":{"name":"string_implode","path":"scripts/string_implode/string_implode.yy",},},
     {"id":{"name":"string_lower_","path":"scripts/string_lower_/string_lower_.yy",},},
@@ -847,5 +849,7 @@
   "templateType":"game",
   "TextureGroups":[
     {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Setting_AdobeHouse","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Setting_AdobeHouse","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Faction_Moralist","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Faction_Moralist","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

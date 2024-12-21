@@ -1,0 +1,14 @@
+{
+  "$GMScript":"v1",
+  "%Name":"spritepack_get_uvs_transformed",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"spritepack_get_uvs_transformed",
+  "parent":{
+    "name":"UVTransform",
+    "path":"folders/Scripts/Plugins/UVTransform.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+  "tags":[],
+}

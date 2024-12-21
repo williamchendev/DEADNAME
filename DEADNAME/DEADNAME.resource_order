@@ -269,6 +269,8 @@
     {"name":"rot_vec_","order":5,"path":"scripts/rot_vec_/rot_vec_.yy",},
     {"name":"round_to","order":5,"path":"scripts/round_to/round_to.yy",},
     {"name":"sprite_get_speed_","order":1,"path":"scripts/sprite_get_speed_/sprite_get_speed_.yy",},
+    {"name":"sprite_get_uvs_transformed","order":2,"path":"scripts/sprite_get_uvs_transformed/sprite_get_uvs_transformed.yy",},
+    {"name":"spritepack_destroy_buffers","order":1,"path":"scripts/spritepack_destroy_buffers/spritepack_destroy_buffers.yy",},
     {"name":"string_implode","order":1,"path":"scripts/string_implode/string_implode.yy",},
     {"name":"string_lower_","order":2,"path":"scripts/string_lower_/string_lower_.yy",},
     {"name":"string_trim_","order":3,"path":"scripts/string_trim_/string_trim_.yy",},

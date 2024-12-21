@@ -1,0 +1,14 @@
+{
+  "$GMScript":"v1",
+  "%Name":"spritepack_destroy_buffers",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"spritepack_destroy_buffers",
+  "parent":{
+    "name":"UVTransform",
+    "path":"folders/Scripts/Plugins/UVTransform.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+  "tags":[],
+}

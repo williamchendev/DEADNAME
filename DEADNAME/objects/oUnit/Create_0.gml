@@ -63,6 +63,7 @@ firearm_reload_safety_angle = 15;
 
 // Unit Behaviour Variables
 var s = 0;
+
 repeat (array_length(global.unit_packs))
 {
 	// Auto Assign Unit Sprite Pack from Unit Object's Idle Sprite Index
