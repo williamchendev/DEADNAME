@@ -2,7 +2,6 @@
 // Creates all the variables necessary for the Unit character
 
 // Lighting Engine
-show_debug_message("adding unit to lighting engine");
 lighting_engine_add_unit(id);
 
 visible = false;

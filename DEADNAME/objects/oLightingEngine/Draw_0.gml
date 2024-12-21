@@ -8,7 +8,7 @@ surface_reset_target();
 
 //
 surface_set_target(normalmap_color_surface);
-draw_clear_alpha(normalmap_default_color, 1);
+draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
 surface_reset_target();
 
 //
@@ -80,3 +80,25 @@ shader_reset();
 
 //
 surface_reset_target();
+
+//
+if (global.debug and global.debug_surface_enabled)
+{
+	//
+	surface_set_target(debug_surface);
+	
+	//
+	with(oPlatform)
+	{
+		draw_self();
+	}
+	
+	//
+	with(oSolid)
+	{
+		draw_self();
+	}
+	
+	//
+	surface_reset_target();
+}

@@ -25,6 +25,4 @@ if (keyboard_check_pressed(vk_f11))
 		window_set_size(game_width, game_height);
 		window_set_fullscreen(true);
 	}
-	
-	surface_resize(application_surface, game_width, game_height);
 }

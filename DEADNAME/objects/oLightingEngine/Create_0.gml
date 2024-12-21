@@ -26,6 +26,10 @@ if (instance_number(object_index) > 1)
 global.lighting_engine = id;
 
 // Lighting Engine Settings
+global.debug_surface_enabled = true;
+global.lighting_engine_normalmap_default_color = make_color_rgb(255 / 2, 255 / 2, 255);
+
+// Rendering Settings
 application_surface_enable(false);
 application_surface_draw_enable(false);
 
@@ -47,15 +51,15 @@ lighting_engine_layer_depth_list = ds_list_create();
 diffuse_color_surface = -1;
 normalmap_color_surface = -1;
 depth_specular_stencil_surface = -1;
-
-normalmap_default_color = make_color_rgb(255 / 2, 255 / 2, 255);
+ui_surface = -1;
+debug_surface = -1;
 
 // Shader Indexes
-mrt_rendering_shader_normal_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "normalMapUV");
-mrt_rendering_shader_specular_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "specularMapUV");
+mrt_rendering_shader_normal_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Normal_UVs");
+mrt_rendering_shader_specular_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Specular_UVs");
 
-mrt_rendering_shader_normal_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "normalMapTex");
-mrt_rendering_shader_specular_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "specularMap");
+mrt_rendering_shader_normal_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_NormalTexture");
+mrt_rendering_shader_specular_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_SpecularTexture");
 
 // Add Default Layers
 lighting_engine_create_default_layers();

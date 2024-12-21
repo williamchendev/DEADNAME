@@ -19,7 +19,7 @@ global.game_manager = id;
 // Resolution Settings
 game_width = 640;
 game_height = 360;
-game_scale = 1;
+game_scale = 3;
 
 // System Settings
 data_directory = string(program_directory +"\Data\\");

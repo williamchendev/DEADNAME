@@ -4,7 +4,7 @@
 // Draw Options Screen
 if (options_active) 
 {
-	surface_set_target(LightingEngine.diffuse_color_surface);
+	surface_set_target(LightingEngine.ui_surface);
 	draw_set_alpha(1);
 	draw_set_color(c_white);
 	draw_set_font(font_Inno);
@@ -20,7 +20,7 @@ if (options_active)
 // Draw Credits Screen
 if (credits_active) 
 {
-	surface_set_target(LightingEngine.diffuse_color_surface);
+	surface_set_target(LightingEngine.ui_surface);
 	draw_set_alpha(1);
 	draw_set_color(c_white);
 	draw_set_font(font_Inno);
@@ -34,7 +34,7 @@ if (credits_active)
 }
 
 //
-surface_set_target(LightingEngine.diffuse_color_surface);
+surface_set_target(LightingEngine.ui_surface);
 
 // Draw Deadname Title
 var temp_color_blend = merge_color(deadname_title_color, c_white, deadname_title_alpha * deadname_title_alpha * deadname_title_alpha * deadname_title_alpha * deadname_title_alpha);

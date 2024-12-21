@@ -24,8 +24,17 @@ lighting_engine_layer_depth_list = -1;
 surface_free(diffuse_color_surface);
 surface_free(normalmap_color_surface);
 surface_free(depth_specular_stencil_surface);
+surface_free(ui_surface);
+
+//
+if (global.debug_surface_enabled)
+{
+	surface_free(debug_surface);
+}
 
 //
 diffuse_color_surface = -1;
 normalmap_color_surface = -1;
 depth_specular_stencil_surface = -1;
+ui_surface = -1;
+debug_surface = -1;
