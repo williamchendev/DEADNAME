@@ -1,5 +1,5 @@
 
-function lighting_engine_add_unit(unit_instance, layer_name = LightingEngineUnitLayer) 
+function lighting_engine_add_unit(unit_instance, layer_name = LightingEngineDefaultLayer) 
 {
     //
     var temp_lighting_object =

@@ -1,27 +1,14 @@
-
 function spritepack_get_uvs_transformed(sprite_a, sprite_b) 
 {
-    //
-    var temp_spritepack_struct =
+	//
+	var temp_spritepack = -1;
+	
+	//
+    for(var i = 0; i < sprite_get_number(sprite_a); i++)
     {
-        textures: -1,
-        uv_buffers: -1
+        temp_spritepack[i] = { uvs: sprite_get_uvs_transformed(sprite_a, i, sprite_b, i), texture: sprite_get_texture(sprite_b, i) };
     }
     
     //
-    var i = 0;
-    
-    repeat(sprite_get_number(sprite_a))
-    {
-        //
-        temp_spritepack_struct.uvs[i] = sprite_get_uvs_transformed(sprite_a, i, sprite_b, i);
-        
-        //
-        temp_spritepack_struct.textures[i] = sprite_get_texture(sprite_b, i);
-        
-        //
-        i++;
-    }
-    
-    return temp_spritepack_struct;
+    return temp_spritepack;
 }

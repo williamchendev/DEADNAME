@@ -3,12 +3,14 @@
 
 // Global Lighting Engine Properties
 #macro LightingEngine global.lighting_engine
-#macro LightingEngineUnitLayer "main"
+#macro LightingEngineDefaultLayer "main"
 
 // Enums
 enum LightingEngineLitObjectType
 {
+	Disabled,
     Basic,
+    Dynamic,
     Unit
 }
 
@@ -55,11 +57,14 @@ ui_surface = -1;
 debug_surface = -1;
 
 // Shader Indexes
-mrt_rendering_shader_normal_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Normal_UVs");
-mrt_rendering_shader_specular_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Specular_UVs");
+mrt_rendering_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Normal_UVs");
+mrt_rendering_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Specular_UVs");
 
-mrt_rendering_shader_normal_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_NormalTexture");
-mrt_rendering_shader_specular_map_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_SpecularTexture");
+mrt_rendering_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "vectorScale");
+mrt_rendering_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "vectorAngle");
+
+mrt_rendering_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_NormalTexture");
+mrt_rendering_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_SpecularTexture");
 
 // Add Default Layers
 lighting_engine_create_default_layers();

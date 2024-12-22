@@ -4,8 +4,6 @@
 // Lighting Engine
 lighting_engine_add_unit(id);
 
-visible = false;
-
 // Unit Behaviour Settings
 canmove = true;
 
@@ -30,7 +28,8 @@ max_velocity = 10;
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
-unit_pack = UnitPack.MoralistWilliam;
+unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
 animation_asymptotic_tolerance = 0.1;
 
@@ -62,19 +61,6 @@ firearm_moving_safety_angle = -45;
 firearm_reload_safety_angle = 15;
 
 // Unit Behaviour Variables
-var s = 0;
-
-repeat (array_length(global.unit_packs))
-{
-	// Auto Assign Unit Sprite Pack from Unit Object's Idle Sprite Index
-	if (global.unit_packs[s].idle_sprite == sprite_index)
-	{
-		unit_pack = s;
-		break;
-	}
-	s++;
-}
-
 ground_contact_vertical_offset = 0;
 
 // Physics Variables
@@ -90,6 +76,9 @@ x_velocity = 0;
 y_velocity = 0;
 
 // Animation Variables
+normalmap_spritepack = -1;
+specularmap_spritepack = -1;
+
 image_speed = 0;
 
 animation_speed = 0.18;
@@ -103,12 +92,6 @@ draw_yscale = 1;
 
 draw_angle = 0;
 draw_angle_value = 0;
-
-normalmap_spritepack = -1;
-specularmap_spritepack = -1;
-
-unit_equipment_animation_state = UnitEquipmentAnimationState.None;
-unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
 hand_fumble_animation_timer = 0;
 hand_fumble_animation_cycle_timer = 0;
@@ -179,3 +162,16 @@ input_cursor_y = 0;
 // Trig Variables
 trig_sine = 0;
 trig_cosine = 1;
+
+// Generate UVs
+unit_spritepack_idle_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
+unit_spritepack_walk_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
+unit_spritepack_jump_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_normalmap);
+unit_spritepack_aim_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
+unit_spritepack_aim_walk_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);
+
+unit_spritepack_idle_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
+unit_spritepack_walk_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
+unit_spritepack_jump_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_normalmap);
+unit_spritepack_aim_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
+unit_spritepack_aim_walk_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);

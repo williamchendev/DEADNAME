@@ -15,8 +15,8 @@
   "name":"oLightingEngine",
   "overriddenProperties":[],
   "parent":{
-    "name":"System",
-    "path":"folders/Objects/System.yy",
+    "name":"Lighting",
+    "path":"folders/Objects/Lighting.yy",
   },
   "parentObjectId":null,
   "persistent":true,

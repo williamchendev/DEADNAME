@@ -1,7 +1,33 @@
 /// @description Unit Update Event
 
 // INPUT //
-#region Movement & Input Behaviour
+#region Input Behaviour
+if (player_input) 
+{
+	// Preset Player Controls
+	input_left = keyboard_check(GameManager.left_check);
+	input_right = keyboard_check(GameManager.right_check);
+
+	input_drop_down = keyboard_check_pressed(GameManager.down_check);
+	
+	input_jump_hold = keyboard_check(GameManager.jump_check);
+	input_double_jump = keyboard_check_pressed(GameManager.jump_check);
+	
+	input_attack = mouse_check_button(mb_left);
+	input_aim = mouse_check_button(mb_right);
+	
+	input_reload = keyboard_check_pressed(GameManager.reload_check);
+	
+	input_cursor_x = mouse_x;
+	input_cursor_y = mouse_y;
+}
+else
+{
+	
+}
+
+// MOVEMENT //
+// Movement Behaviour
 if (canmove)
 {
 	// UNIT AI WOULD GO HERE!!!!!
@@ -557,34 +583,34 @@ if (unit_animation_state != temp_unit_animation_state)
 	{
 		case UnitAnimationState.Idle:
 			sprite_index = global.unit_packs[unit_pack].idle_sprite;
-			normalmap_spritepack = global.unit_packs[unit_pack].idle_normalmap_spritepack;
-			specularmap_spritepack = global.unit_packs[unit_pack].idle_normalmap_spritepack;
+			normalmap_spritepack = unit_spritepack_idle_normalmap;
+			specularmap_spritepack = unit_spritepack_idle_specularmap;
 			draw_image_index_length = 4;
 			break;
 		case UnitAnimationState.Walking:
 			sprite_index = global.unit_packs[unit_pack].walk_sprite;
-			normalmap_spritepack = global.unit_packs[unit_pack].walk_normalmap_spritepack;
-			specularmap_spritepack = global.unit_packs[unit_pack].walk_normalmap_spritepack;
+			normalmap_spritepack = unit_spritepack_walk_normalmap;
+			specularmap_spritepack = unit_spritepack_walk_specularmap;
 			draw_image_index_length = 5;
 			break;
 		case UnitAnimationState.Jumping:
 			sprite_index = global.unit_packs[unit_pack].jump_sprite;
-			normalmap_spritepack = global.unit_packs[unit_pack].jump_normalmap_spritepack;
-			specularmap_spritepack = global.unit_packs[unit_pack].jump_normalmap_spritepack;
+			normalmap_spritepack = unit_spritepack_jump_normalmap;
+			specularmap_spritepack = unit_spritepack_jump_specularmap;
 			draw_image_index_length = -1;
 			break;
 		case UnitAnimationState.Aiming:
 			sprite_index = global.unit_packs[unit_pack].aim_sprite;
-			normalmap_spritepack = global.unit_packs[unit_pack].aim_normalmap_spritepack;
-			specularmap_spritepack = global.unit_packs[unit_pack].aim_normalmap_spritepack;
+			normalmap_spritepack = unit_spritepack_aim_normalmap;
+			specularmap_spritepack = unit_spritepack_aim_specularmap;
 			image_index = 0;
 			draw_image_index = 0;
 			draw_image_index_length = -1;
 			break;
 		case UnitAnimationState.AimWalking:
 			sprite_index = global.unit_packs[unit_pack].aim_walk_sprite;
-			normalmap_spritepack = global.unit_packs[unit_pack].aim_walk_normalmap_spritepack;
-			specularmap_spritepack = global.unit_packs[unit_pack].aim_walk_normalmap_spritepack;
+			normalmap_spritepack = unit_spritepack_aim_walk_normalmap;
+			specularmap_spritepack = unit_spritepack_aim_walk_specularmap;
 			draw_image_index_length = 5;
 			break;
 	}
@@ -1156,5 +1182,5 @@ if (draw_image_index_length != -1)
 		draw_image_index = draw_image_index mod draw_image_index_length;
 	}
 	
-	image_index = floor(draw_image_index);
+	image_index = (floor(draw_image_index) + sprite_get_number(sprite_index)) mod sprite_get_number(sprite_index);
 }

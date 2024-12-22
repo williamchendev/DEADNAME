@@ -47,7 +47,7 @@ global.weapon_packs[WeaponPack.Default] =
     
     // Sprite & NormalMap
     weapon_sprite: sArkov_FAL,
-    weapon_normalmap: sArkov_FAL, sArkov_FAL_NormalMap,
+    weapon_normalmap: sArkov_FAL_NormalMap,
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 15,
@@ -155,5 +155,5 @@ global.weapon_packs[WeaponPack.SMG] =
     
     // Sprite & NormalMap
     weapon_sprite: sArkov_CorsoRifle,
-    weapon_normalmap: sArkov_CorsoRifle, sArkov_CorsoRifle_NormalMap,
+    weapon_normalmap: sArkov_CorsoRifle_NormalMap,
 }

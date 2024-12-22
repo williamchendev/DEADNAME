@@ -30,7 +30,6 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"player_input","filters":[],"listItems":[],"multiselect":false,"name":"player_input","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"name","filters":[
         "GMTileSet",
         "GMSprite",
@@ -43,6 +42,8 @@
         "GMObject",
         "GMRoom",
       ],"listItems":[],"multiselect":false,"name":"name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"default_name","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"unit_pack","filters":[],"listItems":[],"multiselect":false,"name":"unit_pack","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v1","%Name":"player_input","filters":[],"listItems":[],"multiselect":false,"name":"player_input","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
@@ -52,5 +53,5 @@
     "path":"sprites/sCathIdle/sCathIdle.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

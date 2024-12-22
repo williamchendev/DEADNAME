@@ -1,15 +1,19 @@
 
 
-function lighting_engine_draw_sprite(diffusemap_sprite, normalmap_spritepack, specularmap_spritepack, subimage_index, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
+function lighting_engine_draw_sprite(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, normalmap_uvs, specularmap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
 {
     //
-    shader_set_uniform_f_array(LightingEngine.mrt_rendering_shader_normal_uv_index, normalmap_spritepack.uvs[subimage_index]);
-    shader_set_uniform_f_array(LightingEngine.mrt_rendering_shader_specular_uv_index, specularmap_spritepack.uvs[subimage_index]);
+    texture_set_stage(LightingEngine.mrt_rendering_shader_normalmap_texture_index, normalmap_texture);
+    texture_set_stage(LightingEngine.mrt_rendering_shader_specularmap_texture_index, specularmap_texture);
     
     //
-    texture_set_stage(LightingEngine.mrt_rendering_shader_normal_map_index, normalmap_spritepack.textures[subimage_index]);
-    texture_set_stage(LightingEngine.mrt_rendering_shader_specular_map_index, specularmap_spritepack.textures[subimage_index]);
+    shader_set_uniform_f(LightingEngine.mrt_rendering_shader_vector_scale_index, x_scale, y_scale, 1);
+    shader_set_uniform_f(LightingEngine.mrt_rendering_shader_vector_angle_index, degtorad(rotation));
     
     //
-    draw_sprite_ext(diffusemap_sprite, subimage_index, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
+    shader_set_uniform_f_array(LightingEngine.mrt_rendering_shader_normalmap_uv_index, normalmap_uvs);
+    shader_set_uniform_f_array(LightingEngine.mrt_rendering_shader_specularmap_uv_index, specularmap_uvs);
+    
+    //
+    draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
 }
