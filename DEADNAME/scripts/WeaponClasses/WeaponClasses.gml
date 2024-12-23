@@ -22,6 +22,7 @@ class WeaponClass define
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
 		weapon_specularmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
 		
+		//
 		weapon_normalmap_spritepack = spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
 		weapon_specularmap_spritepack = spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
 		
@@ -253,7 +254,7 @@ class FirearmClass extends WeaponClass define
 			weapon_y, 
 			weapon_xscale, 
 			weapon_yscale * weapon_facing_sign, 
-			weapon_angle, 
+			weapon_angle + (weapon_angle_recoil * weapon_facing_sign), 
 			c_white, 
 			1
 		);

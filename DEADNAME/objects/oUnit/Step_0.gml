@@ -1181,6 +1181,11 @@ if (draw_image_index_length != -1)
 		limb_animation_double_cycle = !limb_animation_double_cycle;
 		draw_image_index = draw_image_index mod draw_image_index_length;
 	}
+	else if (draw_image_index < 0)
+	{
+		limb_animation_double_cycle = !limb_animation_double_cycle;
+		draw_image_index = (draw_image_index mod draw_image_index_length) + draw_image_index_length;
+	}
 	
-	image_index = (floor(draw_image_index) + sprite_get_number(sprite_index)) mod sprite_get_number(sprite_index);
+	image_index = max(floor(draw_image_index), 0);
 }

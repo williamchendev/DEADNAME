@@ -44,26 +44,27 @@ repeat(ds_list_size(lighting_engine_layer_object_list))
         switch (temp_lit_object.lit_object_type)
         {
             case LightingEngineLitObjectType.Unit:
-            	with(temp_lit_object.lit_object_instance)
-            	{
-            		//
+            	//
+				with(temp_lit_object.lit_object_instance)
+				{
+					//
 					limb_secondary_arm.lighting_engine_render_behaviour();
-					
+				
 					//
 					lighting_engine_draw_sprite
 					(
-						sprite_index, 
-						image_index, 
-						normalmap_spritepack[image_index].texture, 
-						specularmap_spritepack[image_index].texture, 
-						normalmap_spritepack[image_index].uvs, 
-						specularmap_spritepack[image_index].uvs, 
-						x, 
-						y + ground_contact_vertical_offset, 
-						draw_xscale, 
-						draw_yscale, 
-						image_angle + draw_angle_value, 
-						image_blend, 
+						sprite_index,
+						image_index,
+						normalmap_spritepack[image_index].texture,
+						specularmap_spritepack[image_index].texture,
+						normalmap_spritepack[image_index].uvs,
+						specularmap_spritepack[image_index].uvs,
+						x,
+						y + ground_contact_vertical_offset,
+						draw_xscale,
+						draw_yscale,
+						image_angle + draw_angle_value,
+						image_blend,
 						image_alpha
 					);
 					
@@ -75,7 +76,7 @@ repeat(ds_list_size(lighting_engine_layer_object_list))
 					
 					// 
 					limb_primary_arm.lighting_engine_render_behaviour();
-            	}
+				}
                 break;
             case LightingEngineLitObjectType.Basic:
             default:
