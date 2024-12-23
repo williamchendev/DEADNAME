@@ -14,23 +14,26 @@ uniform float vectorAngle;
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_SpecularTexture;
 
+// Rotate Vector Function
 vec2 rotate(vec2 vec, float angle) 
 {
 	float vec_x = sin(angle);
 	float vec_y = cos(angle);
-	mat2 m = mat2(vec_y, -vec_x, vec_x, vec_y);
+	mat2 m = mat2(vec_y, vec_x, -vec_x, vec_y);
 	return m * vec;            
 }
 
+// Fragment Shader
 void main()
 {
 	// Normal Vector Rotation & Scale Calculation
-	vec4 Normal = ((texture2D(gm_NormalTexture, v_vTexcoordNormalMap) - 0.5) * 2.0);
+	vec4 Normal = (texture2D(gm_NormalTexture, v_vTexcoordNormalMap) - 0.5) * 2.0;
+	Normal *= vec4(vectorScale.x, vectorScale.y, vectorScale.z, 1.0);
 	float NormalAngle = atan(Normal.y, Normal.x);
 	Normal.xy = rotate(Normal.xy, vectorAngle);
-	Normal = (((Normal * vec4(vectorScale.x, vectorScale.y, vectorScale.z, 1.0)) / 2.0) + 0.5);
+	Normal = ((Normal / 2.0) + 0.5);
 	
-	// MRT
+	// Set MRT Render Data
     gl_FragData[0] = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
     gl_FragData[1] = Normal;
     gl_FragData[2] = texture2D(gm_SpecularTexture, v_vTexcoordSpecularMap);

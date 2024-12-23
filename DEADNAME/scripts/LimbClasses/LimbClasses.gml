@@ -326,8 +326,38 @@ class LimbArmClass extends LimbClass define
 		// Draw Arm
 		if (limb_held_item == UnitHeldItem.None)
 		{
-			lighting_engine_draw_limb_part(0, limb_pivot_ax, limb_pivot_ay, limb_pivot_a_angle + 90);
-			lighting_engine_draw_limb_part(1, limb_pivot_bx, limb_pivot_by, limb_pivot_b_angle + 90);
+			lighting_engine_draw_sprite
+			(
+				limb_sprite, 
+				0, 
+				limb_normalmap_spritepack[0].texture,
+				limb_specularmap_spritepack[0].texture, 
+				limb_normalmap_spritepack[0].uvs,
+				limb_specularmap_spritepack[0].uvs,
+				limb_pivot_ax, 
+				limb_pivot_ay, 
+				limb_xscale, 
+				1, 
+				limb_pivot_a_angle + 90, 
+				c_white, 
+				1
+			);
+			lighting_engine_draw_sprite
+			(
+				limb_sprite, 
+				1, 
+				limb_normalmap_spritepack[1].texture,
+				limb_specularmap_spritepack[1].texture, 
+				limb_normalmap_spritepack[1].uvs,
+				limb_specularmap_spritepack[1].uvs,
+				limb_pivot_bx, 
+				limb_pivot_by, 
+				limb_xscale, 
+				1, 
+				limb_pivot_b_angle + 90, 
+				c_white, 
+				1
+			);
 			return;
 		}
 		
@@ -339,13 +369,73 @@ class LimbArmClass extends LimbClass define
 				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
 				
 				// Draw Limb
-				lighting_engine_draw_limb_part(0, limb_pivot_ax, limb_pivot_ay, limb_pivot_a_angle + 90);
-				lighting_engine_draw_limb_part(1, limb_pivot_bx, limb_pivot_by, limb_pivot_b_angle + 90);
+				lighting_engine_draw_sprite
+				(
+					limb_sprite, 
+					0, 
+					limb_normalmap_spritepack[0].texture,
+					limb_specularmap_spritepack[0].texture, 
+					limb_normalmap_spritepack[0].uvs,
+					limb_specularmap_spritepack[0].uvs,
+					limb_pivot_ax, 
+					limb_pivot_ay, 
+					limb_xscale, 
+					1, 
+					limb_pivot_a_angle + 90, 
+					c_white, 
+					1
+				);
+				lighting_engine_draw_sprite
+				(
+					limb_sprite, 
+					1, 
+					limb_normalmap_spritepack[1].texture,
+					limb_specularmap_spritepack[1].texture, 
+					limb_normalmap_spritepack[1].uvs,
+					limb_specularmap_spritepack[1].uvs,
+					limb_pivot_bx, 
+					limb_pivot_by, 
+					limb_xscale, 
+					1, 
+					limb_pivot_b_angle + 90, 
+					c_white, 
+					1
+				);
 				break;
 			case LimbType.RightArm:
 				// Draw Limb
-				lighting_engine_draw_limb_part(0, limb_pivot_ax, limb_pivot_ay, limb_pivot_a_angle + 90);
-				lighting_engine_draw_limb_part(1, limb_pivot_bx, limb_pivot_by, limb_pivot_b_angle + 90);
+				lighting_engine_draw_sprite
+				(
+					limb_sprite, 
+					0, 
+					limb_normalmap_spritepack[0].texture,
+					limb_specularmap_spritepack[0].texture, 
+					limb_normalmap_spritepack[0].uvs,
+					limb_specularmap_spritepack[0].uvs,
+					limb_pivot_ax, 
+					limb_pivot_ay, 
+					limb_xscale, 
+					1, 
+					limb_pivot_a_angle + 90, 
+					c_white, 
+					1
+				);
+				lighting_engine_draw_sprite
+				(
+					limb_sprite, 
+					1, 
+					limb_normalmap_spritepack[1].texture,
+					limb_specularmap_spritepack[1].texture, 
+					limb_normalmap_spritepack[1].uvs,
+					limb_specularmap_spritepack[1].uvs,
+					limb_pivot_bx, 
+					limb_pivot_by, 
+					limb_xscale, 
+					1, 
+					limb_pivot_b_angle + 90, 
+					c_white, 
+					1
+				);
 				
 				// Draw Held Item
 				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
@@ -353,25 +443,5 @@ class LimbArmClass extends LimbClass define
 			default:
 				break;
 		}
-	}
-	
-	static lighting_engine_draw_limb_part = function(limb_subimage, limb_x, limb_y, limb_angle)
-	{
-		lighting_engine_draw_sprite
-		(
-			limb_sprite, 
-			limb_subimage, 
-			limb_normalmap_spritepack[limb_subimage].texture,
-			limb_specularmap_spritepack[limb_subimage].texture, 
-			limb_normalmap_spritepack[limb_subimage].uvs,
-			limb_specularmap_spritepack[limb_subimage].uvs,
-			limb_x, 
-			limb_y, 
-			limb_xscale, 
-			1, 
-			limb_angle, 
-			c_white, 
-			1
-		);
 	}
 }

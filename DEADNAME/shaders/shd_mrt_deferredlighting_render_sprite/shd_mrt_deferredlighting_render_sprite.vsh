@@ -13,6 +13,7 @@ varying vec2 v_vTexcoordNormalMap;
 varying vec2 v_vTexcoordSpecularMap;
 varying vec4 v_vColour;
 
+// Vertex Shader
 void main() 
 {
 	vec4 object_space_pos = vec4(in_Position.x, in_Position.y, in_Position.z, 1.0);
