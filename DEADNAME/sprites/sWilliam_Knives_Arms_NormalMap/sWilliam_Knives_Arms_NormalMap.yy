@@ -12,15 +12,15 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"9fcee79a-c482-4c4f-8789-fb59b657efae","name":"9fcee79a-c482-4c4f-8789-fb59b657efae","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"86f2d103-7e97-479a-aca4-caad6b5e0095","name":"86f2d103-7e97-479a-aca4-caad6b5e0095","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"544e517a-92e2-401c-84bb-23cc9a9b26ba","name":"544e517a-92e2-401c-84bb-23cc9a9b26ba","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"ed6a4d1d-6972-463c-836a-ca826c72394e","name":"ed6a4d1d-6972-463c-836a-ca826c72394e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":10,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"a7cd0438-0222-4781-86f9-242c24bcbd39","blendMode":0,"displayName":"default","isLocked":false,"name":"a7cd0438-0222-4781-86f9-242c24bcbd39","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"43142eac-2df9-4848-b0bb-ebd500cec31c","blendMode":0,"displayName":"default","isLocked":false,"name":"43142eac-2df9-4848-b0bb-ebd500cec31c","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sWilliam_Knives_Arms_NormalMap",
   "nineSlice":null,
@@ -70,11 +70,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9fcee79a-c482-4c4f-8789-fb59b657efae","path":"sprites/sWilliam_Knives_Arms_NormalMap/sWilliam_Knives_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"7ededb0e-5439-4088-be3d-e9896d2b7541","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"544e517a-92e2-401c-84bb-23cc9a9b26ba","path":"sprites/sWilliam_Knives_Arms_NormalMap/sWilliam_Knives_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"ee9dbeeb-b2fb-4108-ab0c-b87e093df38f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"86f2d103-7e97-479a-aca4-caad6b5e0095","path":"sprites/sWilliam_Knives_Arms_NormalMap/sWilliam_Knives_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"2afdd915-b40f-4945-9d8c-6c6f92b4d0da","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ed6a4d1d-6972-463c-836a-ca826c72394e","path":"sprites/sWilliam_Knives_Arms_NormalMap/sWilliam_Knives_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"062e1692-b54c-40aa-87ba-a14aedaac1a2","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

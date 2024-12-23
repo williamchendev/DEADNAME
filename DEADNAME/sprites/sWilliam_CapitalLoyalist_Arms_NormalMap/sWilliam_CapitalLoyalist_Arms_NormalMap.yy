@@ -12,15 +12,15 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"f87904f6-39ec-4d97-b39e-9f8296badbf0","name":"f87904f6-39ec-4d97-b39e-9f8296badbf0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"088d0878-320c-4c9a-9568-eaaa76754995","name":"088d0878-320c-4c9a-9568-eaaa76754995","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"8e7485d4-378e-4ff6-a538-d175535ac01c","name":"8e7485d4-378e-4ff6-a538-d175535ac01c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"d8dcba60-d451-468b-b42b-8bea60fb8d43","name":"d8dcba60-d451-468b-b42b-8bea60fb8d43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":10,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"642e9acc-9bb9-4589-b1a3-b469ffc9d03b","blendMode":0,"displayName":"default","isLocked":false,"name":"642e9acc-9bb9-4589-b1a3-b469ffc9d03b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"bfd3e7ca-291d-4125-b174-8d48bc274590","blendMode":0,"displayName":"default","isLocked":false,"name":"bfd3e7ca-291d-4125-b174-8d48bc274590","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sWilliam_CapitalLoyalist_Arms_NormalMap",
   "nineSlice":null,
@@ -70,11 +70,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f87904f6-39ec-4d97-b39e-9f8296badbf0","path":"sprites/sWilliam_CapitalLoyalist_Arms_NormalMap/sWilliam_CapitalLoyalist_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"6b1e22ba-fa43-4423-9dad-0715d506e38c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8e7485d4-378e-4ff6-a538-d175535ac01c","path":"sprites/sWilliam_CapitalLoyalist_Arms_NormalMap/sWilliam_CapitalLoyalist_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"b777ac62-9d8c-41f9-ab7d-14aff0cfe4cc","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"088d0878-320c-4c9a-9568-eaaa76754995","path":"sprites/sWilliam_CapitalLoyalist_Arms_NormalMap/sWilliam_CapitalLoyalist_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"64d25174-1948-4a38-ad8c-7e43ad10856d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d8dcba60-d451-468b-b42b-8bea60fb8d43","path":"sprites/sWilliam_CapitalLoyalist_Arms_NormalMap/sWilliam_CapitalLoyalist_Arms_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"29ba4eae-bf3a-4e84-b3bf-bec562eb6d38","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
