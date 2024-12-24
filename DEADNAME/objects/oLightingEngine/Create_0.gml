@@ -56,15 +56,19 @@ depth_specular_stencil_surface = -1;
 ui_surface = -1;
 debug_surface = -1;
 
-// Shader Indexes
-mrt_rendering_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Normal_UVs");
-mrt_rendering_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "in_Specular_UVs");
+// Point Light Shader Indexes
+point_light_shader_radius_index = shader_get_uniform(shd_point_light, "in_Radius");
+point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light, "in_CenterPoint");
 
-mrt_rendering_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "vectorScale");
-mrt_rendering_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferredlighting_render_sprite, "vectorAngle");
+// Deferred Lighting Shader Indexes
+mrt_deferred_lighting_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting, "in_Normal_UVs");
+mrt_deferred_lighting_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting, "in_Specular_UVs");
 
-mrt_rendering_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_NormalTexture");
-mrt_rendering_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferredlighting_render_sprite, "gm_SpecularTexture");
+mrt_deferred_lighting_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferred_lighting, "vectorScale");
+mrt_deferred_lighting_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferred_lighting, "vectorAngle");
+
+mrt_deferred_lighting_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting, "gm_NormalTexture");
+mrt_deferred_lighting_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting, "gm_SpecularTexture");
 
 // Add Default Layers
 lighting_engine_create_default_layers();

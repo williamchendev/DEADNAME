@@ -22,7 +22,7 @@ surface_set_target_ext(1, normalmap_color_surface);
 surface_set_target_ext(2, depth_specular_stencil_surface);
 
 //
-shader_set(shd_mrt_deferredlighting_render_sprite);
+shader_set(shd_mrt_deferred_lighting);
 
 //
 var temp_layer_index = 0;
@@ -114,6 +114,15 @@ if (global.debug and global.debug_surface_enabled)
 	{
 		draw_self();
 	}
+	
+	//
+	shader_set(shd_point_light);
+	
+	//
+	lighting_engine_render_point_light(mouse_x, mouse_y, 64, c_white);
+	
+	//
+	shader_reset();
 	
 	//
 	surface_reset_target();
