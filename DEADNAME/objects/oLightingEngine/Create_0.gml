@@ -50,9 +50,13 @@ lighting_engine_layer_object_list = ds_list_create();
 lighting_engine_layer_depth_list = ds_list_create();
 
 // Surfaces
+lights_color_surface = -1;
+lights_vector_surface = -1;
+
 diffuse_color_surface = -1;
 normalmap_color_surface = -1;
 depth_specular_stencil_surface = -1;
+
 ui_surface = -1;
 debug_surface = -1;
 

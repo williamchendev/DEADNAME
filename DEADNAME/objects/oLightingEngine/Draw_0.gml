@@ -2,6 +2,16 @@
 // You can write your code in this editor
 
 //
+surface_set_target(lights_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+//
+surface_set_target(lights_vector_surface);
+draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+surface_reset_target();
+
+//
 surface_set_target(diffuse_color_surface);
 draw_clear(c_black);
 surface_reset_target();

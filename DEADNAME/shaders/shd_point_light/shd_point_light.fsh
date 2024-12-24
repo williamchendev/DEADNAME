@@ -2,8 +2,6 @@
 
 //
 
-
-
 //
 varying vec4 v_vColour;
 varying vec4 v_vNormal;

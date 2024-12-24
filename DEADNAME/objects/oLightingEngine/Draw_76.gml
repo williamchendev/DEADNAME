@@ -2,6 +2,16 @@
 // Creates the Surfaces for the Lighting Engine
 
 //
+if (!surface_exists(lights_color_surface))
+{
+    lights_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_vector_surface))
+{
+    lights_vector_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
 if (!surface_exists(diffuse_color_surface))
 {
     diffuse_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);

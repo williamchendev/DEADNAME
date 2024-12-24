@@ -21,9 +21,13 @@ ds_list_destroy(lighting_engine_layer_depth_list);
 lighting_engine_layer_depth_list = -1;
 
 //
+surface_free(lights_color_surface);
+surface_free(lights_vector_surface);
+
 surface_free(diffuse_color_surface);
 surface_free(normalmap_color_surface);
 surface_free(depth_specular_stencil_surface);
+
 surface_free(ui_surface);
 
 //
