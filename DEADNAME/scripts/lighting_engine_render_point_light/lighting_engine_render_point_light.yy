@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"lighting_engine_render_point_light",
   "parent":{
-    "name":"Lighting Engine",
-    "path":"folders/Scripts/Lighting Engine.yy",
+    "name":"LightRendering",
+    "path":"folders/Scripts/Lighting Engine/LightRendering.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

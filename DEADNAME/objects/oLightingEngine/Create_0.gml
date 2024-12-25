@@ -38,6 +38,8 @@ application_surface_draw_enable(false);
 gpu_set_zwriteenable(false);
 gpu_set_ztestenable(false);
 
+gpu_set_sprite_cull(false);
+
 surface_depth_disable(true);
 
 // Renders
@@ -63,6 +65,11 @@ debug_surface = -1;
 // Point Light Shader Indexes
 point_light_shader_radius_index = shader_get_uniform(shd_point_light, "in_Radius");
 point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light, "in_CenterPoint");
+
+point_light_shader_surface_size_index = shader_get_uniform(shd_point_light, "in_SurfaceSize");
+point_light_shader_surface_position_index = shader_get_uniform(shd_point_light, "in_SurfacePosition");
+
+point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light, "gm_NormalTexture");
 
 // Deferred Lighting Shader Indexes
 mrt_deferred_lighting_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting, "in_Normal_UVs");

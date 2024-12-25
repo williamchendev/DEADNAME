@@ -16,6 +16,5 @@ function lighting_engine_add_unit(unit_instance, layer_name = LightingEngineDefa
         var temp_lighting_engine_layer = ds_list_find_value(LightingEngine.lighting_engine_layer_object_list, temp_lighting_engine_layer_index);
         
         ds_list_add(temp_lighting_engine_layer, temp_lighting_object);
-        show_debug_message("ker");
     }
 }

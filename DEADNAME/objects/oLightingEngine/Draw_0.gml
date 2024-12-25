@@ -128,8 +128,13 @@ if (global.debug and global.debug_surface_enabled)
 	//
 	shader_set(shd_point_light);
 	
+	shader_set_uniform_f(point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+    shader_set_uniform_f(point_light_shader_surface_position_index, render_x, render_y);
+    
+    texture_set_stage(point_light_shader_normalmap_texture_index, surface_get_texture(normalmap_color_surface));
+	
 	//
-	lighting_engine_render_point_light(mouse_x, mouse_y, 64, c_white);
+	lighting_engine_render_point_light(mouse_x, mouse_y, 64, c_red);
 	
 	//
 	shader_reset();
