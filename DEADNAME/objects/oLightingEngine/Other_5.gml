@@ -1,7 +1,7 @@
 /// @description Room End Cleanup Event
 // Cleanup for Event Lighting Engine
 
-//
+// Clean Up Lighting Objects from Lighting Object "Painter's Sorted List"
 for (var i = ds_list_size(lighting_engine_layer_object_list) - 1; i >= 0; i--)
 {
     var temp_layer_object_list = ds_list_find_value(lighting_engine_layer_object_list, i);
@@ -10,7 +10,7 @@ for (var i = ds_list_size(lighting_engine_layer_object_list) - 1; i >= 0; i--)
     ds_list_destroy(temp_layer_object_list);
 }
 
-//
+// Clear Lighting Layer and Object DS Lists
 ds_list_clear(lighting_engine_layer_name_list);
 ds_list_clear(lighting_engine_layer_object_list);
 ds_list_clear(lighting_engine_layer_depth_list);

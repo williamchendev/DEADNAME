@@ -35,8 +35,8 @@ void main()
 	//
 	vec2 Norm = normalize(Center - in_TextureCoord);
 	//vec2 Norm = normalize(Center - in_TextureCoord);
-	float Dis = pow(1.0 - (distance(in_TextureCoord, Center) * 2.0), 2.0);
-	v_vNormal = vec4(Norm.x, -Norm.y, 1.0 - Dis, 1.0);
+	float Dis = pow(cos((distance(in_TextureCoord, Center) / 0.5) * HalfPi), 3.0);
+	v_vNormal = vec4(Norm.x, -Norm.y, Dis, 1.0);
 	
 	//
 	v_vPosition = in_TextureCoord;

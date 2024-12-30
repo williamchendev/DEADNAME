@@ -27,9 +27,10 @@ void main()
 	}
 	
 	//
-	float mag = cos((Distance / 0.5) * HalfPi);
+	float NormalZ = pow(cos((Distance / 0.5) * HalfPi), 3.0);
+	float Mag = 1.0 - pow((Distance / 0.5), 5.0);
+	
 	vec4 SurfaceNormal = (texture2D(gm_NormalTexture, v_vSurfaceUV) * 2.0) - 1.0;
-	vec4 LightColor = mix(vec4(0.0, 0.0, 0.0, 1.0), v_vColour * mag, dot(v_vNormal.xyz, SurfaceNormal.xyz));
-	gl_FragColor = vec4(max(dot(v_vNormal.xy, SurfaceNormal.xy) * 6.0, dot(v_vNormal.z, SurfaceNormal.z) * 0.3) * mag, 0.0, 0.0, 1.0);
-	//gl_FragColor = vec4((v_vNormal.xyz + 1.0) / 2.0, 1.0);
+	//vec4 LightColor = mix(vec4(0.0, 0.0, 0.0, 1.0), v_vColour * mag, dot(v_vNormal.xyz, SurfaceNormal.xyz + vec3(0.0, 0.0, 0.5)));
+	gl_FragColor = vec4(max(dot(v_vNormal.xy, SurfaceNormal.xy) * 6.0, dot(NormalZ, SurfaceNormal.z) * 1.0), 0.0, 0.0, Mag);
 }
