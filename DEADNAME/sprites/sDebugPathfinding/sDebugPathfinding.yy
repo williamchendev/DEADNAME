@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Debug",
-    "path":"folders/Sprites/Debug.yy",
+    "name":"Pathfinding",
+    "path":"folders/Sprites/Debug/Pathfinding.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -81,8 +81,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"DEBUG",
+    "path":"texturegroups/DEBUG",
   },
   "type":0,
   "VTile":false,

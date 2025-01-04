@@ -33,6 +33,8 @@ side_angle_cd = point_direction(center_xpos, center_ypos, lerp(corner_xpos_c, co
 side_angle_da = point_direction(center_xpos, center_ypos, lerp(corner_xpos_d, corner_xpos_a, 0.5), lerp(corner_ypos_d, corner_ypos_a, 0.5));
 
 // Rotations
+rotations = -1;
+
 switch (min(corner_angle_a, corner_angle_b, corner_angle_c, corner_angle_d))
 {
     case corner_angle_a:
@@ -47,4 +49,24 @@ switch (min(corner_angle_a, corner_angle_b, corner_angle_c, corner_angle_d))
     default:
         rotations = 2;
         break;
+}
+
+// Shadow Vertexes
+shadow_vertex_buffer = -1;
+
+if (shadows_enabled and instance_exists(LightingEngine))
+{
+    shadow_vertex_buffer = vertex_create_buffer();
+    vertex_begin(shadow_vertex_buffer, LightingEngine.lighting_engine_box_shadows_vertex_format);
+    
+    vertex_position_3d(shadow_vertex_buffer, corner_xpos_a, corner_ypos_a, 0);
+    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, corner_xpos_c, corner_ypos_c, 0);
+    
+    vertex_position_3d(shadow_vertex_buffer, corner_xpos_b, corner_ypos_b, 0);
+    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, corner_xpos_d, corner_ypos_d, 0);
+    
+    vertex_end(shadow_vertex_buffer);
+    vertex_freeze(shadow_vertex_buffer);
 }

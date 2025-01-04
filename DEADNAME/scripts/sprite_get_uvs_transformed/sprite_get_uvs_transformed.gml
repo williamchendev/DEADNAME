@@ -4,7 +4,7 @@
 /// @param {int} subimg1 The sprite subimage to align the UVs to
 /// @param {sprite} spr2 The sprite with UVs that will be aligned
 /// @param {int} subimg2 The sprite subimage with UVs that will be aligned
-/// @returns {array} returns an array containing the transformed uvs to sample of the second sprite in alignment with the first sprite
+/// @returns {array<Real>} returns an array containing the transformed uvs to sample of the second sprite in alignment with the first sprite
 function sprite_get_uvs_transformed(sprite_a, subimage_a, sprite_b, subimage_b)
 {
 	// Get the uvs of the sprites

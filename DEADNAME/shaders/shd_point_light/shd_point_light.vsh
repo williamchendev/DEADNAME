@@ -14,29 +14,22 @@ uniform vec2 in_SurfacePosition;
 
 //
 varying vec4 v_vColour;
-varying vec4 v_vNormal;
+varying vec2 v_vNormal;
 varying vec2 v_vPosition;
 varying vec2 v_vSurfaceUV;
 
 //
 const vec2 Center = vec2(0.5, 0.5);
-const float HalfPi = 1.57079632679;
 
 //
 void main() 
 {
-	//
+	// World Position
 	vec4 object_space_pos = vec4(in_Position.x, in_Position.y, in_Position.z, 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 	
-	//
+	// Point Light Color
 	v_vColour = in_Colour;
-	
-	//
-	vec2 Norm = normalize(Center - in_TextureCoord);
-	//vec2 Norm = normalize(Center - in_TextureCoord);
-	float Dis = pow(cos((distance(in_TextureCoord, Center) / 0.5) * HalfPi), 3.0);
-	v_vNormal = vec4(Norm.x, -Norm.y, Dis, 1.0);
 	
 	//
 	v_vPosition = in_TextureCoord;

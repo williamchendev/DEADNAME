@@ -22,7 +22,7 @@ lighting_engine_layer_depth_list = -1;
 
 // Free Surfaces
 surface_free(lights_color_surface);
-surface_free(lights_vector_surface);
+surface_free(lights_shadow_surface);
 
 surface_free(diffuse_color_surface);
 surface_free(normalmap_vector_surface);
@@ -38,7 +38,7 @@ if (global.debug_surface_enabled)
 
 // Reset Surface Variables
 lights_color_surface = -1;
-lights_vector_surface = -1;
+lights_shadow_surface = -1;
 
 diffuse_color_surface = -1;
 normalmap_vector_surface = -1;
@@ -47,3 +47,7 @@ depth_specular_stencil_surface = -1;
 ui_surface = -1;
 
 debug_surface = -1;
+
+// Delete Shadow Vertex Formats
+vertex_format_delete(lighting_engine_box_shadows_vertex_format);
+lighting_engine_box_shadows_vertex_format = -1;

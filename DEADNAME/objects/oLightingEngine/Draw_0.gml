@@ -6,11 +6,6 @@ surface_set_target(lights_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-// Reset Light Vector Surface (MIGHT NOT NEED THIS ONE, HEY INNO WE FIND OUT THE LIGHT DATA IN ONE PASS ANYWAYS SO REMOVE THIS LATER)
-surface_set_target(lights_vector_surface);
-draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-surface_reset_target();
-
 // Reset Diffuse Color Surface
 surface_set_target(diffuse_color_surface);
 draw_clear(c_black);
@@ -26,7 +21,7 @@ surface_set_target(depth_specular_stencil_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-// Enable MRT Deferred Lighting Shader - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
+// Enable MRT Deferred Lighting Shader and Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
 shader_set(shd_mrt_deferred_lighting);
 
 surface_set_target_ext(0, diffuse_color_surface);
@@ -36,7 +31,7 @@ surface_set_target_ext(2, depth_specular_stencil_surface);
 // Iterate through all Objects assigned via Layers to be draw sequentially (from back to front) in a Painter's Sorted List
 var temp_layer_index = 0;
 
-repeat(ds_list_size(lighting_engine_layer_object_list))
+repeat (ds_list_size(lighting_engine_layer_object_list))
 {
     // Find Lighting Layer Object List
     var temp_layer_object_list = ds_list_find_value(lighting_engine_layer_object_list, temp_layer_index);
@@ -44,7 +39,7 @@ repeat(ds_list_size(lighting_engine_layer_object_list))
     // Iterate through Lighting Layer Objects
     var temp_layer_object_index = 0;
     
-    repeat(ds_list_size(temp_layer_object_list))
+    repeat (ds_list_size(temp_layer_object_list))
     {
         // Find Lighting Object
         var temp_lit_object = ds_list_find_value(temp_layer_object_list, temp_layer_object_index);
@@ -54,7 +49,7 @@ repeat(ds_list_size(lighting_engine_layer_object_list))
         {
             case LightingEngineLitObjectType.Unit:
             	// Draw Lit Unit
-				with(temp_lit_object.lit_object_instance)
+				with (temp_lit_object.lit_object_instance)
 				{
 					// Draw Secondary Arm rendered behind Unit Body
 					limb_secondary_arm.lighting_engine_render_behaviour();
@@ -100,11 +95,64 @@ repeat(ds_list_size(lighting_engine_layer_object_list))
     temp_layer_index++;
 }
 
-// Reset MRT Deferred Lighting Shader
+// Reset MRT Deferred Lighting Shader and Surfaces
 shader_reset();
-
-//
 surface_reset_target();
+
+// Render Point Lights with Shadows
+with (oLightingEngine_Source_PointLight)
+{
+	if (point_light_render_enabled)
+	{
+		//
+		shader_set(shd_point_light_shadows);
+		surface_set_target(LightingEngine.lights_shadow_surface);
+		
+		//
+		draw_clear_alpha(c_black, 0);
+		
+		//
+		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_position_index, x, y);
+		
+		//
+		var temp_light_source_contact_solid_index = 0;
+		
+		repeat (ds_list_size(point_light_collisions_list))
+		{
+			var temp_light_source_contact_solid = ds_list_find_value(point_light_collisions_list, temp_light_source_contact_solid_index);
+			
+			if (temp_light_source_contact_solid.shadows_enabled and temp_light_source_contact_solid.shadow_vertex_buffer != -1)
+			{
+				vertex_submit(temp_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
+			}
+			
+			temp_light_source_contact_solid_index++;
+		}
+		
+		//
+		shader_reset();
+		surface_reset_target();
+		
+		//
+		shader_set(shd_point_light);
+		surface_set_target(LightingEngine.lights_color_surface);
+		//gpu_set_blendmode(bm_max);
+		
+		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+		shader_set_uniform_f(LightingEngine.point_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);
+		
+		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
+		
+		// Render Light
+		lighting_engine_render_point_light(x - LightingEngine.render_x, y - LightingEngine.render_y, point_light_radius, point_light_color);
+		
+		//
+		shader_reset();
+		surface_reset_target();
+		//gpu_set_blendmode(bm_normal);
+	}
+}
 
 //
 if (global.debug and global.debug_surface_enabled)
@@ -113,30 +161,16 @@ if (global.debug and global.debug_surface_enabled)
 	surface_set_target(debug_surface);
 	
 	//
-	with(oPlatform)
+	with (oPlatform)
 	{
 		draw_self();
 	}
 	
 	//
-	with(oSolid)
+	with (oSolid)
 	{
 		draw_self();
 	}
-	
-	//
-	shader_set(shd_point_light);
-	
-	shader_set_uniform_f(point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
-    shader_set_uniform_f(point_light_shader_surface_position_index, render_x, render_y);
-    
-    texture_set_stage(point_light_shader_normalmap_texture_index, surface_get_texture(normalmap_vector_surface));
-	
-	//
-	lighting_engine_render_point_light(mouse_x, mouse_y, 240, c_red);
-	
-	//
-	shader_reset();
 	
 	//
 	surface_reset_target();

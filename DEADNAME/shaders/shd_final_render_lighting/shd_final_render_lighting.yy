@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_point_light",
-  "name":"shd_point_light",
+  "%Name":"shd_final_render_lighting",
+  "name":"shd_final_render_lighting",
   "parent":{
     "name":"Shaders",
     "path":"folders/Shaders.yy",

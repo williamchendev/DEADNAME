@@ -3,6 +3,7 @@
   "%Name":"oSolid",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"oSolid",
@@ -14,7 +15,7 @@
   "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
-  "physicsDensity":0.0,
+  "physicsDensity":0,
   "physicsFriction":0.2,
   "physicsGroup":0,
   "physicsKinematic":false,
@@ -24,10 +25,10 @@
   "physicsSensor":false,
   "physicsShape":1,
   "physicsShapePoints":[
-    {"x":0.0,"y":0.0,},
-    {"x":48.0,"y":0.0,},
-    {"x":48.0,"y":48.0,},
-    {"x":0.0,"y":48.0,},
+    {"x":0,"y":0,},
+    {"x":48,"y":0,},
+    {"x":48,"y":48,},
+    {"x":0,"y":48,},
   ],
   "physicsStartAwake":true,
   "properties":[

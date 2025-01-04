@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Debug",
-    "path":"folders/Sprites/Debug.yy",
+    "name":"Levels",
+    "path":"folders/Sprites/Debug/Levels.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -81,8 +81,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"DEBUG",
+    "path":"texturegroups/DEBUG",
   },
   "type":0,
   "VTile":false,
