@@ -53,5 +53,5 @@ void main()
 	float LightFade = 1.0 - pow((Distance / 0.5), 2.0);
 
 	//
-	gl_FragColor = vec4(v_vColour.rgb * LightStrength * LightFade, v_vColour.a);
+	gl_FragColor = vec4(v_vColour.rgb * LightStrength * LightFade, v_vColour.a * (1.0 - SurfaceShadow.a));
 }

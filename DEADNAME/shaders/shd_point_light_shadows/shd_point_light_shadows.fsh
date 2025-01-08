@@ -1,9 +1,11 @@
 //
-varying float PenumbraDistanceT;
-varying float PenumbraDistanceL;
+varying vec2 v_vShadowCoord;
 
+//
 void main()
 {
-    float light_strength = 1.0 - (abs(PenumbraDistanceT - 0.5) * (5.0 / PenumbraDistanceL));
-    gl_FragColor = vec4(0.0, 0.0, light_strength, 1.0);
+    float Penumbra = v_vShadowCoord.x / max(0.00001, v_vShadowCoord.y);
+    float LightGradient = mix(0.0, 1.0, 1.0 - Penumbra);
+    
+    gl_FragColor = vec4(LightGradient);
 }

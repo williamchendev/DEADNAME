@@ -10,7 +10,7 @@ function point_check_solid_surface_angle(pos_x, pos_y, solid_inst)
     var temp_point_angle_from_center = point_direction(solid_inst.center_xpos, solid_inst.center_ypos, pos_x, pos_y);
 	
 	// Find Side of Solid Object the given position is relative to
-	var temp_side_angle = point_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
+	var temp_side_angle = angle_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
 	
 	// Find Angle of Solid Object's Side
 	var temp_return_angle = solid_inst.image_angle;
@@ -48,7 +48,7 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
     var temp_point_angle_from_center = point_direction(solid_inst.center_xpos, solid_inst.center_ypos, pos_x, pos_y);
 	
 	// Find Side of Solid Object the given position is relative to
-	var temp_side_angle = point_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
+	var temp_side_angle = angle_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
 	
 	// Find Angle of and Closest Point on Solid Object's Side relative to the given position
 	var temp_closest_point;
@@ -87,13 +87,28 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 	return temp_return_value;
 }
 
+/// @function point_check_solid_surface_side(x, y, solid);
+/// @description Uses a point to check the given solid's SolidSide enum relative to its orientation
+/// @param {number} pos_x The x position of the point to check
+/// @param {number} pos_y The y position of the point to check
+/// @param {oSolid} solid_inst The Solid Object instance to check the side relative of
+/// @return {SolidSide} The enum of the side relative to the given angle from the center of the solid object
+function point_check_solid_surface_side(pos_x, pos_y, solid_inst) 
+{
+    // Find Angle from Solid Object's center to given position
+    var temp_point_angle_from_center = point_direction(solid_inst.center_xpos, solid_inst.center_ypos, pos_x, pos_y);
+	
+	// Return Side of Solid Object the given position is relative to
+	return angle_check_solid_surface_side(temp_point_angle_from_center, solid_inst);
+}
 
-/// @function point_check_solid_surface_side(angle_from_center, solid_inst);
+
+/// @function angle_check_solid_surface_side(angle_from_center, solid_inst);
 /// @description Uses an angle from the center of the solid object and returns SolidSide enum relative to it
 /// @param {number} angle_from_center The angle from the center of the solid object
 /// @param {oSolid} solid_inst The Solid Object instance to check the side relative of
 /// @return {SolidSide} The enum of the side relative to the given angle from the center of the solid object
-function point_check_solid_surface_side(angle_from_center, solid_inst)
+function angle_check_solid_surface_side(angle_from_center, solid_inst)
 {
 	var temp_side_angle = SolidSide.AB;
 	

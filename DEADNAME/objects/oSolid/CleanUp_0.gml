@@ -2,8 +2,12 @@
 // You can write your code in this editor
 
 //
-if (shadow_vertex_buffer != -1)
+if (!shadows_enabled)
 {
-	vertex_delete_buffer(shadow_vertex_buffer);
-	shadow_vertex_buffer = -1;
+	return;
 }
+
+//
+vertex_delete_buffer(shadow_vertex_buffer);
+shadow_vertex_buffer = -1;
+

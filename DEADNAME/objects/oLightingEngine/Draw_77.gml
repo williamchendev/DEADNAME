@@ -12,7 +12,8 @@ shader_reset();
 // Draw Optional Debug Surface
 if (global.debug_surface_enabled and global.debug)
 {
-	draw_surface_ext(lights_color_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
+	//draw_surface_ext(lights_color_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
+	draw_surface_ext(normalmap_vector_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 	draw_surface_ext(lights_shadow_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 	draw_surface_ext(debug_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 }

@@ -33,6 +33,7 @@ global.lighting_engine_normalmap_default_color = make_color_rgb(255 / 2, 255 / 2
 
 vertex_format_begin();
 vertex_format_add_position_3d();
+vertex_format_add_texcoord();
 lighting_engine_box_shadows_vertex_format = vertex_format_end();
 
 // Rendering Settings

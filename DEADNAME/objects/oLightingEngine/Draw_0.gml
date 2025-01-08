@@ -105,6 +105,9 @@ with (oLightingEngine_Source_PointLight)
 	if (point_light_render_enabled)
 	{
 		//
+		gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
+		
+		//
 		shader_set(shd_point_light_shadows);
 		surface_set_target(LightingEngine.lights_shadow_surface);
 		
@@ -121,7 +124,7 @@ with (oLightingEngine_Source_PointLight)
 		{
 			var temp_light_source_contact_solid = ds_list_find_value(point_light_collisions_list, temp_light_source_contact_solid_index);
 			
-			if (temp_light_source_contact_solid.shadows_enabled and temp_light_source_contact_solid.shadow_vertex_buffer != -1)
+			if (temp_light_source_contact_solid.shadows_enabled)
 			{
 				vertex_submit(temp_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
 			}
@@ -136,7 +139,7 @@ with (oLightingEngine_Source_PointLight)
 		//
 		shader_set(shd_point_light);
 		surface_set_target(LightingEngine.lights_color_surface);
-		//gpu_set_blendmode(bm_max);
+		
 		
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);
@@ -150,7 +153,7 @@ with (oLightingEngine_Source_PointLight)
 		//
 		shader_reset();
 		surface_reset_target();
-		//gpu_set_blendmode(bm_normal);
+		gpu_set_blendmode(bm_normal);
 	}
 }
 
