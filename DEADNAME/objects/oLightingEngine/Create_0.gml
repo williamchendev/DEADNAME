@@ -79,7 +79,9 @@ point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light, "gm_ShadowTexture");
 
 // Point Light Shadow Shader Indexes
+point_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_point_light_shadows, "in_LightSource_Radius");
 point_light_shadow_shader_light_source_position_index = shader_get_uniform(shd_point_light_shadows, "in_LightSource_Position");
+point_light_shadow_shader_collider_center_position_index = shader_get_uniform(shd_point_light_shadows, "in_ColliderCenter_Position");
 
 // Deferred Lighting Shader Indexes
 mrt_deferred_lighting_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting, "in_Normal_UVs");

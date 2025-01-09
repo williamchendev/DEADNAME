@@ -72,40 +72,43 @@ if (shadows_enabled)
     var shadows_corner_xpos_d = lerp(corner_xpos_d, center_xpos, shadows_light_penetration_lerp_corner_bd);
     var shadows_corner_ypos_d = lerp(corner_ypos_d, center_ypos, shadows_light_penetration_lerp_corner_bd);
 
-    // Shadow Buffer - Side AB
+    // Shadow Buffer
     shadow_vertex_buffer = vertex_create_buffer();
     vertex_begin(shadow_vertex_buffer, LightingEngine.lighting_engine_box_shadows_vertex_format);
     
     // Soft Shadows
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
-    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 1);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 2);
     vertex_texcoord(shadow_vertex_buffer, 1, 0);
-    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 3);
     vertex_texcoord(shadow_vertex_buffer, 0, 1);
     
+    /*
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_b, shadows_corner_ypos_b, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_b, shadows_corner_ypos_b, 1);
     vertex_texcoord(shadow_vertex_buffer, 1, 0);
-    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_b, shadows_corner_ypos_b, 1);
     vertex_texcoord(shadow_vertex_buffer, 0, 1);
     
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_c, shadows_corner_ypos_c, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_c, shadows_corner_ypos_c, 1);
     vertex_texcoord(shadow_vertex_buffer, 1, 0);
-    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_c, shadows_corner_ypos_c, 1);
     vertex_texcoord(shadow_vertex_buffer, 0, 1);
     
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 1);
     vertex_texcoord(shadow_vertex_buffer, 1, 0);
-    vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 1);
     vertex_texcoord(shadow_vertex_buffer, 0, 1);
+    */
     
     // Hard Shadows
+    /*
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
     vertex_position_3d(shadow_vertex_buffer, center_xpos, center_ypos, 1);
@@ -119,6 +122,22 @@ if (shadows_enabled)
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    
+    // Box Shadows
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_b, shadows_corner_ypos_b, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_c, shadows_corner_ypos_c, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_c, shadows_corner_ypos_c, 0);
+    vertex_texcoord(shadow_vertex_buffer, 0, 0);
+    */
     
     vertex_end(shadow_vertex_buffer);
     vertex_freeze(shadow_vertex_buffer);

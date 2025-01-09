@@ -5,7 +5,9 @@ attribute vec3 in_Position;                  // (x,y,z)
 attribute vec2 in_TextureCoord;              // (u, v)
 
 //
+uniform float in_LightSource_Radius;
 uniform vec2 in_LightSource_Position;
+uniform vec2 in_ColliderCenter_Position;
 
 //
 varying vec2 v_vShadowCoord;
@@ -18,13 +20,18 @@ void main()
 {
     //
     vec2 vertex_position = in_Position.xy;
-    vec2 vertex_to_light_offset = vertex_position - in_LightSource_Position;
-    float vertex_to_light_distance = length(vertex_to_light_offset);
+    vec2 vertex_to_light_offset = normalize(vertex_position - in_LightSource_Position);
     
     //
-    if (in_Position.z != 0.0)
+    if (in_Position.z == 2.0)
     {
-        vertex_position += vertex_to_light_offset * PseudoInfinity;
+        vec2 offset_a = vec2(-vertex_to_light_offset.y, vertex_to_light_offset.x) * in_LightSource_Radius;
+        vertex_position += normalize((vertex_position + offset_a) - in_LightSource_Position) * PseudoInfinity;
+    }
+    else if (in_Position.z == 3.0)
+    {
+        vec2 offset_b = vec2(vertex_to_light_offset.y, -vertex_to_light_offset.x) * in_LightSource_Radius;
+        vertex_position += normalize((vertex_position + offset_b) - in_LightSource_Position) * PseudoInfinity;
     }
     
     //

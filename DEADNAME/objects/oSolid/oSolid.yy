@@ -44,7 +44,7 @@
         "GMObject",
         "GMRoom",
       ],"listItems":[],"multiselect":false,"name":"shadows_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"shadows_light_penetration_depth","filters":[],"listItems":[],"multiselect":false,"name":"shadows_light_penetration_depth","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"shadows_light_penetration_depth","filters":[],"listItems":[],"multiselect":false,"name":"shadows_light_penetration_depth","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

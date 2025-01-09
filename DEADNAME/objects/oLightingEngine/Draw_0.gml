@@ -115,6 +115,7 @@ with (oLightingEngine_Source_PointLight)
 		draw_clear_alpha(c_black, 0);
 		
 		//
+		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_radius_index, point_light_vibrant_radius);
 		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_position_index, x, y);
 		
 		//
@@ -126,6 +127,7 @@ with (oLightingEngine_Source_PointLight)
 			
 			if (temp_light_source_contact_solid.shadows_enabled)
 			{
+				shader_set_uniform_f(LightingEngine.point_light_shadow_shader_collider_center_position_index, temp_light_source_contact_solid.center_xpos, temp_light_source_contact_solid.center_ypos);
 				vertex_submit(temp_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
 			}
 			
@@ -135,6 +137,9 @@ with (oLightingEngine_Source_PointLight)
 		//
 		shader_reset();
 		surface_reset_target();
+		
+		//
+		gpu_set_blendmode(bm_normal);
 		
 		//
 		shader_set(shd_point_light);
@@ -148,7 +153,7 @@ with (oLightingEngine_Source_PointLight)
 		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
 		
 		// Render Light
-		lighting_engine_render_point_light(x - LightingEngine.render_x, y - LightingEngine.render_y, point_light_radius, point_light_color);
+		lighting_engine_render_point_light(x - LightingEngine.render_x, y - LightingEngine.render_y, point_light_falloff_radius, point_light_color);
 		
 		//
 		shader_reset();
