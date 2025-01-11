@@ -19,7 +19,7 @@ global.game_manager = id;
 // Resolution Settings
 game_width = 640;
 game_height = 360;
-game_scale = 3;
+game_scale = 2;
 
 // System Settings
 data_directory = string(program_directory +"\Data\\");
@@ -55,3 +55,6 @@ command_check = ord("Q");
 cursor_icon = false;
 cursor_inventory = false;
 cursor_index = 0;
+
+// Scale Variables
+windowed_scale = 0;

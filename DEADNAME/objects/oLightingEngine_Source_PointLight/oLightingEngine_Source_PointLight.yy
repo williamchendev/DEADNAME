@@ -27,11 +27,18 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"point_light_render_enabled","filters":[],"listItems":[],"multiselect":false,"name":"point_light_render_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"point_light_radius","filters":[],"listItems":[],"multiselect":false,"name":"point_light_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"128","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"point_light_penumbra_radius","filters":[],"listItems":[],"multiselect":false,"name":"point_light_penumbra_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"48","varType":0,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sDebug_Lighting_Icon_PointLight",
+    "path":"sprites/sDebug_Lighting_Icon_PointLight/sDebug_Lighting_Icon_PointLight.yy",
+  },
   "spriteMaskId":null,
   "visible":false,
 }

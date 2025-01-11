@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_Source_SpotLight",
+  "%Name":"oLightingEngine_Source_AmbientLight",
   "eventList":[],
   "managed":true,
-  "name":"oLightingEngine_Source_SpotLight",
+  "name":"oLightingEngine_Source_AmbientLight",
   "overriddenProperties":[],
   "parent":{
     "name":"Sources",
@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_Icon_SpotLight",
-    "path":"sprites/sDebug_Lighting_Icon_SpotLight/sDebug_Lighting_Icon_SpotLight.yy",
+    "name":"sDebug_Lighting_Icon_AmbientOcclusionLight",
+    "path":"sprites/sDebug_Lighting_Icon_AmbientOcclusionLight/sDebug_Lighting_Icon_AmbientOcclusionLight.yy",
   },
   "spriteMaskId":null,
   "visible":true,

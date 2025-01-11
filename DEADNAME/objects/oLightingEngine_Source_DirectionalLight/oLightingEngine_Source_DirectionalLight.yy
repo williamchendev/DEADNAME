@@ -23,11 +23,16 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"directional_light_penumbra_radius","filters":[],"listItems":[],"multiselect":false,"name":"directional_light_penumbra_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sDebug_Lighting_Icon_DirectionalLight",
+    "path":"sprites/sDebug_Lighting_Icon_DirectionalLight/sDebug_Lighting_Icon_DirectionalLight.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

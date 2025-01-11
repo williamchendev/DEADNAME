@@ -17,3 +17,7 @@ ds_list_clear(lighting_engine_layer_depth_list);
 
 // Add Default Layers to Lighting Engine
 lighting_engine_create_default_layers();
+
+// Clear Directional Shadows Variables and List
+directional_light_collisions_exist = false;
+ds_list_clear(directional_light_collisions_list);

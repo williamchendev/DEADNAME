@@ -115,7 +115,7 @@ with (oLightingEngine_Source_PointLight)
 		draw_clear_alpha(c_black, 0);
 		
 		//
-		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_radius_index, point_light_vibrant_radius);
+		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_radius_index, point_light_penumbra_radius);
 		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_position_index, x, y);
 		
 		//
@@ -139,10 +139,10 @@ with (oLightingEngine_Source_PointLight)
 		surface_reset_target();
 		
 		//
-		gpu_set_blendmode(bm_normal);
+		gpu_set_blendmode(bm_add);
 		
 		//
-		shader_set(shd_point_light);
+		shader_set(shd_point_light_blend);
 		surface_set_target(LightingEngine.lights_color_surface);
 		
 		//
@@ -153,9 +153,10 @@ with (oLightingEngine_Source_PointLight)
 		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
 		
 		//
-		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_falloff_radius);
+		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_radius);
     	shader_set_uniform_f(LightingEngine.point_light_shader_centerpoint_index, x, y);
-    	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(point_light_color) / 255, color_get_green(point_light_color) / 255, color_get_blue(point_light_color) / 255);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, image_alpha);
     	
     	//
 		vertex_submit(point_light_vertex_buffer, pr_trianglelist, -1);
@@ -163,9 +164,91 @@ with (oLightingEngine_Source_PointLight)
 		//
 		shader_reset();
 		surface_reset_target();
-		gpu_set_blendmode(bm_normal);
 	}
 }
+
+// Render Directional Lights with Shadows
+with (oLightingEngine_Source_DirectionalLight)
+{
+	//
+	var temp_directional_light_vector_x = sin(degtorad(image_angle));
+	var temp_directional_light_vector_y = cos(degtorad(image_angle));
+	
+	//
+	if (LightingEngine.directional_light_collisions_exist)
+	{
+		//
+		gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
+		
+		//
+		shader_set(shd_directional_light_shadows);
+		surface_set_target(LightingEngine.lights_shadow_surface);
+		
+		//
+		draw_clear_alpha(c_black, 0);
+		
+		//
+		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_radius_index, directional_light_penumbra_radius);
+		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
+		
+		//	
+		var temp_directional_light_view_contact_solid_index = 0;
+		
+		repeat (ds_list_size(LightingEngine.directional_light_collisions_list))
+		{
+			var temp_directional_light_source_contact_solid = ds_list_find_value(LightingEngine.directional_light_collisions_list, temp_directional_light_view_contact_solid_index);
+			
+			if (temp_directional_light_source_contact_solid.shadows_enabled)
+			{
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_center_position_index, temp_directional_light_source_contact_solid.center_xpos, temp_directional_light_source_contact_solid.center_ypos);
+				vertex_submit(temp_directional_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
+			}
+			
+			temp_directional_light_view_contact_solid_index++;
+		}
+		
+		//
+		surface_reset_target();
+		shader_reset();
+	}
+	
+	//
+	gpu_set_blendmode(bm_add);
+	
+	//
+	shader_set(shd_directional_light_blend);
+	surface_set_target(LightingEngine.lights_color_surface);
+	
+	//
+	shader_set_uniform_f(LightingEngine.directional_light_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
+	
+	//
+	texture_set_stage(LightingEngine.directional_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+	
+	//
+	draw_surface_ext(LightingEngine.lights_shadow_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
+	
+	//
+	surface_reset_target();
+	shader_reset();
+}
+
+// Render Ambient Occlusion Lights
+gpu_set_blendmode(bm_max);
+surface_set_target(LightingEngine.lights_color_surface);
+
+with (oLightingEngine_Source_AmbientLight)
+{
+	//
+	draw_set_color(image_blend);
+	draw_set_alpha(image_alpha);
+	
+	//
+	draw_rectangle(0, 0, GameManager.game_width, GameManager.game_height, false);
+}
+
+gpu_set_blendmode(bm_normal);
+surface_reset_target();
 
 //
 if (global.debug and global.debug_surface_enabled)
@@ -183,6 +266,24 @@ if (global.debug and global.debug_surface_enabled)
 	with (oSolid)
 	{
 		draw_self();
+	}
+	
+	//
+	with (oLightingEngine_Source_PointLight)
+	{
+		draw_sprite_ext(sDebug_Lighting_Icon_PointLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+	}
+	
+	//
+	with (oLightingEngine_Source_AmbientLight)
+	{
+		draw_sprite_ext(sDebug_Lighting_Icon_AmbientOcclusionLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+	}
+	
+	//
+	with (oLightingEngine_Source_DirectionalLight)
+	{
+		draw_sprite_ext(sDebug_Lighting_Icon_DirectionalLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
 	}
 	
 	//
