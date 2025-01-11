@@ -5,8 +5,6 @@ uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_ShadowTexture;
 
 //
-varying vec4 v_vColour;
-varying vec2 v_vNormal;
 varying vec2 v_vPosition;
 varying vec2 v_vSurfaceUV;
 
@@ -53,5 +51,5 @@ void main()
 	float LightFade = 1.0 - pow((Distance / 0.5), 2.0);
 
 	//
-	gl_FragColor = vec4(v_vColour.rgb * LightStrength * LightFade, v_vColour.a * (1.0 - SurfaceShadow.a));
+	gl_FragColor = vec4(vec3(1.0) * LightStrength * LightFade, 1.0 - SurfaceShadow.a);
 }

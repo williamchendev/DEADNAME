@@ -36,6 +36,10 @@ vertex_format_add_position_3d();
 vertex_format_add_texcoord();
 lighting_engine_box_shadows_vertex_format = vertex_format_end();
 
+vertex_format_begin();
+vertex_format_add_position();
+lighting_engine_point_light_vertex_format = vertex_format_end();
+
 // Rendering Settings
 application_surface_enable(false);
 application_surface_draw_enable(false);

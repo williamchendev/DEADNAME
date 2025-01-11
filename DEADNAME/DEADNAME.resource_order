@@ -19,7 +19,6 @@
     {"name":"Rooms","order":10,"path":"folders/Rooms.yy",},
     {"name":"Scripts","order":4,"path":"folders/Scripts.yy",},
     {"name":"Lighting Engine","order":4,"path":"folders/Scripts/Lighting Engine.yy",},
-    {"name":"LightRendering","order":9,"path":"folders/Scripts/Lighting Engine/LightRendering.yy",},
     {"name":"Physics & Collisions","order":5,"path":"folders/Scripts/Physics & Collisions.yy",},
     {"name":"Plugins","order":2,"path":"folders/Scripts/Plugins.yy",},
     {"name":"GML Classes","order":1,"path":"folders/Scripts/Plugins/GML Classes.yy",},

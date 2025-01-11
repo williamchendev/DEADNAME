@@ -145,15 +145,19 @@ with (oLightingEngine_Source_PointLight)
 		shader_set(shd_point_light);
 		surface_set_target(LightingEngine.lights_color_surface);
 		
-		
+		//
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);
 		
 		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
 		
-		// Render Light
-		lighting_engine_render_point_light(x - LightingEngine.render_x, y - LightingEngine.render_y, point_light_falloff_radius, point_light_color);
+		//
+		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_falloff_radius);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_centerpoint_index, x, y);
+    	
+    	//
+		vertex_submit(point_light_vertex_buffer, pr_trianglelist, -1);
 		
 		//
 		shader_reset();
