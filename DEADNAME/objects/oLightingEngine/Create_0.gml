@@ -79,6 +79,8 @@ point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light, "in_C
 point_light_shader_surface_size_index = shader_get_uniform(shd_point_light, "in_SurfaceSize");
 point_light_shader_surface_position_index = shader_get_uniform(shd_point_light, "in_SurfacePosition");
 
+point_light_shader_light_color_index = shader_get_uniform(shd_point_light, "in_LightColor");
+
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light, "gm_NormalTexture");
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light, "gm_ShadowTexture");
 

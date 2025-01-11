@@ -5,7 +5,7 @@
 point_light_render_enabled = false;
 point_light_color = image_blend;
 point_light_vibrant_radius = 48;
-point_light_falloff_radius = abs(image_xscale * sprite_get_width(sprite_index));
+point_light_falloff_radius = 128;
 
 //
 point_light_collisions_list = ds_list_create();

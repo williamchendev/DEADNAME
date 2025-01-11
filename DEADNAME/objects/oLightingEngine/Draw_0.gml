@@ -155,6 +155,7 @@ with (oLightingEngine_Source_PointLight)
 		//
 		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_falloff_radius);
     	shader_set_uniform_f(LightingEngine.point_light_shader_centerpoint_index, x, y);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(point_light_color) / 255, color_get_green(point_light_color) / 255, color_get_blue(point_light_color) / 255);
     	
     	//
 		vertex_submit(point_light_vertex_buffer, pr_trianglelist, -1);

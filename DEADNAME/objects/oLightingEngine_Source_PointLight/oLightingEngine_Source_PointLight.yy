@@ -31,10 +31,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sDebugPointLight",
-    "path":"sprites/sDebugPointLight/sDebugPointLight.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":false,
 }

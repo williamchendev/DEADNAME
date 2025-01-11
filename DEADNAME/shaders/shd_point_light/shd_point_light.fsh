@@ -1,6 +1,8 @@
 ///
 
 //
+uniform vec3 in_LightColor;
+
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_ShadowTexture;
 
@@ -51,5 +53,5 @@ void main()
 	float LightFade = 1.0 - pow((Distance / 0.5), 2.0);
 
 	//
-	gl_FragColor = vec4(vec3(1.0) * LightStrength * LightFade, 1.0 - SurfaceShadow.a);
+	gl_FragColor = vec4(in_LightColor.rgb, (1.0 - SurfaceShadow.a) * LightStrength * LightFade);
 }
