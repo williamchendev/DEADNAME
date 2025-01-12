@@ -43,16 +43,17 @@ void main()
 	vec2 LightNormalXY = normalize(Center - v_vPosition);
 	
 	//
-	float LightDirection = acos(dot(-LightNormalXY, vec2(in_LightDirection.x, -in_LightDirection.y))) / FullPi;
+	float LightDirectionDotProduct = clamp(dot(-LightNormalXY, vec2(in_LightDirection.x, -in_LightDirection.y)), -1.0, 1.0);
+	float LightDirectionValue = acos(LightDirectionDotProduct) / FullPi;
 	
-	if (LightDirection > in_LightAngle)
+	if (LightDirectionValue > in_LightAngle)
 	{
 		return;
 	}
 	
 	//
-	float LightDirectionStrength = ((LightDirection - (1.0 - in_LightAngle)) / in_LightAngle) * 0.5;
-	float LightNormalZ = cos(((LightDirectionStrength + 0.5) * HalfPi) - HalfPi);
+	float LightDirectionStrength = pow(1.0 - (((1.0 - LightDirectionValue) - (1.0 - in_LightAngle)) / in_LightAngle), 2.0);
+	float LightNormalZ = cos(LightDirectionStrength * HalfPi);
 	
 	// 
 	vec4 SurfaceShadow = texture2D(gm_ShadowTexture, v_vSurfaceUV);
@@ -67,9 +68,8 @@ void main()
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * HighlighttoBroadlightRatioMax));
 	
 	//
-	float LightFade = 1.0 - pow((Distance / 0.5), 2.0);
+	float LightFade = 1.0 - pow((Distance / 0.5), 1.2);
 
 	//
-	gl_FragColor = vec4(1.0);
-	//gl_FragColor = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade;
+	gl_FragColor = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade;
 }
