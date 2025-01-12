@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"oLightingEngine_Source_DirectionalLight",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"oLightingEngine_Source_DirectionalLight",
   "overriddenProperties":[],
@@ -24,7 +26,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"directional_light_penumbra_radius","filters":[],"listItems":[],"multiselect":false,"name":"directional_light_penumbra_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"directional_light_penumbra_radius","filters":[],"listItems":[],"multiselect":false,"name":"directional_light_penumbra_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"30","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"directional_light_penumbra_distance","filters":[],"listItems":[],"multiselect":false,"name":"directional_light_penumbra_distance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"48","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

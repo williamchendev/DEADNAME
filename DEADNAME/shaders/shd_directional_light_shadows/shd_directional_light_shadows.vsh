@@ -6,6 +6,7 @@ attribute vec2 in_TextureCoord;              // (u, v)
 
 //
 uniform float in_LightSource_Radius;
+uniform float in_LightSource_Distance;
 uniform vec2 in_LightSource_Vector;
 uniform vec2 in_ColliderCenter_Position;
 
@@ -14,14 +15,13 @@ varying vec2 v_vShadowCoord;
 
 //
 const float PseudoInfinity = 1000.0;
-const float ArbitraryDistance = 48.0;
 
 //
 void main()
 {
     //
     vec2 vertex_position = in_Position.xy;
-    vec2 in_LightSource_Position = in_LightSource_Vector * ArbitraryDistance;
+    vec2 in_LightSource_Position = in_ColliderCenter_Position + (vec2(in_LightSource_Vector.y, in_LightSource_Vector.x) * in_LightSource_Distance);
     vec2 vertex_to_light_offset = normalize(vertex_position - in_LightSource_Position);
 
     //

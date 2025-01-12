@@ -94,6 +94,7 @@ point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_l
 // Directional Light Shadow Shader Indexes
 directional_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Radius");
 directional_light_shadow_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Vector");
+directional_light_shadow_shader_light_source_distance_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Distance");
 directional_light_shadow_shader_collider_center_position_index = shader_get_uniform(shd_directional_light_shadows, "in_ColliderCenter_Position");
 
 // Directional Light Blend Shader Indexes
