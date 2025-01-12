@@ -24,7 +24,7 @@ void main()
 	vec4 SurfaceNormal = (texture2D(gm_NormalTexture, v_vSurfaceUV) * 2.0) - 1.0;
 	
 	//
-	float HighlightStrength = dot(vec2(in_LightSource_Vector.x, -in_LightSource_Vector.y), SurfaceNormal.xy) * HighlightStrengthMult;
+	float HighlightStrength = dot(vec2(in_LightSource_Vector.x, in_LightSource_Vector.y), SurfaceNormal.xy) * HighlightStrengthMult;
 	float BroadlightStrength = dot(1.0, SurfaceNormal.z) * BroadlightStrengthMult;
 	
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * HighlighttoBroadlightRatioMax));

@@ -171,8 +171,8 @@ with (oLightingEngine_Source_PointLight)
 with (oLightingEngine_Source_DirectionalLight)
 {
 	//
-	var temp_directional_light_vector_x = sin(degtorad(image_angle));
-	var temp_directional_light_vector_y = cos(degtorad(image_angle));
+	var temp_directional_light_vector_x = cos(degtorad(image_angle));
+	var temp_directional_light_vector_y = sin(degtorad(image_angle));
 	
 	//
 	if (LightingEngine.directional_light_collisions_exist)
@@ -189,7 +189,6 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		//
 		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_radius_index, directional_light_penumbra_radius);
-		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_distance_index, directional_light_penumbra_distance);
 		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
 		
 		//	
