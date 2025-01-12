@@ -91,6 +91,22 @@ point_light_shader_light_intensity_index = shader_get_uniform(shd_point_light_bl
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
 
+// Spot Light Blend Shader Indexes
+spot_light_shader_radius_index = shader_get_uniform(shd_spot_light_blend, "in_Radius");
+spot_light_shader_centerpoint_index = shader_get_uniform(shd_spot_light_blend, "in_CenterPoint");
+
+spot_light_shader_surface_size_index = shader_get_uniform(shd_spot_light_blend, "in_SurfaceSize");
+spot_light_shader_surface_position_index = shader_get_uniform(shd_spot_light_blend, "in_SurfacePosition");
+
+spot_light_shader_light_color_index = shader_get_uniform(shd_spot_light_blend, "in_LightColor");
+spot_light_shader_light_intensity_index = shader_get_uniform(shd_spot_light_blend, "in_LightIntensity");
+
+spot_light_shader_light_direction_index = shader_get_uniform(shd_spot_light_blend, "in_LightDirection");
+spot_light_shader_light_angle_index = shader_get_uniform(shd_spot_light_blend, "in_LightAngle");
+
+spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
+spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
+
 // Directional Light Shadow Shader Indexes
 directional_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Radius");
 directional_light_shadow_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Vector");

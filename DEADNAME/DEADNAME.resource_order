@@ -300,6 +300,7 @@
     {"name":"shd_final_render_lighting","order":5,"path":"shaders/shd_final_render_lighting/shd_final_render_lighting.yy",},
     {"name":"shd_point_light_blend","order":1,"path":"shaders/shd_point_light_blend/shd_point_light_blend.yy",},
     {"name":"shd_point_light_shadows","order":2,"path":"shaders/shd_point_light_shadows/shd_point_light_shadows.yy",},
+    {"name":"shd_spot_light_blend","order":7,"path":"shaders/shd_spot_light_blend/shd_spot_light_blend.yy",},
     {"name":"sAdobeHouse_Back_DiffuseMap","order":1,"path":"sprites/sAdobeHouse_Back_DiffuseMap/sAdobeHouse_Back_DiffuseMap.yy",},
     {"name":"sAdobeHouse_Back_NormalMap","order":1,"path":"sprites/sAdobeHouse_Back_NormalMap/sAdobeHouse_Back_NormalMap.yy",},
     {"name":"sAdobeHouse_Bed_DiffuseMap","order":2,"path":"sprites/sAdobeHouse_Bed_DiffuseMap/sAdobeHouse_Bed_DiffuseMap.yy",},
