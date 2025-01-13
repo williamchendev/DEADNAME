@@ -3,6 +3,7 @@
 //
 uniform vec3 in_LightColor;
 uniform float in_LightIntensity;
+uniform float in_LightFalloff;
 
 uniform vec2 in_LightDirection;
 uniform float in_LightAngle;
@@ -68,7 +69,7 @@ void main()
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * HighlighttoBroadlightRatioMax));
 	
 	//
-	float LightFade = 1.0 - pow((Distance / 0.5), 1.2);
+	float LightFade = 1.0 - pow((Distance / 0.5), in_LightFalloff);
 
 	//
 	gl_FragColor = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade;

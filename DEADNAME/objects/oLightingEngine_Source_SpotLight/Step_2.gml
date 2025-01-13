@@ -2,14 +2,7 @@
 // You can write your code in this editor
 
 //
-if (keyboard_check(ord("Q")))
-{
-	spot_light_fov += 1;
-}
-else if (keyboard_check(ord("E")))
-{
-	spot_light_fov -= 1;
-}
+spot_light_fov = clamp(spot_light_fov, 0, 360);
 
 //
 spot_light_render_enabled = rectangle_in_rectangle

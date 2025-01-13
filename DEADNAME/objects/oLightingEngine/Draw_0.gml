@@ -158,6 +158,7 @@ with (oLightingEngine_Source_PointLight)
     	
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_falloff_index, point_light_distance_fade);
     	
     	//
 		vertex_submit(point_light_vertex_buffer, pr_trianglelist, -1);
@@ -227,9 +228,10 @@ with (oLightingEngine_Source_SpotLight)
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_falloff_index, spot_light_distance_fade);
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_direction_index, cos(degtorad(image_angle)), sin(degtorad(image_angle)));
-		shader_set_uniform_f(LightingEngine.spot_light_shader_light_angle_index, clamp(spot_light_fov, 0, 360) / 360);
+		shader_set_uniform_f(LightingEngine.spot_light_shader_light_angle_index, spot_light_fov / 360);
     	
     	//
 		vertex_submit(spot_light_vertex_buffer, pr_trianglelist, -1);
@@ -355,7 +357,6 @@ if (global.debug and global.debug_surface_enabled)
 	with (oLightingEngine_Source_SpotLight)
 	{
 		draw_sprite_ext(sDebug_Lighting_Icon_SpotLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
-		draw_text_outline(x, y, $"{spot_light_fov}");
 	}
 	
 	//
