@@ -1,9 +1,10 @@
-/// @description Update Event
-// You can write your code in this editor
+/// @description Lighting Engine Update Event
+// Lighting Engine Directional Light Shadow Collision Detection
 
-//
+// Clear Directional Shadow Collisions
 ds_list_clear(directional_light_collisions_list);
 
+// Update Directional Shadow Collisions
 if (instance_exists(oLightingEngine_Source_DirectionalLight))
 {
 	directional_light_collisions_exist = 0 < collision_rectangle_list

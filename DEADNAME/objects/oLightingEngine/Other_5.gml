@@ -1,5 +1,5 @@
 /// @description Room End Cleanup Event
-// Cleanup for Event Lighting Engine
+// Cleanup Lighting Engine Layer and Object Lists & Set up for Next Room
 
 // Clean Up Lighting Objects from Lighting Object "Painter's Sorted List"
 for (var i = ds_list_size(lighting_engine_layer_object_list) - 1; i >= 0; i--)
@@ -15,9 +15,9 @@ ds_list_clear(lighting_engine_layer_name_list);
 ds_list_clear(lighting_engine_layer_object_list);
 ds_list_clear(lighting_engine_layer_depth_list);
 
-// Add Default Layers to Lighting Engine
-lighting_engine_create_default_layers();
-
 // Clear Directional Shadows Variables and List
 directional_light_collisions_exist = false;
 ds_list_clear(directional_light_collisions_list);
+
+// Add Default Layers to Lighting Engine
+lighting_engine_create_default_layers();

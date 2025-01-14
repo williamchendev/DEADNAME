@@ -1,4 +1,4 @@
-/// @description LIGHTING ENGINE INIT EVENT
+/// @description Lighting Engine Singleton Init Event
 // Self-Creating Lighting Engine Init Behaviour Event
 
 // Global Lighting Engine Properties
