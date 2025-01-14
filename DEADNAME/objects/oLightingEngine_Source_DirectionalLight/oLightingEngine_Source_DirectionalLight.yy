@@ -34,5 +34,5 @@
     "path":"sprites/sDebug_Lighting_Icon_DirectionalLight/sDebug_Lighting_Icon_DirectionalLight.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

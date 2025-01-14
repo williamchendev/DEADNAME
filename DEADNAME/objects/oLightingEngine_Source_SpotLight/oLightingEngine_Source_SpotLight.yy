@@ -42,5 +42,5 @@
     "path":"sprites/sDebug_Lighting_Icon_SpotLight/sDebug_Lighting_Icon_SpotLight.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

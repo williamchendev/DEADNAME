@@ -1,13 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_Source_AmbientLight",
+  "%Name":"oLightingEngine_BoxShadow",
   "eventList":[],
   "managed":true,
-  "name":"oLightingEngine_Source_AmbientLight",
+  "name":"oLightingEngine_BoxShadow",
   "overriddenProperties":[],
   "parent":{
-    "name":"Sources",
-    "path":"folders/Objects/Lighting/Sources.yy",
+    "name":"Objects",
+    "path":"folders/Objects/Lighting/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_Icon_AmbientOcclusionLight",
-    "path":"sprites/sDebug_Lighting_Icon_AmbientOcclusionLight/sDebug_Lighting_Icon_AmbientOcclusionLight.yy",
+    "name":"sDebug_Lighting_BoxShadow",
+    "path":"sprites/sDebug_Lighting_BoxShadow/sDebug_Lighting_BoxShadow.yy",
   },
   "spriteMaskId":null,
   "visible":false,
