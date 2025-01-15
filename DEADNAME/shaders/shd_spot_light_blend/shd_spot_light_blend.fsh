@@ -27,7 +27,27 @@ varying vec2 v_vSurfaceUV;
 // Constants
 const vec2 Center = vec2(0.5, 0.5);
 const float HalfPi = 1.57079632679;
-const float FullPi = 3.14159265359;
+const float FullPi = 3.14159265358979;
+
+// Fast Approximation Inverse Cosign Method
+float fastacos(float x) 
+{
+	// Handbook of Mathematical Functions
+	// M. Abramowitz and I.A. Stegun, Ed.
+
+	float negate = float(x < 0.0);
+	x = abs(x);
+	float ret = -0.0187293;
+	ret *= x;
+	ret += 0.0742610;
+	ret *= x;
+	ret -= 0.2121144;
+	ret *= x;
+	ret += 1.5707288;
+	ret *= sqrt(1.0-x);
+	ret = ret - 2.0 * negate * ret;
+	return negate * FullPi + ret;
+}
 
 // Fragment Shader
 void main() 
@@ -46,7 +66,7 @@ void main()
 	
 	// Spot Light FOV Calculation
 	float LightDirectionDotProduct = clamp(dot(-SpotLightVector, vec2(in_LightDirection.x, -in_LightDirection.y)), -1.0, 1.0);
-	float LightDirectionValue = acos(LightDirectionDotProduct) / FullPi;
+	float LightDirectionValue = fastacos(LightDirectionDotProduct) / FullPi;
 	
 	if (LightDirectionValue > in_LightAngle)
 	{

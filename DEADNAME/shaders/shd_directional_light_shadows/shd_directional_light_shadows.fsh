@@ -1,5 +1,5 @@
 //
-// Directional Light Shadow fragment shader for Inno's Deferred Lighting System
+// Directional Light Shadow vertex shader for Inno's Deferred Lighting System
 //
 
 // Interpolated Shadow Gradient UV Coordinates

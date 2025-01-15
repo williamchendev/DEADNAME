@@ -313,6 +313,11 @@ with (oLightingEngine_Source_DirectionalLight)
 	shader_set(shd_directional_light_blend);
 	surface_set_target(LightingEngine.lights_color_surface);
 	
+	// Set Lighting Engine Light Blending Settings
+	shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
+	shader_set_uniform_f(LightingEngine.directional_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
+	shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
+	
 	// Set Directional Light Blend Shader Properties
 	shader_set_uniform_f(LightingEngine.directional_light_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
 	

@@ -29,7 +29,7 @@ void main()
 	// Point Light Surface UV
 	v_vSurfaceUV = (vertex_position - in_SurfacePosition) / in_SurfaceSize;
 	
-	// World Position
+	// Set Vertex Positions
 	vec4 object_space_pos = vec4(vertex_position.x, vertex_position.y, 0.0, 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }
