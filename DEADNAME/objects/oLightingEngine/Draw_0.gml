@@ -226,6 +226,11 @@ with (oLightingEngine_Source_SpotLight)
 		shader_set(shd_spot_light_blend);
 		surface_set_target(LightingEngine.lights_color_surface);
 		
+		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
+		shader_set_uniform_f(LightingEngine.spot_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
+		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
+		
 		// Set Shader Surface Width, Height, Position, and Texture Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);

@@ -1,76 +1,79 @@
-///
-
 //
+// Spot Light Blend fragment shader for Inno's Deferred Lighting System
+//
+
+// Uniform Lighting Engine Strength Multiplier Settings
+uniform float in_HighLight_Strength_Multiplier;
+uniform float in_BroadLight_Strength_Multiplier;
+uniform float in_HighLight_To_BroadLight_Ratio_Max;
+
+// Uniform Light Source Properties
 uniform vec3 in_LightColor;
 uniform float in_LightIntensity;
 uniform float in_LightFalloff;
 
+// Uniform Spot Light Properties
 uniform vec2 in_LightDirection;
 uniform float in_LightAngle;
 
+// Uniform Normal Map and Shadow Map Surface Textures
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_ShadowTexture;
 
-//
+// Interpolated Position and UV
 varying vec2 v_vPosition;
 varying vec2 v_vSurfaceUV;
 
-//1.57079632679
-//3.14159265359
-
-//
-const float HighlightStrengthMult = 1.8;
-const float BroadlightStrengthMult = 1.25;
-
-const float HighlighttoBroadlightRatioMax = 5.0;
-
-//
+// Constants
 const vec2 Center = vec2(0.5, 0.5);
 const float HalfPi = 1.57079632679;
 const float FullPi = 3.14159265359;
 
-//
+// Fragment Shader
 void main() 
 {
-	//
+	// Point Light Distance
 	float Distance = distance(v_vPosition, Center);
 	
 	if (Distance > 0.5)
 	{
+		// Circle Cut-Out Early Return
 		return;
 	}
 	
-	//
-	vec2 LightNormalXY = normalize(Center - v_vPosition);
+	// Spot Light Vector
+	vec2 SpotLightVector = normalize(Center - v_vPosition);
 	
-	//
-	float LightDirectionDotProduct = clamp(dot(-LightNormalXY, vec2(in_LightDirection.x, -in_LightDirection.y)), -1.0, 1.0);
+	// Spot Light FOV Calculation
+	float LightDirectionDotProduct = clamp(dot(-SpotLightVector, vec2(in_LightDirection.x, -in_LightDirection.y)), -1.0, 1.0);
 	float LightDirectionValue = acos(LightDirectionDotProduct) / FullPi;
 	
 	if (LightDirectionValue > in_LightAngle)
 	{
+		// Outside Spot Light FOV Early Return
 		return;
 	}
 	
-	//
+	// Spot Light (Broadlight) Depth Vector Calculation
 	float LightDirectionStrength = pow(1.0 - (((1.0 - LightDirectionValue) - (1.0 - in_LightAngle)) / in_LightAngle), 2.0);
-	float LightNormalZ = cos(LightDirectionStrength * HalfPi);
+	float LightDepthVector = cos(LightDirectionStrength * HalfPi);
 	
-	// 
+	// Light Falloff Effect
+	float LightFade = 1.0 - pow((Distance / 0.5), in_LightFalloff);
+	
+	// Get Shadow Surface Texture's Pixel Value at Pixel's UV
 	vec4 SurfaceShadow = texture2D(gm_ShadowTexture, v_vSurfaceUV);
 	
-	//
+	// Get Normal Map Surface Texture's Pixel Value at Pixel's UV
 	vec4 SurfaceNormal = (texture2D(gm_NormalTexture, v_vSurfaceUV) * 2.0) - 1.0;
 	
-	//
-	float HighlightStrength = dot(vec2(LightNormalXY.x, -LightNormalXY.y), SurfaceNormal.xy) * HighlightStrengthMult;
-	float BroadlightStrength = dot(LightNormalZ, SurfaceNormal.z) * BroadlightStrengthMult;
+	// Light Strength Dot Product
+	float HighlightStrength = dot(vec2(SpotLightVector.x, -SpotLightVector.y), SurfaceNormal.xy) * in_HighLight_Strength_Multiplier;
+	float BroadlightStrength = dot(LightDepthVector, SurfaceNormal.z) * in_BroadLight_Strength_Multiplier;
 	
-	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * HighlighttoBroadlightRatioMax));
-	
-	//
-	float LightFade = 1.0 - pow((Distance / 0.5), in_LightFalloff);
+	// Light Strength Ratio Calculation
+	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * in_HighLight_To_BroadLight_Ratio_Max));
 
-	//
+	// Render Spot Light
 	gl_FragColor = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade;
 }

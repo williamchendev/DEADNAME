@@ -7,7 +7,7 @@ uniform float in_HighLight_Strength_Multiplier;
 uniform float in_BroadLight_Strength_Multiplier;
 uniform float in_HighLight_To_BroadLight_Ratio_Max;
 
-// Uniform Light Properties
+// Uniform Light Source Properties
 uniform vec3 in_LightColor;
 uniform float in_LightIntensity;
 uniform float in_LightFalloff;

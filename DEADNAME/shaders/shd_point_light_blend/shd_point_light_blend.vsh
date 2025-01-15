@@ -3,9 +3,9 @@
 //
 
 // Vertex Buffer Properties
-attribute vec2 in_Position; // (x, y)
+attribute vec2 in_Position; 		// (x, y)
 
-// Uniform Light Properties
+// Uniform Light Source Properties
 uniform float in_Radius;
 uniform vec2 in_CenterPoint;
 
