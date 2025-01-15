@@ -11,19 +11,28 @@ attribute vec2 in_TextureCoord; // (u, v)
 uniform vec4 in_Normal_UVs;
 uniform vec4 in_Specular_UVs;
 
+// Uniform Normal Map Transformations
+uniform float vectorAngle;
+
 // Interpolated Transformed UVs
 varying vec2 v_vTexcoord;
 varying vec2 v_vTexcoordNormalMap;
 varying vec2 v_vTexcoordSpecularMap;
 
-// Interpolated Color
+// Interpolated Color & Rotate
 varying vec4 v_vColour;
+varying mat2 v_vRotate;
 
 // Vertex Shader
 void main() 
 {
 	// Set Interpolated Colors
 	v_vColour = in_Colour;
+	
+	// Calculate Rotate Vector
+	float RotateAngle = radians(vectorAngle);
+	vec2 RotateVector = vec2(cos(RotateAngle), sin(RotateAngle));
+	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	
 	// Transform and set Sprite UVs
 	v_vTexcoord = in_TextureCoord;

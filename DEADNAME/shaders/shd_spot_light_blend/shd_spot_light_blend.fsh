@@ -44,7 +44,7 @@ float fastacos(float x)
 	ret -= 0.2121144;
 	ret *= x;
 	ret += 1.5707288;
-	ret *= sqrt(1.0-x);
+	ret *= sqrt(1.0 - x);
 	ret = ret - 2.0 * negate * ret;
 	return negate * FullPi + ret;
 }

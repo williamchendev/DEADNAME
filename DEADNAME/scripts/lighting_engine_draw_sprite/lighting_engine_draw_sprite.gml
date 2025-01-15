@@ -8,7 +8,7 @@ function lighting_engine_draw_sprite(diffusemap_index, diffusemap_subimage, norm
     
     //
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_shader_vector_scale_index, x_scale, y_scale, 1);
-    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_shader_vector_angle_index, degtorad(rotation));
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_shader_vector_angle_index, rotation);
     
     //
     shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_shader_normalmap_uv_index, normalmap_uvs);

@@ -6,24 +6,17 @@
 varying vec2 v_vTexcoord;
 varying vec2 v_vTexcoordNormalMap;
 varying vec2 v_vTexcoordSpecularMap;
+
+// Interpolated Color & Rotate
 varying vec4 v_vColour;
+varying mat2 v_vRotate;
 
 // Uniform Normal Map Transformations
 uniform vec3 vectorScale;
-uniform float vectorAngle;
 
 // Uniform Normal Map and Specular Map Textures
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_SpecularTexture;
-
-// Rotate Vector Function
-vec2 rotate(vec2 vec, float angle) 
-{
-	float vec_x = sin(angle);
-	float vec_y = cos(angle);
-	mat2 m = mat2(vec_y, vec_x, -vec_x, vec_y);
-	return m * vec;            
-}
 
 // Fragment Shader
 void main()
@@ -33,8 +26,7 @@ void main()
 	Normal *= vec4(vectorScale.x, vectorScale.y, vectorScale.z, 1.0);
 	
 	// Normal Vector Rotation & Scale Calculation
-	float NormalAngle = atan(Normal.y, Normal.x);
-	Normal.xy = rotate(Normal.xy, vectorAngle);
+	Normal.xy = Normal.xy * v_vRotate;
 	Normal = ((Normal / 2.0) + 0.5);
 	
 	// Specular Map
