@@ -2,16 +2,15 @@
 // You can write your code in this editor
 
 //
-point_light_render_enabled = rectangle_in_rectangle
+point_light_render_enabled = rectangle_in_circle
 (
-    x - point_light_radius, 
-    y - point_light_radius, 
-    x + point_light_radius, 
-    y + point_light_radius, 
     LightingEngine.render_x - LightingEngine.render_border, 
     LightingEngine.render_y - LightingEngine.render_border, 
     LightingEngine.render_x + GameManager.game_width + LightingEngine.render_border, 
-    LightingEngine.render_y + GameManager.game_height + LightingEngine.render_border
+    LightingEngine.render_y + GameManager.game_height + LightingEngine.render_border,
+    x,
+    y,
+    point_light_radius
 );
 
 //

@@ -134,7 +134,6 @@ if (shadows_enabled)
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_d, shadows_corner_ypos_d, 1);
     vertex_texcoord(shadow_vertex_buffer, 0, 1);
     
-    
     // Hard Shadows
     vertex_position_3d(shadow_vertex_buffer, shadows_corner_xpos_a, shadows_corner_ypos_a, 0);
     vertex_texcoord(shadow_vertex_buffer, 0, 0);

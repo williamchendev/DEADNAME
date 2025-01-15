@@ -169,7 +169,7 @@ with (oLightingEngine_Source_PointLight)
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_falloff_index, point_light_distance_fade);
     	
     	// Draw Point Light Vertex Buffer
-		vertex_submit(point_light_vertex_buffer, pr_trianglelist, -1);
+		vertex_submit(LightingEngine.simple_light_vertex_buffer, pr_trianglelist, -1);
 		
 		// Reset Shader and Surface
 		shader_reset();
@@ -250,7 +250,7 @@ with (oLightingEngine_Source_SpotLight)
 		shader_set_uniform_f(LightingEngine.spot_light_shader_light_angle_index, spot_light_fov / 360);
     	
     	// Draw Spot Light Vertex Buffer
-		vertex_submit(spot_light_vertex_buffer, pr_trianglelist, -1);
+		vertex_submit(LightingEngine.simple_light_vertex_buffer, pr_trianglelist, -1);
 		
 		// Reset Shader and Surface
 		shader_reset();

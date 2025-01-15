@@ -52,6 +52,10 @@ debug_surface = -1;
 vertex_format_delete(lighting_engine_box_shadows_vertex_format);
 lighting_engine_box_shadows_vertex_format = -1;
 
+// Delete Simple Light Vertex Buffer
+vertex_delete_buffer(simple_light_vertex_buffer);
+simple_light_vertex_buffer = -1;
+
 // Delete Directional Shadows Variables and List
 directional_light_collisions_exist = false;
 

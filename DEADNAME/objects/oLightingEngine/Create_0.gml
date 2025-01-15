@@ -76,7 +76,23 @@ lighting_engine_box_shadows_vertex_format = vertex_format_end();
 
 vertex_format_begin();
 vertex_format_add_position();
-lighting_engine_point_light_vertex_format = vertex_format_end();
+lighting_engine_simple_light_vertex_format = vertex_format_end();
+
+// Vertex Buffers
+simple_light_vertex_buffer = vertex_create_buffer();
+
+vertex_begin(simple_light_vertex_buffer, lighting_engine_simple_light_vertex_format);
+
+vertex_position(simple_light_vertex_buffer, -1, -1);
+vertex_position(simple_light_vertex_buffer, 1, -1);
+vertex_position(simple_light_vertex_buffer, -1, 1);
+
+vertex_position(simple_light_vertex_buffer, 1, 1);
+vertex_position(simple_light_vertex_buffer, -1, 1);
+vertex_position(simple_light_vertex_buffer, 1, -1);
+
+vertex_end(simple_light_vertex_buffer);
+vertex_freeze(simple_light_vertex_buffer);
 
 // Point Light Shadow Shader Indexes
 point_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_point_light_shadows, "in_LightSource_Radius");

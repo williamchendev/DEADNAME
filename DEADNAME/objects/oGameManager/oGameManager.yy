@@ -82,8 +82,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebugSolid",
-    "path":"sprites/sDebugSolid/sDebugSolid.yy",
+    "name":"sDebug_System_GameManager",
+    "path":"sprites/sDebug_System_GameManager/sDebug_System_GameManager.yy",
   },
   "spriteMaskId":null,
   "visible":true,
