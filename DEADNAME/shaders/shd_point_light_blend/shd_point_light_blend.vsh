@@ -1,18 +1,23 @@
-///
+//
+// Point Light Blend vertex shader for Inno's Deferred Lighting System
+//
+
+// Vertex Buffer Properties
 attribute vec2 in_Position; // (x, y)
 
-//
+// Uniform Light Properties
 uniform float in_Radius;
 uniform vec2 in_CenterPoint;
 
+// Uniform Surface Position and Size Properties
 uniform vec2 in_SurfaceSize;
 uniform vec2 in_SurfacePosition;
 
-//
+// Interpolated Position and UV
 varying vec2 v_vPosition;
 varying vec2 v_vSurfaceUV;
 
-//
+// Vertex Shader
 void main() 
 {
 	// World Position

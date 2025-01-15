@@ -1,16 +1,18 @@
 //
-// Multi Render Target fragment shader for a Deferred Lighting System
+// (Multi Render Target) Dynamic Sprite fragment shader for Inno's Deferred Lighting System
 //
+
+// Interpolated Sprite UVs
 varying vec2 v_vTexcoord;
 varying vec2 v_vTexcoordNormalMap;
 varying vec2 v_vTexcoordSpecularMap;
 varying vec4 v_vColour;
 
-//
+// Uniform Normal Map Transformations
 uniform vec3 vectorScale;
 uniform float vectorAngle;
 
-// Textures
+// Uniform Normal Map and Specular Map Textures
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_SpecularTexture;
 

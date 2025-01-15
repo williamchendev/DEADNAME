@@ -31,14 +31,9 @@ global.lighting_engine = id;
 global.debug_surface_enabled = true;
 global.lighting_engine_normalmap_default_color = make_color_rgb(255 / 2, 255 / 2, 255);
 
-vertex_format_begin();
-vertex_format_add_position_3d();
-vertex_format_add_texcoord();
-lighting_engine_box_shadows_vertex_format = vertex_format_end();
-
-vertex_format_begin();
-vertex_format_add_position();
-lighting_engine_point_light_vertex_format = vertex_format_end();
+highlight_strength_multiplier = 1.8;
+broadlight_strength_multiplier = 1.25;
+highlight_to_broadlight_ratio_max = 5.0;
 
 // Rendering Settings
 application_surface_enable(false);
@@ -73,6 +68,16 @@ depth_specular_stencil_surface = -1;
 ui_surface = -1;
 debug_surface = -1;
 
+// Vertex Formats
+vertex_format_begin();
+vertex_format_add_position_3d();
+vertex_format_add_texcoord();
+lighting_engine_box_shadows_vertex_format = vertex_format_end();
+
+vertex_format_begin();
+vertex_format_add_position();
+lighting_engine_point_light_vertex_format = vertex_format_end();
+
 // Point Light Shadow Shader Indexes
 point_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_point_light_shadows, "in_LightSource_Radius");
 point_light_shadow_shader_light_source_position_index = shader_get_uniform(shd_point_light_shadows, "in_LightSource_Position");
@@ -84,6 +89,10 @@ point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light_blend,
 
 point_light_shader_surface_size_index = shader_get_uniform(shd_point_light_blend, "in_SurfaceSize");
 point_light_shader_surface_position_index = shader_get_uniform(shd_point_light_blend, "in_SurfacePosition");
+
+point_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_Strength_Multiplier");
+point_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_BroadLight_Strength_Multiplier");
+point_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
 
 point_light_shader_light_color_index = shader_get_uniform(shd_point_light_blend, "in_LightColor");
 point_light_shader_light_intensity_index = shader_get_uniform(shd_point_light_blend, "in_LightIntensity");
