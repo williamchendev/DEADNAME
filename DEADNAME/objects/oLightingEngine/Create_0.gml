@@ -136,7 +136,9 @@ spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_lig
 // Point Light Shadow Shader Indexes
 point_light_and_spot_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_LightSource_Radius");
 point_light_and_spot_light_shadow_shader_light_source_position_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_LightSource_Position");
+
 point_light_and_spot_light_shadow_shader_collider_center_position_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_ColliderCenter_Position");
+point_light_and_spot_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_Collider_Rotation");
 
 // Directional Light Blend Shader Indexes
 directional_light_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_blend, "in_LightSource_Vector");
@@ -150,7 +152,9 @@ directional_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd
 // Directional Light Shadow Shader Indexes
 directional_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Radius");
 directional_light_shadow_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Vector");
+
 directional_light_shadow_shader_collider_center_position_index = shader_get_uniform(shd_directional_light_shadows, "in_ColliderCenter_Position");
+directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd_directional_light_shadows, "in_Collider_Rotation");
 
 // Deferred Lighting Shader Indexes
 mrt_deferred_lighting_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting, "in_Normal_UVs");

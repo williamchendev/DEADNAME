@@ -129,6 +129,7 @@ with (oLightingEngine_Source_PointLight)
 			{
 				// Set Solid Object's Box Collider Center
 				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_solid.center_xpos, temp_point_light_source_contact_solid.center_ypos);
+				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
 				vertex_submit(temp_point_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
@@ -205,7 +206,7 @@ with (oLightingEngine_Source_SpotLight)
 			
 			if (temp_spot_light_source_contact_solid.shadows_enabled)
 			{
-				// Set Solid Object's Box Collider Center
+				// Set Solid Object's Box Collider Center Position and Rotation
 				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_spot_light_source_contact_solid.center_xpos, temp_spot_light_source_contact_solid.center_ypos);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
@@ -291,8 +292,9 @@ with (oLightingEngine_Source_DirectionalLight)
 			
 			if (temp_directional_light_source_contact_solid.shadows_enabled)
 			{
-				// Set Solid Object's Box Collider Center
+				// Set Solid Object's Box Collider Center Position and Rotation
 				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_center_position_index, temp_directional_light_source_contact_solid.center_xpos, temp_directional_light_source_contact_solid.center_ypos);
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_rotation_index, 0);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
 				vertex_submit(temp_directional_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
