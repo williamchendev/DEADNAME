@@ -11,17 +11,20 @@ center_ypos = 0;
 // Shadow Vertexes
 shadow_vertex_buffer = -1;
 
-var temp_shadow_vertex_xpos_a = -sprite_width / 2;
-var temp_shadow_vertex_ypos_a = -sprite_height / 2;
+var temp_sprite_width = sprite_get_width(sprite_index);
+var temp_sprite_height = sprite_get_height(sprite_index);
 
-var temp_shadow_vertex_xpos_b = sprite_width / 2;
-var temp_shadow_vertex_ypos_b = -sprite_height / 2;
+var temp_shadow_vertex_xpos_a = -temp_sprite_width / 2;
+var temp_shadow_vertex_ypos_a = -temp_sprite_height / 2;
 
-var temp_shadow_vertex_xpos_c = sprite_width / 2;
-var temp_shadow_vertex_ypos_c = sprite_height / 2;
+var temp_shadow_vertex_xpos_b = temp_sprite_width / 2;
+var temp_shadow_vertex_ypos_b = -temp_sprite_height / 2;
 
-var temp_shadow_vertex_xpos_d = -sprite_width / 2;
-var temp_shadow_vertex_ypos_d = sprite_height / 2;
+var temp_shadow_vertex_xpos_c = temp_sprite_width / 2;
+var temp_shadow_vertex_ypos_c = temp_sprite_height / 2;
+
+var temp_shadow_vertex_xpos_d = -temp_sprite_width / 2;
+var temp_shadow_vertex_ypos_d = temp_sprite_height / 2;
 
 // Shadow Buffer
 shadow_vertex_buffer = vertex_create_buffer();
