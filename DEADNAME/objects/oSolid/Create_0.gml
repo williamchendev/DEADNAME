@@ -1,4 +1,5 @@
 /// @description Solid Init Event
+// Initializes Solid Collision and Box Shadow Variables
 
 // Corner Position A
 corner_xpos_a = x;
