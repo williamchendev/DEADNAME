@@ -15,7 +15,7 @@
   "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
-  "physicsDensity":0,
+  "physicsDensity":0.0,
   "physicsFriction":0.2,
   "physicsGroup":0,
   "physicsKinematic":false,
@@ -25,10 +25,10 @@
   "physicsSensor":false,
   "physicsShape":1,
   "physicsShapePoints":[
-    {"x":0,"y":0,},
-    {"x":48,"y":0,},
-    {"x":48,"y":48,},
-    {"x":0,"y":48,},
+    {"x":0.0,"y":0.0,},
+    {"x":48.0,"y":0.0,},
+    {"x":48.0,"y":48.0,},
+    {"x":0.0,"y":48.0,},
   ],
   "physicsStartAwake":true,
   "properties":[

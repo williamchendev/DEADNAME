@@ -118,7 +118,7 @@ with (oLightingEngine_Source_PointLight)
 		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_radius_index, point_light_penumbra_size);
 		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_position_index, x, y);
 		
-		// Iterate through all Solid Object Box Colliders to Draw their Shadows
+		// Iterate through all Solid Object Box Colliders to draw their Shadows
 		var temp_point_light_source_contact_solid_index = 0;
 		
 		repeat (ds_list_size(point_light_collisions_list))
@@ -127,7 +127,7 @@ with (oLightingEngine_Source_PointLight)
 			
 			if (temp_point_light_source_contact_solid.shadows_enabled)
 			{
-				// Set Solid Object's Box Collider Center
+				// Set Solid Object's Box Collider Center Position and Rotation
 				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_solid.center_xpos, temp_point_light_source_contact_solid.center_ypos);
 				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
 				
@@ -136,6 +136,34 @@ with (oLightingEngine_Source_PointLight)
 			}
 			
 			temp_point_light_source_contact_solid_index++;
+		}
+		
+		// Iterate through all Box Shadow Colliders to draw their Shadows
+		var temp_point_light_source_contact_box_shadow_index = 0;
+		
+		repeat (instance_number(oLightingEngine_BoxShadow_Static))
+		{
+			var temp_point_light_source_contact_box_shadow = instance_find(oLightingEngine_BoxShadow_Static, temp_point_light_source_contact_box_shadow_index);
+			
+			if (temp_point_light_source_contact_box_shadow.shadows_enabled and temp_point_light_source_contact_box_shadow.point_light_shadows_enabled)
+			{
+				// Set Box Shadow Collider Center Position and Rotation
+				if (temp_point_light_source_contact_box_shadow.dynamic_shadows)
+				{
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_box_shadow.x, temp_point_light_source_contact_box_shadow.y);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, temp_point_light_source_contact_box_shadow.image_angle);
+				}
+				else
+				{
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_box_shadow.center_xpos, temp_point_light_source_contact_box_shadow.center_ypos);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
+				}
+				
+				// Draw Box Shadow Vertex Buffer
+				vertex_submit(temp_point_light_source_contact_box_shadow.shadow_vertex_buffer, pr_trianglelist, -1);
+			}
+			
+			temp_point_light_source_contact_box_shadow_index++;
 		}
 		
 		// Reset Shader and Surface
@@ -208,6 +236,7 @@ with (oLightingEngine_Source_SpotLight)
 			{
 				// Set Solid Object's Box Collider Center Position and Rotation
 				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_spot_light_source_contact_solid.center_xpos, temp_spot_light_source_contact_solid.center_ypos);
+				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
 				vertex_submit(temp_spot_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);

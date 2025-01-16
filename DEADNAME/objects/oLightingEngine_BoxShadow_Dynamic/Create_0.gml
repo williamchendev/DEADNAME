@@ -1,6 +1,13 @@
 /// @description Box Shadow Init Event
 // Initializes Box Shadow Variables
 
+// Dynamic Property
+dynamic_shadows = true;
+
+// Center Position
+center_xpos = 0;
+center_ypos = 0;
+
 // Shadow Vertexes
 shadow_vertex_buffer = -1;
 
@@ -109,3 +116,8 @@ vertex_position_3d(shadow_vertex_buffer, temp_shadow_vertex_xpos_c, temp_shadow_
 vertex_texcoord(shadow_vertex_buffer, 0, 0);
 
 vertex_end(shadow_vertex_buffer);
+vertex_freeze(shadow_vertex_buffer);
+
+// Disable Sprite & Visibility
+sprite_index = -1;
+visible = false;
