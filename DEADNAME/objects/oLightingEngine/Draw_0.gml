@@ -108,15 +108,15 @@ with (oLightingEngine_Source_PointLight)
 		gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
 		
 		// Prepare Shader and Surface for Point Light Shadows
-		shader_set(shd_point_light_shadows);
+		shader_set(shd_point_light_and_spot_light_shadows);
 		surface_set_target(LightingEngine.lights_shadow_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
 		
 		// Set Point Light Shadow Shader Properties
-		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_radius_index, point_light_penumbra_size);
-		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_position_index, x, y);
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_radius_index, point_light_penumbra_size);
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_position_index, x, y);
 		
 		// Iterate through all Solid Object Box Colliders to Draw their Shadows
 		var temp_point_light_source_contact_solid_index = 0;
@@ -128,7 +128,7 @@ with (oLightingEngine_Source_PointLight)
 			if (temp_point_light_source_contact_solid.shadows_enabled)
 			{
 				// Set Solid Object's Box Collider Center
-				shader_set_uniform_f(LightingEngine.point_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_solid.center_xpos, temp_point_light_source_contact_solid.center_ypos);
+				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_solid.center_xpos, temp_point_light_source_contact_solid.center_ypos);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
 				vertex_submit(temp_point_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
@@ -186,15 +186,15 @@ with (oLightingEngine_Source_SpotLight)
 		gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
 		
 		// Prepare Shader and Surface for Spot Light Shadows
-		shader_set(shd_point_light_shadows);
+		shader_set(shd_point_light_and_spot_light_shadows);
 		surface_set_target(LightingEngine.lights_shadow_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
 		
 		// Set Spot Light Shadow Shader Properties
-		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_radius_index, spot_light_penumbra_size);
-		shader_set_uniform_f(LightingEngine.point_light_shadow_shader_light_source_position_index, x, y);
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_radius_index, spot_light_penumbra_size);
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_position_index, x, y);
 		
 		// Iterate through all Solid Object Box Colliders to Draw their Shadows
 		var temp_spot_light_source_contact_solid_index = 0;
@@ -206,7 +206,7 @@ with (oLightingEngine_Source_SpotLight)
 			if (temp_spot_light_source_contact_solid.shadows_enabled)
 			{
 				// Set Solid Object's Box Collider Center
-				shader_set_uniform_f(LightingEngine.point_light_shadow_shader_collider_center_position_index, temp_spot_light_source_contact_solid.center_xpos, temp_spot_light_source_contact_solid.center_ypos);
+				shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_spot_light_source_contact_solid.center_xpos, temp_spot_light_source_contact_solid.center_ypos);
 				
 				// Draw Solid Object's Shadow Vertex Buffer
 				vertex_submit(temp_spot_light_source_contact_solid.shadow_vertex_buffer, pr_trianglelist, -1);
