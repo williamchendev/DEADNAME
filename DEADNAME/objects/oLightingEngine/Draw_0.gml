@@ -139,31 +139,25 @@ with (oLightingEngine_Source_PointLight)
 		}
 		
 		// Iterate through all Box Shadow Colliders to draw their Shadows
-		var temp_point_light_source_contact_box_shadow_index = 0;
-		
-		repeat (instance_number(oLightingEngine_BoxShadow_Static))
+		with (oLightingEngine_BoxShadow_Static)
 		{
-			var temp_point_light_source_contact_box_shadow = instance_find(oLightingEngine_BoxShadow_Static, temp_point_light_source_contact_box_shadow_index);
-			
-			if (temp_point_light_source_contact_box_shadow.shadows_enabled and temp_point_light_source_contact_box_shadow.point_light_shadows_enabled)
+			if (shadows_enabled and point_light_shadows_enabled)
 			{
 				// Set Box Shadow Collider Center Position and Rotation
-				if (temp_point_light_source_contact_box_shadow.dynamic_shadows)
+				if (dynamic_shadows)
 				{
-					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_box_shadow.x, temp_point_light_source_contact_box_shadow.y);
-					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, temp_point_light_source_contact_box_shadow.image_angle);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, x, y);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, image_angle);
 				}
 				else
 				{
-					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, temp_point_light_source_contact_box_shadow.center_xpos, temp_point_light_source_contact_box_shadow.center_ypos);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, center_xpos, center_ypos);
 					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
 				}
 				
 				// Draw Box Shadow Vertex Buffer
-				vertex_submit(temp_point_light_source_contact_box_shadow.shadow_vertex_buffer, pr_trianglelist, -1);
+				vertex_submit(shadow_vertex_buffer, pr_trianglelist, -1);
 			}
-			
-			temp_point_light_source_contact_box_shadow_index++;
 		}
 		
 		// Reset Shader and Surface
@@ -245,6 +239,28 @@ with (oLightingEngine_Source_SpotLight)
 			temp_spot_light_source_contact_solid_index++;
 		}
 		
+		// Iterate through all Box Shadow Colliders to draw their Shadows
+		with (oLightingEngine_BoxShadow_Static)
+		{
+			if (shadows_enabled and spot_light_shadows_enabled)
+			{
+				// Set Box Shadow Collider Center Position and Rotation
+				if (dynamic_shadows)
+				{
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, x, y);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, image_angle);
+				}
+				else
+				{
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_center_position_index, center_xpos, center_ypos);
+					shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_collider_rotation_index, 0);
+				}
+				
+				// Draw Box Shadow Vertex Buffer
+				vertex_submit(shadow_vertex_buffer, pr_trianglelist, -1);
+			}
+		}
+		
 		// Reset Shader and Surface
 		shader_reset();
 		surface_reset_target();
@@ -295,23 +311,23 @@ with (oLightingEngine_Source_DirectionalLight)
 	var temp_directional_light_vector_x = cos(degtorad(image_angle));
 	var temp_directional_light_vector_y = sin(degtorad(image_angle));
 	
+	// GPU Blending: Surface retains the Alpha Maximum for Overlapping Black Shadows
+	gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
+	
+	// Prepare Shader and Surface for Directional Light Shadows
+	shader_set(shd_directional_light_shadows);
+	surface_set_target(LightingEngine.lights_shadow_surface);
+	
+	// Reset Light Shadow Surface
+	draw_clear_alpha(c_black, 0);
+	
+	// Set Directional Light Shadow Shader Properties
+	shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_radius_index, directional_light_penumbra_radius);
+	shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
+	
 	// Directional Light Shadow Rendering Behaviour
 	if (LightingEngine.directional_light_collisions_exist)
 	{
-		// GPU Blending: Surface retains the Alpha Maximum for Overlapping Black Shadows
-		gpu_set_blendmode_ext_sepalpha(bm_zero, bm_one, bm_one, bm_one);
-		
-		// Prepare Shader and Surface for Directional Light Shadows
-		shader_set(shd_directional_light_shadows);
-		surface_set_target(LightingEngine.lights_shadow_surface);
-		
-		// Reset Light Shadow Surface
-		draw_clear_alpha(c_black, 0);
-		
-		// Set Directional Light Shadow Shader Properties
-		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_radius_index, directional_light_penumbra_radius);
-		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
-		
 		// Iterate through all Solid Object Box Colliders to Draw their Shadows
 		var temp_directional_light_view_contact_solid_index = 0;
 		
@@ -331,11 +347,33 @@ with (oLightingEngine_Source_DirectionalLight)
 			
 			temp_directional_light_view_contact_solid_index++;
 		}
-		
-		// Reset Shader and Surface
-		surface_reset_target();
-		shader_reset();
 	}
+	
+	// Iterate through all Box Shadow Colliders to draw their Shadows
+	with (oLightingEngine_BoxShadow_Static)
+	{
+		if (shadows_enabled and directional_light_shadows_enabled)
+		{
+			// Set Box Shadow Collider Center Position and Rotation
+			if (dynamic_shadows)
+			{
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_center_position_index, x, y);
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_rotation_index, image_angle);
+			}
+			else
+			{
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_center_position_index, center_xpos, center_ypos);
+				shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_collider_rotation_index, 0);
+			}
+			
+			// Draw Box Shadow Vertex Buffer
+			vertex_submit(shadow_vertex_buffer, pr_trianglelist, -1);
+		}
+	}
+	
+	// Reset Shader and Surface
+	surface_reset_target();
+	shader_reset();
 	
 	// GPU Blending: Additive Blending for Lighting
 	gpu_set_blendmode(bm_add);
