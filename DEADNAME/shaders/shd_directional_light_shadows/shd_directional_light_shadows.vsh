@@ -12,6 +12,7 @@ uniform vec2 in_LightSource_Vector;
 
 // Uniform Collider Properties
 uniform vec2 in_ColliderCenter_Position;
+uniform vec2 in_Collider_Scale;
 uniform float in_Collider_Rotation;
 
 // Interpolated Shadow Gradient UV Coordinates
@@ -29,7 +30,7 @@ void main()
 	mat2 rotate_matrix = mat2(rotate_vector.x, -rotate_vector.y, rotate_vector.y, rotate_vector.x);
     
     // Normalize Light Direction Vectors
-    vec2 vertex_position = in_ColliderCenter_Position + (in_Position.xy * rotate_matrix);
+    vec2 vertex_position = in_ColliderCenter_Position + (in_Position.xy * in_Collider_Scale * rotate_matrix);
     vec2 in_LightSource_Position = in_ColliderCenter_Position + (vec2(in_LightSource_Vector.x, -in_LightSource_Vector.y) * PseudoInfinity);
     vec2 vertex_to_light_offset = normalize(vertex_position - in_LightSource_Position);
 

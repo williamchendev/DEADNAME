@@ -21,6 +21,14 @@ uniform sampler2D gm_SpecularTexture;
 // Fragment Shader
 void main()
 {
+	// Diffuse Map
+	vec4 Diffuse = texture2D(gm_BaseTexture, v_vTexcoord);
+	
+	if (Diffuse.a == 0.0)
+	{
+		return;
+	}
+	
 	// Normal Map
 	vec4 Normal = (texture2D(gm_NormalTexture, v_vTexcoordNormalMap) - 0.5) * 2.0;
 	Normal *= vec4(vectorScale.x, vectorScale.y, vectorScale.z, 1.0);
@@ -32,8 +40,8 @@ void main()
 	// Specular Map
 	vec4 Specular = texture2D(gm_SpecularTexture, v_vTexcoordSpecularMap);
 	
-	// Set MRT Render Data
-    gl_FragData[0] = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
+	// Draw MRT Diffuse, Normal, and Specular Map
+    gl_FragData[0] = v_vColour * Diffuse;
     gl_FragData[1] = Normal;
     gl_FragData[2] = vec4(Specular.r * Specular.a, 0.0, 0.0, 1.0);
 }
