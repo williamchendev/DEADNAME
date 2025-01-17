@@ -22,7 +22,7 @@ draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Enable MRT Deferred Lighting Shader and Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
-shader_set(shd_mrt_deferred_lighting);
+shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
 
 surface_set_target_ext(0, diffuse_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);

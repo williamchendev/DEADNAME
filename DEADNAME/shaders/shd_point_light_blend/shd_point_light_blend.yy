@@ -3,8 +3,8 @@
   "%Name":"shd_point_light_blend",
   "name":"shd_point_light_blend",
   "parent":{
-    "name":"Shaders",
-    "path":"folders/Shaders.yy",
+    "name":"Lights",
+    "path":"folders/Shaders/Lights.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

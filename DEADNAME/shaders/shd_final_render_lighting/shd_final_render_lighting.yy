@@ -3,8 +3,8 @@
   "%Name":"shd_final_render_lighting",
   "name":"shd_final_render_lighting",
   "parent":{
-    "name":"Shaders",
-    "path":"folders/Shaders.yy",
+    "name":"Rendering",
+    "path":"folders/Shaders/Rendering.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",
