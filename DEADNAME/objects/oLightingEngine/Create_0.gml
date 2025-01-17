@@ -5,15 +5,6 @@
 #macro LightingEngine global.lighting_engine
 #macro LightingEngineDefaultLayer "main"
 
-// Enums
-enum LightingEngineLitObjectType
-{
-	Disabled,
-    Basic,
-    Dynamic,
-    Unit
-}
-
 // Configure Lighting Engine - Global Init Event
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oLightingEngine);");
 
@@ -52,16 +43,14 @@ render_y = 0;
 render_border = 120;
 render_directional_shadows_border = 240;
 
-// Layers
-lighting_engine_layer_name_list = ds_list_create();
-lighting_engine_layer_object_list = ds_list_create();
-lighting_engine_layer_depth_list = ds_list_create();
-
 // Surfaces
 lights_color_surface = -1;
 lights_shadow_surface = -1;
 
-diffuse_color_surface = -1;
+diffuse_back_color_surface = -1;
+diffuse_mid_color_surface = -1;
+diffuse_front_color_surface = -1;
+
 normalmap_vector_surface = -1;
 depth_specular_stencil_surface = -1;
 
@@ -107,8 +96,10 @@ vertex_freeze(simple_light_vertex_buffer);
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
 
-mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "vectorScale");
-mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "vectorAngle");
+mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorScale");
+mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorAngle");
+
+mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Layer_Depth");
 
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
@@ -180,13 +171,337 @@ directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd
 // Final Render Pass Lighting Shader Indexes
 final_render_lighting_shader_lightblend_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlendTexture");
 
-// Lighting Engine Create Default Layers
-lighting_engine_create_default_layers = function()
+// Layers
+lighting_engine_back_layer_sub_layer_name_list = ds_list_create();
+lighting_engine_back_layer_sub_layer_depth_list = ds_list_create();
+lighting_engine_back_layer_sub_layer_type_list = ds_list_create();
+lighting_engine_back_layer_sub_layer_object_list = ds_list_create();
+lighting_engine_back_layer_sub_layer_object_type_list = ds_list_create();
+
+lighting_engine_mid_layer_sub_layer_name_list = ds_list_create();
+lighting_engine_mid_layer_sub_layer_depth_list = ds_list_create();
+lighting_engine_mid_layer_sub_layer_type_list = ds_list_create();
+lighting_engine_mid_layer_sub_layer_object_list = ds_list_create();
+lighting_engine_mid_layer_sub_layer_object_type_list = ds_list_create();
+
+lighting_engine_front_layer_sub_layer_name_list = ds_list_create();
+lighting_engine_front_layer_sub_layer_depth_list = ds_list_create();
+lighting_engine_front_layer_sub_layer_type_list = ds_list_create();
+lighting_engine_front_layer_sub_layer_object_list = ds_list_create();
+lighting_engine_front_layer_sub_layer_object_type_list = ds_list_create();
+
+// Lighting Engine Layer Types
+enum LightingEngineRenderLayerType
+{
+	Back,
+	Mid,
+	Front
+}
+
+// Lighting Engine Sub Layer Types
+enum LightingEngineSubLayerType
+{
+	Dynamic,
+	BulkStatic
+}
+
+// Lighting Engine Object Types
+enum LightingEngineObjectType
+{
+	Default,
+    Basic,
+    Dynamic,
+    Unit
+}
+
+// Lighting Engine Layer Methods: Add Sub Layer Behaviours
+add_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type)
+{
+	// Clamp Layer Depth
+    var temp_sub_layer_depth = clamp(sub_layer_depth, -1, 1);
+    
+	// Add Sub Layer based on Render Layer Type
+	switch (render_layer_type)
+	{
+		case LightingEngineRenderLayerType.Back:
+			// Check if Sub Layer already exists
+			if (ds_list_find_index(lighting_engine_back_layer_sub_layer_name_list, sub_layer_name) != -1)
+			{
+				// Unsuccessfully added Sub Layer because a sub layer with the given name already exists - Return False
+				return false;
+			}
+			
+			// Find Index based on Layer Depth
+			for (var i = 0; i < ds_list_size(lighting_engine_back_layer_sub_layer_depth_list); i++)
+			{
+				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_back_layer_sub_layer_depth_list, i);
+				
+				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
+		        {
+		        	// Add Sub Layer's Name, Depth, and Type
+		        	ds_list_insert(lighting_engine_back_layer_sub_layer_name_list, i, sub_layer_name);
+    				ds_list_insert(lighting_engine_back_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
+    				ds_list_insert(lighting_engine_back_layer_sub_layer_type_list, i, sub_layer_type);
+    				
+    				// Add Sub Layer Object and Object Type Lists
+    				ds_list_insert(lighting_engine_back_layer_sub_layer_object_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_list, i);
+    				
+    				ds_list_insert(lighting_engine_back_layer_sub_layer_object_type_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_type_list, i);
+		            break;
+		        }
+			}
+			break;
+		case LightingEngineRenderLayerType.Front:
+			// Check if Sub Layer already exists
+			if (ds_list_find_index(lighting_engine_front_layer_sub_layer_name_list, sub_layer_name) != -1)
+			{
+				// Unsuccessfully added Sub Layer because a sub layer with the given name already exists - Return False
+				return false;
+			}
+			
+			// Find Index based on Layer Depth
+			for (var i = 0; i < ds_list_size(lighting_engine_front_layer_sub_layer_depth_list); i++)
+			{
+				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_front_layer_sub_layer_depth_list, i);
+				
+				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
+		        {
+		        	// Add Sub Layer's Name, Depth, and Type
+		        	ds_list_insert(lighting_engine_front_layer_sub_layer_name_list, i, sub_layer_name);
+    				ds_list_insert(lighting_engine_front_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
+    				ds_list_insert(lighting_engine_front_layer_sub_layer_type_list, i, sub_layer_type);
+    				
+    				// Add Sub Layer Object and Object Type Lists
+    				ds_list_insert(lighting_engine_front_layer_sub_layer_object_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_list, i);
+    				
+    				ds_list_insert(lighting_engine_front_layer_sub_layer_object_type_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_type_list, i);
+		            break;
+		        }
+			}
+			break;
+		case LightingEngineRenderLayerType.Mid:
+		default:
+			// Check if Sub Layer already exists
+			if (ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, sub_layer_name) != -1)
+			{
+				// Unsuccessfully added Sub Layer because a sub layer with the given name already exists - Return False
+				return false;
+			}
+			
+			// Find Index based on Layer Depth
+			for (var i = 0; i < ds_list_size(lighting_engine_mid_layer_sub_layer_depth_list); i++)
+			{
+				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_mid_layer_sub_layer_depth_list, i);
+				
+				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
+		        {
+		        	// Add Sub Layer's Name, Depth, and Type
+		        	ds_list_insert(lighting_engine_mid_layer_sub_layer_name_list, i, sub_layer_name);
+    				ds_list_insert(lighting_engine_mid_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
+    				ds_list_insert(lighting_engine_mid_layer_sub_layer_type_list, i, sub_layer_type);
+    				
+    				// Add Sub Layer Object and Object Type Lists
+    				ds_list_insert(lighting_engine_mid_layer_sub_layer_object_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_list, i);
+    				
+    				ds_list_insert(lighting_engine_mid_layer_sub_layer_object_type_list, i, ds_list_create());
+    				ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_type_list, i);
+		            break;
+		        }
+			}
+			break;
+	}
+	
+	// Successfully added Sub Layer - Return True
+	return true;
+}
+
+// Lighting Engine Layer Methods: Remove Sub Layer Behaviours
+remove_object_from_sub_layer = function(sub_layer_object_list, sub_layer_object_type_list, sub_layer_object_index)
+{
+	// Find Object and Object Type from given Sub Layer Object and Object Type DS Lists at the Sub Layer Object Index
+	var temp_sub_layer_object = ds_list_find_value(sub_layer_object_list, sub_layer_object_index);
+	var temp_sub_layer_object_type = ds_list_find_value(sub_layer_object_type_list, sub_layer_object_index);
+	
+	// Properly Delete the given Object based on the Object's Type
+	switch (temp_sub_layer_object_type)
+	{
+		case LightingEngineObjectType.Default:
+		default:
+			// Default Object Type Condition: Destroy Game Object
+			instance_destroy(temp_sub_layer_object);
+			break;
+	}
+	
+	// Remove Object and Object Type at Index within Sub Layer DS Lists
+	ds_list_delete(sub_layer_object_list, sub_layer_object_index);
+	ds_list_delete(sub_layer_object_type_list, sub_layer_object_index);
+}
+
+remove_all_objects_from_sub_layer = function(sub_layer_object_list, sub_layer_object_type_list)
+{
+	// Iterate through entire Sub Layer Object and Object Type DS Lists and delete every index
+	for (var i = ds_list_size(sub_layer_object_list) - 1; i >= 0; i--)
+	{
+		remove_object_from_sub_layer(sub_layer_object_list, sub_layer_object_type_list, i);
+	}
+}
+
+remove_sub_layer = function(sub_layer_name)
+{
+	// Establish Check Boolean if Sub Layer was successfully removed
+	var temp_sub_layer_was_removed = false;
+	
+	// Attempt to remove Sub Layer from Back Render Layer Organizational DS Lists
+	var temp_back_render_layer_sub_layer_index = ds_list_find_index(lighting_engine_back_layer_sub_layer_name_list, sub_layer_name);
+	
+	if (temp_back_render_layer_sub_layer_index != -1)
+	{
+		// Find Sub Layer Object and Object Type DS Lists to Delete
+		var temp_back_render_layer_sub_layer_object_list_to_delete = ds_list_find_value(lighting_engine_back_layer_sub_layer_object_list, temp_back_render_layer_sub_layer_index);
+		var temp_back_render_layer_sub_layer_object_type_list_to_delete = ds_list_find_value(lighting_engine_back_layer_sub_layer_object_type_list, temp_back_render_layer_sub_layer_index);
+		
+		// Delete all Objects on Sub Layer
+		remove_all_objects_from_sub_layer(temp_back_render_layer_sub_layer_object_list_to_delete, temp_back_render_layer_sub_layer_object_type_list_to_delete);
+		
+		// Delete Sub Layer Object and Object Type DS Lists
+		ds_list_destroy(temp_back_render_layer_sub_layer_object_list_to_delete);
+		ds_list_delete(lighting_engine_back_layer_sub_layer_object_list, temp_back_render_layer_sub_layer_index);
+		
+		ds_list_destroy(temp_back_render_layer_sub_layer_object_type_list_to_delete);
+		ds_list_delete(lighting_engine_back_layer_sub_layer_object_type_list, temp_back_render_layer_sub_layer_index);
+		
+		// Delete Indexed Sub Layer Properties (Name, Depth, and Type)
+		ds_list_delete(lighting_engine_back_layer_sub_layer_name_list, temp_back_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_back_layer_sub_layer_depth_list, temp_back_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_back_layer_sub_layer_type_list, temp_back_render_layer_sub_layer_index);
+		
+		// Toggle boolean to indicate that a Sub Layer was successfully removed
+		temp_sub_layer_was_removed = true;
+	}
+	
+	// Attempt to remove Sub Layer from Mid Render Layer Organizational DS Lists
+	var temp_mid_render_layer_sub_layer_index = ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, sub_layer_name);
+	
+	if (temp_mid_render_layer_sub_layer_index != -1)
+	{
+		// Find Sub Layer Object and Object Type DS Lists to Delete
+		var temp_mid_render_layer_sub_layer_object_list_to_delete = ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_list, temp_mid_render_layer_sub_layer_index);
+		var temp_mid_render_layer_sub_layer_object_type_list_to_delete = ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_type_list, temp_mid_render_layer_sub_layer_index);
+		
+		// Delete all Objects on Sub Layer
+		remove_all_objects_from_sub_layer(temp_mid_render_layer_sub_layer_object_list_to_delete, temp_mid_render_layer_sub_layer_object_type_list_to_delete);
+		
+		// Delete Sub Layer Object and Object Type DS Lists
+		ds_list_destroy(temp_mid_render_layer_sub_layer_object_list_to_delete);
+		ds_list_delete(lighting_engine_mid_layer_sub_layer_object_list, temp_mid_render_layer_sub_layer_index);
+		
+		ds_list_destroy(temp_mid_render_layer_sub_layer_object_type_list_to_delete);
+		ds_list_delete(lighting_engine_mid_layer_sub_layer_object_type_list, temp_mid_render_layer_sub_layer_index);
+		
+		// Delete Indexed Sub Layer Properties (Name, Depth, and Type)
+		ds_list_delete(lighting_engine_mid_layer_sub_layer_name_list, temp_mid_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_mid_layer_sub_layer_depth_list, temp_mid_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_mid_layer_sub_layer_type_list, temp_mid_render_layer_sub_layer_index);
+		
+		// Toggle boolean to indicate that a Sub Layer was successfully removed
+		temp_sub_layer_was_removed = true;
+	}
+	
+	// Attempt to remove Sub Layer from Front Render Layer Organizational DS Lists
+	var temp_front_render_layer_sub_layer_index = ds_list_find_index(lighting_engine_front_layer_sub_layer_name_list, sub_layer_name);
+	
+	if (temp_front_render_layer_sub_layer_index != -1)
+	{
+		// Find Sub Layer Object and Object Type DS Lists to Delete
+		var temp_front_render_layer_sub_layer_object_list_to_delete = ds_list_find_value(lighting_engine_front_layer_sub_layer_object_list, temp_front_render_layer_sub_layer_index);
+		var temp_front_render_layer_sub_layer_object_type_list_to_delete = ds_list_find_value(lighting_engine_front_layer_sub_layer_object_type_list, temp_front_render_layer_sub_layer_index);
+		
+		// Delete all Objects on Sub Layer
+		remove_all_objects_from_sub_layer(temp_front_render_layer_sub_layer_object_list_to_delete, temp_front_render_layer_sub_layer_object_type_list_to_delete);
+		
+		// Delete Sub Layer Object and Object Type DS Lists
+		ds_list_destroy(temp_front_render_layer_sub_layer_object_list_to_delete);
+		ds_list_delete(lighting_engine_front_layer_sub_layer_object_list, temp_front_render_layer_sub_layer_index);
+		
+		ds_list_destroy(temp_front_render_layer_sub_layer_object_type_list_to_delete);
+		ds_list_delete(lighting_engine_front_layer_sub_layer_object_type_list, temp_front_render_layer_sub_layer_index);
+		
+		// Delete Indexed Sub Layer Properties (Name, Depth, and Type)
+		ds_list_delete(lighting_engine_front_layer_sub_layer_name_list, temp_front_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_front_layer_sub_layer_depth_list, temp_front_render_layer_sub_layer_index);
+		ds_list_delete(lighting_engine_front_layer_sub_layer_type_list, temp_front_render_layer_sub_layer_index);
+		
+		// Toggle boolean to indicate that a Sub Layer was successfully removed
+		temp_sub_layer_was_removed = true;
+	}
+	
+	// Return Boolean if successfully removed a Sub Layer that matched the given Sub Layer Name
+	return temp_sub_layer_was_removed;
+}
+
+// Lighting Engine Layer Method: Clear and Reset All Sub Layers
+clear_all_sub_layers = function()
+{
+	// Iterate through and delete all Sub Layers
+	for (var temp_back_layer_names_index = ds_list_size(lighting_engine_back_layer_sub_layer_name_list) - 1; temp_back_layer_names_index >= 0; temp_back_layer_names_index--)
+	{
+		// Find Layer Name from Index
+		var temp_back_layer_name = ds_list_find_value(lighting_engine_back_layer_sub_layer_name_list, temp_back_layer_names_index);
+		
+		// Remove and Delete Sub Layer
+		remove_sub_layer(temp_back_layer_name);
+	}
+	
+	for (var temp_mid_layer_names_index = ds_list_size(lighting_engine_mid_layer_sub_layer_name_list) - 1; temp_mid_layer_names_index >= 0; temp_mid_layer_names_index--)
+	{
+		// Find Layer Name from Index
+		var temp_mid_layer_name = ds_list_find_value(lighting_engine_mid_layer_sub_layer_name_list, temp_mid_layer_names_index);
+		
+		// Remove and Delete Sub Layer
+		remove_sub_layer(temp_mid_layer_name);
+	}
+	
+	for (var temp_front_layer_names_index = ds_list_size(lighting_engine_front_layer_sub_layer_name_list) - 1; temp_front_layer_names_index >= 0; temp_front_layer_names_index--)
+	{
+		// Find Layer Name from Index
+		var temp_front_layer_name = ds_list_find_value(lighting_engine_front_layer_sub_layer_name_list, temp_front_layer_names_index);
+		
+		// Remove and Delete Sub Layer
+		remove_sub_layer(temp_front_layer_name);
+	}
+	
+	// Clear and Reset Sub Layer Organization DS Lists
+	ds_list_clear(lighting_engine_back_layer_sub_layer_name_list);
+	ds_list_clear(lighting_engine_back_layer_sub_layer_depth_list);
+	ds_list_clear(lighting_engine_back_layer_sub_layer_type_list);
+	ds_list_clear(lighting_engine_back_layer_sub_layer_object_list);
+	ds_list_clear(lighting_engine_back_layer_sub_layer_object_type_list);
+	
+	ds_list_clear(lighting_engine_mid_layer_sub_layer_name_list);
+	ds_list_clear(lighting_engine_mid_layer_sub_layer_depth_list);
+	ds_list_clear(lighting_engine_mid_layer_sub_layer_type_list);
+	ds_list_clear(lighting_engine_mid_layer_sub_layer_object_list);
+	ds_list_clear(lighting_engine_mid_layer_sub_layer_object_type_list);
+	
+	ds_list_clear(lighting_engine_front_layer_sub_layer_name_list);
+	ds_list_clear(lighting_engine_front_layer_sub_layer_depth_list);
+	ds_list_clear(lighting_engine_front_layer_sub_layer_type_list);
+	ds_list_clear(lighting_engine_front_layer_sub_layer_object_list);
+	ds_list_clear(lighting_engine_front_layer_sub_layer_object_type_list);
+}
+
+// Lighting Engine Layer Method: Create Default Sub Layers
+create_default_sub_layers = function()
 {
 	lighting_engine_add_layer(LightingEngineDefaultLayer, 0);
 }
 
-lighting_engine_create_default_layers();
+create_default_sub_layers();
 
 // Lighting Directional Shadows Variables
 directional_light_collisions_exist = false;

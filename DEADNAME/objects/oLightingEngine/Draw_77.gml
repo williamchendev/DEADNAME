@@ -7,7 +7,7 @@ gpu_set_blendenable(false);
 shader_set(shd_final_render_lighting);
 texture_set_stage(final_render_lighting_shader_lightblend_texture_index, surface_get_texture(lights_color_surface));
 
-draw_surface_ext(diffuse_color_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
+draw_surface_ext(diffuse_mid_color_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 
 shader_reset();
 

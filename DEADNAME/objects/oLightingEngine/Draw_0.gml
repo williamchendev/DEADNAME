@@ -7,7 +7,15 @@ draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Reset Diffuse Color Surface
-surface_set_target(diffuse_color_surface);
+surface_set_target(diffuse_back_color_surface);
+draw_clear(c_black);
+surface_reset_target();
+
+surface_set_target(diffuse_mid_color_surface);
+draw_clear(c_black);
+surface_reset_target();
+
+surface_set_target(diffuse_front_color_surface);
 draw_clear(c_black);
 surface_reset_target();
 
@@ -24,7 +32,7 @@ surface_reset_target();
 // Enable MRT Deferred Lighting Shader and Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
 shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
 
-surface_set_target_ext(0, diffuse_color_surface);
+surface_set_target_ext(0, diffuse_mid_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
 surface_set_target_ext(2, depth_specular_stencil_surface);
 
@@ -69,7 +77,8 @@ repeat (ds_list_size(lighting_engine_layer_object_list))
 						draw_yscale,
 						image_angle + draw_angle_value,
 						image_blend,
-						image_alpha
+						image_alpha,
+						0
 					);
 					
 					// Draw Unit's Weapon (if equipped)

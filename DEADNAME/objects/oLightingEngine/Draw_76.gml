@@ -12,9 +12,19 @@ if (!surface_exists(lights_shadow_surface))
     lights_shadow_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
-if (!surface_exists(diffuse_color_surface))
+if (!surface_exists(diffuse_back_color_surface))
 {
-    diffuse_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    diffuse_back_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(diffuse_mid_color_surface))
+{
+    diffuse_mid_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(diffuse_front_color_surface))
+{
+    diffuse_front_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
 if (!surface_exists(normalmap_vector_surface))

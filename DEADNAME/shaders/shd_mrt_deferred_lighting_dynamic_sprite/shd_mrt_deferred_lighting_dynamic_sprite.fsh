@@ -12,7 +12,10 @@ varying vec4 v_vColour;
 varying mat2 v_vRotate;
 
 // Uniform Normal Map Transformations
-uniform vec3 vectorScale;
+uniform vec3 in_VectorScale;
+
+// Uniform Layer Depth Value
+uniform float in_Layer_Depth;
 
 // Uniform Normal Map and Specular Map Textures
 uniform sampler2D gm_NormalTexture;
@@ -35,13 +38,17 @@ void main()
 	
 	// Normal Vector Rotation & Scale Calculation
 	Normal.xy = Normal.xy * v_vRotate;
-	Normal = ((Normal / 2.0) + 0.5);
+	Normal = (Normal * 0.5) + 0.5;
 	
 	// Specular Map
 	vec4 Specular = texture2D(gm_SpecularTexture, v_vTexcoord_SpecularMap);
 	
-	// Draw MRT Diffuse, Normal, and Specular Map
+	// MRT Draw Diffuse Map
     gl_FragData[0] = v_vColour * Diffuse;
+    
+    // MRT Draw Normal Map
     gl_FragData[1] = Normal;
-    gl_FragData[2] = vec4(Specular.r * Specular.a, 0.0, 0.0, 1.0);
+    
+    // MRT Draw Depth, Specular, and Stencil Map
+    gl_FragData[2] = vec4((in_Layer_Depth * 0.5) + 0.5, Specular.r, 0.0, 1.0);
 }

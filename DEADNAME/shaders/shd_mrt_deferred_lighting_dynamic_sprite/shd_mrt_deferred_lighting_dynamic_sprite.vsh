@@ -12,7 +12,7 @@ uniform vec4 in_Normal_UVs;
 uniform vec4 in_Specular_UVs;
 
 // Uniform Normal Map Transformations
-uniform float vectorAngle;
+uniform float in_VectorAngle;
 
 // Interpolated Transformed UVs
 varying vec2 v_vTexcoord_DiffuseMap;
