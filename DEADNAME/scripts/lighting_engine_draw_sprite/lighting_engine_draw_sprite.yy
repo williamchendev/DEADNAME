@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"lighting_engine_draw_sprite",
   "parent":{
-    "name":"Lighting Engine",
-    "path":"folders/Scripts/Lighting Engine.yy",
+    "name":"Rendering",
+    "path":"folders/Scripts/Lighting Engine/Rendering.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

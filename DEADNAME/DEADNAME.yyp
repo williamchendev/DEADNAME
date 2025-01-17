@@ -217,6 +217,9 @@
     {"$GMFolder":"","%Name":"OilerSubmachineGun","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy","name":"OilerSubmachineGun","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"PlanetsideRevolver","folderPath":"folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy","name":"PlanetsideRevolver","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Timelines","folderPath":"folders/Timelines.yy","name":"Timelines","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Layers","folderPath":"folders/Scripts/Lighting Engine/Layers.yy","name":"Layers","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Rendering","folderPath":"folders/Scripts/Lighting Engine/Rendering.yy","name":"Rendering","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Units","folderPath":"folders/Scripts/Lighting Engine/Units.yy","name":"Units","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"gmlp-reference-guide.pdf","CopyToMask":0,"filePath":"datafiles","name":"gmlp-reference-guide.pdf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -313,7 +316,6 @@
     {"id":{"name":"lighting_engine_add_basic_object","path":"scripts/lighting_engine_add_basic_object/lighting_engine_add_basic_object.yy",},},
     {"id":{"name":"lighting_engine_add_layer","path":"scripts/lighting_engine_add_layer/lighting_engine_add_layer.yy",},},
     {"id":{"name":"lighting_engine_add_unit","path":"scripts/lighting_engine_add_unit/lighting_engine_add_unit.yy",},},
-    {"id":{"name":"lighting_engine_create_default_layers","path":"scripts/lighting_engine_create_default_layers/lighting_engine_create_default_layers.yy",},},
     {"id":{"name":"lighting_engine_draw_sprite","path":"scripts/lighting_engine_draw_sprite/lighting_engine_draw_sprite.yy",},},
     {"id":{"name":"lighting_engine_remove_basic_object","path":"scripts/lighting_engine_remove_basic_object/lighting_engine_remove_basic_object.yy",},},
     {"id":{"name":"lighting_engine_remove_layer","path":"scripts/lighting_engine_remove_layer/lighting_engine_remove_layer.yy",},},

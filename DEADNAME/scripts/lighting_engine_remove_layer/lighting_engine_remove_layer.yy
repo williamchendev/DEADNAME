@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"lighting_engine_remove_layer",
   "parent":{
-    "name":"Lighting Engine",
-    "path":"folders/Scripts/Lighting Engine.yy",
+    "name":"Layers",
+    "path":"folders/Scripts/Lighting Engine/Layers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

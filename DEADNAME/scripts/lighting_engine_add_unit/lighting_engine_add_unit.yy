@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"lighting_engine_add_unit",
   "parent":{
-    "name":"Lighting Engine",
-    "path":"folders/Scripts/Lighting Engine.yy",
+    "name":"Units",
+    "path":"folders/Scripts/Lighting Engine/Units.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

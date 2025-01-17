@@ -78,6 +78,13 @@ vertex_format_begin();
 vertex_format_add_position();
 lighting_engine_simple_light_vertex_format = vertex_format_end();
 
+vertex_format_begin();
+vertex_format_add_position();
+vertex_format_add_texcoord();
+vertex_format_add_texcoord();
+vertex_format_add_texcoord();
+lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = vertex_format_end();
+
 // Vertex Buffers
 simple_light_vertex_buffer = vertex_create_buffer();
 
@@ -171,7 +178,12 @@ mrt_deferred_lighting_shader_specularmap_texture_index  = shader_get_sampler_ind
 // Final Render Pass Lighting Shader Indexes
 final_render_lighting_shader_lightblend_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlendTexture");
 
-// Add Default Layers
+// Lighting Engine Create Default Layers
+lighting_engine_create_default_layers = function()
+{
+	lighting_engine_add_layer(LightingEngineDefaultLayer, 0);
+}
+
 lighting_engine_create_default_layers();
 
 // Lighting Directional Shadows Variables

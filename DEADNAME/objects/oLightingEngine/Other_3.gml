@@ -48,11 +48,17 @@ ui_surface = -1;
 
 debug_surface = -1;
 
-// Delete Shadow Vertex Formats
+// Delete Vertex Formats
 vertex_format_delete(lighting_engine_box_shadows_vertex_format);
 lighting_engine_box_shadows_vertex_format = -1;
 
-// Delete Simple Light Vertex Buffer
+vertex_format_delete(lighting_engine_simple_light_vertex_format);
+lighting_engine_simple_light_vertex_format = -1;
+
+vertex_format_delete(lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format);
+lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = -1;
+
+// Delete Vertex Buffers
 vertex_delete_buffer(simple_light_vertex_buffer);
 simple_light_vertex_buffer = -1;
 
