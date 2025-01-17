@@ -3,41 +3,41 @@
 //
 
 // Vertex Buffer Properties
-attribute vec3 in_Position; // (x, y, z)
-attribute vec4 in_Colour; // (r, g, b, a)
-attribute vec2 in_TextureCoord; // (u, v)
+attribute vec3 in_Position; 				// (x, y, z)
+attribute vec4 in_Colour;					// (r, g, b, a)
+attribute vec3 in_Normal_Scale;				// (nx, ny, nz)
+attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
+attribute vec2 in_TextureCoord_Normal; 		// (u, v)
+attribute vec2 in_TextureCoord_Specular; 	// (u, v)
 
-// Uniform Sprite UVs
-uniform vec4 in_Normal_UVs;
-uniform vec4 in_Specular_UVs;
-
-// Uniform Normal Map Transformations
-uniform float vectorAngle;
-
-// Interpolated Transformed UVs
+// Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
 varying vec2 v_vTexcoord_NormalMap;
 varying vec2 v_vTexcoord_SpecularMap;
 
-// Interpolated Color & Rotate
+// Interpolated Color, Scale, and Rotation Values
 varying vec4 v_vColour;
+varying vec3 v_vScale;
 varying mat2 v_vRotate;
 
 // Vertex Shader
 void main() 
 {
-	// Set Interpolated Colors
+	// Set Sprite Color
 	v_vColour = in_Colour;
 	
+	// Set Sprite Scale
+	v_vScale = in_Normal_Scale;
+	
 	// Calculate Rotate Vector
-	float RotateAngle = radians(vectorAngle);
+	float RotateAngle = radians(in_Position.z);
 	vec2 RotateVector = vec2(cos(RotateAngle), sin(RotateAngle));
 	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	
-	// Transform and set Sprite UVs
-	v_vTexcoord_DiffuseMap = in_TextureCoord;
-	v_vTexcoord_NormalMap = in_TextureCoord * in_Normal_UVs.zw + in_Normal_UVs.xy;
-	v_vTexcoord_SpecularMap = in_TextureCoord * in_Specular_UVs.zw + in_Specular_UVs.xy;
+	// Set Sprite UVs
+	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;
+	v_vTexcoord_NormalMap = in_TextureCoord_Normal;
+	v_vTexcoord_SpecularMap = in_TextureCoord_Specular;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(in_Position.x, in_Position.y, 0.0, 1.0);
