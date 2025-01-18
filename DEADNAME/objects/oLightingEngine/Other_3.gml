@@ -51,7 +51,10 @@ ds_list_destroy(lighting_engine_front_layer_sub_layer_object_type_list);
 lighting_engine_front_layer_sub_layer_object_type_list = -1;
 
 // Free Surfaces
-surface_free(lights_color_surface);
+surface_free(lights_back_color_surface);
+surface_free(lights_mid_color_surface);
+surface_free(lights_front_color_surface);
+
 surface_free(lights_shadow_surface);
 
 surface_free(diffuse_back_color_surface);
@@ -70,7 +73,10 @@ if (global.debug_surface_enabled)
 }
 
 // Reset Surface Variables
-lights_color_surface = -1;
+lights_back_color_surface = -1;
+lights_mid_color_surface = -1;
+lights_front_color_surface = -1;
+
 lights_shadow_surface = -1;
 
 diffuse_back_color_surface = -1;

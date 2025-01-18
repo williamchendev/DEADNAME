@@ -44,7 +44,10 @@ render_border = 120;
 render_directional_shadows_border = 240;
 
 // Surfaces
-lights_color_surface = -1;
+lights_back_color_surface = -1;
+lights_mid_color_surface = -1;
+lights_front_color_surface = -1;
+
 lights_shadow_surface = -1;
 
 diffuse_back_color_surface = -1;
@@ -119,6 +122,8 @@ point_light_shader_light_color_index = shader_get_uniform(shd_point_light_blend,
 point_light_shader_light_intensity_index = shader_get_uniform(shd_point_light_blend, "in_LightIntensity");
 point_light_shader_light_falloff_index = shader_get_uniform(shd_point_light_blend, "in_LightFalloff");
 
+point_light_shader_light_layers_index = shader_get_uniform(shd_point_light_blend, "in_Light_Layers");
+
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
 
@@ -140,6 +145,8 @@ spot_light_shader_light_falloff_index = shader_get_uniform(shd_spot_light_blend,
 spot_light_shader_light_direction_index = shader_get_uniform(shd_spot_light_blend, "in_LightDirection");
 spot_light_shader_light_angle_index = shader_get_uniform(shd_spot_light_blend, "in_LightAngle");
 
+spot_light_shader_light_layers_index = shader_get_uniform(shd_spot_light_blend, "in_Light_Layers");
+
 spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
 spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
 
@@ -153,6 +160,8 @@ point_light_and_spot_light_shadow_shader_collider_rotation_index = shader_get_un
 
 // Directional Light Blend Shader Indexes
 directional_light_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_blend, "in_LightSource_Vector");
+
+directional_light_shader_light_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Light_Layers");
 
 directional_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_HighLight_Strength_Multiplier");
 directional_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_BroadLight_Strength_Multiplier");

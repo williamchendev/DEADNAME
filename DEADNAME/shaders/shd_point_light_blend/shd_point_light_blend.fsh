@@ -12,6 +12,9 @@ uniform vec3 in_LightColor;
 uniform float in_LightIntensity;
 uniform float in_LightFalloff;
 
+// Uniform Light Layers
+uniform vec3 in_Light_Layers;
+
 // Uniform Normal Map and Shadow Map Surface Textures
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_ShadowTexture;
@@ -55,6 +58,10 @@ void main()
 	// Light Strength Ratio Calculation
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * in_HighLight_To_BroadLight_Ratio_Max));
 	
-	// Render Point Light
-	gl_FragColor = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade;
+	// MRT Render Point Light to Light Blend Layers
+	vec4 LightBlend = vec4(in_LightColor, in_LightIntensity * (1.0 - SurfaceShadow.a)) * LightStrength * LightFade
+	
+	gl_FragData[0] = LightBlend * in_Light_Layers.x;
+	gl_FragData[1] = LightBlend * in_Light_Layers.y;
+	gl_FragData[2] = LightBlend * in_Light_Layers.z;
 }

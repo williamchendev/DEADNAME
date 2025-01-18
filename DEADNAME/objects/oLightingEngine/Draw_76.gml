@@ -2,9 +2,19 @@
 // Creates the Surfaces for the Lighting Engine
 
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
-if (!surface_exists(lights_color_surface))
+if (!surface_exists(lights_back_color_surface))
 {
-    lights_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    lights_back_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_mid_color_surface))
+{
+    lights_mid_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_front_color_surface))
+{
+    lights_front_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
 if (!surface_exists(lights_shadow_surface))

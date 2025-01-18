@@ -2,7 +2,15 @@
 // You can write your code in this editor
 
 // Reset Light Color Surface
-surface_set_target(lights_color_surface);
+surface_set_target(lights_back_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(lights_mid_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(lights_front_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
@@ -181,7 +189,9 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Prepare Shader and Surface for Point Light Blending
 		shader_set(shd_point_light_blend);
-		surface_set_target(LightingEngine.lights_color_surface);
+		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
@@ -285,7 +295,9 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Prepare Shader and Surface for Spot Light Blending
 		shader_set(shd_spot_light_blend);
-		surface_set_target(LightingEngine.lights_color_surface);
+		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
@@ -398,7 +410,9 @@ with (oLightingEngine_Source_DirectionalLight)
 	
 	// Prepare Shader and Surface for Directional Light Blending
 	shader_set(shd_directional_light_blend);
-	surface_set_target(LightingEngine.lights_color_surface);
+	surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
+	surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
+	surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 	
 	// Set Lighting Engine Light Blending Settings
 	shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
@@ -421,7 +435,9 @@ with (oLightingEngine_Source_DirectionalLight)
 
 // Render Ambient Occlusion Lights
 gpu_set_blendmode(bm_max);
-surface_set_target(LightingEngine.lights_color_surface);
+surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
+surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
+surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 
 with (oLightingEngine_Source_AmbientLight)
 {
