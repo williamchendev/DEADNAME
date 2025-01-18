@@ -30,7 +30,7 @@ void main()
 	v_vColour = in_Colour;
 	
 	// Calculate Rotate Vector
-	float RotateAngle = radians(vectorAngle);
+	float RotateAngle = radians(in_VectorAngle);
 	vec2 RotateVector = vec2(cos(RotateAngle), sin(RotateAngle));
 	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	

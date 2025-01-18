@@ -419,7 +419,7 @@ with (oLightingEngine_Source_AmbientLight)
     	shader_set_uniform_f(LightingEngine.ambient_light_shader_light_intensity_index, image_alpha);
 		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface
-		vertex_submit(screen_space_vertex_buffer, pr_trianglelist, -1);
+		vertex_submit(LightingEngine.screen_space_vertex_buffer, pr_trianglelist, -1);
 	}
 }
 

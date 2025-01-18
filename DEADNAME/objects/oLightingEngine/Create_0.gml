@@ -279,26 +279,30 @@ add_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render
 			}
 			
 			// Find Index based on Layer Depth
+			var temp_sub_layer_index = ds_list_size(lighting_engine_back_layer_sub_layer_depth_list);
+			
 			for (var i = 0; i < ds_list_size(lighting_engine_back_layer_sub_layer_depth_list); i++)
 			{
 				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_back_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
 		        {
-		        	// Add Sub Layer's Name, Depth, and Type
-		        	ds_list_insert(lighting_engine_back_layer_sub_layer_name_list, i, sub_layer_name);
-    				ds_list_insert(lighting_engine_back_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
-    				ds_list_insert(lighting_engine_back_layer_sub_layer_type_list, i, sub_layer_type);
-    				
-    				// Add Sub Layer Object and Object Type Lists
-    				ds_list_insert(lighting_engine_back_layer_sub_layer_object_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_list, i);
-    				
-    				ds_list_insert(lighting_engine_back_layer_sub_layer_object_type_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_type_list, i);
+		        	temp_sub_layer_index = i;
 		            break;
 		        }
 			}
+			
+			// Add Sub Layer's Name, Depth, and Type
+        	ds_list_insert(lighting_engine_back_layer_sub_layer_name_list, temp_sub_layer_index, sub_layer_name);
+			ds_list_insert(lighting_engine_back_layer_sub_layer_depth_list, temp_sub_layer_index, temp_sub_layer_depth);
+			ds_list_insert(lighting_engine_back_layer_sub_layer_type_list, temp_sub_layer_index, sub_layer_type);
+			
+			// Add Sub Layer Object and Object Type Lists
+			ds_list_insert(lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index);
+			
+			ds_list_insert(lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index);
 			break;
 		case LightingEngineRenderLayerType.Front:
 			// Check if Sub Layer already exists
@@ -309,26 +313,30 @@ add_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render
 			}
 			
 			// Find Index based on Layer Depth
+			var temp_sub_layer_index = ds_list_size(lighting_engine_front_layer_sub_layer_depth_list);
+			
 			for (var i = 0; i < ds_list_size(lighting_engine_front_layer_sub_layer_depth_list); i++)
 			{
 				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_front_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
 		        {
-		        	// Add Sub Layer's Name, Depth, and Type
-		        	ds_list_insert(lighting_engine_front_layer_sub_layer_name_list, i, sub_layer_name);
-    				ds_list_insert(lighting_engine_front_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
-    				ds_list_insert(lighting_engine_front_layer_sub_layer_type_list, i, sub_layer_type);
-    				
-    				// Add Sub Layer Object and Object Type Lists
-    				ds_list_insert(lighting_engine_front_layer_sub_layer_object_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_list, i);
-    				
-    				ds_list_insert(lighting_engine_front_layer_sub_layer_object_type_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_type_list, i);
+		        	temp_sub_layer_index = i;
 		            break;
 		        }
 			}
+			
+			// Add Sub Layer's Name, Depth, and Type
+        	ds_list_insert(lighting_engine_front_layer_sub_layer_name_list, temp_sub_layer_index, sub_layer_name);
+			ds_list_insert(lighting_engine_front_layer_sub_layer_depth_list, temp_sub_layer_index, temp_sub_layer_depth);
+			ds_list_insert(lighting_engine_front_layer_sub_layer_type_list, temp_sub_layer_index, sub_layer_type);
+			
+			// Add Sub Layer Object and Object Type Lists
+			ds_list_insert(lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index);
+			
+			ds_list_insert(lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index);
 			break;
 		case LightingEngineRenderLayerType.Mid:
 		default:
@@ -340,26 +348,30 @@ add_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render
 			}
 			
 			// Find Index based on Layer Depth
+			var temp_sub_layer_index = ds_list_size(lighting_engine_mid_layer_sub_layer_depth_list);
+			
 			for (var i = 0; i < ds_list_size(lighting_engine_mid_layer_sub_layer_depth_list); i++)
 			{
 				var temp_check_sub_layer_depth = ds_list_find_value(lighting_engine_mid_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
 		        {
-		        	// Add Sub Layer's Name, Depth, and Type
-		        	ds_list_insert(lighting_engine_mid_layer_sub_layer_name_list, i, sub_layer_name);
-    				ds_list_insert(lighting_engine_mid_layer_sub_layer_depth_list, i, temp_sub_layer_depth);
-    				ds_list_insert(lighting_engine_mid_layer_sub_layer_type_list, i, sub_layer_type);
-    				
-    				// Add Sub Layer Object and Object Type Lists
-    				ds_list_insert(lighting_engine_mid_layer_sub_layer_object_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_list, i);
-    				
-    				ds_list_insert(lighting_engine_mid_layer_sub_layer_object_type_list, i, ds_list_create());
-    				ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_type_list, i);
+		        	temp_sub_layer_index = i;
 		            break;
 		        }
 			}
+			
+			// Add Sub Layer's Name, Depth, and Type
+        	ds_list_insert(lighting_engine_mid_layer_sub_layer_name_list, temp_sub_layer_index, sub_layer_name);
+			ds_list_insert(lighting_engine_mid_layer_sub_layer_depth_list, temp_sub_layer_index, temp_sub_layer_depth);
+			ds_list_insert(lighting_engine_mid_layer_sub_layer_type_list, temp_sub_layer_index, sub_layer_type);
+			
+			// Add Sub Layer Object and Object Type Lists
+			ds_list_insert(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index);
+			
+			ds_list_insert(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index, ds_list_create());
+			ds_list_mark_as_list(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index);
 			
 			// Recalculate Default Layer
 			lighting_engine_default_layer_index = ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, LightingEngineDefaultLayer);

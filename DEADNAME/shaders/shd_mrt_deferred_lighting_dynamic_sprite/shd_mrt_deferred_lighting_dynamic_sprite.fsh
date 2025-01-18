@@ -34,7 +34,7 @@ void main()
 	
 	// Normal Map
 	vec4 Normal = (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0;
-	Normal *= vec4(vectorScale, 1.0);
+	Normal *= vec4(in_VectorScale, 1.0);
 	
 	// Normal Vector Rotation & Scale Calculation
 	Normal.xy = Normal.xy * v_vRotate;
