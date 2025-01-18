@@ -142,6 +142,7 @@ point_light_shader_light_intensity_index = shader_get_uniform(shd_point_light_bl
 point_light_shader_light_falloff_index = shader_get_uniform(shd_point_light_blend, "in_LightFalloff");
 
 point_light_shader_light_layers_index = shader_get_uniform(shd_point_light_blend, "in_Light_Layers");
+point_light_shader_shadow_layers_index = shader_get_uniform(shd_point_light_blend, "in_Shadow_Layers");
 
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
@@ -165,6 +166,7 @@ spot_light_shader_light_direction_index = shader_get_uniform(shd_spot_light_blen
 spot_light_shader_light_angle_index = shader_get_uniform(shd_spot_light_blend, "in_LightAngle");
 
 spot_light_shader_light_layers_index = shader_get_uniform(shd_spot_light_blend, "in_Light_Layers");
+spot_light_shader_shadow_layers_index = shader_get_uniform(shd_spot_light_blend, "in_Shadow_Layers");
 
 spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
 spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
@@ -181,6 +183,7 @@ point_light_and_spot_light_shadow_shader_collider_rotation_index = shader_get_un
 directional_light_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_blend, "in_LightSource_Vector");
 
 directional_light_shader_light_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Light_Layers");
+directional_light_shader_shadow_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Shadow_Layers");
 
 directional_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_HighLight_Strength_Multiplier");
 directional_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_BroadLight_Strength_Multiplier");
@@ -214,8 +217,12 @@ final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();
 
-// Lighting Engine Depth Variables
+// Lighting Engine Rendering Variables
 lighting_engine_sub_layer_depth = 0;
+
+lighting_engine_back_render_layer_shadows_enabled = true;
+lighting_engine_mid_render_layer_shadows_enabled = true;
+lighting_engine_front_render_layer_shadows_enabled = true;
 
 // Layers
 lighting_engine_default_layer_index = 0;

@@ -169,6 +169,7 @@ with (oLightingEngine_Source_PointLight)
     	
     	// Set Point Light Shader MRT Render Layer Properties
 		shader_set_uniform_f(LightingEngine.point_light_shader_light_layers_index, point_light_render_background_layer ? 1 : 0, point_light_render_midground_layer ? 1 : 0, point_light_render_foreground_layer ? 1 : 0);
+		shader_set_uniform_f(LightingEngine.point_light_shader_shadow_layers_index, LightingEngine.lighting_engine_back_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_mid_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_front_render_layer_shadows_enabled ? 1 : 0);
     	
     	// Draw Point Light Vertex Buffer
 		vertex_submit(LightingEngine.simple_light_vertex_buffer, pr_trianglelist, -1);
@@ -281,6 +282,7 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Set Spot Light Shader MRT Render Layer Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_light_layers_index, spot_light_render_background_layer ? 1 : 0, spot_light_render_midground_layer ? 1 : 0, spot_light_render_foreground_layer ? 1 : 0);
+		shader_set_uniform_f(LightingEngine.spot_light_shader_shadow_layers_index, LightingEngine.lighting_engine_back_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_mid_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_front_render_layer_shadows_enabled ? 1 : 0);
     	
     	// Draw Spot Light Vertex Buffer
 		vertex_submit(LightingEngine.simple_light_vertex_buffer, pr_trianglelist, -1);
@@ -389,6 +391,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Set Directional Light Shader MRT Render Layer Properties
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_layers_index, directional_light_render_background_layer ? 1 : 0, directional_light_render_midground_layer ? 1 : 0, directional_light_render_foreground_layer ? 1 : 0);
+		shader_set_uniform_f(LightingEngine.directional_light_shader_shadow_layers_index, LightingEngine.lighting_engine_back_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_mid_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_front_render_layer_shadows_enabled ? 1 : 0);
 		
 		// Render Directional Light Blending using the Directional Light's Shadow Surface
 		draw_surface_ext(LightingEngine.lights_shadow_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
