@@ -97,12 +97,18 @@ lighting_engine_box_shadows_vertex_format = -1;
 vertex_format_delete(lighting_engine_simple_light_vertex_format);
 lighting_engine_simple_light_vertex_format = -1;
 
+vertex_format_delete(lighting_engine_screen_space_render_vertex_format);
+lighting_engine_screen_space_render_vertex_format = -1;
+
 vertex_format_delete(lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format);
 lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = -1;
 
 // Delete Vertex Buffers
 vertex_delete_buffer(simple_light_vertex_buffer);
 simple_light_vertex_buffer = -1;
+
+vertex_delete_buffer(screen_space_vertex_buffer);
+screen_space_vertex_buffer = -1;
 
 // Delete Directional Shadows Variables and List
 directional_light_collisions_exist = false;

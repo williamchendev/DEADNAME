@@ -71,6 +71,10 @@ vertex_format_add_position();
 lighting_engine_simple_light_vertex_format = vertex_format_end();
 
 vertex_format_begin();
+vertex_format_add_position();
+lighting_engine_screen_space_render_vertex_format = vertex_format_end();
+
+vertex_format_begin();
 vertex_format_add_position_3d();
 vertex_format_add_custom(vertex_type_float3, vertex_usage_normal);
 vertex_format_add_color();
@@ -94,6 +98,21 @@ vertex_position(simple_light_vertex_buffer, 1, -1);
 
 vertex_end(simple_light_vertex_buffer);
 vertex_freeze(simple_light_vertex_buffer);
+
+screen_space_vertex_buffer = vertex_create_buffer();
+
+vertex_begin(screen_space_vertex_buffer, lighting_engine_screen_space_render_vertex_format);
+
+vertex_position(screen_space_vertex_buffer, 0, 0);
+vertex_position(screen_space_vertex_buffer, 0, 1);
+vertex_position(screen_space_vertex_buffer, 1, 0);
+
+vertex_position(screen_space_vertex_buffer, 1, 1);
+vertex_position(screen_space_vertex_buffer, 1, 0);
+vertex_position(screen_space_vertex_buffer, 0, 1);
+
+vertex_end(screen_space_vertex_buffer);
+vertex_freeze(screen_space_vertex_buffer);
 
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
@@ -184,6 +203,10 @@ final_render_lighting_shader_diffusemap_front_layer_texture_index  = shader_get_
 final_render_lighting_shader_lightblend_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_BackLayer_Texture");
 final_render_lighting_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_MidLayer_Texture");
 final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_FrontLayer_Texture");
+
+// Lighting Directional Shadows Variables
+directional_light_collisions_exist = false;
+directional_light_collisions_list = ds_list_create();
 
 // Layers
 lighting_engine_back_layer_sub_layer_name_list = ds_list_create();
@@ -517,6 +540,5 @@ create_default_sub_layers = function()
 
 create_default_sub_layers();
 
-// Lighting Directional Shadows Variables
-directional_light_collisions_exist = false;
-directional_light_collisions_list = ds_list_create();
+// Lighting Engine Layer Method: Render Sub Layer
+

@@ -460,7 +460,7 @@ with (oLightingEngine_Source_AmbientLight)
 		draw_set_alpha(image_alpha);
 		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface
-		draw_rectangle(0, 0, GameManager.game_width, GameManager.game_height, false);
+		vertex_submit(screen_space_vertex_buffer, pr_trianglelist, -1);
 	}
 }
 
