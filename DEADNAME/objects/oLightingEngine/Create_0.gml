@@ -178,7 +178,12 @@ directional_light_shadow_shader_collider_scale_index = shader_get_uniform(shd_di
 directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd_directional_light_shadows, "in_Collider_Rotation");
 
 // Final Render Pass Lighting Shader Indexes
-final_render_lighting_shader_lightblend_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlendTexture");
+final_render_lighting_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_BackLayer_Texture");
+final_render_lighting_shader_diffusemap_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_FrontLayer_Texture");
+
+final_render_lighting_shader_lightblend_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_BackLayer_Texture");
+final_render_lighting_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_MidLayer_Texture");
+final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_FrontLayer_Texture");
 
 // Layers
 lighting_engine_back_layer_sub_layer_name_list = ds_list_create();
