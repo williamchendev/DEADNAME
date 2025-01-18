@@ -3,7 +3,7 @@
 //
 
 // Vertex Buffer Properties
-attribute vec2 in_Position; 		// (x, y, z)
+attribute vec2 in_Position; 		// (x, y)
 attribute vec4 in_Colour;			// (r, g, b, a)
 attribute vec2 in_TextureCoord; 	// (u, v)
 

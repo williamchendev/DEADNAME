@@ -447,17 +447,22 @@ with (oLightingEngine_Source_DirectionalLight)
 
 // Render Ambient Occlusion Lights
 gpu_set_blendmode(bm_max);
-surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+
+shader_set(shd_ambient_occlusion_light_blend);
+
+shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+
+surface_set_target_ext(0, lights_back_color_surface);
+surface_set_target_ext(1, lights_mid_color_surface);
+surface_set_target_ext(2, lights_front_color_surface);
 
 with (oLightingEngine_Source_AmbientLight)
 {
 	if (ambient_light_render_enabled)
 	{
 		// Set Ambient Occlusion Light Color And Intensity
-		draw_set_color(image_blend);
-		draw_set_alpha(image_alpha);
+		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
+    	shader_set_uniform_f(LightingEngine.ambient_light_shader_light_intensity_index, image_alpha);
 		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface
 		vertex_submit(screen_space_vertex_buffer, pr_trianglelist, -1);
@@ -465,6 +470,8 @@ with (oLightingEngine_Source_AmbientLight)
 }
 
 gpu_set_blendmode(bm_normal);
+
+shader_reset();
 surface_reset_target();
 
 //

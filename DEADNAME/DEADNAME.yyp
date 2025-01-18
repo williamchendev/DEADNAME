@@ -358,6 +358,7 @@
     {"id":{"name":"WeaponPacks","path":"scripts/WeaponPacks/WeaponPacks.yy",},},
     {"id":{"name":"window_get_cursor_sprite","path":"scripts/window_get_cursor_sprite/window_get_cursor_sprite.yy",},},
     {"id":{"name":"window_set_cursor_sprite","path":"scripts/window_set_cursor_sprite/window_set_cursor_sprite.yy",},},
+    {"id":{"name":"shd_ambient_occlusion_light_blend","path":"shaders/shd_ambient_occlusion_light_blend/shd_ambient_occlusion_light_blend.yy",},},
     {"id":{"name":"shd_directional_light_blend","path":"shaders/shd_directional_light_blend/shd_directional_light_blend.yy",},},
     {"id":{"name":"shd_directional_light_shadows","path":"shaders/shd_directional_light_shadows/shd_directional_light_shadows.yy",},},
     {"id":{"name":"shd_final_render_lighting","path":"shaders/shd_final_render_lighting/shd_final_render_lighting.yy",},},

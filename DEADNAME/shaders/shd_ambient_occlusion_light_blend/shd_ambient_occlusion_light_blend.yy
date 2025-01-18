@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_ambient_occlusion_light_blend",
+  "name":"shd_ambient_occlusion_light_blend",
+  "parent":{
+    "name":"Lights",
+    "path":"folders/Shaders/Lights.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
