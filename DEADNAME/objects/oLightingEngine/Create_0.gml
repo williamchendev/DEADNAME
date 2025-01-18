@@ -214,7 +214,12 @@ final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();
 
+// Lighting Engine Depth Variables
+lighting_engine_sub_layer_depth = 0;
+
 // Layers
+lighting_engine_default_layer_index = 0;
+
 lighting_engine_back_layer_sub_layer_name_list = ds_list_create();
 lighting_engine_back_layer_sub_layer_depth_list = ds_list_create();
 lighting_engine_back_layer_sub_layer_type_list = ds_list_create();
@@ -251,10 +256,9 @@ enum LightingEngineSubLayerType
 // Lighting Engine Object Types
 enum LightingEngineObjectType
 {
-	Default,
-    Basic,
-    Dynamic,
-    Unit
+    Dynamic_Basic,
+    Dynamic_Dynamic,
+    Dynamic_Unit
 }
 
 // Lighting Engine Layer Methods: Add Sub Layer Behaviours
@@ -356,6 +360,9 @@ add_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render
 		            break;
 		        }
 			}
+			
+			// Recalculate Default Layer
+			lighting_engine_default_layer_index = ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, LightingEngineDefaultLayer);
 			break;
 	}
 	
@@ -373,7 +380,6 @@ remove_object_from_sub_layer = function(sub_layer_object_list, sub_layer_object_
 	// Properly Delete the given Object based on the Object's Type
 	switch (temp_sub_layer_object_type)
 	{
-		case LightingEngineObjectType.Default:
 		default:
 			// Default Object Type Condition: Destroy Game Object
 			instance_destroy(temp_sub_layer_object);
@@ -538,13 +544,209 @@ clear_all_sub_layers = function()
 	ds_list_clear(lighting_engine_front_layer_sub_layer_object_type_list);
 }
 
+// Lighting Engine Layer Method: Add Object to Sub Layer
+add_object = function(object_id, object_type, sub_layer_name = LightingEngineDefaultLayer)
+{
+	// Establish Default Sub Layer Index and Sub Layer Render Layer Type
+	var temp_sub_layer_index = lighting_engine_default_layer_index;
+	var temp_sub_layer_render_layer = LightingEngineRenderLayerType.Mid;
+	
+	// Add to Lighting Engine's Default Layer unless given a specific Sub Layer Name to add Object to
+	if (sub_layer_name != LightingEngineDefaultLayer)
+	{
+		// Find Sub Layer Index (Priority: Exists on Mid Layer => Exists on Front Layer => Exists on Back Layer)
+		var temp_sub_layer_exists_on_back_render_layer = ds_list_find_index(lighting_engine_back_layer_sub_layer_name_list, sub_layer_name);
+		var temp_sub_layer_exists_on_mid_render_layer = ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, sub_layer_name);
+		var temp_sub_layer_exists_on_front_render_layer = ds_list_find_index(lighting_engine_front_layer_sub_layer_name_list, sub_layer_name);
+		
+		if (temp_sub_layer_exists_on_mid_render_layer != -1)
+		{
+			temp_sub_layer_index = temp_sub_layer_exists_on_mid_render_layer;
+			temp_sub_layer_render_layer = LightingEngineRenderLayerType.Mid;
+		}
+		else if (temp_sub_layer_exists_on_front_render_layer != -1)
+		{
+			temp_sub_layer_index = temp_sub_layer_exists_on_front_render_layer;
+			temp_sub_layer_render_layer = LightingEngineRenderLayerType.Front;
+		}
+		else if (temp_sub_layer_exists_on_back_render_layer != -1)
+		{
+			temp_sub_layer_index = temp_sub_layer_exists_on_back_render_layer;
+			temp_sub_layer_render_layer = LightingEngineRenderLayerType.Back;
+		}
+		else
+		{
+			// Sub Layer with given name does not exist - Object was unsuccessfully added to Sub Layer - Return False
+			return false;
+		}
+	}
+	
+	// Add Object to Sub Layer
+	switch (temp_sub_layer_render_layer)
+	{
+		case LightingEngineRenderLayerType.Back:
+			ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+			ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+			break;
+		case LightingEngineRenderLayerType.Front:
+			ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+			ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+			break;
+		case LightingEngineRenderLayerType.Mid:
+		default:
+			ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+			ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+			break;
+	}
+	
+	// Object was successfully added to Sub Layer - Return True
+	return true;
+}
+
 // Lighting Engine Layer Method: Create Default Sub Layers
 create_default_sub_layers = function()
 {
-	lighting_engine_add_layer(LightingEngineDefaultLayer, 0);
+	// Create Default "Main" Sub Layer
+	add_sub_layer(LightingEngineDefaultLayer, 0.0, LightingEngineSubLayerType.Dynamic, LightingEngineRenderLayerType.Mid);
 }
 
 create_default_sub_layers();
 
-// Lighting Engine Layer Method: Render Sub Layer
+// Lighting Engine Layer Method: Render Layer
+render_layer = function(render_layer_type)
+{
+	// Establish Empty Render Layer Variables
+	var temp_render_layer_sub_layer_name_list = undefined;
+	var temp_render_layer_sub_layer_depth_list = undefined;
+	var temp_render_layer_sub_layer_type_list = undefined;
+	var temp_render_layer_sub_layer_object_list = undefined;
+	var temp_render_layer_sub_layer_object_type_list = undefined;
+	
+	// Assign Render Layer Variables from given Render Layer Type
+	switch (render_layer_type)
+	{
+		case LightingEngineRenderLayerType.Back:
+			temp_render_layer_sub_layer_name_list = lighting_engine_back_layer_sub_layer_name_list;
+			temp_render_layer_sub_layer_depth_list = lighting_engine_back_layer_sub_layer_depth_list;
+			temp_render_layer_sub_layer_type_list = lighting_engine_back_layer_sub_layer_type_list;
+			temp_render_layer_sub_layer_object_list = lighting_engine_back_layer_sub_layer_object_list;
+			temp_render_layer_sub_layer_object_type_list = lighting_engine_back_layer_sub_layer_object_type_list;
+			break;
+		case LightingEngineRenderLayerType.Front:
+			temp_render_layer_sub_layer_name_list = lighting_engine_front_layer_sub_layer_name_list;
+			temp_render_layer_sub_layer_depth_list = lighting_engine_front_layer_sub_layer_depth_list;
+			temp_render_layer_sub_layer_type_list = lighting_engine_front_layer_sub_layer_type_list;
+			temp_render_layer_sub_layer_object_list = lighting_engine_front_layer_sub_layer_object_list;
+			temp_render_layer_sub_layer_object_type_list = lighting_engine_front_layer_sub_layer_object_type_list;
+			break;
+		case LightingEngineRenderLayerType.Mid:
+		default:
+			temp_render_layer_sub_layer_name_list = lighting_engine_mid_layer_sub_layer_name_list;
+			temp_render_layer_sub_layer_depth_list = lighting_engine_mid_layer_sub_layer_depth_list;
+			temp_render_layer_sub_layer_type_list = lighting_engine_mid_layer_sub_layer_type_list;
+			temp_render_layer_sub_layer_object_list = lighting_engine_mid_layer_sub_layer_object_list;
+			temp_render_layer_sub_layer_object_type_list = lighting_engine_mid_layer_sub_layer_object_type_list;
+			break;
+	}
+	
+	// Iterate through Render Layer's Sub Layers
+	var temp_sub_layer_index = 0;
+	
+	repeat (ds_list_size(temp_render_layer_sub_layer_name_list))
+	{
+		// Get Render Layer Depth and Type
+		var temp_sub_layer_depth = ds_list_find_value(temp_render_layer_sub_layer_depth_list, temp_sub_layer_index);
+		var temp_sub_layer_type = ds_list_find_value(temp_render_layer_sub_layer_type_list, temp_sub_layer_index);
+		
+		// Get Render Layer Object and Object Type DS Lists
+		var temp_sub_layer_object_list = ds_list_find_value(temp_render_layer_sub_layer_object_list, temp_sub_layer_index);
+		var temp_sub_layer_object_type_list = ds_list_find_value(temp_render_layer_sub_layer_object_type_list, temp_sub_layer_index);
+		
+		// Set Lighting Engine Layer Depth
+		lighting_engine_sub_layer_depth = temp_sub_layer_depth;
+		
+		// Set Shader Properties based on Sub Layer Type
+		switch (temp_sub_layer_type)
+		{
+			case LightingEngineSubLayerType.BulkStatic:
+				// MRT Bulk Static Sprite Layer
+				shader_set(shd_mrt_deferred_lighting_bulk_static_sprite);
+				break;
+			case LightingEngineSubLayerType.Dynamic:
+			default:
+				// MRT Dynamic Sprite Layer
+				shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
+				
+				// Set Sub Layer Depth
+    			shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+				break;
+		}
+		
+		// Iterate through Sub Layer's Objects List
+		var temp_sub_layer_object_index = 0;
+	
+		repeat (ds_list_size(temp_sub_layer_object_type_list))
+		{
+			// Get Sub Layer Object and Object Type
+			var temp_sub_layer_object = ds_list_find_value(temp_sub_layer_object_list, temp_sub_layer_object_index);
+			var temp_sub_layer_object_type = ds_list_find_value(temp_sub_layer_object_type_list, temp_sub_layer_object_index);
+			
+			// Draw Object based on Object Type
+			switch (temp_sub_layer_object_type)
+			{
+				case LightingEngineObjectType.Dynamic_Unit:
+					// Draw Unit on Dynamic Layer
+					with (temp_sub_layer_object)
+					{
+						// Draw Secondary Arm rendered behind Unit Body
+						limb_secondary_arm.lighting_engine_render_behaviour();
+					
+						// Draw Unit Body
+						lighting_engine_draw_sprite
+						(
+							sprite_index,
+							image_index,
+							normalmap_spritepack[image_index].texture,
+							specularmap_spritepack[image_index].texture,
+							normalmap_spritepack[image_index].uvs,
+							specularmap_spritepack[image_index].uvs,
+							x,
+							y + ground_contact_vertical_offset,
+							draw_xscale,
+							draw_yscale,
+							image_angle + draw_angle_value,
+							image_blend,
+							image_alpha
+						);
+						
+						// Draw Unit's Weapon (if equipped)
+						if (weapon_active)
+						{
+							weapon_equipped.lighting_engine_render_behaviour();
+						}
+						
+						// Draw Primary Arm rendered in front Unit Body
+						limb_primary_arm.lighting_engine_render_behaviour();
+					}
+					break;
+				default:
+					break;
+			}
+			
+			// Increment Object
+			temp_sub_layer_object_index++;
+		}
+		
+		// Reset Shader Properties
+		shader_reset();
+		
+		// Increment Sub Layer Index
+		temp_sub_layer_index++;
+	}
+}
 
+// Lighting Engine Layer Method: Add Unit to Default Layer
+add_unit = function(unit_id, sub_layer_name = LightingEngineDefaultLayer)
+{
+	add_object(unit_id, LightingEngineObjectType.Dynamic_Unit, sub_layer_name);
+}

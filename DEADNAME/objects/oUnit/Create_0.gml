@@ -2,7 +2,7 @@
 // Creates all the variables necessary for the Unit character
 
 // Lighting Engine
-lighting_engine_add_unit(id);
+LightingEngine.add_unit(id);
 
 // Unit Behaviour Settings
 canmove = true;
