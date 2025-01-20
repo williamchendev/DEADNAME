@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_BulkStatic_Object",
+  "%Name":"oLightingEngine_BulkStatic_Object_Midground",
   "eventList":[],
   "managed":true,
-  "name":"oLightingEngine_BulkStatic_Object",
+  "name":"oLightingEngine_BulkStatic_Object_Midground",
   "overriddenProperties":[],
   "parent":{
     "name":"BulkStatic",
