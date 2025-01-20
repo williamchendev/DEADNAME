@@ -9,8 +9,8 @@
   "name":"oLightingEngine_Object_Dynamic",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects/Lighting/Objects.yy",
+    "name":"Dynamic",
+    "path":"folders/Objects/Lighting/Dynamic.yy",
   },
   "parentObjectId":null,
   "persistent":false,

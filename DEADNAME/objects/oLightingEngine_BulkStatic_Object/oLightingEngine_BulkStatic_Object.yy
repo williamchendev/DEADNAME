@@ -1,15 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_Object_Static",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"oLightingEngine_BulkStatic_Object",
+  "eventList":[],
   "managed":true,
-  "name":"oLightingEngine_Object_Static",
+  "name":"oLightingEngine_BulkStatic_Object",
   "overriddenProperties":[],
   "parent":{
-    "name":"Dynamic",
-    "path":"folders/Objects/Lighting/Dynamic.yy",
+    "name":"BulkStatic",
+    "path":"folders/Objects/Lighting/BulkStatic.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -29,10 +27,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sDebugSystem",
-    "path":"sprites/sDebugSystem/sDebugSystem.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }

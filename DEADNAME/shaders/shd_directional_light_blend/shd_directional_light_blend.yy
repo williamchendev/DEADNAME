@@ -3,8 +3,8 @@
   "%Name":"shd_directional_light_blend",
   "name":"shd_directional_light_blend",
   "parent":{
-    "name":"Lights",
-    "path":"folders/Shaders/Lights.yy",
+    "name":"DirectionalLighting",
+    "path":"folders/Shaders/Lights/DirectionalLighting.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

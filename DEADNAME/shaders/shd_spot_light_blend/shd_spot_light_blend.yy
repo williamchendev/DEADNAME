@@ -3,8 +3,8 @@
   "%Name":"shd_spot_light_blend",
   "name":"shd_spot_light_blend",
   "parent":{
-    "name":"Lights",
-    "path":"folders/Shaders/Lights.yy",
+    "name":"SpotLighting",
+    "path":"folders/Shaders/Lights/SpotLighting.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

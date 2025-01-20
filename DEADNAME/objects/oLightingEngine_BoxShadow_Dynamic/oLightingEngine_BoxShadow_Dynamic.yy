@@ -9,8 +9,8 @@
   "name":"oLightingEngine_BoxShadow_Dynamic",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects/Lighting/Objects.yy",
+    "name":"Shadows",
+    "path":"folders/Objects/Lighting/Shadows.yy",
   },
   "parentObjectId":{
     "name":"oLightingEngine_BoxShadow_Static",
