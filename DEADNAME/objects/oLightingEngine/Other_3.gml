@@ -2,9 +2,15 @@
 // Cleanup for Event Lighting Engine
 
 // Clean Up all Sub Layers and Lighting Objects from Lighting Object "Painter's Sorted List" DS Lists
-clear_all_sub_layers();
+delete_all_sub_layers();
 
 // Destroy Sub Layer Organization DS Lists
+ds_list_destroy(lighting_engine_sub_layer_name_list);
+lighting_engine_sub_layer_name_list = -1;
+
+ds_list_destroy(lighting_engine_sub_layer_render_layer_type_list);
+lighting_engine_sub_layer_render_layer_type_list = -1;
+
 ds_list_destroy(lighting_engine_back_layer_sub_layer_name_list);
 lighting_engine_back_layer_sub_layer_name_list = -1;
 
