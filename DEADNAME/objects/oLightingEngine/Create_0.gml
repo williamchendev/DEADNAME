@@ -206,7 +206,6 @@ directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd
 ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_SurfaceSize");
 
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
-ambient_light_shader_light_intensity_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightIntensity");
 
 // Final Render Pass Lighting Shader Indexes
 final_render_lighting_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_BackLayer_Texture");
