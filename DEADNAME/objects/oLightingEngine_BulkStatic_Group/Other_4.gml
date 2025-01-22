@@ -22,22 +22,23 @@ if (temp_bulk_static_objects_count > 0)
 		// Check if Bulk Static Object shares Bulk Static Group's Layer
 		if (temp_bulk_static_object.layer == layer)
 		{
-			// Establish UV Data for Bulk Static Object
-			var temp_diffusemap_uvs = sprite_get_uvs(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index);
-			var temp_normalmap_uvs = sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.normalmap_texture, temp_bulk_static_object.image_index);
-			var temp_specularmap_uvs = sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.specularmap_texture, temp_bulk_static_object.image_index);
-			
 			// Get Bulk Static Object Sprite Variables
+			var temp_diffusemap_uvs = sprite_get_uvs(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index);
+			
 			var temp_sprite_width = sprite_get_width(temp_bulk_static_object.sprite_index) * temp_diffusemap_uvs[6];
 			var temp_sprite_height = sprite_get_height(temp_bulk_static_object.sprite_index) * temp_diffusemap_uvs[7];
 						
-			var temp_pivot_offset_x = (sprite_get_xoffset(temp_bulk_static_object.sprite_index)) - temp_diffusemap_uvs[4];
-			var temp_pivot_offset_y = (sprite_get_yoffset(temp_bulk_static_object.sprite_index)) - temp_diffusemap_uvs[5];
+			var temp_pivot_offset_x = sprite_get_xoffset(temp_bulk_static_object.sprite_index) - temp_diffusemap_uvs[4];
+			var temp_pivot_offset_y = sprite_get_yoffset(temp_bulk_static_object.sprite_index) - temp_diffusemap_uvs[5];
 			
-			var temp_sprite_left = (-temp_pivot_offset_x * temp_bulk_static_object.image_xscale);
-			var temp_sprite_top = (-temp_pivot_offset_y * temp_bulk_static_object.image_yscale);
+			var temp_sprite_left = -temp_pivot_offset_x * temp_bulk_static_object.image_xscale;
+			var temp_sprite_top = -temp_pivot_offset_y * temp_bulk_static_object.image_yscale;
 			var temp_sprite_right = (temp_sprite_width - temp_pivot_offset_x) * temp_bulk_static_object.image_xscale;
 			var temp_sprite_bottom = (temp_sprite_height - temp_pivot_offset_y) * temp_bulk_static_object.image_yscale;
+			
+			// Establish UV Data for Bulk Static Object
+			var temp_normalmap_uvs = sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.normalmap_texture, temp_bulk_static_object.image_index);
+			var temp_specularmap_uvs = sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.specularmap_texture, temp_bulk_static_object.image_index);
 						
 			// Set Bulk Static Object Rotation
 			rot_prefetch(temp_bulk_static_object.image_angle);
