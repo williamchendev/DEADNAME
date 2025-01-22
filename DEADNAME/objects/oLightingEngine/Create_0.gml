@@ -268,7 +268,8 @@ enum LightingEngineObjectType
 {
     Dynamic_Basic,
     Dynamic_Dynamic,
-    Dynamic_Unit
+    Dynamic_Unit,
+    BulkStatic_Group
 }
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
@@ -581,37 +582,32 @@ add_object = function(object_id, object_type, sub_layer_name = LightingEngineDef
 		// Find Sub Layer Render Layer Type
 		var temp_sub_layer_render_layer = ds_list_find_value(lighting_engine_sub_layer_render_layer_type_list, temp_sub_layer_name_index);
 		
+		// Add Object to Sub Layer
 		switch (temp_sub_layer_render_layer)
 		{
 			case LightingEngineRenderLayerType.Back:
 				temp_sub_layer_index = ds_list_find_index(lighting_engine_back_layer_sub_layer_name_list, sub_layer_name);
+				ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+				ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
 				break;
 			case LightingEngineRenderLayerType.Front:
 				temp_sub_layer_index = ds_list_find_index(lighting_engine_front_layer_sub_layer_name_list, sub_layer_name);
+				ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+				ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
 				break;
 			case LightingEngineRenderLayerType.Mid:
 			default:
 				temp_sub_layer_index = ds_list_find_index(lighting_engine_mid_layer_sub_layer_name_list, sub_layer_name);
+				ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+				ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
 				break;
 		}
 	}
-	
-	// Add Object to Sub Layer
-	switch (temp_sub_layer_render_layer)
+	else
 	{
-		case LightingEngineRenderLayerType.Back:
-			ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-			ds_list_add(ds_list_find_value(lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
-			break;
-		case LightingEngineRenderLayerType.Front:
-			ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-			ds_list_add(ds_list_find_value(lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
-			break;
-		case LightingEngineRenderLayerType.Mid:
-		default:
-			ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-			ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
-			break;
+		// Add Object to Sub Layer
+		ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+		ds_list_add(ds_list_find_value(lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
 	}
 	
 	// Object was successfully added to Sub Layer - Return True
@@ -709,6 +705,16 @@ render_layer = function(render_layer_type)
 			// Draw Object based on Object Type
 			switch (temp_sub_layer_object_type)
 			{
+				case LightingEngineObjectType.BulkStatic_Group:
+					// Draw Bulk Static Group Vertex Buffer on Bulk Static Layer
+					with (temp_sub_layer_object)
+					{
+						if (bulk_static_group_render_enabled)
+						{
+							vertex_submit(bulk_static_group_vertex_buffer, pr_trianglelist, bulk_static_group_texture);
+						}
+					}
+					break;
 				case LightingEngineObjectType.Dynamic_Unit:
 					// Draw Unit on Dynamic Layer
 					with (temp_sub_layer_object)
