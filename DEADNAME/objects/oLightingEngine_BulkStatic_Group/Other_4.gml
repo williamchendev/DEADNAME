@@ -11,7 +11,7 @@ if (temp_bulk_static_objects_count > 0)
 	vertex_begin(bulk_static_group_vertex_buffer, oLightingEngine.lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format);
 	
 	// Iterate through all colliding Bulk Static Objects
-	for (var i = ds_list_size(temp_bulk_static_objects_list) - 1; i >= 0; i--)
+	for (var i = 0; i < ds_list_size(temp_bulk_static_objects_list); i++)
 	{
 		// Find Bulk Static Object at Index
 		var temp_bulk_static_object = ds_list_find_value(temp_bulk_static_objects_list, i);
@@ -102,6 +102,10 @@ if (temp_bulk_static_objects_count > 0)
 			instance_destroy(temp_bulk_static_object.id);
 		}
 	}
+	
+	// Delete DS List
+	ds_list_destroy(temp_bulk_static_objects_list);
+	temp_bulk_static_objects_list = -1;
 	
 	// Finish Initializing Vertex Buffer
 	vertex_end(bulk_static_group_vertex_buffer);

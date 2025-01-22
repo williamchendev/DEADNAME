@@ -15,10 +15,6 @@ varying mat2 v_vRotate;
 // Uniform Layer Depth Value
 uniform float in_Layer_Depth;
 
-// Uniform Normal Map and Specular Map Textures
-uniform sampler2D gm_NormalTexture;
-uniform sampler2D gm_SpecularTexture;
-
 // Fragment Shader
 void main()
 {
@@ -31,7 +27,7 @@ void main()
 	}
 	
 	// Normal Map
-	vec4 Normal = (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0;
+	vec4 Normal = (texture2D(gm_BaseTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0;
 	Normal *= vec4(v_vScale, 1.0);
 	
 	// Normal Vector Rotation & Scale Calculation
@@ -39,7 +35,7 @@ void main()
 	Normal = (Normal * 0.5) + 0.5;
 	
 	// Specular Map
-	vec4 Specular = texture2D(gm_SpecularTexture, v_vTexcoord_SpecularMap);
+	vec4 Specular = texture2D(gm_BaseTexture, v_vTexcoord_SpecularMap);
 	
 	// MRT Draw Diffuse Map
     gl_FragData[0] = v_vColour * Diffuse;

@@ -76,7 +76,7 @@ lighting_engine_screen_space_render_vertex_format = vertex_format_end();
 
 vertex_format_begin();
 vertex_format_add_position_3d();
-vertex_format_add_custom(vertex_type_float3, vertex_usage_normal);
+vertex_format_add_normal();
 vertex_format_add_color();
 vertex_format_add_texcoord();
 vertex_format_add_texcoord();
@@ -125,6 +125,9 @@ mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index  = shader_get_unif
 
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
+
+// MRT Deferred Lighting Bulk Static Sprite Shader Indexes
+mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
 
 // Point Light Blend Shader Indexes
 point_light_shader_radius_index = shader_get_uniform(shd_point_light_blend, "in_Radius");
@@ -682,6 +685,9 @@ render_layer = function(render_layer_type)
 			case LightingEngineSubLayerType.BulkStatic:
 				// MRT Bulk Static Sprite Layer
 				shader_set(shd_mrt_deferred_lighting_bulk_static_sprite);
+				
+				// Set Sub Layer Depth
+				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index, temp_sub_layer_depth);
 				break;
 			case LightingEngineSubLayerType.Dynamic:
 			default:

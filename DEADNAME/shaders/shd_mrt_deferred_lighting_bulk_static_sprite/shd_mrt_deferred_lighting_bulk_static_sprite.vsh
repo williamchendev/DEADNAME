@@ -4,8 +4,8 @@
 
 // Vertex Buffer Properties
 attribute vec3 in_Position; 				// (x, y, z)
+attribute vec3 in_Normal;					// (nx, ny, nz)
 attribute vec4 in_Colour;					// (r, g, b, a)
-attribute vec3 in_Normal_Scale;				// (nx, ny, nz)
 attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
 attribute vec2 in_TextureCoord_Normal; 		// (u, v)
 attribute vec2 in_TextureCoord_Specular; 	// (u, v)
@@ -27,7 +27,7 @@ void main()
 	v_vColour = in_Colour;
 	
 	// Set Sprite Scale
-	v_vScale = in_Normal_Scale;
+	v_vScale = in_Normal;
 	
 	// Calculate Rotate Vector
 	float RotateAngle = radians(in_Position.z);

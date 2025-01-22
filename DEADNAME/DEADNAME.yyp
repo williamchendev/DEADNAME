@@ -311,6 +311,7 @@
     {"id":{"name":"oUnitPath","path":"objects/oUnitPath/oUnitPath.yy",},},
     {"id":{"name":"oUnitPlayer","path":"objects/oUnitPlayer/oUnitPlayer.yy",},},
     {"id":{"name":"_TitleScreen","path":"rooms/_TitleScreen/_TitleScreen.yy",},},
+    {"id":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
     {"id":{"name":"DebugRoom","path":"rooms/DebugRoom/DebugRoom.yy",},},
     {"id":{"name":"angle_reflect","path":"scripts/angle_reflect/angle_reflect.yy",},},
     {"id":{"name":"angle_refract","path":"scripts/angle_refract/angle_refract.yy",},},
@@ -408,6 +409,7 @@
     {"id":{"name":"shd_mrt_deferred_lighting_dynamic_sprite","path":"shaders/shd_mrt_deferred_lighting_dynamic_sprite/shd_mrt_deferred_lighting_dynamic_sprite.yy",},},
     {"id":{"name":"shd_point_light_and_spot_light_shadows","path":"shaders/shd_point_light_and_spot_light_shadows/shd_point_light_and_spot_light_shadows.yy",},},
     {"id":{"name":"shd_point_light_blend","path":"shaders/shd_point_light_blend/shd_point_light_blend.yy",},},
+    {"id":{"name":"shd_render_background","path":"shaders/shd_render_background/shd_render_background.yy",},},
     {"id":{"name":"shd_spot_light_blend","path":"shaders/shd_spot_light_blend/shd_spot_light_blend.yy",},},
     {"id":{"name":"sAdobeHouse_ArkovianTruckStill_DiffuseMap","path":"sprites/sAdobeHouse_ArkovianTruckStill_DiffuseMap/sAdobeHouse_ArkovianTruckStill_DiffuseMap.yy",},},
     {"id":{"name":"sAdobeHouse_ArkovianTruckStill_NormalMap","path":"sprites/sAdobeHouse_ArkovianTruckStill_NormalMap/sAdobeHouse_ArkovianTruckStill_NormalMap.yy",},},
@@ -923,6 +925,7 @@
   "RoomOrderNodes":[
     {"roomId":{"name":"_TitleScreen","path":"rooms/_TitleScreen/_TitleScreen.yy",},},
     {"roomId":{"name":"DebugRoom","path":"rooms/DebugRoom/DebugRoom.yy",},},
+    {"roomId":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

@@ -20,11 +20,11 @@ draw_clear(c_black);
 surface_reset_target();
 
 surface_set_target(diffuse_mid_color_surface);
-draw_clear(c_black);
+draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 surface_set_target(diffuse_front_color_surface);
-draw_clear(c_black);
+draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Reset Normal Map Vector Surface
@@ -36,6 +36,9 @@ surface_reset_target();
 surface_set_target(depth_specular_stencil_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
+
+// Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
 // (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
 surface_set_target_ext(0, diffuse_back_color_surface);
