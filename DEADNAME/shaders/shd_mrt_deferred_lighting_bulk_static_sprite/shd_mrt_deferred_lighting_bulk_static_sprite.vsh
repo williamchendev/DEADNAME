@@ -7,8 +7,8 @@ attribute vec3 in_Position; 				// (x, y, z)
 attribute vec3 in_Normal;					// (nx, ny, nz)
 attribute vec4 in_Colour;					// (r, g, b, a)
 attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
-attribute vec2 in_TextureCoord_Normal; 		// (u, v)
-attribute vec2 in_TextureCoord_Specular; 	// (u, v)
+attribute vec4 in_TextureCoord_Normal; 		// (x, y, z, w)
+attribute vec4 in_TextureCoord_Specular; 	// (x, y, z, w)
 
 // Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
@@ -36,8 +36,8 @@ void main()
 	
 	// Set Sprite UVs
 	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;
-	v_vTexcoord_NormalMap = in_TextureCoord_Normal;
-	v_vTexcoord_SpecularMap = in_TextureCoord_Specular;
+	v_vTexcoord_NormalMap = in_TextureCoord_Diffuse * in_TextureCoord_Normal.zw + in_TextureCoord_Normal.xy;
+	v_vTexcoord_SpecularMap = in_TextureCoord_Diffuse * in_TextureCoord_Specular.zw + in_TextureCoord_Specular.xy;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(in_Position.x, in_Position.y, 0.0, 1.0);

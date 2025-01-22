@@ -79,8 +79,8 @@ vertex_format_add_position_3d();
 vertex_format_add_normal();
 vertex_format_add_color();
 vertex_format_add_texcoord();
-vertex_format_add_texcoord();
-vertex_format_add_texcoord();
+vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
+vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = vertex_format_end();
 
 // Vertex Buffers

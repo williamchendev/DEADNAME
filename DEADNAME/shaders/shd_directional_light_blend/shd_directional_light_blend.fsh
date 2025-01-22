@@ -40,9 +40,9 @@ void main()
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * in_HighLight_To_BroadLight_Ratio_Max));
 	
 	// MRT Render Directional Light to Light Blend Layers
-	vec4 LightBlend = v_vColour * LightStrength;
+	vec3 LightBlend = v_vColour.rgb * v_vColour.a * LightStrength;
 	
-	gl_FragData[0] = vec4(LightBlend.rgb, LightBlend.a * ShadowLayers.x) * in_Light_Layers.x;
-	gl_FragData[1] = vec4(LightBlend.rgb, LightBlend.a * ShadowLayers.y) * in_Light_Layers.y;
-	gl_FragData[2] = vec4(LightBlend.rgb, LightBlend.a * ShadowLayers.z) * in_Light_Layers.z;
+	gl_FragData[0] = vec4(LightBlend * ShadowLayers.x, 1.0) * in_Light_Layers.x;
+	gl_FragData[1] = vec4(LightBlend * ShadowLayers.y, 1.0) * in_Light_Layers.y;
+	gl_FragData[2] = vec4(LightBlend * ShadowLayers.z, 1.0) * in_Light_Layers.z;
 }
