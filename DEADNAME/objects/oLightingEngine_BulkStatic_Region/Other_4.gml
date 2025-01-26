@@ -92,42 +92,42 @@ if (temp_bulk_static_objects_count > 0)
 				
 				// Add Bulk Static Object to Vertex Buffer
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_ax, temp_vertex_coordinate_ay, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[0], temp_diffusemap_uvs[1]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 				
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_bx, temp_vertex_coordinate_by, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[2], temp_diffusemap_uvs[1]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 				
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_dx, temp_vertex_coordinate_dy, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[0], temp_diffusemap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 				
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_cx, temp_vertex_coordinate_cy, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[2], temp_diffusemap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 				
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_dx, temp_vertex_coordinate_dy, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[0], temp_diffusemap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 				
 				vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_bx, temp_vertex_coordinate_by, temp_bulk_static_object.image_angle);
-				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.image_zscale);
+				vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normalmap_strength);
 				vertex_color(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_blend, temp_bulk_static_object.image_alpha);
 				vertex_texcoord(temp_bulk_static_layer_vertex_buffer, temp_diffusemap_uvs[2], temp_diffusemap_uvs[1]);
 				vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
@@ -157,10 +157,6 @@ if (temp_bulk_static_objects_count > 0)
 				show_debug_message($"Debug Warning! - Unsuccessfully added Bulk Static Region to Lighting Engine Sub Layer with name \"{temp_bulk_static_layers_map_key}\"");
 			}
 		}
-		
-		// Destroy Layer DS List
-		ds_list_destroy(temp_bulk_static_layers_list_value);
-		temp_bulk_static_layers_list_value = -1;
 	}
 	
 	// Delete DS Map Layers List

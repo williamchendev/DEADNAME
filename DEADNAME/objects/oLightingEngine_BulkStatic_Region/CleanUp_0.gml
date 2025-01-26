@@ -12,9 +12,6 @@ for (var temp_map_key = ds_map_find_first(bulk_static_region_vertex_buffer_map);
 		// Delete Vertex Buffer
 		vertex_delete_buffer(temp_vertex_buffer_value);
 		temp_vertex_buffer_value = -1;
-		
-		// Set Vertex Buffer Map Value to Empty Value
-		ds_map_set(bulk_static_region_vertex_buffer_map, temp_map_key, -1);
 	}
 }
 
