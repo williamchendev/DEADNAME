@@ -304,6 +304,7 @@
     {"id":{"name":"oPlatform","path":"objects/oPlatform/oPlatform.yy",},},
     {"id":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},},
     {"id":{"name":"oSolidRotation","path":"objects/oSolidRotation/oSolidRotation.yy",},},
+    {"id":{"name":"oTempAddBackground","path":"objects/oTempAddBackground/oTempAddBackground.yy",},},
     {"id":{"name":"oTitleScreen","path":"objects/oTitleScreen/oTitleScreen.yy",},},
     {"id":{"name":"oUnit","path":"objects/oUnit/oUnit.yy",},},
     {"id":{"name":"oUnitAI","path":"objects/oUnitAI/oUnitAI.yy",},},

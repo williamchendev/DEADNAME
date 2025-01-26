@@ -19,5 +19,5 @@ void main()
 	float Background_V = clamp(in_Background_Tile.y < 1.0 ? (v_vTexcoord.y + in_Background_Offset.y + in_Background_Position.y) : mod(v_vTexcoord.y + in_Background_Offset.y + in_Background_Position.y, 1.0), 0.0, 1.0);
 	
 	// Render Background Color
-	gl_FragColor = v_vColour * texture2D(gm_BaseTexture, vec2(0.0));
+	gl_FragColor = v_vColour * texture2D(gm_BaseTexture, vec2(Background_U, Background_V));
 }

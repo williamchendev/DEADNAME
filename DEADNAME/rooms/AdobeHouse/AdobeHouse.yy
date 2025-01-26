@@ -72,6 +72,7 @@
     {"name":"inst_D1C4B9C","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_6D68DCA0","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_4908E49D","path":"rooms/AdobeHouse/AdobeHouse.yy",},
+    {"name":"inst_4F0BF45C","path":"rooms/AdobeHouse/AdobeHouse.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -82,6 +83,7 @@
       ],"layers":[],"name":"Lights","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Regions","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_4908E49D","colour":443272703,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4908E49D","objectId":{"name":"oLightingEngine_BulkStatic_Region","path":"objects/oLightingEngine_BulkStatic_Region/oLightingEngine_BulkStatic_Region.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":11.5,"scaleY":4.5,"x":-62.0,"y":80.0,},
+        {"$GMRInstance":"v1","%Name":"inst_4F0BF45C","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4F0BF45C","objectId":{"name":"oTempAddBackground","path":"objects/oTempAddBackground/oTempAddBackground.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":-96.0,"y":64.0,},
       ],"layers":[],"name":"Regions","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Foliage_Foreground","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_56D9928C","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":2,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_56D9928C","objectId":{"name":"oEnvironment_AdobeHouse_BulkStatic_SageBrush","path":"objects/oEnvironment_AdobeHouse_BulkStatic_SageBrush/oEnvironment_AdobeHouse_BulkStatic_SageBrush.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":106.0,"y":318.0,},

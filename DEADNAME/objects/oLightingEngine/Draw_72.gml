@@ -44,7 +44,22 @@ draw_clear(c_black);
 gpu_set_blendmode(bm_normal);
 shader_set(shd_render_background);
 
+var temp_background_index = 0;
 
+repeat (ds_list_size(lighting_engine_backgrounds))
+{
+	// Find Background
+	var temp_background = ds_list_find_value(lighting_engine_backgrounds, temp_background_index);
+	
+	// Draw Background
+	if (temp_background != 0)
+	{
+		draw_sprite(temp_background.background_sprite_index, temp_background.background_image_index, GameManager.game_width * 0.5, GameManager.game_height);
+	}
+	
+	// Increment Background Index
+	temp_background_index++;
+}
 
 shader_reset();
 surface_reset_target();

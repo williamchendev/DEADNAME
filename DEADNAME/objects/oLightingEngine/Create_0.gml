@@ -813,9 +813,35 @@ add_unit = function(unit_id, sub_layer_name = LightingEngineDefaultLayer)
 
 #endregion
 
-// Lighting Directional Shadows Variables
-directional_light_collisions_exist = false;
-directional_light_collisions_list = ds_list_create();
+#region Backgrounds
+
+// Background Enums
+enum LightingEngineBackgroundTileTypes
+{
+	TileHorizontal,
+	TileVertical,
+	TileHorizontalAndVertical
+}
 
 // Background Variables
 lighting_engine_backgrounds = ds_list_create();
+
+// Background Functions
+add_background = function(background_sprite_index, background_image_index, background_layer, background_offset_x, background_offset_y)
+{
+	// Create Background
+	var temp_background_value =
+	{
+		background_sprite_index: background_sprite_index,
+		background_image_index: background_image_index
+	}
+	
+	// Index Background in Lighting Engine Backgrounds DS List
+	ds_list_set(lighting_engine_backgrounds, background_layer, temp_background_value);
+}
+
+#endregion
+
+// Lighting Directional Shadows Variables
+directional_light_collisions_exist = false;
+directional_light_collisions_list = ds_list_create();
