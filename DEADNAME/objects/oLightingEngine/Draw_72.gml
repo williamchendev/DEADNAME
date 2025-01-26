@@ -1,5 +1,5 @@
-/// @description Draw Event
-// You can write your code in this editor
+/// @description Process Scene Lighting
+// Renders MRT Objects and Light Sources to Deferred Lighting Surfaces
 
 // Reset Light Color Surface
 surface_set_target(lights_back_color_surface);
@@ -16,7 +16,7 @@ surface_reset_target();
 
 // Reset Diffuse Color Surface
 surface_set_target(diffuse_back_color_surface);
-draw_clear(c_black);
+draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 surface_set_target(diffuse_mid_color_surface);
@@ -35,6 +35,18 @@ surface_reset_target();
 // Reset Depth Specular Stencil Surface
 surface_set_target(depth_specular_stencil_surface);
 draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+// Draw Background Surface
+surface_set_target(background_surface);
+draw_clear(c_black);
+
+gpu_set_blendmode(bm_normal);
+shader_set(shd_render_background);
+
+
+
+shader_reset();
 surface_reset_target();
 
 // Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces

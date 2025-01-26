@@ -45,12 +45,16 @@ render_y = 0;
 render_border = 120;
 render_directional_shadows_border = 240;
 
+#region Surfaces
+
 // Surfaces
 lights_back_color_surface = -1;
 lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
 
 lights_shadow_surface = -1;
+
+background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
@@ -61,6 +65,10 @@ depth_specular_stencil_surface = -1;
 
 ui_surface = -1;
 debug_surface = -1;
+
+#endregion
+
+#region Vertex Formats
 
 // Vertex Formats
 vertex_format_begin();
@@ -84,6 +92,10 @@ vertex_format_add_texcoord();
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = vertex_format_end();
+
+#endregion
+
+#region Vertex Buffers
 
 // Vertex Buffers
 simple_light_vertex_buffer = vertex_create_buffer();
@@ -115,6 +127,15 @@ vertex_position(screen_space_vertex_buffer, 0, 1);
 
 vertex_end(screen_space_vertex_buffer);
 vertex_freeze(screen_space_vertex_buffer);
+
+#endregion
+
+#region Shader Indexes
+
+// Background Rendering Shader Indexes
+background_shader_background_tile_index  = shader_get_uniform(shd_render_background, "in_Background_Tile");
+background_shader_background_offset_index  = shader_get_uniform(shd_render_background, "in_Background_Offset");
+background_shader_background_position_index  = shader_get_uniform(shd_render_background, "in_Background_Position");
 
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
@@ -210,6 +231,8 @@ ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusi
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
 
 // Final Render Pass Lighting Shader Indexes
+final_render_lighting_shader_background_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_Background_Texture");
+
 final_render_lighting_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_BackLayer_Texture");
 final_render_lighting_shader_diffusemap_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_FrontLayer_Texture");
 
@@ -217,20 +240,20 @@ final_render_lighting_shader_lightblend_back_layer_texture_index  = shader_get_s
 final_render_lighting_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_MidLayer_Texture");
 final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_FrontLayer_Texture");
 
-// Lighting Directional Shadows Variables
-directional_light_collisions_exist = false;
-directional_light_collisions_list = ds_list_create();
+#endregion
 
-// Lighting Engine Rendering Variables
+#region Sub-Layer Settings & Variables
+
+// Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;
+
+lighting_engine_default_layer_index = 0;
 
 lighting_engine_back_render_layer_shadows_enabled = true;
 lighting_engine_mid_render_layer_shadows_enabled = true;
 lighting_engine_front_render_layer_shadows_enabled = true;
 
-// Layers
-lighting_engine_default_layer_index = 0;
-
+// Lighting Engine Sub Layer DS Lists
 lighting_engine_sub_layer_name_list = ds_list_create();
 lighting_engine_sub_layer_render_layer_type_list = ds_list_create();
 
@@ -252,7 +275,11 @@ lighting_engine_front_layer_sub_layer_type_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_type_list = ds_list_create();
 
-// Lighting Engine Layer Types
+#endregion
+
+#region Sub-Layer Enums
+
+// Lighting Engine Render Layer Types
 enum LightingEngineRenderLayerType
 {
 	Back,
@@ -275,6 +302,10 @@ enum LightingEngineObjectType
     Dynamic_Unit,
     BulkStatic_Region
 }
+
+#endregion
+
+#region Sub-Layer Functions
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
 create_sub_layer = function(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type)
@@ -779,3 +810,12 @@ add_unit = function(unit_id, sub_layer_name = LightingEngineDefaultLayer)
 {
 	add_object(unit_id, LightingEngineObjectType.Dynamic_Unit, sub_layer_name);
 }
+
+#endregion
+
+// Lighting Directional Shadows Variables
+directional_light_collisions_exist = false;
+directional_light_collisions_list = ds_list_create();
+
+// Background Variables
+lighting_engine_backgrounds = ds_list_create();

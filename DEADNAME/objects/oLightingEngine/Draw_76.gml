@@ -22,6 +22,11 @@ if (!surface_exists(lights_shadow_surface))
     lights_shadow_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
+if (!surface_exists(background_surface))
+{
+    background_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
 if (!surface_exists(diffuse_back_color_surface))
 {
     diffuse_back_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);

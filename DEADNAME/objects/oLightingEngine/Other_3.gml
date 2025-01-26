@@ -56,12 +56,18 @@ lighting_engine_front_layer_sub_layer_object_list = -1;
 ds_list_destroy(lighting_engine_front_layer_sub_layer_object_type_list);
 lighting_engine_front_layer_sub_layer_object_type_list = -1;
 
+// Destroy Backgrounds DS List
+ds_list_destroy(lighting_engine_backgrounds);
+lighting_engine_backgrounds = -1;
+
 // Free Surfaces
 surface_free(lights_back_color_surface);
 surface_free(lights_mid_color_surface);
 surface_free(lights_front_color_surface);
 
 surface_free(lights_shadow_surface);
+
+surface_free(background_surface);
 
 surface_free(diffuse_back_color_surface);
 surface_free(diffuse_mid_color_surface);
@@ -84,6 +90,8 @@ lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
 
 lights_shadow_surface = -1;
+
+background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;

@@ -6,6 +6,8 @@ gpu_set_blendenable(false);
 
 shader_set(shd_final_render_lighting);
 
+texture_set_stage(final_render_lighting_shader_background_texture_index, surface_get_texture(background_surface));
+
 texture_set_stage(final_render_lighting_shader_diffusemap_back_layer_texture_index, surface_get_texture(diffuse_back_color_surface));
 texture_set_stage(final_render_lighting_shader_diffusemap_front_layer_texture_index, surface_get_texture(diffuse_front_color_surface));
 

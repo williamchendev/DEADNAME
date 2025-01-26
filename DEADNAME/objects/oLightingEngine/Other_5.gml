@@ -8,6 +8,9 @@ delete_all_sub_layers();
 directional_light_collisions_exist = false;
 ds_list_clear(directional_light_collisions_list);
 
+// Clear Backgrounds
+ds_list_clear(lighting_engine_backgrounds);
+
 // Flush Texture Data
 draw_texture_flush();
 

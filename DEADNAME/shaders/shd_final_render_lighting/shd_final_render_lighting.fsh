@@ -2,6 +2,9 @@
 // (Multi Render Target) Lit Surface Final Rendering Pass fragment shader for Inno's Deferred Lighting System
 //
 
+// Uniform Background Surface Texture
+uniform sampler2D gm_Background_Texture;
+
 // Uniform Diffuse Map Surface Textures
 uniform sampler2D gm_DiffuseMap_BackLayer_Texture;
 uniform sampler2D gm_DiffuseMap_FrontLayer_Texture;
@@ -18,6 +21,9 @@ varying vec2 v_vTexcoord;
 // Fragment Shader
 void main() 
 {
+	// Establish Background Surface Colors
+	vec4 Background_SurfaceColor = texture2D(gm_Background_Texture, v_vTexcoord);
+	
 	// Establish Diffuse Map Surface Colors
 	vec4 DiffuseMap_BackLayer_SurfaceColor = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vTexcoord);
 	vec4 DiffuseMap_MidLayer_SurfaceColor = texture2D(gm_BaseTexture, v_vTexcoord);
@@ -33,7 +39,7 @@ void main()
 	vec4 RenderColor_MidLayer = DiffuseMap_MidLayer_SurfaceColor * LightBlend_MidLayer_SurfaceColor;
 	vec4 RenderColor_FrontLayer = DiffuseMap_FrontLayer_SurfaceColor * LightBlend_FrontLayer_SurfaceColor;
 	
-	vec4 RenderColor_Final = (RenderColor_FrontLayer * RenderColor_FrontLayer.a) + (RenderColor_MidLayer * (1.0 - RenderColor_FrontLayer.a)) + (RenderColor_BackLayer * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a));
+	vec4 RenderColor_Final = RenderColor_FrontLayer + (RenderColor_MidLayer * (1.0 - RenderColor_FrontLayer.a)) + (RenderColor_BackLayer * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a)) + (Background_SurfaceColor * (1.0 - RenderColor_BackLayer.a) * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a));
 	
 	// Lit Surface Final Render Pass
 	gl_FragColor = v_vColour * RenderColor_Final;
