@@ -1,7 +1,7 @@
 /// @description Screen Space Culling
 // Checks whether or not to display this Bulk Static Group if within range of the Camera
 
-bulk_static_group_render_enabled = !screen_space_culling ? true : rectangle_in_rectangle
+bulk_static_region_render_enabled = rectangle_in_rectangle
 (
 	LightingEngine.render_x - LightingEngine.render_border, 
 	LightingEngine.render_y - LightingEngine.render_border, 

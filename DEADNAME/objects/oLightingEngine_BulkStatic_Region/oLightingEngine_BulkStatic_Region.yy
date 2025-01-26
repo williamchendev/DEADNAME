@@ -1,6 +1,6 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_BulkStatic_Group",
+  "%Name":"oLightingEngine_BulkStatic_Region",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
@@ -8,7 +8,7 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oLightingEngine_BulkStatic_Group",
+  "name":"oLightingEngine_BulkStatic_Region",
   "overriddenProperties":[],
   "parent":{
     "name":"BulkStatic",
@@ -28,15 +28,13 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v1","%Name":"screen_space_culling","filters":[],"listItems":[],"multiselect":false,"name":"screen_space_culling","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_BulkStatic_Group",
-    "path":"sprites/sDebug_Lighting_BulkStatic_Group/sDebug_Lighting_BulkStatic_Group.yy",
+    "name":"sDebug_System_NineSlice",
+    "path":"sprites/sDebug_System_NineSlice/sDebug_System_NineSlice.yy",
   },
   "spriteMaskId":null,
   "visible":false,

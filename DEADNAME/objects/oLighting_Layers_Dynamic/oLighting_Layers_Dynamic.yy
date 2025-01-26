@@ -26,7 +26,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"default_name","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"sub_layer_depth","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_depth","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"render_layer_type","filters":[],"listItems":[],"multiselect":false,"name":"render_layer_type","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
   ],

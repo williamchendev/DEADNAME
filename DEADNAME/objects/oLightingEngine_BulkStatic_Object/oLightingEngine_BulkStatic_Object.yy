@@ -26,6 +26,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"normalmap_texture","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"normalmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sDebug_Lighting_BulkStatic_Object","path":"sprites/sDebug_Lighting_BulkStatic_Object/sDebug_Lighting_BulkStatic_Object.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sDebug_Lighting_BulkStatic_Object","varType":5,},
