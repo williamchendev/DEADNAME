@@ -6,6 +6,9 @@
 attribute vec3 in_Position;                  // (x, y, z)
 attribute vec2 in_TextureCoord;              // (u, v)
 
+// Uniform Camera Properties
+uniform vec2 in_Camera_Offset;
+
 // Uniform Light Source Properties
 uniform float in_LightSource_Radius;
 uniform vec2 in_LightSource_Position;
@@ -64,6 +67,6 @@ void main()
     v_vShadowCoord = in_TextureCoord;
     
     // Set Vertex Position
-    vec4 object_space_pos = vec4(vertex_position.x, vertex_position.y, 0.0, 1.0);
+    vec4 object_space_pos = vec4(vertex_position.x - in_Camera_Offset.x, vertex_position.y - in_Camera_Offset.y, 0.0, 1.0);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }

@@ -10,6 +10,9 @@ attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
 attribute vec4 in_TextureCoord_Normal; 		// (x, y, z, w)
 attribute vec4 in_TextureCoord_Specular; 	// (x, y, z, w)
 
+// Uniform Camera Properties
+uniform vec2 in_Camera_Offset;
+
 // Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
 varying vec2 v_vTexcoord_NormalMap;
@@ -40,6 +43,6 @@ void main()
 	v_vTexcoord_SpecularMap = in_TextureCoord_Diffuse * in_TextureCoord_Specular.zw + in_TextureCoord_Specular.xy;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(in_Position.x, in_Position.y, 0.0, 1.0);
+	vec4 object_space_pos = vec4(in_Position.x - in_Camera_Offset.x, in_Position.y - in_Camera_Offset.y, 0.0, 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }

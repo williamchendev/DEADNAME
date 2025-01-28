@@ -66,6 +66,8 @@ normalmap_vector_surface = -1;
 depth_specular_stencil_surface = -1;
 distortion_surface = -1;
 
+final_render_surface = -1;
+
 ui_surface = -1;
 debug_surface = -1;
 
@@ -141,6 +143,8 @@ background_shader_background_offset_index  = shader_get_uniform(shd_render_backg
 background_shader_background_position_index  = shader_get_uniform(shd_render_background, "in_Background_Position");
 
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
+mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
+
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
 
@@ -153,6 +157,8 @@ mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index  = shader_ge
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
 
 // MRT Deferred Lighting Bulk Static Sprite Shader Indexes
+mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
+
 mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
 
 // Point Light Blend Shader Indexes
@@ -200,7 +206,9 @@ spot_light_shader_shadow_layers_index = shader_get_uniform(shd_spot_light_blend,
 spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
 spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
 
-// Point Light Shadow Shader Indexes
+// Point Light & Spot Light Shadow Shader Indexes
+point_light_and_spot_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_Camera_Offset");
+
 point_light_and_spot_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_LightSource_Radius");
 point_light_and_spot_light_shadow_shader_light_source_position_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_LightSource_Position");
 
@@ -728,6 +736,9 @@ render_layer = function(render_layer_type)
 				
 				// Set Sub Layer Depth
 				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+				
+				// Set Camera Offset
+				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index, render_x, render_y);
 				break;
 			case LightingEngineSubLayerType.Dynamic:
 			default:
@@ -736,6 +747,9 @@ render_layer = function(render_layer_type)
 				
 				// Set Sub Layer Depth
     			shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+    			
+    			// Set Camera Offset
+				shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, render_x, render_y);
 				break;
 		}
 		
