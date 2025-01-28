@@ -28,6 +28,8 @@ highlight_strength_multiplier = 1.8;
 broadlight_strength_multiplier = 1.25;
 highlight_to_broadlight_ratio_max = 5.0;
 
+universal_distortion_strength = 0.25;
+
 // Rendering Settings
 application_surface_enable(false);
 application_surface_draw_enable(false);
@@ -62,6 +64,7 @@ diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_stencil_surface = -1;
+distortion_surface = -1;
 
 ui_surface = -1;
 debug_surface = -1;
@@ -231,6 +234,10 @@ ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusi
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
 
 // Final Render Pass Lighting Shader Indexes
+final_render_lighting_shader_distortion_strength_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Strength");
+final_render_lighting_shader_distortion_aspect_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Aspect");
+final_render_lighting_shader_distortion_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_Distortion_Texture");
+
 final_render_lighting_shader_background_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_Background_Texture");
 
 final_render_lighting_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_BackLayer_Texture");

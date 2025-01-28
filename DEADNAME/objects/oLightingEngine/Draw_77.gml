@@ -6,6 +6,11 @@ gpu_set_blendenable(false);
 
 shader_set(shd_final_render_lighting);
 
+shader_set_uniform_f(final_render_lighting_shader_distortion_strength_index, universal_distortion_strength);
+shader_set_uniform_f(final_render_lighting_shader_distortion_aspect_index, GameManager.game_height / GameManager.game_width);
+
+texture_set_stage(final_render_lighting_shader_distortion_texture_index, surface_get_texture(distortion_surface));
+
 texture_set_stage(final_render_lighting_shader_background_texture_index, surface_get_texture(background_surface));
 
 texture_set_stage(final_render_lighting_shader_diffusemap_back_layer_texture_index, surface_get_texture(diffuse_back_color_surface));

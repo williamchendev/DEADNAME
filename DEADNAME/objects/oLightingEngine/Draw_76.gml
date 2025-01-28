@@ -52,6 +52,11 @@ if (!surface_exists(depth_specular_stencil_surface))
     depth_specular_stencil_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
+if (!surface_exists(distortion_surface))
+{
+    distortion_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
 if (!surface_exists(ui_surface))
 {
     ui_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);

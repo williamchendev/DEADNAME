@@ -20,7 +20,6 @@
     {"name":"Particle Systems","order":16,"path":"folders/Particle Systems.yy",},
     {"name":"Paths","order":3,"path":"folders/Paths.yy",},
     {"name":"Rooms","order":11,"path":"folders/Rooms.yy",},
-    {"name":null,"order":3,"path":"folders/Objects/UI.yy",},
     {"name":"Scripts","order":4,"path":"folders/Scripts.yy",},
     {"name":"Lighting Engine","order":4,"path":"folders/Scripts/Lighting Engine.yy",},
     {"name":"Layers","order":3,"path":"folders/Scripts/Lighting Engine/Layers.yy",},

@@ -75,6 +75,7 @@ surface_free(diffuse_front_color_surface);
 
 surface_free(normalmap_vector_surface);
 surface_free(depth_specular_stencil_surface);
+surface_free(distortion_surface);
 
 surface_free(ui_surface);
 
@@ -99,6 +100,7 @@ diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_stencil_surface = -1;
+distortion_surface = -1;
 
 ui_surface = -1;
 

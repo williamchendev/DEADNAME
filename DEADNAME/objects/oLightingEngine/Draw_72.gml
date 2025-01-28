@@ -37,6 +37,12 @@ surface_set_target(depth_specular_stencil_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
+// Reset Distortion Surface
+surface_set_target(distortion_surface);
+draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+draw_sprite(sDebugNormalMap_Sphere, 0, 200, 200);
+surface_reset_target();
+
 // Draw Background Surface
 surface_set_target(background_surface);
 draw_clear(c_black);

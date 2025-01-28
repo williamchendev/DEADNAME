@@ -2,6 +2,12 @@
 // (Multi Render Target) Lit Surface Final Rendering Pass fragment shader for Inno's Deferred Lighting System
 //
 
+// Uniform Distortion Settings & Surface Texture
+uniform float in_Distortion_Strength;
+uniform float in_Distortion_Aspect;
+
+uniform sampler2D gm_Distortion_Texture;
+
 // Uniform Background Surface Texture
 uniform sampler2D gm_Background_Texture;
 
@@ -21,18 +27,22 @@ varying vec2 v_vTexcoord;
 // Fragment Shader
 void main() 
 {
+	// Establish Distortion Offset
+	vec2 Distortion_Offset = (texture2D(gm_Distortion_Texture, v_vTexcoord).xy - 0.5) * 2.0 * in_Distortion_Strength;
+	Distortion_Offset *= vec2(in_Distortion_Aspect, -1.0);
+	
 	// Establish Background Surface Colors
-	vec4 Background_SurfaceColor = texture2D(gm_Background_Texture, v_vTexcoord);
+	vec4 Background_SurfaceColor = texture2D(gm_Background_Texture, v_vTexcoord + Distortion_Offset);
 	
 	// Establish Diffuse Map Surface Colors
-	vec4 DiffuseMap_BackLayer_SurfaceColor = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vTexcoord);
-	vec4 DiffuseMap_MidLayer_SurfaceColor = texture2D(gm_BaseTexture, v_vTexcoord);
-	vec4 DiffuseMap_FrontLayer_SurfaceColor = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vTexcoord);
+	vec4 DiffuseMap_BackLayer_SurfaceColor = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vTexcoord + Distortion_Offset);
+	vec4 DiffuseMap_MidLayer_SurfaceColor = texture2D(gm_BaseTexture, v_vTexcoord + Distortion_Offset);
+	vec4 DiffuseMap_FrontLayer_SurfaceColor = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vTexcoord + Distortion_Offset);
 	
 	// Establish Light Blend Surface Colors
-	vec4 LightBlend_BackLayer_SurfaceColor = texture2D(gm_LightBlend_BackLayer_Texture, v_vTexcoord);
-	vec4 LightBlend_MidLayer_SurfaceColor = texture2D(gm_LightBlend_MidLayer_Texture, v_vTexcoord);
-	vec4 LightBlend_FrontLayer_SurfaceColor = texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord);
+	vec4 LightBlend_BackLayer_SurfaceColor = texture2D(gm_LightBlend_BackLayer_Texture, v_vTexcoord + Distortion_Offset);
+	vec4 LightBlend_MidLayer_SurfaceColor = texture2D(gm_LightBlend_MidLayer_Texture, v_vTexcoord + Distortion_Offset);
+	vec4 LightBlend_FrontLayer_SurfaceColor = texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord + Distortion_Offset);
 	
 	// Layer Color Values
 	vec4 RenderColor_BackLayer = DiffuseMap_BackLayer_SurfaceColor * LightBlend_BackLayer_SurfaceColor;
