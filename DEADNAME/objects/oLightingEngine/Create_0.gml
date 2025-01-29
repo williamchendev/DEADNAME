@@ -163,6 +163,8 @@ mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_ge
 mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
 
 // Point Light Blend Shader Indexes
+point_light_shader_camera_offset_index = shader_get_uniform(shd_point_light_blend, "in_Camera_Offset");
+
 point_light_shader_radius_index = shader_get_uniform(shd_point_light_blend, "in_Radius");
 point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light_blend, "in_CenterPoint");
 
@@ -184,6 +186,8 @@ point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point
 point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
 
 // Spot Light Blend Shader Indexes
+spot_light_shader_camera_offset_index = shader_get_uniform(shd_spot_light_blend, "in_Camera_Offset");
+
 spot_light_shader_radius_index = shader_get_uniform(shd_spot_light_blend, "in_Radius");
 spot_light_shader_centerpoint_index = shader_get_uniform(shd_spot_light_blend, "in_CenterPoint");
 
@@ -230,6 +234,8 @@ directional_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_un
 directional_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_directional_light_blend, "gm_NormalTexture");
 
 // Directional Light Shadow Shader Indexes
+directional_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_directional_light_shadows, "in_Camera_Offset");
+
 directional_light_shadow_shader_light_source_radius_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Radius");
 directional_light_shadow_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_shadows, "in_LightSource_Vector");
 

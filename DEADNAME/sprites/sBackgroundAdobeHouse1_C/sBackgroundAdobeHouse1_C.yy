@@ -23,7 +23,7 @@
   ],
   "name":"sBackgroundAdobeHouse1_C",
   "nineSlice":null,
-  "origin":7,
+  "origin":9,
   "parent":{
     "name":"AdobeHouse",
     "path":"folders/Sprites/Assets/Backgrounds/AdobeHouse.yy",
@@ -76,7 +76,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":330,
-    "yorigin":380,
+    "yorigin":200,
   },
   "swatchColours":null,
   "swfPrecision":2.525,

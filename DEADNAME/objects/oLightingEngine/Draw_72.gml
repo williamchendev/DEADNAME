@@ -18,7 +18,7 @@ repeat (ds_list_size(lighting_engine_backgrounds))
 	// Draw Background
 	if (temp_background != 0)
 	{
-		draw_sprite(temp_background.background_sprite_index, temp_background.background_image_index, (GameManager.game_width * 0.5) + render_border, GameManager.game_height + render_border);
+		draw_sprite(temp_background.background_sprite_index, temp_background.background_image_index, (GameManager.game_width * 0.5) + render_border, (GameManager.game_height * 0.5) + render_border);
 	}
 	
 	// Increment Background Index
@@ -78,6 +78,9 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
+		
+		// Set Point Light Shadow Shader Camera Offset
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Point Light Shadow Shader Properties
 		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_radius_index, point_light_penumbra_size);
@@ -141,6 +144,9 @@ with (oLightingEngine_Source_PointLight)
 		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
 		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 		
+		// Set Point Light Blend Shader Camera Offset
+		shader_set_uniform_f(LightingEngine.point_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
@@ -188,6 +194,9 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
+		
+		// Set Spot Light Shadow Shader Camera Offset
+		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Spot Light Shadow Shader Properties
 		shader_set_uniform_f(LightingEngine.point_light_and_spot_light_shadow_shader_light_source_radius_index, spot_light_penumbra_size);
@@ -251,6 +260,9 @@ with (oLightingEngine_Source_SpotLight)
 		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
 		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
 		
+		// Set Spot Light Blend Shader Camera Offset
+		shader_set_uniform_f(LightingEngine.spot_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
@@ -305,6 +317,9 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
+		
+		// Set Directional Light Shadow Shader Camera Offset
+		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Directional Light Shadow Shader Properties
 		shader_set_uniform_f(LightingEngine.directional_light_shadow_shader_light_source_radius_index, directional_light_penumbra_radius);
@@ -401,7 +416,7 @@ gpu_set_blendmode(bm_max);
 
 shader_set(shd_ambient_occlusion_light_blend);
 
-shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2));
 
 surface_set_target_ext(0, lights_back_color_surface);
 surface_set_target_ext(1, lights_mid_color_surface);

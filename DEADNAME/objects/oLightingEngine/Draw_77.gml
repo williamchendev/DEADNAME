@@ -9,7 +9,7 @@ gpu_set_blendenable(true);
 // Draw Debug Surface
 if (global.debug_surface_enabled and global.debug)
 {
-	draw_surface_ext(lights_mid_color_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
+	draw_surface_ext(lights_mid_color_surface, (-render_border * GameManager.game_scale), (-render_border * GameManager.game_scale), GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 	//draw_surface_ext(lights_shadow_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 	draw_surface_ext(debug_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 }
