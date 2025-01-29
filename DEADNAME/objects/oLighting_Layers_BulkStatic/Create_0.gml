@@ -18,7 +18,7 @@ switch (render_layer_type)
 }
 
 // Create Sub Layer
-LightingEngine.create_sub_layer(sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name, sub_layer_depth, LightingEngineSubLayerType.BulkStatic, temp_render_layer_type);
+lighting_engine_create_sub_layer(sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name, sub_layer_depth, LightingEngineSubLayerType.BulkStatic, temp_render_layer_type);
 
 // Destroy Instance
 instance_destroy();

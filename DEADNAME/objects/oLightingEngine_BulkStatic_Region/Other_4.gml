@@ -149,7 +149,7 @@ if (temp_bulk_static_objects_count > 0)
 			ds_map_add(bulk_static_region_vertex_buffer_map, temp_bulk_static_layers_map_key, temp_bulk_static_layer_vertex_buffer);
 			
 			// Add Bulk Static Region to Lighting Engine Layers
-			var temp_successfully_added_bulk_static_region_layer = LightingEngine.add_object(id, LightingEngineObjectType.BulkStatic_Region, temp_bulk_static_layers_map_key);
+			var temp_successfully_added_bulk_static_region_layer = lighting_engine_add_object(id, LightingEngineObjectType.BulkStatic_Region, temp_bulk_static_layers_map_key);
 			
 			// Debug Flag - Unsuccessfully added Bulk Static Group to Lighting Engine Sub Layer
 			if (!temp_successfully_added_bulk_static_region_layer)
