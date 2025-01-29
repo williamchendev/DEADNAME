@@ -1,47 +1,5 @@
-/// @description Process Scene Lighting
-// Renders MRT Objects and Light Sources to Deferred Lighting Surfaces
-
-// Reset Light Color Surface
-surface_set_target(lights_back_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(lights_mid_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(lights_front_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-// Reset Diffuse Color Surface
-surface_set_target(diffuse_back_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(diffuse_mid_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(diffuse_front_color_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-// Reset Normal Map Vector Surface
-surface_set_target(normalmap_vector_surface);
-draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-surface_reset_target();
-
-// Reset Depth Specular Stencil Surface
-surface_set_target(depth_specular_stencil_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-// Reset Distortion Surface
-surface_set_target(distortion_surface);
-draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-draw_sprite_ext(sDebugNormalMap_Sphere, 0, 200, 200, 1, 1, 0, c_white, 0.5);
-surface_reset_target();
+/// @description MRT Scene & Lighting Draw
+// Draws Scene Backgrounds, MRT Objects, and Light Sources to Deferred Lighting Surfaces
 
 // Draw Background Surface
 surface_set_target(background_surface);
@@ -465,33 +423,6 @@ gpu_set_blendmode(bm_normal);
 
 shader_reset();
 surface_reset_target();
-
-// Draw Lit Surface with Post Processing
-shader_set(shd_final_render_lighting);
-
-surface_set_target(final_render_surface);
-
-draw_clear(c_black);
-
-shader_set_uniform_f(final_render_lighting_shader_distortion_strength_index, universal_distortion_strength);
-shader_set_uniform_f(final_render_lighting_shader_distortion_aspect_index, GameManager.game_height / GameManager.game_width);
-
-texture_set_stage(final_render_lighting_shader_distortion_texture_index, surface_get_texture(distortion_surface));
-
-texture_set_stage(final_render_lighting_shader_background_texture_index, surface_get_texture(background_surface));
-
-texture_set_stage(final_render_lighting_shader_diffusemap_back_layer_texture_index, surface_get_texture(diffuse_back_color_surface));
-texture_set_stage(final_render_lighting_shader_diffusemap_front_layer_texture_index, surface_get_texture(diffuse_front_color_surface));
-
-texture_set_stage(final_render_lighting_shader_lightblend_back_layer_texture_index, surface_get_texture(lights_back_color_surface));
-texture_set_stage(final_render_lighting_shader_lightblend_mid_layer_texture_index, surface_get_texture(lights_mid_color_surface));
-texture_set_stage(final_render_lighting_shader_lightblend_front_layer_texture_index, surface_get_texture(lights_front_color_surface));
-
-draw_surface(diffuse_mid_color_surface, 0, 0);
-
-surface_reset_target();
-
-shader_reset();
 
 //
 if (global.debug and global.debug_surface_enabled)

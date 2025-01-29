@@ -18,8 +18,11 @@ if (player_input)
 	
 	input_reload = keyboard_check_pressed(GameManager.reload_check);
 	
-	input_cursor_x = mouse_x;
-	input_cursor_y = mouse_y;
+	input_cursor_x = mouse_x + LightingEngine.render_x;
+	input_cursor_y = mouse_y + LightingEngine.render_y;
+	
+	// DEBUG
+	LightingEngine.render_x = x - (GameManager.game_width * 0.5);
 }
 else
 {

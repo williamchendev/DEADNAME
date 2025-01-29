@@ -1,4 +1,4 @@
-/// @description Pre-Draw Lighting Engine Surface Creation
+/// @description Surfaces Initialization
 // Creates the Surfaces for the Lighting Engine
 
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
@@ -66,6 +66,48 @@ if (!surface_exists(ui_surface))
 {
     ui_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
+
+// Reset Light Color Surface
+surface_set_target(lights_back_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(lights_mid_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(lights_front_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+// Reset Diffuse Color Surface
+surface_set_target(diffuse_back_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(diffuse_mid_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(diffuse_front_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+// Reset Normal Map Vector Surface
+surface_set_target(normalmap_vector_surface);
+draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+surface_reset_target();
+
+// Reset Depth Specular Stencil Surface
+surface_set_target(depth_specular_stencil_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+// Reset Distortion Surface
+surface_set_target(distortion_surface);
+draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+draw_sprite_ext(sDebugNormalMap_Sphere, 0, 200, 200, 1, 1, 0, c_white, 0.5);
+surface_reset_target();
 
 // Refresh UI Surface Clear
 surface_set_target(ui_surface);
