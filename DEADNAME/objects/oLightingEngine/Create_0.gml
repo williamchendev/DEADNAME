@@ -44,6 +44,7 @@ surface_depth_disable(true);
 // Renders
 render_x = 0;
 render_y = 0;
+
 render_border = 120;
 render_directional_shadows_border = 240;
 
@@ -738,7 +739,7 @@ render_layer = function(render_layer_type)
 				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index, temp_sub_layer_depth);
 				
 				// Set Camera Offset
-				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index, render_x, render_y);
+				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
 				break;
 			case LightingEngineSubLayerType.Dynamic:
 			default:
@@ -749,7 +750,7 @@ render_layer = function(render_layer_type)
     			shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
     			
     			// Set Camera Offset
-				shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, render_x, render_y);
+				shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
 				break;
 		}
 		

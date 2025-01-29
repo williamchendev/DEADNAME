@@ -10,7 +10,7 @@ draw_clear(c_black);
 
 // Set Final Render Shader's Distortion Properties
 shader_set_uniform_f(final_render_lighting_shader_distortion_strength_index, universal_distortion_strength);
-shader_set_uniform_f(final_render_lighting_shader_distortion_aspect_index, GameManager.game_height / GameManager.game_width);
+shader_set_uniform_f(final_render_lighting_shader_distortion_aspect_index, (GameManager.game_height + (render_border * 2)) / (GameManager.game_width + (render_border * 2)));
 
 // Set Final Render Shader's Distortion Texture
 texture_set_stage(final_render_lighting_shader_distortion_texture_index, surface_get_texture(distortion_surface));
@@ -28,7 +28,7 @@ texture_set_stage(final_render_lighting_shader_lightblend_mid_layer_texture_inde
 texture_set_stage(final_render_lighting_shader_lightblend_front_layer_texture_index, surface_get_texture(lights_front_color_surface));
 
 // Draw Lit Surface with Post Processing
-draw_surface(diffuse_mid_color_surface, 0, 0);
+draw_surface(diffuse_mid_color_surface, -render_border, -render_border);
 
 // Reset Surface & Shader
 surface_reset_target();

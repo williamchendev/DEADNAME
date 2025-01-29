@@ -4,57 +4,57 @@
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
 if (!surface_exists(lights_back_color_surface))
 {
-    lights_back_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    lights_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(lights_mid_color_surface))
 {
-    lights_mid_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    lights_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(lights_front_color_surface))
 {
-    lights_front_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    lights_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(lights_shadow_surface))
 {
-    lights_shadow_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    lights_shadow_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(background_surface))
 {
-    background_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    background_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(diffuse_back_color_surface))
 {
-    diffuse_back_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    diffuse_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(diffuse_mid_color_surface))
 {
-    diffuse_mid_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    diffuse_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(diffuse_front_color_surface))
 {
-    diffuse_front_color_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    diffuse_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(normalmap_vector_surface))
 {
-    normalmap_vector_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(depth_specular_stencil_surface))
 {
-    depth_specular_stencil_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    depth_specular_stencil_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(distortion_surface))
 {
-    distortion_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    distortion_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(final_render_surface))
@@ -106,7 +106,7 @@ surface_reset_target();
 // Reset Distortion Surface
 surface_set_target(distortion_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-draw_sprite_ext(sDebugNormalMap_Sphere, 0, 200, 200, 1, 1, 0, c_white, 0.5);
+draw_sprite_ext(sDebugNormalMap_Sphere, 0, 100, 300, 1, 1, 0, c_white, 0.5);
 surface_reset_target();
 
 // Refresh UI Surface Clear

@@ -18,7 +18,7 @@ repeat (ds_list_size(lighting_engine_backgrounds))
 	// Draw Background
 	if (temp_background != 0)
 	{
-		draw_sprite(temp_background.background_sprite_index, temp_background.background_image_index, GameManager.game_width * 0.5, GameManager.game_height);
+		draw_sprite(temp_background.background_sprite_index, temp_background.background_image_index, (GameManager.game_width * 0.5) + render_border, GameManager.game_height + render_border);
 	}
 	
 	// Increment Background Index
