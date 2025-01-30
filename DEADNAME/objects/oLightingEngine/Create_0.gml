@@ -308,7 +308,25 @@ create_default_sub_layers = function()
 
 create_default_sub_layers();
 
-// Lighting Engine Layer Method: Render Layer
+// Lighting Engine Rendering Methods
+render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, normalmap_uvs, specularmap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
+{
+    //
+    texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
+    texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index, specularmap_texture);
+    
+    //
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index, x_scale, y_scale, 1);
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index, rotation);
+    
+    //
+    shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, normalmap_uvs);
+    shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index, specularmap_uvs);
+    
+    //
+    draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
+}
+
 render_layer = function(render_layer_type)
 {
 	// Establish Empty Render Layer Variables
@@ -415,10 +433,10 @@ render_layer = function(render_layer_type)
 					with (temp_sub_layer_object)
 					{
 						// Draw Secondary Arm rendered behind Unit Body
-						limb_secondary_arm.lighting_engine_render_behaviour();
+						limb_secondary_arm.render_behaviour();
 					
 						// Draw Unit Body
-						lighting_engine_draw_sprite
+						LightingEngine.render_sprite
 						(
 							sprite_index,
 							image_index,
@@ -438,11 +456,11 @@ render_layer = function(render_layer_type)
 						// Draw Unit's Weapon (if equipped)
 						if (weapon_active)
 						{
-							weapon_equipped.lighting_engine_render_behaviour();
+							weapon_equipped.render_behaviour();
 						}
 						
 						// Draw Primary Arm rendered in front Unit Body
-						limb_primary_arm.lighting_engine_render_behaviour();
+						limb_primary_arm.render_behaviour();
 					}
 					break;
 				default:
