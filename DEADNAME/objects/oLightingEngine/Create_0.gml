@@ -139,9 +139,14 @@ vertex_freeze(screen_space_vertex_buffer);
 #region Shader Indexes
 
 // Background Rendering Shader Indexes
+background_shader_background_surface_size_index  = shader_get_uniform(shd_render_background, "in_SurfaceSize");
+
+background_shader_background_size_index  = shader_get_uniform(shd_render_background, "in_Background_Size");
+background_shader_background_trim_index  = shader_get_uniform(shd_render_background, "in_Background_Trim");
 background_shader_background_tile_index  = shader_get_uniform(shd_render_background, "in_Background_Tile");
 background_shader_background_offset_index  = shader_get_uniform(shd_render_background, "in_Background_Offset");
 background_shader_background_position_index  = shader_get_uniform(shd_render_background, "in_Background_Position");
+background_shader_background_uvs_index  = shader_get_uniform(shd_render_background, "in_Background_UVs");
 
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
 mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
@@ -502,8 +507,14 @@ add_background = function(background_sprite_index, background_image_index, backg
 	// Create Background
 	var temp_background_value =
 	{
-		background_sprite_index: background_sprite_index,
-		background_image_index: background_image_index
+		background_texture: sprite_get_texture(background_sprite_index, background_image_index),
+		background_uvs: sprite_get_uvs(background_sprite_index, background_image_index),
+		background_sprite_width: sprite_get_width(background_sprite_index),
+		background_sprite_height: sprite_get_height(background_sprite_index),
+		background_sprite_offset_x: sprite_get_xoffset(background_sprite_index),
+		background_sprite_offset_y: sprite_get_yoffset(background_sprite_index),
+		background_offset_x: background_offset_x,
+		background_offset_y: background_offset_y
 	}
 	
 	// Index Background in Lighting Engine Backgrounds DS List
