@@ -21,3 +21,6 @@ lighting_engine_front_render_layer_shadows_enabled = true;
 
 // Add Default Layers to Lighting Engine
 create_default_sub_layers();
+
+// Initialize Lighting Engine Worker
+lighting_engine_worker = instance_create_depth(x, y, depth, oLightingEngine_Worker);

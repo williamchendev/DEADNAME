@@ -19,7 +19,8 @@ enum LightingEngineObjectType
     Dynamic_Basic,
     Dynamic_Dynamic,
     Dynamic_Unit,
-    BulkStatic_Region
+    BulkStatic_Region,
+    BulkStatic_Layer
 }
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
@@ -143,6 +144,11 @@ function lighting_engine_remove_object_from_sub_layer(sub_layer_object_list, sub
 	// Properly Delete the given Object based on the Object's Type
 	switch (temp_sub_layer_object_type)
 	{
+		case LightingEngineObjectType.BulkStatic_Layer:
+			// Bulk Static Layer Type Condition: Destroy Vertex Buffer from Struct
+			vertex_delete_buffer(temp_sub_layer_object.bulk_static_vertex_buffer);
+			temp_sub_layer_object = -1;
+			break;
 		default:
 			// Default Object Type Condition: Destroy Game Object
 			instance_destroy(temp_sub_layer_object);

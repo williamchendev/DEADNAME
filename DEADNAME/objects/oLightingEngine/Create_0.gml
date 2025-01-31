@@ -428,6 +428,10 @@ render_layer = function(render_layer_type)
 						}
 					}
 					break;
+				case LightingEngineObjectType.BulkStatic_Layer:
+					// Draw Bulk Static Layer Vertex Buffer with Texture from Sub-Layer Vertex Buffer and Texture Struct
+					vertex_submit(temp_sub_layer_object.bulk_static_vertex_buffer, pr_trianglelist, temp_sub_layer_object.bulk_static_texture);
+					break;
 				case LightingEngineObjectType.Dynamic_Unit:
 					// Draw Unit on Dynamic Layer
 					with (temp_sub_layer_object)
@@ -511,3 +515,6 @@ add_background = function(background_sprite_index, background_image_index, backg
 // Lighting Directional Shadows Variables
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();
+
+// Lighting Engine Worker
+lighting_engine_worker = -1;
