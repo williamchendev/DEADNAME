@@ -22,8 +22,7 @@ if (player_input)
 	input_cursor_y = mouse_y + LightingEngine.render_y;
 	
 	// DEBUG
-	LightingEngine.render_x = x - (GameManager.game_width * 0.5);
-	LightingEngine.render_y = y - (GameManager.game_height * 0.5);
+	LightingEngine.render_position(x - (GameManager.game_width * 0.5), y - (GameManager.game_height * 0.5));
 }
 else
 {

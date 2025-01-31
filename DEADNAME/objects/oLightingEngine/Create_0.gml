@@ -48,6 +48,20 @@ render_y = 0;
 render_border = 120;
 render_directional_shadows_border = 240;
 
+lighting_engine_camera_bounds_exist = false;
+lighting_engine_camera_bounds_min_x = 0;
+lighting_engine_camera_bounds_min_y = 0;
+lighting_engine_camera_bounds_max_x = 0;
+lighting_engine_camera_bounds_max_y = 0;
+
+// Render Functions
+render_position = function(render_position_x, render_position_y)
+{
+	// Restrict Render to Camera Bounds
+	render_x = lighting_engine_camera_bounds_exist ? clamp(render_position_x, lighting_engine_camera_bounds_min_x, lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
+	render_y = lighting_engine_camera_bounds_exist ? clamp(render_position_y, lighting_engine_camera_bounds_min_y, lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
+}
+
 #region Surfaces
 
 // Surfaces
@@ -526,13 +540,6 @@ add_background = function(background_sprite_index, background_image_index, backg
 // Lighting Directional Shadows Variables
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();
-
-// Lighting Engine Camera Bounds
-lighting_engine_camera_bounds_exist = false;
-lighting_engine_camera_bounds_min_x = 0;
-lighting_engine_camera_bounds_min_y = 0;
-lighting_engine_camera_bounds_max_x = 0;
-lighting_engine_camera_bounds_max_y = 0;
 
 // Lighting Engine Worker
 lighting_engine_worker = -1;

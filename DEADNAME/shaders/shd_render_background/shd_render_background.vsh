@@ -19,7 +19,7 @@ varying vec2 v_vTexcoord;
 void main() 
 {
 	// Vertex Position
-	vec2 VertexPosition = (in_SurfaceSize * 0.5) + ((in_Position - 0.5) * in_Background_Size) - (in_Background_Trim - (in_Background_Size * 0.5));
+	vec2 VertexPosition = (in_SurfaceSize * 0.5) + ((in_Position - 0.5) * in_Background_Size);
 	
 	// Surface UV
 	v_vTexcoord = in_Position;
