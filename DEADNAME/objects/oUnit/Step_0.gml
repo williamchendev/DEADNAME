@@ -23,6 +23,7 @@ if (player_input)
 	
 	// DEBUG
 	LightingEngine.render_x = x - (GameManager.game_width * 0.5);
+	LightingEngine.render_y = y - (GameManager.game_height * 0.5);
 }
 else
 {

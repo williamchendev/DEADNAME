@@ -1,5 +1,12 @@
-/// @description Surfaces Initialization
-// Creates the Surfaces for the Lighting Engine
+/// @description Camera & Surfaces Initialization
+// Creates the Surfaces for the Lighting Engine and restricts Rendering to Camera Bounds
+
+// Restrict Render to Camera Bounds
+if (lighting_engine_camera_bounds_exist)
+{
+	render_x = clamp(render_x, lighting_engine_camera_bounds_min_x, lighting_engine_camera_bounds_max_x - GameManager.game_width);
+	render_y = clamp(render_y, lighting_engine_camera_bounds_min_y, lighting_engine_camera_bounds_max_y - GameManager.game_height);
+}
 
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
 if (!surface_exists(lights_back_color_surface))

@@ -19,6 +19,8 @@ lighting_engine_back_render_layer_shadows_enabled = true;
 lighting_engine_mid_render_layer_shadows_enabled = true;
 lighting_engine_front_render_layer_shadows_enabled = true;
 
+lighting_engine_camera_bounds_exist = false;
+
 // Add Default Layers to Lighting Engine
 create_default_sub_layers();
 

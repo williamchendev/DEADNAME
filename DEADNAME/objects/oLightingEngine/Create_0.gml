@@ -516,5 +516,12 @@ add_background = function(background_sprite_index, background_image_index, backg
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();
 
+// Lighting Engine Camera Bounds
+lighting_engine_camera_bounds_exist = false;
+lighting_engine_camera_bounds_min_x = 0;
+lighting_engine_camera_bounds_min_y = 0;
+lighting_engine_camera_bounds_max_x = 0;
+lighting_engine_camera_bounds_max_y = 0;
+
 // Lighting Engine Worker
 lighting_engine_worker = -1;
