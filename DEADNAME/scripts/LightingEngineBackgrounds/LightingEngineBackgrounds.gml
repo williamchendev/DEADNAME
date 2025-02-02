@@ -1,6 +1,6 @@
 
 
-function lighting_engine_add_background(background_sprite_index, background_offset_x, background_offset_y, background_horizontal_tile = true, background_vertical_tile = false, background_horizontal_speed = 0, background_vertical_speed = 0, background_horizontal_parallax_movement = 0, background_vertical_parallax_movement = 0, background_horizontal_parallax_lock = false, background_vertical_parallax_lock = false)
+function lighting_engine_add_background(background_sprite_index, background_blend = c_white, background_offset_x = 0, background_offset_y = 0, background_horizontal_tile = true, background_vertical_tile = false, background_horizontal_speed = 0, background_vertical_speed = 0, background_horizontal_parallax_movement = 0, background_vertical_parallax_movement = 0, background_horizontal_parallax_lock = false, background_vertical_parallax_lock = false)
 {
 	// Create Layer
 	var temp_layer_id = layer_create(LightingEngine.lighting_engine_background_depth - ds_list_size(LightingEngine.lighting_engine_backgrounds), $"LightingEngine_Background_{ds_list_size(LightingEngine.lighting_engine_backgrounds)}");
@@ -31,7 +31,7 @@ function lighting_engine_add_background(background_sprite_index, background_offs
 	layer_background_htiled(temp_background_layer_id, background_horizontal_tile);
 	layer_background_vtiled(temp_background_layer_id, background_vertical_tile);
 	
-	layer_background_blend(temp_background_layer_id, c_white);
+	layer_background_blend(temp_background_layer_id, background_blend);
 	
 	// Index Background in DS List
 	ds_list_add(LightingEngine.lighting_engine_backgrounds, temp_lighting_engine_background);
