@@ -139,8 +139,17 @@ for (var temp_background_index = 0; temp_background_index < ds_list_size(lightin
 	temp_background_struct.movement_y = (temp_background_struct.movement_y + temp_background_struct.movement_speed_y * frame_delta) mod temp_background_struct.background_height;
 	
 	var temp_background_parallax_x = temp_background_struct.offset_x - (render_x * temp_background_struct.parallax_horizontal_movement);
-	var temp_background_parallax_y = temp_background_struct.offset_y - (render_y * temp_background_struct.parallax_horizontal_movement);
+	var temp_background_parallax_y = temp_background_struct.offset_y - (render_y * temp_background_struct.parallax_vertical_movement);
 	
-	layer_x(temp_background_struct.layer_id, temp_background_struct.movement_x + temp_background_parallax_x);
-	layer_y(temp_background_struct.layer_id, temp_background_struct.movement_y + temp_background_parallax_y);
+	layer_x
+	(
+		temp_background_struct.layer_id, 
+		temp_background_struct.parallax_horizontal_lock ? clamp(temp_background_struct.movement_x + temp_background_parallax_x, GameManager.game_width + render_border - temp_background_struct.background_width, render_border) : temp_background_struct.movement_x + temp_background_parallax_x
+	);
+	
+	layer_y
+	(
+		temp_background_struct.layer_id, 
+		temp_background_struct.parallax_vertical_lock ? clamp(temp_background_struct.movement_y + temp_background_parallax_y, GameManager.game_height + render_border - temp_background_struct.background_height, render_border) : temp_background_struct.movement_y + temp_background_parallax_y
+	);
 }
