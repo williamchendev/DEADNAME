@@ -1,6 +1,57 @@
 /// @description Asset Organization & Creation
 // Iterates through the organized Lighting Engine Objects and performs their behaviours in order, then destroys the worker
 
+// Check if Room is Start Screen
+if (room_get_name(room) == "_TitleScreen")
+{
+	// Destroy Instance and Exit Behaviour
+	instance_destroy();
+	return;
+}
+
+// Set Room Width & Height to match Game Size
+room_width = GameManager.game_width;
+room_height = GameManager.game_height;
+
+// Background Initialization - Find all Layers in Room
+var temp_room_layers = layer_get_all();
+
+// Background Initialization - Iterate through all Layers in Room
+var temp_layer_index = 0;
+
+repeat (array_length(temp_room_layers))
+{
+	// Get all Elements on Layer
+	var temp_layer_elements = layer_get_all_elements(temp_room_layers[temp_layer_index]);
+	
+	// Determine if Layer contains Elements and if Layer is a Background Layer
+	if (array_length(temp_layer_elements) == 1 and layer_get_element_type(temp_layer_elements[0]) == layerelementtype_background)
+	{
+		// Check if Background is a Lighting Engine Integrated Background
+		var temp_background_lighting_engine_index = ds_list_find_index(LightingEngine.lighting_engine_background_layer_ids, temp_room_layers[temp_layer_index]);
+		var temp_background_is_lighting_engine_integrated = temp_background_lighting_engine_index != -1;
+		
+		// Find Background Layer ID & Background Properties
+		var temp_background_layer_id = temp_background_is_lighting_engine_integrated ? ds_list_find_value(LightingEngine.lighting_engine_backgrounds, temp_background_lighting_engine_index).background_layer_id : layer_background_get_id(temp_room_layers[temp_layer_index]);
+		
+		// Add Background Layer Properties
+		layer_script_begin(temp_room_layers[temp_layer_index], lighting_engine_draw_background_begin);
+		layer_script_end(temp_room_layers[temp_layer_index], lighting_engine_draw_background_end);
+		
+		// Center Background
+		var temp_background_layer_sprite_index = layer_background_get_sprite(temp_background_layer_id);
+		
+		var temp_background_sprite_width = sprite_get_width(temp_background_layer_sprite_index);
+		var temp_background_sprite_height = sprite_get_height(temp_background_layer_sprite_index);
+		
+		layer_x(temp_room_layers[temp_layer_index], ((GameManager.game_width * 0.5) + LightingEngine.render_border) - (temp_background_sprite_width * 0.5));
+		layer_y(temp_room_layers[temp_layer_index], ((GameManager.game_height * 0.5) + LightingEngine.render_border) - (temp_background_sprite_height * 0.5));
+	}
+	
+	// Increment Index
+	temp_layer_index++;
+}
+
 // Iterate Initialization Behaviour for Bulk Static Layers
 for (var temp_bulk_static_layer_index = 0; temp_bulk_static_layer_index < ds_list_size(bulk_static_layers_list); temp_bulk_static_layer_index++)
 {

@@ -60,6 +60,9 @@ lighting_engine_front_layer_sub_layer_object_type_list = -1;
 ds_list_destroy(lighting_engine_backgrounds);
 lighting_engine_backgrounds = -1;
 
+ds_list_destroy(lighting_engine_background_layer_ids);
+lighting_engine_background_layer_ids = -1;
+
 // Free Surfaces
 surface_free(lights_back_color_surface);
 surface_free(lights_mid_color_surface);

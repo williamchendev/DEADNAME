@@ -1,41 +1,5 @@
 /// @description MRT Scene & Lighting Draw
-// Draws Scene Backgrounds, MRT Objects, and Light Sources to Deferred Lighting Surfaces
-
-// Draw Background Surface
-surface_set_target(background_surface);
-draw_clear(c_black);
-
-gpu_set_blendmode(bm_normal);
-shader_set(shd_render_background);
-
-shader_set_uniform_f(background_shader_background_surface_size_index, GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2));
-
-var temp_background_index = 0;
-
-repeat (ds_list_size(lighting_engine_backgrounds))
-{
-	// Find Background
-	var temp_background = ds_list_find_value(lighting_engine_backgrounds, temp_background_index);
-	
-	// Draw Background
-	if (temp_background != 0)
-	{
-		shader_set_uniform_f(background_shader_background_size_index, temp_background.background_sprite_width * temp_background.background_uvs[6], temp_background.background_sprite_height * temp_background.background_uvs[7]);
-		shader_set_uniform_f(background_shader_background_trim_index, temp_background.background_sprite_offset_x - temp_background.background_uvs[4], temp_background.background_sprite_offset_y - temp_background.background_uvs[5]);
-		shader_set_uniform_f(background_shader_background_tile_index, 1, 1);
-		shader_set_uniform_f(background_shader_background_offset_index, temp_background.background_offset_x / GameManager.game_width, temp_background.background_offset_y / GameManager.game_height);
-		shader_set_uniform_f(background_shader_background_position_index, (render_x + (GameManager.game_width * 0.5)) / GameManager.game_width, (render_y + (GameManager.game_height * 0.5)) / GameManager.game_height);
-		shader_set_uniform_f(background_shader_background_uvs_index, temp_background.background_uvs[0], temp_background.background_uvs[1], temp_background.background_uvs[2], temp_background.background_uvs[3]);
-		
-		vertex_submit(screen_space_vertex_buffer, pr_trianglelist, temp_background.background_texture);
-	}
-	
-	// Increment Background Index
-	temp_background_index++;
-}
-
-shader_reset();
-surface_reset_target();
+// Draws Scene MRT Objects and Light Sources to Deferred Lighting Surfaces
 
 // Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);

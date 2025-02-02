@@ -10,6 +10,7 @@ ds_list_clear(directional_light_collisions_list);
 
 // Clear Backgrounds
 ds_list_clear(lighting_engine_backgrounds);
+ds_list_clear(lighting_engine_background_layer_ids);
 
 // Flush Texture Data
 draw_texture_flush();
