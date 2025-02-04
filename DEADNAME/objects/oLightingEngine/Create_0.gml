@@ -62,8 +62,6 @@ render_position = function(render_position_x, render_position_y)
 	render_y = lighting_engine_camera_bounds_exist ? clamp(render_position_y, lighting_engine_camera_bounds_min_y, lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
 }
 
-#region Surfaces
-
 // Surfaces
 lights_back_color_surface = -1;
 lights_mid_color_surface = -1;
@@ -79,8 +77,11 @@ diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_stencil_surface = -1;
-distortion_surface = -1;
 
+bloom_effect_surface = -1;
+distortion_effect_surface = -1;
+
+post_processing_surface = -1;
 final_render_surface = -1;
 
 ui_surface = -1;
@@ -111,11 +112,9 @@ vertex_format_add_color();
 vertex_format_add_texcoord();
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
+vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
+vertex_format_add_custom(vertex_type_float3, vertex_usage_texcoord);
 lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = vertex_format_end();
-
-#endregion
-
-#region Vertex Buffers
 
 // Vertex Buffers
 simple_light_vertex_buffer = vertex_create_buffer();
@@ -148,23 +147,25 @@ vertex_position(screen_space_vertex_buffer, 0, 1);
 vertex_end(screen_space_vertex_buffer);
 vertex_freeze(screen_space_vertex_buffer);
 
-#endregion
-
-#region Shader Indexes
-
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
 mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
 
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_UVs");
 
 mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorScale");
 mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorAngle");
 
 mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Layer_Depth");
 
+mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Enabled");
+
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
 mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_BloomTexture");
 
 // MRT Deferred Lighting Bulk Static Sprite Shader Indexes
 mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
@@ -271,10 +272,6 @@ final_render_lighting_shader_lightblend_back_layer_texture_index  = shader_get_s
 final_render_lighting_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_MidLayer_Texture");
 final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_FrontLayer_Texture");
 
-#endregion
-
-#region Sub-Layer Settings & Variables
-
 // Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;
 
@@ -305,8 +302,6 @@ lighting_engine_front_layer_sub_layer_depth_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_type_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_type_list = ds_list_create();
-
-#endregion
 
 // Lighting Engine Layer Method: Create Default Sub Layers
 create_default_sub_layers = function()

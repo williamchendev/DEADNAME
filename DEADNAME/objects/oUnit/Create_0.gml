@@ -76,8 +76,9 @@ x_velocity = 0;
 y_velocity = 0;
 
 // Animation Variables
-normalmap_spritepack = -1;
-specularmap_spritepack = -1;
+normalmap_spritepack = noone;
+specularmap_spritepack = noone;
+bloommap_spritepack = noone;
 
 image_speed = 0;
 
@@ -164,14 +165,20 @@ trig_sine = 0;
 trig_cosine = 1;
 
 // Generate UVs
-unit_spritepack_idle_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
-unit_spritepack_walk_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
-unit_spritepack_jump_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_normalmap);
-unit_spritepack_aim_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
-unit_spritepack_aim_walk_normalmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);
+unit_spritepack_idle_normalmap = global.unit_packs[unit_pack].idle_normalmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
+unit_spritepack_walk_normalmap = global.unit_packs[unit_pack].walk_normalmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
+unit_spritepack_jump_normalmap = global.unit_packs[unit_pack].jump_normalmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_normalmap);
+unit_spritepack_aim_normalmap = global.unit_packs[unit_pack].aim_normalmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
+unit_spritepack_aim_walk_normalmap = global.unit_packs[unit_pack].aim_walk_normalmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);
 
-unit_spritepack_idle_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
-unit_spritepack_walk_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
-unit_spritepack_jump_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_normalmap);
-unit_spritepack_aim_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
-unit_spritepack_aim_walk_specularmap = spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);
+unit_spritepack_idle_specularmap = global.unit_packs[unit_pack].idle_specularmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_specularmap);
+unit_spritepack_walk_specularmap = global.unit_packs[unit_pack].walk_specularmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_specularmap);
+unit_spritepack_jump_specularmap = global.unit_packs[unit_pack].jump_specularmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_specularmap);
+unit_spritepack_aim_specularmap = global.unit_packs[unit_pack].aim_specularmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_specularmap);
+unit_spritepack_aim_walk_specularmap = global.unit_packs[unit_pack].aim_walk_specularmap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_specularmap);
+
+unit_spritepack_idle_bloommap = global.unit_packs[unit_pack].idle_bloommap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_bloommap);
+unit_spritepack_walk_bloommap = global.unit_packs[unit_pack].walk_bloommap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_bloommap);
+unit_spritepack_jump_bloommap = global.unit_packs[unit_pack].jump_bloommap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_bloommap);
+unit_spritepack_aim_bloommap = global.unit_packs[unit_pack].aim_bloommap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_bloommap);
+unit_spritepack_aim_walk_bloommap = global.unit_packs[unit_pack].aim_walk_bloommap == noone ? noone : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_bloommap);

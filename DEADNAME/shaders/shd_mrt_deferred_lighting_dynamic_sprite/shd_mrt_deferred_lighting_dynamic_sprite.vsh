@@ -13,6 +13,7 @@ uniform vec2 in_Camera_Offset;
 // Uniform Sprite UVs
 uniform vec4 in_Normal_UVs;
 uniform vec4 in_Specular_UVs;
+uniform vec4 in_Bloom_UVs;
 
 // Uniform Normal Map Transformations
 uniform float in_VectorAngle;
@@ -21,6 +22,7 @@ uniform float in_VectorAngle;
 varying vec2 v_vTexcoord_DiffuseMap;
 varying vec2 v_vTexcoord_NormalMap;
 varying vec2 v_vTexcoord_SpecularMap;
+varying vec2 v_vTexcoord_BloomMap;
 
 // Interpolated Color & Rotate
 varying vec4 v_vColour;
@@ -41,6 +43,7 @@ void main()
 	v_vTexcoord_DiffuseMap = in_TextureCoord;
 	v_vTexcoord_NormalMap = in_TextureCoord * in_Normal_UVs.zw + in_Normal_UVs.xy;
 	v_vTexcoord_SpecularMap = in_TextureCoord * in_Specular_UVs.zw + in_Specular_UVs.xy;
+	v_vTexcoord_BloomMap = in_TextureCoord * in_Bloom_UVs.zw + in_Bloom_UVs.xy;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(in_Position.x - in_Camera_Offset.x, in_Position.y - in_Camera_Offset.y, 0.0, 1.0);

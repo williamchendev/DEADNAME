@@ -45,9 +45,11 @@ global.weapon_packs[WeaponPack.Default] =
     // Weapon Type
     weapon_type: WeaponType.DefaultFirearm,
     
-    // Sprite & NormalMap
+    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
     weapon_sprite: sArkov_FAL,
     weapon_normalmap: sArkov_FAL_NormalMap,
+    weapon_specularmap: noone,
+    weapon_bloommap: noone,
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 15,
@@ -99,9 +101,11 @@ global.weapon_packs[WeaponPack.Corso] =
     // Weapon Type
     weapon_type: WeaponType.BoltActionFirearm,
     
-    // Sprite & NormalMap
+    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
+    weapon_specularmap: noone,
+    weapon_bloommap: noone,
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 5,
@@ -153,7 +157,9 @@ global.weapon_packs[WeaponPack.SMG] =
     // Weapon Type
     weapon_type: WeaponType.DefaultFirearm,
     
-    // Sprite & NormalMap
+    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
+    weapon_specularmap: noone,
+    weapon_bloommap: noone,
 }

@@ -29,10 +29,11 @@
     {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"normalmap_texture","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"normalmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sDebug_Lighting_BulkStatic_Object","path":"sprites/sDebug_Lighting_BulkStatic_Object/sDebug_Lighting_BulkStatic_Object.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sDebug_Lighting_BulkStatic_Object","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"normalmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"specularmap_texture","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"specularmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sDebug_Lighting_BulkStatic_Object","path":"sprites/sDebug_Lighting_BulkStatic_Object/sDebug_Lighting_BulkStatic_Object.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sDebug_Lighting_BulkStatic_Object","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"specularmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+    {"$GMObjectProperty":"v1","%Name":"bloommap_texture","filters":[],"listItems":[],"multiselect":false,"name":"bloommap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"normalmap_strength","filters":[],"listItems":[],"multiselect":false,"name":"normalmap_strength","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
   ],
   "resourceType":"GMObject",

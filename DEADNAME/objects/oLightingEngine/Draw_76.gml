@@ -52,9 +52,19 @@ if (!surface_exists(depth_specular_stencil_surface))
     depth_specular_stencil_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(distortion_surface))
+if (!surface_exists(bloom_effect_surface))
 {
-    distortion_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(distortion_effect_surface))
+{
+    distortion_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(post_processing_surface))
+{
+    post_processing_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(final_render_surface))
@@ -103,9 +113,19 @@ surface_set_target(depth_specular_stencil_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-// Reset Distortion Surface
-surface_set_target(distortion_surface);
+// Reset Bloom Effect Surface
+surface_set_target(bloom_effect_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+// Reset Distortion Effect Surface
+surface_set_target(distortion_effect_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+surface_reset_target();
+
+// Reset Post Processing Surface
+surface_set_target(post_processing_surface);
+draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Refresh UI Surface Clear

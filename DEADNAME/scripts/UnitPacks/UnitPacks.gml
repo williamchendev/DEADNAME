@@ -57,21 +57,35 @@ enum UnitPack
 // Default Unit Pack
 global.unit_packs[UnitPack.Default] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_CapitalLoyalist_Idle,
 	walk_sprite: sWilliam_CapitalLoyalist_Run,
 	jump_sprite: sWilliam_CapitalLoyalist_Jump,
 	aim_sprite: sWilliam_CapitalLoyalist_Aim,
 	aim_walk_sprite: sWilliam_CapitalLoyalist_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_CapitalLoyalist_Idle_NormalMap,
 	walk_normalmap: sWilliam_CapitalLoyalist_Run_NormalMap,
 	jump_normalmap: sWilliam_CapitalLoyalist_Jump_NormalMap,
 	aim_normalmap: sWilliam_CapitalLoyalist_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_CapitalLoyalist_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_CapitalLoyalist_Head,
 	ragdoll_arm_left_sprite: sWilliam_CapitalLoyalist_Arms,
 	ragdoll_arm_right_sprite: sWilliam_CapitalLoyalist_Arms,
@@ -80,7 +94,7 @@ global.unit_packs[UnitPack.Default] =
 	ragdoll_leg_left_sprite: sWilliam_CapitalLoyalist_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_CapitalLoyalist_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_CapitalLoyalist_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_CapitalLoyalist_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_CapitalLoyalist_Arms_NormalMap,
@@ -88,6 +102,24 @@ global.unit_packs[UnitPack.Default] =
 	ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -7,
@@ -129,21 +161,35 @@ global.unit_packs[UnitPack.Default] =
 // Moralist William
 global.unit_packs[UnitPack.MoralistWilliam] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_CapitalLoyalist_Idle,
 	walk_sprite: sWilliam_CapitalLoyalist_Run,
 	jump_sprite: sWilliam_CapitalLoyalist_Jump,
 	aim_sprite: sWilliam_CapitalLoyalist_Aim,
 	aim_walk_sprite: sWilliam_CapitalLoyalist_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_CapitalLoyalist_Idle_NormalMap,
 	walk_normalmap: sWilliam_CapitalLoyalist_Run_NormalMap,
 	jump_normalmap: sWilliam_CapitalLoyalist_Jump_NormalMap,
 	aim_normalmap: sWilliam_CapitalLoyalist_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_CapitalLoyalist_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_CapitalLoyalist_Head,
 	ragdoll_arm_left_sprite: sWilliam_CapitalLoyalist_Arms,
 	ragdoll_arm_right_sprite: sWilliam_CapitalLoyalist_Arms,
@@ -152,7 +198,7 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	ragdoll_leg_left_sprite: sWilliam_CapitalLoyalist_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_CapitalLoyalist_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_CapitalLoyalist_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_CapitalLoyalist_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_CapitalLoyalist_Arms_NormalMap,
@@ -160,6 +206,24 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -7,
@@ -201,21 +265,35 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 // Wolf
 global.unit_packs[UnitPack.Wolf] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWolf_Idle,
 	walk_sprite: sWolf_Run,
 	jump_sprite: sWolf_Jump,
 	aim_sprite: sWolf_Aim,
 	aim_walk_sprite: sWolf_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWolf_Idle_NormalMap,
 	walk_normalmap: sWolf_Run_NormalMap,
 	jump_normalmap: sWolf_Jump_NormalMap,
 	aim_normalmap: sWolf_Aim_NormalMap,
 	aim_walk_normalmap: sWolf_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_CapitalLoyalist_Head,
 	ragdoll_arm_left_sprite: sWolf_Arms,
 	ragdoll_arm_right_sprite: sWolf_Arms,
@@ -224,7 +302,7 @@ global.unit_packs[UnitPack.Wolf] =
 	ragdoll_leg_left_sprite: sWilliam_CapitalLoyalist_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_CapitalLoyalist_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_CapitalLoyalist_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWolf_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWolf_Arms_NormalMap,
@@ -232,6 +310,24 @@ global.unit_packs[UnitPack.Wolf] =
 	ragdoll_chest_bot_normalmap: sWilliam_CapitalLoyalist_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_CapitalLoyalist_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_CapitalLoyalist_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -7,
@@ -253,21 +349,35 @@ global.unit_packs[UnitPack.Wolf] =
 // Director
 global.unit_packs[UnitPack.Director] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_Director_Idle,
 	walk_sprite: sWilliam_Director_Run,
 	jump_sprite: sWilliam_Director_Jump,
 	aim_sprite: sWilliam_Director_Aim,
 	aim_walk_sprite: sWilliam_Director_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_Director_Idle_NormalMap,
 	walk_normalmap: sWilliam_Director_Run_NormalMap,
 	jump_normalmap: sWilliam_Director_Jump_NormalMap,
 	aim_normalmap: sWilliam_Director_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_Director_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_Knives_Head,
 	ragdoll_arm_left_sprite: sWilliam_Director_Arms,
 	ragdoll_arm_right_sprite: sWilliam_Director_Arms,
@@ -276,7 +386,7 @@ global.unit_packs[UnitPack.Director] =
 	ragdoll_leg_left_sprite: sWilliam_Knives_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_Knives_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_Knives_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_Director_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_Director_Arms_NormalMap,
@@ -284,6 +394,24 @@ global.unit_packs[UnitPack.Director] =
 	ragdoll_chest_bot_normalmap: sWilliam_Knives_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_Knives_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_Knives_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -5,
@@ -305,21 +433,35 @@ global.unit_packs[UnitPack.Director] =
 // Knives
 global.unit_packs[UnitPack.Knives] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_Knives_Idle,
 	walk_sprite: sWilliam_Knives_Run,
 	jump_sprite: sWilliam_Knives_Jump,
 	aim_sprite: sWilliam_Knives_Aim,
 	aim_walk_sprite: sWilliam_Knives_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_Knives_Idle_NormalMap,
 	walk_normalmap: sWilliam_Knives_Run_NormalMap,
 	jump_normalmap: sWilliam_Knives_Jump_NormalMap,
 	aim_normalmap: sWilliam_Knives_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_Knives_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_Knives_Head,
 	ragdoll_arm_left_sprite: sWilliam_Knives_Arms,
 	ragdoll_arm_right_sprite: sWilliam_Knives_Arms,
@@ -328,7 +470,7 @@ global.unit_packs[UnitPack.Knives] =
 	ragdoll_leg_left_sprite: sWilliam_Knives_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_Knives_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_Knives_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_Knives_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_Knives_Arms_NormalMap,
@@ -336,6 +478,24 @@ global.unit_packs[UnitPack.Knives] =
 	ragdoll_chest_bot_normalmap: sWilliam_Knives_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_Knives_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_Knives_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -5,
@@ -357,21 +517,35 @@ global.unit_packs[UnitPack.Knives] =
 // Martyr
 global.unit_packs[UnitPack.Martyr] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliamDS_Heavy_Idle,
 	walk_sprite: sWilliamDS_Heavy_Run,
 	jump_sprite: sWilliamDS_Heavy_Jump,
 	aim_sprite: sWilliamDS_Heavy_Aim,
 	aim_walk_sprite: sWilliamDS_Heavy_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliamDS_Heavy_Idle_NormalMap,
 	walk_normalmap: sWilliamDS_Heavy_Run_NormalMap,
 	jump_normalmap: sWilliamDS_Heavy_Jump_NormalMap,
 	aim_normalmap: sWilliamDS_Heavy_Aim_NormalMap,
 	aim_walk_normalmap: sWilliamDS_Heavy_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliamDS_Heavy_Head,
 	ragdoll_arm_left_sprite: sWilliamDS_Heavy_Arms,
 	ragdoll_arm_right_sprite: sWilliamDS_Heavy_Arms,
@@ -380,7 +554,7 @@ global.unit_packs[UnitPack.Martyr] =
 	ragdoll_leg_left_sprite: sWilliamDS_Heavy_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliamDS_Heavy_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliamDS_Heavy_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliamDS_Heavy_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliamDS_Heavy_Arms_NormalMap,
@@ -388,6 +562,24 @@ global.unit_packs[UnitPack.Martyr] =
 	ragdoll_chest_bot_normalmap: sWilliamDS_Heavy_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliamDS_Heavy_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliamDS_Heavy_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -6,
@@ -409,21 +601,35 @@ global.unit_packs[UnitPack.Martyr] =
 // Northern Brigade Soldier
 global.unit_packs[UnitPack.NorthernBrigadeSoldier] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_NorthernBrigade_Soldat_Idle,
 	walk_sprite: sWilliam_NorthernBrigade_Soldat_Run,
 	jump_sprite: sWilliam_NorthernBrigade_Soldat_Jump,
 	aim_sprite: sWilliam_NorthernBrigade_Soldat_Aim,
 	aim_walk_sprite: sWilliam_NorthernBrigade_Soldat_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_NorthernBrigade_Soldat_Idle_NormalMap,
 	walk_normalmap: sWilliam_NorthernBrigade_Soldat_Run_NormalMap,
 	jump_normalmap: sWilliam_NorthernBrigade_Soldat_Jump_NormalMap,
 	aim_normalmap: sWilliam_NorthernBrigade_Soldat_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_NorthernBrigade_Soldat_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_NorthernBrigade_Soldat_Head,
 	ragdoll_arm_left_sprite: sWilliam_NorthernBrigade_Arms,
 	ragdoll_arm_right_sprite: sWilliam_NorthernBrigade_Arms,
@@ -432,7 +638,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	ragdoll_leg_left_sprite: sWilliam_NorthernBrigade_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_NorthernBrigade_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_NorthernBrigade_Soldat_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_NorthernBrigade_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_NorthernBrigade_Arms_NormalMap,
@@ -440,6 +646,24 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	ragdoll_chest_bot_normalmap: sWilliam_NorthernBrigade_Soldat_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_NorthernBrigade_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_NorthernBrigade_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -6,
@@ -461,21 +685,35 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 // Northern Brigade Officer
 global.unit_packs[UnitPack.NorthernBrigadeOfficer] = 
 {
-	// Animation Sprites
+	// Animation Diffuse Maps
 	idle_sprite: sWilliam_NorthernBrigade_Idle,
 	walk_sprite: sWilliam_NorthernBrigade_Run,
 	jump_sprite: sWilliam_NorthernBrigade_Jump,
 	aim_sprite: sWilliam_NorthernBrigade_Aim,
 	aim_walk_sprite: sWilliam_NorthernBrigade_AimWalk,
 	
-	// Animation NormalMaps
+	// Animation Normal Maps
 	idle_normalmap: sWilliam_NorthernBrigade_Idle_NormalMap,
 	walk_normalmap: sWilliam_NorthernBrigade_Run_NormalMap,
 	jump_normalmap: sWilliam_NorthernBrigade_Jump_NormalMap,
 	aim_normalmap: sWilliam_NorthernBrigade_Aim_NormalMap,
 	aim_walk_normalmap: sWilliam_NorthernBrigade_AimWalk_NormalMap,
 	
-	// Bodypart Sprites
+	// Animation Specular Maps
+	idle_specularmap: noone,
+	walk_specularmap: noone,
+	jump_specularmap: noone,
+	aim_specularmap: noone,
+	aim_walk_specularmap: noone,
+	
+	// Animation Bloom Maps
+	idle_bloommap: noone,
+	walk_bloommap: noone,
+	jump_bloommap: noone,
+	aim_bloommap: noone,
+	aim_walk_bloommap: noone,
+	
+	// Bodypart Diffuse Maps
 	ragdoll_head_sprite: sWilliam_NorthernBrigade_Head,
 	ragdoll_arm_left_sprite: sWilliam_NorthernBrigade_Arms,
 	ragdoll_arm_right_sprite: sWilliam_NorthernBrigade_Arms,
@@ -484,7 +722,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	ragdoll_leg_left_sprite: sWilliam_NorthernBrigade_LeftLeg,
 	ragdoll_leg_right_sprite: sWilliam_NorthernBrigade_RightLeg,
 	
-	// Bodypart NormalMaps
+	// Bodypart Normal Maps
 	ragdoll_head_normalmap: sWilliam_NorthernBrigade_Head_NormalMap,
 	ragdoll_arm_left_normalmap: sWilliam_NorthernBrigade_Arms_NormalMap,
 	ragdoll_arm_right_normalmap: sWilliam_NorthernBrigade_Arms_NormalMap,
@@ -492,6 +730,24 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	ragdoll_chest_bot_normalmap: sWilliam_NorthernBrigade_ChestBot_NormalMap,
 	ragdoll_leg_left_normalmap: sWilliam_NorthernBrigade_LeftLeg_NormalMap,
 	ragdoll_leg_right_normalmap: sWilliam_NorthernBrigade_RightLeg_NormalMap,
+	
+	// Bodypart Specular Maps
+	ragdoll_head_specularmap: noone,
+	ragdoll_arm_left_specularmap: noone,
+	ragdoll_arm_right_specularmap: noone,
+	ragdoll_chest_top_specularmap: noone,
+	ragdoll_chest_bot_specularmap: noone,
+	ragdoll_leg_left_specularmap: noone,
+	ragdoll_leg_right_specularmap: noone,
+	
+	// Bodypart Bloom Maps
+	ragdoll_head_bloommap: noone,
+	ragdoll_arm_left_bloommap: noone,
+	ragdoll_arm_right_bloommap: noone,
+	ragdoll_chest_top_bloommap: noone,
+	ragdoll_chest_bot_bloommap: noone,
+	ragdoll_leg_left_bloommap: noone,
+	ragdoll_leg_right_bloommap: noone,
 	
 	// Limb & Equipment Positions
 	limb_anchor_left_arm_x: -4,

@@ -272,6 +272,7 @@
     {"name":"oUnitPlayer","order":8,"path":"objects/oUnitPlayer/oUnitPlayer.yy",},
     {"name":"_TitleScreen","order":1,"path":"rooms/_TitleScreen/_TitleScreen.yy",},
     {"name":"AdobeHouse","order":2,"path":"rooms/AdobeHouse/AdobeHouse.yy",},
+    {"name":"DebugRoom","order":1,"path":"rooms/DebugRoom/DebugRoom.yy",},
     {"name":"angle_refract","order":1,"path":"scripts/angle_refract/angle_refract.yy",},
     {"name":"array_create_ext","order":1,"path":"scripts/array_create_ext/array_create_ext.yy",},
     {"name":"array_depth","order":2,"path":"scripts/array_depth/array_depth.yy",},

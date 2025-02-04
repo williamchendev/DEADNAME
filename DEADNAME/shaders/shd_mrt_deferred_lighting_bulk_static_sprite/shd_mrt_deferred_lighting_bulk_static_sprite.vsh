@@ -9,14 +9,22 @@ attribute vec4 in_Colour;					// (r, g, b, a)
 attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
 attribute vec4 in_TextureCoord_Normal; 		// (x, y, z, w)
 attribute vec4 in_TextureCoord_Specular; 	// (x, y, z, w)
+attribute vec4 in_TextureCoord_Bloom; 		// (x, y, z, w)
+attribute vec3 in_ShaderEffect_Toggles; 	// (x, y, z)
 
 // Uniform Camera Properties
 uniform vec2 in_Camera_Offset;
+
+// Interpolated Shader Effect Toggles
+varying float in_Normal_Enabled;
+varying float in_Specular_Enabled;
+varying float in_Bloom_Enabled;
 
 // Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
 varying vec2 v_vTexcoord_NormalMap;
 varying vec2 v_vTexcoord_SpecularMap;
+varying vec2 v_vTexcoord_BloomMap;
 
 // Interpolated Color, Scale, and Rotation Values
 varying vec4 v_vColour;
@@ -37,10 +45,16 @@ void main()
 	vec2 RotateVector = vec2(cos(RotateAngle), sin(RotateAngle));
 	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	
+	// Set Shader Effect Toggles
+	in_Normal_Enabled = in_ShaderEffect_Toggles.x;
+	in_Specular_Enabled = in_ShaderEffect_Toggles.y;
+	in_Bloom_Enabled = in_ShaderEffect_Toggles.z;
+	
 	// Set Sprite UVs
 	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;
 	v_vTexcoord_NormalMap = in_TextureCoord_Diffuse * in_TextureCoord_Normal.zw + in_TextureCoord_Normal.xy;
 	v_vTexcoord_SpecularMap = in_TextureCoord_Diffuse * in_TextureCoord_Specular.zw + in_TextureCoord_Specular.xy;
+	v_vTexcoord_BloomMap = in_TextureCoord_Diffuse * in_TextureCoord_Bloom.zw + in_TextureCoord_Bloom.xy;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(in_Position.x - in_Camera_Offset.x, in_Position.y - in_Camera_Offset.y, 0.0, 1.0);

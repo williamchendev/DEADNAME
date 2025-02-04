@@ -6,7 +6,6 @@
   "name":"oEnvironment_AdobeHouse_BulkStatic_DesertFencing",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normalmap_texture","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_DesertFencing_NormalMap","path":"sprites/sAdobeHouse_DesertFencing_NormalMap/sAdobeHouse_DesertFencing_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_DesertFencing_NormalMap",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"specularmap_texture","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_DesertFencing_NormalMap","path":"sprites/sAdobeHouse_DesertFencing_NormalMap/sAdobeHouse_DesertFencing_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_DesertFencing_NormalMap",},
   ],
   "parent":{
     "name":"AdobeHouse",

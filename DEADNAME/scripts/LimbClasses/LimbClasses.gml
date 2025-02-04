@@ -73,12 +73,13 @@ class LimbArmClass extends LimbClass define
 	// Limb Properties Methods
 	static init_arm = function(init_limb_type, init_unit_pack) 
 	{
-		//
+		// Set Limb Type
 		limb_type = init_limb_type;
 		
 		switch (init_limb_type)
 		{
 			case LimbType.LeftArm:
+				// Create Properties for Left Arm Limb
 				limb_animation_value_offset = 0;
 				
 				anchor_offset_x = global.unit_packs[init_unit_pack].limb_anchor_left_arm_x;
@@ -86,6 +87,8 @@ class LimbArmClass extends LimbClass define
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_left_sprite;
 				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_normalmap;
+				limb_specularmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_specularmap;
+				limb_bloommap = global.unit_packs[init_unit_pack].ragdoll_arm_left_bloommap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_angle;
@@ -95,6 +98,7 @@ class LimbArmClass extends LimbClass define
 				limb_walk_animation_ambient_move_height = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_ambient_move_height;
 				break;
 			case LimbType.RightArm:
+				// Create Properties for Right Arm Limb
 				limb_animation_value_offset = 0.5;
 				
 				anchor_offset_x = global.unit_packs[init_unit_pack].limb_anchor_right_arm_x;
@@ -102,6 +106,8 @@ class LimbArmClass extends LimbClass define
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_right_sprite;
 				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_normalmap;
+				limb_specularmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_specularmap;
+				limb_bloommap = global.unit_packs[init_unit_pack].ragdoll_arm_right_bloommap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_angle;
@@ -112,10 +118,10 @@ class LimbArmClass extends LimbClass define
 				break;
 		}
 		
-		//
+		// Set "Rocking Back and Forth" Idle Ambient Animation Movement Properties
 		limb_idle_animation_ambient_move_width = global.unit_packs[init_unit_pack].limb_idle_animation_ambient_move_width;
 		
-		//
+		// Set Ambient Animation Limb Extension During Movement Properties
 		limb_length = sprite_get_height(limb_sprite) * 2;
 		
 		var limb_idle_animation_extension_percent = global.unit_packs[init_unit_pack].limb_idle_animation_extension_percent;
@@ -130,9 +136,10 @@ class LimbArmClass extends LimbClass define
 		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 		
-		//
-		limb_normalmap_spritepack = spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
-		limb_specularmap_spritepack = spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
+		// Set Limb Sprite Packs
+		limb_normalmap_spritepack = limb_normalmap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
+		limb_specularmap_spritepack = limb_specularmap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_specularmap);
+		limb_bloommap_spritepack = limb_bloommap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_bloommap);
 	}
 	
 	// Update Methods

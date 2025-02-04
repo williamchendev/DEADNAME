@@ -13,7 +13,7 @@ shader_set_uniform_f(final_render_lighting_shader_distortion_strength_index, uni
 shader_set_uniform_f(final_render_lighting_shader_distortion_aspect_index, (GameManager.game_height + (render_border * 2)) / (GameManager.game_width + (render_border * 2)));
 
 // Set Final Render Shader's Distortion Texture
-texture_set_stage(final_render_lighting_shader_distortion_texture_index, surface_get_texture(distortion_surface));
+texture_set_stage(final_render_lighting_shader_distortion_texture_index, surface_get_texture(distortion_effect_surface));
 
 // Set Final Render Shader's Background Texture
 texture_set_stage(final_render_lighting_shader_background_texture_index, surface_get_texture(background_surface));

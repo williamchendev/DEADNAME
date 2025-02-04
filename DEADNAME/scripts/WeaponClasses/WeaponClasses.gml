@@ -21,10 +21,12 @@ class WeaponClass define
 		weapon_sprite = global.weapon_packs[init_weapon_pack].weapon_sprite;
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
 		weapon_specularmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
+		weapon_bloommap = global.weapon_packs[init_weapon_pack].weapon_bloommap;
 		
-		//
-		weapon_normalmap_spritepack = spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
-		weapon_specularmap_spritepack = spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
+		// Init Weapon Sprite Packs
+		weapon_normalmap_spritepack = weapon_normalmap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
+		weapon_specularmap_spritepack = weapon_specularmap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
+		weapon_bloommap_spritepack = weapon_bloommap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_bloommap);
 		
 		// Init Weapon Image Index
 	    weapon_image_index = 0;
