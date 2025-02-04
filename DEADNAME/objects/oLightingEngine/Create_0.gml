@@ -313,19 +313,47 @@ create_default_sub_layers = function()
 create_default_sub_layers();
 
 // Lighting Engine Rendering Methods
-render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, normalmap_uvs, specularmap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
+render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, bloommap_texture, normalmap_uvs, specularmap_uvs, bloommap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
 {
+	//
+	var temp_mrt_shader_normal_enabled = normalmap_texture != noone;
+	var temp_mrt_shader_specular_enabled = specularmap_texture != noone;
+	var temp_mrt_shader_bloom_enabled = bloommap_texture != noone;
+	
+	var temp_normalmap_uvs = temp_mrt_shader_normal_enabled ? normalmap_uvs : [ 0, 0, 0, 0 ];
+	var temp_specularmap_uvs = temp_mrt_shader_specular_enabled ? specularmap_uvs : [ 0, 0, 0, 0 ];
+	var temp_bloommap_uvs = temp_mrt_shader_bloom_enabled ? bloommap_uvs : [ 0, 0, 0, 0 ];
+	
+	//
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index, temp_mrt_shader_normal_enabled ? 1 : 0);
+	
+	if (temp_mrt_shader_normal_enabled)
+	{
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
+		 shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, temp_normalmap_uvs);
+	}
+	
     //
-    texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
-    texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index, specularmap_texture);
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index, temp_mrt_shader_specular_enabled ? 1 : 0);
+    
+    if (temp_mrt_shader_specular_enabled)
+    {
+    	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index, specularmap_texture);
+    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index, temp_specularmap_uvs);
+    }
+    
+    //
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index, temp_mrt_shader_bloom_enabled ? 1 : 0);
+	
+	if (temp_mrt_shader_bloom_enabled)
+	{
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index, bloommap_texture);
+    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index, temp_bloommap_uvs);
+	}
     
     //
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index, x_scale, y_scale, 1);
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index, rotation);
-    
-    //
-    shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, normalmap_uvs);
-    shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index, specularmap_uvs);
     
     //
     draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
@@ -448,10 +476,12 @@ render_layer = function(render_layer_type)
 						(
 							sprite_index,
 							image_index,
-							normalmap_spritepack[image_index].texture,
-							specularmap_spritepack[image_index].texture,
-							normalmap_spritepack[image_index].uvs,
-							specularmap_spritepack[image_index].uvs,
+							normalmap_spritepack != noone ? normalmap_spritepack[image_index].texture : noone,
+							specularmap_spritepack != noone ? specularmap_spritepack[image_index].texture : noone,
+							bloommap_spritepack != noone ? bloommap_spritepack[image_index].texture : noone,
+							normalmap_spritepack != noone ? normalmap_spritepack[image_index].uvs : noone,
+							specularmap_spritepack != noone ? specularmap_spritepack[image_index].uvs : noone,
+							bloommap_spritepack != noone ? bloommap_spritepack[image_index].uvs : noone,
 							x,
 							y + ground_contact_vertical_offset,
 							draw_xscale,

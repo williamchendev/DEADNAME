@@ -20,7 +20,7 @@ class WeaponClass define
 		// Init Weapon Properties
 		weapon_sprite = global.weapon_packs[init_weapon_pack].weapon_sprite;
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
-		weapon_specularmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
+		weapon_specularmap = global.weapon_packs[init_weapon_pack].weapon_specularmap;
 		weapon_bloommap = global.weapon_packs[init_weapon_pack].weapon_bloommap;
 		
 		// Init Weapon Sprite Packs
@@ -73,10 +73,12 @@ class WeaponClass define
 		(
 			weapon_sprite, 
 			weapon_image_index, 
-			weapon_normalmap_spritepack[weapon_image_index].texture,
-			weapon_specularmap_spritepack[weapon_image_index].texture, 
-			weapon_normalmap_spritepack[weapon_image_index].uvs,
-			weapon_specularmap_spritepack[weapon_image_index].uvs,
+			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].texture : noone,
+			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].texture : noone, 
+			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].texture : noone, 
+			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].uvs : noone,
+			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].uvs : noone,
+			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].uvs : noone,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 
@@ -253,10 +255,12 @@ class FirearmClass extends WeaponClass define
 		(
 			weapon_sprite, 
 			weapon_image_index, 
-			weapon_normalmap_spritepack[weapon_image_index].texture,
-			weapon_specularmap_spritepack[weapon_image_index].texture, 
-			weapon_normalmap_spritepack[weapon_image_index].uvs,
-			weapon_specularmap_spritepack[weapon_image_index].uvs,
+			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].texture : noone,
+			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].texture : noone, 
+			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].texture : noone, 
+			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].uvs : noone,
+			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].uvs : noone,
+			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].uvs : noone,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 
