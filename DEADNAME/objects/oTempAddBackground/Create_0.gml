@@ -5,4 +5,4 @@ lighting_engine_add_background(sBackgroundAdobeHouse1_A, c_white, 0, -35, true, 
 lighting_engine_add_background(sBackgroundAdobeHouse1_B, c_white, 0, -35, true, false, 0, 0, 0.08, 0.1, false, false);
 lighting_engine_add_background(sBackgroundAdobeHouse1_C, c_white, 0, -35, true, false, 0, 0, 0.2, 0.2, false, false);
 lighting_engine_add_background(sBackgroundAdobeHouse1_D, c_white, 0, -35, true, false, 0, 0, 0.35, 0.4, false, false);
-lighting_engine_add_background(sBackgroundAdobeHouse1_E, c_white, 0, 0, true, false, -0.3, 0, 0, 0, false, false);
+lighting_engine_add_background(sBackgroundAdobeHouse1_E, c_white, 0, 0, true, false, -0.3, 0, 0.35, 0.4, false, false);

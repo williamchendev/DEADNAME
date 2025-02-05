@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_bloom_surface_render",
+  "name":"shd_bloom_surface_render",
+  "parent":{
+    "name":"Rendering",
+    "path":"folders/Shaders/Rendering.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

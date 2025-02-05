@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_post_process_render",
+  "name":"shd_post_process_render",
+  "parent":{
+    "name":"Rendering",
+    "path":"folders/Shaders/Rendering.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

@@ -54,6 +54,9 @@ lighting_engine_camera_bounds_min_y = 0;
 lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
+render_bloom_color = c_white;
+render_bloom_intensity = 1.0;
+
 // Render Functions
 render_position = function(render_position_x, render_position_y)
 {
@@ -76,7 +79,7 @@ diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
-depth_specular_stencil_surface = -1;
+depth_specular_bloom_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;
@@ -86,6 +89,10 @@ final_render_surface = -1;
 
 ui_surface = -1;
 debug_surface = -1;
+
+// Surface Variables
+bloom_surface_texel_width = 0;
+bloom_surface_texel_height = 0;
 
 #endregion
 
@@ -257,6 +264,21 @@ directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd
 ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_SurfaceSize");
 
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
+
+// Deferred Lighting & Background Post Process Rendering Shader Indexes
+post_process_lighting_render_shader_background_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_Background_Texture");
+
+post_process_lighting_render_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_DiffuseMap_BackLayer_Texture");
+post_process_lighting_render_shader_diffusemap_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_DiffuseMap_FrontLayer_Texture");
+
+post_process_lighting_render_shader_lightblend_back_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_BackLayer_Texture");
+post_process_lighting_render_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_MidLayer_Texture");
+post_process_lighting_render_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_FrontLayer_Texture");
+
+// Bloom Effect Surface Rendering Shader Indexes
+bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_surface_render, "in_Surface_Texel_Size");
+
+bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_surface_render, "in_Bloom_Texture");
 
 // Final Render Pass Lighting Shader Indexes
 final_render_lighting_shader_distortion_strength_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Strength");

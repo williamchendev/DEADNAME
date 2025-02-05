@@ -47,14 +47,18 @@ if (!surface_exists(normalmap_vector_surface))
     normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(depth_specular_stencil_surface))
+if (!surface_exists(depth_specular_bloom_surface))
 {
-    depth_specular_stencil_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(bloom_effect_surface))
 {
     bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    
+    var temp_bloom_surface_texture = surface_get_texture(bloom_effect_surface);
+    bloom_surface_texel_width = texture_get_texel_width(temp_bloom_surface_texture);
+    bloom_surface_texel_height = texture_get_texel_height(temp_bloom_surface_texture);
 }
 
 if (!surface_exists(distortion_effect_surface))
@@ -108,8 +112,8 @@ surface_set_target(normalmap_vector_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
 surface_reset_target();
 
-// Reset Depth Specular Stencil Surface
-surface_set_target(depth_specular_stencil_surface);
+// Reset Depth Specular Bloom Surface
+surface_set_target(depth_specular_bloom_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

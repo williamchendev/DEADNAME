@@ -4,10 +4,10 @@
 // Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
-// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
+// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
 surface_set_target_ext(0, diffuse_back_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_stencil_surface);
+surface_set_target_ext(2, depth_specular_bloom_surface);
 
 // (Back Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
 render_layer(LightingEngineRenderLayerType.Back);
@@ -15,10 +15,10 @@ render_layer(LightingEngineRenderLayerType.Back);
 // (Back Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
+// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
 surface_set_target_ext(0, diffuse_mid_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_stencil_surface);
+surface_set_target_ext(2, depth_specular_bloom_surface);
 
 // (Mid Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
 render_layer(LightingEngineRenderLayerType.Mid);
@@ -26,10 +26,10 @@ render_layer(LightingEngineRenderLayerType.Mid);
 // (Mid Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Stencil (Object Detail and Effects Map)
+// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
 surface_set_target_ext(0, diffuse_front_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_stencil_surface);
+surface_set_target_ext(2, depth_specular_bloom_surface);
 
 // (Front Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
 render_layer(LightingEngineRenderLayerType.Front);

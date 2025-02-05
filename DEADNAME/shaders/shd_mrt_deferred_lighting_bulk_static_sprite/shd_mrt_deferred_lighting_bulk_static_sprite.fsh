@@ -53,6 +53,6 @@ void main()
     // MRT Draw Normal Map
     gl_FragData[1] = Normal;
     
-    // MRT Draw Depth, Specular, and Stencil Map
+    // MRT Draw Depth, Specular, and Bloom Map
     gl_FragData[2] = vec4((in_Layer_Depth * 0.5) + 0.5, Specular, Bloom, 1.0);
 }
