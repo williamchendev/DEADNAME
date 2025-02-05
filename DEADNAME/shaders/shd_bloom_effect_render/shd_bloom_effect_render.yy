@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_bloom_effect_render",
+  "name":"shd_bloom_effect_render",
+  "parent":{
+    "name":"Rendering",
+    "path":"folders/Shaders/Rendering.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

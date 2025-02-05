@@ -5,6 +5,9 @@
 shader_set(shd_post_process_render);
 surface_set_target(post_processing_surface);
 
+//
+draw_clear(c_black);
+
 // Set Deferred Lighting Post Process Render Shader's Background Texture
 texture_set_stage(post_process_lighting_render_shader_background_texture_index, surface_get_texture(background_surface));
 
@@ -25,7 +28,7 @@ surface_reset_target();
 shader_reset();
 
 // Enable Bloom Effect Shader and Surface Target
-shader_set(shd_bloom_surface_render);
+shader_set(shd_bloom_effect_render);
 surface_set_target(bloom_effect_surface);
 
 // Set Bloom Effect Surface Texel Size & Set Bloom Texture
@@ -43,27 +46,50 @@ draw_surface(post_processing_surface, 0, 0);
 surface_reset_target();
 shader_reset();
 
+// Create Bloom Render
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+surface_set_target(post_processing_surface);
+
+//
+draw_set_alpha(0.2);
+draw_set_color(c_white);
+
+//
+for (var w = -2; w <= 2; w++)
+{
+	for (var h = -2; h <= 2; h++)
+	{
+		draw_surface(bloom_effect_surface, w, h);
+	}
+}
+
+// Reset Surface & Blendmode
+surface_reset_target();
+gpu_set_blendmode(bm_normal);
+
+// Reset Draw Alpha
+draw_set_alpha(1.0);
+
 // Create Final Render
+shader_set(shd_distortion_effect_render);
 surface_set_target(final_render_surface);
 
 // Reset Final Render Surface with Neutral Color
 draw_clear(c_black);
 
+// Set Final Render Shader's Distortion Properties
+shader_set_uniform_f(distortion_effect_render_shader_distortion_strength_index, universal_distortion_strength);
+shader_set_uniform_f(distortion_effect_render_shader_distortion_aspect_index, (GameManager.game_height + (render_border * 2)) / (GameManager.game_width + (render_border * 2)));
+
+// Set Final Render Shader's Distortion Texture
+texture_set_stage(distortion_effect_render_shader_distortion_texture_index, surface_get_texture(distortion_effect_surface));
+
 //
 draw_surface(post_processing_surface, -render_border, -render_border);
 
-draw_set_alpha(0.2);
-for (var w = -2; w <= 2; w++)
-{
-	for (var h = -2; h <= 2; h++)
-	{
-		draw_surface(bloom_effect_surface, -render_border + w, -render_border + h);
-	}
-}
-
-
-// Reset Surface & Shader
+// Reset Surface
 surface_reset_target();
+shader_reset();
 
 //#####
 

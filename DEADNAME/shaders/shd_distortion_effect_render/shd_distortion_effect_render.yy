@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_bloom_surface_render",
-  "name":"shd_bloom_surface_render",
+  "%Name":"shd_distortion_effect_render",
+  "name":"shd_distortion_effect_render",
   "parent":{
     "name":"Rendering",
     "path":"folders/Shaders/Rendering.yy",

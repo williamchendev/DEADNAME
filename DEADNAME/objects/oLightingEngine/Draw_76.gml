@@ -125,11 +125,7 @@ surface_reset_target();
 // Reset Distortion Effect Surface
 surface_set_target(distortion_effect_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-surface_reset_target();
-
-// Reset Post Processing Surface
-surface_set_target(post_processing_surface);
-draw_clear_alpha(c_black, 0);
+draw_sprite(sDebugNormalMap_Sphere, 0, 300, 300);
 surface_reset_target();
 
 // Refresh UI Surface Clear

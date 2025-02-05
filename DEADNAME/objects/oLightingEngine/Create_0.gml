@@ -276,9 +276,14 @@ post_process_lighting_render_shader_lightblend_mid_layer_texture_index  = shader
 post_process_lighting_render_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_FrontLayer_Texture");
 
 // Bloom Effect Surface Rendering Shader Indexes
-bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_surface_render, "in_Surface_Texel_Size");
+bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_Surface_Texel_Size");
 
-bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_surface_render, "in_Bloom_Texture");
+bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_Bloom_Texture");
+
+// Distortion Effect Surface Rendering Shader Indexes
+distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
+distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Aspect");
+distortion_effect_render_shader_distortion_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Texture");
 
 // Final Render Pass Lighting Shader Indexes
 final_render_lighting_shader_distortion_strength_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Strength");
