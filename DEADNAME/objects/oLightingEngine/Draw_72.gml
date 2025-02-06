@@ -125,9 +125,8 @@ with (oLightingEngine_Source_PointLight)
 		shader_set_uniform_f(LightingEngine.point_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
 		
-		// Set Shader Surface Width, Height, Position, and Texture Properties
-		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
-		shader_set_uniform_f(LightingEngine.point_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);
+		// Set Shader Surface Width, Height, and Texture Properties
+		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
 		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
@@ -241,9 +240,8 @@ with (oLightingEngine_Source_SpotLight)
 		shader_set_uniform_f(LightingEngine.spot_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
 		
-		// Set Shader Surface Width, Height, Position, and Texture Properties
-		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
-		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_position_index, LightingEngine.render_x, LightingEngine.render_y);
+		// Set Shader Surface Width, Height, and Texture Properties
+		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
 		texture_set_stage(LightingEngine.spot_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
@@ -425,37 +423,37 @@ if (global.debug and global.debug_surface_enabled)
 	//
 	with (oPlatform)
 	{
-		draw_self();
+		draw_sprite_ext(sprite_index, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, image_xscale, image_yscale, image_angle, image_blend, 1);
 	}
 	
 	//
 	with (oSolid)
 	{
-		draw_self();
+		draw_sprite_ext(sprite_index, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, image_xscale, image_yscale, image_angle, image_blend, 1);
 	}
 	
 	//
 	with (oLightingEngine_Source_PointLight)
 	{
-		draw_sprite_ext(sDebug_Lighting_Icon_PointLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+		draw_sprite_ext(sDebug_Lighting_Icon_PointLight, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
 	}
 	
 	//
 	with (oLightingEngine_Source_SpotLight)
 	{
-		draw_sprite_ext(sDebug_Lighting_Icon_SpotLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+		draw_sprite_ext(sDebug_Lighting_Icon_SpotLight, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
 	}
 	
 	//
 	with (oLightingEngine_Source_AmbientLight)
 	{
-		draw_sprite_ext(sDebug_Lighting_Icon_AmbientOcclusionLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+		draw_sprite_ext(sDebug_Lighting_Icon_AmbientOcclusionLight, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
 	}
 	
 	//
 	with (oLightingEngine_Source_DirectionalLight)
 	{
-		draw_sprite_ext(sDebug_Lighting_Icon_DirectionalLight, 0, x, y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
+		draw_sprite_ext(sDebug_Lighting_Icon_DirectionalLight, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, 1, 1, image_angle, image_blend, 0.5 + (image_alpha * 0.5));
 	}
 	
 	// Reset Surface

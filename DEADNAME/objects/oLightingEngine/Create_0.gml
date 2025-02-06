@@ -90,10 +90,6 @@ final_render_surface = -1;
 ui_surface = -1;
 debug_surface = -1;
 
-// Surface Variables
-bloom_surface_texel_width = 0;
-bloom_surface_texel_height = 0;
-
 #endregion
 
 #region Vertex Formats
@@ -186,7 +182,6 @@ point_light_shader_radius_index = shader_get_uniform(shd_point_light_blend, "in_
 point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light_blend, "in_CenterPoint");
 
 point_light_shader_surface_size_index = shader_get_uniform(shd_point_light_blend, "in_SurfaceSize");
-point_light_shader_surface_position_index = shader_get_uniform(shd_point_light_blend, "in_SurfacePosition");
 
 point_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_Strength_Multiplier");
 point_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_BroadLight_Strength_Multiplier");
@@ -209,7 +204,6 @@ spot_light_shader_radius_index = shader_get_uniform(shd_spot_light_blend, "in_Ra
 spot_light_shader_centerpoint_index = shader_get_uniform(shd_spot_light_blend, "in_CenterPoint");
 
 spot_light_shader_surface_size_index = shader_get_uniform(shd_spot_light_blend, "in_SurfaceSize");
-spot_light_shader_surface_position_index = shader_get_uniform(shd_spot_light_blend, "in_SurfacePosition");
 
 spot_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_spot_light_blend, "in_HighLight_Strength_Multiplier");
 spot_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_spot_light_blend, "in_BroadLight_Strength_Multiplier");
@@ -275,6 +269,8 @@ post_process_lighting_render_shader_lightblend_back_layer_texture_index  = shade
 post_process_lighting_render_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_MidLayer_Texture");
 post_process_lighting_render_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_FrontLayer_Texture");
 
+post_process_lighting_render_shader_specular_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_SpecularMap");
+
 // Bloom Effect Surface Rendering Shader Indexes
 bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_Surface_Texel_Size");
 
@@ -284,20 +280,6 @@ bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_b
 distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
 distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Aspect");
 distortion_effect_render_shader_distortion_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Texture");
-
-// Final Render Pass Lighting Shader Indexes
-final_render_lighting_shader_distortion_strength_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Strength");
-final_render_lighting_shader_distortion_aspect_index = shader_get_uniform(shd_final_render_lighting, "in_Distortion_Aspect");
-final_render_lighting_shader_distortion_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_Distortion_Texture");
-
-final_render_lighting_shader_background_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_Background_Texture");
-
-final_render_lighting_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_BackLayer_Texture");
-final_render_lighting_shader_diffusemap_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_DiffuseMap_FrontLayer_Texture");
-
-final_render_lighting_shader_lightblend_back_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_BackLayer_Texture");
-final_render_lighting_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_MidLayer_Texture");
-final_render_lighting_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_final_render_lighting, "gm_LightBlend_FrontLayer_Texture");
 
 // Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;

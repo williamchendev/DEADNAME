@@ -41,8 +41,8 @@ repeat (array_length(temp_room_layers))
 		// Center Background
 		var temp_background_layer_sprite_index = layer_background_get_sprite(temp_background_layer_id);
 		
-		var temp_background_sprite_width = sprite_get_width(temp_background_layer_sprite_index);
-		var temp_background_sprite_height = sprite_get_height(temp_background_layer_sprite_index);
+		var temp_background_sprite_width = temp_background_layer_sprite_index != -1 ? sprite_get_width(temp_background_layer_sprite_index) : 0;
+		var temp_background_sprite_height = temp_background_layer_sprite_index != -1 ? sprite_get_height(temp_background_layer_sprite_index) : 0;
 		
 		layer_x(temp_room_layers[temp_layer_index], ((GameManager.game_width * 0.5) + LightingEngine.render_border) - (temp_background_sprite_width * 0.5));
 		layer_y(temp_room_layers[temp_layer_index], ((GameManager.game_height * 0.5) + LightingEngine.render_border) - (temp_background_sprite_height * 0.5));

@@ -21,7 +21,6 @@ inno_spelman_text_alpha_spd = 0.015;
 
 // Play Option Settings
 play_fade_spd = 0.03;
-play_room_goto = AdobeHouse;
 
 // Options Settings
 options_text = "Press F11 for Fullscreen\n\nCheck back in 2 years for more options...";

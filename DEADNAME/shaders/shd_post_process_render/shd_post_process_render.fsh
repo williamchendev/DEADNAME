@@ -14,6 +14,9 @@ uniform sampler2D gm_LightBlend_BackLayer_Texture;
 uniform sampler2D gm_LightBlend_MidLayer_Texture;
 uniform sampler2D gm_LightBlend_FrontLayer_Texture;
 
+// Uniform Specular Map
+uniform sampler2D gm_SpecularMap;
+
 // Interpolated Color and UVs
 varying vec4 v_vColour;
 varying vec2 v_vTexcoord;
@@ -21,6 +24,9 @@ varying vec2 v_vTexcoord;
 // Fragment Shader
 void main() 
 {
+	// Find Specular Value at Pixel
+	float SpecularValue = texture2D(gm_SpecularMap, v_vTexcoord).g;
+	
 	// Establish Background Surface Colors
 	vec4 Background_SurfaceColor = texture2D(gm_Background_Texture, v_vTexcoord);
 	
@@ -35,9 +41,9 @@ void main()
 	vec4 LightBlend_FrontLayer_SurfaceColor = texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord);
 	
 	// Layer Color Values
-	vec4 RenderColor_BackLayer = DiffuseMap_BackLayer_SurfaceColor * LightBlend_BackLayer_SurfaceColor;
-	vec4 RenderColor_MidLayer = DiffuseMap_MidLayer_SurfaceColor * LightBlend_MidLayer_SurfaceColor;
-	vec4 RenderColor_FrontLayer = DiffuseMap_FrontLayer_SurfaceColor * LightBlend_FrontLayer_SurfaceColor;
+	vec4 RenderColor_BackLayer = vec4(mix(DiffuseMap_BackLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_BackLayer_SurfaceColor.a) * LightBlend_BackLayer_SurfaceColor;
+	vec4 RenderColor_MidLayer = vec4(mix(DiffuseMap_MidLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_MidLayer_SurfaceColor.a) * LightBlend_MidLayer_SurfaceColor;
+	vec4 RenderColor_FrontLayer = vec4(mix(DiffuseMap_FrontLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_FrontLayer_SurfaceColor.a) * LightBlend_FrontLayer_SurfaceColor;
 	
 	vec4 RenderColor_Final = RenderColor_FrontLayer + (RenderColor_MidLayer * (1.0 - RenderColor_FrontLayer.a)) + (RenderColor_BackLayer * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a)) + (Background_SurfaceColor * (1.0 - RenderColor_BackLayer.a) * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a));
 	

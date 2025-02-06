@@ -12,9 +12,8 @@ uniform vec2 in_Camera_Offset;
 uniform float in_Radius;
 uniform vec2 in_CenterPoint;
 
-// Uniform Surface Position and Size Properties
+// Uniform Surface Size Properties
 uniform vec2 in_SurfaceSize;
-uniform vec2 in_SurfacePosition;
 
 // Interpolated Position and UV
 varying vec2 v_vPosition;
@@ -30,7 +29,7 @@ void main()
 	v_vPosition = (in_Position * 0.5) + 0.5;
 	
 	// Point Light Surface UV
-	v_vSurfaceUV = (vertex_position - in_SurfacePosition) / in_SurfaceSize;
+	v_vSurfaceUV = (vertex_position - in_Camera_Offset) / in_SurfaceSize;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(vertex_position.x - in_Camera_Offset.x, vertex_position.y - in_Camera_Offset.y, 0.0, 1.0);

@@ -14,7 +14,7 @@ if (play_active)
 	
 	if (play_fade_timer == 1) 
 	{
-		room_goto(play_room_goto);
+		room_goto(play_button_event_room);
 		return;
 	}
 }

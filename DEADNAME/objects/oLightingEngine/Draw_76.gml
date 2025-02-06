@@ -55,10 +55,6 @@ if (!surface_exists(depth_specular_bloom_surface))
 if (!surface_exists(bloom_effect_surface))
 {
     bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-    
-    var temp_bloom_surface_texture = surface_get_texture(bloom_effect_surface);
-    bloom_surface_texel_width = texture_get_texel_width(temp_bloom_surface_texture);
-    bloom_surface_texel_height = texture_get_texel_height(temp_bloom_surface_texture);
 }
 
 if (!surface_exists(distortion_effect_surface))

@@ -20,6 +20,9 @@ texture_set_stage(post_process_lighting_render_shader_lightblend_back_layer_text
 texture_set_stage(post_process_lighting_render_shader_lightblend_mid_layer_texture_index, surface_get_texture(lights_mid_color_surface));
 texture_set_stage(post_process_lighting_render_shader_lightblend_front_layer_texture_index, surface_get_texture(lights_front_color_surface));
 
+// Set Deferred Lighting Post Process Render Shader's Specular Map
+texture_set_stage(post_process_lighting_render_shader_specular_map_index, surface_get_texture(depth_specular_bloom_surface));
+
 // Render Lit Surface with Background to Post Processing Surface
 draw_surface(diffuse_mid_color_surface, 0, 0);
 
@@ -32,7 +35,7 @@ shader_set(shd_bloom_effect_render);
 surface_set_target(bloom_effect_surface);
 
 // Set Bloom Effect Surface Texel Size & Set Bloom Texture
-shader_set_uniform_f(bloom_effect_render_shader_surface_texel_size_index, bloom_surface_texel_width, bloom_surface_texel_height);
+shader_set_uniform_f(bloom_effect_render_shader_surface_texel_size_index, 1 / (GameManager.game_width + (render_border * 2)), 1 / (GameManager.game_height + (render_border * 2)));
 texture_set_stage(bloom_effect_render_shader_bloom_texture_index, surface_get_texture(depth_specular_bloom_surface));
 
 // Set Bloom Render Color and Intensity
