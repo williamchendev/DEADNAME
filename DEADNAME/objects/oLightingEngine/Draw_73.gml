@@ -79,14 +79,15 @@ draw_set_alpha(1);
 draw_set_color(c_white);
 
 //
-for (var w = -1; w <= 1; w++)
-{
-	for (var h = -1; h <= 1; h++)
-	{
-		draw_surface(bloom_effect_surface, w, h);
-	}
-}
 
+draw_surface(bloom_effect_surface, -1, -1);
+draw_surface(bloom_effect_surface, 1, -1);
+draw_surface(bloom_effect_surface, -1, 1);
+draw_surface(bloom_effect_surface, 1, 1);
+draw_surface(bloom_effect_surface, -1, 0);
+draw_surface(bloom_effect_surface, 1, 0);
+draw_surface(bloom_effect_surface, 0, -1);
+draw_surface(bloom_effect_surface, 0, 1);
 draw_surface(bloom_effect_surface, 0, 0);
 
 // Reset Surface & Blendmode

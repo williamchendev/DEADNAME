@@ -24,8 +24,10 @@ varying vec2 v_vTexcoord;
 // Fragment Shader
 void main() 
 {
-	// Find Specular Value at Pixel
-	float SpecularValue = texture2D(gm_SpecularMap, v_vTexcoord).g;
+	// Find Specular & Bloom Value at Pixel
+	vec4 DepthSpecularBloomValue = texture2D(gm_SpecularMap, v_vTexcoord);
+	float SpecularValue = DepthSpecularBloomValue.g;
+	float BloomValue = DepthSpecularBloomValue.b;
 	
 	// Establish Background Surface Colors
 	vec4 Background_SurfaceColor = texture2D(gm_Background_Texture, v_vTexcoord);
@@ -36,9 +38,9 @@ void main()
 	vec4 DiffuseMap_FrontLayer_SurfaceColor = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vTexcoord);
 	
 	// Establish Light Blend Surface Colors
-	vec4 LightBlend_BackLayer_SurfaceColor = texture2D(gm_LightBlend_BackLayer_Texture, v_vTexcoord);
-	vec4 LightBlend_MidLayer_SurfaceColor = texture2D(gm_LightBlend_MidLayer_Texture, v_vTexcoord);
-	vec4 LightBlend_FrontLayer_SurfaceColor = texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord);
+	vec4 LightBlend_BackLayer_SurfaceColor = max(texture2D(gm_LightBlend_BackLayer_Texture, v_vTexcoord), vec4(BloomValue));
+	vec4 LightBlend_MidLayer_SurfaceColor = max(texture2D(gm_LightBlend_MidLayer_Texture, v_vTexcoord), vec4(BloomValue));
+	vec4 LightBlend_FrontLayer_SurfaceColor = max(texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord), vec4(BloomValue));
 	
 	// Layer Color Values
 	vec4 RenderColor_BackLayer = vec4(mix(DiffuseMap_BackLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_BackLayer_SurfaceColor.a) * LightBlend_BackLayer_SurfaceColor;
