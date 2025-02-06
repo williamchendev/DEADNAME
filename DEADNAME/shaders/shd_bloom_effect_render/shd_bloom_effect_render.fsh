@@ -12,11 +12,15 @@ uniform vec2 in_Surface_Texel_Size;
 // Unifrom Bloom Texture
 uniform sampler2D in_Bloom_Texture;
 
+// Constants
+const float BloomMinimum = 0.15;
+
 // Fragment Shader
 void main() 
 {
 	//
-	float BloomValue = 0.0;
+	float BloomAlpha = 0.0;
+	float BloomCount = 0.0;
 	vec3 BloomColor = vec3(0.0);
 	
 	// Establish Bloom Value At Pixel
@@ -25,14 +29,15 @@ void main()
 		for (float y = -2.0; y <= 2.0; y++)
 		{
 			//
-			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + (in_Surface_Texel_Size * vec2(x, y))).b > 0.0 ? 1.0 : 0.0;
+			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + (in_Surface_Texel_Size * vec2(x, y))).b;
 			
 			//
-			BloomValue += Neighbor;
-			BloomColor += Neighbor != 0.0 ? texture2D(gm_BaseTexture, v_vTexcoord + (in_Surface_Texel_Size * vec2(x, y))).rgb : vec3(0.0);
+			BloomAlpha += Neighbor;
+			BloomCount += Neighbor > 0.0 ? 1.0 : 0.0;
+			BloomColor += Neighbor > 0.0 ? texture2D(gm_BaseTexture, v_vTexcoord + (in_Surface_Texel_Size * vec2(x, y))).rgb : vec3(0.0);
 		}
 	}
 	
 	//
-	gl_FragColor = v_vColour * vec4(BloomColor / BloomValue, BloomValue / 25.0);
+	gl_FragColor = v_vColour * vec4(BloomColor / BloomCount, max(BloomAlpha, BloomMinimum) / 25.0);
 }

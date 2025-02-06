@@ -1,5 +1,5 @@
 //
-// Distortion Bloom Effect fragment shader for Inno's Rendering System
+// Surface Distortion Effect fragment shader for Inno's Rendering System
 //
 
 // Interpolated Color and UVs

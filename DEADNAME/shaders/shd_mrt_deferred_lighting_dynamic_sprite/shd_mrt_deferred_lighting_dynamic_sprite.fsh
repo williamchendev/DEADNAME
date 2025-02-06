@@ -52,7 +52,7 @@ void main()
 	float Specular = in_Specular_Enabled == 1.0 ? texture2D(gm_SpecularTexture, v_vTexcoord_SpecularMap).r : 0.0;
 	
 	// Bloom Map
-	float Bloom = in_Bloom_Enabled == 1.0 ? texture2D(gm_BloomTexture, v_vTexcoord_BloomMap).r : 0.0;
+	float Bloom = in_Bloom_Enabled == 1.0 ? texture2D(gm_BloomTexture, v_vTexcoord_BloomMap).a : 0.0;
 	
 	// MRT Draw Diffuse Map
     gl_FragData[0] = v_vColour * Diffuse;

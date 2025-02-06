@@ -43,6 +43,17 @@ draw_set_color(render_bloom_color);
 draw_set_alpha(render_bloom_intensity);
 
 // Use Post Process Surface for Bloom Effect
+for (var w = -1; w <= 1; w++)
+{
+	for (var h = -1; h <= 1; h++)
+	{
+		if (w != 0 or h != 0)
+		{
+			draw_surface(post_processing_surface, w, h);
+		}
+	}
+}
+
 draw_surface(post_processing_surface, 0, 0);
 
 // Reset Surface & Shader
@@ -50,21 +61,17 @@ surface_reset_target();
 shader_reset();
 
 // Create Bloom Render
-gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 surface_set_target(post_processing_surface);
 
 //
-draw_set_alpha(0.2);
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+
+//
+draw_set_alpha(1);
 draw_set_color(c_white);
 
 //
-for (var w = -2; w <= 2; w++)
-{
-	for (var h = -2; h <= 2; h++)
-	{
-		draw_surface(bloom_effect_surface, w, h);
-	}
-}
+draw_surface(bloom_effect_surface, 0, 0);
 
 // Reset Surface & Blendmode
 surface_reset_target();
