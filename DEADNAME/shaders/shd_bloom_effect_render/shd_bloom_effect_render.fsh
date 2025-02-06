@@ -13,7 +13,7 @@ uniform vec2 in_Surface_Texel_Size;
 uniform sampler2D in_Bloom_Texture;
 
 // Constants
-const float BloomMinimum = 0.15;
+const float BloomPreMult = 0.66666;
 
 // Fragment Shader
 void main() 
@@ -39,5 +39,8 @@ void main()
 	}
 	
 	//
-	gl_FragColor = v_vColour * vec4(BloomColor / BloomCount, max(BloomAlpha, BloomMinimum) / 25.0);
+	vec4 Bloom = v_vColour * vec4(BloomColor / BloomCount, BloomAlpha / 25.0);
+	
+	//
+	gl_FragColor = vec4(Bloom.rgb * Bloom.a, Bloom.a) * BloomPreMult;
 }
