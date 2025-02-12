@@ -1,5 +1,5 @@
 //
-// Surface Horizontal (First Pass) Blur Effect vertex shader
+// Surface Vertical (Second Pass) Blur Effect vertex shader
 //
 
 // Vertex Buffer Properties

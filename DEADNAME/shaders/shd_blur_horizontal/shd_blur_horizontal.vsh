@@ -1,5 +1,5 @@
 //
-// (Multi Render Target) Lit Surface Final Rendering Pass vertex shader for Inno's Deferred Lighting System
+// Surface Horizontal (First Pass) Blur Effect vertex shader
 //
 
 // Vertex Buffer Properties

@@ -3,8 +3,8 @@
   "%Name":"shd_post_process_render",
   "name":"shd_post_process_render",
   "parent":{
-    "name":"Rendering",
-    "path":"folders/Shaders/Rendering.yy",
+    "name":"Post",
+    "path":"folders/Shaders/Post.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

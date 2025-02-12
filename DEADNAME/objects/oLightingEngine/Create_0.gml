@@ -54,7 +54,7 @@ lighting_engine_camera_bounds_min_y = 0;
 lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
-render_bloom_blur_size = 2;
+render_bloom_size = 3;
 render_bloom_color = c_white;
 render_bloom_intensity = 1.0;
 
@@ -82,10 +82,7 @@ diffuse_front_color_surface = -1;
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
 
-bloom_first_pass_surface = -1;
-bloom_second_pass_surface = -1;
-bloom_third_pass_surface = -1;
-
+bloom_effect_surface = -1;
 distortion_effect_surface = -1;
 
 post_processing_surface = -1;
@@ -263,7 +260,7 @@ ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusi
 
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
 
-// Background Layer, Deferred (Specular) Lighting, and Bloom Render Post Process Shader Indexes
+// Deferred Lighting & Background Post Process Rendering Shader Indexes
 post_process_lighting_render_shader_background_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_Background_Texture");
 
 post_process_lighting_render_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_DiffuseMap_BackLayer_Texture");
@@ -275,18 +272,11 @@ post_process_lighting_render_shader_lightblend_front_layer_texture_index  = shad
 
 post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_DepthSpecularBloomMap");
 
-post_process_lighting_render_shader_bloom_color_index = shader_get_uniform(shd_post_process_render, "in_BloomColor");
+// Bloom Effect Surface Rendering Shader Indexes
+bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");
+bloom_effect_render_shader_alpha_multiplier_index  = shader_get_uniform(shd_bloom_effect_render, "in_AlphaMult");
 
-// Bloom Box Blur First Pass Rendering Shader Indexes
-bloom_box_blur_shader_texel_size_index  = shader_get_uniform(shd_surface_bloom_boxblur, "in_TexelSize");
-
-// Surface (Horizontal) Blur Effect Rendering Shader Indexes
-surface_horizontal_blur_shader_texel_width_index  = shader_get_uniform(shd_surface_blur_horizontal, "in_TexelWidth");
-surface_horizontal_blur_shader_blur_width_index  = shader_get_uniform(shd_surface_blur_horizontal, "in_BlurWidth");
-
-// Surface (Vertical) Blur Effect Rendering Shader Indexes
-surface_vertical_blur_shader_texel_height_index  = shader_get_uniform(shd_surface_blur_vertical, "in_TexelHeight");
-surface_vertical_blur_shader_blur_height_index  = shader_get_uniform(shd_surface_blur_vertical, "in_BlurHeight");
+bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_Bloom_Texture");
 
 // Distortion Effect Surface Rendering Shader Indexes
 distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
