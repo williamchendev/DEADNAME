@@ -1,13 +1,12 @@
 {
   "$GMShader":"",
-  "%Name":"shd_bloom_boxblur",
-  "name":"shd_bloom_boxblur",
+  "%Name":"shd_surface_bloom_boxblur",
+  "name":"shd_surface_bloom_boxblur",
   "parent":{
     "name":"Blur",
     "path":"folders/Shaders/Blur.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",
-  "tags":[],
   "type":1,
 }

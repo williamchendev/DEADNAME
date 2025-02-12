@@ -32,7 +32,7 @@ surface_reset_target();
 shader_reset();
 
 // 
-shader_set(shd_bloom_boxblur);
+shader_set(shd_surface_bloom_boxblur);
 surface_set_target(bloom_second_pass_surface);
 
 //

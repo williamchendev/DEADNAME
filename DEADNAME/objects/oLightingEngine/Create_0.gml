@@ -278,7 +278,7 @@ post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get
 post_process_lighting_render_shader_bloom_color_index = shader_get_uniform(shd_post_process_render, "in_BloomColor");
 
 // Bloom Box Blur First Pass Rendering Shader Indexes
-bloom_box_blur_shader_texel_size_index  = shader_get_uniform(shd_bloom_boxblur, "in_TexelSize");
+bloom_box_blur_shader_texel_size_index  = shader_get_uniform(shd_surface_bloom_boxblur, "in_TexelSize");
 
 // Surface (Horizontal) Blur Effect Rendering Shader Indexes
 surface_horizontal_blur_shader_texel_width_index  = shader_get_uniform(shd_surface_blur_horizontal, "in_TexelWidth");
