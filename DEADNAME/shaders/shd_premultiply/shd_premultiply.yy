@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_premultiply",
+  "name":"shd_premultiply",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

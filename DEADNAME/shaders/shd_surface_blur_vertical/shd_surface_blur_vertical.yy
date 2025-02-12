@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_surface_blur_vertical",
+  "name":"shd_surface_blur_vertical",
+  "parent":{
+    "name":"Blur",
+    "path":"folders/Shaders/Blur.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

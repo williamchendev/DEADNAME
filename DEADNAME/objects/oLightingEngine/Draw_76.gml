@@ -52,9 +52,19 @@ if (!surface_exists(depth_specular_bloom_surface))
     depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(bloom_effect_surface))
+if (!surface_exists(bloom_first_pass_surface))
 {
-    bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    bloom_first_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(bloom_second_pass_surface))
+{
+    bloom_second_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(bloom_third_pass_surface))
+{
+    bloom_third_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(distortion_effect_surface))
@@ -114,7 +124,15 @@ draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Reset Bloom Effect Surface
-surface_set_target(bloom_effect_surface);
+surface_set_target(bloom_first_pass_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(bloom_second_pass_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(bloom_third_pass_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
@@ -122,6 +140,11 @@ surface_reset_target();
 surface_set_target(distortion_effect_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
 draw_sprite(sDebugNormalMap_Sphere, 0, 300, 300);
+surface_reset_target();
+
+// Reset Post Process Surface
+surface_set_target(post_processing_surface);
+draw_clear(c_black);
 surface_reset_target();
 
 // Refresh UI Surface Clear
