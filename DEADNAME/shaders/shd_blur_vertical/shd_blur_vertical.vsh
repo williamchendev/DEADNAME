@@ -1,5 +1,5 @@
 //
-// Surface Bloom Effect vertex shader for Inno's Rendering System
+// Surface Vertical (Second Pass) Blur Effect vertex shader
 //
 
 // Vertex Buffer Properties

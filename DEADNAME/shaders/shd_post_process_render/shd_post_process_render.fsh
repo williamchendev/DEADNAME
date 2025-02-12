@@ -14,8 +14,8 @@ uniform sampler2D gm_LightBlend_BackLayer_Texture;
 uniform sampler2D gm_LightBlend_MidLayer_Texture;
 uniform sampler2D gm_LightBlend_FrontLayer_Texture;
 
-// Uniform Specular Map
-uniform sampler2D gm_SpecularMap;
+// Uniform Depth, Specular, and Bloom Map
+uniform sampler2D gm_DepthSpecularBloomMap;
 
 // Interpolated Color and UVs
 varying vec4 v_vColour;
@@ -25,7 +25,7 @@ varying vec2 v_vTexcoord;
 void main() 
 {
 	// Find Specular & Bloom Value at Pixel
-	vec4 DepthSpecularBloomValue = texture2D(gm_SpecularMap, v_vTexcoord);
+	vec4 DepthSpecularBloomValue = texture2D(gm_DepthSpecularBloomMap, v_vTexcoord);
 	float SpecularValue = DepthSpecularBloomValue.g;
 	float BloomValue = DepthSpecularBloomValue.b;
 	
