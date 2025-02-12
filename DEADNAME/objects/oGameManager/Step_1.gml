@@ -33,3 +33,9 @@ if (keyboard_check_pressed(vk_f11))
 		window_set_fullscreen(true);
 	}
 }
+
+// Restart Room
+if (keyboard_check_pressed(vk_f8)) 
+{
+	room_restart();
+}
