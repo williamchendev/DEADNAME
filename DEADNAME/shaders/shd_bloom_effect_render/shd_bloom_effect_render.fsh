@@ -1,20 +1,20 @@
 //
-// Surface Bloom Effect vertex shader for Inno's Rendering System
+// Surface Bloom Effect fragment shader for Inno's Rendering System
 //
 
 // Interpolated Color and UVs
 varying vec4 v_vColour;
 varying vec2 v_vTexcoord;
 
-// Uniform Texel Size
+// Uniform Blur Settings
+uniform float in_AlphaMult;
 uniform vec2 in_TexelSize;
 
 // Unifrom Bloom Texture
 uniform sampler2D in_Bloom_Texture;
 
 // Constants
-const float BloomSize = 2.0;
-const float BloomPreMult = 0.333333;
+const float BloomBlurSize = 2.0;
 
 // Fragment Shader
 void main() 
@@ -23,9 +23,9 @@ void main()
 	float BloomAlpha = 0.0;
 	vec3 BloomColor = vec3(0.0);
 	
-	for (float x = -BloomSize; x <= BloomSize; x++)
+	for (float x = -BloomBlurSize; x <= BloomBlurSize; x++)
 	{
-		for (float y = -BloomSize; y <= BloomSize; y++)
+		for (float y = -BloomBlurSize; y <= BloomBlurSize; y++)
 		{
 			//
 			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).b;
@@ -37,6 +37,6 @@ void main()
 	}
 	
 	// Divide and Render Premultiplied Blur Color
-	vec4 Bloom = v_vColour * vec4(BloomColor / BloomAlpha, BloomAlpha / pow(2.0 * BloomSize + 1.0, 2.0));
-	gl_FragColor = vec4(Bloom.rgb * Bloom.a, Bloom.a) * BloomPreMult;
+	vec4 Bloom = v_vColour * vec4(BloomColor / BloomAlpha, BloomAlpha / pow(2.0 * BloomBlurSize + 1.0, 2.0));
+	gl_FragColor = vec4(Bloom.rgb * Bloom.a, Bloom.a) * in_AlphaMult;
 }

@@ -79,10 +79,7 @@ surface_free(diffuse_front_color_surface);
 surface_free(normalmap_vector_surface);
 surface_free(depth_specular_bloom_surface);
 
-surface_free(bloom_first_pass_surface);
-surface_free(bloom_second_pass_surface);
-surface_free(bloom_third_pass_surface);
-
+surface_free(bloom_effect_surface);
 surface_free(distortion_effect_surface);
 
 surface_free(post_processing_surface);
@@ -112,10 +109,7 @@ diffuse_front_color_surface = -1;
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
 
-bloom_first_pass_surface = -1;
-bloom_second_pass_surface = -1;
-bloom_third_pass_surface = -1;
-
+bloom_effect_surface = -1;
 distortion_effect_surface = -1;
 
 post_processing_surface = -1;

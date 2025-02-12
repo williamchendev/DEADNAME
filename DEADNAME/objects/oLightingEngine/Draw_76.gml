@@ -52,19 +52,9 @@ if (!surface_exists(depth_specular_bloom_surface))
     depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(bloom_first_pass_surface))
+if (!surface_exists(bloom_effect_surface))
 {
-    bloom_first_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(bloom_second_pass_surface))
-{
-    bloom_second_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(bloom_third_pass_surface))
-{
-    bloom_third_pass_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(distortion_effect_surface))
@@ -120,19 +110,6 @@ surface_reset_target();
 
 // Reset Depth Specular Bloom Surface
 surface_set_target(depth_specular_bloom_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-// Reset Bloom Effect Surface
-surface_set_target(bloom_first_pass_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(bloom_second_pass_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
-surface_set_target(bloom_third_pass_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

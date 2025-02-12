@@ -31,14 +31,20 @@ surface_reset_target();
 shader_reset();
 
 // Enable Bloom Effect Shader and Surface Target
-shader_set(shd_bloom_effect_render);
 surface_set_target(bloom_effect_surface);
+
+// Reset Bloom Effect Surface
+draw_clear_alpha(c_black, 0);
+
+//
+shader_set(shd_bloom_effect_render);
 
 // Set Bloom Texture
 texture_set_stage(bloom_effect_render_shader_bloom_texture_index, surface_get_texture(depth_specular_bloom_surface));
 
-// Set Bloom Effect Surface Texel Size
+// Set Bloom Effect Surface Texel Size & Alpha Multiplier
 shader_set_uniform_f(bloom_effect_render_shader_surface_texel_size_index, 1 / (GameManager.game_width + (render_border * 2)), 1 / (GameManager.game_height + (render_border * 2)));
+shader_set_uniform_f(bloom_effect_render_shader_alpha_multiplier_index, 1 / render_bloom_size);
 
 // Set Bloom Render Color and Intensity
 draw_set_color(render_bloom_color);
@@ -62,23 +68,18 @@ draw_set_alpha(1);
 draw_set_color(c_white);
 
 // Draw Bloom Effect Surface - pixel offset in each direction
-draw_surface(bloom_effect_surface, -2, -2);
-draw_surface(bloom_effect_surface, 2, -2);
-draw_surface(bloom_effect_surface, -2, 2);
-draw_surface(bloom_effect_surface, 2, 2);
-draw_surface(bloom_effect_surface, -2, 0);
-draw_surface(bloom_effect_surface, 2, 0);
-draw_surface(bloom_effect_surface, 0, -2);
-draw_surface(bloom_effect_surface, 0, 2);
+for (var i = render_bloom_size; i > 0; i--)
+{
+	draw_surface(bloom_effect_surface, -i, -i);
+	draw_surface(bloom_effect_surface, i, -i);
+	draw_surface(bloom_effect_surface, -i, i);
+	draw_surface(bloom_effect_surface, i, i);
+	draw_surface(bloom_effect_surface, -i, 0);
+	draw_surface(bloom_effect_surface, i, 0);
+	draw_surface(bloom_effect_surface, 0, -i);
+	draw_surface(bloom_effect_surface, 0, i);
+}
 
-draw_surface(bloom_effect_surface, -1, -1);
-draw_surface(bloom_effect_surface, 1, -1);
-draw_surface(bloom_effect_surface, -1, 1);
-draw_surface(bloom_effect_surface, 1, 1);
-draw_surface(bloom_effect_surface, -1, 0);
-draw_surface(bloom_effect_surface, 1, 0);
-draw_surface(bloom_effect_surface, 0, -1);
-draw_surface(bloom_effect_surface, 0, 1);
 draw_surface(bloom_effect_surface, 0, 0);
 
 // Reset Surface & Blendmode

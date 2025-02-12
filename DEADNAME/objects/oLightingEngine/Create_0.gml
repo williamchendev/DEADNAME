@@ -54,6 +54,7 @@ lighting_engine_camera_bounds_min_y = 0;
 lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
+render_bloom_size = 3;
 render_bloom_color = c_white;
 render_bloom_intensity = 1.0;
 
@@ -273,6 +274,7 @@ post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get
 
 // Bloom Effect Surface Rendering Shader Indexes
 bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");
+bloom_effect_render_shader_alpha_multiplier_index  = shader_get_uniform(shd_bloom_effect_render, "in_AlphaMult");
 
 bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_Bloom_Texture");
 
