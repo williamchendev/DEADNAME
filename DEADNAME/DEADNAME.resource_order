@@ -63,6 +63,7 @@
     {"name":"Functions","order":5,"path":"folders/Scripts/Unit Behaviours/Functions.yy",},
     {"name":"Sequences","order":12,"path":"folders/Sequences.yy",},
     {"name":"Shaders","order":6,"path":"folders/Shaders.yy",},
+    {"name":"Basic","order":4,"path":"folders/Shaders/Basic.yy",},
     {"name":"Blur","order":9,"path":"folders/Shaders/Blur.yy",},
     {"name":"Lights","order":7,"path":"folders/Shaders/Lights.yy",},
     {"name":"AmbientOcclusionLighting","order":6,"path":"folders/Shaders/Lights/AmbientOcclusionLighting.yy",},

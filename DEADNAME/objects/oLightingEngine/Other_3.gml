@@ -78,6 +78,7 @@ surface_free(diffuse_front_color_surface);
 
 surface_free(normalmap_vector_surface);
 surface_free(depth_specular_bloom_surface);
+surface_free(background_depth_specular_bloom_surface);
 
 surface_free(bloom_effect_surface);
 surface_free(distortion_effect_surface);
@@ -108,6 +109,7 @@ diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
+background_depth_specular_bloom_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;

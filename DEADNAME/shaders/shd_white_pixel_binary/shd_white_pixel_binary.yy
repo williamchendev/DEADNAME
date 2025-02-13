@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_white_pixel_binary",
+  "name":"shd_white_pixel_binary",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

@@ -52,6 +52,11 @@ if (!surface_exists(depth_specular_bloom_surface))
     depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
+if (!surface_exists(background_depth_specular_bloom_surface))
+{
+	background_depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
 if (!surface_exists(bloom_effect_surface))
 {
     bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
@@ -110,6 +115,10 @@ surface_reset_target();
 
 // Reset Depth Specular Bloom Surface
 surface_set_target(depth_specular_bloom_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(background_depth_specular_bloom_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

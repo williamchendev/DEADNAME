@@ -1,6 +1,20 @@
 /// @description Process Scene Lighting
 // Processes Diffuse and Lighting Surfaces into the Final Render Surface along with Post Processing Effects
 
+// Layer Background & Object Render Depth, Specular, Bloom Maps
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+
+surface_set_target(background_depth_specular_bloom_surface);
+draw_surface(depth_specular_bloom_surface, 0, 0);
+surface_reset_target();
+
+gpu_set_blendmode(bm_normal);
+
+surface_set_target(depth_specular_bloom_surface);
+draw_clear_alpha(c_black, 0);
+draw_surface(background_depth_specular_bloom_surface, 0, 0);
+surface_reset_target();
+
 // Enable Deferred Lighting Post Process Render Shader and Surface Target
 shader_set(shd_post_process_render);
 surface_set_target(post_processing_surface);
@@ -36,7 +50,7 @@ surface_set_target(bloom_effect_surface);
 // Reset Bloom Effect Surface
 draw_clear_alpha(c_black, 0);
 
-//
+// Set Bloom Effect Shader
 shader_set(shd_bloom_effect_render);
 
 // Set Bloom Texture
@@ -63,7 +77,7 @@ surface_set_target(post_processing_surface);
 // Set Premultiply Blendmode - Correctly Layers Premultiplied Transparent Bloom Surface over other Surfaces
 gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 
-//
+// Reset Color & Alpha
 draw_set_alpha(1);
 draw_set_color(c_white);
 

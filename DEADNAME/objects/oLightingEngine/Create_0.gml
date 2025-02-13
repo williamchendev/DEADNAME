@@ -30,7 +30,7 @@ highlight_to_broadlight_ratio_max = 5.0;
 
 universal_distortion_strength = 0.25;
 
-// Rendering Settings
+// Engine Settings
 application_surface_enable(false);
 application_surface_draw_enable(false);
 
@@ -41,7 +41,7 @@ gpu_set_sprite_cull(false);
 
 surface_depth_disable(true);
 
-// Renders
+// Render Settings
 render_x = 0;
 render_y = 0;
 
@@ -81,6 +81,7 @@ diffuse_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
+background_depth_specular_bloom_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;

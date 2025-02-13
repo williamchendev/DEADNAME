@@ -26,4 +26,10 @@ for (var temp_background_index = 0; temp_background_index < ds_list_size(lightin
 		temp_background_struct.layer_id, 
 		temp_background_struct.parallax_vertical_lock ? clamp(temp_background_struct.movement_y + temp_background_parallax_y, GameManager.game_height + render_border - temp_background_struct.background_height, render_border) : temp_background_struct.movement_y + temp_background_parallax_y
 	);
+	
+	// Set Bloom Color
+	if (temp_background_struct.bloom)
+	{
+		layer_background_blend(temp_background_struct.layer_id, make_color_rgb(0, 0, temp_background_struct.bloom_alpha * 255));
+	}
 }
