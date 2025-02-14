@@ -137,9 +137,9 @@ class LimbArmClass extends LimbClass define
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 		
 		// Set Limb Sprite Packs
-		limb_normalmap_spritepack = limb_normalmap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
-		limb_specularmap_spritepack = limb_specularmap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_specularmap);
-		limb_bloommap_spritepack = limb_bloommap == noone ? noone : spritepack_get_uvs_transformed(limb_sprite, limb_bloommap);
+		limb_normalmap_spritepack = limb_normalmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
+		limb_specularmap_spritepack = limb_specularmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_specularmap);
+		limb_bloommap_spritepack = limb_bloommap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_bloommap);
 	}
 	
 	// Update Methods
@@ -298,12 +298,12 @@ class LimbArmClass extends LimbClass define
 			(
 				limb_sprite, 
 				0, 
-				limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].texture : noone,
-				limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].texture : noone, 
-				limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].texture : noone, 
-				limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].uvs : noone,
-				limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].uvs : noone,
-				limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].uvs : noone,
+				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
+				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
+				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
+				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
+				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
 				limb_pivot_ax, 
 				limb_pivot_ay, 
 				limb_xscale, 
@@ -317,12 +317,12 @@ class LimbArmClass extends LimbClass define
 			(
 				limb_sprite, 
 				1, 
-				limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].texture : noone,
-				limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].texture : noone, 
-				limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].texture : noone, 
-				limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].uvs : noone,
-				limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].uvs : noone,
-				limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].uvs : noone,
+				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
+				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
+				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
+				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
+				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
 				limb_pivot_bx, 
 				limb_pivot_by, 
 				limb_xscale, 
@@ -346,12 +346,12 @@ class LimbArmClass extends LimbClass define
 				(
 					limb_sprite, 
 					0, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].texture : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].texture : noone, 
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].texture : noone, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].uvs : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].uvs : noone,
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].uvs : noone,
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
 					limb_pivot_ax, 
 					limb_pivot_ay, 
 					limb_xscale, 
@@ -365,12 +365,12 @@ class LimbArmClass extends LimbClass define
 				(
 					limb_sprite, 
 					1, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].texture : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].texture : noone, 
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].texture : noone, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].uvs : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].uvs : noone,
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].uvs : noone,
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
 					limb_pivot_bx, 
 					limb_pivot_by, 
 					limb_xscale, 
@@ -386,12 +386,12 @@ class LimbArmClass extends LimbClass define
 				(
 					limb_sprite, 
 					0, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].texture : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].texture : noone, 
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].texture : noone, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[0].uvs : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[0].uvs : noone,
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[0].uvs : noone,
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
 					limb_pivot_ax, 
 					limb_pivot_ay, 
 					limb_xscale, 
@@ -405,12 +405,12 @@ class LimbArmClass extends LimbClass define
 				(
 					limb_sprite, 
 					1, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].texture : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].texture : noone, 
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].texture : noone, 
-					limb_normalmap_spritepack != noone ? limb_normalmap_spritepack[1].uvs : noone,
-					limb_specularmap_spritepack != noone ? limb_specularmap_spritepack[1].uvs : noone,
-					limb_bloommap_spritepack != noone ? limb_bloommap_spritepack[1].uvs : noone,
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
+					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
+					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
 					limb_pivot_bx, 
 					limb_pivot_by, 
 					limb_xscale, 

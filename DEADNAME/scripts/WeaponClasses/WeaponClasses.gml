@@ -24,9 +24,9 @@ class WeaponClass define
 		weapon_bloommap = global.weapon_packs[init_weapon_pack].weapon_bloommap;
 		
 		// Init Weapon Sprite Packs
-		weapon_normalmap_spritepack = weapon_normalmap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
-		weapon_specularmap_spritepack = weapon_specularmap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
-		weapon_bloommap_spritepack = weapon_bloommap == noone ? noone : spritepack_get_uvs_transformed(weapon_sprite, weapon_bloommap);
+		weapon_normalmap_spritepack = weapon_normalmap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
+		weapon_specularmap_spritepack = weapon_specularmap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
+		weapon_bloommap_spritepack = weapon_bloommap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_bloommap);
 		
 		// Init Weapon Image Index
 	    weapon_image_index = 0;
@@ -73,12 +73,12 @@ class WeaponClass define
 		(
 			weapon_sprite, 
 			weapon_image_index, 
-			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].texture : noone,
-			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].texture : noone, 
-			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].texture : noone, 
-			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].uvs : noone,
-			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].uvs : noone,
-			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].uvs : noone,
+			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].texture : undefined,
+			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].uvs : undefined,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 
@@ -255,12 +255,12 @@ class FirearmClass extends WeaponClass define
 		(
 			weapon_sprite, 
 			weapon_image_index, 
-			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].texture : noone,
-			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].texture : noone, 
-			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].texture : noone, 
-			weapon_normalmap_spritepack != noone ? weapon_normalmap_spritepack[weapon_image_index].uvs : noone,
-			weapon_specularmap_spritepack != noone ? weapon_specularmap_spritepack[weapon_image_index].uvs : noone,
-			weapon_bloommap_spritepack != noone ? weapon_bloommap_spritepack[weapon_image_index].uvs : noone,
+			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].texture : undefined,
+			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].uvs : undefined,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 

@@ -328,9 +328,9 @@ create_default_sub_layers();
 render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, bloommap_texture, normalmap_uvs, specularmap_uvs, bloommap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
 {
 	//
-	var temp_mrt_shader_normal_enabled = normalmap_texture != noone;
-	var temp_mrt_shader_specular_enabled = specularmap_texture != noone;
-	var temp_mrt_shader_bloom_enabled = bloommap_texture != noone;
+	var temp_mrt_shader_normal_enabled = normalmap_texture != undefined;
+	var temp_mrt_shader_specular_enabled = specularmap_texture != undefined;
+	var temp_mrt_shader_bloom_enabled = bloommap_texture != undefined;
 	
 	var temp_normalmap_uvs = temp_mrt_shader_normal_enabled ? normalmap_uvs : [ 0, 0, 0, 0 ];
 	var temp_specularmap_uvs = temp_mrt_shader_specular_enabled ? specularmap_uvs : [ 0, 0, 0, 0 ];
@@ -488,12 +488,12 @@ render_layer = function(render_layer_type)
 						(
 							sprite_index,
 							image_index,
-							normalmap_spritepack != noone ? normalmap_spritepack[image_index].texture : noone,
-							specularmap_spritepack != noone ? specularmap_spritepack[image_index].texture : noone,
-							bloommap_spritepack != noone ? bloommap_spritepack[image_index].texture : noone,
-							normalmap_spritepack != noone ? normalmap_spritepack[image_index].uvs : noone,
-							specularmap_spritepack != noone ? specularmap_spritepack[image_index].uvs : noone,
-							bloommap_spritepack != noone ? bloommap_spritepack[image_index].uvs : noone,
+							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].texture : undefined,
+							specularmap_spritepack != undefined ? specularmap_spritepack[image_index].texture : undefined,
+							bloommap_spritepack != undefined ? bloommap_spritepack[image_index].texture : undefined,
+							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].uvs : undefined,
+							specularmap_spritepack != undefined ? specularmap_spritepack[image_index].uvs : undefined,
+							bloommap_spritepack != undefined ? bloommap_spritepack[image_index].uvs : undefined,
 							x,
 							y + ground_contact_vertical_offset,
 							draw_xscale,
