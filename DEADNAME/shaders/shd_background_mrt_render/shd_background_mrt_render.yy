@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_background_mrt_render",
+  "name":"shd_background_mrt_render",
+  "parent":{
+    "name":"Post",
+    "path":"folders/Shaders/Post.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

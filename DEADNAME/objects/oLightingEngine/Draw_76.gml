@@ -2,24 +2,9 @@
 // Creates the Surfaces for the Lighting Engine
 
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
-if (!surface_exists(lights_back_color_surface))
+if (!surface_exists(temp_surface))
 {
-    lights_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(lights_mid_color_surface))
-{
-    lights_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(lights_front_color_surface))
-{
-    lights_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(lights_shadow_surface))
-{
-    lights_shadow_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    temp_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(background_surface))
@@ -40,6 +25,21 @@ if (!surface_exists(diffuse_mid_color_surface))
 if (!surface_exists(diffuse_front_color_surface))
 {
     diffuse_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_back_color_surface))
+{
+    lights_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_mid_color_surface))
+{
+    lights_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(lights_front_color_surface))
+{
+    lights_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(normalmap_vector_surface))
@@ -125,7 +125,6 @@ surface_reset_target();
 // Reset Distortion Effect Surface
 surface_set_target(distortion_effect_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
-draw_sprite(sDebugNormalMap_Sphere, 0, 300, 300);
 surface_reset_target();
 
 // Reset Post Process Surface

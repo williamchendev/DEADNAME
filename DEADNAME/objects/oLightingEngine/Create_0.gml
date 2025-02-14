@@ -67,17 +67,17 @@ render_position = function(render_position_x, render_position_y)
 }
 
 // Surfaces
-lights_back_color_surface = -1;
-lights_mid_color_surface = -1;
-lights_front_color_surface = -1;
-
-lights_shadow_surface = -1;
+temp_surface = -1;
 
 background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
+
+lights_back_color_surface = -1;
+lights_mid_color_surface = -1;
+lights_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;

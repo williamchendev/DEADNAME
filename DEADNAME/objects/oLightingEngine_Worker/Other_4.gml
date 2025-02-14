@@ -33,19 +33,10 @@ repeat (array_length(temp_room_layers))
 		
 		// Find Background Layer ID & Background Properties
 		var temp_background_layer_id = temp_background_is_lighting_engine_integrated ? ds_list_find_value(LightingEngine.lighting_engine_backgrounds, temp_background_lighting_engine_index).background_layer_id : layer_background_get_id(temp_room_layers[temp_layer_index]);
-		var temp_background_bloom = temp_background_is_lighting_engine_integrated ? ds_list_find_value(LightingEngine.lighting_engine_backgrounds, temp_background_lighting_engine_index).bloom : false;
 		
 		// Add Background Layer Properties
-		if (temp_background_bloom)
-		{
-			layer_script_begin(temp_room_layers[temp_layer_index], lighting_engine_draw_bloom_background_begin);
-			layer_script_end(temp_room_layers[temp_layer_index], lighting_engine_draw_bloom_background_end);
-		}
-		else
-		{
-			layer_script_begin(temp_room_layers[temp_layer_index], lighting_engine_draw_background_begin);
-			layer_script_end(temp_room_layers[temp_layer_index], lighting_engine_draw_background_end);
-		}
+		layer_script_begin(temp_room_layers[temp_layer_index], lighting_engine_draw_background_begin);
+		layer_script_end(temp_room_layers[temp_layer_index], lighting_engine_draw_background_end);
 		
 		// Center Background
 		var temp_background_layer_sprite_index = layer_background_get_sprite(temp_background_layer_id);

@@ -47,7 +47,7 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Prepare Shader and Surface for Point Light Shadows
 		shader_set(shd_point_light_and_spot_light_shadows);
-		surface_set_target(LightingEngine.lights_shadow_surface);
+		surface_set_target(LightingEngine.temp_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -129,7 +129,7 @@ with (oLightingEngine_Source_PointLight)
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
 		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
-		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
+		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.temp_surface));
 		
 		// Set Point Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_radius);
@@ -162,7 +162,7 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Prepare Shader and Surface for Spot Light Shadows
 		shader_set(shd_point_light_and_spot_light_shadows);
-		surface_set_target(LightingEngine.lights_shadow_surface);
+		surface_set_target(LightingEngine.temp_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -244,7 +244,7 @@ with (oLightingEngine_Source_SpotLight)
 		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
 		texture_set_stage(LightingEngine.spot_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
-		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.lights_shadow_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.temp_surface));
 		
 		// Set Spot Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_radius_index, spot_light_radius);
@@ -284,7 +284,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Prepare Shader and Surface for Directional Light Shadows
 		shader_set(shd_directional_light_shadows);
-		surface_set_target(LightingEngine.lights_shadow_surface);
+		surface_set_target(LightingEngine.temp_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -374,7 +374,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		shader_set_uniform_f(LightingEngine.directional_light_shader_shadow_layers_index, LightingEngine.lighting_engine_back_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_mid_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_front_render_layer_shadows_enabled ? 1 : 0);
 		
 		// Render Directional Light Blending using the Directional Light's Shadow Surface
-		draw_surface_ext(LightingEngine.lights_shadow_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
+		draw_surface_ext(LightingEngine.temp_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
 		
 		// Reset Shader and Surface
 		surface_reset_target();

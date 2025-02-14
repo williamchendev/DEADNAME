@@ -25,65 +25,29 @@ function lighting_engine_add_background(background_sprite_index, background_blen
 		parallax_vertical_lock: background_vertical_parallax_lock,
 		background_width: sprite_get_width(background_sprite_index),
 		background_height: sprite_get_height(background_sprite_index),
-		bloom: false,
-		bloom_alpha: 0
+		color: background_blend,
+		bloom: background_bloom_alpha
 	}
 	
 	// Set Background Properties
 	layer_background_htiled(temp_background_layer_id, background_horizontal_tile);
 	layer_background_vtiled(temp_background_layer_id, background_vertical_tile);
 	
-	layer_background_alpha(temp_background_layer_id, 1.0);
+	layer_background_alpha(temp_background_layer_id, background_bloom_alpha);
 	layer_background_blend(temp_background_layer_id, background_blend);
 	
 	// Index Background in DS List
 	ds_list_add(LightingEngine.lighting_engine_backgrounds, temp_lighting_engine_background);
 	ds_list_add(LightingEngine.lighting_engine_background_layer_ids, temp_layer_id);
-	
-	// Create Bloom Layer
-	var temp_bloom_layer_id = layer_create(LightingEngine.lighting_engine_background_depth - ds_list_size(LightingEngine.lighting_engine_backgrounds), $"LightingEngine_Bloom_Background_{ds_list_size(LightingEngine.lighting_engine_backgrounds)}");
-	
-	// Create Bloom Background
-	var temp_bloom_background_layer_id = layer_background_create(temp_bloom_layer_id, background_sprite_index);
-	
-	// Create Bloom Background Struct
-	var temp_lighting_engine_bloom_background = 
-	{
-		layer_id: temp_bloom_layer_id,
-		background_layer_id: temp_bloom_background_layer_id,
-		offset_x: ((GameManager.game_width * 0.5) + LightingEngine.render_border) - (sprite_get_width(background_sprite_index) * 0.5) + background_offset_x,
-		offset_y: ((GameManager.game_height * 0.5) + LightingEngine.render_border) - (sprite_get_height(background_sprite_index) * 0.5) + background_offset_y,
-		movement_x: 0,
-		movement_y: 0,
-		movement_speed_x: background_horizontal_speed,
-		movement_speed_y: background_vertical_speed,
-		parallax_horizontal_movement: background_horizontal_parallax_movement,
-		parallax_vertical_movement: background_vertical_parallax_movement,
-		parallax_horizontal_lock: background_horizontal_parallax_lock,
-		parallax_vertical_lock: background_vertical_parallax_lock,
-		background_width: sprite_get_width(background_sprite_index),
-		background_height: sprite_get_height(background_sprite_index),
-		bloom: true,
-		bloom_alpha: background_bloom_alpha
-	}
-	
-	// Set Bloom Background Properties
-	layer_background_htiled(temp_bloom_background_layer_id, background_horizontal_tile);
-	layer_background_vtiled(temp_bloom_background_layer_id, background_vertical_tile);
-	
-	layer_background_alpha(temp_bloom_background_layer_id, 1.0);
-	layer_background_blend(temp_bloom_background_layer_id, make_color_rgb(0, 0, background_bloom_alpha * 255));
-	
-	// Index Bloom Background in DS List
-	ds_list_add(LightingEngine.lighting_engine_backgrounds, temp_lighting_engine_bloom_background);
-	ds_list_add(LightingEngine.lighting_engine_background_layer_ids, temp_bloom_layer_id);
 }
 
 function lighting_engine_draw_background_begin()
 {
 	if (event_type == ev_draw and event_number == ev_draw_normal)
     {
-        surface_set_target(LightingEngine.background_surface);
+        surface_set_target_ext(0, LightingEngine.background_surface);
+        surface_set_target_ext(1, LightingEngine.background_depth_specular_bloom_surface);
+        shader_set(shd_background_mrt_render);
     }
 }
 
@@ -92,24 +56,6 @@ function lighting_engine_draw_background_end()
 	if (event_type == ev_draw and event_number == ev_draw_normal)
     {
         surface_reset_target();
+        shader_reset();
     }
 }
-
-function lighting_engine_draw_bloom_background_begin()
-{
-	if (event_type == ev_draw and event_number == ev_draw_normal)
-    {
-    	shader_set(shd_white_pixel_binary);
-        surface_set_target(LightingEngine.background_depth_specular_bloom_surface);
-    }
-}
-
-function lighting_engine_draw_bloom_background_end()
-{
-	if (event_type == ev_draw and event_number == ev_draw_normal)
-    {
-    	shader_reset();
-        surface_reset_target();
-    }
-}
-

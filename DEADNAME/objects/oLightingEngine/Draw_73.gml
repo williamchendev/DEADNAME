@@ -1,19 +1,16 @@
 /// @description Process Scene Lighting
 // Processes Diffuse and Lighting Surfaces into the Final Render Surface along with Post Processing Effects
 
-// Layer Background & Object Render Depth, Specular, Bloom Maps
+// Layer Background & Object Render Depth, Specular, Bloom in combined Map stored on the Temp Surface
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
-surface_set_target(background_depth_specular_bloom_surface);
+surface_set_target(temp_surface);
+draw_clear_alpha(c_black, 0);
+draw_surface(background_depth_specular_bloom_surface, 0, 0);
 draw_surface(depth_specular_bloom_surface, 0, 0);
 surface_reset_target();
 
 gpu_set_blendmode(bm_normal);
-
-surface_set_target(depth_specular_bloom_surface);
-draw_clear_alpha(c_black, 0);
-draw_surface(background_depth_specular_bloom_surface, 0, 0);
-surface_reset_target();
 
 // Enable Deferred Lighting Post Process Render Shader and Surface Target
 shader_set(shd_post_process_render);
@@ -35,7 +32,7 @@ texture_set_stage(post_process_lighting_render_shader_lightblend_mid_layer_textu
 texture_set_stage(post_process_lighting_render_shader_lightblend_front_layer_texture_index, surface_get_texture(lights_front_color_surface));
 
 // Set Deferred Lighting Post Process Render Shader's Specular Map
-texture_set_stage(post_process_lighting_render_shader_depth_specular_bloom_map_index, surface_get_texture(depth_specular_bloom_surface));
+texture_set_stage(post_process_lighting_render_shader_depth_specular_bloom_map_index, surface_get_texture(temp_surface));
 
 // Render Lit Surface with Background to Post Processing Surface
 draw_surface(diffuse_mid_color_surface, 0, 0);
@@ -54,7 +51,7 @@ draw_clear_alpha(c_black, 0);
 shader_set(shd_bloom_effect_render);
 
 // Set Bloom Texture
-texture_set_stage(bloom_effect_render_shader_bloom_texture_index, surface_get_texture(depth_specular_bloom_surface));
+texture_set_stage(bloom_effect_render_shader_bloom_texture_index, surface_get_texture(temp_surface));
 
 // Set Bloom Effect Surface Texel Size & Alpha Multiplier
 shader_set_uniform_f(bloom_effect_render_shader_surface_texel_size_index, 1 / (GameManager.game_width + (render_border * 2)), 1 / (GameManager.game_height + (render_border * 2)));

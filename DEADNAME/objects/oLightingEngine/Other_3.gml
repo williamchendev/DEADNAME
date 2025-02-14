@@ -64,17 +64,17 @@ ds_list_destroy(lighting_engine_background_layer_ids);
 lighting_engine_background_layer_ids = -1;
 
 // Free Surfaces
-surface_free(lights_back_color_surface);
-surface_free(lights_mid_color_surface);
-surface_free(lights_front_color_surface);
-
-surface_free(lights_shadow_surface);
+surface_free(temp_surface);
 
 surface_free(background_surface);
 
 surface_free(diffuse_back_color_surface);
 surface_free(diffuse_mid_color_surface);
 surface_free(diffuse_front_color_surface);
+
+surface_free(lights_back_color_surface);
+surface_free(lights_mid_color_surface);
+surface_free(lights_front_color_surface);
 
 surface_free(normalmap_vector_surface);
 surface_free(depth_specular_bloom_surface);
@@ -95,17 +95,17 @@ if (global.debug_surface_enabled)
 }
 
 // Reset Surface Variables
-lights_back_color_surface = -1;
-lights_mid_color_surface = -1;
-lights_front_color_surface = -1;
-
-lights_shadow_surface = -1;
+temp_surface = -1;
 
 background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
+
+lights_back_color_surface = -1;
+lights_mid_color_surface = -1;
+lights_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
