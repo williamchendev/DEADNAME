@@ -45,8 +45,11 @@ function lighting_engine_draw_background_begin()
 {
 	if (event_type == ev_draw and event_number == ev_draw_normal)
     {
+    	// Set MRT Surfaces
         surface_set_target_ext(0, LightingEngine.background_surface);
         surface_set_target_ext(1, LightingEngine.background_depth_specular_bloom_surface);
+        
+        // Set Shader
         shader_set(shd_background_mrt_render);
     }
 }
@@ -55,6 +58,7 @@ function lighting_engine_draw_background_end()
 {
 	if (event_type == ev_draw and event_number == ev_draw_normal)
     {
+    	// Reset Surface & Shader
         surface_reset_target();
         shader_reset();
     }

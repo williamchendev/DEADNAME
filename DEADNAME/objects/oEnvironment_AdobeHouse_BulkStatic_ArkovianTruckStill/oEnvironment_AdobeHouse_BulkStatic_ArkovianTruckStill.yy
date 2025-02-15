@@ -5,7 +5,7 @@
   "managed":true,
   "name":"oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normalmap_texture","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_ArkovianTruckStill_NormalMap","path":"sprites/sAdobeHouse_ArkovianTruckStill_NormalMap/sAdobeHouse_ArkovianTruckStill_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_ArkovianTruckStill_NormalMap",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_ArkovianTruckStill_NormalMap","path":"sprites/sAdobeHouse_ArkovianTruckStill_NormalMap/sAdobeHouse_ArkovianTruckStill_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_ArkovianTruckStill_NormalMap",},
   ],
   "parent":{
     "name":"AdobeHouse",

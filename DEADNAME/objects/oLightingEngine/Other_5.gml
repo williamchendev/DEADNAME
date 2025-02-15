@@ -22,6 +22,10 @@ lighting_engine_front_render_layer_shadows_enabled = true;
 
 lighting_engine_camera_bounds_exist = false;
 
+// Reset Lighting Engine Bloom Settings
+bloom_global_color = c_white;
+bloom_global_intensity = 1.0;
+
 // Add Default Layers to Lighting Engine
 create_default_sub_layers();
 

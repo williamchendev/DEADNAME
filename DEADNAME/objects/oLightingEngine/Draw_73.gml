@@ -55,11 +55,11 @@ texture_set_stage(bloom_effect_render_shader_bloom_texture_index, surface_get_te
 
 // Set Bloom Effect Surface Texel Size & Alpha Multiplier
 shader_set_uniform_f(bloom_effect_render_shader_surface_texel_size_index, 1 / (GameManager.game_width + (render_border * 2)), 1 / (GameManager.game_height + (render_border * 2)));
-shader_set_uniform_f(bloom_effect_render_shader_alpha_multiplier_index, 1 / render_bloom_size);
+shader_set_uniform_f(bloom_effect_render_shader_alpha_multiplier_index, 1 / bloom_global_size);
 
 // Set Bloom Render Color and Intensity
-draw_set_color(render_bloom_color);
-draw_set_alpha(render_bloom_intensity);
+draw_set_color(bloom_global_color);
+draw_set_alpha(bloom_global_intensity);
 
 // Use Post Process Surface for Bloom Effect
 draw_surface(post_processing_surface, 0, 0);
@@ -79,7 +79,7 @@ draw_set_alpha(1);
 draw_set_color(c_white);
 
 // Draw Bloom Effect Surface - pixel offset in each direction
-for (var i = render_bloom_size; i > 0; i--)
+for (var i = bloom_global_size; i > 0; i--)
 {
 	draw_surface(bloom_effect_surface, -i, -i);
 	draw_surface(bloom_effect_surface, i, -i);

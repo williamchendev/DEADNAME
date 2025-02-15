@@ -54,10 +54,6 @@ lighting_engine_camera_bounds_min_y = 0;
 lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
-render_bloom_size = 3;
-render_bloom_color = c_white;
-render_bloom_intensity = 1.0;
-
 // Render Functions
 render_position = function(render_position_x, render_position_y)
 {
@@ -65,6 +61,11 @@ render_position = function(render_position_x, render_position_y)
 	render_x = lighting_engine_camera_bounds_exist ? clamp(render_position_x, lighting_engine_camera_bounds_min_x, lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
 	render_y = lighting_engine_camera_bounds_exist ? clamp(render_position_y, lighting_engine_camera_bounds_min_y, lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
 }
+
+// Bloom Settings
+bloom_global_size = 3;
+bloom_global_color = c_white;
+bloom_global_intensity = 1.0;
 
 // Surfaces
 temp_surface = -1;
@@ -115,6 +116,7 @@ vertex_format_add_position_3d();
 vertex_format_add_normal();
 vertex_format_add_color();
 vertex_format_add_texcoord();
+vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
@@ -327,7 +329,7 @@ create_default_sub_layers();
 // Lighting Engine Rendering Methods
 render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, bloommap_texture, normalmap_uvs, specularmap_uvs, bloommap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
 {
-	//
+	// Toggle Shader Effects: Normal Channel, Specular Channel, & Bloom Channel
 	var temp_mrt_shader_normal_enabled = normalmap_texture != undefined;
 	var temp_mrt_shader_specular_enabled = specularmap_texture != undefined;
 	var temp_mrt_shader_bloom_enabled = bloommap_texture != undefined;
@@ -336,16 +338,16 @@ render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_textur
 	var temp_specularmap_uvs = temp_mrt_shader_specular_enabled ? specularmap_uvs : [ 0, 0, 0, 0 ];
 	var temp_bloommap_uvs = temp_mrt_shader_bloom_enabled ? bloommap_uvs : [ 0, 0, 0, 0 ];
 	
-	//
+	// Set Shader Normal Map Toggle and Texture Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index, temp_mrt_shader_normal_enabled ? 1 : 0);
 	
 	if (temp_mrt_shader_normal_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
-		 shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, temp_normalmap_uvs);
+		shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, temp_normalmap_uvs);
 	}
 	
-    //
+    // Set Shader Specular Map Toggle and Texture Settings
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index, temp_mrt_shader_specular_enabled ? 1 : 0);
     
     if (temp_mrt_shader_specular_enabled)
@@ -354,7 +356,7 @@ render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_textur
     	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index, temp_specularmap_uvs);
     }
     
-    //
+    // Set Shader Bloom Map Toggle and Texture Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index, temp_mrt_shader_bloom_enabled ? 1 : 0);
 	
 	if (temp_mrt_shader_bloom_enabled)
@@ -363,11 +365,11 @@ render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_textur
     	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index, temp_bloommap_uvs);
 	}
     
-    //
+    // Set Shader Sprite Scale & Rotation Settings
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index, x_scale, y_scale, 1);
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index, rotation);
     
-    //
+    // Draw Sprite
     draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
 }
 

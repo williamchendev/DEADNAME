@@ -1,11 +1,10 @@
 //
-// (Multi Render Target) Dynamic Sprite fragment shader for Inno's Deferred Lighting System
+// (Multi Render Target) Bulk Static Sprite fragment shader for Inno's Deferred Lighting System
 //
 
-// Interpolated Shader Effect Toggles
-varying float in_Normal_Enabled;
-varying float in_Specular_Enabled;
-varying float in_Bloom_Enabled;
+// Interpolated Shader Effect Base Strength & Modifiers
+varying vec4 v_vShaderEffect_BaseStrength;
+varying vec3 v_vShaderEffect_Modifiers;
 
 // Interpolated Sprite UVs
 varying vec2 v_vTexcoord_DiffuseMap;
@@ -33,7 +32,10 @@ void main()
 	}
 	
 	// Normal Map
-	vec4 Normal = in_Normal_Enabled == 1.0 ? (texture2D(gm_BaseTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0 : vec4(0.0, 0.0, 1.0, Diffuse.a);
+	vec4 Normal = v_vShaderEffect_BaseStrength.x <= -1.0 ? vec4(0.0, 0.0, 1.0, Diffuse.a) : (texture2D(gm_BaseTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0;
+	vec3 NormalBaseStrength = vec3((vec2(v_vShaderEffect_BaseStrength.x <= -1.0 ? ((v_vShaderEffect_BaseStrength.x + 1.0) * -1.0) : v_vShaderEffect_BaseStrength.x, v_vShaderEffect_Modifiers.x) - 0.5) * 2.0, v_vShaderEffect_BaseStrength.w) ;
+	vec3 NormalInverseMagnitude = vec3(1.0) - abs(NormalBaseStrength);
+	Normal = vec4(NormalBaseStrength, 0.0) + vec4(NormalInverseMagnitude * Normal.xyz, Normal.a);
 	Normal *= vec4(v_vScale.xy, 1.0, 1.0);
 	Normal = vec4(mix(vec3(0.0, 0.0, 1.0), Normal.rgb, v_vScale.z), Normal.a);
 	
@@ -42,10 +44,10 @@ void main()
 	Normal = (Normal * 0.5) + 0.5;
 	
 	// Specular Map
-	float Specular = in_Specular_Enabled == 1.0 ? texture2D(gm_BaseTexture, v_vTexcoord_SpecularMap).r : 0.0;
+	float Specular = v_vShaderEffect_BaseStrength.y <= -1.0 ? v_vShaderEffect_Modifiers.y * ((v_vShaderEffect_BaseStrength.y + 1.0) * -1.0) : v_vShaderEffect_Modifiers.y * ((texture2D(gm_BaseTexture, v_vTexcoord_SpecularMap).r * (1.0 - v_vShaderEffect_BaseStrength.y)) + v_vShaderEffect_BaseStrength.y);
 	
 	// Bloom Map
-	float Bloom = in_Bloom_Enabled == 1.0 ? texture2D(gm_BaseTexture, v_vTexcoord_BloomMap).a : 0.0;
+	float Bloom = v_vShaderEffect_BaseStrength.z <= -1.0 ? v_vShaderEffect_Modifiers.z * ((v_vShaderEffect_BaseStrength.z + 1.0) * -1.0) : v_vShaderEffect_Modifiers.z * ((texture2D(gm_BaseTexture, v_vTexcoord_SpecularMap).a * (1.0 - v_vShaderEffect_BaseStrength.z)) + v_vShaderEffect_BaseStrength.z);
 	
 	// MRT Draw Diffuse Map
     gl_FragData[0] = v_vColour * Diffuse;

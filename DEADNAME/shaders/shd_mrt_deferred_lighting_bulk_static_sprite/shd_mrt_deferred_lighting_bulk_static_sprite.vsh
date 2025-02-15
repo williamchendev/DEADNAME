@@ -1,24 +1,24 @@
 //
-// (Multi Render Target) Dynamic Sprite vertex shader for Inno's Deferred Lighting System
+// (Multi Render Target) Bulk Static Sprite vertex shader for Inno's Deferred Lighting System
 //
 
 // Vertex Buffer Properties
-attribute vec3 in_Position; 				// (x, y, z)
-attribute vec3 in_Normal;					// (nx, ny, nz)
-attribute vec4 in_Colour;					// (r, g, b, a)
-attribute vec2 in_TextureCoord_Diffuse; 	// (u, v)
-attribute vec4 in_TextureCoord_Normal; 		// (x, y, z, w)
-attribute vec4 in_TextureCoord_Specular; 	// (x, y, z, w)
-attribute vec4 in_TextureCoord_Bloom; 		// (x, y, z, w)
-attribute vec3 in_ShaderEffect_Toggles; 	// (x, y, z)
+attribute vec3 in_Position; 									// (x, y, z)
+attribute vec3 in_Normal;										// (nx, ny, nz)
+attribute vec4 in_Colour;										// (r, g, b, a)
+attribute vec2 in_TextureCoord_Diffuse; 						// (u, v)
+attribute vec4 in_TextureCoord_Normal; 							// (x, y, z, w)
+attribute vec4 in_TextureCoord_Specular; 						// (x, y, z, w)
+attribute vec4 in_TextureCoord_Bloom; 							// (x, y, z, w)
+attribute vec4 in_ShaderEffect_BaseStrength; 					// (x, y, z, w)
+attribute vec3 in_ShaderEffect_Modifiers; 						// (x, y, z)
 
 // Uniform Camera Properties
 uniform vec2 in_Camera_Offset;
 
-// Interpolated Shader Effect Toggles
-varying float in_Normal_Enabled;
-varying float in_Specular_Enabled;
-varying float in_Bloom_Enabled;
+// Interpolated Shader Effect Base Strength & Modifiers
+varying vec4 v_vShaderEffect_BaseStrength;
+varying vec3 v_vShaderEffect_Modifiers;
 
 // Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
@@ -46,9 +46,8 @@ void main()
 	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	
 	// Set Shader Effect Toggles
-	in_Normal_Enabled = in_ShaderEffect_Toggles.x;
-	in_Specular_Enabled = in_ShaderEffect_Toggles.y;
-	in_Bloom_Enabled = in_ShaderEffect_Toggles.z;
+	v_vShaderEffect_BaseStrength = in_ShaderEffect_BaseStrength;
+	v_vShaderEffect_Modifiers = in_ShaderEffect_Modifiers;
 	
 	// Set Sprite UVs
 	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;
