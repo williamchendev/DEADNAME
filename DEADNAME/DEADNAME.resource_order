@@ -259,7 +259,7 @@
     {"name":"oLightingEngine_BulkStatic_Object","order":3,"path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},
     {"name":"oLightingEngine_BulkStatic_Region","order":5,"path":"objects/oLightingEngine_BulkStatic_Region/oLightingEngine_BulkStatic_Region.yy",},
     {"name":"oLightingEngine_CameraBounds","order":1,"path":"objects/oLightingEngine_CameraBounds/oLightingEngine_CameraBounds.yy",},
-    {"name":"oLightingEngine_Object_Dynamic","order":1,"path":"objects/oLightingEngine_Object_Dynamic/oLightingEngine_Object_Dynamic.yy",},
+    {"name":"oLightingEngine_Dynamic_Object","order":1,"path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},
     {"name":"oLightingEngine_Source_AmbientLight","order":3,"path":"objects/oLightingEngine_Source_AmbientLight/oLightingEngine_Source_AmbientLight.yy",},
     {"name":"oLightingEngine_Source_DirectionalLight","order":1,"path":"objects/oLightingEngine_Source_DirectionalLight/oLightingEngine_Source_DirectionalLight.yy",},
     {"name":"oLightingEngine_Source_SpotLight","order":2,"path":"objects/oLightingEngine_Source_SpotLight/oLightingEngine_Source_SpotLight.yy",},

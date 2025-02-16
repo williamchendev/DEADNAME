@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_Object_Static",
+  "%Name":"oLightingEngine_Dynamic_Object",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oLightingEngine_Object_Static",
+  "name":"oLightingEngine_Dynamic_Object",
   "overriddenProperties":[],
   "parent":{
     "name":"Dynamic",
@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebugSystem",
-    "path":"sprites/sDebugSystem/sDebugSystem.yy",
+    "name":"sDebug_Lighting_Dynamic_Object",
+    "path":"sprites/sDebug_Lighting_Dynamic_Object/sDebug_Lighting_Dynamic_Object.yy",
   },
   "spriteMaskId":null,
   "visible":false,
