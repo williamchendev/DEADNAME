@@ -29,7 +29,7 @@ void main()
 		for (float y = -BloomBlurSize; y <= BloomBlurSize; y++)
 		{
 			// Find Bloom Value from Neighbor
-			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).b;
+			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).b * v_vColour.a;
 			
 			// Establish Bloom Value At Pixel
 			BloomAlpha += Neighbor;
@@ -39,6 +39,6 @@ void main()
 	}
 	
 	// Divide and Render Premultiplied Blur Color
-	vec4 Bloom = v_vColour * vec4(BloomColor / BloomCount, BloomAlpha / pow(2.0 * BloomBlurSize + 1.0, 2.0));
+	vec4 Bloom = vec4(v_vColour.rgb, 1.0) * vec4(BloomColor / BloomCount, BloomAlpha / pow(2.0 * BloomBlurSize + 1.0, 2.0));
 	gl_FragColor = vec4(Bloom.rgb * Bloom.a, Bloom.a) * in_AlphaMult;
 }

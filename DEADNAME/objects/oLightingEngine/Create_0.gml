@@ -58,8 +58,8 @@ lighting_engine_camera_bounds_max_y = 0;
 render_position = function(render_position_x, render_position_y)
 {
 	// Restrict Render to Camera Bounds
-	render_x = lighting_engine_camera_bounds_exist ? clamp(render_position_x, lighting_engine_camera_bounds_min_x, lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
-	render_y = lighting_engine_camera_bounds_exist ? clamp(render_position_y, lighting_engine_camera_bounds_min_y, lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
+	LightingEngine.render_x = LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_x, LightingEngine.lighting_engine_camera_bounds_min_x, LightingEngine.lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
+	LightingEngine.render_y = LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_y, LightingEngine.lighting_engine_camera_bounds_min_y, LightingEngine.lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
 }
 
 // Bloom Settings
@@ -155,24 +155,32 @@ vertex_end(screen_space_vertex_buffer);
 vertex_freeze(screen_space_vertex_buffer);
 
 // MRT Deferred Lighting Dynamic Sprite Shader Indexes
-mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
+mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
 
-mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
-mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
-mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_UVs");
 
-mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorScale");
-mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorAngle");
+mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorScale");
+mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorAngle");
 
-mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Layer_Depth");
+mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Layer_Depth");
 
-mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Enabled");
-mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Enabled");
-mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index  = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_normal_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_BaseStrength");
+mrt_deferred_lighting_dynamic_sprite_shader_specular_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_BaseStrength");
+mrt_deferred_lighting_dynamic_sprite_shader_bloom_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_BaseStrength");
 
-mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
-mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
-mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index  = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_BloomTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_normal_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Modifier");
+mrt_deferred_lighting_dynamic_sprite_shader_specular_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Modifier");
+mrt_deferred_lighting_dynamic_sprite_shader_bloom_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Modifier");
+
+mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Enabled");
+
+mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_BloomTexture");
 
 // MRT Deferred Lighting Bulk Static Sprite Shader Indexes
 mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
@@ -337,6 +345,15 @@ render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_textur
 	var temp_normalmap_uvs = temp_mrt_shader_normal_enabled ? normalmap_uvs : [ 0, 0, 0, 0 ];
 	var temp_specularmap_uvs = temp_mrt_shader_specular_enabled ? specularmap_uvs : [ 0, 0, 0, 0 ];
 	var temp_bloommap_uvs = temp_mrt_shader_bloom_enabled ? bloommap_uvs : [ 0, 0, 0, 0 ];
+	
+	// Set Shader Channels' Base Strength & Modifiers
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_base_strength_index, 0);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_base_strength_index, 0);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_base_strength_index, 0);
+
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_modifier_index, 1);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_modifier_index, 1);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_modifier_index, 1);
 	
 	// Set Shader Normal Map Toggle and Texture Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index, temp_mrt_shader_normal_enabled ? 1 : 0);
