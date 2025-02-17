@@ -10,14 +10,15 @@ draw_surface(background_depth_specular_bloom_surface, 0, 0);
 draw_surface(depth_specular_bloom_surface, 0, 0);
 surface_reset_target();
 
-gpu_set_blendmode(bm_normal);
-
-// Enable Deferred Lighting Post Process Render Shader and Surface Target
-shader_set(shd_post_process_render);
+// Post Process Deferred Light Rendering Surface Target
 surface_set_target(post_processing_surface);
 
-// Reset Post Processing Surface
+// Reset Post Processing Surface and Draw Background to Post Processing Surface
 draw_clear(c_black);
+draw_surface(background_surface, 0, 0);
+
+// Enable Deferred Lighting Post Process Render Shader
+shader_set(shd_post_process_render);
 
 // Set Deferred Lighting Post Process Render Shader's Background Texture
 texture_set_stage(post_process_lighting_render_shader_background_texture_index, surface_get_texture(background_surface));
