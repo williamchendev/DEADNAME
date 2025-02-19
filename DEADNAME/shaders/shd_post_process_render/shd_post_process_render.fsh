@@ -4,23 +4,22 @@
 
 #define FRESNEL 0.8
 
-// Uniform Diffuse Map Surface Textures
-uniform sampler2D gm_DiffuseMap_BackLayer_Texture;
-uniform sampler2D gm_DiffuseMap_FrontLayer_Texture;
-
 // Uniform Light Blend Surface Textures
-uniform sampler2D gm_LightBlend_BackLayer_Texture;
-uniform sampler2D gm_LightBlend_MidLayer_Texture;
-uniform sampler2D gm_LightBlend_FrontLayer_Texture;
+uniform sampler2D gm_LightBlend_Texture;
+uniform sampler2D gm_LightBlend_DotProduct_Texture;
 
 // Uniform Depth, Specular, and Bloom Map
 uniform sampler2D gm_DepthSpecularBloomMap;
+
+// Uniform View Normal Map
+uniform sampler2D gm_ViewNormal_Texture;
 
 // Interpolated Color and UVs
 varying vec4 v_vColour;
 varying vec2 v_vTexcoord;
 
 // Constants
+const float PI = 3.1415926535;
 const float InversePI = 0.318309886184;
 const float FresnelRefraction = FRESNEL;
 const float FresnelReflection = 1.0 - FRESNEL;
@@ -28,30 +27,35 @@ const float FresnelReflection = 1.0 - FRESNEL;
 // Fragment Shader
 void main() 
 {
-	// Refract
-	
 	// Find Specular & Bloom Value at Pixel
 	vec4 DepthSpecularBloomValue = texture2D(gm_DepthSpecularBloomMap, v_vTexcoord);
-	float SpecularValue = DepthSpecularBloomValue.g;
-	float BloomValue = DepthSpecularBloomValue.b;
+	float RoughnessModifier = pow(abs((DepthSpecularBloomValue.g - 0.5) * 2.0), 4.0);
+	float MetallicModifier = ((DepthSpecularBloomValue.g - 0.5) * 2.0) > 0.0 ? 0.92 : 0.04;
+	float BloomModifier = DepthSpecularBloomValue.b;
 	
 	// Establish Diffuse Map Surface Colors
-	vec4 DiffuseMap_BackLayer_SurfaceColor = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vTexcoord) * FresnelRefraction * InversePI;
-	vec4 DiffuseMap_MidLayer_SurfaceColor = texture2D(gm_BaseTexture, v_vTexcoord) * FresnelRefraction * InversePI;
-	vec4 DiffuseMap_FrontLayer_SurfaceColor = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vTexcoord) * FresnelRefraction * InversePI;
+	vec4 DiffuseMap_SurfaceColor = texture2D(gm_BaseTexture, v_vTexcoord) * FresnelRefraction * InversePI;
 	
 	// Establish Light Blend Surface Colors
-	vec4 LightBlend_BackLayer_SurfaceColor = max(texture2D(gm_LightBlend_BackLayer_Texture, v_vTexcoord), vec4(BloomValue));
-	vec4 LightBlend_MidLayer_SurfaceColor = max(texture2D(gm_LightBlend_MidLayer_Texture, v_vTexcoord), vec4(BloomValue));
-	vec4 LightBlend_FrontLayer_SurfaceColor = max(texture2D(gm_LightBlend_FrontLayer_Texture, v_vTexcoord), vec4(BloomValue));
+	vec4 LightBlend_SurfaceColor = max(texture2D(gm_LightBlend_Texture, v_vTexcoord), vec4(BloomModifier));
+	
+	// Establish Light Dot Product Values
+	float View_DotProduct = dot((texture2D(gm_ViewNormal_Texture, v_vTexcoord).rgb * 2.0) - 1.0, vec3(0.0, 0.0, 1.0));
+	
+	vec4 Normal_DotProduct = texture2D(gm_LightBlend_DotProduct_Texture, v_vTexcoord).r;
+	
+	float Dis = (Normal_DotProduct * Normal_DotProduct) * (RoughnessModifier - 1.0) + 1.0;
+	float NormalDistribution = RoughnessModifier / (PI * Dis * Dis);
+	
+	float GeometryDistribution = pow(RoughnessModifier + 1.0, 2.0) / 8.0;
+	
+	float FresnelApproximation = 
+	
+	float SpecularDenominator = 4.0 * Normal_DotProduct * View_DotProduct;
 	
 	// Layer Color Values
-	vec4 RenderColor_BackLayer = vec4(mix(DiffuseMap_BackLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_BackLayer_SurfaceColor.a) * LightBlend_BackLayer_SurfaceColor;
-	vec4 RenderColor_MidLayer = vec4(mix(DiffuseMap_MidLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_MidLayer_SurfaceColor.a) * LightBlend_MidLayer_SurfaceColor;
-	vec4 RenderColor_FrontLayer = vec4(mix(DiffuseMap_FrontLayer_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_FrontLayer_SurfaceColor.a) * LightBlend_FrontLayer_SurfaceColor;
-	
-	vec4 RenderColor_Final = RenderColor_FrontLayer + (RenderColor_MidLayer * (1.0 - RenderColor_FrontLayer.a)) + (RenderColor_BackLayer * (1.0 - RenderColor_MidLayer.a) * (1.0 - RenderColor_FrontLayer.a));
+	vec4 RenderColor = vec4(mix(DiffuseMap_SurfaceColor.rgb, vec3(1.0), SpecularValue), DiffuseMap_SurfaceColor.a) * LightBlend_SurfaceColor;
 	
 	// Lit Surface Final Render Pass
-	gl_FragColor = v_vColour * RenderColor_Final;
+	gl_FragColor = v_vColour * RenderColor;
 }

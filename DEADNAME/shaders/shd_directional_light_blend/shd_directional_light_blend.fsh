@@ -45,4 +45,5 @@ void main()
 	gl_FragData[0] = vec4(LightBlend * ShadowLayers.x, 1.0) * in_Light_Layers.x;
 	gl_FragData[1] = vec4(LightBlend * ShadowLayers.y, 1.0) * in_Light_Layers.y;
 	gl_FragData[2] = vec4(LightBlend * ShadowLayers.z, 1.0) * in_Light_Layers.z;
+	gl_FragData[3] = vec4(in_Light_Layers.x, in_Light_Layers.y, in_Light_Layers.z, LightStrength);
 }

@@ -20,23 +20,22 @@ draw_surface(background_surface, 0, 0);
 // Enable Deferred Lighting Post Process Render Shader
 shader_set(shd_post_process_render);
 
-// Set Deferred Lighting Post Process Render Shader's Background Texture
-texture_set_stage(post_process_lighting_render_shader_background_texture_index, surface_get_texture(background_surface));
-
-// Set Deferred Lighting Post Process Render Shader's Diffuse Map Textures
-texture_set_stage(post_process_lighting_render_shader_diffusemap_back_layer_texture_index, surface_get_texture(diffuse_back_color_surface));
-texture_set_stage(post_process_lighting_render_shader_diffusemap_front_layer_texture_index, surface_get_texture(diffuse_front_color_surface));
-
 // Set Deferred Lighting Post Process Render Shader's Light Blend Textures
-texture_set_stage(post_process_lighting_render_shader_lightblend_back_layer_texture_index, surface_get_texture(lights_back_color_surface));
-texture_set_stage(post_process_lighting_render_shader_lightblend_mid_layer_texture_index, surface_get_texture(lights_mid_color_surface));
-texture_set_stage(post_process_lighting_render_shader_lightblend_front_layer_texture_index, surface_get_texture(lights_front_color_surface));
+texture_set_stage(post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index, surface_get_texture(lights_normal_dotproduct_surface));
+texture_set_stage(post_process_lighting_render_shader_view_normal_map_index, surface_get_texture(normalmap_vector_surface));
 
 // Set Deferred Lighting Post Process Render Shader's Specular Map
 texture_set_stage(post_process_lighting_render_shader_depth_specular_bloom_map_index, surface_get_texture(temp_surface));
 
-// Render Lit Surface with Background to Post Processing Surface
+// Render Lit Surfaces to Post Processing Surface
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_back_color_surface));
+draw_surface(diffuse_back_color_surface, 0, 0);
+
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_mid_color_surface));
 draw_surface(diffuse_mid_color_surface, 0, 0);
+
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_front_color_surface));
+draw_surface(diffuse_front_color_surface, 0, 0);
 
 // Reset Surface & Shader
 surface_reset_target();

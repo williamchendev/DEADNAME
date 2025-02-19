@@ -75,6 +75,7 @@ surface_free(diffuse_front_color_surface);
 surface_free(lights_back_color_surface);
 surface_free(lights_mid_color_surface);
 surface_free(lights_front_color_surface);
+surface_free(lights_normal_dotproduct_surface);
 
 surface_free(normalmap_vector_surface);
 surface_free(depth_specular_bloom_surface);
@@ -106,6 +107,7 @@ diffuse_front_color_surface = -1;
 lights_back_color_surface = -1;
 lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
+lights_normal_dotproduct_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;

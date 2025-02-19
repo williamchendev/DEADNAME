@@ -34,16 +34,16 @@
     {"$GMObjectProperty":"v1","%Name":"normal_basestrength_y","filters":[],"listItems":[],"multiselect":false,"name":"normal_basestrength_y","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"normal_basestrength_z","filters":[],"listItems":[],"multiselect":false,"name":"normal_basestrength_z","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"normal_modifier","filters":[],"listItems":[],"multiselect":false,"name":"normal_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"specular_map","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"specular_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"specular_basestrength","filters":[],"listItems":[],"multiselect":false,"name":"specular_basestrength","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"specular_modifier","filters":[],"listItems":[],"multiselect":false,"name":"specular_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"bloom_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"bloom_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"bloom_basestrength","filters":[],"listItems":[],"multiselect":false,"name":"bloom_basestrength","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"bloom_modifier","filters":[],"listItems":[],"multiselect":false,"name":"bloom_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"metallic_map","filters":[
+        "GMSprite",
+      ],"listItems":[],"multiselect":false,"name":"metallic_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+    {"$GMObjectProperty":"v1","%Name":"metallic_modifier","filters":[],"listItems":[],"multiselect":false,"name":"metallic_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"roughness_modifier","filters":[],"listItems":[],"multiselect":false,"name":"roughness_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

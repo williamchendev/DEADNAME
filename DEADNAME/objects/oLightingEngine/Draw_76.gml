@@ -42,6 +42,11 @@ if (!surface_exists(lights_front_color_surface))
     lights_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
+if (!surface_exists(lights_normal_dotproduct_surface))
+{
+    lights_normal_dotproduct_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
 if (!surface_exists(normalmap_vector_surface))
 {
     normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
@@ -92,6 +97,10 @@ draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 surface_set_target(lights_front_color_surface);
+draw_clear_alpha(c_black, 0);
+surface_reset_target();
+
+surface_set_target(lights_normal_dotproduct_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

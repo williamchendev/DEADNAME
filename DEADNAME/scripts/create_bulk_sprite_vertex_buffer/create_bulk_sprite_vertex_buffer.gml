@@ -29,16 +29,21 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		var temp_shader_effect_toggles =
 		{
 			normal_enabled: temp_bulk_static_object.normal_map != noone,
-			specular_enabled: temp_bulk_static_object.specular_map != noone,
+			specular_enabled: temp_bulk_static_object.metallic_map != noone,
 			bloom_enabled: temp_bulk_static_object.bloom_map != noone
 		}
 		
 		// Establish Base Strength & Shader Effect Toggles
-		var temp_normal_basestrength_x = temp_shader_effect_toggles.normal_enabled ? (temp_bulk_static_object.normal_basestrength_x * 0.5) + 0.5 : -1.0 - ((temp_bulk_static_object.normal_basestrength_x * 0.5) + 0.5);
+		var temp_normal_basestrength_x = (temp_bulk_static_object.normal_basestrength_x * 0.5) + 0.5;
 		var temp_normal_basestrength_y = (temp_bulk_static_object.normal_basestrength_y * 0.5) + 0.5;
+		var temp_normal_basestrength_z = temp_bulk_static_object.normal_basestrength_z;
 		
-		var temp_specular_basestrength = temp_shader_effect_toggles.specular_enabled ? temp_bulk_static_object.specular_basestrength : -1.0 - temp_bulk_static_object.specular_basestrength;
-		var temp_bloom_basestrength = temp_shader_effect_toggles.bloom_enabled ? temp_bulk_static_object.bloom_basestrength : -1.0 - temp_bulk_static_object.bloom_basestrength;
+		var temp_bloom_basestrength = temp_shader_effect_toggles.bloom_enabled ? temp_bulk_static_object.bloom_basestrength : -1 - temp_bulk_static_object.bloom_basestrength;
+		var temp_bloom_modifier = temp_bulk_static_object.bloom_modifier;
+		
+		var temp_roughness_modifier = temp_bulk_static_object.roughness_modifier;
+		var temp_metallic = (temp_bulk_static_object.metallic_modifier ? 2 : 1) * (temp_shader_effect_toggles.specular_enabled ? 1 : -1);
+		
 		
 		// Establish UV Data for Bulk Static Object
 		var temp_normalmap_uvs = temp_shader_effect_toggles.normal_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.normal_map, temp_bulk_static_object.image_index) : [ 0, 0, 0, 0 ];
@@ -69,8 +74,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_bx, temp_vertex_coordinate_by, temp_bulk_static_object.image_angle);
 		vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normal_modifier);
@@ -79,8 +84,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_dx, temp_vertex_coordinate_dy, temp_bulk_static_object.image_angle);
 		vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normal_modifier);
@@ -89,8 +94,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_cx, temp_vertex_coordinate_cy, temp_bulk_static_object.image_angle);
 		vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normal_modifier);
@@ -99,8 +104,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_dx, temp_vertex_coordinate_dy, temp_bulk_static_object.image_angle);
 		vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normal_modifier);
@@ -109,8 +114,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		vertex_position_3d(temp_bulk_static_layer_vertex_buffer, temp_vertex_coordinate_bx, temp_vertex_coordinate_by, temp_bulk_static_object.image_angle);
 		vertex_normal(temp_bulk_static_layer_vertex_buffer, temp_bulk_static_object.image_xscale, temp_bulk_static_object.image_yscale, temp_bulk_static_object.normal_modifier);
@@ -119,8 +124,8 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normalmap_uvs[0], temp_normalmap_uvs[1], temp_normalmap_uvs[2], temp_normalmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_specularmap_uvs[0], temp_specularmap_uvs[1], temp_specularmap_uvs[2], temp_specularmap_uvs[3]);
 		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloommap_uvs[0], temp_bloommap_uvs[1], temp_bloommap_uvs[2], temp_bloommap_uvs[3]);
-		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_specular_basestrength, temp_bloom_basestrength, temp_bulk_static_object.normal_basestrength_z);
-		vertex_float3(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_y, temp_bulk_static_object.specular_modifier, temp_bulk_static_object.bloom_modifier);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_normal_basestrength_x, temp_normal_basestrength_y, temp_normal_basestrength_z, temp_shader_effect_toggles.normal_enabled ? 1 : 0);
+		vertex_float4(temp_bulk_static_layer_vertex_buffer, temp_bloom_basestrength, temp_bloom_modifier, temp_metallic, temp_roughness_modifier);
 		
 		// Destroy Bulk Static Object
 		instance_destroy(temp_bulk_static_object.id);

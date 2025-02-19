@@ -10,15 +10,16 @@ attribute vec2 in_TextureCoord_Diffuse; 						// (u, v)
 attribute vec4 in_TextureCoord_Normal; 							// (x, y, z, w)
 attribute vec4 in_TextureCoord_Specular; 						// (x, y, z, w)
 attribute vec4 in_TextureCoord_Bloom; 							// (x, y, z, w)
-attribute vec4 in_ShaderEffect_BaseStrength; 					// (x, y, z, w)
-attribute vec3 in_ShaderEffect_Modifiers; 						// (x, y, z)
+attribute vec4 in_Normal_Settings; 								// (x, y, z, w)
+attribute vec4 in_PBR_Settings; 								// (x, y, z, w)
 
 // Uniform Camera Properties
 uniform vec2 in_Camera_Offset;
 
-// Interpolated Shader Effect Base Strength & Modifiers
-varying vec4 v_vShaderEffect_BaseStrength;
-varying vec3 v_vShaderEffect_Modifiers;
+// Interpolated Color, Scale, and Rotation Values
+varying vec4 v_vColour;
+varying vec3 v_vScale;
+varying mat2 v_vRotate;
 
 // Interpolated Texture Map UVs
 varying vec2 v_vTexcoord_DiffuseMap;
@@ -26,10 +27,9 @@ varying vec2 v_vTexcoord_NormalMap;
 varying vec2 v_vTexcoord_SpecularMap;
 varying vec2 v_vTexcoord_BloomMap;
 
-// Interpolated Color, Scale, and Rotation Values
-varying vec4 v_vColour;
-varying vec3 v_vScale;
-varying mat2 v_vRotate;
+// Interpolated Shader Effect Base Strength & Modifiers
+varying vec4 v_vNormal_Settings;
+varying vec4 v_vPBR_Settings;
 
 // Vertex Shader
 void main() 
@@ -46,8 +46,8 @@ void main()
 	v_vRotate = mat2(RotateVector.x, -RotateVector.y, RotateVector.y, RotateVector.x);
 	
 	// Set Shader Effect Toggles
-	v_vShaderEffect_BaseStrength = in_ShaderEffect_BaseStrength;
-	v_vShaderEffect_Modifiers = in_ShaderEffect_Modifiers;
+	v_vNormal_Settings = in_Normal_Settings;
+	v_vPBR_Settings = in_PBR_Settings;
 	
 	// Set Sprite UVs
 	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;

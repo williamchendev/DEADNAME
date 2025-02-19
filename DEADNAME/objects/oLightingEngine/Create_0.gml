@@ -79,6 +79,7 @@ diffuse_front_color_surface = -1;
 lights_back_color_surface = -1;
 lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
+lights_normal_dotproduct_surface = -1;
 
 normalmap_vector_surface = -1;
 depth_specular_bloom_surface = -1;
@@ -120,7 +121,7 @@ vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
-vertex_format_add_custom(vertex_type_float3, vertex_usage_texcoord);
+vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format = vertex_format_end();
 
 // Vertex Buffers
@@ -272,16 +273,12 @@ ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusi
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
 
 // Deferred Lighting & Background Post Process Rendering Shader Indexes
-post_process_lighting_render_shader_background_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_Background_Texture");
-
-post_process_lighting_render_shader_diffusemap_back_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_DiffuseMap_BackLayer_Texture");
-post_process_lighting_render_shader_diffusemap_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_DiffuseMap_FrontLayer_Texture");
-
-post_process_lighting_render_shader_lightblend_back_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_BackLayer_Texture");
-post_process_lighting_render_shader_lightblend_mid_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_MidLayer_Texture");
-post_process_lighting_render_shader_lightblend_front_layer_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_FrontLayer_Texture");
+post_process_lighting_render_shader_lightblend_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_Texture");
+post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_DotProduct_Texture");
 
 post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_DepthSpecularBloomMap");
+
+post_process_lighting_render_shader_view_normal_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_ViewNormal_Texture");
 
 // Bloom Effect Surface Rendering Shader Indexes
 bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");

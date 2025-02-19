@@ -116,6 +116,7 @@ with (oLightingEngine_Source_PointLight)
 		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
 		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
 		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
 		
 		// Set Point Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.point_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
@@ -231,6 +232,7 @@ with (oLightingEngine_Source_SpotLight)
 		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
 		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
 		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
 		
 		// Set Spot Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.spot_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
@@ -357,6 +359,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
 		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
 		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
 		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);

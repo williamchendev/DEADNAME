@@ -6,7 +6,7 @@
   "name":"oEnvironment_AdobeHouse_BulkStatic_DebugWorkbench",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sDebug_Workbench_Normal","path":"sprites/sDebug_Workbench_Normal/sDebug_Workbench_Normal.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sDebug_Workbench_Normal",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"specular_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sDebug_Workbench_Specular","path":"sprites/sDebug_Workbench_Specular/sDebug_Workbench_Specular.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sDebug_Workbench_Specular",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"metallic_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sDebug_Workbench_Specular","path":"sprites/sDebug_Workbench_Specular/sDebug_Workbench_Specular.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sDebug_Workbench_Specular",},
   ],
   "parent":{
     "name":"Debug",
