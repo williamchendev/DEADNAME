@@ -77,8 +77,8 @@ surface_free(lights_mid_color_surface);
 surface_free(lights_front_color_surface);
 
 surface_free(normalmap_vector_surface);
-surface_free(depth_specular_bloom_surface);
-surface_free(background_depth_specular_bloom_surface);
+surface_free(prb_metalrough_emissive_depth_surface);
+surface_free(background_prb_metalrough_emissive_depth_surface);
 
 surface_free(bloom_effect_surface);
 surface_free(distortion_effect_surface);
@@ -108,8 +108,8 @@ lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
-depth_specular_bloom_surface = -1;
-background_depth_specular_bloom_surface = -1;
+prb_metalrough_emissive_depth_surface = -1;
+background_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;
