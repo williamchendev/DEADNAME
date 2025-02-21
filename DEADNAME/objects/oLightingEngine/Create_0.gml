@@ -79,11 +79,10 @@ diffuse_front_color_surface = -1;
 lights_back_color_surface = -1;
 lights_mid_color_surface = -1;
 lights_front_color_surface = -1;
-lights_normal_dotproduct_surface = -1;
 
 normalmap_vector_surface = -1;
-depth_specular_bloom_surface = -1;
-background_depth_specular_bloom_surface = -1;
+prb_metalrough_emissive_depth_surface = -1;
+background_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;
@@ -117,7 +116,6 @@ vertex_format_add_position_3d();
 vertex_format_add_normal();
 vertex_format_add_color();
 vertex_format_add_texcoord();
-vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
 vertex_format_add_custom(vertex_type_float4, vertex_usage_texcoord);
@@ -159,29 +157,27 @@ vertex_freeze(screen_space_vertex_buffer);
 mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Camera_Offset");
 
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_UVs");
-mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_UVs");
-mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_MetallicRoughness_UVs");
+mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Emissive_UVs");
 
 mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorScale");
 mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_VectorAngle");
 
 mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Layer_Depth");
 
-mrt_deferred_lighting_dynamic_sprite_shader_normal_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_BaseStrength");
-mrt_deferred_lighting_dynamic_sprite_shader_specular_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_BaseStrength");
-mrt_deferred_lighting_dynamic_sprite_shader_bloom_base_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_BaseStrength");
+mrt_deferred_lighting_dynamic_sprite_shader_normal_strength_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_NormalStrength");
+mrt_deferred_lighting_dynamic_sprite_shader_metallic_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Metallic");
+mrt_deferred_lighting_dynamic_sprite_shader_roughness_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Roughness");
+mrt_deferred_lighting_dynamic_sprite_shader_emissive_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Emissive");
+mrt_deferred_lighting_dynamic_sprite_shader_emissive_multiplier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_EmissiveMultiplier");
 
-mrt_deferred_lighting_dynamic_sprite_shader_normal_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Modifier");
-mrt_deferred_lighting_dynamic_sprite_shader_specular_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Modifier");
-mrt_deferred_lighting_dynamic_sprite_shader_bloom_modifier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Modifier");
-
-mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Normal_Enabled");
-mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Specular_Enabled");
-mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_Bloom_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_normalmap_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_NormalMap_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_MetallicRoughnessMap_Enabled");
+mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_enabled_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_sprite, "in_EmissiveMap_Enabled");
 
 mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_NormalTexture");
-mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_SpecularTexture");
-mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_BloomTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_MetallicRoughnessTexture");
+mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_texture_index = shader_get_sampler_index(shd_mrt_deferred_lighting_dynamic_sprite, "gm_EmissiveTexture");
 
 // MRT Deferred Lighting Bulk Static Sprite Shader Indexes
 mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
@@ -207,8 +203,12 @@ point_light_shader_light_falloff_index = shader_get_uniform(shd_point_light_blen
 point_light_shader_light_layers_index = shader_get_uniform(shd_point_light_blend, "in_Light_Layers");
 point_light_shader_shadow_layers_index = shader_get_uniform(shd_point_light_blend, "in_Shadow_Layers");
 
+point_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_BackLayer");
+point_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_MidLayer");
+point_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_FrontLayer");
+
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
-point_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
+point_light_shader_shadowmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
 
 // Spot Light Blend Shader Indexes
 spot_light_shader_camera_offset_index = shader_get_uniform(shd_spot_light_blend, "in_Camera_Offset");

@@ -6,8 +6,8 @@ gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_
 
 surface_set_target(temp_surface);
 draw_clear_alpha(c_black, 0);
-draw_surface(background_depth_specular_bloom_surface, 0, 0);
-draw_surface(depth_specular_bloom_surface, 0, 0);
+draw_surface(background_prb_metalrough_emissive_depth_surface, 0, 0);
+draw_surface(prb_metalrough_emissive_depth_surface, 0, 0);
 surface_reset_target();
 
 // Post Process Deferred Light Rendering Surface Target

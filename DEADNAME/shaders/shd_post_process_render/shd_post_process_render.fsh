@@ -40,7 +40,7 @@ void main()
 	vec4 LightBlend_SurfaceColor = max(texture2D(gm_LightBlend_Texture, v_vTexcoord), vec4(BloomModifier));
 	
 	// Establish Light Dot Product Values
-	float View_DotProduct = dot((texture2D(gm_ViewNormal_Texture, v_vTexcoord).rgb * 2.0) - 1.0, vec3(0.0, 0.0, 1.0));
+	
 	
 	vec4 Normal_DotProduct = texture2D(gm_LightBlend_DotProduct_Texture, v_vTexcoord).r;
 	

@@ -30,20 +30,17 @@
     {"$GMObjectProperty":"v1","%Name":"normal_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"normal_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"normal_basestrength_x","filters":[],"listItems":[],"multiselect":false,"name":"normal_basestrength_x","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"normal_basestrength_y","filters":[],"listItems":[],"multiselect":false,"name":"normal_basestrength_y","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"normal_basestrength_z","filters":[],"listItems":[],"multiselect":false,"name":"normal_basestrength_z","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"normal_modifier","filters":[],"listItems":[],"multiselect":false,"name":"normal_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"bloom_map","filters":[
+    {"$GMObjectProperty":"v1","%Name":"normal_strength","filters":[],"listItems":[],"multiselect":false,"name":"normal_strength","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"metallic_roughness_map","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"bloom_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"bloom_basestrength","filters":[],"listItems":[],"multiselect":false,"name":"bloom_basestrength","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"bloom_modifier","filters":[],"listItems":[],"multiselect":false,"name":"bloom_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"metallic_map","filters":[
+      ],"listItems":[],"multiselect":false,"name":"metallic_roughness_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+    {"$GMObjectProperty":"v1","%Name":"metallic","filters":[],"listItems":[],"multiselect":false,"name":"metallic","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"roughness","filters":[],"listItems":[],"multiselect":false,"name":"roughness","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"emissive_map","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"metallic_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"metallic_modifier","filters":[],"listItems":[],"multiselect":false,"name":"metallic_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"roughness_modifier","filters":[],"listItems":[],"multiselect":false,"name":"roughness_modifier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"emissive_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+    {"$GMObjectProperty":"v1","%Name":"emissive","filters":[],"listItems":[],"multiselect":false,"name":"emissive","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"emissive_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"emissive_multiplier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

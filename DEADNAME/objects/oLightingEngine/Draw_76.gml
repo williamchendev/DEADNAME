@@ -52,14 +52,14 @@ if (!surface_exists(normalmap_vector_surface))
     normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(depth_specular_bloom_surface))
+if (!surface_exists(prb_metalrough_emissive_depth_surface))
 {
-    depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(background_depth_specular_bloom_surface))
+if (!surface_exists(background_prb_metalrough_emissive_depth_surface))
 {
-	background_depth_specular_bloom_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+	background_prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(bloom_effect_surface))
@@ -100,10 +100,6 @@ surface_set_target(lights_front_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-surface_set_target(lights_normal_dotproduct_surface);
-draw_clear_alpha(c_black, 0);
-surface_reset_target();
-
 // Reset Diffuse Color Surface
 surface_set_target(diffuse_back_color_surface);
 draw_clear_alpha(c_black, 0);
@@ -123,11 +119,11 @@ draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
 surface_reset_target();
 
 // Reset Depth Specular Bloom Surface
-surface_set_target(depth_specular_bloom_surface);
+surface_set_target(prb_metalrough_emissive_depth_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-surface_set_target(background_depth_specular_bloom_surface);
+surface_set_target(background_prb_metalrough_emissive_depth_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

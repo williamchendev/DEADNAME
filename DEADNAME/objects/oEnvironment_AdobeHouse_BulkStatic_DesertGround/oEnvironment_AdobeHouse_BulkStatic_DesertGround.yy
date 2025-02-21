@@ -6,7 +6,7 @@
   "name":"oEnvironment_AdobeHouse_BulkStatic_DesertGround",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_DesertGround_NormalMap","path":"sprites/sAdobeHouse_DesertGround_NormalMap/sAdobeHouse_DesertGround_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_DesertGround_NormalMap",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_modifier","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.4",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.4",},
   ],
   "parent":{
     "name":"AdobeHouse",
