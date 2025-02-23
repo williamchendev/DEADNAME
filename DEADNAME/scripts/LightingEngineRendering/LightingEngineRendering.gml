@@ -13,7 +13,7 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	// Set Shader PBR Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_strength_index, normal_strength);
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallic_index, metallic ? 1 : 0);
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_roughness_index, roughness);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_roughness_index, max(roughness, 0.01));
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissive_index, emissive);
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissive_multiplier_index, emissive_multiplier);
 	

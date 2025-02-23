@@ -35,7 +35,7 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		
 		// Establish Base Strength & Shader Effect Toggles
 		var temp_metallic = temp_bulk_static_object.metallic ? 1 : 0;
-		var temp_roughness = temp_bulk_static_object.roughness;
+		var temp_roughness = max(temp_bulk_static_object.roughness, 0.01);
 		var temp_emissive = temp_bulk_static_object.emissive;
 		var temp_emissive_multiplier = temp_bulk_static_object.emissive_multiplier;
 		

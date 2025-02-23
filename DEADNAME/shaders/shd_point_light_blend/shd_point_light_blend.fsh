@@ -37,6 +37,8 @@ const float Pi = 3.14159265359;
 const float HalfPi = 1.57079632679;
 const float OneOverPi = 0.31830988618;
 
+const float PseudoZero = 0.00001;
+
 const float DielectricMaterialLightReflectionCoefficient = 0.04;
 const float MetallicMaterialLightReflectionCoefficient = 0.92;
 
@@ -73,9 +75,9 @@ void main()
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * in_HighLight_To_BroadLight_Ratio_Max));
 	
 	// Dot Product for Vectors
-	float SurfaceToViewVectorDotProduct = dot(SurfaceNormal.xyz, vec3(0.0, 0.0, 1.0));
-	float HalfViewVectorToLightVector_ViewVectorDotProduct =  dot(normalize(PointLightVector + vec3(0.0, 0.0, 1.0)), vec3(0.0, 0.0, 1.0));
-	float HalfViewVectorToLightVector_SurfaceVectorDotProduct =  dot(normalize(PointLightVector + vec3(0.0, 0.0, 1.0)), SurfaceNormal.xyz);
+	float SurfaceToViewVectorDotProduct = max(dot(SurfaceNormal.xyz, vec3(0.0, 0.0, 1.0)), 0.0);
+	float HalfViewVectorToLightVector_ViewVectorDotProduct =  max(dot(normalize(PointLightVector + vec3(0.0, 0.0, 1.0)), vec3(0.0, 0.0, 1.0)), 0.0);
+	float HalfViewVectorToLightVector_SurfaceVectorDotProduct =  max(dot(normalize(PointLightVector + vec3(0.0, 0.0, 1.0)), SurfaceNormal.xyz), 0.0);
 	
 	// Surface Diffuse Color
 	vec3 DiffuseMap_Back = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vSurfaceUV).rgb;
@@ -84,22 +86,22 @@ void main()
 	
 	// Surface PBR Metallic-Roughness Value
 	float MetallicRoughness = texture2D(gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture, v_vSurfaceUV).r;
-	float LightReflectionCoefficient = MetallicRoughness <= 0.5 ? MetallicMaterialLightReflectionCoefficient : DielectricMaterialLightReflectionCoefficient;
+	float LightReflectionCoefficient = MetallicRoughness <= 0.5 ? DielectricMaterialLightReflectionCoefficient : MetallicMaterialLightReflectionCoefficient;
 	float Roughness = abs(MetallicRoughness - 0.5) * 2.0;
 	
 	// Frenel-Schlick Approximate
 	float FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
 	
 	// GGX/Trowbridge-Reitz Normal Distribution Function
-	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0);
+	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero);
 	
 	// Smith Model Geometry Shadowing Function
-	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / (SurfaceToViewVectorDotProduct * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0));
-	float GeometricShadowing_LightVector_Smith = LightStrength / (LightStrength * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0));
+	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / max((SurfaceToViewVectorDotProduct * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
+	float GeometricShadowing_LightVector_Smith = LightStrength / max((LightStrength * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
 	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
 	
 	// Cook-Torrance Specular Value
-	float CookTorranceSpecular = ((NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / (4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength)) * FrenelSchlick;
+	float CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max((4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength) * FrenelSchlick, PseudoZero);
 	
 	// Lambertian Diffuse Value
 	vec3 LambertianDiffuse_Back = (1.0 - FrenelSchlick) * DiffuseMap_Back * OneOverPi;
