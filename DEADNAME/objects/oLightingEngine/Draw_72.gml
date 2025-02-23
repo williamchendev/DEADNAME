@@ -249,8 +249,14 @@ with (oLightingEngine_Source_SpotLight)
 		// Set Shader Surface Width, Height, and Texture Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+		
 		texture_set_stage(LightingEngine.spot_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.temp_surface));
+		
+		texture_set_stage(LightingEngine.spot_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Spot Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_radius_index, spot_light_radius);
@@ -373,7 +379,13 @@ with (oLightingEngine_Source_DirectionalLight)
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
 		
 		// Set Shader Surface Normal Map Texture Properties
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+		
 		texture_set_stage(LightingEngine.directional_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+		
+		texture_set_stage(LightingEngine.directional_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Directional Light Shader MRT Render Layer Properties
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_layers_index, directional_light_render_background_layer ? 1 : 0, directional_light_render_midground_layer ? 1 : 0, directional_light_render_foreground_layer ? 1 : 0);

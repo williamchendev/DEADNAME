@@ -20,9 +20,15 @@ uniform float in_LightAngle;
 uniform vec3 in_Light_Layers;
 uniform vec3 in_Shadow_Layers;
 
-// Uniform Normal Map and Shadow Map Surface Textures
+// Uniform Layered Diffuse Map, Normal Map, Shadow Map, and PBR Detail Map Surface Textures
+uniform sampler2D gm_DiffuseMap_BackLayer_Texture;
+uniform sampler2D gm_DiffuseMap_MidLayer_Texture;
+uniform sampler2D gm_DiffuseMap_FrontLayer_Texture;
+
 uniform sampler2D gm_NormalTexture;
 uniform sampler2D gm_ShadowTexture;
+
+uniform sampler2D gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture;
 
 // Interpolated Position and UV
 varying vec2 v_vPosition;
@@ -30,8 +36,15 @@ varying vec2 v_vSurfaceUV;
 
 // Constants
 const vec2 Center = vec2(0.5, 0.5);
+
+const float Pi = 3.14159265359;
 const float HalfPi = 1.57079632679;
-const float FullPi = 3.14159265358979;
+const float OneOverPi = 0.31830988618;
+
+const float PseudoZero = 0.00001;
+
+const float DielectricMaterialLightReflectionCoefficient = 0.04;
+const float MetallicMaterialLightReflectionCoefficient = 0.92;
 
 // Fast Approximation Inverse Cosign Method
 float fastacos(float x) 
@@ -50,7 +63,7 @@ float fastacos(float x)
 	ret += 1.5707288;
 	ret *= sqrt(1.0 - x);
 	ret = ret - 2.0 * negate * ret;
-	return negate * FullPi + ret;
+	return negate * Pi + ret;
 }
 
 // Fragment Shader
@@ -70,7 +83,7 @@ void main()
 	
 	// Spot Light FOV Calculation
 	float LightDirectionDotProduct = clamp(dot(-SpotLightVector, vec2(in_LightDirection.x, -in_LightDirection.y)), -1.0, 1.0);
-	float LightDirectionValue = fastacos(LightDirectionDotProduct) / FullPi;
+	float LightDirectionValue = fastacos(LightDirectionDotProduct) / Pi;
 	
 	if (LightDirectionValue > in_LightAngle)
 	{
@@ -99,11 +112,44 @@ void main()
 	// Light Strength Ratio Calculation
 	float LightStrength = max(BroadlightStrength, min(HighlightStrength, BroadlightStrength * in_HighLight_To_BroadLight_Ratio_Max));
 
-	// MRT Render Spot Light to Light Blend Layers
+	// Dot Product for Vectors
+	float SurfaceToViewVectorDotProduct = max(dot(SurfaceNormal.xyz, vec3(0.0, 0.0, 1.0)), 0.0);
+	float HalfViewVectorToLightVector_ViewVectorDotProduct =  max(dot(normalize(vec3(SpotLightVector.x, -SpotLightVector.y, LightDepthVector) + vec3(0.0, 0.0, 1.0)), vec3(0.0, 0.0, 1.0)), 0.0);
+	float HalfViewVectorToLightVector_SurfaceVectorDotProduct =  max(dot(normalize(vec3(SpotLightVector.x, -SpotLightVector.y, LightDepthVector) + vec3(0.0, 0.0, 1.0)), SurfaceNormal.xyz), 0.0);
+	
+	// Surface Diffuse Color
+	vec3 DiffuseMap_Back = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vSurfaceUV).rgb;
+	vec3 DiffuseMap_Mid = texture2D(gm_DiffuseMap_MidLayer_Texture, v_vSurfaceUV).rgb;
+	vec3 DiffuseMap_Front = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vSurfaceUV).rgb;
+	
+	// Surface PBR Metallic-Roughness Value
+	float MetallicRoughness = texture2D(gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture, v_vSurfaceUV).r;
+	float LightReflectionCoefficient = MetallicRoughness <= 0.5 ? DielectricMaterialLightReflectionCoefficient : MetallicMaterialLightReflectionCoefficient;
+	float Roughness = abs(MetallicRoughness - 0.5) * 2.0;
+	
+	// Frenel-Schlick Approximate
+	float FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
+	
+	// GGX/Trowbridge-Reitz Normal Distribution Function
+	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero);
+	
+	// Smith Model Geometry Shadowing Function
+	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / max((SurfaceToViewVectorDotProduct * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
+	float GeometricShadowing_LightVector_Smith = LightStrength / max((LightStrength * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
+	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
+	
+	// Cook-Torrance Specular Value
+	float CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max((4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength) * FrenelSchlick, PseudoZero);
+	
+	// Lambertian Diffuse Value
+	vec3 LambertianDiffuse_Back = (1.0 - FrenelSchlick) * DiffuseMap_Back * OneOverPi;
+	vec3 LambertianDiffuse_Mid = (1.0 - FrenelSchlick) * DiffuseMap_Mid * OneOverPi;
+	vec3 LambertianDiffuse_Front = (1.0 - FrenelSchlick) * DiffuseMap_Front * OneOverPi;
+	
+	// MRT Render Point Light to Light Blend Layers
 	vec3 LightBlend = in_LightColor * in_LightIntensity * LightStrength * LightFade;
 	
-	gl_FragData[0] = vec4(LightBlend * ShadowLayers.x, 1.0) * in_Light_Layers.x;
-	gl_FragData[1] = vec4(LightBlend * ShadowLayers.y, 1.0) * in_Light_Layers.y;
-	gl_FragData[2] = vec4(LightBlend * ShadowLayers.z, 1.0) * in_Light_Layers.z;
-	gl_FragData[3] = vec4(in_Light_Layers.x, in_Light_Layers.y, in_Light_Layers.z, LightStrength);
+	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * ShadowLayers.x, 1.0);
+	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * ShadowLayers.y, 1.0);
+	gl_FragData[2] = vec4((CookTorranceSpecular + LambertianDiffuse_Front) * LightBlend * ShadowLayers.z, 1.0);
 }

@@ -235,8 +235,14 @@ spot_light_shader_light_angle_index = shader_get_uniform(shd_spot_light_blend, "
 spot_light_shader_light_layers_index = shader_get_uniform(shd_spot_light_blend, "in_Light_Layers");
 spot_light_shader_shadow_layers_index = shader_get_uniform(shd_spot_light_blend, "in_Shadow_Layers");
 
+spot_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_spot_light_blend, "gm_DiffuseMap_BackLayer_Texture");
+spot_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_spot_light_blend, "gm_DiffuseMap_MidLayer_Texture");
+spot_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_spot_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
+
 spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
 spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
+
+spot_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Point Light & Spot Light Shadow Shader Indexes
 point_light_and_spot_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_Camera_Offset");
@@ -258,7 +264,13 @@ directional_light_shader_highlight_strength_multiplier_index = shader_get_unifor
 directional_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_BroadLight_Strength_Multiplier");
 directional_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_directional_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
 
+directional_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_directional_light_blend, "gm_DiffuseMap_BackLayer_Texture");
+directional_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_directional_light_blend, "gm_DiffuseMap_MidLayer_Texture");
+directional_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_directional_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
+
 directional_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_directional_light_blend, "gm_NormalTexture");
+
+directional_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_directional_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Directional Light Shadow Shader Indexes
 directional_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_directional_light_shadows, "in_Camera_Offset");

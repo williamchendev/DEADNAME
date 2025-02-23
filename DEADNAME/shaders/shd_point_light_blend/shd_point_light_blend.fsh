@@ -16,7 +16,7 @@ uniform float in_LightFalloff;
 uniform vec3 in_Light_Layers;
 uniform vec3 in_Shadow_Layers;
 
-// Uniform Normal Map and Shadow Map Surface Textures
+// Uniform Layered Diffuse Map, Normal Map, Shadow Map, and PBR Detail Map Surface Textures
 uniform sampler2D gm_DiffuseMap_BackLayer_Texture;
 uniform sampler2D gm_DiffuseMap_MidLayer_Texture;
 uniform sampler2D gm_DiffuseMap_FrontLayer_Texture;
