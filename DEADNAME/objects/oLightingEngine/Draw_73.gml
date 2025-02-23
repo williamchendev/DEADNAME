@@ -7,7 +7,7 @@ gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_
 surface_set_target(temp_surface);
 draw_clear_alpha(c_black, 0);
 draw_surface(background_prb_metalrough_emissive_depth_surface, 0, 0);
-draw_surface(prb_metalrough_emissive_depth_surface, 0, 0);
+draw_surface(layered_prb_metalrough_emissive_depth_surface, 0, 0);
 surface_reset_target();
 
 // Post Process Deferred Light Rendering Surface Target
@@ -21,20 +21,19 @@ draw_surface(background_surface, 0, 0);
 shader_set(shd_post_process_render);
 
 // Set Deferred Lighting Post Process Render Shader's Light Blend Textures
-texture_set_stage(post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index, surface_get_texture(lights_normal_dotproduct_surface));
 texture_set_stage(post_process_lighting_render_shader_view_normal_map_index, surface_get_texture(normalmap_vector_surface));
 
 // Set Deferred Lighting Post Process Render Shader's Specular Map
 texture_set_stage(post_process_lighting_render_shader_depth_specular_bloom_map_index, surface_get_texture(temp_surface));
 
 // Render Lit Surfaces to Post Processing Surface
-texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_back_color_surface));
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(pbr_lighting_back_color_surface));
 draw_surface(diffuse_back_color_surface, 0, 0);
 
-texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_mid_color_surface));
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(pbr_lighting_mid_color_surface));
 draw_surface(diffuse_mid_color_surface, 0, 0);
 
-texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(lights_front_color_surface));
+texture_set_stage(post_process_lighting_render_shader_lightblend_texture_index, surface_get_texture(pbr_lighting_front_color_surface));
 draw_surface(diffuse_front_color_surface, 0, 0);
 
 // Reset Surface & Shader

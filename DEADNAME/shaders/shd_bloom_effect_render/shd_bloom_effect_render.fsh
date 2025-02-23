@@ -29,7 +29,7 @@ void main()
 		for (float y = -BloomBlurSize; y <= BloomBlurSize; y++)
 		{
 			// Find Bloom Value from Neighbor
-			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).b * v_vColour.a;
+			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).g * v_vColour.a;
 			
 			// Establish Bloom Value At Pixel
 			BloomAlpha += Neighbor;

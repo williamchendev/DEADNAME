@@ -363,6 +363,7 @@
     {"id":{"name":"is_even","path":"scripts/is_even/is_even.yy",},},
     {"id":{"name":"is_odd","path":"scripts/is_odd/is_odd.yy",},},
     {"id":{"name":"LightingEngineBackgrounds","path":"scripts/LightingEngineBackgrounds/LightingEngineBackgrounds.yy",},},
+    {"id":{"name":"LightingEngineRendering","path":"scripts/LightingEngineRendering/LightingEngineRendering.yy",},},
     {"id":{"name":"LightingEngineSubLayers","path":"scripts/LightingEngineSubLayers/LightingEngineSubLayers.yy",},},
     {"id":{"name":"LimbClasses","path":"scripts/LimbClasses/LimbClasses.yy",},},
     {"id":{"name":"make_color_hex","path":"scripts/make_color_hex/make_color_hex.yy",},},

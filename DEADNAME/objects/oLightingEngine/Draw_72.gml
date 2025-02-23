@@ -4,35 +4,35 @@
 // Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
-// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_back_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, prb_metalrough_emissive_depth_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Back Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Back);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Back);
 
 // (Back Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_mid_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, prb_metalrough_emissive_depth_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Mid Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Mid);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Mid);
 
 // (Mid Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_front_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, prb_metalrough_emissive_depth_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Front Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Front);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Front);
 
 // (Front Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
@@ -113,10 +113,9 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Prepare Shader and Surface for Point Light Blending
 		shader_set(shd_point_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
-		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Point Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.point_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
@@ -135,6 +134,8 @@ with (oLightingEngine_Source_PointLight)
 		
 		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 		texture_set_stage(LightingEngine.point_light_shader_shadowmap_texture_index, surface_get_texture(LightingEngine.temp_surface));
+		
+		texture_set_stage(LightingEngine.point_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Point Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_radius);
@@ -233,10 +234,9 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Prepare Shader and Surface for Spot Light Blending
 		shader_set(shd_spot_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
-		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Spot Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.spot_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
@@ -360,10 +360,9 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Prepare Shader and Surface for Directional Light Blending
 		shader_set(shd_directional_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
-		surface_set_target_ext(3, LightingEngine.lights_normal_dotproduct_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Lighting Engine Light Blending Settings
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
@@ -396,9 +395,9 @@ shader_set(shd_ambient_occlusion_light_blend);
 
 shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2));
 
-surface_set_target_ext(0, lights_back_color_surface);
-surface_set_target_ext(1, lights_mid_color_surface);
-surface_set_target_ext(2, lights_front_color_surface);
+surface_set_target_ext(0, pbr_lighting_back_color_surface);
+surface_set_target_ext(1, pbr_lighting_mid_color_surface);
+surface_set_target_ext(2, pbr_lighting_front_color_surface);
 
 with (oLightingEngine_Source_AmbientLight)
 {

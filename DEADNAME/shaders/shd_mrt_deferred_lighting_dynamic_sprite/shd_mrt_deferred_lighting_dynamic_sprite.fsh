@@ -47,7 +47,7 @@ void main()
 	}
 	
 	// Normal Map
-	vec4 Normal = in_NormalMap_Enabled != 1.0 ? vec4(0.0, 0.0, 1.0, Diffuse.a) : (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - 0.5) * 2.0;
+	vec4 Normal = in_NormalMap_Enabled != 1.0 ? vec4(0.0, 0.0, 1.0, Diffuse.a) : (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - vec4(0.5, 0.5, 0.0, 0.0)) * vec4(2.0, 2.0, 1.0, 1.0);
 	Normal *= vec4(in_VectorScale, 1.0, 1.0);
 	Normal = vec4(mix(vec3(0.0, 0.0, 1.0), Normal.rgb, in_NormalStrength), Normal.a);
 	
@@ -57,7 +57,7 @@ void main()
 	
 	// Metallic-Roughness PBR Data
 	vec4 MetallicRoughnessMap = in_MetallicRoughness_Enabled != 1.0 ? vec4(0.0, 0.0, 0.0, 0.0) : texture2D(gm_MetallicRoughnessTexture, v_vTexcoord_MetallicRoughnessMap);
-	float Metallic = MetallicRoughnessMap.a > 0.0 ? (MetallicRoughnessMap.b > 0.5 ? 1.0 : -1.0) : in_Metallic);
+	float Metallic = MetallicRoughnessMap.a > 0.0 ? (MetallicRoughnessMap.b > 0.5 ? 1.0 : -1.0) : in_Metallic;
 	float Roughness = MetallicRoughnessMap.a > 0.0 ? MetallicRoughnessMap.r : in_Roughness;
 	
 	// Emissive Data

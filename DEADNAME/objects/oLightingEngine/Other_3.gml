@@ -72,12 +72,12 @@ surface_free(diffuse_back_color_surface);
 surface_free(diffuse_mid_color_surface);
 surface_free(diffuse_front_color_surface);
 
-surface_free(lights_back_color_surface);
-surface_free(lights_mid_color_surface);
-surface_free(lights_front_color_surface);
+surface_free(pbr_lighting_back_color_surface);
+surface_free(pbr_lighting_mid_color_surface);
+surface_free(pbr_lighting_front_color_surface);
 
 surface_free(normalmap_vector_surface);
-surface_free(prb_metalrough_emissive_depth_surface);
+surface_free(layered_prb_metalrough_emissive_depth_surface);
 surface_free(background_prb_metalrough_emissive_depth_surface);
 
 surface_free(bloom_effect_surface);
@@ -103,12 +103,12 @@ diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
 
-lights_back_color_surface = -1;
-lights_mid_color_surface = -1;
-lights_front_color_surface = -1;
+pbr_lighting_back_color_surface = -1;
+pbr_lighting_mid_color_surface = -1;
+pbr_lighting_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
-prb_metalrough_emissive_depth_surface = -1;
+layered_prb_metalrough_emissive_depth_surface = -1;
 background_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;

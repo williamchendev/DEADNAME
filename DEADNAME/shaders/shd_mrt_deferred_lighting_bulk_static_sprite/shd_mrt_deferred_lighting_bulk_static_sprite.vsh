@@ -30,7 +30,7 @@ varying vec3 v_vTexcoord_EmissiveMap;
 varying vec4 v_vPBR_Settings;
 
 // Constants
-const vec2 TextureIsNull = vec4(-1.0, -1.0, -1.0, -1.0);
+const vec4 TextureIsNull = vec4(-1.0, -1.0, -1.0, -1.0);
 
 // Vertex Shader
 void main() 
@@ -50,10 +50,10 @@ void main()
 	v_vPBR_Settings = in_PBR_Settings;
 	
 	// Set Sprite UVs
-	v_vTexcoord_DiffuseMap = in_TextureCoord_Diffuse;
-	v_vTexcoord_NormalMap = vec3(in_TextureCoord_Diffuse * in_TextureCoord_Normal.zw + in_TextureCoord_Normal.xy, in_TextureCoord_Normal == TextureIsNull ? 1.0 : 0.0);
-	v_vTexcoord_MetallicRoughnessMap = vec3(in_TextureCoord_Diffuse * in_TextureCoord_MetallicRoughnessMap.zw + in_TextureCoord_MetallicRoughnessMap.xy, in_TextureCoord_MetallicRoughnessMap == TextureIsNull ? 1.0 : 0.0);
-	v_vTexcoord_EmissiveMap = vec3(in_TextureCoord_Diffuse * in_TextureCoord_EmissiveMap.zw + in_TextureCoord_EmissiveMap.xy, in_TextureCoord_EmissiveMap == TextureIsNull ? 1.0 : 0.0);
+	v_vTexcoord_DiffuseMap = in_TextureCoord_DiffuseMap;
+	v_vTexcoord_NormalMap = vec3(in_TextureCoord_DiffuseMap * in_TextureCoord_NormalMap.zw + in_TextureCoord_NormalMap.xy, in_TextureCoord_NormalMap == TextureIsNull ? 0.0 : 1.0);
+	v_vTexcoord_MetallicRoughnessMap = vec3(in_TextureCoord_DiffuseMap * in_TextureCoord_MetallicRoughnessMap.zw + in_TextureCoord_MetallicRoughnessMap.xy, in_TextureCoord_MetallicRoughnessMap == TextureIsNull ? 0.0 : 1.0);
+	v_vTexcoord_EmissiveMap = vec3(in_TextureCoord_DiffuseMap * in_TextureCoord_EmissiveMap.zw + in_TextureCoord_EmissiveMap.xy, in_TextureCoord_EmissiveMap == TextureIsNull ? 0.0 : 1.0);
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(in_Position.x - in_Camera_Offset.x, in_Position.y - in_Camera_Offset.y, 0.0, 1.0);

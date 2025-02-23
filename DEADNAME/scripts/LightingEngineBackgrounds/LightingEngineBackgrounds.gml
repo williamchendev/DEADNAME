@@ -47,7 +47,7 @@ function lighting_engine_draw_background_begin()
     {
     	// Set MRT Surfaces
         surface_set_target_ext(0, LightingEngine.background_surface);
-        surface_set_target_ext(1, LightingEngine.background_depth_specular_bloom_surface);
+        surface_set_target_ext(1, LightingEngine.background_prb_metalrough_emissive_depth_surface);
         
         // Set Shader
         shader_set(shd_background_mrt_render);

@@ -27,24 +27,19 @@ if (!surface_exists(diffuse_front_color_surface))
     diffuse_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(lights_back_color_surface))
+if (!surface_exists(pbr_lighting_back_color_surface))
 {
-    lights_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    pbr_lighting_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(lights_mid_color_surface))
+if (!surface_exists(pbr_lighting_mid_color_surface))
 {
-    lights_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    pbr_lighting_mid_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(lights_front_color_surface))
+if (!surface_exists(pbr_lighting_front_color_surface))
 {
-    lights_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
-if (!surface_exists(lights_normal_dotproduct_surface))
-{
-    lights_normal_dotproduct_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    pbr_lighting_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(normalmap_vector_surface))
@@ -52,9 +47,9 @@ if (!surface_exists(normalmap_vector_surface))
     normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(prb_metalrough_emissive_depth_surface))
+if (!surface_exists(layered_prb_metalrough_emissive_depth_surface))
 {
-    prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    layered_prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(background_prb_metalrough_emissive_depth_surface))
@@ -88,15 +83,15 @@ if (!surface_exists(ui_surface))
 }
 
 // Reset Light Color Surface
-surface_set_target(lights_back_color_surface);
+surface_set_target(pbr_lighting_back_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-surface_set_target(lights_mid_color_surface);
+surface_set_target(pbr_lighting_mid_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
-surface_set_target(lights_front_color_surface);
+surface_set_target(pbr_lighting_front_color_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
@@ -118,8 +113,8 @@ surface_set_target(normalmap_vector_surface);
 draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
 surface_reset_target();
 
-// Reset Depth Specular Bloom Surface
-surface_set_target(prb_metalrough_emissive_depth_surface);
+// Reset PBR Metallic-Roughness/Emissive/Depth (Object Lighting and Details Map) Surface
+surface_set_target(layered_prb_metalrough_emissive_depth_surface);
 draw_clear_alpha(c_black, 0);
 surface_reset_target();
 

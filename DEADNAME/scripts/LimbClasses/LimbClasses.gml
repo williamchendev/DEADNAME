@@ -87,8 +87,8 @@ class LimbArmClass extends LimbClass define
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_left_sprite;
 				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_normalmap;
-				limb_specularmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_specularmap;
-				limb_bloommap = global.unit_packs[init_unit_pack].ragdoll_arm_left_bloommap;
+				limb_metallicroughnessmap = global.unit_packs[init_unit_pack].ragdoll_arm_left_metallicroughnessmap;
+				limb_emissivemap = global.unit_packs[init_unit_pack].ragdoll_arm_left_emissivemap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_left_arm_walk_animation_angle;
@@ -106,8 +106,8 @@ class LimbArmClass extends LimbClass define
 				
 				limb_sprite = global.unit_packs[init_unit_pack].ragdoll_arm_right_sprite;
 				limb_normalmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_normalmap;
-				limb_specularmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_specularmap;
-				limb_bloommap = global.unit_packs[init_unit_pack].ragdoll_arm_right_bloommap;
+				limb_metallicroughnessmap = global.unit_packs[init_unit_pack].ragdoll_arm_right_metallicroughnessmap;
+				limb_emissivemap = global.unit_packs[init_unit_pack].ragdoll_arm_right_emissivemap;
 				
 				limb_anchor_idle_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_idle_animation_angle;
 				limb_anchor_walk_animation_angle = global.unit_packs[init_unit_pack].limb_right_arm_walk_animation_angle;
@@ -136,10 +136,17 @@ class LimbArmClass extends LimbClass define
 		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 		
+		// Set Limb PBR Settings
+		limb_normal_strength = 1;
+		limb_metallic = global.unit_packs[init_unit_pack].metallic;
+		limb_roughness = global.unit_packs[init_unit_pack].roughness;
+		limb_emissive = global.unit_packs[init_unit_pack].emissive;
+		limb_emissive_multiplier = 1;
+		
 		// Set Limb Sprite Packs
 		limb_normalmap_spritepack = limb_normalmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
-		limb_specularmap_spritepack = limb_specularmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_specularmap);
-		limb_bloommap_spritepack = limb_bloommap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_bloommap);
+		limb_metallicroughnessmap_spritepack = limb_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_metallicroughnessmap);
+		limb_emissivemap_spritepack = limb_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_emissivemap);
 	}
 	
 	// Update Methods
@@ -294,16 +301,21 @@ class LimbArmClass extends LimbClass define
 		// Draw Arm
 		if (limb_held_item == UnitHeldItem.None)
 		{
-			LightingEngine.render_sprite
+			lighting_engine_render_sprite_ext
 			(
 				limb_sprite, 
 				0, 
 				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
-				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
-				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+				limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].texture : undefined, 
+				limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].texture : undefined, 
 				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
-				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
-				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
+				limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].uvs : undefined,
+				limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].uvs : undefined,
+				limb_normal_strength,
+				limb_metallic,
+				limb_roughness,
+				limb_emissive,
+				limb_emissive_multiplier,
 				limb_pivot_ax, 
 				limb_pivot_ay, 
 				limb_xscale, 
@@ -313,16 +325,21 @@ class LimbArmClass extends LimbClass define
 				1
 			);
 			
-			LightingEngine.render_sprite
+			lighting_engine_render_sprite_ext
 			(
 				limb_sprite, 
 				1, 
 				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
-				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
-				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+				limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].texture : undefined, 
+				limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].texture : undefined, 
 				limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
-				limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
-				limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
+				limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].uvs : undefined,
+				limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].uvs : undefined,
+				limb_normal_strength,
+				limb_metallic,
+				limb_roughness,
+				limb_emissive,
+				limb_emissive_multiplier,
 				limb_pivot_bx, 
 				limb_pivot_by, 
 				limb_xscale, 
@@ -342,16 +359,21 @@ class LimbArmClass extends LimbClass define
 				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
 				
 				// Draw Limb
-				LightingEngine.render_sprite
+				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
 					0, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].texture : undefined, 
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].texture : undefined, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].uvs : undefined,
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].uvs : undefined,
+					limb_normal_strength,
+					limb_metallic,
+					limb_roughness,
+					limb_emissive,
+					limb_emissive_multiplier,
 					limb_pivot_ax, 
 					limb_pivot_ay, 
 					limb_xscale, 
@@ -361,16 +383,21 @@ class LimbArmClass extends LimbClass define
 					1
 				);
 				
-				LightingEngine.render_sprite
+				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
 					1, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].texture : undefined, 
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].texture : undefined, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].uvs : undefined,
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].uvs : undefined,
+					limb_normal_strength,
+					limb_metallic,
+					limb_roughness,
+					limb_emissive,
+					limb_emissive_multiplier,
 					limb_pivot_bx, 
 					limb_pivot_by, 
 					limb_xscale, 
@@ -382,16 +409,21 @@ class LimbArmClass extends LimbClass define
 				break;
 			case LimbType.RightArm:
 				// Draw Limb
-				LightingEngine.render_sprite
+				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
 					0, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].texture : undefined, 
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].texture : undefined, 
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].texture : undefined, 
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].texture : undefined, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[0].uvs : undefined,
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[0].uvs : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].uvs : undefined,
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].uvs : undefined,
+					limb_normal_strength,
+					limb_metallic,
+					limb_roughness,
+					limb_emissive,
+					limb_emissive_multiplier,
 					limb_pivot_ax, 
 					limb_pivot_ay, 
 					limb_xscale, 
@@ -401,16 +433,21 @@ class LimbArmClass extends LimbClass define
 					1
 				);
 				
-				LightingEngine.render_sprite
+				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
 					1, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].texture : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].texture : undefined, 
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].texture : undefined, 
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].texture : undefined, 
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].texture : undefined, 
 					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[1].uvs : undefined,
-					limb_specularmap_spritepack != undefined ? limb_specularmap_spritepack[1].uvs : undefined,
-					limb_bloommap_spritepack != undefined ? limb_bloommap_spritepack[1].uvs : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[1].uvs : undefined,
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[1].uvs : undefined,
+					limb_normal_strength,
+					limb_metallic,
+					limb_roughness,
+					limb_emissive,
+					limb_emissive_multiplier,
 					limb_pivot_bx, 
 					limb_pivot_by, 
 					limb_xscale, 

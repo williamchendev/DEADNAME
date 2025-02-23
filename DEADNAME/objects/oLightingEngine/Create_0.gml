@@ -76,12 +76,13 @@ diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
 
-lights_back_color_surface = -1;
-lights_mid_color_surface = -1;
-lights_front_color_surface = -1;
+pbr_lighting_back_color_surface = -1;
+pbr_lighting_mid_color_surface = -1;
+pbr_lighting_front_color_surface = -1;
 
 normalmap_vector_surface = -1;
-prb_metalrough_emissive_depth_surface = -1;
+
+layered_prb_metalrough_emissive_depth_surface = -1;
 background_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
@@ -203,12 +204,14 @@ point_light_shader_light_falloff_index = shader_get_uniform(shd_point_light_blen
 point_light_shader_light_layers_index = shader_get_uniform(shd_point_light_blend, "in_Light_Layers");
 point_light_shader_shadow_layers_index = shader_get_uniform(shd_point_light_blend, "in_Shadow_Layers");
 
-point_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_BackLayer");
-point_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_MidLayer");
-point_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseTexture_FrontLayer");
+point_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseMap_BackLayer_Texture");
+point_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseMap_MidLayer_Texture");
+point_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
 
 point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
 point_light_shader_shadowmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
+
+point_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Spot Light Blend Shader Indexes
 spot_light_shader_camera_offset_index = shader_get_uniform(shd_spot_light_blend, "in_Camera_Offset");
@@ -330,220 +333,6 @@ create_default_sub_layers = function()
 }
 
 create_default_sub_layers();
-
-// Lighting Engine Rendering Methods
-render_sprite = function(diffusemap_index, diffusemap_subimage, normalmap_texture, specularmap_texture, bloommap_texture, normalmap_uvs, specularmap_uvs, bloommap_uvs, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
-{
-	// Toggle Shader Effects: Normal Channel, Specular Channel, & Bloom Channel
-	var temp_mrt_shader_normal_enabled = normalmap_texture != undefined;
-	var temp_mrt_shader_specular_enabled = specularmap_texture != undefined;
-	var temp_mrt_shader_bloom_enabled = bloommap_texture != undefined;
-	
-	var temp_normalmap_uvs = temp_mrt_shader_normal_enabled ? normalmap_uvs : [ 0, 0, 0, 0 ];
-	var temp_specularmap_uvs = temp_mrt_shader_specular_enabled ? specularmap_uvs : [ 0, 0, 0, 0 ];
-	var temp_bloommap_uvs = temp_mrt_shader_bloom_enabled ? bloommap_uvs : [ 0, 0, 0, 0 ];
-	
-	// Set Shader Channels' Base Strength & Modifiers
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_base_strength_index, 0);
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_base_strength_index, 0);
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_base_strength_index, 0);
-
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_modifier_index, 1);
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_modifier_index, 1);
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_modifier_index, 1);
-	
-	// Set Shader Normal Map Toggle and Texture Settings
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_enabled_index, temp_mrt_shader_normal_enabled ? 1 : 0);
-	
-	if (temp_mrt_shader_normal_enabled)
-	{
-		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
-		shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, temp_normalmap_uvs);
-	}
-	
-    // Set Shader Specular Map Toggle and Texture Settings
-    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specular_enabled_index, temp_mrt_shader_specular_enabled ? 1 : 0);
-    
-    if (temp_mrt_shader_specular_enabled)
-    {
-    	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_texture_index, specularmap_texture);
-    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_specularmap_uv_index, temp_specularmap_uvs);
-    }
-    
-    // Set Shader Bloom Map Toggle and Texture Settings
-	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloom_enabled_index, temp_mrt_shader_bloom_enabled ? 1 : 0);
-	
-	if (temp_mrt_shader_bloom_enabled)
-	{
-		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloommap_texture_index, bloommap_texture);
-    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_bloommap_uv_index, temp_bloommap_uvs);
-	}
-    
-    // Set Shader Sprite Scale & Rotation Settings
-    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index, x_scale, y_scale, 1);
-    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index, rotation);
-    
-    // Draw Sprite
-    draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
-}
-
-render_layer = function(render_layer_type)
-{
-	// Establish Empty Render Layer Variables
-	var temp_render_layer_sub_layer_name_list = undefined;
-	var temp_render_layer_sub_layer_depth_list = undefined;
-	var temp_render_layer_sub_layer_type_list = undefined;
-	var temp_render_layer_sub_layer_object_list = undefined;
-	var temp_render_layer_sub_layer_object_type_list = undefined;
-	
-	// Assign Render Layer Variables from given Render Layer Type
-	switch (render_layer_type)
-	{
-		case LightingEngineRenderLayerType.Back:
-			temp_render_layer_sub_layer_name_list = lighting_engine_back_layer_sub_layer_name_list;
-			temp_render_layer_sub_layer_depth_list = lighting_engine_back_layer_sub_layer_depth_list;
-			temp_render_layer_sub_layer_type_list = lighting_engine_back_layer_sub_layer_type_list;
-			temp_render_layer_sub_layer_object_list = lighting_engine_back_layer_sub_layer_object_list;
-			temp_render_layer_sub_layer_object_type_list = lighting_engine_back_layer_sub_layer_object_type_list;
-			break;
-		case LightingEngineRenderLayerType.Front:
-			temp_render_layer_sub_layer_name_list = lighting_engine_front_layer_sub_layer_name_list;
-			temp_render_layer_sub_layer_depth_list = lighting_engine_front_layer_sub_layer_depth_list;
-			temp_render_layer_sub_layer_type_list = lighting_engine_front_layer_sub_layer_type_list;
-			temp_render_layer_sub_layer_object_list = lighting_engine_front_layer_sub_layer_object_list;
-			temp_render_layer_sub_layer_object_type_list = lighting_engine_front_layer_sub_layer_object_type_list;
-			break;
-		case LightingEngineRenderLayerType.Mid:
-		default:
-			temp_render_layer_sub_layer_name_list = lighting_engine_mid_layer_sub_layer_name_list;
-			temp_render_layer_sub_layer_depth_list = lighting_engine_mid_layer_sub_layer_depth_list;
-			temp_render_layer_sub_layer_type_list = lighting_engine_mid_layer_sub_layer_type_list;
-			temp_render_layer_sub_layer_object_list = lighting_engine_mid_layer_sub_layer_object_list;
-			temp_render_layer_sub_layer_object_type_list = lighting_engine_mid_layer_sub_layer_object_type_list;
-			break;
-	}
-	
-	// Iterate through Render Layer's Sub Layers
-	var temp_sub_layer_index = 0;
-	
-	repeat (ds_list_size(temp_render_layer_sub_layer_name_list))
-	{
-		// Get Render Layer Name, Depth, and Type
-		var temp_sub_layer_name = ds_list_find_value(temp_render_layer_sub_layer_name_list, temp_sub_layer_index);
-		var temp_sub_layer_depth = ds_list_find_value(temp_render_layer_sub_layer_depth_list, temp_sub_layer_index);
-		var temp_sub_layer_type = ds_list_find_value(temp_render_layer_sub_layer_type_list, temp_sub_layer_index);
-		
-		// Get Render Layer Object and Object Type DS Lists
-		var temp_sub_layer_object_list = ds_list_find_value(temp_render_layer_sub_layer_object_list, temp_sub_layer_index);
-		var temp_sub_layer_object_type_list = ds_list_find_value(temp_render_layer_sub_layer_object_type_list, temp_sub_layer_index);
-		
-		// Set Lighting Engine Layer Depth
-		lighting_engine_sub_layer_depth = temp_sub_layer_depth;
-		
-		// Set Shader Properties based on Sub Layer Type
-		switch (temp_sub_layer_type)
-		{
-			case LightingEngineSubLayerType.BulkStatic:
-				// MRT Bulk Static Sprite Layer
-				shader_set(shd_mrt_deferred_lighting_bulk_static_sprite);
-				
-				// Set Sub Layer Depth
-				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index, temp_sub_layer_depth);
-				
-				// Set Camera Offset
-				shader_set_uniform_f(mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
-				break;
-			case LightingEngineSubLayerType.Dynamic:
-			default:
-				// MRT Dynamic Sprite Layer
-				shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
-				
-				// Set Sub Layer Depth
-    			shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
-    			
-    			// Set Camera Offset
-				shader_set_uniform_f(mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
-				break;
-		}
-		
-		// Iterate through Sub Layer's Objects List
-		var temp_sub_layer_object_index = 0;
-	
-		repeat (ds_list_size(temp_sub_layer_object_type_list))
-		{
-			// Get Sub Layer Object and Object Type
-			var temp_sub_layer_object = ds_list_find_value(temp_sub_layer_object_list, temp_sub_layer_object_index);
-			var temp_sub_layer_object_type = ds_list_find_value(temp_sub_layer_object_type_list, temp_sub_layer_object_index);
-			
-			// Draw Object based on Object Type
-			switch (temp_sub_layer_object_type)
-			{
-				case LightingEngineObjectType.BulkStatic_Region:
-					// Draw Bulk Static Region Vertex Buffer on Bulk Static Layer
-					with (temp_sub_layer_object)
-					{
-						if (bulk_static_region_render_enabled)
-						{
-							vertex_submit(ds_map_find_value(bulk_static_region_vertex_buffer_map, temp_sub_layer_name), pr_trianglelist, ds_map_find_value(bulk_static_region_texture_map, temp_sub_layer_name));
-						}
-					}
-					break;
-				case LightingEngineObjectType.BulkStatic_Layer:
-					// Draw Bulk Static Layer Vertex Buffer with Texture from Sub-Layer Vertex Buffer and Texture Struct
-					vertex_submit(temp_sub_layer_object.bulk_static_vertex_buffer, pr_trianglelist, temp_sub_layer_object.bulk_static_texture);
-					break;
-				case LightingEngineObjectType.Dynamic_Unit:
-					// Draw Unit on Dynamic Layer
-					with (temp_sub_layer_object)
-					{
-						// Draw Secondary Arm rendered behind Unit Body
-						limb_secondary_arm.render_behaviour();
-					
-						// Draw Unit Body
-						LightingEngine.render_sprite
-						(
-							sprite_index,
-							image_index,
-							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].texture : undefined,
-							specularmap_spritepack != undefined ? specularmap_spritepack[image_index].texture : undefined,
-							bloommap_spritepack != undefined ? bloommap_spritepack[image_index].texture : undefined,
-							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].uvs : undefined,
-							specularmap_spritepack != undefined ? specularmap_spritepack[image_index].uvs : undefined,
-							bloommap_spritepack != undefined ? bloommap_spritepack[image_index].uvs : undefined,
-							x,
-							y + ground_contact_vertical_offset,
-							draw_xscale,
-							draw_yscale,
-							image_angle + draw_angle_value,
-							image_blend,
-							image_alpha
-						);
-						
-						// Draw Unit's Weapon (if equipped)
-						if (weapon_active)
-						{
-							weapon_equipped.render_behaviour();
-						}
-						
-						// Draw Primary Arm rendered in front Unit Body
-						limb_primary_arm.render_behaviour();
-					}
-					break;
-				default:
-					break;
-			}
-			
-			// Increment Object
-			temp_sub_layer_object_index++;
-		}
-		
-		// Reset Shader Properties
-		shader_reset();
-		
-		// Increment Sub Layer Index
-		temp_sub_layer_index++;
-	}
-}
 
 // Background Variables
 lighting_engine_background_depth = 250;
