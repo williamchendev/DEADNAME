@@ -44,7 +44,6 @@ const float OneOverPi = 0.31830988618;
 const float PseudoZero = 0.00001;
 
 const float DielectricMaterialLightReflectionCoefficient = 0.04;
-const float MetallicMaterialLightReflectionCoefficient = 0.92;
 
 // Fast Approximation Inverse Cosign Method
 float fastacos(float x) 
@@ -118,17 +117,17 @@ void main()
 	float HalfViewVectorToLightVector_SurfaceVectorDotProduct =  max(dot(normalize(vec3(SpotLightVector.x, -SpotLightVector.y, LightDepthVector) + vec3(0.0, 0.0, 1.0)), SurfaceNormal.xyz), 0.0);
 	
 	// Surface Diffuse Color
-	vec3 DiffuseMap_Back = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vSurfaceUV).rgb;
-	vec3 DiffuseMap_Mid = texture2D(gm_DiffuseMap_MidLayer_Texture, v_vSurfaceUV).rgb;
-	vec3 DiffuseMap_Front = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vSurfaceUV).rgb;
+	vec4 DiffuseMap_Back = texture2D(gm_DiffuseMap_BackLayer_Texture, v_vSurfaceUV);
+	vec4 DiffuseMap_Mid = texture2D(gm_DiffuseMap_MidLayer_Texture, v_vSurfaceUV);
+	vec4 DiffuseMap_Front = texture2D(gm_DiffuseMap_FrontLayer_Texture, v_vSurfaceUV);
 	
 	// Surface PBR Metallic-Roughness Value
 	float MetallicRoughness = texture2D(gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture, v_vSurfaceUV).r;
-	float LightReflectionCoefficient = MetallicRoughness <= 0.5 ? DielectricMaterialLightReflectionCoefficient : MetallicMaterialLightReflectionCoefficient;
+	vec3 LightReflectionCoefficient = MetallicRoughness <= 0.5 ? vec3(DielectricMaterialLightReflectionCoefficient) : DiffuseMap_Front.rgb + (DiffuseMap_Mid.rgb * (1.0 - DiffuseMap_Front.a)) + (DiffuseMap_Back.rgb * (1.0 - DiffuseMap_Mid.a) * (1.0 - DiffuseMap_Front.a));
 	float Roughness = abs(MetallicRoughness - 0.5) * 2.0;
 	
 	// Frenel-Schlick Approximate
-	float FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
+	vec3 FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
 	
 	// GGX/Trowbridge-Reitz Normal Distribution Function
 	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero);
@@ -139,12 +138,12 @@ void main()
 	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
 	
 	// Cook-Torrance Specular Value
-	float CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max((4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength) * FrenelSchlick, PseudoZero);
+	vec3 CookTorranceSpecular = ((NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max(4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength, PseudoZero)) * FrenelSchlick;
 	
 	// Lambertian Diffuse Value
-	vec3 LambertianDiffuse_Back = (1.0 - FrenelSchlick) * DiffuseMap_Back * OneOverPi;
-	vec3 LambertianDiffuse_Mid = (1.0 - FrenelSchlick) * DiffuseMap_Mid * OneOverPi;
-	vec3 LambertianDiffuse_Front = (1.0 - FrenelSchlick) * DiffuseMap_Front * OneOverPi;
+	vec3 LambertianDiffuse_Back = (1.0 - FrenelSchlick) * DiffuseMap_Back.rgb * OneOverPi;
+	vec3 LambertianDiffuse_Mid = (1.0 - FrenelSchlick) * DiffuseMap_Mid.rgb * OneOverPi;
+	vec3 LambertianDiffuse_Front = (1.0 - FrenelSchlick) * DiffuseMap_Front.rgb * OneOverPi;
 	
 	// MRT Render Point Light to Light Blend Layers
 	vec3 LightBlend = in_LightColor * in_LightIntensity * LightStrength * LightFade;
