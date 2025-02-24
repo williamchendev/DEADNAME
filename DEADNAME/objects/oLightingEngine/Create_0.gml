@@ -198,6 +198,7 @@ point_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd
 point_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
 
 point_light_shader_light_color_index = shader_get_uniform(shd_point_light_blend, "in_LightColor");
+point_light_shader_light_alpha_index = shader_get_uniform(shd_point_light_blend, "in_LightAlpha");
 point_light_shader_light_intensity_index = shader_get_uniform(shd_point_light_blend, "in_LightIntensity");
 point_light_shader_light_falloff_index = shader_get_uniform(shd_point_light_blend, "in_LightFalloff");
 
@@ -226,6 +227,7 @@ spot_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_
 spot_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_spot_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
 
 spot_light_shader_light_color_index = shader_get_uniform(shd_spot_light_blend, "in_LightColor");
+spot_light_shader_light_alpha_index = shader_get_uniform(shd_spot_light_blend, "in_LightAlpha");
 spot_light_shader_light_intensity_index = shader_get_uniform(shd_spot_light_blend, "in_LightIntensity");
 spot_light_shader_light_falloff_index = shader_get_uniform(shd_spot_light_blend, "in_LightFalloff");
 
@@ -256,6 +258,7 @@ point_light_and_spot_light_shadow_shader_collider_rotation_index = shader_get_un
 
 // Directional Light Blend Shader Indexes
 directional_light_shader_light_source_vector_index = shader_get_uniform(shd_directional_light_blend, "in_LightSource_Vector");
+directional_light_shader_light_intensity_index = shader_get_uniform(shd_directional_light_blend, "in_LightIntensity");
 
 directional_light_shader_light_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Light_Layers");
 directional_light_shader_shadow_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Shadow_Layers");

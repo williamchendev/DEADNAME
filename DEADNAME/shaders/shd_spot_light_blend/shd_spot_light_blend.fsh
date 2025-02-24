@@ -9,6 +9,7 @@ uniform float in_HighLight_To_BroadLight_Ratio_Max;
 
 // Uniform Light Source Properties
 uniform vec3 in_LightColor;
+uniform float in_LightAlpha;
 uniform float in_LightIntensity;
 uniform float in_LightFalloff;
 
@@ -133,8 +134,10 @@ void main()
 	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero);
 	
 	// Smith Model Geometry Shadowing Function
-	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / max((SurfaceToViewVectorDotProduct * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
-	float GeometricShadowing_LightVector_Smith = LightStrength / max((LightStrength * (1.0 - (Roughness / 2.0)) + (Roughness / 2.0)), PseudoZero);
+	float GeometricShadowing_RoughnessK = ((Roughness + 1.0) * (Roughness + 1.0)) / 8.0;
+	GeometricShadowing_RoughnessK = Roughness / 2.0;
+	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / max((SurfaceToViewVectorDotProduct * (1.0 - GeometricShadowing_RoughnessK) + GeometricShadowing_RoughnessK), PseudoZero);
+	float GeometricShadowing_LightVector_Smith = LightStrength / max((LightStrength * (1.0 - GeometricShadowing_RoughnessK) + GeometricShadowing_RoughnessK), PseudoZero);
 	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
 	
 	// Cook-Torrance Specular Value
@@ -146,7 +149,7 @@ void main()
 	vec3 LambertianDiffuse_Front = (1.0 - FrenelSchlick) * DiffuseMap_Front.rgb * OneOverPi;
 	
 	// MRT Render Point Light to Light Blend Layers
-	vec3 LightBlend = in_LightColor * in_LightIntensity * LightStrength * LightFade;
+	vec3 LightBlend = in_LightColor * in_LightAlpha * in_LightIntensity * LightStrength * LightFade;
 	
 	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * ShadowLayers.x, 1.0);
 	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * ShadowLayers.y, 1.0);

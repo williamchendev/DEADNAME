@@ -142,7 +142,8 @@ with (oLightingEngine_Source_PointLight)
     	shader_set_uniform_f(LightingEngine.point_light_shader_centerpoint_index, x, y);
     	
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
-    	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_alpha_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, point_light_intensity);
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_falloff_index, point_light_distance_fade);
     	
     	// Set Point Light Shader MRT Render Layer Properties
@@ -263,7 +264,8 @@ with (oLightingEngine_Source_SpotLight)
     	shader_set_uniform_f(LightingEngine.spot_light_shader_centerpoint_index, x, y);
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
-    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_alpha_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_intensity_index, spot_light_intensity);
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_falloff_index, spot_light_distance_fade);
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_direction_index, cos(degtorad(image_angle)), sin(degtorad(image_angle)));
@@ -376,6 +378,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
 		
 		// Set Directional Light Blend Shader Properties
+		shader_set_uniform_f(LightingEngine.directional_light_shader_light_intensity_index, directional_light_intensity);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
 		
 		// Set Shader Surface Normal Map Texture Properties
