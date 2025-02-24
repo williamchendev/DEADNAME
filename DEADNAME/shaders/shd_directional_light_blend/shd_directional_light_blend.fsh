@@ -37,8 +37,6 @@ const float PseudoZero = 0.00001;
 
 const float DielectricMaterialLightReflectionCoefficient = 0.04;
 
-const float DirectionalLightStrengthMultiplier = 3.0;
-
 // Fragment Shader
 void main() 
 {
@@ -69,23 +67,22 @@ void main()
 	// Surface PBR Metallic-Roughness Value
 	float MetallicRoughness = texture2D(gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture, v_vSurfaceUV).r;
 	vec3 LightReflectionCoefficient = MetallicRoughness <= 0.5 ? vec3(DielectricMaterialLightReflectionCoefficient) : DiffuseMap_Front.rgb + (DiffuseMap_Mid.rgb * (1.0 - DiffuseMap_Front.a)) + (DiffuseMap_Back.rgb * (1.0 - DiffuseMap_Mid.a) * (1.0 - DiffuseMap_Front.a));
-	float Roughness = abs(MetallicRoughness - 0.5) * 2.0;
+	float Roughness = abs(MetallicRoughness - 0.5);
 	
 	// Frenel-Schlick Approximate
 	vec3 FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
 	
 	// GGX/Trowbridge-Reitz Normal Distribution Function
-	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero);
+	float NormalDistribution_GGXTrowbridgeReitz = (Roughness * Roughness) / (Pi * max(pow(((HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct) * ((Roughness * Roughness) - 1.0)) + 1.0, 2.0), PseudoZero));
 	
 	// Smith Model Geometry Shadowing Function
-	float GeometricShadowing_RoughnessK = ((Roughness + 1.0) * (Roughness + 1.0)) / 8.0;
-	GeometricShadowing_RoughnessK = Roughness / 2.0;
+	float GeometricShadowing_RoughnessK = Roughness / 2.0;
 	float GeometricShadowing_ViewVector_Smith = SurfaceToViewVectorDotProduct / max((SurfaceToViewVectorDotProduct * (1.0 - GeometricShadowing_RoughnessK) + GeometricShadowing_RoughnessK), PseudoZero);
 	float GeometricShadowing_LightVector_Smith = LightStrength / max((LightStrength * (1.0 - GeometricShadowing_RoughnessK) + GeometricShadowing_RoughnessK), PseudoZero);
 	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
 	
 	// Cook-Torrance Specular Value
-	vec3 CookTorranceSpecular = ((NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max(4.0 * Pi * SurfaceToViewVectorDotProduct * LightStrength, PseudoZero)) * FrenelSchlick;
+	vec3 CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max(4.0 * SurfaceToViewVectorDotProduct * LightStrength, PseudoZero);
 	
 	// Lambertian Diffuse Value
 	vec3 LambertianDiffuse_Back = (1.0 - FrenelSchlick) * DiffuseMap_Back.rgb * OneOverPi;
@@ -93,7 +90,7 @@ void main()
 	vec3 LambertianDiffuse_Front = (1.0 - FrenelSchlick) * DiffuseMap_Front.rgb * OneOverPi;
 	
 	// MRT Render Directional Light to Light Blend Layers
-	vec3 LightBlend = v_vColour.rgb * v_vColour.a * in_LightIntensity * LightStrength * DirectionalLightStrengthMultiplier;
+	vec3 LightBlend = v_vColour.rgb * v_vColour.a * in_LightIntensity * LightStrength;
 	
 	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * ShadowLayers.x, 1.0);
 	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * ShadowLayers.y, 1.0);
