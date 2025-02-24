@@ -24,9 +24,9 @@ global.lighting_engine = id;
 global.debug_surface_enabled = true;
 global.lighting_engine_normalmap_default_color = make_color_rgb(255 / 2, 255 / 2, 255);
 
-highlight_strength_multiplier = 2.5;
-broadlight_strength_multiplier = 1.0;
-highlight_to_broadlight_ratio_max = 1.8;
+highlight_strength_multiplier = 3.0;
+broadlight_strength_multiplier = 2.25;
+highlight_to_broadlight_ratio_max = 3.0;
 
 universal_distortion_strength = 0.25;
 
