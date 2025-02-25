@@ -24,9 +24,11 @@ global.lighting_engine = id;
 global.debug_surface_enabled = true;
 global.lighting_engine_normalmap_default_color = make_color_rgb(255 / 2, 255 / 2, 255);
 
+global_illumination_multiplier = 2.0;
+
 highlight_strength_multiplier = 3.0;
-broadlight_strength_multiplier = 2.25;
-highlight_to_broadlight_ratio_max = 3.0;
+broadlight_strength_multiplier = 1.0;
+highlight_to_broadlight_ratio_max = 1.5;
 
 universal_distortion_strength = 0.25;
 
@@ -193,6 +195,7 @@ point_light_shader_centerpoint_index = shader_get_uniform(shd_point_light_blend,
 
 point_light_shader_surface_size_index = shader_get_uniform(shd_point_light_blend, "in_SurfaceSize");
 
+point_light_shader_global_illumination_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_Global_Illumination_Multiplier");
 point_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_Strength_Multiplier");
 point_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_point_light_blend, "in_BroadLight_Strength_Multiplier");
 point_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_point_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
@@ -222,6 +225,7 @@ spot_light_shader_centerpoint_index = shader_get_uniform(shd_spot_light_blend, "
 
 spot_light_shader_surface_size_index = shader_get_uniform(shd_spot_light_blend, "in_SurfaceSize");
 
+spot_light_shader_global_illumination_multiplier_index = shader_get_uniform(shd_spot_light_blend, "in_Global_Illumination_Multiplier");
 spot_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_spot_light_blend, "in_HighLight_Strength_Multiplier");
 spot_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_spot_light_blend, "in_BroadLight_Strength_Multiplier");
 spot_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_spot_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
@@ -263,6 +267,7 @@ directional_light_shader_light_intensity_index = shader_get_uniform(shd_directio
 directional_light_shader_light_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Light_Layers");
 directional_light_shader_shadow_layers_index = shader_get_uniform(shd_directional_light_blend, "in_Shadow_Layers");
 
+directional_light_shader_global_illumination_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_Global_Illumination_Multiplier");
 directional_light_shader_highlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_HighLight_Strength_Multiplier");
 directional_light_shader_broadlight_strength_multiplier_index = shader_get_uniform(shd_directional_light_blend, "in_BroadLight_Strength_Multiplier");
 directional_light_shader_highlight_to_broadlight_ratio_max_index = shader_get_uniform(shd_directional_light_blend, "in_HighLight_To_BroadLight_Ratio_Max");
@@ -289,6 +294,12 @@ directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd
 ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_SurfaceSize");
 
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
+
+ambient_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_DiffuseMap_BackLayer_Texture");
+ambient_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_DiffuseMap_MidLayer_Texture");
+ambient_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
+
+ambient_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_NormalTexture");
 
 // Deferred Lighting & Background Post Process Rendering Shader Indexes
 post_process_lighting_render_shader_lightblend_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_Texture");

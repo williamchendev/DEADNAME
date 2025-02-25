@@ -6,9 +6,6 @@
   "name":"oEnvironment_AdobeHouse_BulkStatic_CactusLarge",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_CactusLarge_NormalMap","path":"sprites/sAdobeHouse_CactusLarge_NormalMap/sAdobeHouse_CactusLarge_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_CactusLarge_NormalMap",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"metallic","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_BulkStatic_Object","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLightingEngine_BulkStatic_Object/oLightingEngine_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.1",},
   ],
   "parent":{
     "name":"AdobeHouse",

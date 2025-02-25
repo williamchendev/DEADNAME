@@ -121,6 +121,7 @@ with (oLightingEngine_Source_PointLight)
 		shader_set_uniform_f(LightingEngine.point_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.point_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
@@ -243,6 +244,7 @@ with (oLightingEngine_Source_SpotLight)
 		shader_set_uniform_f(LightingEngine.spot_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.spot_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
@@ -373,6 +375,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.directional_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
@@ -404,11 +407,17 @@ with (oLightingEngine_Source_DirectionalLight)
 }
 
 // Render Ambient Occlusion Lights
-gpu_set_blendmode(bm_max);
+gpu_set_blendmode(bm_add);
 
 shader_set(shd_ambient_occlusion_light_blend);
 
 shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2));
+
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+
+texture_set_stage(LightingEngine.ambient_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
 
 surface_set_target_ext(0, pbr_lighting_back_color_surface);
 surface_set_target_ext(1, pbr_lighting_mid_color_surface);
@@ -418,7 +427,7 @@ with (oLightingEngine_Source_AmbientLight)
 {
 	if (ambient_light_render_enabled)
 	{
-		// Set Ambient Occlusion Light Color And Intensity
+		// Set Ambient Occlusion Light Color
 		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
 		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface
