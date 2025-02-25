@@ -126,7 +126,7 @@ void main()
 	// Surface PBR Metallic-Roughness Value
 	float MetallicRoughness = texture2D(gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture, v_vSurfaceUV).r;
 	vec3 LightReflectionCoefficient = MetallicRoughness <= 0.5 ? vec3(DielectricMaterialLightReflectionCoefficient) : DiffuseMap_Front.rgb + (DiffuseMap_Mid.rgb * (1.0 - DiffuseMap_Front.a)) + (DiffuseMap_Back.rgb * (1.0 - DiffuseMap_Mid.a) * (1.0 - DiffuseMap_Front.a));
-	float Roughness = abs(MetallicRoughness - 0.5);
+	float Roughness = MetallicRoughness <= 0.5 ? 0.5 - MetallicRoughness : 0.5 - (MetallicRoughness - 0.5);
 	
 	// Frenel-Schlick Approximate
 	vec3 FrenelSchlick = LightReflectionCoefficient + ((1.0 - LightReflectionCoefficient) * pow(1.0 - HalfViewVectorToLightVector_ViewVectorDotProduct, 5.0));
@@ -142,7 +142,7 @@ void main()
 	float GeometricShadowing_Smith = GeometricShadowing_ViewVector_Smith * GeometricShadowing_LightVector_Smith;
 	
 	// Cook-Torrance Specular Value
-	vec3 CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick) / max(4.0 * SurfaceToViewVectorDotProduct * LightStrength, PseudoZero);
+	vec3 CookTorranceSpecular = (NormalDistribution_GGXTrowbridgeReitz * GeometricShadowing_Smith * FrenelSchlick * FrenelSchlick) / max(3.0 * SurfaceToViewVectorDotProduct * LightStrength, PseudoZero);
 	
 	// Burley Diffuse Geometry Shadowing Function
 	float GeometricShadowing_RoughnessFD = (3.0 * Roughness * HalfViewVectorToLightVector_SurfaceVectorDotProduct * HalfViewVectorToLightVector_SurfaceVectorDotProduct);
