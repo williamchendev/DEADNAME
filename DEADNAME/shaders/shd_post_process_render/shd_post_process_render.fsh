@@ -22,5 +22,6 @@ void main()
 	vec4 RenderColor = vec4(LightBlend_SurfaceColor.rgb, DiffuseMap_SurfaceColor.a);
 	
 	// Lit Surface Final Render Pass
-	gl_FragColor = v_vColour * RenderColor;
+	gl_FragData[0] = v_vColour * RenderColor;
+	gl_FragData[1] = v_vColour * DiffuseMap_SurfaceColor;
 }

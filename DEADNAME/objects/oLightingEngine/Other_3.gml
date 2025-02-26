@@ -64,21 +64,23 @@ ds_list_destroy(lighting_engine_background_layer_ids);
 lighting_engine_background_layer_ids = -1;
 
 // Free Surfaces
-surface_free(temp_surface);
-
 surface_free(background_surface);
 
 surface_free(diffuse_back_color_surface);
 surface_free(diffuse_mid_color_surface);
 surface_free(diffuse_front_color_surface);
+surface_free(diffuse_aggregate_color_surface);
 
 surface_free(pbr_lighting_back_color_surface);
 surface_free(pbr_lighting_mid_color_surface);
 surface_free(pbr_lighting_front_color_surface);
 
+surface_free(shadowmap_surface);
 surface_free(normalmap_vector_surface);
+
 surface_free(layered_prb_metalrough_emissive_depth_surface);
 surface_free(background_prb_metalrough_emissive_depth_surface);
+surface_free(aggregate_prb_metalrough_emissive_depth_surface);
 
 surface_free(bloom_effect_surface);
 surface_free(distortion_effect_surface);
@@ -95,21 +97,23 @@ if (global.debug_surface_enabled)
 }
 
 // Reset Surface Variables
-temp_surface = -1;
-
 background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
+diffuse_aggregate_color_surface = -1;
 
 pbr_lighting_back_color_surface = -1;
 pbr_lighting_mid_color_surface = -1;
 pbr_lighting_front_color_surface = -1;
 
+shadowmap_surface = -1;
 normalmap_vector_surface = -1;
+
 layered_prb_metalrough_emissive_depth_surface = -1;
 background_prb_metalrough_emissive_depth_surface = -1;
+aggregate_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;

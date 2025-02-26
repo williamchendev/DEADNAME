@@ -2,11 +2,6 @@
 // Creates the Surfaces for the Lighting Engine
 
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
-if (!surface_exists(temp_surface))
-{
-    temp_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
-}
-
 if (!surface_exists(background_surface))
 {
     background_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
@@ -27,6 +22,11 @@ if (!surface_exists(diffuse_front_color_surface))
     diffuse_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
+if (!surface_exists(diffuse_aggregate_color_surface))
+{
+    diffuse_aggregate_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
 if (!surface_exists(pbr_lighting_back_color_surface))
 {
     pbr_lighting_back_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
@@ -42,6 +42,11 @@ if (!surface_exists(pbr_lighting_front_color_surface))
     pbr_lighting_front_color_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
+if (!surface_exists(shadowmap_surface))
+{
+    shadowmap_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
 if (!surface_exists(normalmap_vector_surface))
 {
     normalmap_vector_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
@@ -55,6 +60,11 @@ if (!surface_exists(layered_prb_metalrough_emissive_depth_surface))
 if (!surface_exists(background_prb_metalrough_emissive_depth_surface))
 {
 	background_prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+if (!surface_exists(aggregate_prb_metalrough_emissive_depth_surface))
+{
+	aggregate_prb_metalrough_emissive_depth_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
 if (!surface_exists(bloom_effect_surface))

@@ -70,22 +70,23 @@ bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
 
 // Surfaces
-temp_surface = -1;
-
 background_surface = -1;
 
 diffuse_back_color_surface = -1;
 diffuse_mid_color_surface = -1;
 diffuse_front_color_surface = -1;
+diffuse_aggregate_color_surface = -1;
 
 pbr_lighting_back_color_surface = -1;
 pbr_lighting_mid_color_surface = -1;
 pbr_lighting_front_color_surface = -1;
 
+shadowmap_surface = -1;
 normalmap_vector_surface = -1;
 
 layered_prb_metalrough_emissive_depth_surface = -1;
 background_prb_metalrough_emissive_depth_surface = -1;
+aggregate_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
 distortion_effect_surface = -1;
@@ -313,7 +314,8 @@ post_process_lighting_render_shader_view_normal_map_index  = shader_get_sampler_
 bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");
 bloom_effect_render_shader_alpha_multiplier_index  = shader_get_uniform(shd_bloom_effect_render, "in_AlphaMult");
 
-bloom_effect_render_shader_bloom_texture_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_Bloom_Texture");
+bloom_effect_render_shader_diffusemap_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_DiffuseMap");
+bloom_effect_render_shader_emissivemap_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_EmissiveMap");
 
 // Distortion Effect Surface Rendering Shader Indexes
 distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
