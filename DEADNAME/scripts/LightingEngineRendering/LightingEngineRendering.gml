@@ -157,6 +157,36 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Bulk Static Layer Vertex Buffer with Texture from Sub-Layer Vertex Buffer and Texture Struct
 					vertex_submit(temp_sub_layer_object.bulk_static_vertex_buffer, pr_trianglelist, temp_sub_layer_object.bulk_static_texture);
 					break;
+				case LightingEngineObjectType.Dynamic_Basic:
+					// Draw Dynamic Object (Basic) on Dynamic Layer
+					with (temp_sub_layer_object)
+					{
+						// Draw Dynamic Object (Basic)
+						lighting_engine_render_sprite_ext
+						(
+							sprite_index,
+							image_index,
+							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].texture : undefined,
+							metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].texture : undefined,
+							emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].texture : undefined,
+							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].uvs : undefined,
+							metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].uvs : undefined,
+							emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].uvs : undefined,
+							normal_strength,
+							metallic,
+							roughness,
+							emissive,
+							emissive_multiplier,
+							x,
+							y,
+							image_xscale,
+							image_yscale,
+							image_angle,
+							image_blend,
+							image_alpha
+						);
+					}
+					break;
 				case LightingEngineObjectType.Dynamic_Unit:
 					// Draw Unit on Dynamic Layer
 					with (temp_sub_layer_object)

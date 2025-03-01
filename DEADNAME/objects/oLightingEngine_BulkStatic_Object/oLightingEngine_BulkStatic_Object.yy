@@ -38,7 +38,7 @@
     {"$GMObjectProperty":"v1","%Name":"roughness","filters":[],"listItems":[],"multiselect":false,"name":"roughness","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.9","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"emissive_map","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"emissive_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"emissive_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"emissive","filters":[],"listItems":[],"multiselect":false,"name":"emissive","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"emissive_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"emissive_multiplier","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
   ],

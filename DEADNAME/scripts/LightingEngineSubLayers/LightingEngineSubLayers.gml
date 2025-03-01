@@ -17,7 +17,6 @@ enum LightingEngineSubLayerType
 enum LightingEngineObjectType
 {
     Dynamic_Basic,
-    Dynamic_Dynamic,
     Dynamic_Unit,
     BulkStatic_Region,
     BulkStatic_Layer
