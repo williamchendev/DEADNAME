@@ -587,29 +587,29 @@ if (unit_animation_state != temp_unit_animation_state)
 		case UnitAnimationState.Idle:
 			sprite_index = global.unit_packs[unit_pack].idle_sprite;
 			normalmap_spritepack = unit_spritepack_idle_normalmap;
-			specularmap_spritepack = unit_spritepack_idle_specularmap;
-			bloommap_spritepack = unit_spritepack_idle_bloommap;
+			metallicroughnessmap_spritepack = unit_spritepack_idle_metallicroughnessmap;
+			emissivemap_spritepack = unit_spritepack_idle_emissivemap;
 			draw_image_index_length = 4;
 			break;
 		case UnitAnimationState.Walking:
 			sprite_index = global.unit_packs[unit_pack].walk_sprite;
 			normalmap_spritepack = unit_spritepack_walk_normalmap;
-			specularmap_spritepack = unit_spritepack_walk_specularmap;
-			bloommap_spritepack = unit_spritepack_walk_bloommap;
+			metallicroughnessmap_spritepack = unit_spritepack_walk_metallicroughnessmap;
+			emissivemap_spritepack = unit_spritepack_walk_emissivemap;
 			draw_image_index_length = 5;
 			break;
 		case UnitAnimationState.Jumping:
 			sprite_index = global.unit_packs[unit_pack].jump_sprite;
 			normalmap_spritepack = unit_spritepack_jump_normalmap;
-			specularmap_spritepack = unit_spritepack_jump_specularmap;
-			bloommap_spritepack = unit_spritepack_jump_bloommap;
+			metallicroughnessmap_spritepack = unit_spritepack_jump_metallicroughnessmap;
+			emissivemap_spritepack = unit_spritepack_jump_emissivemap;
 			draw_image_index_length = -1;
 			break;
 		case UnitAnimationState.Aiming:
 			sprite_index = global.unit_packs[unit_pack].aim_sprite;
 			normalmap_spritepack = unit_spritepack_aim_normalmap;
-			specularmap_spritepack = unit_spritepack_aim_specularmap;
-			bloommap_spritepack = unit_spritepack_aim_bloommap;
+			metallicroughnessmap_spritepack = unit_spritepack_aim_metallicroughnessmap;
+			emissivemap_spritepack = unit_spritepack_aim_emissivemap;
 			image_index = 0;
 			draw_image_index = 0;
 			draw_image_index_length = -1;
@@ -617,8 +617,8 @@ if (unit_animation_state != temp_unit_animation_state)
 		case UnitAnimationState.AimWalking:
 			sprite_index = global.unit_packs[unit_pack].aim_walk_sprite;
 			normalmap_spritepack = unit_spritepack_aim_walk_normalmap;
-			specularmap_spritepack = unit_spritepack_aim_walk_specularmap;
-			bloommap_spritepack = unit_spritepack_aim_walk_bloommap;
+			metallicroughnessmap_spritepack = unit_spritepack_aim_walk_metallicroughnessmap;
+			emissivemap_spritepack = unit_spritepack_aim_walk_emissivemap;
 			draw_image_index_length = 5;
 			break;
 	}

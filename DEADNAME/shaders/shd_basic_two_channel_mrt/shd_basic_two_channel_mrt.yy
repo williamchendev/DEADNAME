@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_basic_two_channel_mrt",
+  "name":"shd_basic_two_channel_mrt",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

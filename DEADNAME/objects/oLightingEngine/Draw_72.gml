@@ -4,35 +4,35 @@
 // Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
-// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_back_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_bloom_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Back Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Back);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Back);
 
 // (Back Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Mid Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_mid_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_bloom_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Mid Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Mid);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Mid);
 
 // (Mid Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
-// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), Depth/Specular/Bloom (Object Detail and Effects Map)
+// (Front Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_front_color_surface);
 surface_set_target_ext(1, normalmap_vector_surface);
-surface_set_target_ext(2, depth_specular_bloom_surface);
+surface_set_target_ext(2, layered_prb_metalrough_emissive_depth_surface);
 
 // (Front Layer) Iterate through all Objects assigned via Sub Layers to be draw sequentially (from back to front) in a Painter's Sorted List
-render_layer(LightingEngineRenderLayerType.Front);
+lighting_engine_render_layer(LightingEngineRenderLayerType.Front);
 
 // (Front Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
@@ -47,7 +47,7 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Prepare Shader and Surface for Point Light Shadows
 		shader_set(shd_point_light_and_spot_light_shadows);
-		surface_set_target(LightingEngine.temp_surface);
+		surface_set_target(LightingEngine.shadowmap_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -113,14 +113,15 @@ with (oLightingEngine_Source_PointLight)
 		
 		// Prepare Shader and Surface for Point Light Blending
 		shader_set(shd_point_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Point Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.point_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.point_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.point_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
@@ -128,15 +129,22 @@ with (oLightingEngine_Source_PointLight)
 		// Set Shader Surface Width, Height, and Texture Properties
 		shader_set_uniform_f(LightingEngine.point_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
+		texture_set_stage(LightingEngine.point_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+		texture_set_stage(LightingEngine.point_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+		texture_set_stage(LightingEngine.point_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+		
 		texture_set_stage(LightingEngine.point_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
-		texture_set_stage(LightingEngine.point_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.temp_surface));
+		texture_set_stage(LightingEngine.point_light_shader_shadowmap_texture_index, surface_get_texture(LightingEngine.shadowmap_surface));
+		
+		texture_set_stage(LightingEngine.point_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Point Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.point_light_shader_radius_index, point_light_radius);
     	shader_set_uniform_f(LightingEngine.point_light_shader_centerpoint_index, x, y);
     	
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
-    	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_alpha_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.point_light_shader_light_intensity_index, point_light_intensity);
     	shader_set_uniform_f(LightingEngine.point_light_shader_light_falloff_index, point_light_distance_fade);
     	
     	// Set Point Light Shader MRT Render Layer Properties
@@ -162,7 +170,7 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Prepare Shader and Surface for Spot Light Shadows
 		shader_set(shd_point_light_and_spot_light_shadows);
-		surface_set_target(LightingEngine.temp_surface);
+		surface_set_target(LightingEngine.shadowmap_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -228,14 +236,15 @@ with (oLightingEngine_Source_SpotLight)
 		
 		// Prepare Shader and Surface for Spot Light Blending
 		shader_set(shd_spot_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Spot Light Blend Shader Camera Offset
 		shader_set_uniform_f(LightingEngine.spot_light_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.spot_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.spot_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
@@ -243,15 +252,22 @@ with (oLightingEngine_Source_SpotLight)
 		// Set Shader Surface Width, Height, and Texture Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 		
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+		
 		texture_set_stage(LightingEngine.spot_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
-		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.temp_surface));
+		texture_set_stage(LightingEngine.spot_light_shader_shadows_texture_index, surface_get_texture(LightingEngine.shadowmap_surface));
+		
+		texture_set_stage(LightingEngine.spot_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Spot Light Blend Shader Properties
 		shader_set_uniform_f(LightingEngine.spot_light_shader_radius_index, spot_light_radius);
     	shader_set_uniform_f(LightingEngine.spot_light_shader_centerpoint_index, x, y);
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
-    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_intensity_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_alpha_index, image_alpha);
+    	shader_set_uniform_f(LightingEngine.spot_light_shader_light_intensity_index, spot_light_intensity);
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_falloff_index, spot_light_distance_fade);
     	
     	shader_set_uniform_f(LightingEngine.spot_light_shader_light_direction_index, cos(degtorad(image_angle)), sin(degtorad(image_angle)));
@@ -284,7 +300,7 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Prepare Shader and Surface for Directional Light Shadows
 		shader_set(shd_directional_light_shadows);
-		surface_set_target(LightingEngine.temp_surface);
+		surface_set_target(LightingEngine.shadowmap_surface);
 		
 		// Reset Light Shadow Surface
 		draw_clear_alpha(c_black, 0);
@@ -354,27 +370,35 @@ with (oLightingEngine_Source_DirectionalLight)
 		
 		// Prepare Shader and Surface for Directional Light Blending
 		shader_set(shd_directional_light_blend);
-		surface_set_target_ext(0, LightingEngine.lights_back_color_surface);
-		surface_set_target_ext(1, LightingEngine.lights_mid_color_surface);
-		surface_set_target_ext(2, LightingEngine.lights_front_color_surface);
+		surface_set_target_ext(0, LightingEngine.pbr_lighting_back_color_surface);
+		surface_set_target_ext(1, LightingEngine.pbr_lighting_mid_color_surface);
+		surface_set_target_ext(2, LightingEngine.pbr_lighting_front_color_surface);
 		
 		// Set Lighting Engine Light Blending Settings
+		shader_set_uniform_f(LightingEngine.directional_light_shader_global_illumination_multiplier_index, LightingEngine.global_illumination_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_strength_multiplier_index, LightingEngine.highlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_broadlight_strength_multiplier_index, LightingEngine.broadlight_strength_multiplier);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_highlight_to_broadlight_ratio_max_index, LightingEngine.highlight_to_broadlight_ratio_max);
 		
 		// Set Directional Light Blend Shader Properties
+		shader_set_uniform_f(LightingEngine.directional_light_shader_light_intensity_index, directional_light_intensity);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_source_vector_index, temp_directional_light_vector_x, temp_directional_light_vector_y);
 		
 		// Set Shader Surface Normal Map Texture Properties
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+		texture_set_stage(LightingEngine.directional_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+		
 		texture_set_stage(LightingEngine.directional_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+		
+		texture_set_stage(LightingEngine.directional_light_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 		
 		// Set Directional Light Shader MRT Render Layer Properties
 		shader_set_uniform_f(LightingEngine.directional_light_shader_light_layers_index, directional_light_render_background_layer ? 1 : 0, directional_light_render_midground_layer ? 1 : 0, directional_light_render_foreground_layer ? 1 : 0);
 		shader_set_uniform_f(LightingEngine.directional_light_shader_shadow_layers_index, LightingEngine.lighting_engine_back_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_mid_render_layer_shadows_enabled ? 1 : 0, LightingEngine.lighting_engine_front_render_layer_shadows_enabled ? 1 : 0);
 		
 		// Render Directional Light Blending using the Directional Light's Shadow Surface
-		draw_surface_ext(LightingEngine.temp_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
+		draw_surface_ext(LightingEngine.shadowmap_surface, 0, 0, 1, 1, 0, image_blend, image_alpha);
 		
 		// Reset Shader and Surface
 		surface_reset_target();
@@ -383,21 +407,27 @@ with (oLightingEngine_Source_DirectionalLight)
 }
 
 // Render Ambient Occlusion Lights
-gpu_set_blendmode(bm_max);
+gpu_set_blendmode(bm_add);
 
 shader_set(shd_ambient_occlusion_light_blend);
 
 shader_set_uniform_f(ambient_light_shader_surface_size_index, GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2));
 
-surface_set_target_ext(0, lights_back_color_surface);
-surface_set_target_ext(1, lights_mid_color_surface);
-surface_set_target_ext(2, lights_front_color_surface);
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_back_layer_index, surface_get_texture(LightingEngine.diffuse_back_color_surface));
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_mid_layer_index, surface_get_texture(LightingEngine.diffuse_mid_color_surface));
+texture_set_stage(LightingEngine.ambient_light_shader_diffusemap_texture_front_layer_index, surface_get_texture(LightingEngine.diffuse_front_color_surface));
+
+texture_set_stage(LightingEngine.ambient_light_shader_normalmap_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+
+surface_set_target_ext(0, pbr_lighting_back_color_surface);
+surface_set_target_ext(1, pbr_lighting_mid_color_surface);
+surface_set_target_ext(2, pbr_lighting_front_color_surface);
 
 with (oLightingEngine_Source_AmbientLight)
 {
 	if (ambient_light_render_enabled)
 	{
-		// Set Ambient Occlusion Light Color And Intensity
+		// Set Ambient Occlusion Light Color
 		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
 		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface

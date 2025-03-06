@@ -20,13 +20,20 @@ class WeaponClass define
 		// Init Weapon Properties
 		weapon_sprite = global.weapon_packs[init_weapon_pack].weapon_sprite;
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
-		weapon_specularmap = global.weapon_packs[init_weapon_pack].weapon_specularmap;
-		weapon_bloommap = global.weapon_packs[init_weapon_pack].weapon_bloommap;
+		weapon_metallicroughnessmap = global.weapon_packs[init_weapon_pack].weapon_metallicroughnessmap;
+		weapon_emissivemap = global.weapon_packs[init_weapon_pack].weapon_emissivemap;
 		
 		// Init Weapon Sprite Packs
 		weapon_normalmap_spritepack = weapon_normalmap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_normalmap);
-		weapon_specularmap_spritepack = weapon_specularmap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_specularmap);
-		weapon_bloommap_spritepack = weapon_bloommap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_bloommap);
+		weapon_metallicroughnessmap_spritepack = weapon_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_metallicroughnessmap);
+		weapon_emissivemap_spritepack = weapon_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(weapon_sprite, weapon_emissivemap);
+		
+		// Init Weapon PBR Settings
+		weapon_normal_strength = 1;
+		weapon_metallic = global.weapon_packs[init_weapon_pack].metallic;
+		weapon_roughness = global.weapon_packs[init_weapon_pack].roughness;
+		weapon_emissive = global.weapon_packs[init_weapon_pack].emissive;
+		weapon_emissive_multiplier = 1;
 		
 		// Init Weapon Image Index
 	    weapon_image_index = 0;
@@ -69,16 +76,21 @@ class WeaponClass define
 	static render_behaviour = function() 
 	{
 		// Draw Weapon
-		LightingEngine.render_sprite
+		lighting_engine_render_sprite_ext
 		(
 			weapon_sprite, 
 			weapon_image_index, 
 			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].texture : undefined,
-			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].texture : undefined, 
-			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_metallicroughnessmap_spritepack != undefined ? weapon_metallicroughnessmap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_emissivemap_spritepack != undefined ? weapon_emissivemap_spritepack[weapon_image_index].texture : undefined, 
 			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].uvs : undefined,
-			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].uvs : undefined,
-			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_metallicroughnessmap_spritepack != undefined ? weapon_metallicroughnessmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_emissivemap_spritepack != undefined ? weapon_emissivemap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_normal_strength,
+			weapon_metallic,
+			weapon_roughness,
+			weapon_emissive,
+			weapon_emissive_multiplier,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 
@@ -251,16 +263,21 @@ class FirearmClass extends WeaponClass define
 	static render_behaviour = function() 
 	{
 		// Draw Weapon
-		LightingEngine.render_sprite
+		lighting_engine_render_sprite_ext
 		(
 			weapon_sprite, 
 			weapon_image_index, 
 			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].texture : undefined,
-			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].texture : undefined, 
-			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_metallicroughnessmap_spritepack != undefined ? weapon_metallicroughnessmap_spritepack[weapon_image_index].texture : undefined, 
+			weapon_emissivemap_spritepack != undefined ? weapon_emissivemap_spritepack[weapon_image_index].texture : undefined, 
 			weapon_normalmap_spritepack != undefined ? weapon_normalmap_spritepack[weapon_image_index].uvs : undefined,
-			weapon_specularmap_spritepack != undefined ? weapon_specularmap_spritepack[weapon_image_index].uvs : undefined,
-			weapon_bloommap_spritepack != undefined ? weapon_bloommap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_metallicroughnessmap_spritepack != undefined ? weapon_metallicroughnessmap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_emissivemap_spritepack != undefined ? weapon_emissivemap_spritepack[weapon_image_index].uvs : undefined,
+			weapon_normal_strength,
+			weapon_metallic,
+			weapon_roughness,
+			weapon_emissive,
+			weapon_emissive_multiplier,
 			weapon_x, 
 			weapon_y, 
 			weapon_xscale, 

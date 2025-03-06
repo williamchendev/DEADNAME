@@ -17,7 +17,7 @@ enum LightingEngineSubLayerType
 enum LightingEngineObjectType
 {
     Dynamic_Basic,
-    Dynamic_Dynamic,
+    Dynamic_Particle,
     Dynamic_Unit,
     BulkStatic_Region,
     BulkStatic_Layer
@@ -317,7 +317,7 @@ function lighting_engine_delete_all_sub_layers()
 }
 
 // Lighting Engine Layer Method: Add Object to Sub Layer
-function lighting_engine_add_object(object_id, object_type, sub_layer_name = LightingEngineDefaultLayer)
+function lighting_engine_add_object(object_id, object_type, sub_layer_name = LightingEngineDefaultLayer, sub_layer_index = -1)
 {
 	// Establish Default Sub Layer Index and Sub Layer Render Layer Type
 	var temp_sub_layer_index = LightingEngine.lighting_engine_default_layer_index;
@@ -343,31 +343,109 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 		{
 			case LightingEngineRenderLayerType.Back:
 				temp_sub_layer_index = ds_list_find_index(LightingEngine.lighting_engine_back_layer_sub_layer_name_list, sub_layer_name);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				
+				if (sub_layer_index == -1)
+				{
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				}
+				else
+				{
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+				}
 				break;
 			case LightingEngineRenderLayerType.Front:
 				temp_sub_layer_index = ds_list_find_index(LightingEngine.lighting_engine_front_layer_sub_layer_name_list, sub_layer_name);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				
+				if (sub_layer_index == -1)
+				{
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				}
+				else
+				{
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+				}
 				break;
 			case LightingEngineRenderLayerType.Mid:
 			default:
 				temp_sub_layer_index = ds_list_find_index(LightingEngine.lighting_engine_mid_layer_sub_layer_name_list, sub_layer_name);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-				ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				
+				if (sub_layer_index == -1)
+				{
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+					ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+				}
+				else
+				{
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+				}
 				break;
 		}
 	}
 	else
 	{
 		// Add Object to Sub Layer
-		ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
-		ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+		if (sub_layer_index == -1)
+		{
+			ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id);
+			ds_list_add(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type);
+		}
+		else
+		{
+			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
+			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+		}
 	}
 	
 	// Object was successfully added to Sub Layer - Return True
 	return true;
+}
+
+// Lighting Engine Layer Method: Find Object Index
+function lighting_engine_find_object_index(object_id)
+{
+	// Search Midground Sub-Layers for Object Index
+	for (var temp_mid_sub_layer_index = 0; temp_mid_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list); temp_mid_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_mid_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			return temp_object_index;
+		}
+	}
+	
+	// Search Background Sub-Layers for Object Index
+	for (var temp_back_sub_layer_index = 0; temp_back_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_back_layer_sub_layer_object_list); temp_back_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_back_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			return temp_object_index;
+		}
+	}
+	
+	// Search Foreground Sub-Layers for Object Index
+	for (var temp_front_sub_layer_index = 0; temp_front_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_front_layer_sub_layer_object_list); temp_front_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_front_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			return temp_object_index;
+		}
+	}
+	
+	// Unsuccessfully Found Object Index - Return -1 as Default Result
+	return -1;
 }
 
 // Lighting Engine Layer Method: Add Unit to Default Layer

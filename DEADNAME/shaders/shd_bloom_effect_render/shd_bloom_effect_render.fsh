@@ -10,10 +10,12 @@ varying vec2 v_vTexcoord;
 uniform float in_AlphaMult;
 uniform vec2 in_TexelSize;
 
-// Unifrom Bloom Texture
-uniform sampler2D in_Bloom_Texture;
+// Unifrom Bloom Maps
+uniform sampler2D in_DiffuseMap;
+uniform sampler2D in_EmissiveMap;
 
 // Constants
+const float LightingImpact = 0.5;
 const float BloomBlurSize = 2.0;
 
 // Fragment Shader
@@ -29,12 +31,12 @@ void main()
 		for (float y = -BloomBlurSize; y <= BloomBlurSize; y++)
 		{
 			// Find Bloom Value from Neighbor
-			float Neighbor = texture2D(in_Bloom_Texture, v_vTexcoord + in_TexelSize * vec2(x, y)).b * v_vColour.a;
+			float Neighbor = texture2D(in_EmissiveMap, v_vTexcoord + in_TexelSize * vec2(x, y)).g * v_vColour.a;
 			
 			// Establish Bloom Value At Pixel
 			BloomAlpha += Neighbor;
 			BloomCount += Neighbor > 0.0 ? 1.0 : 0.0;
-			BloomColor += Neighbor > 0.0 ? texture2D(gm_BaseTexture, v_vTexcoord + in_TexelSize * vec2(x, y)).rgb : vec3(0.0);
+			BloomColor += Neighbor > 0.0 ? mix(texture2D(gm_BaseTexture, v_vTexcoord + in_TexelSize * vec2(x, y)).rgb, texture2D(in_DiffuseMap, v_vTexcoord + in_TexelSize * vec2(x, y)).rgb, (1.0 - LightingImpact) + (Neighbor * LightingImpact)) : vec3(0.0);
 		}
 	}
 	

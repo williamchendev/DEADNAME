@@ -45,11 +45,16 @@ global.weapon_packs[WeaponPack.Default] =
     // Weapon Type
     weapon_type: WeaponType.DefaultFirearm,
     
-    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
+    // Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
     weapon_sprite: sArkov_FAL,
     weapon_normalmap: sArkov_FAL_NormalMap,
-    weapon_specularmap: noone,
-    weapon_bloommap: noone,
+    weapon_metallicroughnessmap: noone,
+    weapon_emissivemap: noone,
+    
+    // Weapon PBR Settings
+    metallic: false,
+    roughness: 0.2,
+    emissive: 0,
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 15,
@@ -101,11 +106,16 @@ global.weapon_packs[WeaponPack.Corso] =
     // Weapon Type
     weapon_type: WeaponType.BoltActionFirearm,
     
-    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
+    // Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
-    weapon_specularmap: noone,
-    weapon_bloommap: noone,
+    weapon_metallicroughnessmap: noone,
+    weapon_emissivemap: noone,
+    
+    // Weapon PBR Settings
+    metallic: false,
+    roughness: 0.2,
+    emissive: 0,
     
     // Weapon Ammo
     firearm_max_ammo_capacity: 5,
@@ -157,9 +167,14 @@ global.weapon_packs[WeaponPack.SMG] =
     // Weapon Type
     weapon_type: WeaponType.DefaultFirearm,
     
-    // Diffuse Map, Normal Map, Specular Map, and Bloom Map
+    // Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
-    weapon_specularmap: noone,
-    weapon_bloommap: noone,
+    weapon_metallicroughnessmap: noone,
+    weapon_emissivemap: noone,
+    
+    // Weapon PBR Settings
+    metallic: false,
+    roughness: 0.2,
+    emissive: 0,
 }

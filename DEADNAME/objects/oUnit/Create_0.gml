@@ -77,8 +77,8 @@ y_velocity = 0;
 
 // Animation Variables
 normalmap_spritepack = noone;
-specularmap_spritepack = noone;
-bloommap_spritepack = noone;
+metallicroughnessmap_spritepack = noone;
+emissivemap_spritepack = noone;
 
 image_speed = 0;
 
@@ -164,6 +164,13 @@ input_cursor_y = 0;
 trig_sine = 0;
 trig_cosine = 1;
 
+// PBR Variables
+normal_strength = 1;
+metallic = global.unit_packs[unit_pack].metallic;
+roughness = global.unit_packs[unit_pack].roughness;
+emissive = global.unit_packs[unit_pack].emissive;
+emissive_multiplier = 1;
+
 // Generate UVs
 unit_spritepack_idle_normalmap = global.unit_packs[unit_pack].idle_normalmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_normalmap);
 unit_spritepack_walk_normalmap = global.unit_packs[unit_pack].walk_normalmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_normalmap);
@@ -171,14 +178,14 @@ unit_spritepack_jump_normalmap = global.unit_packs[unit_pack].jump_normalmap == 
 unit_spritepack_aim_normalmap = global.unit_packs[unit_pack].aim_normalmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_normalmap);
 unit_spritepack_aim_walk_normalmap = global.unit_packs[unit_pack].aim_walk_normalmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_normalmap);
 
-unit_spritepack_idle_specularmap = global.unit_packs[unit_pack].idle_specularmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_specularmap);
-unit_spritepack_walk_specularmap = global.unit_packs[unit_pack].walk_specularmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_specularmap);
-unit_spritepack_jump_specularmap = global.unit_packs[unit_pack].jump_specularmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_specularmap);
-unit_spritepack_aim_specularmap = global.unit_packs[unit_pack].aim_specularmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_specularmap);
-unit_spritepack_aim_walk_specularmap = global.unit_packs[unit_pack].aim_walk_specularmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_specularmap);
+unit_spritepack_idle_metallicroughnessmap = global.unit_packs[unit_pack].idle_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_metallicroughnessmap);
+unit_spritepack_walk_metallicroughnessmap = global.unit_packs[unit_pack].walk_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_metallicroughnessmap);
+unit_spritepack_jump_metallicroughnessmap = global.unit_packs[unit_pack].jump_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_metallicroughnessmap);
+unit_spritepack_aim_metallicroughnessmap = global.unit_packs[unit_pack].aim_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_metallicroughnessmap);
+unit_spritepack_aim_walk_metallicroughnessmap = global.unit_packs[unit_pack].aim_walk_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_metallicroughnessmap);
 
-unit_spritepack_idle_bloommap = global.unit_packs[unit_pack].idle_bloommap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_bloommap);
-unit_spritepack_walk_bloommap = global.unit_packs[unit_pack].walk_bloommap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_bloommap);
-unit_spritepack_jump_bloommap = global.unit_packs[unit_pack].jump_bloommap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_bloommap);
-unit_spritepack_aim_bloommap = global.unit_packs[unit_pack].aim_bloommap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_bloommap);
-unit_spritepack_aim_walk_bloommap = global.unit_packs[unit_pack].aim_walk_bloommap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_bloommap);
+unit_spritepack_idle_emissivemap = global.unit_packs[unit_pack].idle_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].idle_sprite, global.unit_packs[unit_pack].idle_emissivemap);
+unit_spritepack_walk_emissivemap = global.unit_packs[unit_pack].walk_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].walk_sprite, global.unit_packs[unit_pack].walk_emissivemap);
+unit_spritepack_jump_emissivemap = global.unit_packs[unit_pack].jump_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_emissivemap);
+unit_spritepack_aim_emissivemap = global.unit_packs[unit_pack].aim_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_emissivemap);
+unit_spritepack_aim_walk_emissivemap = global.unit_packs[unit_pack].aim_walk_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_emissivemap);
