@@ -192,10 +192,11 @@ for (var temp_dynamic_object_index = 0; temp_dynamic_object_index < ds_list_size
 {
 	// Find Dynamic Object at Index
     var temp_dynamic_object_instance = ds_list_find_value(dynamic_object_list, temp_dynamic_object_index);
+    var temp_dynamic_object_type = ds_list_find_value(dynamic_type_list, temp_dynamic_object_index);
     
     // Add Dynamic Object to Sub Layer by Sub Layer Name
     var temp_dynamic_object_layer = temp_dynamic_object_instance.sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(temp_dynamic_object_instance.layer) : temp_dynamic_object_instance.sub_layer_name;
-    var temp_successfully_added_dynamic_object = lighting_engine_add_object(temp_dynamic_object_instance.id, LightingEngineObjectType.Dynamic_Basic, temp_dynamic_object_instance.sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_object_layer);
+    var temp_successfully_added_dynamic_object = lighting_engine_add_object(temp_dynamic_object_instance.id, temp_dynamic_object_type, temp_dynamic_object_instance.sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_object_layer);
     
     // Debug Flag - Unsuccessfully added Dynamic Object to Lighting Engine Sub Layer
     if (!temp_successfully_added_dynamic_object)

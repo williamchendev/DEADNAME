@@ -6,6 +6,7 @@ if (LightingEngine.lighting_engine_worker != -1 and instance_exists(LightingEngi
 {
     // Add Dynamic Object to Lighting Engine Worker to add to Layer after they have been initialized
     ds_list_add(LightingEngine.lighting_engine_worker.dynamic_object_list, id);
+    ds_list_add(LightingEngine.lighting_engine_worker.dynamic_type_list, LightingEngineObjectType.Dynamic_Basic);
 }
 else
 {

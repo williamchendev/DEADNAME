@@ -1,6 +1,9 @@
 /// @description Flame Dynamic Object Init
 // Initializes Flame Dynamic Object & Point Light
 
+// Instantiate Smoke Particle
+smoke_particle_source = instance_create_depth(x, y, depth, oFlameEntity_Smoke_Particle);
+
 // Lighting Engine Behaviour: Initialize Dynamic Object
 event_inherited();
 

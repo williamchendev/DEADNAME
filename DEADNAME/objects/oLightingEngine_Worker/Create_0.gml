@@ -7,3 +7,4 @@ bulk_static_regions_list = ds_list_create();
 
 // Dynamic Object DS List
 dynamic_object_list = ds_list_create();
+dynamic_type_list = ds_list_create();

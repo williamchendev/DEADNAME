@@ -1,20 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"oDebug_Dynamic_Flame",
+  "%Name":"oFlameEntity_Small_Torch",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oDebug_Dynamic_Flame",
+  "name":"oFlameEntity_Small_Torch",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Dynamic_Object","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"propertyId":{"name":"emissive","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Dynamic_Object","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Dynamic_Object","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"propertyId":{"name":"metallic","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
   ],
   "parent":{
-    "name":"Debug",
-    "path":"folders/Objects/Environment/Debug.yy",
+    "name":"Entities",
+    "path":"folders/Objects/Entities.yy",
   },
   "parentObjectId":{
     "name":"oLightingEngine_Dynamic_Object",
@@ -33,7 +34,9 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"dynamic_movement","filters":[],"listItems":[],"multiselect":false,"name":"dynamic_movement","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

@@ -187,6 +187,36 @@ function lighting_engine_render_layer(render_layer_type)
 						);
 					}
 					break;
+				case LightingEngineObjectType.Dynamic_Particle:
+					// Draw Dynamic Particle System
+					with (temp_sub_layer_object)
+					{
+						// Reset Default Dynamic Sprite Shader
+						shader_reset();
+						
+						// Set & Prepare Dynamic Particle Shader
+						shader_set(shd_mrt_deferred_lighting_particle_system);
+						
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_camera_offset_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+						
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_metallic_index, metallic ? 1 : 0);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_roughness_index, max(roughness, 0.01));
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_emissive_index, emissive);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_particle_shader_emissive_multiplier_index, emissive_multiplier);
+						
+						// Draw Particle System
+						part_system_drawit(temp_sub_layer_object.dynamic_particle_system);
+						
+						// Reset Dynamic Particle Shader
+						shader_reset();
+						
+						// Retore Default Dynamic Sprite Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
+		    			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+					}
+					break;
 				case LightingEngineObjectType.Dynamic_Unit:
 					// Draw Unit on Dynamic Layer
 					with (temp_sub_layer_object)
