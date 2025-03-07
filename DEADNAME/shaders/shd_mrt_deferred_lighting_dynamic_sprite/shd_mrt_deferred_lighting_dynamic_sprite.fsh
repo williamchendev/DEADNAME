@@ -67,7 +67,7 @@ void main()
     gl_FragData[0] = v_vColour * Diffuse;
     
     // MRT[1] Normal Vector Layer: Draw Sprite Normal Vector
-    gl_FragData[1] = Normal;
+    gl_FragData[1] = vec4(Normal.rgb, v_vColour.a * Normal.a * Diffuse.a);
     
     // MRT[2] BRDF Workflow Layer: Draw PBR Metallic-Roughness, Emissive, and Depth Data
     gl_FragData[2] = vec4((Roughness * Metallic * 0.5) + 0.5, Emissive, (in_Layer_Depth * 0.5) + 0.5, 1.0);

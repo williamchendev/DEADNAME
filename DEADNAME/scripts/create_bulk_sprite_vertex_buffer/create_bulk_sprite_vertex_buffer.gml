@@ -1,4 +1,6 @@
-
+/// @function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list);
+/// @description Creates a compiled Vertex Buffer with the given DS List of Bulk Static Objects and their PBR Properties
+/// @param {ds_list<oLighting_BulkStatic_Object>} bulk_sprite_object_ds_list - The DS List of Bulk Static Objects to compile into a single unbroken Vertex Buffer (This is to save on expensive vertex batch breaks when rendering large amounts of environmental assets in a scene)
 function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list) 
 {
     // Begin Initialize Vertex Buffer

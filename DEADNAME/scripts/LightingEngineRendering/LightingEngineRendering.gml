@@ -1,4 +1,25 @@
-
+/// @function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage, normalmap_texture, metallicroughnessmap_texture, emissivemap_texture, normalmap_uvs, metallicroughnessmap_uvs, emissivemap_uvs, normal_strength, metallic, roughness, emissive, emissive_multiplier, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
+/// @description Draws a Sprite through the Deferred Lighting Engine's Multi-Render-Target System using a Diffuse/Normal/Metallic/Roughness/Emissive workflow with the given arguments
+/// @param {sprite} diffusemap_index - The Rendered Sprite's Diffuse Map as a Sprite Index Asset
+/// @param {real} diffusemap_subimage - The Rendered Sprite's Subimage Index
+/// @param {?texture} normalmap_texture - The Rendered Sprite's Normal Map as a texture index, can be optionally assigned as undefined to disable rendering a Normal Map (Normal Map by default is tangent with View Vector)
+/// @param {?texture} metallicroughnessmap_texture - The Rendered Sprite's MetallicRoughness Map as a texture index, can be optionally assigned as undefined to disable rendering a MetallicRoughness Map (defaults to the metallic and roughness values in the given arguments)
+/// @param {?texture} emissivemap_texture - The Rendered Sprite's Emissive Map as a texture index, can be optionally assigned as undefined to disable rendering a Emissive Map (defaults to the emissive values in the given arguments)
+/// @param {?array<real>} normalmap_uvs - The Rendered Sprite's Normal Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {?array<real>} metallicroughnessmap_uvs - The Rendered Sprite's Metallic Roughness Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {?array<real>} emissivemap_uvs - The Rendered Sprite's Emissive Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {real} normal_strength - The value to interpolate the given Normal Map towards being tangent with the View Vector on a 0 to 1 range, 0 is completely tangent with the View Vector, 1 is the unchanged value of the given Normal Map
+/// @param {bool} metallic - Boolean toggle to draw the Rendered Sprite's material as Metallic (true) or Dielectric (false)
+/// @param {real} roughness - The Rendered Sprite's roughness value between a 0 to 1 range, determining how much light gets reflected off or even gets trapped in micro-facets within the material
+/// @param {real} emissive - The Rendered Sprite's emissive (Bloom) base value between a 0 to 1 range, determines how much light bleed (and blur) of the material's base diffuse color is rendered
+/// @param {real} emissive_multiplier - The Rendered Sprite's emissive (Bloom) modifier value between a 0 to 1 range, this value is used to modify an emissive material's bloom effect's strength or even toggle it on or off
+/// @param {real} x_pos - The X coordinate within a scene to draw the Rendered Sprite
+/// @param {real} y_pos - The Y coordinate within a scene to draw the Rendered Sprite
+/// @param {real} x_scale - The horizontal scale to draw the Rendered Sprite
+/// @param {real} y_scale - The vertical scale to draw the Rendered Sprite
+/// @param {real} rotation - The angle to draw the Rendered Sprite rotated
+/// @param {int} color - The color to draw the Rendered Sprite
+/// @param {real} alpha - The transparency to draw the Rendered Sprite
 function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage, normalmap_texture, metallicroughnessmap_texture, emissivemap_texture, normalmap_uvs, metallicroughnessmap_uvs, emissivemap_uvs, normal_strength, metallic, roughness, emissive, emissive_multiplier, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
 {
     // Toggle Shader Effects: Normal Channel, Specular Channel, & Bloom Channel
@@ -52,6 +73,9 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
     draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
 }
 
+/// @function lighting_engine_render_layer(render_layer_type);
+/// @description Draws the Lighting Engine's Render Layers through the Deferred Lighting Engine's Multi-Render-Target System using a Diffuse/Normal/Metallic/Roughness/Emissive workflow
+/// @param {LightingEngineRenderLayerType} render_layer_type - The Render Layer to draw (Back/Mid/Front)
 function lighting_engine_render_layer(render_layer_type)
 {
 	// Establish Empty Render Layer Variables

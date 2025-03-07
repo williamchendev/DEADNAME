@@ -24,6 +24,13 @@ enum LightingEngineObjectType
 }
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
+/// @function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type);
+/// @description Adds a new Sub-Layer to the active scene in the Lighting Engine's Rendering Pipeline with the given properties
+/// @param {string} sub_layer_name - The name of the new Sub-Layer
+/// @param {real} sub_layer_depth - The depth of the new Sub-Layer, on a range from -1.0 (Background) to 1.0 (Foreground)
+/// @param {LightingEngineSubLayerType} sub_layer_type - The new Sub-Layer's Type, Sub-Layers are designed to make efficient batched drawing calls and a Sub-Layer type will be dedicated to drawing a single kind of object (either Dynamic or Bulk-Static, however particles ignore this)
+/// @param {LightingEngineRenderLayerType} render_layer_type - The Render Layer Type of the new Sub-Layer, there are three options: Background, Midground, and Foreground (remember to set the Sub-Layer's depth in a relavent position to its Render Layer Type!)
+/// @returns {bool} Returns if the Sub-Layer could be successfully created
 function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type)
 {
 	// Check if Sub Layer already exists
@@ -170,6 +177,10 @@ function lighting_engine_remove_all_objects_from_sub_layer_lists(sub_layer_objec
 }
 
 // Lighting Engine Layer Methods: Delete Sub Layer Behaviours
+/// @function lighting_engine_delete_sub_layer(sub_layer_name);
+/// @description Deletes the given Sub-Layer (by the Sub-Layer's name) being used by the Lighting Engine
+/// @param {string} sub_layer_name - The name of the Sub-Layer to be deleted
+/// @returns {bool} Returns if the Sub-Layer could be successfully deleted
 function lighting_engine_delete_sub_layer(sub_layer_name)
 {
 	// Check if Sub Layer exists
@@ -263,6 +274,8 @@ function lighting_engine_delete_sub_layer(sub_layer_name)
 	return true;
 }
 
+/// @function lighting_engine_delete_all_sub_layers();
+/// @description Deletes all Sub-Layers being used by the Lighting Engine, intended to be used when switching Scenes or even closing the Game
 function lighting_engine_delete_all_sub_layers()
 {
 	// Iterate through and delete all Sub Layers
@@ -317,6 +330,13 @@ function lighting_engine_delete_all_sub_layers()
 }
 
 // Lighting Engine Layer Method: Add Object to Sub Layer
+/// @function lighting_engine_add_object(object_id, object_type, sub_layer_name, sub_layer_index);
+/// @description Adds an Object to the Lighting Engine's Rendering System with the given properties
+/// @param {any} object_id - The Object Instance to index into a Sub-Layer add to the Lighting Engine's Rendering System
+/// @param {int<LightingEngineObjectType>} object_type - The Object's Type to determine how it will be rendering by the Lighting Engine during its rendering process
+/// @param {string} sub_layer_name - The name of the Sub-Layer to add the Object Instance to as to determine the Object's order during the rendering process
+/// @param {real} sub_layer_index - The index within the Sub-Layer's Object List to determine the Object's order being rendered within its own Sub-Layer, by default this is -1 which will add the Object to the front of the Sub-Layer's drawing order
+/// @returns {bool} Returns if the Object could be successfully added to the given Sub-Layer within the Lighting Engine
 function lighting_engine_add_object(object_id, object_type, sub_layer_name = LightingEngineDefaultLayer, sub_layer_index = -1)
 {
 	// Establish Default Sub Layer Index and Sub Layer Render Layer Type
@@ -406,6 +426,10 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 }
 
 // Lighting Engine Layer Method: Find Object Index
+/// @function lighting_engine_find_object_index(object_id);
+/// @description Finds the given Object Instance's index within its Sub-Layer's Object List if it exists, otherwise this function returns -1 by default
+/// @param {any} object_id - The Object Instance to find the index of
+/// @returns {int} Returns the Object's Index within the Sub-Layer's Object List if it exists, if the Object's Index is not stored in the Lighting Engine's Sub-Layer Object Lists then this function returns -1 by default
 function lighting_engine_find_object_index(object_id)
 {
 	// Search Midground Sub-Layers for Object Index
@@ -449,6 +473,10 @@ function lighting_engine_find_object_index(object_id)
 }
 
 // Lighting Engine Layer Method: Add Unit to Default Layer
+/// @function lighting_engine_add_unit(unit_id, sub_layer_name);
+/// @description Adds a Unit Instance to the Lighting Engine with the given Sub-Layer (by default the Unit will be added to the Lighting Engine's Default Sub-Layer in the Midground)
+/// @param {oUnit} unit_id - The object instance of the Unit to add to the Lighting Engine's Sub-Layer
+/// @param {string} sub_layer_name - The name of the Sub-Layer to add the Unit to (by default the Unit will be added to the Default Layer, unless you are attempting to do something specific you will most likely be adding new Units to the Lighting Engine's default layer)
 function lighting_engine_add_unit(unit_id, sub_layer_name = LightingEngineDefaultLayer)
 {
 	lighting_engine_add_object(unit_id, LightingEngineObjectType.Dynamic_Unit, sub_layer_name);
