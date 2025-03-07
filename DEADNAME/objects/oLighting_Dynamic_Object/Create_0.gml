@@ -1,6 +1,9 @@
 /// @description Default Dynamic Object Initialization
 // Initialized Dynamic Object for Lighting Engine Rendering
 
+// Disable Visibility
+visible = false;
+
 // Adds Dynamic Object to Lighting Engine
 if (LightingEngine.lighting_engine_worker != -1 and instance_exists(LightingEngine.lighting_engine_worker))
 {

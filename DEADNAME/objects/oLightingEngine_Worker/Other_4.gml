@@ -62,7 +62,7 @@ for (var temp_bulk_static_layer_index = 0; temp_bulk_static_layer_index < ds_lis
     var temp_bulk_static_sublayer_objects_list = ds_list_create();
     
     // Select for Bulk Static Objects that share the same Sub-Layer Name as the Indexed Sub-Layer Name
-    with (oLightingEngine_BulkStatic_Object)
+    with (oLighting_BulkStatic_Object)
     {
         var temp_sub_layer_name = sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name;
         
@@ -111,13 +111,14 @@ for (var temp_bulk_static_region_index = 0; temp_bulk_static_region_index < ds_l
 {
     // Find Bulk Static Region at Index
     var temp_bulk_static_region_instance = ds_list_find_value(bulk_static_regions_list, temp_bulk_static_region_index);
+    var temp_bulk_static_region_layer = temp_bulk_static_region_instance.sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(temp_bulk_static_region_instance.layer) : temp_bulk_static_region_instance.sub_layer_name;
     
     // Bulk Static Region - Layered Region Vertex Buffer Creation
     with (temp_bulk_static_region_instance)
     {
         // Index all Bulk Static Objects in Vertex Buffer
         var temp_bulk_static_objects_list = ds_list_create();
-        var temp_bulk_static_objects_count = collision_rectangle_list(bbox_left, bbox_top, bbox_right, bbox_bottom, oLightingEngine_BulkStatic_Object, false, true, temp_bulk_static_objects_list, false);
+        var temp_bulk_static_objects_count = collision_rectangle_list(bbox_left, bbox_top, bbox_right, bbox_bottom, oLighting_BulkStatic_Object, false, true, temp_bulk_static_objects_list, false);
         
         if (temp_bulk_static_objects_count > 0)
         {
@@ -130,6 +131,12 @@ for (var temp_bulk_static_region_index = 0; temp_bulk_static_region_index < ds_l
         		// Find Bulk Static Object at Index
         		var temp_bulk_static_object = ds_list_find_value(temp_bulk_static_objects_list, i);
         		var temp_bulk_static_object_layer = temp_bulk_static_object.sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(temp_bulk_static_object.layer) : temp_bulk_static_object.sub_layer_name;
+        		
+        		// If Region has the "Single Sub-Layer" Option enabled, Check if Bulk Static Object's Sub-Layer matches Region Sub-Layer
+        		if (single_sub_layer and temp_bulk_static_region_layer != temp_bulk_static_object_layer)
+        		{
+        			continue;
+        		}
         		
         		// Find Layer List & Create Layer List if Layer List does not exist
         		var temp_bulk_static_layer_list = ds_map_find_value(temp_bulk_static_layers_map, temp_bulk_static_object_layer);

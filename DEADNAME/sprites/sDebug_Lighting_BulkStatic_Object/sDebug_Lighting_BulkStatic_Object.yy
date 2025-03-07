@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"BulkStatic",
-    "path":"folders/Sprites/Debug/Lighting/BulkStatic.yy",
+    "name":"Entities",
+    "path":"folders/Sprites/Debug/Lighting/Entities.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

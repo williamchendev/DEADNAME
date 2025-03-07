@@ -147,7 +147,7 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Bulk Static Region Vertex Buffer on Bulk Static Layer
 					with (temp_sub_layer_object)
 					{
-						if (bulk_static_region_render_enabled)
+						if (region_render_enabled)
 						{
 							vertex_submit(ds_map_find_value(bulk_static_region_vertex_buffer_map, temp_sub_layer_name), pr_trianglelist, ds_map_find_value(bulk_static_region_texture_map, temp_sub_layer_name));
 						}
@@ -161,6 +161,24 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Dynamic Object (Basic) on Dynamic Layer
 					with (temp_sub_layer_object)
 					{
+						// Region Culling Check
+						if (region_culled)
+						{
+							// Find Region Culling Instance
+							var temp_region = ds_map_find_value(LightingEngine.lighting_engine_culling_regions_map, region_culling_id);
+							
+							// Check if Region Culling Instance is Indexed
+							if (!is_undefined(temp_region))
+							{
+								// Check if Region is being Culled
+								if (!temp_region.region_render_enabled)
+								{
+									// Region Render Disabled - Skip Drawing Object
+									break;
+								}
+							}
+						}
+						
 						// Draw Dynamic Object (Basic)
 						lighting_engine_render_sprite_ext
 						(
@@ -191,6 +209,24 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Dynamic Particle System
 					with (temp_sub_layer_object)
 					{
+						// Region Culling Check
+						if (region_culled)
+						{
+							// Find Region Culling Instance
+							var temp_region = ds_map_find_value(LightingEngine.lighting_engine_culling_regions_map, region_culling_id);
+							
+							// Check if Region Culling Instance is Indexed
+							if (!is_undefined(temp_region))
+							{
+								// Check if Region is being Culled
+								if (!temp_region.region_render_enabled)
+								{
+									// Region Render Disabled - Skip Drawing Object
+									break;
+								}
+							}
+						}
+						
 						// Reset Default Dynamic Sprite Shader
 						shader_reset();
 						

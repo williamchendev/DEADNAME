@@ -1,6 +1,9 @@
 /// @description Create Layer
 // Creates a Layer and destroys its Instance
 
+// Disable Visibility
+visible = false;
+
 // Establish Render Layer
 var temp_render_layer_type = LightingEngineRenderLayerType.Mid;
 

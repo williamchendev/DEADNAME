@@ -8,16 +8,16 @@
   "managed":true,
   "name":"oDebug_Torch",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Dynamic_Object","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"propertyId":{"name":"metallic","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Dynamic_Object","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"metallic","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
   ],
   "parent":{
     "name":"Entities",
     "path":"folders/Objects/Entities.yy",
   },
   "parentObjectId":{
-    "name":"oLightingEngine_Dynamic_Object",
-    "path":"objects/oLightingEngine_Dynamic_Object/oLightingEngine_Dynamic_Object.yy",
+    "name":"oLighting_Dynamic_Object",
+    "path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -41,5 +41,5 @@
     "path":"sprites/sAdobeHouse_DebugTorch_DiffuseMap/sAdobeHouse_DebugTorch_DiffuseMap.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

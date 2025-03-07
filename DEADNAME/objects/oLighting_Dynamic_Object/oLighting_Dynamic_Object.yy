@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"oLightingEngine_BulkStatic_Object",
+  "%Name":"oLighting_Dynamic_Object",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oLightingEngine_BulkStatic_Object",
+  "name":"oLighting_Dynamic_Object",
   "overriddenProperties":[],
   "parent":{
-    "name":"BulkStatic",
-    "path":"folders/Objects/Lighting/BulkStatic.yy",
+    "name":"Entities",
+    "path":"folders/Objects/Lighting/Entities.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -26,7 +26,10 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v1","%Name":"sub_layer_use_default_layer","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_use_default_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"region_culled","filters":[],"listItems":[],"multiselect":false,"name":"region_culled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"region_culling_id","filters":[],"listItems":[],"multiselect":false,"name":"region_culling_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#NO_ID#","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"normal_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"normal_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
@@ -34,8 +37,8 @@
     {"$GMObjectProperty":"v1","%Name":"metallicroughness_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"metallicroughness_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"metallic","filters":[],"listItems":[],"multiselect":false,"name":"metallic","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"roughness","filters":[],"listItems":[],"multiselect":false,"name":"roughness","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.9","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"metallic","filters":[],"listItems":[],"multiselect":false,"name":"metallic","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"roughness","filters":[],"listItems":[],"multiselect":false,"name":"roughness","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"emissive_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"emissive_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
@@ -46,8 +49,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_BulkStatic_Object",
-    "path":"sprites/sDebug_Lighting_BulkStatic_Object/sDebug_Lighting_BulkStatic_Object.yy",
+    "name":"sDebug_Lighting_Dynamic_Object",
+    "path":"sprites/sDebug_Lighting_Dynamic_Object/sDebug_Lighting_Dynamic_Object.yy",
   },
   "spriteMaskId":null,
   "visible":false,

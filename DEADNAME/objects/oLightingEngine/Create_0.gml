@@ -6,6 +6,7 @@
 #macro LightingEngineDefaultLayer "main"
 
 #macro LightingEngineUseGameMakerLayerName "#USE_GAMEMAKER_LAYER_NAME#"
+#macro LightingEngineEmptyRegionCullingID "#NO_ID#"
 
 // Configure Lighting Engine - Global Init Event
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oLightingEngine);");
@@ -362,6 +363,9 @@ lighting_engine_front_layer_sub_layer_depth_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_type_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_type_list = ds_list_create();
+
+// Lighting Engine Culling Regions DS Map
+lighting_engine_culling_regions_map = ds_map_create();
 
 // Lighting Engine Layer Method: Create Default Sub Layers
 create_default_sub_layers = function()

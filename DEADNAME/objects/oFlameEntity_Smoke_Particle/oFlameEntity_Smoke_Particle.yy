@@ -14,8 +14,8 @@
     "path":"folders/Objects/Entities.yy",
   },
   "parentObjectId":{
-    "name":"oLightingEngine_Dynamic_Particle",
-    "path":"objects/oLightingEngine_Dynamic_Particle/oLightingEngine_Dynamic_Particle.yy",
+    "name":"oLighting_Dynamic_Particle",
+    "path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -39,5 +39,5 @@
     "path":"sprites/sDebug_Lighting_Dynamic_Particle/sDebug_Lighting_Dynamic_Particle.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
