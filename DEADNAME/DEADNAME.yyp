@@ -318,6 +318,7 @@
     {"id":{"name":"FireSmokeParticle","path":"particles/FireSmokeParticle/FireSmokeParticle.yy",},},
     {"id":{"name":"_TitleScreen","path":"rooms/_TitleScreen/_TitleScreen.yy",},},
     {"id":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
+    {"id":{"name":"DebugAdobeHouse","path":"rooms/DebugAdobeHouse/DebugAdobeHouse.yy",},},
     {"id":{"name":"DebugRoom","path":"rooms/DebugRoom/DebugRoom.yy",},},
     {"id":{"name":"angle_reflect","path":"scripts/angle_reflect/angle_reflect.yy",},},
     {"id":{"name":"angle_refract","path":"scripts/angle_refract/angle_refract.yy",},},
@@ -946,6 +947,7 @@
     {"roomId":{"name":"_TitleScreen","path":"rooms/_TitleScreen/_TitleScreen.yy",},},
     {"roomId":{"name":"DebugRoom","path":"rooms/DebugRoom/DebugRoom.yy",},},
     {"roomId":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
+    {"roomId":{"name":"DebugAdobeHouse","path":"rooms/DebugAdobeHouse/DebugAdobeHouse.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
