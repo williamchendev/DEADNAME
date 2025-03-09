@@ -72,9 +72,14 @@ if (!surface_exists(bloom_effect_surface))
     bloom_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
 }
 
-if (!surface_exists(distortion_effect_surface))
+if (!surface_exists(distortion_horizontal_effect_surface))
 {
-    distortion_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+    distortion_horizontal_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_r16float);
+}
+
+if (!surface_exists(distortion_vertical_effect_surface))
+{
+    distortion_vertical_effect_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_r16float);
 }
 
 if (!surface_exists(post_processing_surface))
@@ -133,8 +138,12 @@ draw_clear_alpha(c_black, 0);
 surface_reset_target();
 
 // Reset Distortion Effect Surface
-surface_set_target(distortion_effect_surface);
-draw_clear_alpha(global.lighting_engine_normalmap_default_color, 1);
+surface_set_target(distortion_horizontal_effect_surface);
+draw_clear(c_black);
+surface_reset_target();
+
+surface_set_target(distortion_vertical_effect_surface);
+draw_clear(c_black);
 surface_reset_target();
 
 // Reset Post Process Surface

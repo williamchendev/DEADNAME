@@ -57,7 +57,7 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 	    return_angle: 0,
 	    return_x: pos_x,
 	    return_y: pos_y
-	}
+	};
 	
 	switch (temp_side_angle)
 	{

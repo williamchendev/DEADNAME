@@ -117,7 +117,8 @@ shader_set_uniform_f(distortion_effect_render_shader_distortion_strength_index, 
 shader_set_uniform_f(distortion_effect_render_shader_distortion_aspect_index, (GameManager.game_height + (render_border * 2)) / (GameManager.game_width + (render_border * 2)));
 
 // Set Final Render Shader's Distortion Texture
-texture_set_stage(distortion_effect_render_shader_distortion_texture_index, surface_get_texture(distortion_effect_surface));
+texture_set_stage(distortion_effect_render_shader_distortion_horizontal_texture_index, surface_get_texture(distortion_horizontal_effect_surface));
+texture_set_stage(distortion_effect_render_shader_distortion_vertical_texture_index, surface_get_texture(distortion_vertical_effect_surface));
 
 // Draw Post Processing Surface with Distortion Effect
 draw_surface(post_processing_surface, -render_border, -render_border);

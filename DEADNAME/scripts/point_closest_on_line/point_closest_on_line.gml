@@ -26,6 +26,7 @@ function point_closest_on_line(x_position, y_position, first_point_x, first_poin
 	{
 	    return_x: first_point_x + temp_projection_scalar * temp_dx,
 	    return_y: first_point_y + temp_projection_scalar * temp_dy
-	}
+	};
+	
 	return temp_return;
 }

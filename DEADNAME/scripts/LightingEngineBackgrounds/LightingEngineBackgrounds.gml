@@ -40,7 +40,7 @@ function lighting_engine_add_background(background_sprite_index, background_blen
 		background_height: sprite_get_height(background_sprite_index),
 		color: background_blend,
 		bloom: background_emissive
-	}
+	};
 	
 	// Set Background Properties
 	layer_background_htiled(temp_background_layer_id, background_horizontal_tile);

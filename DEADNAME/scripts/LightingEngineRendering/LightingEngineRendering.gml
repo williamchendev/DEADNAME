@@ -75,7 +75,7 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 
 /// @function lighting_engine_render_layer(render_layer_type);
 /// @description Draws the Lighting Engine's Render Layers through the Deferred Lighting Engine's Multi-Render-Target System using a Diffuse/Normal/Metallic/Roughness/Emissive workflow
-/// @param {LightingEngineRenderLayerType} render_layer_type - The Render Layer to draw (Back/Mid/Front)
+/// @param {int<LightingEngineRenderLayerType>} render_layer_type - The Render Layer to draw (Back/Mid/Front)
 function lighting_engine_render_layer(render_layer_type)
 {
 	// Establish Empty Render Layer Variables

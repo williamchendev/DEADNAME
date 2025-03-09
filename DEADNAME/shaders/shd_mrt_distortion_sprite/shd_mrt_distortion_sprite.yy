@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_mrt_distortion_sprite",
+  "name":"shd_mrt_distortion_sprite",
+  "parent":{
+    "name":"Sprites",
+    "path":"folders/Shaders/Sprites.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

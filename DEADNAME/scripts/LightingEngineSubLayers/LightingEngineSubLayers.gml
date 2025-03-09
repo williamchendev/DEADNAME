@@ -28,8 +28,8 @@ enum LightingEngineObjectType
 /// @description Adds a new Sub-Layer to the active scene in the Lighting Engine's Rendering Pipeline with the given properties
 /// @param {string} sub_layer_name - The name of the new Sub-Layer
 /// @param {real} sub_layer_depth - The depth of the new Sub-Layer, on a range from -1.0 (Background) to 1.0 (Foreground)
-/// @param {LightingEngineSubLayerType} sub_layer_type - The new Sub-Layer's Type, Sub-Layers are designed to make efficient batched drawing calls and a Sub-Layer type will be dedicated to drawing a single kind of object (either Dynamic or Bulk-Static, however particles ignore this)
-/// @param {LightingEngineRenderLayerType} render_layer_type - The Render Layer Type of the new Sub-Layer, there are three options: Background, Midground, and Foreground (remember to set the Sub-Layer's depth in a relavent position to its Render Layer Type!)
+/// @param {int<LightingEngineSubLayerType>} sub_layer_type - The new Sub-Layer's Type, Sub-Layers are designed to make efficient batched drawing calls and a Sub-Layer type will be dedicated to drawing a single kind of object (either Dynamic or Bulk-Static, however particles ignore this)
+/// @param {int<LightingEngineRenderLayerType>} render_layer_type - The Render Layer Type of the new Sub-Layer, there are three options: Background, Midground, and Foreground (remember to set the Sub-Layer's depth in a relavent position to its Render Layer Type!)
 /// @returns {bool} Returns if the Sub-Layer could be successfully created
 function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type)
 {

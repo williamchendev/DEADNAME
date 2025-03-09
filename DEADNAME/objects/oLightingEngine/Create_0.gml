@@ -31,7 +31,7 @@ highlight_strength_multiplier = 3.0;
 broadlight_strength_multiplier = 1.0;
 highlight_to_broadlight_ratio_max = 1.5;
 
-universal_distortion_strength = 0.25;
+universal_distortion_strength = 0.03;
 
 // Engine Settings
 application_surface_enable(false);
@@ -90,7 +90,8 @@ background_prb_metalrough_emissive_depth_surface = -1;
 aggregate_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
-distortion_effect_surface = -1;
+distortion_horizontal_effect_surface = -1;
+distortion_vertical_effect_surface = -1;
 
 post_processing_surface = -1;
 final_render_surface = -1;
@@ -198,6 +199,9 @@ mrt_deferred_lighting_dynamic_particle_shader_emissive_multiplier_index = shader
 mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
 
 mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
+
+// MRT Distortion Sprite Shader Indexes
+mrt_distortion_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_distortion_sprite, "in_Camera_Offset");
 
 // Point Light Blend Shader Indexes
 point_light_shader_camera_offset_index = shader_get_uniform(shd_point_light_blend, "in_Camera_Offset");
@@ -331,7 +335,8 @@ bloom_effect_render_shader_emissivemap_index  = shader_get_sampler_index(shd_blo
 // Distortion Effect Surface Rendering Shader Indexes
 distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
 distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Aspect");
-distortion_effect_render_shader_distortion_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Texture");
+distortion_effect_render_shader_distortion_horizontal_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Horizontal_Channel_Texture");
+distortion_effect_render_shader_distortion_vertical_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Vertical_Channel_Texture");
 
 // Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;
@@ -380,6 +385,9 @@ create_default_sub_layers();
 lighting_engine_background_depth = 250;
 lighting_engine_backgrounds = ds_list_create();
 lighting_engine_background_layer_ids = ds_list_create();
+
+// Distortion Variables
+lighting_engine_distortion_effects = ds_list_create();
 
 // Lighting Directional Shadows Variables
 directional_light_collisions_exist = false;

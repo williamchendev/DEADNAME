@@ -12,6 +12,9 @@ ds_list_clear(directional_light_collisions_list);
 ds_list_clear(lighting_engine_backgrounds);
 ds_list_clear(lighting_engine_background_layer_ids);
 
+// Clear Distortion List
+ds_list_clear(lighting_engine_distortion_effects);
+
 // Clear Culling Regions Map
 ds_map_clear(lighting_engine_culling_regions_map);
 

@@ -63,6 +63,10 @@ lighting_engine_backgrounds = -1;
 ds_list_destroy(lighting_engine_background_layer_ids);
 lighting_engine_background_layer_ids = -1;
 
+// Destroy Distortions DS List
+ds_list_destroy(lighting_engine_distortion_effects);
+lighting_engine_distortion_effects = -1;
+
 // Destroy Culling Regions DS Map
 ds_map_destroy(lighting_engine_culling_regions_map);
 lighting_engine_culling_regions_map = -1;
@@ -87,7 +91,8 @@ surface_free(background_prb_metalrough_emissive_depth_surface);
 surface_free(aggregate_prb_metalrough_emissive_depth_surface);
 
 surface_free(bloom_effect_surface);
-surface_free(distortion_effect_surface);
+surface_free(distortion_horizontal_effect_surface);
+surface_free(distortion_vertical_effect_surface);
 
 surface_free(post_processing_surface);
 surface_free(final_render_surface);
@@ -120,7 +125,8 @@ background_prb_metalrough_emissive_depth_surface = -1;
 aggregate_prb_metalrough_emissive_depth_surface = -1;
 
 bloom_effect_surface = -1;
-distortion_effect_surface = -1;
+distortion_horizontal_effect_surface = -1;
+distortion_vertical_effect_surface = -1;
 
 post_processing_surface = -1;
 final_render_surface = -1;

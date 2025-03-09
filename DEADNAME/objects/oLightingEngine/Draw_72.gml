@@ -37,6 +37,48 @@ lighting_engine_render_layer(LightingEngineRenderLayerType.Front);
 // (Front Layer) Reset MRT Lighting Surfaces
 surface_reset_target();
 
+// Set Additive MRT Blendmode - Add Normal Map Vectors to Directional (Single Color Channel) Surfaces
+gpu_set_blendmode(bm_add);
+
+// (Distortion Effect) Enable MRT Distortion Surfaces - Draw Normal Maps to the two Red Only Channel 16 bit Float Surfaces: The Distortion Horizontal Channel Effect Surface and The Distortion Vertical Channel Effect Surface
+surface_set_target_ext(0, distortion_horizontal_effect_surface);
+surface_set_target_ext(1, distortion_vertical_effect_surface);
+
+// (Distortion Effect) Enable MRT Distortion Shader - Draws Normal Maps to the two Red Only Channel 16 bit Float Surfaces so the Distortion Effect Normal Map Vectors can be correctly added
+shader_set(shd_mrt_distortion_sprite);
+
+shader_set_uniform_f(mrt_distortion_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
+
+// MRT Render all Distortion Effects to Distortion Surfaces
+var temp_distortion_index = 0;
+
+repeat (ds_list_size(lighting_engine_distortion_effects))
+{
+	// Find Distortion Struct
+	var temp_distortion_struct = ds_list_find_value(lighting_engine_distortion_effects, temp_distortion_index);
+	
+	// Draw Distortion
+	draw_sprite_ext
+	(
+		temp_distortion_struct.distortion_sprite, 
+		temp_distortion_struct.distortion_subimage, 
+		temp_distortion_struct.distortion_x_position, 
+		temp_distortion_struct.distortion_y_position, 
+		temp_distortion_struct.distortion_horizontal_scale, 
+		temp_distortion_struct.distortion_vertical_scale,
+		temp_distortion_struct.distortion_angle,
+		c_white,
+		temp_distortion_struct.distortion_alpha
+	);
+	
+	// Increment Distortion Index
+	temp_distortion_index++;
+}
+
+// Reset MRT Distortion Effect Surfaces & Shader
+surface_reset_target();
+shader_reset();
+
 // Render Point Lights with Shadows
 with (oLightingEngine_Source_PointLight)
 {
