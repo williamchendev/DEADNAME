@@ -386,9 +386,6 @@ lighting_engine_background_depth = 250;
 lighting_engine_backgrounds = ds_list_create();
 lighting_engine_background_layer_ids = ds_list_create();
 
-// Distortion Variables
-lighting_engine_distortion_effects = ds_list_create();
-
 // Lighting Directional Shadows Variables
 directional_light_collisions_exist = false;
 directional_light_collisions_list = ds_list_create();

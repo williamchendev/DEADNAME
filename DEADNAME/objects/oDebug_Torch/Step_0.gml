@@ -10,5 +10,5 @@ flame_entity.y = y - 7;
 // DEBUG DISTORTION
 if (mouse_check_button_pressed(mb_left))
 {
-    lighting_engine_create_distortion(sDistortionNormal_Shockwave_Ball, 0, x, y, 0.15, 0.15, 0, 1);
+    instance_create_depth(x, y, depth, oShockwave_DefaultExplosion);
 }

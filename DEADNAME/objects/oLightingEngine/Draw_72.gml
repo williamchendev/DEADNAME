@@ -47,32 +47,14 @@ surface_set_target_ext(1, distortion_vertical_effect_surface);
 // (Distortion Effect) Enable MRT Distortion Shader - Draws Normal Maps to the two Red Only Channel 16 bit Float Surfaces so the Distortion Effect Normal Map Vectors can be correctly added
 shader_set(shd_mrt_distortion_sprite);
 
+// Set Distortion Shader Camera Offset
 shader_set_uniform_f(mrt_distortion_sprite_shader_camera_offset_index, render_x - render_border, render_y - render_border);
 
 // MRT Render all Distortion Effects to Distortion Surfaces
-var temp_distortion_index = 0;
-
-repeat (ds_list_size(lighting_engine_distortion_effects))
+with (oLighting_Distortion_Object)
 {
-	// Find Distortion Struct
-	var temp_distortion_struct = ds_list_find_value(lighting_engine_distortion_effects, temp_distortion_index);
-	
 	// Draw Distortion
-	draw_sprite_ext
-	(
-		temp_distortion_struct.distortion_sprite, 
-		temp_distortion_struct.distortion_subimage, 
-		temp_distortion_struct.distortion_x_position, 
-		temp_distortion_struct.distortion_y_position, 
-		temp_distortion_struct.distortion_horizontal_scale, 
-		temp_distortion_struct.distortion_vertical_scale,
-		temp_distortion_struct.distortion_angle,
-		c_white,
-		temp_distortion_struct.distortion_alpha
-	);
-	
-	// Increment Distortion Index
-	temp_distortion_index++;
+	draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, image_alpha);
 }
 
 // Reset MRT Distortion Effect Surfaces & Shader

@@ -63,10 +63,6 @@ lighting_engine_backgrounds = -1;
 ds_list_destroy(lighting_engine_background_layer_ids);
 lighting_engine_background_layer_ids = -1;
 
-// Destroy Distortions DS List
-ds_list_destroy(lighting_engine_distortion_effects);
-lighting_engine_distortion_effects = -1;
-
 // Destroy Culling Regions DS Map
 ds_map_destroy(lighting_engine_culling_regions_map);
 lighting_engine_culling_regions_map = -1;

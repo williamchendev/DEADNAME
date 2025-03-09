@@ -1,5 +1,5 @@
-/// @description Update Event
-// Updates movement for all Backgrounds and Distortions Integrated with the Lighting Engine
+/// @description Update Backgrounds
+// Updates movement for all Backgrounds Integrated with the Lighting Engine
 
 // Background Update Behaviour
 for (var temp_background_index = 0; temp_background_index < ds_list_size(lighting_engine_backgrounds); temp_background_index++)
@@ -30,16 +30,4 @@ for (var temp_background_index = 0; temp_background_index < ds_list_size(lightin
 	// Set Background Color & Bloom
 	layer_background_blend(temp_background_struct.layer_id, temp_background_struct.color);
 	layer_background_alpha(temp_background_struct.layer_id, temp_background_struct.bloom);
-}
-
-// Distortion Update Behaviour
-for (var temp_distortion_index = 0; temp_distortion_index < ds_list_size(lighting_engine_distortion_effects); temp_distortion_index++)
-{
-	// Find Distortion Struct
-	var temp_distortion_struct = ds_list_find_value(lighting_engine_distortion_effects, temp_distortion_index);
-	
-	// Calculate Distortion Movement
-	
-	
-	// Update Distortion Position & Alpha Decay
 }

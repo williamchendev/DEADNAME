@@ -1,22 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"oFlameEntity_Smoke_Particle",
+  "%Name":"oLighting_Distortion_Object",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oFlameEntity_Smoke_Particle",
+  "name":"oLighting_Distortion_Object",
   "overriddenProperties":[],
   "parent":{
-    "name":"Fire",
-    "path":"folders/Objects/Entities/Fire.yy",
+    "name":"Entities",
+    "path":"folders/Objects/Lighting/Entities.yy",
   },
-  "parentObjectId":{
-    "name":"oLighting_Dynamic_Particle",
-    "path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -35,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_Dynamic_Particle",
-    "path":"sprites/sDebug_Lighting_Dynamic_Particle/sDebug_Lighting_Dynamic_Particle.yy",
+    "name":"sDistortionNormal_Shockwave_Ball",
+    "path":"sprites/sDistortionNormal_Shockwave_Ball/sDistortionNormal_Shockwave_Ball.yy",
   },
   "spriteMaskId":null,
   "visible":false,

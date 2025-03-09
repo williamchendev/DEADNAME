@@ -6,6 +6,6 @@ void main() {
 	vec2 DistortionNormal = (texture2D(gm_BaseTexture, v_vTexcoord).xy * 2.0) - 1.0;
 	
 	//
-	gl_FragData[0] = vec4(DistortionNormal.x, 0.0, 0.0, 1.0);
-	gl_FragData[1] = vec4(DistortionNormal.y, 0.0, 0.0, 1.0);
+	gl_FragData[0] = vec4(DistortionNormal.x, 0.0, 0.0, 1.0) * v_vColour.a;
+	gl_FragData[1] = vec4(DistortionNormal.y, 0.0, 0.0, 1.0) * v_vColour.a;
 }
