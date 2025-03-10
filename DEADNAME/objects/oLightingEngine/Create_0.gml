@@ -58,7 +58,7 @@ lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
 // Render Functions
-render_position = function(render_position_x, render_position_y)
+render_position = function(render_position_x = 0, render_position_y = 0)
 {
 	// Restrict Render to Camera Bounds
 	LightingEngine.render_x = LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_x, LightingEngine.lighting_engine_camera_bounds_min_x, LightingEngine.lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;

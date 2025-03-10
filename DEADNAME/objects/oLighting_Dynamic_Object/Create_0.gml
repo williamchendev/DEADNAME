@@ -14,13 +14,16 @@ if (LightingEngine.lighting_engine_worker != -1 and instance_exists(LightingEngi
 else
 {
     // Add Dynamic Object to Sub Layer by Sub Layer Name
-    var temp_dynamic_object_layer = sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name;
-    var temp_successfully_added_object = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Basic, sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_object_layer);
+    var temp_dynamic_object_layer = sub_layer_use_default_layer ? LightingEngineDefaultLayer : (sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name);
+    var temp_successfully_added_object = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Basic, temp_dynamic_object_layer);
+    
+    // Update Dynamic Object's Sub-Layer
+    sub_layer_name = temp_dynamic_object_layer;
     
     // Debug Flag - Unsuccessfully added Dynamic Object to Lighting Engine Sub Layer
     if (!temp_successfully_added_object)
     {
-        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (Basic) to Lighting Engine Sub Layer with name \"{sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_object_layer}\"");
+        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (Basic) to Lighting Engine Sub Layer with name \"{temp_dynamic_object_layer}\"");
         return;
     }
 }

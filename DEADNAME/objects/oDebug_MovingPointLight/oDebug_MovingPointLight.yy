@@ -8,8 +8,8 @@
   "name":"oDebug_MovingPointLight",
   "overriddenProperties":[],
   "parent":{
-    "name":"Debug",
-    "path":"folders/Objects/Environment/Debug.yy",
+    "name":"Entities",
+    "path":"folders/Objects/Entities.yy",
   },
   "parentObjectId":{
     "name":"oLightingEngine_Source_PointLight",

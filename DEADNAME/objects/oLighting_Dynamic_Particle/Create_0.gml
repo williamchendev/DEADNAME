@@ -17,8 +17,11 @@ if (LightingEngine.lighting_engine_worker != -1 and instance_exists(LightingEngi
 else
 {
     // Add Dynamic Particle to Sub Layer by Sub Layer Name
-    var temp_dynamic_particle_layer = sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name;
-    var temp_successfully_added_particle = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Particle, sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_particle_layer);
+    var temp_dynamic_particle_layer = sub_layer_use_default_layer ? LightingEngineDefaultLayer : (sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name);
+    var temp_successfully_added_particle = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Basic, temp_dynamic_object_layer);
+    
+    // Update Dynamic Particle's Sub-Layer
+    sub_layer_name = temp_dynamic_particle_layer;
     
     // Debug Flag - Unsuccessfully added Dynamic Particle to Lighting Engine Sub Layer
     if (!temp_successfully_added_particle)

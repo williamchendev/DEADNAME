@@ -185,6 +185,12 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Dynamic Object (Basic) on Dynamic Layer
 					with (temp_sub_layer_object)
 					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
 						// Region Culling Check
 						if (region_culled)
 						{
@@ -233,6 +239,12 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Dynamic Particle System
 					with (temp_sub_layer_object)
 					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
 						// Region Culling Check
 						if (region_culled)
 						{
@@ -281,6 +293,12 @@ function lighting_engine_render_layer(render_layer_type)
 					// Draw Unit on Dynamic Layer
 					with (temp_sub_layer_object)
 					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
 						// Draw Secondary Arm rendered behind Unit Body
 						limb_secondary_arm.render_behaviour();
 					
