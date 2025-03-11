@@ -11,8 +11,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_BulkStatic_Object","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
   ],
   "parent":{
-    "name":"AdobeHouse",
-    "path":"folders/Objects/Environment/AdobeHouse.yy",
+    "name":"Foliage",
+    "path":"folders/Objects/Environment/AdobeHouse/Foliage.yy",
   },
   "parentObjectId":{
     "name":"oLighting_BulkStatic_Object",

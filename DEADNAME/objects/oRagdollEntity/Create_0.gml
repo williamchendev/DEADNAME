@@ -4,6 +4,9 @@
 // Lighting Object Inherited Event
 event_inherited();
 
+// Physics Movement Variables
+held = false;
+
 // Physics Culling Variables
 physics_enabled = true;
 

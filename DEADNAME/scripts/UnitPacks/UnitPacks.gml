@@ -121,6 +121,11 @@ global.unit_packs[UnitPack.Default] =
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
 	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
+	
 	// PBR Settings
 	metallic: false,
 	roughness: 0.5,
@@ -229,6 +234,11 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	ragdoll_chest_bot_emissivemap: noone,
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
+	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
 	metallic: false,
@@ -339,6 +349,11 @@ global.unit_packs[UnitPack.Wolf] =
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
 	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
+	
 	// PBR Settings
 	metallic: false,
 	roughness: 0.5,
@@ -427,6 +442,11 @@ global.unit_packs[UnitPack.Director] =
 	ragdoll_chest_bot_emissivemap: noone,
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
+	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
 	metallic: false,
@@ -517,6 +537,11 @@ global.unit_packs[UnitPack.Knives] =
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
 	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
+	
 	// PBR Settings
 	metallic: false,
 	roughness: 0.5,
@@ -605,6 +630,11 @@ global.unit_packs[UnitPack.Martyr] =
 	ragdoll_chest_bot_emissivemap: noone,
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
+	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
 	metallic: false,
@@ -695,6 +725,11 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
 	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
+	
 	// PBR Settings
 	metallic: false,
 	roughness: 0.5,
@@ -783,6 +818,11 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	ragdoll_chest_bot_emissivemap: noone,
 	ragdoll_leg_left_emissivemap: noone,
 	ragdoll_leg_right_emissivemap: noone,
+	
+	// Ragdoll Settings
+	ragdoll_head_offset: -4,
+	ragdoll_arms_offset: 4,
+	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
 	metallic: false,

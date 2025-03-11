@@ -2,7 +2,17 @@
 // Initializes Flame Dynamic Object & Point Light
 
 // Instantiate Smoke Particle
-smoke_particle_source = instance_create_depth(x, y, depth, oFlameEntity_Smoke_Particle);
+smoke_particle_source = instance_create_depth
+(
+	x, 
+	y, 
+	depth, 
+	oFlameEntity_Smoke_Particle, 
+	{
+		sub_layer_use_default_layer: other.sub_layer_use_default_layer,
+		sub_layer_name: other.sub_layer_name
+	}
+);
 
 // Lighting Engine Behaviour: Initialize Dynamic Object
 event_inherited();

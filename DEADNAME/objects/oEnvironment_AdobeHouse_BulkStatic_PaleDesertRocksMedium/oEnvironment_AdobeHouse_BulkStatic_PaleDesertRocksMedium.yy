@@ -8,8 +8,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_BulkStatic_Object","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_PaleDesertRocksMedium_NormalMap","path":"sprites/sAdobeHouse_PaleDesertRocksMedium_NormalMap/sAdobeHouse_PaleDesertRocksMedium_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_PaleDesertRocksMedium_NormalMap",},
   ],
   "parent":{
-    "name":"AdobeHouse",
-    "path":"folders/Objects/Environment/AdobeHouse.yy",
+    "name":"Foliage",
+    "path":"folders/Objects/Environment/AdobeHouse/Foliage.yy",
   },
   "parentObjectId":{
     "name":"oLighting_BulkStatic_Object",

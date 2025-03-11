@@ -1,28 +1,35 @@
 /// @description Ragdoll Entity Update Event
 // Performs calculations for the Ragdoll Entity Object
 
-/*
-if (held) {
-	var px = (mouse_get_x() - x);
-	var py = (mouse_get_y() - y);
+// Physics Movement Behaviour
+if (held) 
+{
+	var px = ((mouse_x + LightingEngine.render_x) - x);
+	var py = ((mouse_y + LightingEngine.render_y) - y);
+	
 	phy_speed_x = px;
 	phy_speed_y = py;
 	
-	if (!mouse_check_button(mb_left)) {
+	if (!mouse_check_button(mb_left)) 
+	{
 		held = false;
 	}
 }
-else {
-	if (mouse_check_button_pressed(mb_left)) {
-		if (position_meeting(mouse_get_x(), mouse_get_y(), self)) {
-			with (oRagdollEntity_Collision) {
+else 
+{
+	if (mouse_check_button_pressed(mb_left)) 
+	{
+		if (position_meeting((mouse_x + LightingEngine.render_x), (mouse_y + LightingEngine.render_y), self)) 
+		{
+			with (oRagdollEntity) 
+			{
 				held = false;
 			}
+			
 			held = true;
 		}
 	}
 }
-*/
 
 // Physics Object Culling
 var temp_physics_object_within_rendering_bounds = collision_rectangle
