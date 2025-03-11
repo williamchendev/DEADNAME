@@ -282,6 +282,39 @@ function unit_create_ragdoll(unit_instance)
 
 	physics_joint_revolute_create(ragdoll_leftleg2_obj, ragdoll_leftleg1_obj, ragdoll_leftleg2_obj.x, ragdoll_leftleg2_obj.y, -(75 + (temp_unit_direction * 75)), (75 + (temp_unit_direction * -75)), 1, 0, 0, 0, 0);
 	physics_joint_revolute_create(ragdoll_rightleg2_obj, ragdoll_rightleg1_obj, ragdoll_rightleg2_obj.x, ragdoll_rightleg2_obj.y, -(75 + (temp_unit_direction * 75)), (75 + (temp_unit_direction * -75)), 1, 0, 0, 0, 0);
+	
+	// Ragdoll UnitBody Arm Positioning
+	if (unit_instance.limb_primary_arm != noone)
+	{
+		// Left Arm Positioning
+		with (temp_ragdoll_struct.left_upperarm) 
+		{
+			phy_fixed_rotation = true;
+			phy_rotation = -90 - unit_instance.limb_primary_arm.limb_pivot_a_angle;
+		}
+		
+		with (temp_ragdoll_struct.left_forearm) 
+		{
+			phy_fixed_rotation = true;
+			phy_rotation = -90 - unit_instance.limb_primary_arm.limb_pivot_b_angle;
+		}
+	}
+	
+	if (unit_instance.limb_secondary_arm != noone)
+	{
+		// Left Arm Positioning
+		with (temp_ragdoll_struct.right_upperarm) 
+		{
+			phy_fixed_rotation = true;
+			phy_rotation = -90 - unit_instance.limb_secondary_arm.limb_pivot_a_angle;
+		}
+		
+		with (temp_ragdoll_struct.right_forearm) 
+		{
+			phy_fixed_rotation = true;
+			phy_rotation = -90 - unit_instance.limb_secondary_arm.limb_pivot_b_angle;
+		}
+	}
 
 	// Return Ragdoll UnitBody Limbs Struct
 	return temp_ragdoll_struct;

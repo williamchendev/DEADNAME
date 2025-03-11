@@ -23,7 +23,7 @@ ds_list_destroy(temp_unit_list);
 alpha_value = temp_unit_exists ? 0 : 1;
 
 // Set House Objects to have same Transparency as House
-image_alpha = alpha_value;
-house_front.image_alpha = alpha_value;
-house_door.image_alpha = alpha_value;
-house_ladder.image_alpha = alpha_value;
+image_alpha = temp_unit_exists ? 0 : 1;
+house_front.image_alpha = temp_unit_exists ? 0 : 1;
+house_door.image_alpha = temp_unit_exists ? 0.7 : 1;
+house_ladder.image_alpha = temp_unit_exists ? 0.6 : 1;
