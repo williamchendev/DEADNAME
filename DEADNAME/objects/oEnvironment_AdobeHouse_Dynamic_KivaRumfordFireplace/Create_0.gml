@@ -20,4 +20,5 @@ fireplace_flame = instance_create_depth
 	}
 );
 
+fireplace_flame.point_light_source.point_light_render_background_layer = false;
 fireplace_flame.point_light_source.point_light_render_foreground_layer = false;

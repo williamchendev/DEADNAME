@@ -129,10 +129,10 @@ weapon_aim_y = 0;
 weapon_equipped = noone;
 
 // Weapons DEBUG
-weapon_active = true;
-weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Corso);
-weapon_equipped.init_weapon_physics();
-unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
+//weapon_active = true;
+//weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Corso);
+//weapon_equipped.init_weapon_physics();
+//unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
 
 // Unit Limb Arms
 limb_primary_arm = NEW(LimbArmClass);

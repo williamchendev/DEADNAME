@@ -23,12 +23,6 @@ if (player_input)
 	
 	// DEBUG
 	LightingEngine.render_position(x - (GameManager.game_width * 0.5), y - (GameManager.game_height * 0.7));
-	
-	if (keyboard_check_pressed(ord("N")))
-	{
-		instance_create_depth(input_cursor_x, input_cursor_y, depth, oShockwave_DefaultExplosion);
-		unit_create_ragdoll(id);
-	}
 }
 else
 {

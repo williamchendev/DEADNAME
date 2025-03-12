@@ -14,7 +14,7 @@ instance_create_depth
 	{
 		sub_layer_name: temp_back_layer_name,
 		sub_layer_depth: -0.1,
-		render_layer_type: -1
+		render_layer_type: 0
 	}
 );
 

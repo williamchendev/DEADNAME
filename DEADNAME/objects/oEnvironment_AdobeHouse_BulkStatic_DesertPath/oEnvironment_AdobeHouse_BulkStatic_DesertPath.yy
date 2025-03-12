@@ -6,6 +6,7 @@
   "name":"oEnvironment_AdobeHouse_BulkStatic_DesertPath",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_BulkStatic_Object","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"resource":{"name":"sAdobeHouse_DesertPath_NormalMap","path":"sprites/sAdobeHouse_DesertPath_NormalMap/sAdobeHouse_DesertPath_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sAdobeHouse_DesertPath_NormalMap",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_BulkStatic_Object","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_BulkStatic_Object/oLighting_BulkStatic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.4",},
   ],
   "parent":{
     "name":"Foliage",
