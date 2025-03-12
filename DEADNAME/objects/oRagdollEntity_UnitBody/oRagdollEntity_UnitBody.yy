@@ -4,7 +4,9 @@
   "eventList":[],
   "managed":true,
   "name":"oRagdollEntity_UnitBody",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oRagdollEntity","path":"objects/oRagdollEntity/oRagdollEntity.yy",},"propertyId":{"name":"ragdoll_culled","path":"objects/oRagdollEntity/oRagdollEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+  ],
   "parent":{
     "name":"Humanoid",
     "path":"folders/Objects/Entities/Ragdoll/Humanoid.yy",

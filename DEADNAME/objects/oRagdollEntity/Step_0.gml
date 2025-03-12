@@ -32,19 +32,24 @@ else
 }
 
 // Physics Object Culling
-var temp_physics_object_within_rendering_bounds = collision_rectangle
-(
-	LightingEngine.render_x - LightingEngine.render_border, 
-	LightingEngine.render_y - LightingEngine.render_border, 
-	LightingEngine.render_x + GameManager.game_width + LightingEngine.render_border, 
-	LightingEngine.render_y + GameManager.game_height + LightingEngine.render_border,
-	id,
-	false,
-	false
-);
+if (ragdoll_culled)
+{
+	// Check within Screen Space Rendering Bounds
+	var temp_physics_object_within_rendering_bounds = collision_rectangle
+	(
+		LightingEngine.render_x - LightingEngine.render_border, 
+		LightingEngine.render_y - LightingEngine.render_border, 
+		LightingEngine.render_x + GameManager.game_width + LightingEngine.render_border, 
+		LightingEngine.render_y + GameManager.game_height + LightingEngine.render_border,
+		id,
+		false,
+		false
+	);
 
-physics_enabled = temp_physics_object_within_rendering_bounds;
-render_enabled = temp_physics_object_within_rendering_bounds;
+	// Toggle Physics & Rendering if within Rendering Bounds
+	physics_enabled = temp_physics_object_within_rendering_bounds;
+	render_enabled = temp_physics_object_within_rendering_bounds;
+}
 
 if (phy_active != physics_enabled)
 {

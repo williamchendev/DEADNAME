@@ -265,6 +265,7 @@ function unit_create_ragdoll(unit_instance)
     );
     
 	temp_ragdoll_struct.head = temp_ragdoll_head_obj;
+	temp_ragdoll_struct.head.ragdoll_group = temp_ragdoll_struct;
 
 	// Instantiate Joints between Limbs
 	physics_joint_revolute_create(temp_ragdoll_struct.head, temp_ragdoll_struct.chest, temp_ragdoll_struct.head.x, temp_ragdoll_struct.head.y, -45, 45, 1, 0, 0, 0, 0); 
