@@ -5,7 +5,7 @@
 var temp_cursor_x = round(game_width * (window_mouse_get_x() / window_get_width()));
 var temp_cursor_y = round(game_height * (window_mouse_get_y() / window_get_height()));
 
-//
+// Draw to UI Surface
 surface_set_target(LightingEngine.ui_surface);
 
 // Cursor GUI Behaviour
@@ -29,13 +29,13 @@ else
 	draw_sprite(sCursorCrosshairIcons, 1, temp_cursor_x, temp_cursor_y);
 }
 
-//
+// Reset Surface
 surface_reset_target();
 
 // Check if Debugging mode is active 
 if (global.debug and global.debug_surface_enabled) 
 {
-	//
+	// Draw to Debug Surface
 	surface_set_target(LightingEngine.debug_surface);
 	
 	// Camera GUI Layer
@@ -72,6 +72,6 @@ if (global.debug and global.debug_surface_enabled)
 	draw_text_outline(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 28, $"Target FPS: {game_get_speed(gamespeed_fps)}");
 	draw_text_outline(temp_camera_x + debug_x_offset, temp_camera_y + debug_y_offset + 39, $"Real FPS: {debug_fps}");
 	
-	//
+	// Reset Surface
 	surface_reset_target();
 }

@@ -1,7 +1,8 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-if (global.debug) {
+if (global.debug) 
+{
 	/*
 	if (mouse_check_button(mb_left)) {
 		var temp_node = instance_nearest(mouse_x, mouse_y, oPathNode);
