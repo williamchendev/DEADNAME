@@ -28,7 +28,7 @@
   "properties":[
     {"$GMObjectProperty":"v1","%Name":"sub_layer_use_default_layer","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_use_default_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
-    {"$GMObjectProperty":"v1","%Name":"render_enabled","filters":[],"listItems":[],"multiselect":false,"name":"render_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"render_enabled","filters":[],"listItems":[],"multiselect":false,"name":"render_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"region_culled","filters":[],"listItems":[],"multiselect":false,"name":"region_culled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"region_culling_id","filters":[],"listItems":[],"multiselect":false,"name":"region_culling_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#NO_ID#","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"normal_map","filters":[

@@ -22,7 +22,7 @@ game_height = 360;
 game_scale = 2;
 
 // System Settings
-data_directory = string(program_directory +"\Data\\");
+data_directory = $"{program_directory}\Data\\";
 
 // Debug Settings
 global.debug = false;
@@ -54,6 +54,7 @@ pathfinding_nodes_list = ds_list_create();
 pathfinding_node_ids_list = ds_list_create();
 pathfinding_edges_list = ds_list_create();
 pathfinding_edges_types_list = ds_list_create();
+pathfinding_edges_weights_list = ds_list_create();
 
 // Cursor Variables
 cursor_icon = false;

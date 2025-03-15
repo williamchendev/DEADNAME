@@ -6,3 +6,4 @@ ds_list_clear(pathfinding_nodes_list);
 ds_list_clear(pathfinding_node_ids_list);
 ds_list_clear(pathfinding_edges_list);
 ds_list_clear(pathfinding_edges_types_list);
+ds_list_clear(pathfinding_edges_weights_list);

@@ -281,6 +281,7 @@
     {"name":"oPathfinder","order":2,"path":"objects/oPathfinder/oPathfinder.yy",},
     {"name":"oPathNode","order":3,"path":"objects/oPathNode/oPathNode.yy",},
     {"name":"oPatrolNode","order":4,"path":"objects/oPatrolNode/oPatrolNode.yy",},
+    {"name":"oPlatformRaycastTest","order":11,"path":"objects/oPlatformRaycastTest/oPlatformRaycastTest.yy",},
     {"name":"oRagdollEntity_UnitBody_Arm","order":2,"path":"objects/oRagdollEntity_UnitBody_Arm/oRagdollEntity_UnitBody_Arm.yy",},
     {"name":"oRagdollEntity_UnitBody_Chest","order":3,"path":"objects/oRagdollEntity_UnitBody_Chest/oRagdollEntity_UnitBody_Chest.yy",},
     {"name":"oRagdollEntity_UnitBody_Hair","order":4,"path":"objects/oRagdollEntity_UnitBody_Hair/oRagdollEntity_UnitBody_Hair.yy",},

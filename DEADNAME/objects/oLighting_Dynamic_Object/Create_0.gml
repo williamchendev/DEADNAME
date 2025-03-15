@@ -23,7 +23,7 @@ else
     // Debug Flag - Unsuccessfully added Dynamic Object to Lighting Engine Sub Layer
     if (!temp_successfully_added_object)
     {
-        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (Basic) to Lighting Engine Sub Layer with name \"{temp_dynamic_object_layer}\"");
+        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (Basic) \"{object_get_name(object_index)}\" to Lighting Engine Sub Layer with name \"{temp_dynamic_object_layer}\"");
         return;
     }
 }

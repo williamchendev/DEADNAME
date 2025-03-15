@@ -32,6 +32,7 @@ function pathfinding_add_node(node_position_x, node_position_y, node_id = undefi
 	ds_list_add(GameManager.pathfinding_node_ids_list, temp_node_id);
 	ds_list_add_list(GameManager.pathfinding_edges_list, ds_list_create());
 	ds_list_add_list(GameManager.pathfinding_edges_types_list, ds_list_create());
+	ds_list_add_list(GameManager.pathfinding_edges_weights_list, ds_list_create());
 }
 
 function pathfinding_remove_node(node_id)
@@ -48,6 +49,7 @@ function pathfinding_remove_node(node_id)
 	// Find Pathfinding Node Indexes
 	var temp_node_edges_list = ds_list_find_value(GameManager.pathfinding_edges_list, temp_node_index);
 	var temp_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_node_index);
+	var temp_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_node_index);
 	
 	for (var i = 0; i < ds_list_size(temp_node_edges_list); i++)
 	{
@@ -58,6 +60,7 @@ function pathfinding_remove_node(node_id)
 		{
 			var temp_edge_node_edges_list = ds_list_find_value(GameManager.pathfinding_edges_list, temp_edge_node_index);
 			var temp_edge_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_edge_node_index);
+			var temp_edge_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_edge_node_index);
 			var temp_node_within_edge_node_edges_list_index = ds_list_find_index(temp_edge_node_edges_list, node_id);
 			
 			if (temp_node_within_edge_node_edges_list_index != -1)
@@ -65,6 +68,7 @@ function pathfinding_remove_node(node_id)
 				// Delete Edges that contain this Node
 				ds_list_delete(temp_edge_node_edges_list, temp_node_within_edge_node_edges_list_index);
 				ds_list_delete(temp_edge_node_edges_types_list, temp_node_within_edge_node_edges_list_index);
+				ds_list_delete(temp_edge_node_edges_weights_list, temp_node_within_edge_node_edges_list_index);
 			}
 		}
 	}
@@ -74,21 +78,26 @@ function pathfinding_remove_node(node_id)
 	ds_list_delete(GameManager.pathfinding_node_ids_list, temp_node_index);
 	ds_list_delete(GameManager.pathfinding_edges_list, temp_node_index);
 	ds_list_delete(GameManager.pathfinding_edges_types_list, temp_node_index);
+	ds_list_delete(GameManager.pathfinding_edges_weights_list, temp_node_index);
 	
 	// Destroy DS Lists
 	ds_list_destroy(temp_node_edges_list);
 	ds_list_destroy(temp_node_edges_types_list);
+	ds_list_destroy(temp_node_edges_weights_list);
 }
 
 function pathfinding_generate_node_id(possible_characters = "0123456789ABCDEF", limit = 8)
 {
+	// Default Prefix
 	var temp_return_id = "Node_";
 	
+	// Add Random Characters to Node ID
 	repeat (limit)
 	{
 		temp_return_id = $"{temp_return_id}{string_char_at(possible_characters, random(string_length(possible_characters) - 1))}";
 	}
 	
+	// Return Node ID
 	return temp_return_id;
 }
 
@@ -105,11 +114,16 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 		return;
 	}
 	
+	// 
+	
 	// Add Pathfinding Edge to both Nodes
 	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_list, temp_first_node_index), second_node_id);
 	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_first_node_index), edge_type);
+	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_first_node_index), {});
+	
 	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_list, temp_second_node_index), first_node_id);
 	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_second_node_index), edge_type);
+	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_second_node_index), {});
 }
 
 /// pathfinding_remove_edge(first_node_id, second_node_id);
@@ -132,19 +146,43 @@ function pathfinding_remove_edge(first_node_id, second_node_id)
 	var temp_first_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_first_node_index);
 	var temp_second_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_second_node_index);
 	
+	var temp_first_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_first_node_index);
+	var temp_second_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_second_node_index);
+	
 	var temp_first_node_edge_index = ds_list_find_index(temp_first_node_edges_list, second_node_id);
 	var temp_second_node_edge_index = ds_list_find_index(temp_second_node_edges_list, first_node_id);
 	
 	// Delete Pathfinding Edge Data from Pathfinding Node DS Lists
 	ds_list_delete(temp_first_node_edges_list, temp_first_node_edge_index);
 	ds_list_delete(temp_first_node_edges_types_list, temp_first_node_edge_index);
+	ds_list_delete(temp_first_node_edges_weights_list, temp_first_node_edge_index);
 	
 	ds_list_delete(temp_second_node_edges_list, temp_second_node_edge_index);
 	ds_list_delete(temp_second_node_edges_types_list, temp_second_node_edge_index);
+	ds_list_delete(temp_second_node_edges_weights_list, temp_second_node_edge_index);
+}
+
+function pathfinding_create_weight_struct()
+{
+	
+}
+
+function pathfinding_edge_weight()
+{
+	
 }
 
 function pathfinding_recursive(path_array, start_node_id, end_node_id)
 {
+	// Index Start Node in Array
+	path_array[array_length(path_array)] = start_node_id;
+	
+	// Check that Start Node and End Node Match - Early Return of Recursive Path Structure
+	if (start_node_id == end_node_id)
+	{
+		return path_array;
+	}
+	
 	
 }
 

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"platform_free",
+  "%Name":"Platforms",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"platform_free",
+  "name":"Platforms",
   "parent":{
     "name":"Physics & Collisions",
     "path":"folders/Scripts/Physics & Collisions.yy",

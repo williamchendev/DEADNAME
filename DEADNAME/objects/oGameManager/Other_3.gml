@@ -13,3 +13,6 @@ pathfinding_edges_list = -1;
 
 ds_list_destroy(pathfinding_edges_types_list);
 pathfinding_edges_types_list = -1;
+
+ds_list_destroy(pathfinding_edges_weights_list);
+pathfinding_edges_weights_list = -1;
