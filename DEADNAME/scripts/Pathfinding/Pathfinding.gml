@@ -8,17 +8,24 @@ enum PathfindingEdgeType
 /// pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
 function pathfinding_add_node(position_x, position_y, node_id = undefined)
 {
+	// Check if Node already exists
+	if (!is_undefined(node_id) and !is_undefined(ds_map_find_value(GameManager.pathfinding_node_ids_map, node_id)))
+	{
+		// Node with Unique ID already exists - Early Return
+		return;
+	}
+	
 	// Create Unique Pathfinding Node ID
-	var temp_node_id = is_undefined(node_id) ? "" : node_id;
-	var temp_node_id_found = !is_undefined(node_id) and ds_list_find_index(GameManager.pathfinding_node_ids_list, node_id) == -1;
+	var temp_node_id = is_undefined(node_id) ? 0 : node_id;
+	var temp_node_id_found = !is_undefined(node_id) and is_undefined(ds_map_find_value(GameManager.pathfinding_node_ids_map, node_id));
 	
 	while (!temp_node_id_found)
 	{
 		// Generate New Pathfinding Node ID
-		var temp_generated_node_id = pathfinding_generate_node_id();
+		var temp_generated_node_id = irandom(99999) + 600000;
 		
 		// Check if Generated Node ID already exists
-		if (ds_list_find_index(GameManager.pathfinding_node_ids_list, temp_generated_node_id) == -1)
+		if (is_undefined(ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_generated_node_id)))
 		{
 			// Node ID is valid
 			temp_node_id_found = true;
@@ -27,141 +34,230 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 		}
 	}
 	
-	// Raycast towards Ground to Anchor Node
+	// Check if Deleted Pathfinding Node Index is available
+	var temp_node_index = -1;
+	var temp_deleted_node_index_available = false;
+	
+	if (ds_list_size(GameManager.pathfinding_node_deleted_indexes_list) > 0)
+	{
+		// Get next available deleted index in Pathfinding Nodes DS List
+		temp_node_index = ds_list_find_value(GameManager.pathfinding_node_deleted_indexes_list, 0);
+		temp_deleted_node_index_available = true;
+		
+		// Remove available index now that the index has been taken
+		ds_list_delete(GameManager.pathfinding_node_deleted_indexes_list, 0);
+	}
+	else
+	{
+		// Get next available index in Pathfinding Nodes DS List
+		temp_node_index = ds_list_size(GameManager.pathfinding_node_exists_list);
+	}
+	
+	// Add Pathfinding Node ID and Pathfinding Node DS List Index to Pathfinding Node ID DS Map
+	ds_map_add(GameManager.pathfinding_node_ids_map, temp_node_id, temp_node_index);
+	
+	// Obtain Pathfinding Node Anchor Position via Raycast towards Ground at Pathfinding Node Position
 	var temp_raycast = platform_raycast(x, y, 100, 270);
 	
-	// Add New Pathfinding Node to Pathfinding DS Lists
-	ds_list_add(GameManager.pathfinding_nodes_list, { node_position_x: position_x, node_position_y: position_y, anchor_position_x: temp_raycast.collision_x, anchor_position_y: temp_raycast.collision_y });
-	ds_list_add(GameManager.pathfinding_node_ids_list, temp_node_id);
-	ds_list_add_list(GameManager.pathfinding_edges_list, ds_list_create());
-	ds_list_add_list(GameManager.pathfinding_edges_types_list, ds_list_create());
-	ds_list_add_list(GameManager.pathfinding_edges_weights_list, ds_list_create());
+	// Create Node at next available Pathfinding Node DS List Index
+	if (temp_deleted_node_index_available)
+	{
+		// Set Pathfinding Node's Data at the Available Deleted Node Index within the Pathfinding Nodes DS Lists
+		ds_list_set(GameManager.pathfinding_node_exists_list, temp_node_index, true);
+		ds_list_set(GameManager.pathfinding_node_struct_list, temp_node_index, { node_position_x: position_x, node_position_y: position_y, anchor_position_x: temp_raycast.collision_x, anchor_position_y: temp_raycast.collision_y });
+		ds_list_clear(ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_node_index));
+	}
+	else
+	{
+		// Add New Pathfinding Node's Data to Pathfinding Nodes DS Lists
+		ds_list_add(GameManager.pathfinding_node_exists_list, true);
+		ds_list_add(GameManager.pathfinding_node_struct_list, { node_position_x: position_x, node_position_y: position_y, anchor_position_x: temp_raycast.collision_x, anchor_position_y: temp_raycast.collision_y });
+		ds_list_add_list(GameManager.pathfinding_node_edges_list, ds_list_create());
+	}
 }
 
+/// pathfinding_remove_node(node_id);
+/// @description Removes a Pathfinding Node that shares the given Node ID
+/// @param {int} node_id The Node ID of the Pathfinding Node to remove
 function pathfinding_remove_node(node_id)
 {
 	// Check if Node Exists
-	var temp_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, node_id);
+	var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, node_id);
 	
-	if (temp_node_index == -1)
+	if (is_undefined(temp_node_index))
 	{
 		// Node is missing or Invalid - Early Return
 		return;
 	}
 	
 	// Find Pathfinding Node Indexes
-	var temp_node_edges_list = ds_list_find_value(GameManager.pathfinding_edges_list, temp_node_index);
-	var temp_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_node_index);
-	var temp_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_node_index);
+	var temp_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_node_index);
 	
 	for (var i = 0; i < ds_list_size(temp_node_edges_list); i++)
 	{
+		// Find Edge Node ID
 		var temp_edge_node_id = ds_list_find_value(temp_node_edges_list, i);
-		var temp_edge_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, temp_edge_node_id);
 		
-		if (temp_edge_node_index != -1)
+		// Find Edge Node Index
+		var temp_edge_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_node_id);
+		
+		// Edge Node Index Exists
+		if (!is_undefined(temp_edge_node_index))
 		{
-			var temp_edge_node_edges_list = ds_list_find_value(GameManager.pathfinding_edges_list, temp_edge_node_index);
-			var temp_edge_node_edges_types_list = ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_edge_node_index);
-			var temp_edge_node_edges_weights_list = ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_edge_node_index);
+			// Find Edge Node's Edge Reference to Deleted Node ID 
+			var temp_edge_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_edge_node_index);
 			var temp_node_within_edge_node_edges_list_index = ds_list_find_index(temp_edge_node_edges_list, node_id);
 			
-			if (temp_node_within_edge_node_edges_list_index != -1)
-			{
-				// Delete Edges that contain this Node
-				ds_list_delete(temp_edge_node_edges_list, temp_node_within_edge_node_edges_list_index);
-				ds_list_delete(temp_edge_node_edges_types_list, temp_node_within_edge_node_edges_list_index);
-				ds_list_delete(temp_edge_node_edges_weights_list, temp_node_within_edge_node_edges_list_index);
-			}
+			// Remove Deleted Node's ID from Edge Node's Edge Reference
+			ds_list_delete(temp_edge_node_edges_list, temp_node_within_edge_node_edges_list_index);
+		}
+		
+		// Create Edge ID based on the given Node IDs and Find Edge Index
+		var temp_edge_id = (node_id < temp_edge_node_id) ? $"[{node_id}][{temp_edge_node_id}]" : $"[{temp_edge_node_id}][{node_id}]";
+		var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+		
+		// Edge Exists
+		if (temp_edge_index != -1)
+		{
+			// Delete Edge ID from Edge ID DS Map
+			ds_map_delete(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+			
+			// Set Pathfinding Edge Existence at Edge Index to False
+			ds_list_set(GameManager.pathfinding_edge_exists_list, temp_edge_index, false);
+			
+			// Add Deleted Pathfinding Edge Index to Deleted Pathfinding Edge Indexes DS List
+			ds_list_add(GameManager.pathfinding_edge_deleted_indexes_list, temp_edge_index);
 		}
 	}
 	
-	// Delete Indexes of Node
-	ds_list_delete(GameManager.pathfinding_nodes_list, temp_node_index);
-	ds_list_delete(GameManager.pathfinding_node_ids_list, temp_node_index);
-	ds_list_delete(GameManager.pathfinding_edges_list, temp_node_index);
-	ds_list_delete(GameManager.pathfinding_edges_types_list, temp_node_index);
-	ds_list_delete(GameManager.pathfinding_edges_weights_list, temp_node_index);
+	// Delete Node ID from Node ID DS Map
+	ds_map_delete(GameManager.pathfinding_node_ids_map, node_id);
+			
+	// Set Pathfinding Node Existence at Node Index to False
+	ds_list_set(GameManager.pathfinding_node_exists_list, temp_node_index, false);
 	
-	// Destroy DS Lists
-	ds_list_destroy(temp_node_edges_list);
-	ds_list_destroy(temp_node_edges_types_list);
-	ds_list_destroy(temp_node_edges_weights_list);
-}
-
-function pathfinding_generate_node_id(possible_characters = "0123456789ABCDEF", limit = 8)
-{
-	// Default Prefix
-	var temp_return_id = "Node_";
-	
-	// Add Random Characters to Node ID
-	repeat (limit)
-	{
-		temp_return_id = $"{temp_return_id}{string_char_at(possible_characters, random(string_length(possible_characters) - 1))}";
-	}
-	
-	// Return Node ID
-	return temp_return_id;
+	// Add Deleted Pathfinding Node Index to Deleted Pathfinding Node Indexes DS List
+	ds_list_add(GameManager.pathfinding_node_deleted_indexes_list, temp_node_index);
 }
 
 /// pathfinding_add_edge(first_node_id, second_node_id, edge_type);
 function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 {
 	// Check if both Nodes Exist
-	var temp_first_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, first_node_id);
-	var temp_second_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, second_node_id);
+	var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, first_node_id);
+	var temp_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, second_node_id);
 	
-	if (temp_first_node_index == -1 or temp_second_node_index == -1)
+	if (is_undefined(temp_first_node_index) or is_undefined(temp_second_node_index))
 	{
 		// One or More Node is missing or Invalid - Early Return
 		return;
 	}
 	
+	// Create Edge ID based on the given Node IDs
+	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	
+	// Check if Pathfinding Edge already exists
+	if (!is_undefined(ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id)))
+	{
+		// Edge already exists between these two Pathfinding Nodes - Early Return
+		return;
+	}
+	
 	// Create Edge Weight Struct between the two given Pathfinding Nodes
-	var temp_edge_struct = pathfinding_create_edge_weight(temp_first_node_index, temp_second_node_index, edge_type);
+	var temp_edge_weight_struct = pathfinding_create_edge_weight(temp_first_node_index, temp_second_node_index, edge_type);
 	
-	// Add Pathfinding Edge to both Nodes
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_list, temp_first_node_index), second_node_id);
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_first_node_index), edge_type);
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_first_node_index), temp_edge_struct);
+	// Check if Deleted Pathfinding Edge Index is available
+	var temp_edge_index = -1;
+	var temp_deleted_edge_index_available = false;
 	
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_list, temp_second_node_index), first_node_id);
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_second_node_index), edge_type);
-	ds_list_add(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_second_node_index), temp_edge_struct);
+	if (ds_list_size(GameManager.pathfinding_edge_deleted_indexes_list) > 0)
+	{
+		// Get next available deleted index in Pathfinding Edges DS List
+		temp_edge_index = ds_list_find_value(GameManager.pathfinding_edge_deleted_indexes_list, 0);
+		temp_deleted_edge_index_available = true;
+		
+		// Remove available index now that the index has been taken
+		ds_list_delete(GameManager.pathfinding_edge_deleted_indexes_list, 0);
+	}
+	else
+	{
+		// Get next available index in Pathfinding Edges DS List
+		temp_edge_index = ds_list_size(GameManager.pathfinding_edge_exists_list);
+	}
+	
+	// Add Pathfinding Edge ID to Pathfinding Edge ID DS Map
+	ds_map_add(GameManager.pathfinding_edge_ids_map, temp_edge_id, temp_edge_index);
+	
+	// Create Edge at next available Pathfinding Edge DS List Index
+	if (temp_deleted_edge_index_available)
+	{
+		// Set Pathfinding Edge's Data at the Available Deleted Edge Index within the Pathfinding Edges DS Lists
+		ds_list_set(GameManager.pathfinding_edge_exists_list, temp_edge_index, true);
+		ds_list_set(GameManager.pathfinding_edge_nodes_list, temp_edge_index, { first_node_id: first_node_id, second_node_id: second_node_id });
+		ds_list_set(GameManager.pathfinding_edge_types_list, temp_edge_index, edge_type);
+		ds_list_set(GameManager.pathfinding_edge_weights_list, temp_edge_index, temp_edge_weight_struct);
+	}
+	else
+	{
+		// Add New Pathfinding Edge's Data to Pathfinding Edges DS Lists
+		ds_list_add(GameManager.pathfinding_edge_exists_list, true);
+		ds_list_add(GameManager.pathfinding_edge_nodes_list, { first_node_id: first_node_id, second_node_id: second_node_id });
+		ds_list_add(GameManager.pathfinding_edge_types_list, edge_type);
+		ds_list_add(GameManager.pathfinding_edge_weights_list, temp_edge_weight_struct);
+	}
 }
 
 /// pathfinding_remove_edge(first_node_id, second_node_id);
 function pathfinding_remove_edge(first_node_id, second_node_id)
 {
 	// Check if both Nodes Exist
-	var temp_first_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, first_node_id);
-	var temp_second_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, second_node_id);
+	var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, first_node_id);
+	var temp_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, second_node_id);
 	
-	if (temp_first_node_index == -1 or temp_second_node_index == -1)
+	if (is_undefined(temp_first_node_index) or is_undefined(temp_second_node_index))
 	{
 		// One or More Node is missing or Invalid - Early Return
 		return;
 	}
 	
-	// Find Pathfinding Edge Indexes
-	var temp_first_node_edge_index = ds_list_find_index(ds_list_find_value(GameManager.pathfinding_edges_list, temp_first_node_index), second_node_id);
-	var temp_second_node_edge_index = ds_list_find_index(ds_list_find_value(GameManager.pathfinding_edges_list, temp_second_node_index), first_node_id);
+	// Create Edge ID based on the given Node IDs and Find Edge Index
+	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
 	
-	// Delete Pathfinding Edge Data from Pathfinding Node DS Lists
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_list, temp_first_node_index), temp_first_node_edge_index);
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_first_node_index), temp_first_node_edge_index);
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_first_node_index), temp_first_node_edge_index);
+	// Check if Pathfinding Edge already exists
+	if (is_undefined(temp_edge_index))
+	{
+		// Edge does not exist between these two Pathfinding Nodes - Early Return
+		return;
+	}
 	
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_list, temp_second_node_index), temp_second_node_edge_index);
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_types_list, temp_second_node_index), temp_second_node_edge_index);
-	ds_list_delete(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_second_node_index), temp_second_node_edge_index);
+	// Find First Node's Edge Reference to Second Node ID and Remove Second Node's ID from First Node's Edge Reference
+	var temp_first_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_first_node_index);
+	var temp_second_node_within_first_node_edges_list_index = ds_list_find_index(temp_first_node_edges_list, second_node_id);
+	
+	ds_list_delete(temp_first_node_edges_list, temp_second_node_within_first_node_edges_list_index);
+	
+	// Find Second Node's Edge Reference to First Node ID and Remove First Node's ID from Second Node's Edge Reference
+	var temp_second_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_second_node_index);
+	var temp_first_node_within_second_node_edges_list_index = ds_list_find_index(temp_second_node_edges_list, first_node_id);
+	
+	ds_list_delete(temp_second_node_edges_list, temp_first_node_within_second_node_edges_list_index);
+	
+	// Delete Edge ID from Edge ID DS Map
+	ds_map_delete(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+	
+	// Set Pathfinding Edge Existence at Edge Index to False
+	ds_list_set(GameManager.pathfinding_edge_exists_list, temp_edge_index, false);
+	
+	// Add Deleted Pathfinding Edge Index to Deleted Pathfinding Edge Indexes DS List
+	ds_list_add(GameManager.pathfinding_edge_deleted_indexes_list, temp_edge_index);
 }
 
 function pathfinding_create_edge_weight(first_node_index, second_node_index, edge_type)
 {
 	// Find Nodes
-	var temp_first_node = ds_list_find_value(GameManager.pathfinding_nodes_list, first_node_index);
-	var temp_second_node = ds_list_find_value(GameManager.pathfinding_nodes_list, second_node_index);
+	var temp_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, first_node_index);
+	var temp_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, second_node_index);
 	
 	// Find Weight between both Nodes
 	var temp_weight_struct = 
@@ -176,12 +272,19 @@ function pathfinding_create_edge_weight(first_node_index, second_node_index, edg
 
 function pathfinding_find_edge_weight(first_node_id, second_node_id)
 {
-	// Find Node Indexes
-	var temp_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, first_node_id);
-	var temp_node_edge_index = ds_list_find_index(ds_list_find_value(GameManager.pathfinding_edges_list, temp_node_index), second_node_id);
+	// Create Edge ID based on the given Node IDs and Find Edge Index
+	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+	
+	// Check if Pathfinding Edge exists
+	if (is_undefined(temp_edge_index))
+	{
+		// Edge does not exist between these two Pathfinding Nodes - Early Return
+		return undefined;
+	}
 	
 	// Obtain Edge Struct
-	var temp_node_edge_struct = ds_list_find_value(ds_list_find_value(GameManager.pathfinding_edges_weights_list, temp_node_index), temp_node_edge_index);
+	var temp_node_edge_struct = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
 	
 	// Return Cumulative Edge Weight
 	return temp_node_edge_struct.distance_weight + temp_node_edge_struct.hazard_weight;
@@ -224,8 +327,8 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	}
 	
 	// Find Node Index & Node Edges List
-	var temp_node_index = ds_list_find_index(GameManager.pathfinding_node_ids_list, start_node_id);
-	var temp_node_edges_list = ds_list_find_value(GameManager.pathfinding_edges_list, temp_node_index);
+	var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, start_node_id);
+	var temp_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_node_index);
 	
 	// Establish Path Comparison Variables
 	var temp_path_weight = -1;

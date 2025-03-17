@@ -24,7 +24,7 @@ function platform_free(pos_x, pos_y, platform_list, precise = false)
 /// @param {number} distance The distance of the Raycast
 /// @param {number} angle The angle of the Raycast
 /// @returns {struct} returns a struct containing a boolean if a collision occured [struct.collision], and the x and y coordinates of the collision and/or end of the Raycast [struct.collision_x] [struct.collision_y]
-function platform_raycast(pos_x, pos_y, distance, angle = 270)
+function platform_raycast(pos_x, pos_y, distance, angle)
 {
 	// Normalize Angle
 	angle = angle mod 360;

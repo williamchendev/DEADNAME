@@ -49,12 +49,24 @@ inventory_check = ord("I");
 
 command_check = ord("Q");
 
-// Pathfinding Variables
-pathfinding_nodes_list = ds_list_create();
-pathfinding_node_ids_list = ds_list_create();
-pathfinding_edges_list = ds_list_create();
-pathfinding_edges_types_list = ds_list_create();
-pathfinding_edges_weights_list = ds_list_create();
+// Pathfinding Node Variables
+pathfinding_node_ids_map = ds_map_create();
+
+pathfinding_node_exists_list = ds_list_create();
+pathfinding_node_edges_list = ds_list_create();
+pathfinding_node_struct_list = ds_list_create();
+
+pathfinding_node_deleted_indexes_list = ds_list_create();
+
+// Pathfinding Edge Variables
+pathfinding_edge_ids_map = ds_map_create();
+
+pathfinding_edge_exists_list = ds_list_create();
+pathfinding_edge_nodes_list = ds_list_create();
+pathfinding_edge_types_list = ds_list_create();
+pathfinding_edge_weights_list = ds_list_create();
+
+pathfinding_edge_deleted_indexes_list = ds_list_create();
 
 // Cursor Variables
 cursor_icon = false;
