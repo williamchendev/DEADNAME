@@ -21,7 +21,7 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 	
 	while (!temp_node_id_found)
 	{
-		// Generate New Pathfinding Node ID
+		// Generate New Pathfinding Node ID - I don't know why I chose to make it this way, I was just feeling quirky and I like the number 6
 		var temp_generated_node_id = irandom(99999) + 600000;
 		
 		// Check if Generated Node ID already exists
@@ -302,7 +302,7 @@ function pathfinding_find_path_weight(path_list)
 	var temp_weight = 0;
 	var temp_path_index = 0;
 	
-	repeat (ds_list_size(path_list) - 2)
+	repeat (ds_list_size(path_list) - 1)
 	{
 		// Add Weight Between Edges
 		temp_weight += pathfinding_find_edge_weight(ds_list_find_value(path_list, temp_path_index), ds_list_find_value(path_list, temp_path_index + 1));
@@ -457,7 +457,7 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	// Check if Edge Data is Viable
 	if (is_undefined(temp_start_edge_data.edge_id) or is_undefined(temp_end_edge_data.edge_id)) 
 	{
-		// Edges Don't Exist
+		// Edges do not Exist
 		return undefined;
 	}
 	
@@ -488,6 +488,13 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	
 	var temp_path_nodes = pathfinding_recursive(temp_start_edge_nodes.first_node_id, temp_end_edge_nodes.first_node_id);
 	
+	// Check if Node Path is Viable
+	if (is_undefined(temp_path_nodes)) 
+	{
+		// Node Path does not Exist
+		return undefined;
+	}
+	
 	// Remove Arbitrary Start Node
 	var temp_path_first_node_id = ds_list_find_value(temp_path_nodes, 0);
 	var temp_path_second_node_id = ds_list_find_value(temp_path_nodes, 1);
@@ -508,115 +515,59 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 		ds_list_delete(temp_path_nodes, ds_list_size(temp_path_nodes) - 1);
 	}
 	
+	// Create Pathfinding Path
+	var temp_path = ds_list_create();
+	
+	// Add Start Position, Edge ID, and Edge Type
+	var temp_start_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_start_edge_index);
+	ds_list_add(temp_path, { position_x: temp_start_edge_data.return_x, position_y: temp_start_edge_data.return_y, edge_id: temp_start_edge_data.edge_id, edge_type: temp_start_edge_type });
+	
+	// Add First Node Position, Edge ID, and Edge Type
+	var temp_first_node_id = ds_list_find_value(temp_path_nodes, 0);
+	var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_first_node_id);
+	var temp_first_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_first_node_index);
+	
+	ds_list_add(temp_path, { position_x: temp_first_node_struct.anchor_position_x, position_y: temp_first_node_struct.anchor_position_y, edge_id: temp_start_edge_data.edge_id, edge_type: temp_start_edge_type });
+	
 	// Iterate through Node Path to create Cleaned Up and "detail rich" Pathfinding Path
+	var temp_path_node_index = 1;
 	
-}
-
-/*
-
-/// pathfind_get_path(start_x_position, start_y_position, end_x_position, end_y_position);
-
-
-
-// Establish Variables
-#args temp_start_x
-var temp_start_y = argument1;
-
-var temp_end_x = argument2;
-var temp_end_y = argument3;
-
-// Find Edge Data for Start and End Coordinates
-var temp_start_edge_data = pathfind_get_closest_point(temp_start_x, temp_start_y);
-var temp_end_edge_data = pathfind_get_closest_point(temp_end_x, temp_end_y);
-
-// Check if Edge Data is Viable
-if (temp_start_edge_data[2] == noone or temp_start_edge_data[2] == noone) {
-	// Edges Don't Exist
-	return noone;
-}
-
-if (temp_start_edge_data[2] == temp_end_edge_data[2]) {
-	// Same Edge
-	var temp_early_return = noone;
-	temp_early_return[0, 0] = temp_start_edge_data[2];
-	temp_early_return[0, 1] = temp_start_edge_data[0];
-	temp_early_return[0, 2] = temp_start_edge_data[1];
-	temp_early_return[1, 0] = temp_end_edge_data[2];
-	temp_early_return[1, 1] = temp_end_edge_data[0];
-	temp_early_return[1, 2] = temp_end_edge_data[1];
-	return temp_early_return;
-}
-
-// Find Nearest Nodes
-var temp_start_node = temp_start_edge_data[2].nodes[0];
-var temp_start_node_a_distance = point_distance(temp_start_x, temp_start_y, temp_start_edge_data[2].nodes[0].x, temp_start_edge_data[2].nodes[0].y);
-var temp_start_node_b_distance = point_distance(temp_start_x, temp_start_y, temp_start_edge_data[2].nodes[1].x, temp_start_edge_data[2].nodes[1].y);
-if (temp_start_node_b_distance < temp_start_node_a_distance) {
-	temp_start_node = temp_start_edge_data[2].nodes[1];
-}
-
-var temp_end_node = temp_end_edge_data[2].nodes[0];
-var temp_end_node_a_distance = point_distance(temp_end_x, temp_end_y, temp_end_edge_data[2].nodes[0].x, temp_end_edge_data[2].nodes[0].y);
-var temp_end_node_b_distance = point_distance(temp_end_x, temp_end_y, temp_end_edge_data[2].nodes[1].x, temp_end_edge_data[2].nodes[1].y);
-if (temp_end_node_b_distance < temp_end_node_a_distance) {
-	temp_end_node = temp_end_edge_data[2].nodes[1];
-}
-
-// Establish Path
-var temp_path_array = pathfind_recursive(noone, temp_start_node, temp_end_node);
-
-// Clean Path
-if (array_length_1d(temp_path_array) > 1) {
-	var temp_remove_first_index = 0;
-	if (temp_path_array[0] == temp_start_edge_data[2].nodes[0]) {
-		if (temp_path_array[1] == temp_start_edge_data[2].nodes[1]) {
-			temp_remove_first_index = 1;
-		}
-	}
-	else if (temp_path_array[0] == temp_start_edge_data[2].nodes[1]) {
-		if (temp_path_array[1] == temp_start_edge_data[2].nodes[0]) {
-			temp_remove_first_index = 1;
-		}
+	repeat(ds_list_size(temp_path_nodes) - 1)
+	{
+		// Find Path Node IDs
+		var temp_node_a_id = ds_list_find_value(temp_path_nodes, temp_path_node_index - 1);
+		var temp_node_b_id = ds_list_find_value(temp_path_nodes, temp_path_node_index);
+		
+		// Find Path Node Index
+		var temp_node_b_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_node_b_id);
+		
+		// Find Path Node Struct
+		var temp_node_b_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_b_index);
+		
+		// Find Path Edge ID
+		var temp_path_edge_id = (temp_node_a_id < temp_node_b_id) ? $"[{temp_node_a_id}][{temp_node_b_id}]" : $"[{temp_node_b_id}][{temp_node_a_id}]";
+		
+		// Find Path Edge Index
+		var temp_path_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_path_edge_id);
+		
+		// Find Path Edge Type
+		var temp_path_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_path_edge_index);
+		
+		// Index Pathfinding Data
+		ds_list_add(temp_path, { position_x: temp_node_b_struct.anchor_position_x, position_y: temp_node_b_struct.anchor_position_y, edge_id: temp_path_edge_id, edge_type: temp_path_edge_type });
+		
+		// Increment Index
+		temp_path_node_index++;
 	}
 	
-	var temp_remove_last_index = array_length_1d(temp_path_array);
-	if (temp_path_array[array_length_1d(temp_path_array) - 1] == temp_end_edge_data[2].nodes[0]) {
-		if (temp_path_array[array_length_1d(temp_path_array) - 2] == temp_end_edge_data[2].nodes[1]) {
-			temp_remove_last_index = array_length_1d(temp_path_array) - 1;
-		}
-	}
-	else if (temp_path_array[array_length_1d(temp_path_array) - 1] == temp_end_edge_data[2].nodes[1]) {
-		if (temp_path_array[array_length_1d(temp_path_array) - 2] == temp_end_edge_data[2].nodes[0]) {
-			temp_remove_last_index = array_length_1d(temp_path_array) - 1;
-		}
-	}
+	// Add End Position, Edge ID, and Edge Type
+	var temp_end_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_end_edge_index);
+	ds_list_add(temp_path, { position_x: temp_end_edge_data.return_x, position_y: temp_end_edge_data.return_y, edge_id: temp_end_edge_data.edge_id, edge_type: temp_end_edge_type });
 	
-	var temp_cutoff_index = 0;
-	var temp_cutoff_array = noone;
-	for (var q = temp_remove_first_index; q < temp_remove_last_index; q++) {
-		temp_cutoff_array[temp_cutoff_index] = temp_path_array[q];
-		temp_cutoff_index++;
-	}
+	// Destroy Node Path
+	ds_list_destroy(temp_path_nodes);
+	temp_path_nodes = -1;
 	
-	temp_path_array = temp_cutoff_array;
+	// Return Finalized Pathfinding Path
+	return temp_path;
 }
-
-// Assemble Path Data
-var temp_return = noone;
-temp_return[0, 0] = temp_start_edge_data[2];
-temp_return[0, 1] = temp_start_edge_data[0];
-temp_return[0, 2] = temp_start_edge_data[1];
-
-for (var k = 0; k < array_length_1d(temp_path_array); k++) {
-	var temp_array_height = array_height_2d(temp_return);
-	temp_return[temp_array_height, 0] = temp_path_array[k];
-	temp_return[temp_array_height, 1] = temp_path_array[k].x_position;
-	temp_return[temp_array_height, 2] = temp_path_array[k].y_position;
-}
-
-var temp_array_height_again = array_height_2d(temp_return);
-temp_return[temp_array_height_again, 0] = temp_end_edge_data[2];
-temp_return[temp_array_height_again, 1] = temp_end_edge_data[0];
-temp_return[temp_array_height_again, 2] = temp_end_edge_data[1];
-
-return temp_return;
