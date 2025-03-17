@@ -318,7 +318,7 @@ function pathfinding_find_path_weight(path_list)
 function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_create())
 {
 	// Index Start Node in Array
-	ds_list_insert(path_list, 0, start_node_id);
+	ds_list_add(path_list, start_node_id);
 	
 	// Check that Start Node and End Node Match - Early Return of Recursive Path Structure
 	if (start_node_id == end_node_id)
@@ -394,16 +394,122 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	return temp_path_list;
 }
 
+/// pathfinder_get_closest_point_on_edge(x_position, y_position);
+/// @description Finds the closest coordinate that exists on any oPathEdge that exists in the room
+/// @param {real} x_position The X position to check for the closest coordinate to on a oPathEdge
+/// @param {real} y_position The Y position to check for the closest coordinate to on a oPathEdge
+/// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y] and the Edge id it exists on [struct.edge_id]
+function pathfinder_get_closest_point_on_edge(x_position, y_position)
+{
+	// Establish Return Variables
+	var temp_position_x = x_position;
+	var temp_position_y = y_position;
+	var temp_distance = 0;
+	var temp_position_edge = undefined;
+	
+	// Iterate through Edges to find closest point to given point
+	for (var i = 0; i < ds_list_size(GameManager.pathfinding_edge_exists_list); i++)
+	{
+		// Check if Edge Exists
+		if (ds_list_find_value(GameManager.pathfinding_edge_exists_list, i))
+		{
+			// Find Edge's Node IDs and Node Indexes
+			var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, i);
+			var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.first_node_id);
+			var temp_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.second_node_id);
+			
+			// Find Edge's Node Data
+			var temp_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_first_node_index);
+			var temp_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_second_node_index);
+			
+			// Find Closest Point on Edge
+			var temp_closest_point_on_edge = point_closest_on_line(x_position, y_position, temp_first_node.anchor_position_x, temp_first_node.anchor_position_y, temp_second_node.anchor_position_x, temp_second_node.anchor_position_y);
+			var temp_closest_point_on_edge_distance = point_distance(x_position, y_position, temp_closest_point_on_edge.return_x, temp_closest_point_on_edge.return_y);
+			
+			// Compare Closest Point on Old Edge to Closest Point on New Edge 
+			if (is_undefined(temp_position_edge) or temp_closest_point_on_edge_distance < temp_distance)
+			{
+				temp_position_x = temp_closest_point_on_edge.return_x;
+				temp_position_y = temp_closest_point_on_edge.return_y;
+				temp_distance = temp_closest_point_on_edge_distance;
+				temp_position_edge = (temp_edge_nodes.first_node_id < temp_edge_nodes.second_node_id) ? $"[{temp_edge_nodes.first_node_id}][{temp_edge_nodes.second_node_id}]" : $"[{temp_edge_nodes.second_node_id}][{temp_edge_nodes.first_node_id}]";
+			}
+		}
+	}
+	
+	// Return Struct
+	return { return_x: temp_position_x, return_y: temp_position_y, edge_id: temp_position_edge };
+}
+
 /// pathfinder_get_path(start_x_position, start_y_position, end_x_position, end_y_position);
 /// @description Finds the path of least resistance between the start coordinate and the end coordinate
 /// @param {real} start_x_position The X position in the world to start pathfinding from
 /// @param {real} start_y_position The Y position in the world to start pathfinding from
 /// @param {real} end_x_position The X position in the world to end the path at
 /// @param {real} end_x_position The Y position in the world to end the path at
-/// @returns {array} An array of nodes from the start coordinate to the end coordinate
-function pathfinding_get_path()
+/// @returns 
+function pathfinding_get_path(start_x_position, start_y_position, end_x_position, end_y_position)
 {
-
+	// Find Edge Data for Start and End Coordinates
+	var temp_start_edge_data = pathfinder_get_closest_point_on_edge(start_x_position, start_y_position);
+	var temp_end_edge_data = pathfinder_get_closest_point_on_edge(end_x_position, end_y_position);
+	
+	// Check if Edge Data is Viable
+	if (is_undefined(temp_start_edge_data.edge_id) or is_undefined(temp_end_edge_data.edge_id)) 
+	{
+		// Edges Don't Exist
+		return undefined;
+	}
+	
+	// Check if Start Edge and End Edge share the same Edge ID
+	if (temp_start_edge_data.edge_id == temp_end_edge_data.edge_id) 
+	{
+		// Find Edge Index, Type, and Weight
+		var temp_same_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_start_edge_data.edge_id);
+		var temp_same_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_same_edge_index);
+		var temp_same_edge_weight = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_same_edge_index);
+		
+		// Create Path DS List with Edge Data
+		var temp_same_edge_return_list = ds_list_create();
+		ds_list_add(temp_same_edge_return_list, { position_x: temp_start_edge_data.return_x, position_y: temp_start_edge_data.return_y, edge_id: temp_start_edge_data.edge_id, edge_type: temp_same_edge_type });
+		ds_list_add(temp_same_edge_return_list, { position_x: temp_end_edge_data.return_x, position_y: temp_end_edge_data.return_y, edge_id: temp_end_edge_data.edge_id, edge_type: temp_same_edge_type });
+		
+		// Return Same Edge Path DS List
+		return temp_same_edge_return_list;
+	}
+	
+	// Find Start and End Edge IDs
+	var temp_start_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_start_edge_data.edge_id);
+	var temp_end_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_end_edge_data.edge_id);
+	
+	// Create Node Path using Arbitrary Nodes
+	var temp_start_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_start_edge_index);
+	var temp_end_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_end_edge_index);
+	
+	var temp_path_nodes = pathfinding_recursive(temp_start_edge_nodes.first_node_id, temp_end_edge_nodes.first_node_id);
+	
+	// Remove Arbitrary Start Node
+	var temp_path_first_node_id = ds_list_find_value(temp_path_nodes, 0);
+	var temp_path_second_node_id = ds_list_find_value(temp_path_nodes, 1);
+	var temp_path_first_second_node_edge_id = (temp_path_first_node_id < temp_path_second_node_id) ? $"[{temp_path_first_node_id}][{temp_path_second_node_id}]" : $"[{temp_path_second_node_id}][{temp_path_first_node_id}]";
+	
+	if (temp_start_edge_data.edge_id == temp_path_first_second_node_edge_id)
+	{
+		ds_list_delete(temp_path_nodes, 0);
+	}
+	
+	// Remove Arbitrary End Node
+	var temp_path_last_node_id = ds_list_find_value(temp_path_nodes, ds_list_size(temp_path_nodes) - 1);
+	var temp_path_second_to_last_node_id = ds_list_find_value(temp_path_nodes, ds_list_size(temp_path_nodes) - 2);
+	var temp_path_last_second_to_last_node_edge_id = (temp_path_last_node_id < temp_path_second_to_last_node_id) ? $"[{temp_path_last_node_id}][{temp_path_second_to_last_node_id}]" : $"[{temp_path_second_to_last_node_id}][{temp_path_last_node_id}]";
+	
+	if (temp_end_edge_data.edge_id == temp_path_last_second_to_last_node_edge_id)
+	{
+		ds_list_delete(temp_path_nodes, ds_list_size(temp_path_nodes) - 1);
+	}
+	
+	// Iterate through Node Path to create Cleaned Up and "detail rich" Pathfinding Path
+	
 }
 
 /*

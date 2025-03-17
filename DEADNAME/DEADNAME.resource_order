@@ -31,6 +31,7 @@
     {"name":"Pathfinding","order":1,"path":"folders/Scripts/Pathfinding.yy",},
     {"name":"Plugins","order":5,"path":"folders/Scripts/Plugins.yy",},
     {"name":"GML Classes","order":1,"path":"folders/Scripts/Plugins/GML Classes.yy",},
+    {"name":"InnoSoft","order":3,"path":"folders/Scripts/Plugins/InnoSoft.yy",},
     {"name":"UVTransform","order":2,"path":"folders/Scripts/Plugins/UVTransform.yy",},
     {"name":"XGASOFT GML+","order":2,"path":"folders/Scripts/Plugins/XGASOFT GML+.yy",},
     {"name":"Asset Management","order":1,"path":"folders/Scripts/Plugins/XGASOFT GML+/Asset Management.yy",},

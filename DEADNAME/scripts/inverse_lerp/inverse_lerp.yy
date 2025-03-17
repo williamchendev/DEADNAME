@@ -1,0 +1,14 @@
+{
+  "$GMScript":"v1",
+  "%Name":"inverse_lerp",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"inverse_lerp",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+  "tags":[],
+}

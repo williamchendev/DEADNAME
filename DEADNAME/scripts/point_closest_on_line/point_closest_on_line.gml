@@ -6,7 +6,7 @@
 /// @param {number} first_point_y The Y position of the first coordinate in a line segment to find the closest coordinate to
 /// @param {number} second_point_x The X position of the second coordinate in a line segment to find the closest coordinate to
 /// @param {number} second_point_y The Y position of the second coordinate in a line segment to find the closest coordinate to
-/// @returns {struct} A struct with the X coordinate (return_x) and Y coordinate (return_y)
+/// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y]
 function point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y) 
 {
 	// Direction vector of the line
