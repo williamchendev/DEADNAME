@@ -113,7 +113,7 @@ function pathfinding_remove_node(node_id)
 		}
 		
 		// Create Edge ID based on the given Node IDs and Find Edge Index
-		var temp_edge_id = (node_id < temp_edge_node_id) ? $"[{node_id}][{temp_edge_node_id}]" : $"[{temp_edge_node_id}][{node_id}]";
+		var temp_edge_id = pathfinding_generate_edge_id(node_id, temp_edge_node_id);
 		var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
 		
 		// Edge Exists
@@ -140,6 +140,26 @@ function pathfinding_remove_node(node_id)
 	ds_list_add(GameManager.pathfinding_node_deleted_indexes_list, temp_node_index);
 }
 
+/// pathfinding_generate_edge_id(first_node_id, second_node_id);
+/// @description Generates the Edge ID shared by the two given Nodes, based on the Node IDs being sorted (lowest ID comes first, highest ID comes second)
+/// @param {any} first_node_id The first Node's ID to create the concatenated Edge ID off of
+/// @param {any} second_node_id The second Node's ID to create the concatenated Edge ID off of
+/// @returns {string} Returns the Edge ID of the two given Nodes
+function pathfinding_generate_edge_id(first_node_id, second_node_id)
+{
+	if (is_string(first_node_id) or is_string(second_node_id))
+	{
+		var first_node_id_as_string = string(first_node_id);
+		var second_node_id_as_string = string(second_node_id);
+		
+		return (first_node_id_as_string < second_node_id_as_string) ? $"[{first_node_id_as_string}][{second_node_id_as_string}]" : $"[{second_node_id_as_string}][{first_node_id_as_string}]";
+	}
+	else
+	{
+		return (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	}
+}
+
 /// pathfinding_add_edge(first_node_id, second_node_id, edge_type);
 function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 {
@@ -154,7 +174,7 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 	}
 	
 	// Create Edge ID based on the given Node IDs
-	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	var temp_edge_id = pathfinding_generate_edge_id(first_node_id, second_node_id);
 	
 	// Check if Pathfinding Edge already exists
 	if (!is_undefined(ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id)))
@@ -221,7 +241,7 @@ function pathfinding_remove_edge(first_node_id, second_node_id)
 	}
 	
 	// Create Edge ID based on the given Node IDs and Find Edge Index
-	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	var temp_edge_id = pathfinding_generate_edge_id(first_node_id, second_node_id);
 	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
 	
 	// Check if Pathfinding Edge already exists
@@ -273,7 +293,7 @@ function pathfinding_create_edge_weight(first_node_index, second_node_index, edg
 function pathfinding_find_edge_weight(first_node_id, second_node_id)
 {
 	// Create Edge ID based on the given Node IDs and Find Edge Index
-	var temp_edge_id = (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
+	var temp_edge_id = pathfinding_generate_edge_id(first_node_id, second_node_id);
 	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
 	
 	// Check if Pathfinding Edge exists
@@ -447,7 +467,7 @@ function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type 
 				temp_position_x = temp_closest_point_on_edge.return_x;
 				temp_position_y = temp_closest_point_on_edge.return_y;
 				temp_distance = temp_closest_point_on_edge_distance;
-				temp_position_edge = (temp_edge_nodes.first_node_id < temp_edge_nodes.second_node_id) ? $"[{temp_edge_nodes.first_node_id}][{temp_edge_nodes.second_node_id}]" : $"[{temp_edge_nodes.second_node_id}][{temp_edge_nodes.first_node_id}]";
+				temp_position_edge = pathfinding_generate_edge_id(temp_edge_nodes.first_node_id, temp_edge_nodes.second_node_id);
 			}
 		}
 	}
@@ -462,7 +482,6 @@ function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type 
 /// @param {real} start_y_position The Y position in the world to start pathfinding from
 /// @param {real} end_x_position The X position in the world to end the path at
 /// @param {real} end_x_position The Y position in the world to end the path at
-/// @returns 
 function pathfinding_get_path(start_x_position, start_y_position, end_x_position, end_y_position)
 {
 	// Find Edge Data for Start and End Coordinates
@@ -513,7 +532,7 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	// Remove Arbitrary Start Node
 	var temp_path_first_node_id = ds_list_find_value(temp_path_nodes, 0);
 	var temp_path_second_node_id = ds_list_find_value(temp_path_nodes, 1);
-	var temp_path_first_second_node_edge_id = (temp_path_first_node_id < temp_path_second_node_id) ? $"[{temp_path_first_node_id}][{temp_path_second_node_id}]" : $"[{temp_path_second_node_id}][{temp_path_first_node_id}]";
+	var temp_path_first_second_node_edge_id = pathfinding_generate_edge_id(temp_path_first_node_id, temp_path_second_node_id);
 	
 	if (temp_start_edge_data.edge_id == temp_path_first_second_node_edge_id)
 	{
@@ -523,7 +542,7 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	// Remove Arbitrary End Node
 	var temp_path_last_node_id = ds_list_find_value(temp_path_nodes, ds_list_size(temp_path_nodes) - 1);
 	var temp_path_second_to_last_node_id = ds_list_find_value(temp_path_nodes, ds_list_size(temp_path_nodes) - 2);
-	var temp_path_last_second_to_last_node_edge_id = (temp_path_last_node_id < temp_path_second_to_last_node_id) ? $"[{temp_path_last_node_id}][{temp_path_second_to_last_node_id}]" : $"[{temp_path_second_to_last_node_id}][{temp_path_last_node_id}]";
+	var temp_path_last_second_to_last_node_edge_id = pathfinding_generate_edge_id(temp_path_last_node_id, temp_path_second_to_last_node_id);
 	
 	if (temp_end_edge_data.edge_id == temp_path_last_second_to_last_node_edge_id)
 	{
@@ -560,7 +579,7 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 		var temp_node_b_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_b_index);
 		
 		// Find Path Edge ID
-		var temp_path_edge_id = (temp_node_a_id < temp_node_b_id) ? $"[{temp_node_a_id}][{temp_node_b_id}]" : $"[{temp_node_b_id}][{temp_node_a_id}]";
+		var temp_path_edge_id = pathfinding_generate_edge_id(temp_node_a_id, temp_node_b_id);
 		
 		// Find Path Edge Index
 		var temp_path_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_path_edge_id);
@@ -590,12 +609,12 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 function pathfinding_save_level_data()
 {
 	// Establish Level File Directory
-	var temp_level_files_directory = $"{GameManager.data_directory}Levels\\{room_get_name(room)}\\";
+	var temp_level_file_directory = $"{GameManager.data_directory}Levels\\{room_get_name(room)}\\";
 	
 	// Create Level File Directory
-	if (!directory_exists(temp_level_files_directory))
+	if (!directory_exists(temp_level_file_directory))
 	{
-	    directory_create(temp_level_files_directory);
+	    directory_create(temp_level_file_directory);
 	}
 	
 	// Create Pathfinding File Data
@@ -664,12 +683,191 @@ function pathfinding_save_level_data()
 	temp_pathfinding_data += "\n";
 
 	// Write Pathfinding File Data to File
-	var temp_pathfinding_data_file = file_text_open_write($"{temp_level_files_directory}pathfinding_data.txt");
+	var temp_pathfinding_data_file = file_text_open_write($"{temp_level_file_directory}pathfinding_data.txt");
 	file_text_write_string(temp_pathfinding_data_file, temp_pathfinding_data);
 	file_text_close(temp_pathfinding_data_file);
 }
 
 function pathfinding_load_level_data()
 {
+	// Check if Pathfinding Level File Exists
+	var temp_level_file_directory = $"{GameManager.data_directory}Levels\\{room_get_name(room)}\\";
+	var temp_level_file_path = $"{temp_level_file_directory}pathfinding_data.txt";
 	
+	if (!directory_exists(temp_level_file_directory) or !file_exists(temp_level_file_path))
+	{
+	    show_debug_message($"Failed to read Pathfinding Level Data File - Missing File at \"{temp_level_file_path}\"");
+	}
+	
+	// Open Pathfinding File
+	var temp_pathfinding_data_file = file_text_open_read(temp_level_file_path);
+	
+	// Iterate and read through Pathfinding Level Data File
+	var temp_pathfinding_data_line_index = 0;
+	
+	while (!file_text_eof(temp_pathfinding_data_file))
+	{
+		// Load Pathfinding Data Line by Line
+	    var temp_pathfinding_data_line = file_text_readln(temp_pathfinding_data_file);
+	    
+	    // Clean Pathfinding Data Line of Whitespace Characters
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, " ", "");
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\t", "");
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\n", "");
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\r", "");
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\f", "");
+	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\v", "");
+	    
+	    // Remove Comments
+	    var temp_comment_index = string_pos("//", temp_pathfinding_data_line);
+	    
+	    if (temp_comment_index != 0)
+	    {
+	    	temp_pathfinding_data_line = string_delete(temp_pathfinding_data_line, temp_comment_index, string_length(temp_pathfinding_data_line) - temp_comment_index + 1);
+	    }
+	    
+	    // Check if Pathfinding Data is Node or Edge
+	    var temp_pathfinding_data_type_start_index = string_pos("[", temp_pathfinding_data_line);
+	    var temp_pathfinding_data_type_end_index = string_pos("]", temp_pathfinding_data_line);
+	    
+	    if (temp_pathfinding_data_type_start_index == 0 or temp_pathfinding_data_type_end_index == 0 or temp_pathfinding_data_type_end_index < temp_pathfinding_data_type_start_index)
+	    {
+	    	continue;
+	    }
+	    
+	    var temp_pathfinding_data_type = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_type_start_index + 1, temp_pathfinding_data_type_end_index - temp_pathfinding_data_type_start_index - 1);
+	    
+	    // Clean Pathfinding Data
+	    var temp_pathfinding_data_start_index = string_pos("{", temp_pathfinding_data_line);
+	    var temp_pathfinding_data_end_index = string_last_pos("}", temp_pathfinding_data_line);
+	    
+	    if (temp_pathfinding_data_start_index == 0 or temp_pathfinding_data_end_index == 0 or temp_pathfinding_data_end_index < temp_pathfinding_data_start_index)
+	    {
+	    	continue;
+	    }
+	    
+	    var temp_pathfinding_data_raw = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_start_index + 1, temp_pathfinding_data_end_index - temp_pathfinding_data_start_index - 1);
+	    var temp_pathfinding_data_split = string_split(temp_pathfinding_data_raw, ",");
+	    
+	    // Use Pathfinding Type & Data to populate Level's Pathfinding Map
+	    switch (temp_pathfinding_data_type)
+	    {
+	    	case "Node":
+	    		// Establish Node Data
+	    		var temp_node_id = undefined;
+	    		var temp_node_position_x = undefined;
+	    		var temp_node_position_y = undefined;
+	    		
+	    		// Parse Node Data
+	    		for (var temp_node_data_index = 0; temp_node_data_index < array_length(temp_pathfinding_data_split); temp_node_data_index++)
+	    		{
+	    			// Find Colon
+	    			var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_node_data_index]);
+	    			
+	    			// Set Node Data
+	    			if (temp_colon_index != 0)
+	    			{
+	    				// Seperate Node Data Type and Node Data Value
+	    				var temp_node_data_type = string_copy(temp_pathfinding_data_split[temp_node_data_index], 1, temp_colon_index - 1);
+	    				var temp_node_data_value = string_copy(temp_pathfinding_data_split[temp_node_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_node_data_index]) - temp_colon_index);
+	    				
+	    				// Check Node Data Type and set according Node Data Value
+	    				switch (temp_node_data_type)
+	    				{
+	    					case "node_id":
+	    						temp_node_id = (string_digits(temp_node_data_value) == temp_node_data_value) ? int64(temp_node_data_value) : temp_node_data_value;
+	    						break;
+    						case "node_position_x":
+    							temp_node_position_x = real(temp_node_data_value);
+	    						break;
+    						case "node_position_y":
+    							temp_node_position_y = real(temp_node_data_value);
+	    						break;
+    						default:
+    							show_debug_message($"Unsupported Node Data Type found while reading Pathfinding Level Data - Unsupported Node Data Type \"{temp_node_data_type}\"");
+    							break;
+	    				}
+	    			}
+	    		}
+	    		
+	    		// Check if Node Data is Valid
+    			if (!is_undefined(temp_node_id) and !is_undefined(temp_node_position_x) and !is_undefined(temp_node_position_y))
+    			{
+    				pathfinding_add_node(temp_node_position_x, temp_node_position_y, temp_node_id);
+    			}
+    			else
+    			{
+    				show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
+    			}
+	    		break;
+    		case "Edge":
+    			// Establish Edge Data
+    			var temp_edge_first_node_id = undefined;
+	    		var temp_edge_second_node_id = undefined;
+	    		var temp_edge_type = undefined;
+    			
+    			// Parse Edge Data
+    			for (var temp_edge_data_index = 0; temp_edge_data_index < array_length(temp_pathfinding_data_split); temp_edge_data_index++)
+	    		{
+	    			// Find Colon
+	    			var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_edge_data_index]);
+	    			
+	    			// Set Edge Data
+	    			if (temp_colon_index != 0)
+	    			{
+	    				// Seperate Edge Data Type and Edge Data Value
+	    				var temp_edge_data_type = string_copy(temp_pathfinding_data_split[temp_edge_data_index], 1, temp_colon_index - 1);
+	    				var temp_edge_data_value = string_copy(temp_pathfinding_data_split[temp_edge_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_edge_data_index]) - temp_colon_index);
+	    				
+	    				// Check Edge Data Type and set according Edge Data Value
+	    				switch (temp_edge_data_type)
+	    				{
+	    					case "first_node_id":
+	    						temp_edge_first_node_id = (string_digits(temp_edge_data_value) == temp_edge_data_value) ? int64(temp_edge_data_value) : temp_edge_data_value;
+	    						break;
+    						case "second_node_id":
+    							temp_edge_second_node_id = (string_digits(temp_edge_data_value) == temp_edge_data_value) ? int64(temp_edge_data_value) : temp_edge_data_value;
+	    						break;
+    						case "edge_type":
+    							switch (temp_edge_data_value)
+								{
+									case "Jump":
+										temp_edge_type = PathfindingEdgeType.JumpEdge;
+										break;
+									case "Teleport":
+										temp_edge_type = PathfindingEdgeType.TeleportEdge;
+										break;
+									default:
+										temp_edge_type = PathfindingEdgeType.DefaultEdge;
+										break;
+								}
+	    						break;
+    						default:
+    							show_debug_message($"Unsupported Edge Data Type found while reading Pathfinding Level Data - Unsupported Edge Data Type \"{temp_node_data_type}\"");
+    							break;
+	    				}
+	    			}
+	    		}
+	    		
+	    		// Check if Edge Data is Valid
+    			if (!is_undefined(temp_edge_first_node_id) and !is_undefined(temp_edge_second_node_id) and !is_undefined(temp_edge_type))
+    			{
+    				pathfinding_add_edge(temp_edge_first_node_id, temp_edge_second_node_id, temp_edge_type);
+    			}
+    			else
+    			{
+    				show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
+    			}
+    			break;
+			default:
+				show_debug_message($"Unsupported Pathfinding Data Type found while reading Pathfinding Level Data - Unsupported Pathfinding Data Type \"{temp_pathfinding_data_raw}\"");
+				break;
+	    }
+	    
+	    // Increment Pathfinding Line Number
+	    temp_pathfinding_data_line_index++;
+	}
+	
+	// Close Pathfinding File
+	file_text_close(temp_pathfinding_data_file);
 }

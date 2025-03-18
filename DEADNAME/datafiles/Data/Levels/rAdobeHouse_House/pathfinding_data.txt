@@ -1,0 +1,40 @@
+// Pathfinding Level Data - Level: "rAdobeHouse_House"
+
+// Node Data
+[Node]{node_id: 611477, node_position_x: 309.25, node_position_y: -277.38}
+[Node]{node_id: 617248, node_position_x: 329.46, node_position_y: 287.85}
+[Node]{node_id: 647549, node_position_x: 10.32, node_position_y: 234.98}
+[Node]{node_id: 647517, node_position_x: 218.80, node_position_y: 45.33}
+[Node]{node_id: 605689, node_position_x: 241.89, node_position_y: -8.03}
+[Node]{node_id: 604440, node_position_x: -39.10, node_position_y: -424.33}
+[Node]{node_id: 618510, node_position_x: 196.29, node_position_y: -499.31}
+[Node]{node_id: 646350, node_position_x: 122.71, node_position_y: -235.26}
+[Node]{node_id: 640171, node_position_x: 69.60, node_position_y: 325.86}
+[Node]{node_id: 645640, node_position_x: -453.36, node_position_y: 407.67}
+[Node]{node_id: 618705, node_position_x: -58.70, node_position_y: -381.35}
+[Node]{node_id: 617439, node_position_x: -59.85, node_position_y: -432.48}
+[Node]{node_id: 634472, node_position_x: 322.25, node_position_y: 342.00}
+[Node]{node_id: 645189, node_position_x: -498.73, node_position_y: -448.61}
+[Node]{node_id: 630760, node_position_x: 499.94, node_position_y: 337.41}
+[Node]{node_id: 609707, node_position_x: -476.17, node_position_y: 343.05}
+[Node]{node_id: 632627, node_position_x: -32.18, node_position_y: -125.52}
+[Node]{node_id: 644584, node_position_x: 38.96, node_position_y: 301.80}
+[Node]{node_id: 600116, node_position_x: -66.27, node_position_y: -202.61}
+[Node]{node_id: 626555, node_position_x: 460.24, node_position_y: -491.58}
+
+// Edge Data
+[Edge]{first_node_id: 640171, second_node_id: 634472, edge_type: Jump}
+[Edge]{first_node_id: 618705, second_node_id: 617248, edge_type: Jump}
+[Edge]{first_node_id: 617439, second_node_id: 604440, edge_type: Jump}
+[Edge]{first_node_id: 617439, second_node_id: 647549, edge_type: Default}
+[Edge]{first_node_id: 600116, second_node_id: 632627, edge_type: Default}
+[Edge]{first_node_id: 600116, second_node_id: 640171, edge_type: Default}
+[Edge]{first_node_id: 640171, second_node_id: 605689, edge_type: Default}
+[Edge]{first_node_id: 605689, second_node_id: 634472, edge_type: Default}
+[Edge]{first_node_id: 645189, second_node_id: 645640, edge_type: Default}
+[Edge]{first_node_id: 600116, second_node_id: 617248, edge_type: Default}
+[Edge]{first_node_id: 611477, second_node_id: 600116, edge_type: Jump}
+[Edge]{first_node_id: 647517, second_node_id: 640171, edge_type: Default}
+[Edge]{first_node_id: 618705, second_node_id: 618705, edge_type: Default}
+[Edge]{first_node_id: 647549, second_node_id: 617248, edge_type: Default}
+[Edge]{first_node_id: 646350, second_node_id: 605689, edge_type: Default}

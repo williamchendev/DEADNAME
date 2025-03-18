@@ -1,28 +1,25 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-var temp_array = array_create(0);
+pathfinding_load_level_data();
 
-for (var i = 0; i < 20; i++)
+for (var temp_node_id = ds_map_find_first(GameManager.pathfinding_node_ids_map); !is_undefined(temp_node_id); temp_node_id = ds_map_find_next(GameManager.pathfinding_node_ids_map, temp_node_id)) 
 {
-	var node_id;
+	// Find Node Index
+	var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_node_id);
 	
-	while (true)
-	{
-		node_id = irandom(50000) + 600000;
-		if (!array_contains(temp_array, node_id))
-		{
-			break;
-		}
-	}
+	// Find Node Data
+	var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
 	
-	pathfinding_add_node(random_range(-500, 500), random_range(-500, 500), node_id);
-	temp_array[array_length(temp_array)] = node_id;
+	// Add Node Data
+	show_debug_message($"Node_ID:{temp_node_id}, Node_X:{temp_node_struct.node_position_x}, Node_Y:{temp_node_struct.node_position_y}");
 }
 
-for (var q = 0; q < 15; q++)
+for (var temp_edge_id = ds_map_find_first(GameManager.pathfinding_edge_ids_map); !is_undefined(temp_edge_id); temp_edge_id = ds_map_find_next(GameManager.pathfinding_edge_ids_map, temp_edge_id)) 
 {
-	pathfinding_add_edge(temp_array[irandom(array_length(temp_array) - 1)], temp_array[irandom(array_length(temp_array) - 1)], irandom(2) == 0 ? PathfindingEdgeType.JumpEdge : PathfindingEdgeType.DefaultEdge);
+	// Find Edge Index
+	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+	
+	// Add Node Data
+	show_debug_message($"Edge_ID:{temp_edge_id}, Edge_Type:{ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index)}");
 }
-
-pathfinding_save_level_data();
