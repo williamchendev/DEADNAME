@@ -3,10 +3,12 @@
 /// @param {real} from The number which the range starts from
 /// @param {real} to The number which the range goes to
 /// @param {real} value The value between the from and to arguments
+/// @param {bool} clamp_value Argument to optionally set whether or not the value is clamped in the range between the from and to arguments (by default the value is clamped)
 /// @returns {real} Returns the percentage the given value is between the from and to arguments
-function inverse_lerp(from, to, value) 
+function inverse_lerp(from, to, value, clamp_value = true) 
 {
-    return (value - from) / (to - from);
+	var temp_inv_lerp = (value - from) / (to - from);
+    return clamp_value ? clamp(temp_inv_lerp, 0, 1) : temp_inv_lerp;
 }
 
 /// inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y);
@@ -17,8 +19,9 @@ function inverse_lerp(from, to, value)
 /// @param {real} to_x The coordinate x which the vector range goes to
 /// @param {real} value_x The coordinate x between the from and to arguments
 /// @param {real} value_y The coordinate y between the from and to arguments
+/// @param {bool} clamp_value Argument to optionally set whether or not the value is clamped in the range between the from and to arguments (by default the value is clamped)
 /// @returns {real} Returns the percentage the given value is between the from and to arguments
-function inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y)
+function inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y, clamp_value = true)
 {
     // Direction vector of the line
     var temp_dx = to_x - from_x;
@@ -30,7 +33,7 @@ function inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y)
 
     // Compute the projection scalar (dot(v, d) / dot(d, d))
     var temp_projection_scalar = dot_product(temp_vx, temp_vy, temp_dx, temp_dy) / dot_product(temp_dx, temp_dy, temp_dx, temp_dy);
-	temp_projection_scalar = clamp(temp_projection_scalar, 0, 1);
-	
-	return temp_projection_scalar;
+    
+    // Clamp projection scalar to range
+	return clamp_value ? clamp(temp_projection_scalar, 0, 1) : temp_projection_scalar;
 }
