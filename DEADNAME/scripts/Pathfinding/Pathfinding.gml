@@ -398,8 +398,9 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 /// @description Finds the closest coordinate that exists on any oPathEdge that exists in the room
 /// @param {real} x_position The X position to check for the closest coordinate to on a oPathEdge
 /// @param {real} y_position The Y position to check for the closest coordinate to on a oPathEdge
+/// @param {PathfindingEdgeType} edge_type Edge Type to pass as an optional argument, if this value is not undefined this function will only return a closest point on an edge that has a matching edge type to the one given
 /// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y] and the Edge id it exists on [struct.edge_id]
-function pathfinder_get_closest_point_on_edge(x_position, y_position)
+function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type = undefined)
 {
 	// Establish Return Variables
 	var temp_position_x = x_position;
@@ -413,6 +414,20 @@ function pathfinder_get_closest_point_on_edge(x_position, y_position)
 		// Check if Edge Exists
 		if (ds_list_find_value(GameManager.pathfinding_edge_exists_list, i))
 		{
+			// Edge Type Discrimination
+			if (!is_undefined(edge_type))
+			{
+				// Check Edge Type and compare to desired Pathfinding Edge Type
+				var temp_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, i);
+				
+				// Edge Types do not match
+				if (edge_type != temp_edge_type)
+				{
+					// Skip this Edge and Continue
+					continue;
+				}
+			}
+			
 			// Find Edge's Node IDs and Node Indexes
 			var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, i);
 			var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.first_node_id);
@@ -570,4 +585,91 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	
 	// Return Finalized Pathfinding Path
 	return temp_path;
+}
+
+function pathfinding_save_level_data()
+{
+	// Establish Level File Directory
+	var temp_level_files_directory = $"{GameManager.data_directory}Levels\\{room_get_name(room)}\\";
+	
+	// Create Level File Directory
+	if (!directory_exists(temp_level_files_directory))
+	{
+	    directory_create(temp_level_files_directory);
+	}
+	
+	// Create Pathfinding File Data
+	var temp_pathfinding_data = $"// Pathfinding Level Data - Level: \"{room_get_name(room)}\"";
+	
+	// Add Nodes to Pathfinding File Data
+	temp_pathfinding_data += "\n\n// Node Data";
+	
+	for (var temp_node_id = ds_map_find_first(GameManager.pathfinding_node_ids_map); !is_undefined(temp_node_id); temp_node_id = ds_map_find_next(GameManager.pathfinding_node_ids_map, temp_node_id)) 
+	{
+		// Find Node Index
+		var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_node_id);
+		
+		// Check if Node Exists
+		if (!ds_list_find_value(GameManager.pathfinding_node_exists_list, temp_node_index))
+		{
+			continue;
+		}
+		
+		// Find Node Data
+		var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
+		
+		// Add Node Data
+		temp_pathfinding_data += $"\n[Node]\{node_id: {string(temp_node_id)}, node_position_x: {temp_node_struct.node_position_x}, node_position_y: {temp_node_struct.node_position_y}\}";
+	}
+	
+	// Add Space
+	temp_pathfinding_data += "\n\n// Edge Data";
+	
+	// Add Edges to Pathfinding File Data
+	for (var temp_edge_index = 0; temp_edge_index < ds_list_size(GameManager.pathfinding_edge_exists_list); temp_edge_index++)
+	{
+		// Check if Edge Exists
+		if (!ds_list_find_value(GameManager.pathfinding_edge_exists_list, temp_edge_index))
+		{
+			continue;
+		}
+		
+		// Find Edge Nodes
+		var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_edge_index);
+		
+		// Find Edge Type
+		var temp_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index);
+		var temp_edge_type_as_string = "";
+		
+		switch (temp_edge_type)
+		{
+			case PathfindingEdgeType.JumpEdge:
+				temp_edge_type_as_string = "Jump";
+				break;
+			case PathfindingEdgeType.TeleportEdge:
+				temp_edge_type_as_string = "Teleport";
+				break;
+			default:
+				temp_edge_type_as_string = "Default";
+				break;
+		}
+		
+		// Find Edge Weight
+		var temp_edge_weights = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
+		
+		// Add Edge Data
+		temp_pathfinding_data += $"\n[Edge]\{first_node_id: {temp_edge_nodes.first_node_id}, second_node_id: {temp_edge_nodes.second_node_id}, edge_type: {temp_edge_type_as_string}\}";
+	}
+	
+	temp_pathfinding_data += "\n";
+
+	// Write Pathfinding File Data to File
+	var temp_pathfinding_data_file = file_text_open_write($"{temp_level_files_directory}pathfinding_data.txt");
+	file_text_write_string(temp_pathfinding_data_file, temp_pathfinding_data);
+	file_text_close(temp_pathfinding_data_file);
+}
+
+function pathfinding_load_level_data()
+{
+	
 }
