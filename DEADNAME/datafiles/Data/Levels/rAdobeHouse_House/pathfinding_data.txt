@@ -35,6 +35,5 @@
 [Edge]{first_node_id: 600116, second_node_id: 617248, edge_type: Default}
 [Edge]{first_node_id: 611477, second_node_id: 600116, edge_type: Jump}
 [Edge]{first_node_id: 647517, second_node_id: 640171, edge_type: Default}
-[Edge]{first_node_id: 618705, second_node_id: 618705, edge_type: Default}
 [Edge]{first_node_id: 647549, second_node_id: 617248, edge_type: Default}
 [Edge]{first_node_id: 646350, second_node_id: 605689, edge_type: Default}

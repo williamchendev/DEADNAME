@@ -163,6 +163,13 @@ function pathfinding_generate_edge_id(first_node_id, second_node_id)
 /// pathfinding_add_edge(first_node_id, second_node_id, edge_type);
 function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 {
+	// Check if both Nodes share the same Node ID
+	if (first_node_id == second_node_id)
+	{
+		// Can't make an Edge between a single Node - Early Return
+		return;
+	}
+	
 	// Check if both Nodes Exist
 	var temp_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, first_node_id);
 	var temp_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, second_node_id);
