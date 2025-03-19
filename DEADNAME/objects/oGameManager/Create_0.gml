@@ -13,6 +13,8 @@ if (instance_number(object_index) > 1)
 	exit;
 }
 
+sprite_index = noone;
+
 // Game Manager Singleton
 global.game_manager = id;
 
@@ -26,13 +28,6 @@ data_directory = $"{program_directory}\Data\\";
 
 // Debug Settings
 global.debug = false;
-sprite_index = noone;
-
-debug_x_offset = 4;
-debug_y_offset = 0;
-
-debug_fps = 0;
-debug_fps_timer = 0;
 
 // Player Input Management
 up_check = ord("W");
@@ -48,6 +43,9 @@ interact_check = ord("E");
 inventory_check = ord("I");
 
 command_check = ord("Q");
+
+// Debug Variables
+debug_menu = undefined;
 
 // Pathfinding Node Variables
 pathfinding_node_ids_map = ds_map_create();

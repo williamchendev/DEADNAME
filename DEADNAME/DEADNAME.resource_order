@@ -22,6 +22,7 @@
     {"name":"Pathfinding","order":1,"path":"folders/Objects/System/Pathfinding.yy",},
     {"name":"Platforms","order":2,"path":"folders/Objects/System/Platforms.yy",},
     {"name":"Solids","order":3,"path":"folders/Objects/System/Solids.yy",},
+    {"name":"Debug","order":1,"path":"folders/Objects/UI/Debug.yy",},
     {"name":"Units","order":6,"path":"folders/Objects/Units.yy",},
     {"name":"Particle Systems","order":16,"path":"folders/Particle Systems.yy",},
     {"name":"Paths","order":2,"path":"folders/Paths.yy",},
