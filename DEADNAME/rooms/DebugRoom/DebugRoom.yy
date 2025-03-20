@@ -7,7 +7,6 @@
   "inheritLayers":false,
   "instanceCreationOrder":[
     {"name":"inst_4C4A0B73","path":"rooms/DebugRoom/DebugRoom.yy",},
-    {"name":"inst_641EBB2C","path":"rooms/DebugRoom/DebugRoom.yy",},
     {"name":"inst_7CE8AED4","path":"rooms/DebugRoom/DebugRoom.yy",},
     {"name":"inst_74CA4849","path":"rooms/DebugRoom/DebugRoom.yy",},
     {"name":"inst_6D710F5C","path":"rooms/DebugRoom/DebugRoom.yy",},
@@ -57,7 +56,6 @@
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":14.537939,"scaleX":4.3333335,"scaleY":1.0,"x":344.0,"y":320.0,},
         {"$GMRInstance":"v1","%Name":"inst_2CCCCC65","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2CCCCC65","objectId":{"name":"oSolidRotation","path":"objects/oSolidRotation/oSolidRotation.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.4791667,"x":347.0,"y":131.0,},
         {"$GMRInstance":"v1","%Name":"inst_4C4A0B73","colour":3791650815,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4C4A0B73","objectId":{"name":"oUnitPlayer","path":"objects/oUnitPlayer/oUnitPlayer.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":448.0,"y":288.0,},
-        {"$GMRInstance":"v1","%Name":"inst_641EBB2C","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_641EBB2C","objectId":{"name":"oDebugOverlay","path":"objects/oDebugOverlay/oDebugOverlay.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":-32.0,},
         {"$GMRInstance":"v1","%Name":"inst_7CE8AED4","colour":4294901760,"frozen":false,"hasCreationCode":false,"ignore":true,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7CE8AED4","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"properties":[
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_distance_fade","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"3.6",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":312.0,"y":217.0,},

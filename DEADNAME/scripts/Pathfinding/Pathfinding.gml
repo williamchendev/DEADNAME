@@ -704,6 +704,7 @@ function pathfinding_load_level_data()
 	if (!directory_exists(temp_level_file_directory) or !file_exists(temp_level_file_path))
 	{
 	    show_debug_message($"Failed to read Pathfinding Level Data File - Missing File at \"{temp_level_file_path}\"");
+	    return;
 	}
 	
 	// Open Pathfinding File

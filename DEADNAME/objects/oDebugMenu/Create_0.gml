@@ -5,12 +5,12 @@
 debug_menu_font = font_Inno;
 
 // Color Settings
-color_pale_dogwood = make_color_rgb(223, 187, 177);
-color_rose_taupe = make_color_rgb(150, 97, 107);
-
 color_light_blue = make_color_rgb(193, 238, 255);
 color_cerulean_blue = make_color_rgb(55, 113, 142);
 color_indigo_blue = make_color_rgb(37, 78, 112);
+
+color_pale_dogwood = make_color_rgb(223, 187, 177);
+color_rose_taupe = make_color_rgb(150, 97, 107);
 
 // Info & Version Settings
 debug_menu_info_text = "DEADNAME Debug Menu - Capy Crucible";
@@ -18,6 +18,8 @@ debug_menu_version_text = "0.23b";
 
 debug_menu_info_and_version_horizontal_offset = 6;
 debug_menu_info_and_version_vertical_offset = 6;
+
+debug_menu_info_vertical_padding = 4;
 
 // Ribbon Menu Tab Settings
 ribbon_menu_start_horizontal_offset = 8;
@@ -40,9 +42,24 @@ ribbon_menu_option_toggle_box_horizontal_padding = 10;
 ribbon_menu_option_toggle_box_size = 7;
 
 // Debug Menu Widget Settings
-level_platforms_and_collisions_widgets_enabled = true;
-pathfinding_widgets_enabled = false;
+fps_counter = false;
+fps_counter_width = 60;
+fps_counter_height = 8;
+
+level_platforms_and_collisions_widgets_enabled = false;
 lighting_engine_light_sources_widgets_enabled = false;
+pathfinding_widgets_enabled = false;
+
+// Debug Menu Rendering Settings
+rendering_foreground_light_map_enabled = false;
+rendering_midground_light_map_enabled = false;
+rendering_background_light_map_enabled = false;
+
+rendering_normal_map_enabled = false;
+rendering_depth_map_enabled = false;
+
+// Debug Menu Pathfinding Settings
+pathfinding_edit_mode = false;
 
 // Debug Menu Ribbon Menu Variables
 ribbon_menu_tab_hover_select_index = -1;
@@ -52,6 +69,17 @@ ribbon_menu_window_option_clicked = false;
 ribbon_menu_window_option_hover_select_index = -1;
 ribbon_menu_window_option_clicked_select_index = -1;
 
+// Debug Menu Functions
+reset_rendering_options = function()
+{
+    rendering_foreground_light_map_enabled = false;
+    rendering_midground_light_map_enabled = false;
+    rendering_background_light_map_enabled = false;
+
+    rendering_normal_map_enabled = false;
+    rendering_depth_map_enabled = false;
+}
+
 // Ribbon Menu
 enum DebugMenuRibbonMenuTabs
 {
@@ -60,6 +88,7 @@ enum DebugMenuRibbonMenuTabs
     Scene,
     Lighting,
     Pathfinding,
+    Rendering,
     OptionTemplate
 }
 
@@ -77,6 +106,29 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Game] =
             option_toggle: undefined
         },
         {
+            option_name: "FPS Counter",
+            option_function: function()
+            {
+                GameManager.debug_menu.fps_counter = !GameManager.debug_menu.fps_counter;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.fps_counter;
+            }
+        },
+        {
+            option_name: "Gamemaker Debug Overlay",
+            option_function: function()
+            {
+                GameManager.debug_overlay_enabled = !GameManager.debug_overlay_enabled;
+                show_debug_overlay(GameManager.debug_overlay_enabled);
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_overlay_enabled;
+            }
+        },
+        {
             option_name: "Exit Game",
             option_function: function() 
             {
@@ -86,7 +138,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Game] =
             option_toggle: undefined
         }
     ]
-}
+};
 
 ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Resolution] = 
 {
@@ -126,7 +178,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Resolution] =
             option_toggle: undefined
         }
     ]
-}
+};
 
 ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Scene] = 
 {
@@ -137,17 +189,11 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Scene] =
             option_name: "Show/Hide Platform and Collision Widgets",
             option_function: function()
             {
-                with (oDebugMenu)
-                {
-                    level_platforms_and_collisions_widgets_enabled = !level_platforms_and_collisions_widgets_enabled;
-                }
+                GameManager.debug_menu.level_platforms_and_collisions_widgets_enabled = !GameManager.debug_menu.level_platforms_and_collisions_widgets_enabled;
             },
             option_toggle: function()
             {
-                with (oDebugMenu)
-                {
-                     return level_platforms_and_collisions_widgets_enabled;
-                }
+                 return GameManager.debug_menu.level_platforms_and_collisions_widgets_enabled;
             }
         },
         {
@@ -159,7 +205,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Scene] =
             option_toggle: undefined
         }
     ]
-}
+};
 
 ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Lighting] = 
 {
@@ -170,21 +216,15 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Lighting] =
             option_name: "Show/Hide Light Source Widgets",
             option_function: function()
             {
-                with (oDebugMenu)
-                {
-                    lighting_engine_light_sources_widgets_enabled = !lighting_engine_light_sources_widgets_enabled;
-                }
+                GameManager.debug_menu.lighting_engine_light_sources_widgets_enabled = !GameManager.debug_menu.lighting_engine_light_sources_widgets_enabled;
             },
             option_toggle: function()
             {
-                with (oDebugMenu)
-                {
-                    return lighting_engine_light_sources_widgets_enabled;
-                }
+                return GameManager.debug_menu.lighting_engine_light_sources_widgets_enabled;
             }
         }
     ]
-}
+};
 
 ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] = 
 {
@@ -195,41 +235,168 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
             option_name: "Show/Hide Pathfinding Widgets",
             option_function: function()
             {
-                with (oDebugMenu)
-                {
-                    pathfinding_widgets_enabled = !pathfinding_widgets_enabled;
-                }
+                GameManager.debug_menu.pathfinding_widgets_enabled = !GameManager.debug_menu.pathfinding_widgets_enabled;
             },
             option_toggle: function()
             {
-                with (oDebugMenu)
-                {
-                    return pathfinding_widgets_enabled;
-                }
+                return GameManager.debug_menu.pathfinding_widgets_enabled;
             }
         },
         {
             option_name: "Enter Pathfinding Map Edit Mode",
-            option_function: undefined,
-            option_toggle: undefined
+            option_function: function()
+            {
+                GameManager.debug_menu.pathfinding_edit_mode = !GameManager.debug_menu.pathfinding_edit_mode;
+                
+                if (GameManager.debug_menu.pathfinding_edit_mode)
+                {
+                    GameManager.debug_menu.ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding].tab_options[1].option_name = "Exit Pathfinding Map Edit Mode";
+                    GameManager.debug_menu.level_platforms_and_collisions_widgets_enabled = true;
+                    GameManager.debug_menu.pathfinding_widgets_enabled = true;
+                }
+                else
+                {
+                    GameManager.debug_menu.ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding].tab_options[1].option_name = "Enter Pathfinding Map Edit Mode";
+                    GameManager.debug_menu.level_platforms_and_collisions_widgets_enabled = false;
+                    GameManager.debug_menu.pathfinding_widgets_enabled = false;
+                }
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.pathfinding_edit_mode;
+            }
         },
         {
-            option_name: "Save Level Data",
+            option_name: "Save Scene File",
             option_function: pathfinding_save_level_data,
             option_toggle: undefined
         },
         {
-            option_name: "Load Level Data",
+            option_name: "Load Scene File",
             option_function: pathfinding_load_level_data,
             option_toggle: undefined
         },
         {
-            option_name: "Clear Scene",
+            option_name: "Clear Scene Data",
             option_function: pathfinding_clear_level_data,
+            option_toggle: undefined
+        },
+        {
+            option_name: "Print Console Scene Data",
+            option_function: function()
+            {
+                var temp_pathfinding_data_report = $"// Scene \"{room_get_name(room)}\" Pathfinding Data\n\n// Scene Nodes";
+                
+                for (var temp_node_id = ds_map_find_first(GameManager.pathfinding_node_ids_map); !is_undefined(temp_node_id); temp_node_id = ds_map_find_next(GameManager.pathfinding_node_ids_map, temp_node_id)) 
+                {
+                	// Find Node Index
+                	var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_node_id);
+                	
+                	// Find Node Data
+                	var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
+                	
+                	// Add Node Data
+                	temp_pathfinding_data_report += $"\nNode_ID:{temp_node_id}, Node_X:{temp_node_struct.node_position_x}, Node_Y:{temp_node_struct.node_position_y}";
+                }
+                
+                temp_pathfinding_data_report += "\n\n// Scene Edges";
+                
+                for (var temp_edge_id = ds_map_find_first(GameManager.pathfinding_edge_ids_map); !is_undefined(temp_edge_id); temp_edge_id = ds_map_find_next(GameManager.pathfinding_edge_ids_map, temp_edge_id)) 
+                {
+                	// Find Edge Index
+                	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
+                	
+                	// Add Node Data
+                	temp_pathfinding_data_report += $"\nEdge_ID:{temp_edge_id}, Edge_Type:{ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index)}";
+                }
+                
+                show_debug_message(temp_pathfinding_data_report);
+            },
             option_toggle: undefined
         }
     ]
-}
+};
+
+ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] = 
+{
+    tab_name: "Rendering",
+    tab_options: 
+    [
+        {
+            option_name: "Enable Back-Layer LightMap Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_background_light_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_background_light_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_background_light_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Mid-Layer LightMap Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_midground_light_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_midground_light_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_midground_light_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Fore-Layer LightMap Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_foreground_light_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_foreground_light_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_foreground_light_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Normal Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_normal_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_normal_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_normal_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Depth Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_depth_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_depth_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_depth_map_enabled;
+            }
+        },
+        {
+            option_name: "Reset Rendering Options",
+            option_function: function()
+            {
+                GameManager.debug_menu.reset_rendering_options();
+            },
+            option_toggle: undefined
+        },
+    ]
+};
 
 ribbon_menu_tabs[DebugMenuRibbonMenuTabs.OptionTemplate] = 
 {
@@ -252,7 +419,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.OptionTemplate] =
             option_toggle: undefined
         }
     ]
-}
+};
 
 // Generate Font Spacing Variables
 draw_set_font(debug_menu_font);

@@ -39,6 +39,7 @@ data_directory = $"{program_directory}\Data\\";
 
 // Debug Settings
 global.debug = false;
+debug_overlay_enabled = false;
 
 // Player Input Management
 up_check = ord("W");

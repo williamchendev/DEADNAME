@@ -22,7 +22,6 @@
     {"name":"inst_111E88DD","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_465115C8","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_238F2709","path":"rooms/AdobeHouse/AdobeHouse.yy",},
-    {"name":"inst_D786045","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_4C5F59F4","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_13BD4202","path":"rooms/AdobeHouse/AdobeHouse.yy",},
     {"name":"inst_1FC9D035","path":"rooms/AdobeHouse/AdobeHouse.yy",},
@@ -170,7 +169,6 @@
         {"$GMRInstance":"v1","%Name":"inst_49960D38","colour":4278190335,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_49960D38","objectId":{"name":"oLightingEngine_CameraBounds","path":"objects/oLightingEngine_CameraBounds/oLightingEngine_CameraBounds.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":34.578125,"scaleY":10.171875,"x":667.0,"y":-288.0,},
       ],"layers":[],"name":"CameraBounds","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":false,},
     {"$GMRInstanceLayer":"","%Name":"Lights","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v1","%Name":"inst_D786045","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_D786045","objectId":{"name":"oDebugOverlay","path":"objects/oDebugOverlay/oDebugOverlay.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":-32.0,"y":-32.0,},
         {"$GMRInstance":"v1","%Name":"inst_4C5F59F4","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4C5F59F4","objectId":{"name":"oLightingEngine_Source_DirectionalLight","path":"objects/oLightingEngine_Source_DirectionalLight/oLightingEngine_Source_DirectionalLight.yy",},"properties":[
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_DirectionalLight","path":"objects/oLightingEngine_Source_DirectionalLight/oLightingEngine_Source_DirectionalLight.yy",},"propertyId":{"name":"directional_light_intensity","path":"objects/oLightingEngine_Source_DirectionalLight/oLightingEngine_Source_DirectionalLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":34.29232,"scaleX":1.0,"scaleY":1.0,"x":704.0,"y":0.0,},

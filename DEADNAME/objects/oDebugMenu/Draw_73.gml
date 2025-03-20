@@ -242,20 +242,20 @@ for (var i = 0; i < array_length(ribbon_menu_tabs); i++)
                     {
                         draw_line_width
                         (
-                            temp_toggle_box_x - 1,
-                            temp_toggle_box_y + (ribbon_menu_option_toggle_box_size / 2) - 2,
+                            temp_toggle_box_x,
+                            temp_toggle_box_y + (ribbon_menu_option_toggle_box_size / 2) - 1,
                             temp_toggle_box_x - (ribbon_menu_option_toggle_box_size / 2) - 2,
                             temp_toggle_box_y - 3,
-                            2
+                            3
                         );
                         
                         draw_line_width
                         (
-                            temp_toggle_box_x - 1,
-                            temp_toggle_box_y + (ribbon_menu_option_toggle_box_size / 2) - 2,
-                            temp_toggle_box_x + (ribbon_menu_option_toggle_box_size / 2) + 3,
+                            temp_toggle_box_x,
+                            temp_toggle_box_y + (ribbon_menu_option_toggle_box_size / 2) - 1,
+                            temp_toggle_box_x + (ribbon_menu_option_toggle_box_size / 2) + 1,
                             temp_toggle_box_y - (ribbon_menu_option_toggle_box_size / 2) - 3,
-                            2
+                            3
                         );
                     }
                 }
@@ -278,9 +278,6 @@ for (var i = 0; i < array_length(ribbon_menu_tabs); i++)
     temp_ribbon_menu_width += ribbon_menu_horizontal_spacing + string_width(ribbon_menu_tabs[i].tab_name);
 }
 
-// Draw Debug Mode Active
-
-
 // Cursor GUI Behaviour
 draw_set_alpha(1);
 draw_set_color(c_white);
@@ -290,6 +287,32 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_bottom);
 
 draw_text_outline(debug_menu_info_and_version_horizontal_offset, GameManager.game_height - debug_menu_info_and_version_vertical_offset, $"{debug_menu_info_text} v{debug_menu_version_text}");
+
+// Draw Debug FPS Counter
+if (fps_counter)
+{
+    //
+    var temp_fps_counter_x = debug_menu_info_and_version_horizontal_offset + string_width("FPS Counter: 000000");
+    var temp_fps_counter_y = GameManager.game_height - debug_menu_info_and_version_vertical_offset - debug_menu_font_height - debug_menu_info_vertical_padding;
+    
+    //
+    var temp_fps_quality = min(1.3, 60 / fps_real);
+    
+    //
+    draw_text_outline(debug_menu_info_and_version_horizontal_offset, temp_fps_counter_y, $"FPS Counter: {floor(fps_real)}");
+    
+    //
+    draw_set_color(c_gray);
+    draw_rectangle(temp_fps_counter_x, temp_fps_counter_y - (fps_counter_height / 2) - (debug_menu_font_height / 2), temp_fps_counter_x + (fps_counter_width * 1.3), temp_fps_counter_y + (fps_counter_height / 2) - (debug_menu_font_height / 2), false);
+    
+    //
+    draw_set_color(temp_fps_quality < 0.8 ? c_green : (temp_fps_quality <= 1.0 ? c_yellow : c_red));
+    draw_rectangle(temp_fps_counter_x, temp_fps_counter_y - (fps_counter_height / 2) - (debug_menu_font_height / 2), temp_fps_counter_x + (fps_counter_width * temp_fps_quality), temp_fps_counter_y + (fps_counter_height / 2) - (debug_menu_font_height / 2), false);
+    
+    //
+    draw_set_color(c_white);
+    draw_line(temp_fps_counter_x + fps_counter_width, temp_fps_counter_y - (fps_counter_height / 2) - (debug_menu_font_height / 2) - 2, temp_fps_counter_x + fps_counter_width, temp_fps_counter_y + (fps_counter_height / 2) - (debug_menu_font_height / 2) + 1);
+}
 
 // Draw Cursor to Debug Menu
 draw_sprite(sCursorMenu, 0, GameManager.cursor_x, GameManager.cursor_y);

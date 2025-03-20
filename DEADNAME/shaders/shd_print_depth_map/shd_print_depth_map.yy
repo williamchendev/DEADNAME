@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_print_depth_map",
+  "name":"shd_print_depth_map",
+  "parent":{
+    "name":"Debug",
+    "path":"folders/Shaders/Debug.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

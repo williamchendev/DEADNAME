@@ -27,10 +27,6 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	var temp_mrt_shader_metallicroughness_enabled = metallicroughnessmap_texture != undefined;
 	var temp_mrt_shader_emissive_enabled = emissivemap_texture != undefined;
 	
-	var temp_normalmap_uvs = temp_mrt_shader_normal_enabled ? normalmap_uvs : [ -1, -1, -1, -1 ];
-	var temp_metallicroughnessmap_uvs = temp_mrt_shader_metallicroughness_enabled ? metallicroughnessmap_uvs : [ -1, -1, -1, -1 ];
-	var temp_emissivemap_uvs = temp_mrt_shader_emissive_enabled ? emissivemap_uvs : [ -1, -1, -1, -1 ];
-	
 	// Set Shader PBR Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normal_strength_index, normal_strength);
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallic_index, metallic ? 1 : 0);
@@ -44,7 +40,15 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	if (temp_mrt_shader_normal_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
-		shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, temp_normalmap_uvs);
+		
+		if (temp_mrt_shader_normal_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, -1, -1, -1, -1);
+		}
 	}
 	
     // Set Shader Metallic-Roughness Map Toggle and Texture Settings
@@ -53,7 +57,15 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
     if (temp_mrt_shader_metallicroughness_enabled)
     {
     	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
-    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, temp_metallicroughnessmap_uvs);
+		
+		if (temp_mrt_shader_metallicroughness_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
+		}
     }
     
     // Set Shader Bloom Map Toggle and Texture Settings
@@ -62,7 +74,15 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	if (temp_mrt_shader_emissive_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_texture_index, emissivemap_texture);
-    	shader_set_uniform_f_array(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, temp_emissivemap_uvs);
+		
+		if (temp_mrt_shader_emissive_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, -1, -1, -1, -1);
+		}
 	}
     
     // Set Shader Sprite Scale & Rotation Settings
