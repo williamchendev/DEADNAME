@@ -79,7 +79,7 @@ if (global.debug_surface_enabled)
         	draw_circle(temp_node_struct.anchor_position_x - LightingEngine.render_x, temp_node_struct.anchor_position_y - LightingEngine.render_y, 3, false);
         	
         	draw_set_color(c_white);
-        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 12, false);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 6, false);
         }
 	}
 	
