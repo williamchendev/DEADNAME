@@ -20,6 +20,7 @@ if (instance_number(object_index) > 1)
 
 // Lighting Engine Singleton
 global.lighting_engine = id;
+sprite_index = -1;
 
 // Lighting Engine Settings
 global.debug_surface_enabled = true;
@@ -58,11 +59,11 @@ lighting_engine_camera_bounds_max_x = 0;
 lighting_engine_camera_bounds_max_y = 0;
 
 // Render Functions
-render_position = function(render_position_x = 0, render_position_y = 0)
+render_position = function(render_position_x = 0, render_position_y = 0, unrestricted = false)
 {
 	// Restrict Render to Camera Bounds
-	LightingEngine.render_x = LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_x, LightingEngine.lighting_engine_camera_bounds_min_x, LightingEngine.lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
-	LightingEngine.render_y = LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_y, LightingEngine.lighting_engine_camera_bounds_min_y, LightingEngine.lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
+	LightingEngine.render_x = !unrestricted and LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_x, LightingEngine.lighting_engine_camera_bounds_min_x, LightingEngine.lighting_engine_camera_bounds_max_x - GameManager.game_width) : render_position_x;
+	LightingEngine.render_y = !unrestricted and LightingEngine.lighting_engine_camera_bounds_exist ? clamp(render_position_y, LightingEngine.lighting_engine_camera_bounds_min_y, LightingEngine.lighting_engine_camera_bounds_max_y - GameManager.game_height) : render_position_y;
 }
 
 // Bloom Settings

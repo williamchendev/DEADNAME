@@ -352,3 +352,42 @@ function lighting_engine_render_layer(render_layer_type)
 		temp_sub_layer_index++;
 	}
 }
+
+/// @function lighting_engine_render_clear_surfaces();
+/// @description Clears all surfaces used by the Game's Rendering System - Mostly used when changing the Game Scene Type, Game Window's Resolution, or Ending the Game
+function lighting_engine_render_clear_surfaces()
+{
+	// Free Surfaces
+	surface_free(LightingEngine.background_surface);
+	
+	surface_free(LightingEngine.diffuse_back_color_surface);
+	surface_free(LightingEngine.diffuse_mid_color_surface);
+	surface_free(LightingEngine.diffuse_front_color_surface);
+	surface_free(LightingEngine.diffuse_aggregate_color_surface);
+	
+	surface_free(LightingEngine.pbr_lighting_back_color_surface);
+	surface_free(LightingEngine.pbr_lighting_mid_color_surface);
+	surface_free(LightingEngine.pbr_lighting_front_color_surface);
+	
+	surface_free(LightingEngine.shadowmap_surface);
+	surface_free(LightingEngine.normalmap_vector_surface);
+	
+	surface_free(LightingEngine.layered_prb_metalrough_emissive_depth_surface);
+	surface_free(LightingEngine.background_prb_metalrough_emissive_depth_surface);
+	surface_free(LightingEngine.aggregate_prb_metalrough_emissive_depth_surface);
+	
+	surface_free(LightingEngine.bloom_effect_surface);
+	surface_free(LightingEngine.distortion_horizontal_effect_surface);
+	surface_free(LightingEngine.distortion_vertical_effect_surface);
+	
+	surface_free(LightingEngine.post_processing_surface);
+	surface_free(LightingEngine.final_render_surface);
+	
+	surface_free(LightingEngine.ui_surface);
+	
+	// Free Debug Surface
+	if (global.debug_surface_enabled)
+	{
+		surface_free(LightingEngine.debug_surface);
+	}
+}

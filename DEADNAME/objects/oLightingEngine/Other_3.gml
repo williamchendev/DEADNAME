@@ -67,39 +67,8 @@ lighting_engine_background_layer_ids = -1;
 ds_map_destroy(lighting_engine_culling_regions_map);
 lighting_engine_culling_regions_map = -1;
 
-// Free Surfaces
-surface_free(background_surface);
-
-surface_free(diffuse_back_color_surface);
-surface_free(diffuse_mid_color_surface);
-surface_free(diffuse_front_color_surface);
-surface_free(diffuse_aggregate_color_surface);
-
-surface_free(pbr_lighting_back_color_surface);
-surface_free(pbr_lighting_mid_color_surface);
-surface_free(pbr_lighting_front_color_surface);
-
-surface_free(shadowmap_surface);
-surface_free(normalmap_vector_surface);
-
-surface_free(layered_prb_metalrough_emissive_depth_surface);
-surface_free(background_prb_metalrough_emissive_depth_surface);
-surface_free(aggregate_prb_metalrough_emissive_depth_surface);
-
-surface_free(bloom_effect_surface);
-surface_free(distortion_horizontal_effect_surface);
-surface_free(distortion_vertical_effect_surface);
-
-surface_free(post_processing_surface);
-surface_free(final_render_surface);
-
-surface_free(ui_surface);
-
-// Free Debug Surface
-if (global.debug_surface_enabled)
-{
-	surface_free(debug_surface);
-}
+// Free all Surfaces used by the Lighting Engine
+lighting_engine_render_clear_surfaces();
 
 // Reset Surface Variables
 background_surface = -1;

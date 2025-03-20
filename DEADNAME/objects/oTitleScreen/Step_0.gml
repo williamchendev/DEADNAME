@@ -67,21 +67,21 @@ if (deadname_title_alpha >= 0.8)
 inno_spelman_draw_text = string_copy(inno_spelman_text, 0, round(string_length(inno_spelman_text) * inno_spelman_text_alpha));
 
 // Title Menu Button Variables
-var temp_menu_x = (game_manager.game_width / 2);
+var temp_menu_x = (GameManager.game_width / 2);
 
-var temp_play_button_y = (game_manager.game_height / 2) + play_button_sprite_y_offset;
+var temp_play_button_y = (GameManager.game_height / 2) + play_button_sprite_y_offset;
 var temp_play_button_width = (sprite_get_width(play_button_sprite) / 2);
 var temp_play_button_height = (sprite_get_height(play_button_sprite) / 2);
 
-var temp_options_button_y = (game_manager.game_height / 2) + options_button_sprite_y_offset;
+var temp_options_button_y = (GameManager.game_height / 2) + options_button_sprite_y_offset;
 var temp_options_button_width = (sprite_get_width(options_button_sprite) / 2);
 var temp_options_button_height = (sprite_get_height(options_button_sprite) / 2);
 
-var temp_credits_button_y = (game_manager.game_height / 2) + credits_button_sprite_y_offset;
+var temp_credits_button_y = (GameManager.game_height / 2) + credits_button_sprite_y_offset;
 var temp_credits_button_width = (sprite_get_width(credits_button_sprite) / 2);
 var temp_credits_button_height = (sprite_get_height(credits_button_sprite) / 2);
 
-var temp_end_button_y = (game_manager.game_height / 2) + end_button_sprite_y_offset;
+var temp_end_button_y = (GameManager.game_height / 2) + end_button_sprite_y_offset;
 var temp_end_button_width = (sprite_get_width(end_button_sprite) / 2);
 var temp_end_button_height = (sprite_get_height(end_button_sprite) / 2);
 
@@ -90,19 +90,19 @@ if (deadname_title_alpha >= 1)
 {
 	// Mouse Hover
 	button_index = -1;
-	if (point_in_rectangle(mouse_x, mouse_y, temp_menu_x - temp_play_button_width, temp_play_button_y - temp_play_button_height, temp_menu_x + temp_play_button_width, temp_play_button_y + temp_play_button_height)) 
+	if (point_in_rectangle(GameManager.cursor_x, GameManager.cursor_y, temp_menu_x - temp_play_button_width, temp_play_button_y - temp_play_button_height, temp_menu_x + temp_play_button_width, temp_play_button_y + temp_play_button_height)) 
 	{
 		button_index = 0;
 	}
-	else if (point_in_rectangle(mouse_x, mouse_y, temp_menu_x - temp_options_button_width, temp_options_button_y - temp_options_button_height, temp_menu_x + temp_options_button_width, temp_options_button_y + temp_options_button_height)) 
+	else if (point_in_rectangle(GameManager.cursor_x, GameManager.cursor_y, temp_menu_x - temp_options_button_width, temp_options_button_y - temp_options_button_height, temp_menu_x + temp_options_button_width, temp_options_button_y + temp_options_button_height)) 
 	{
 		button_index = 1;
 	}
-	else if (point_in_rectangle(mouse_x, mouse_y, temp_menu_x - temp_credits_button_width, temp_credits_button_y - temp_credits_button_height, temp_menu_x + temp_credits_button_width, temp_credits_button_y + temp_credits_button_height)) 
+	else if (point_in_rectangle(GameManager.cursor_x, GameManager.cursor_y, temp_menu_x - temp_credits_button_width, temp_credits_button_y - temp_credits_button_height, temp_menu_x + temp_credits_button_width, temp_credits_button_y + temp_credits_button_height)) 
 	{
 		button_index = 2;
 	}
-	else if (point_in_rectangle(mouse_x, mouse_y, temp_menu_x - temp_end_button_width, temp_end_button_y - temp_end_button_height, temp_menu_x + temp_end_button_width, temp_end_button_y + temp_end_button_height)) 
+	else if (point_in_rectangle(GameManager.cursor_x, GameManager.cursor_y, temp_menu_x - temp_end_button_width, temp_end_button_y - temp_end_button_height, temp_menu_x + temp_end_button_width, temp_end_button_y + temp_end_button_height)) 
 	{
 		button_index = 3;
 	}
@@ -148,7 +148,7 @@ if (button_move_timer >= 1)
 }
 
 // Cursor Icon
-game_manager.cursor_inventory = true;
+GameManager.cursor_inventory = true;
 
 // Debug
 if (keyboard_check_pressed(ord("L"))) 

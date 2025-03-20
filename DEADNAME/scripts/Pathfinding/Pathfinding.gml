@@ -5,7 +5,7 @@ enum PathfindingEdgeType
 	TeleportEdge
 }
 
-/// pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
+/// @function pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
 function pathfinding_add_node(position_x, position_y, node_id = undefined)
 {
 	// Check if Node already exists
@@ -57,7 +57,7 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 	ds_map_add(GameManager.pathfinding_node_ids_map, temp_node_id, temp_node_index);
 	
 	// Obtain Pathfinding Node Anchor Position via Raycast towards Ground at Pathfinding Node Position
-	var temp_raycast = platform_raycast(x, y, 100, 270);
+	var temp_raycast = platform_raycast(position_x, position_y, 100, 270);
 	
 	// Create Node at next available Pathfinding Node DS List Index
 	if (temp_deleted_node_index_available)
@@ -76,7 +76,7 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 	}
 }
 
-/// pathfinding_remove_node(node_id);
+/// @function pathfinding_remove_node(node_id);
 /// @description Removes a Pathfinding Node that shares the given Node ID
 /// @param {int} node_id The Node ID of the Pathfinding Node to remove
 function pathfinding_remove_node(node_id)
@@ -140,7 +140,7 @@ function pathfinding_remove_node(node_id)
 	ds_list_add(GameManager.pathfinding_node_deleted_indexes_list, temp_node_index);
 }
 
-/// pathfinding_generate_edge_id(first_node_id, second_node_id);
+/// @function pathfinding_generate_edge_id(first_node_id, second_node_id);
 /// @description Generates the Edge ID shared by the two given Nodes, based on the Node IDs being sorted (lowest ID comes first, highest ID comes second)
 /// @param {any} first_node_id The first Node's ID to create the concatenated Edge ID off of
 /// @param {any} second_node_id The second Node's ID to create the concatenated Edge ID off of
@@ -421,7 +421,7 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	return temp_path_list;
 }
 
-/// pathfinder_get_closest_point_on_edge(x_position, y_position);
+/// @function pathfinder_get_closest_point_on_edge(x_position, y_position);
 /// @description Finds the closest coordinate that exists on any oPathEdge that exists in the room
 /// @param {real} x_position The X position to check for the closest coordinate to on a oPathEdge
 /// @param {real} y_position The Y position to check for the closest coordinate to on a oPathEdge
@@ -877,4 +877,26 @@ function pathfinding_load_level_data()
 	
 	// Close Pathfinding File
 	file_text_close(temp_pathfinding_data_file);
+}
+
+function pathfinding_clear_level_data()
+{
+	// Reset Pathfinding Node DS Map & Lists
+	ds_map_clear(GameManager.pathfinding_node_ids_map);
+	
+	ds_list_clear(GameManager.pathfinding_node_exists_list);
+	ds_list_clear(GameManager.pathfinding_node_edges_list);
+	ds_list_clear(GameManager.pathfinding_node_struct_list);
+	
+	ds_list_clear(GameManager.pathfinding_node_deleted_indexes_list);
+	
+	// Reset Pathfinding Edge DS Map & Lists
+	ds_map_clear(GameManager.pathfinding_edge_ids_map);
+	
+	ds_list_clear(GameManager.pathfinding_edge_exists_list);
+	ds_list_clear(GameManager.pathfinding_edge_nodes_list);
+	ds_list_clear(GameManager.pathfinding_edge_types_list);
+	ds_list_clear(GameManager.pathfinding_edge_weights_list);
+	
+	ds_list_clear(GameManager.pathfinding_edge_deleted_indexes_list);
 }

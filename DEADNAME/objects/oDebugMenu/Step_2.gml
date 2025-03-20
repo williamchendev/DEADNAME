@@ -8,43 +8,124 @@ if (!global.debug)
 }
 
 // Reset Ribbon Menu Hover Selection Index
-ribbon_menu_option_hover_select_index = -1;
+ribbon_menu_tab_hover_select_index = -1;
+ribbon_menu_window_option_hover_select_index = -1;
 
 // Set Debug Menu Font for Collision Detection
 draw_set_font(debug_menu_font);
 
-// Ribbon Menu Option Mouse Selection
+// Ribbon Menu Tab Mouse Selection
 var temp_ribbon_menu_width = 0;
 
-for (var i = 0; i < array_length(ribbon_menu_options); i++)
+for (var i = 0; i < array_length(ribbon_menu_tabs); i++)
 {
-    // Check Mouse Point with Ribbon Menu Option's Collision Rectangle
-    var temp_ribbon_menu_option_x = ribbon_menu_start_horizontal_offset + temp_ribbon_menu_width;
-    var temp_ribbon_menu_option_mouse_collision = point_in_rectangle
+    // Check Mouse Point with Ribbon Menu Tab's Collision Rectangle
+    var temp_ribbon_menu_tab_x = ribbon_menu_start_horizontal_offset + temp_ribbon_menu_width - 1;
+    var temp_ribbon_menu_tab_mouse_collision = point_in_rectangle
     (
-        mouse_x, 
-        mouse_y, 
-        temp_ribbon_menu_option_x - ribbon_menu_option_selection_hitbox_padding - 1, 
+        GameManager.cursor_x, 
+        GameManager.cursor_y, 
+        temp_ribbon_menu_tab_x - ribbon_menu_tab_selection_hitbox_padding, 
         0, 
-        temp_ribbon_menu_option_x + string_width(ribbon_menu_options[i].option_name) + ribbon_menu_option_selection_hitbox_padding, 
+        temp_ribbon_menu_tab_x + string_width(ribbon_menu_tabs[i].tab_name) + ribbon_menu_tab_selection_hitbox_padding, 
         ribbon_menu_start_vertical_offset + debug_menu_font_height + ribbon_menu_vertical_spacing
     );
     
-    if (temp_ribbon_menu_option_mouse_collision)
+    //
+    if (temp_ribbon_menu_tab_mouse_collision)
     {
-        ribbon_menu_option_hover_select_index = i;
+        //
+        if (ribbon_menu_tab_hover_select_index != i)
+        {
+            ribbon_menu_window_option_hover_select_index = -1;
+        }
+        
+        //
+        ribbon_menu_tab_hover_select_index = i;
+    }
+    
+    // Check Mouse Point with Ribbon Menu Tab Window Options Collision Rectangle
+    if (ribbon_menu_tab_clicked_select_index == i)
+    {
+        // Ribbon Menu Tab Window Option Selection
+        var temp_ribbon_tab_drop_down_window_y = ribbon_menu_start_vertical_offset + debug_menu_font_height + ribbon_menu_vertical_spacing + ribbon_menu_option_window_vertical_offset;
+        
+        // Draw Ribbon Menu Tab Window Options
+        for (var temp_ribbon_menu_option_index = 0; temp_ribbon_menu_option_index < array_length(ribbon_menu_tabs[i].tab_options); temp_ribbon_menu_option_index++)
+        {
+            //
+            var temp_ribbon_menu_tab_window_option_collision = point_in_rectangle
+            (
+                GameManager.cursor_x, 
+                GameManager.cursor_y, 
+                ribbon_menu_start_horizontal_offset + temp_ribbon_menu_width - (ribbon_menu_horizontal_spacing / 2), 
+                temp_ribbon_tab_drop_down_window_y - (ribbon_menu_option_window_vertical_padding / 2), 
+                ribbon_menu_start_horizontal_offset + temp_ribbon_menu_width - (ribbon_menu_horizontal_spacing / 2) + ribbon_menu_tabs[i].tab_window_width + ribbon_menu_option_window_horizontal_padding, 
+                temp_ribbon_tab_drop_down_window_y + debug_menu_font_height + (ribbon_menu_option_window_vertical_padding / 2)
+            );
+            
+            //
+            if (temp_ribbon_menu_tab_window_option_collision)
+            {
+                //
+                ribbon_menu_tab_hover_select_index = i;
+                ribbon_menu_window_option_hover_select_index = temp_ribbon_menu_option_index;
+                
+                //
+                break;
+            }
+            
+            // Increment Option Vertical Padding
+            temp_ribbon_tab_drop_down_window_y += ribbon_menu_option_window_vertical_padding + debug_menu_font_height;
+        }
     }
     
     // Increment Ribbon Menu Width
-    temp_ribbon_menu_width += ribbon_menu_horizontal_spacing + string_width(ribbon_menu_options[i].option_name);
+    temp_ribbon_menu_width += ribbon_menu_horizontal_spacing + string_width(ribbon_menu_tabs[i].tab_name);
 }
 
 // Debug Menu Mouse Behaviour
 if (mouse_check_button_pressed(mb_left))
 {
-    
+    // Ribbon Menu Tab Selection
+    if (ribbon_menu_tab_hover_select_index == -1)
+    {
+        //
+        ribbon_menu_tab_clicked_select_index = -1;
+        
+        //
+        ribbon_menu_window_option_clicked = false;
+        ribbon_menu_window_option_clicked_select_index = -1;
+    }
+    else
+    {
+        //
+        ribbon_menu_tab_clicked_select_index = ribbon_menu_tab_hover_select_index;
+        
+        //
+        if (ribbon_menu_window_option_hover_select_index != -1)
+        {
+            ribbon_menu_window_option_clicked = true;
+            ribbon_menu_window_option_clicked_select_index = ribbon_menu_window_option_hover_select_index;
+        }
+    }
 }
 else if (mouse_check_button_pressed(mb_right))
 {
     
+}
+
+if (mouse_check_button_released(mb_left))
+{
+    //
+    if (ribbon_menu_window_option_clicked and ribbon_menu_window_option_hover_select_index == ribbon_menu_window_option_clicked_select_index)
+    {
+        if (!is_undefined(ribbon_menu_tabs[ribbon_menu_tab_clicked_select_index].tab_options[ribbon_menu_window_option_clicked_select_index].option_function))
+        {
+            ribbon_menu_tabs[ribbon_menu_tab_clicked_select_index].tab_options[ribbon_menu_window_option_clicked_select_index].option_function();
+        }
+    }
+    
+    //
+    ribbon_menu_window_option_clicked = false;
 }

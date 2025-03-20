@@ -1,9 +1,6 @@
 /// @description Title Screen Init Event
 // Creates all the variables necessary for the Title Screen
 
-// Game Manager
-game_manager = instance_find(oGameManager, 0);
-
 // Deadname Title Settings
 deadname_title_sprite = sDeadnameTitle;
 deadname_title_color = make_colour_rgb(104, 1, 1);

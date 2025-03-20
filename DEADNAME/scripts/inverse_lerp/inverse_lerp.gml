@@ -1,4 +1,4 @@
-/// inverse_lerp(from, to, value);
+/// @function inverse_lerp(from, to, value);
 /// @description Finds the inverse linear interpolation percentage the given value is between the from and to arguments
 /// @param {real} from The number which the range starts from
 /// @param {real} to The number which the range goes to
@@ -11,7 +11,7 @@ function inverse_lerp(from, to, value, clamp_value = true)
     return clamp_value ? clamp(temp_inv_lerp, 0, 1) : temp_inv_lerp;
 }
 
-/// inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y);
+/// @function inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y);
 /// @description Finds the inverse linear interpolation percentage the given value is between the from and to arguments using positions instead of a single value
 /// @param {real} from_x The coordinate x which the vector range starts from
 /// @param {real} from_y The coordinate y which the vector range starts from

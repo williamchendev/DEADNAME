@@ -19,9 +19,20 @@ sprite_index = noone;
 global.game_manager = id;
 
 // Resolution Settings
-game_width = 640;
-game_height = 360;
-game_scale = 2;
+enum GameResolutionMode
+{
+	Default640x360,
+	Single640x360,
+	Double640x360,
+	FullScreen640x360,
+	Debug1280x720
+}
+
+default_game_width = 640;
+default_game_height = 360;
+
+debug_game_width = 1280;
+debug_game_height = 720;
 
 // System Settings
 data_directory = $"{program_directory}\Data\\";
@@ -67,9 +78,95 @@ pathfinding_edge_weights_list = ds_list_create();
 pathfinding_edge_deleted_indexes_list = ds_list_create();
 
 // Cursor Variables
+cursor_x = 0;
+cursor_y = 0;
+
 cursor_icon = false;
 cursor_inventory = false;
 cursor_index = 0;
 
-// Scale Variables
-windowed_scale = 0;
+// Resolution Variables
+game_resolution_mode = GameResolutionMode.Default640x360;
+
+game_width = 640;
+game_height = 360;
+game_scale = max(1, round(display_get_width() / game_width) - 1);
+
+// Resolution Methods
+set_game_resolution_mode = function(resolution_mode)
+{
+	// Check if changing Resolution Mode is Redundant
+	if (game_resolution_mode == resolution_mode)
+	{
+		// Attempted to set Game's Resolution Mode to its current Resolution Mode - Early Return
+		return;
+	}
+	
+	// Fullscreen Toggle
+	var temp_fullscreen = false;
+	
+	// Change Resolution Settings based on Resolution Mode
+	switch (resolution_mode)
+	{
+		case GameResolutionMode.FullScreen640x360:
+			temp_fullscreen = true;
+			game_width = default_game_width;
+			game_height = default_game_height;
+			game_scale = display_get_width() / game_width;
+			break;
+		case GameResolutionMode.Debug1280x720:
+			temp_fullscreen = true;
+			game_width = debug_game_width;
+			game_height = debug_game_height;
+			game_scale = display_get_width() / game_width;
+			break;
+		case GameResolutionMode.Single640x360:
+			game_width = default_game_width;
+			game_height = default_game_height;
+			game_scale = 1;
+			break;
+		case GameResolutionMode.Double640x360:
+			game_width = default_game_width;
+			game_height = default_game_height;
+			game_scale = 2;
+			break;
+		case GameResolutionMode.Default640x360:
+		default:
+			game_width = default_game_width;
+			game_height = default_game_height;
+			game_scale = max(1, round(display_get_width() / game_width) - 1);
+			break;
+	}
+	
+	// Reset Viewport Variables
+	view_set_xport(view_current, 0);
+	view_set_yport(view_current, 0);
+	
+	view_set_wport(view_current, game_width);
+	view_set_hport(view_current, game_height);
+	
+	// Set Game Window Size to Match Resolution Settings
+	window_set_size(game_width * game_scale, game_height * game_scale);
+	
+	// Set Game Window Fullscreen Toggle (if applicable)
+	if (temp_fullscreen != window_get_fullscreen())
+	{
+		window_set_fullscreen(temp_fullscreen);
+	}
+	
+	// Set Game Window Centered (if applicable)
+	if (!temp_fullscreen)
+	{
+		window_center();
+	}
+	
+	// Clear Rendering System Surfaces
+	lighting_engine_render_clear_surfaces();
+	
+	// Calculate Cursor Position
+	cursor_x = round(game_width * (window_mouse_get_x() / window_get_width()));
+	cursor_y = round(game_height * (window_mouse_get_y() / window_get_height()));
+	
+	// Set Game Resolution Mode enum for Redundancy Comparison
+	game_resolution_mode = resolution_mode;
+}

@@ -1,7 +1,11 @@
 /// @description Early Step Event
 
+// Calculate Cursor Position
+cursor_x = round(game_width * (window_mouse_get_x() / window_get_width()));
+cursor_y = round(game_height * (window_mouse_get_y() / window_get_height()));
+
 // Toggle Debug Mode
-if (keyboard_check_pressed(vk_f7)) 
+if (keyboard_check_pressed(vk_f3)) 
 {
 	// Toggle Behaviour
 	global.debug = !global.debug;
@@ -31,36 +35,15 @@ if (keyboard_check_pressed(vk_f7))
 	}
 }
 
-// Debug Mode Functions
-if (global.debug) 
-{
-	
-}
-
 // Game Fullscreen
 if (keyboard_check_pressed(vk_f11)) 
 {
 	if (window_get_fullscreen()) 
 	{
-		game_scale = windowed_scale;
-		
-		window_set_size(game_width * game_scale, game_height * game_scale);
-		window_set_fullscreen(false);
-		
-		window_center();
+		set_game_resolution_mode(GameResolutionMode.Default640x360);
 	}
 	else 
 	{
-		windowed_scale = game_scale;
-		game_scale = display_get_width() / game_width;
-		
-		window_set_size(game_width * game_scale, game_height * game_scale);
-		window_set_fullscreen(true);
+		set_game_resolution_mode(GameResolutionMode.FullScreen640x360);
 	}
-}
-
-// Restart Room
-if (keyboard_check_pressed(vk_f8)) 
-{
-	room_restart();
 }
