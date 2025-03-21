@@ -24,8 +24,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"ambient_light_render_enabled","filters":[],"listItems":[],"multiselect":false,"name":"ambient_light_render_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"ambient_light_render_enabled","filters":[],"listItems":[],"multiselect":false,"name":"ambient_light_render_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"ambient_light_intensity","filters":[],"listItems":[],"multiselect":false,"name":"ambient_light_intensity","rangeEnabled":true,"rangeMax":5.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"ambient_light_shadow_grading_intensity","filters":[],"listItems":[],"multiselect":false,"name":"ambient_light_shadow_grading_intensity","rangeEnabled":true,"rangeMax":5.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2.5","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

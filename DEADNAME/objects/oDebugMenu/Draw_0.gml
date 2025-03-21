@@ -38,6 +38,30 @@ else if (rendering_normal_map_enabled)
     // Normal Map
     draw_surface_ext(LightingEngine.normalmap_vector_surface, -LightingEngine.render_border, -LightingEngine.render_border, 1,1, 0, c_white, 1);
 }
+else if (rendering_metallic_map_enabled)
+{
+	// Metallic Map
+	shader_set(shd_print_metallic_map);
+	
+	texture_set_stage(debug_metallic_map_printout_normal_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+	
+	draw_surface_ext(LightingEngine.background_prb_metalrough_emissive_depth_surface, -LightingEngine.render_border, -LightingEngine.render_border, 1,1, 0, c_white, 1);
+    draw_surface_ext(LightingEngine.layered_prb_metalrough_emissive_depth_surface, -LightingEngine.render_border, -LightingEngine.render_border, 1, 1, 0, c_white, 1);
+    
+    shader_reset();
+}
+else if (rendering_roughness_map_enabled)
+{
+	// Metallic Map
+	shader_set(shd_print_roughness_map);
+	
+	texture_set_stage(debug_roughness_map_printout_normal_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
+	
+	draw_surface_ext(LightingEngine.background_prb_metalrough_emissive_depth_surface, -LightingEngine.render_border, -LightingEngine.render_border, 1,1, 0, c_white, 1);
+    draw_surface_ext(LightingEngine.layered_prb_metalrough_emissive_depth_surface, -LightingEngine.render_border, -LightingEngine.render_border, 1, 1, 0, c_white, 1);
+    
+    shader_reset();
+}
 else if (rendering_depth_map_enabled)
 {
     // Depth Map

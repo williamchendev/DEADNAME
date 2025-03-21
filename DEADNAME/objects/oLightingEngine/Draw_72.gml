@@ -454,6 +454,12 @@ with (oLightingEngine_Source_AmbientLight)
 		// Set Ambient Occlusion Light Color
 		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_color_index, color_get_red(image_blend) / 255, color_get_green(image_blend) / 255, color_get_blue(image_blend) / 255);
 		
+		// Set Ambient Occlusion Light Intensity
+		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_intensity_index, ambient_light_intensity);
+		
+		// Set Ambient Occlusion Shadow Grading Intensity
+		shader_set_uniform_f(LightingEngine.ambient_light_shader_light_surface_tangent_exponent_index, ambient_light_shadow_grading_intensity);
+		
 		// Draw Screen Space Ambient Occlusion Light Color to Light Blend Surface
 		vertex_submit(LightingEngine.screen_space_vertex_buffer, pr_trianglelist, -1);
 	}

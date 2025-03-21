@@ -56,6 +56,8 @@ rendering_midground_light_map_enabled = false;
 rendering_background_light_map_enabled = false;
 
 rendering_normal_map_enabled = false;
+rendering_metallic_map_enabled = false;
+rendering_roughness_map_enabled = false;
 rendering_depth_map_enabled = false;
 
 // Debug Menu Pathfinding Settings
@@ -69,6 +71,10 @@ ribbon_menu_window_option_clicked = false;
 ribbon_menu_window_option_hover_select_index = -1;
 ribbon_menu_window_option_clicked_select_index = -1;
 
+// Debug Menu Shader Indexes
+debug_metallic_map_printout_normal_texture_index = shader_get_sampler_index(shd_print_metallic_map, "gm_NormalMap_Texture");
+debug_roughness_map_printout_normal_texture_index = shader_get_sampler_index(shd_print_roughness_map, "gm_NormalMap_Texture");
+
 // Debug Menu Functions
 reset_rendering_options = function()
 {
@@ -77,6 +83,8 @@ reset_rendering_options = function()
     rendering_background_light_map_enabled = false;
 
     rendering_normal_map_enabled = false;
+    rendering_metallic_map_enabled = false;
+    rendering_roughness_map_enabled = false;
     rendering_depth_map_enabled = false;
 }
 
@@ -331,7 +339,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] =
     tab_options: 
     [
         {
-            option_name: "Enable Back-Layer LightMap Render",
+            option_name: "Enable Back-Layer Render",
             option_function: function()
             {
                 var temp_rendering_option = GameManager.debug_menu.rendering_background_light_map_enabled;
@@ -344,7 +352,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] =
             }
         },
         {
-            option_name: "Enable Mid-Layer LightMap Render",
+            option_name: "Enable Mid-Layer Render",
             option_function: function()
             {
                 var temp_rendering_option = GameManager.debug_menu.rendering_midground_light_map_enabled;
@@ -357,7 +365,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] =
             }
         },
         {
-            option_name: "Enable Fore-Layer LightMap Render",
+            option_name: "Enable Fore-Layer Render",
             option_function: function()
             {
                 var temp_rendering_option = GameManager.debug_menu.rendering_foreground_light_map_enabled;
@@ -380,6 +388,32 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] =
             option_toggle: function()
             {
                 return GameManager.debug_menu.rendering_normal_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Metallic Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_metallic_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_metallic_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_metallic_map_enabled;
+            }
+        },
+        {
+            option_name: "Enable Roughness Render",
+            option_function: function()
+            {
+                var temp_rendering_option = GameManager.debug_menu.rendering_roughness_map_enabled;
+                GameManager.debug_menu.reset_rendering_options();
+                GameManager.debug_menu.rendering_roughness_map_enabled = !temp_rendering_option;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.rendering_roughness_map_enabled;
             }
         },
         {

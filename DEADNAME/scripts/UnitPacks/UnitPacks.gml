@@ -128,7 +128,7 @@ global.unit_packs[UnitPack.Default] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -242,7 +242,7 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -356,7 +356,7 @@ global.unit_packs[UnitPack.Wolf] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -450,7 +450,7 @@ global.unit_packs[UnitPack.Director] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -544,7 +544,7 @@ global.unit_packs[UnitPack.Knives] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -638,7 +638,7 @@ global.unit_packs[UnitPack.Martyr] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -732,7 +732,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -826,7 +826,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	
 	// PBR Settings
 	metallic: false,
-	roughness: 0.5,
+	roughness: 0.1,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions

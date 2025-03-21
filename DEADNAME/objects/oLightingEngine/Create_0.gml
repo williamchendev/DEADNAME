@@ -311,6 +311,8 @@ directional_light_shadow_shader_collider_rotation_index = shader_get_uniform(shd
 ambient_light_shader_surface_size_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_SurfaceSize");
 
 ambient_light_shader_light_color_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightColor");
+ambient_light_shader_light_intensity_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightIntensity");
+ambient_light_shader_light_surface_tangent_exponent_index = shader_get_uniform(shd_ambient_occlusion_light_blend, "in_LightSurfaceTangentExponent");
 
 ambient_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_DiffuseMap_BackLayer_Texture");
 ambient_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_DiffuseMap_MidLayer_Texture");
