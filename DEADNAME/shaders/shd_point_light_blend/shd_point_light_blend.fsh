@@ -121,7 +121,7 @@ void main()
 	// MRT Render Point Light to Light Blend Layers
 	vec3 LightBlend = in_LightColor * in_LightAlpha * in_LightIntensity * LightStrength * LightFade * in_Global_Illumination_Multiplier;
 	
-	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * in_Light_Layers.x * ShadowLayers.x, 1.0);
-	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * in_Light_Layers.y * ShadowLayers.y, 1.0);
-	gl_FragData[2] = vec4((CookTorranceSpecular + LambertianDiffuse_Front) * LightBlend * in_Light_Layers.z * ShadowLayers.z, 1.0);
+	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * DiffuseMap_Back.a * in_Light_Layers.x * ShadowLayers.x, 1.0);
+	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * DiffuseMap_Mid.a * in_Light_Layers.y * ShadowLayers.y, 1.0);
+	gl_FragData[2] = vec4((CookTorranceSpecular + LambertianDiffuse_Front) * LightBlend * DiffuseMap_Front.a * in_Light_Layers.z * ShadowLayers.z, 1.0);
 }

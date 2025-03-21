@@ -15,14 +15,6 @@ uniform sampler2D gm_DiffuseMap_FrontLayer_Texture;
 
 uniform sampler2D gm_NormalTexture;
 
-// Constants
-const float Pi = 3.14159265359;
-const float OneOverPi = 0.31830988618;
-
-const float PseudoZero = 0.00001;
-
-const float DielectricMaterialLightReflectionCoefficient = 0.04;
-
 // Fragment Shader
 void main() 
 {
