@@ -285,7 +285,12 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
             option_name: "Print Console Scene Data",
             option_function: function()
             {
-                var temp_pathfinding_data_report = $"// Scene \"{room_get_name(room)}\" Pathfinding Data\n\n// Scene Nodes";
+            	//
+                var temp_pathfinding_data_report = $"// Scene \"{room_get_name(room)}\" Pathfinding Data";
+                temp_pathfinding_data_report += $"\n// File Path \"{GameManager.data_directory}Levels\\{room_get_name(room)}.txt\"";
+                
+                //
+                temp_pathfinding_data_report += "\n\n// Scene Nodes";
                 
                 for (var temp_node_id = ds_map_find_first(GameManager.pathfinding_node_ids_map); !is_undefined(temp_node_id); temp_node_id = ds_map_find_next(GameManager.pathfinding_node_ids_map, temp_node_id)) 
                 {
@@ -299,6 +304,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 	temp_pathfinding_data_report += $"\nNode_ID:{temp_node_id}, Node_X:{temp_node_struct.node_position_x}, Node_Y:{temp_node_struct.node_position_y}";
                 }
                 
+                //
                 temp_pathfinding_data_report += "\n\n// Scene Edges";
                 
                 for (var temp_edge_id = ds_map_find_first(GameManager.pathfinding_edge_ids_map); !is_undefined(temp_edge_id); temp_edge_id = ds_map_find_next(GameManager.pathfinding_edge_ids_map, temp_edge_id)) 
@@ -310,6 +316,8 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 	temp_pathfinding_data_report += $"\nEdge_ID:{temp_edge_id}, Edge_Type:{ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index)}";
                 }
                 
+                //
+                temp_pathfinding_data_report += "\n";
                 show_debug_message(temp_pathfinding_data_report);
             },
             option_toggle: undefined

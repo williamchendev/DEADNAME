@@ -39,6 +39,10 @@ if (global.debug_surface_enabled)
 	// Draw Pathfinding Widgets
 	if (pathfinding_widgets_enabled)
 	{
+		// Centered Text Alignment
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_middle);
+
 	    // Draw Edges
 	    for (var temp_edge_index = 0; temp_edge_index < ds_list_size(GameManager.pathfinding_edge_exists_list); temp_edge_index++)
 	    {
@@ -58,9 +62,12 @@ if (global.debug_surface_enabled)
 	            var temp_edge_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_first_node_index);
 	            var temp_edge_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_second_node_index);
 	            
-	            // Draw Edge
+	            // Draw Edge Widget
+	            draw_set_color(c_black);
+	            draw_line_width(temp_edge_first_node.node_position_x - LightingEngine.render_x, temp_edge_first_node.node_position_y - LightingEngine.render_y, temp_edge_second_node.node_position_x - LightingEngine.render_x, temp_edge_second_node.node_position_y - LightingEngine.render_y, 3);
+	            
 	            draw_set_color(c_white);
-	            draw_line_width(temp_edge_first_node.node_position_x - LightingEngine.render_x, temp_edge_first_node.node_position_y - LightingEngine.render_y, temp_edge_second_node.node_position_x - LightingEngine.render_x, temp_edge_second_node.node_position_y - LightingEngine.render_y, 2);
+	            draw_line_width(temp_edge_first_node.node_position_x - LightingEngine.render_x, temp_edge_first_node.node_position_y - LightingEngine.render_y, temp_edge_second_node.node_position_x - LightingEngine.render_x, temp_edge_second_node.node_position_y - LightingEngine.render_y, 1);
 	        }
 	    }
 	    
@@ -79,8 +86,40 @@ if (global.debug_surface_enabled)
         	draw_circle(temp_node_struct.anchor_position_x - LightingEngine.render_x, temp_node_struct.anchor_position_y - LightingEngine.render_y, 3, false);
         	
         	draw_set_color(c_white);
-        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 6, false);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 9, false);
+        	draw_set_color(c_black);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 7, false);
+        	draw_set_color(c_white);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 5, false);
         }
+        
+        // Draw Edges
+	    for (var temp_edge_index = 0; temp_edge_index < ds_list_size(GameManager.pathfinding_edge_exists_list); temp_edge_index++)
+	    {
+	        // Check if Edge Exists
+	        if (ds_list_find_value(GameManager.pathfinding_edge_exists_list, temp_edge_index))
+	        {
+	            // Edge Exists - Draw Edge Widget
+	            var temp_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index);
+	            var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_edge_index);
+	            var temp_edge_weight = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
+	            
+	            // Find Edge Node Indexes
+	            var temp_edge_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.first_node_id);
+	            var temp_edge_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.second_node_id);
+	            
+	            // Find Edge Node Data
+	            var temp_edge_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_first_node_index);
+	            var temp_edge_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_second_node_index);
+	            
+	            // Find Midway Position between both Nodes
+	            var temp_edge_center_x = lerp(temp_edge_first_node.node_position_x, temp_edge_second_node.node_position_x, 0.5) - LightingEngine.render_x;
+	            var temp_edge_center_y = lerp(temp_edge_first_node.node_position_y, temp_edge_second_node.node_position_y, 0.5) - LightingEngine.render_y;
+	            
+	            // Print Edge Information
+	            draw_text_outline(temp_edge_center_x, temp_edge_center_y, temp_edge_type == 1 ? "Jump" : $"Distance: {temp_edge_weight.distance_weight}");
+	        }
+	    }
 	}
 	
 	// Draw Lighting Engine Light Source Widgets

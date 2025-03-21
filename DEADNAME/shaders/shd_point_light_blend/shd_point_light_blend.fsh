@@ -63,7 +63,7 @@ void main()
 	
 	// Get Shadow Surface Texture's Pixel Value at Pixel's UV
 	vec4 SurfaceShadow = texture2D(gm_ShadowTexture, v_vSurfaceUV);
-	vec3 ShadowLayers = (vec3(1.0) - (in_Shadow_Layers * SurfaceShadow.a)) * in_Light_Layers;
+	vec3 ShadowLayers = vec3(1.0) - (in_Shadow_Layers * SurfaceShadow.a);
 	
 	// Point Light Vector
 	vec3 PointLightVector = vec3(normalize(Center - v_vPosition), cos((Distance / 0.5) * HalfPi)) * vec3(1.0, -1.0, 1.0);
@@ -121,7 +121,7 @@ void main()
 	// MRT Render Point Light to Light Blend Layers
 	vec3 LightBlend = in_LightColor * in_LightAlpha * in_LightIntensity * LightStrength * LightFade * in_Global_Illumination_Multiplier;
 	
-	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * ShadowLayers.x, 1.0);
-	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * ShadowLayers.y, 1.0);
-	gl_FragData[2] = vec4((CookTorranceSpecular + LambertianDiffuse_Front) * LightBlend * ShadowLayers.z, 1.0);
+	gl_FragData[0] = vec4((CookTorranceSpecular + LambertianDiffuse_Back) * LightBlend * in_Light_Layers.x * ShadowLayers.x, 1.0);
+	gl_FragData[1] = vec4((CookTorranceSpecular + LambertianDiffuse_Mid) * LightBlend * in_Light_Layers.y * ShadowLayers.y, 1.0);
+	gl_FragData[2] = vec4((CookTorranceSpecular + LambertianDiffuse_Front) * LightBlend * in_Light_Layers.z * ShadowLayers.z, 1.0);
 }
