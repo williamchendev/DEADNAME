@@ -124,3 +124,4 @@ vertex_freeze(shadow_vertex_buffer);
 // Disable Sprite & Visibility
 sprite_index = -1;
 visible = false;
+

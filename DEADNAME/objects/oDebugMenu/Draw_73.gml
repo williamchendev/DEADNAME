@@ -122,6 +122,16 @@ if (global.debug_surface_enabled)
 	    }
 	}
 	
+	// Draw Box Shadows Widgets
+	if (lighting_engine_box_shadows_widgets_enabled)
+	{
+	    // Draw Box Shadows to Debug Surface
+	    with (oLightingEngine_BoxShadow_Static)
+	    {
+	    	draw_sprite_ext(object_get_name(object_index) == "oLightingEngine_BoxShadow_Dynamic" ? sDebug_Lighting_BoxShadow_Centered : sDebug_Lighting_BoxShadow, 0, x - LightingEngine.render_x, y - LightingEngine.render_y, image_xscale, image_yscale, image_angle, image_blend, 1);
+	    }
+	}
+	
 	// Draw Lighting Engine Light Source Widgets
 	if (lighting_engine_light_sources_widgets_enabled)
 	{

@@ -29,7 +29,7 @@ const float DisableDistance = 16.0;
 void main()
 {
     // Calculate Vertex Position
-    float rotate_angle = radians(in_Collider_Rotation);
+    float rotate_angle = -radians(in_Collider_Rotation);
 	vec2 rotate_vector = vec2(cos(rotate_angle), sin(rotate_angle));
 	mat2 rotate_matrix = mat2(rotate_vector.x, -rotate_vector.y, rotate_vector.y, rotate_vector.x);
     

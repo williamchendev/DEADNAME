@@ -48,6 +48,7 @@ fps_counter_height = 8;
 
 level_platforms_and_collisions_widgets_enabled = false;
 lighting_engine_light_sources_widgets_enabled = false;
+lighting_engine_box_shadows_widgets_enabled = false;
 pathfinding_widgets_enabled = false;
 
 // Debug Menu Rendering Settings
@@ -229,6 +230,17 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Lighting] =
             option_toggle: function()
             {
                 return GameManager.debug_menu.lighting_engine_light_sources_widgets_enabled;
+            }
+        },
+        {
+            option_name: "Show/Hide Box Shadow Widgets",
+            option_function: function()
+            {
+                GameManager.debug_menu.lighting_engine_box_shadows_widgets_enabled = !GameManager.debug_menu.lighting_engine_box_shadows_widgets_enabled;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.lighting_engine_box_shadows_widgets_enabled;
             }
         }
     ]
