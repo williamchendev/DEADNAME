@@ -232,6 +232,13 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 		ds_list_add(GameManager.pathfinding_edge_types_list, edge_type);
 		ds_list_add(GameManager.pathfinding_edge_weights_list, temp_edge_weight_struct);
 	}
+	
+	// Add Node IDs to Nodes' Edge Reference DS Lists
+	var temp_first_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_first_node_index);
+	var temp_second_node_edges_list = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_second_node_index);
+	
+	ds_list_add(temp_first_node_edges_list, second_node_id);
+	ds_list_add(temp_second_node_edges_list, first_node_id);
 }
 
 /// pathfinding_remove_edge(first_node_id, second_node_id);
@@ -367,7 +374,7 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	repeat (ds_list_size(temp_node_edges_list))
 	{
 		// Find Edge Node ID
-		var temp_edge_node_id = ds_list_find_index(temp_node_edges_list, temp_node_edge_index);
+		var temp_edge_node_id = ds_list_find_value(temp_node_edges_list, temp_node_edge_index);
 		
 		// Check if Path contains Edge Node
 		var temp_path_contains_edge_node = ds_list_find_index(path_list, temp_edge_node_id) != -1;
@@ -377,10 +384,20 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 		{
 			// Duplicate Path List
 			var temp_comparison_path = ds_list_create();
-			ds_list_copy(path_list, temp_comparison_path);
+			ds_list_copy(temp_comparison_path, path_list);
 			
 			// Create Comparison Path List and Path Weight
 			temp_comparison_path = pathfinding_recursive(temp_edge_node_id, end_node_id, temp_comparison_path);
+			
+			// Check if Comparison Path Exists
+			if (is_undefined(temp_comparison_path))
+			{
+				// Comparison Path does not Exist - Increment Edge Index
+				temp_node_edge_index++;
+				continue;
+			}
+			
+			// Calculate Comparison Path's Weight
 			var temp_comparison_path_weight = pathfinding_find_path_weight(temp_comparison_path);
 			
 			// Check if Path List Exists and can be Compared
@@ -393,8 +410,9 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 					ds_list_destroy(temp_comparison_path);
 					temp_comparison_path = -1;
 					
-					temp_comparison_path = temp_path_list;
-					temp_comparison_path_weight = temp_path_weight;
+					// Increment Edge Index
+					temp_node_edge_index++;
+					continue;
 				}
 				else
 				{

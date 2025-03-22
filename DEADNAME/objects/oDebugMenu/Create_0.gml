@@ -46,10 +46,19 @@ fps_counter = false;
 fps_counter_width = 60;
 fps_counter_height = 8;
 
+debug_path = undefined;
+debug_path_start_x = 0;
+debug_path_start_y = 0;
+debug_path_end_x = 0;
+debug_path_end_y = 0;
+
 level_platforms_and_collisions_widgets_enabled = false;
 lighting_engine_light_sources_widgets_enabled = false;
 lighting_engine_box_shadows_widgets_enabled = false;
 pathfinding_widgets_enabled = false;
+pathfinding_node_info_widgets_enabled = false;
+pathfinding_edge_info_widgets_enabled = false;
+pathfinding_debug_path_widgets_enabled = false;
 
 // Debug Menu Rendering Settings
 rendering_foreground_light_map_enabled = false;
@@ -341,6 +350,47 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 show_debug_message(temp_pathfinding_data_report);
             },
             option_toggle: undefined
+        },
+        {
+            option_name: "Show Node Details",
+            option_function: function()
+            {
+                GameManager.debug_menu.pathfinding_node_info_widgets_enabled = !GameManager.debug_menu.pathfinding_node_info_widgets_enabled;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.pathfinding_node_info_widgets_enabled;
+            }
+        },
+        {
+            option_name: "Show Edge Details",
+            option_function: function()
+            {
+                GameManager.debug_menu.pathfinding_edge_info_widgets_enabled = !GameManager.debug_menu.pathfinding_edge_info_widgets_enabled;
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.pathfinding_edge_info_widgets_enabled;
+            }
+        },
+        {
+            option_name: "Debug Path",
+            option_function: function()
+            {
+            	// Toggle Debug Path
+                GameManager.debug_menu.pathfinding_debug_path_widgets_enabled = !GameManager.debug_menu.pathfinding_debug_path_widgets_enabled;
+                
+                // Destroy Debug Path
+                if (!is_undefined(GameManager.debug_menu.debug_path))
+		    	{
+		    		ds_list_destroy(GameManager.debug_menu.debug_path);
+		    		GameManager.debug_menu.debug_path = -1;
+		    	}
+            },
+            option_toggle: function()
+            {
+                return GameManager.debug_menu.pathfinding_debug_path_widgets_enabled;
+            }
         }
     ]
 };

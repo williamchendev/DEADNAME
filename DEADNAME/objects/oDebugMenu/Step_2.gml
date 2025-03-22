@@ -109,10 +109,78 @@ if (mouse_check_button_pressed(mb_left))
             ribbon_menu_window_option_clicked_select_index = ribbon_menu_window_option_hover_select_index;
         }
     }
+    
+    // Pathfinding Debug Path Widget Behaviour
+    if (pathfinding_debug_path_widgets_enabled)
+    {
+    	// Remove Previous Path
+    	if (!is_undefined(debug_path))
+    	{
+    		ds_list_destroy(debug_path);
+    		debug_path = -1;
+    	}
+    	
+    	// Set New Debug Path Coordinates
+    	debug_path_start_x = GameManager.cursor_x + LightingEngine.render_x;
+    	debug_path_start_y = GameManager.cursor_y + LightingEngine.render_y;
+    	
+    	// Recalculate Path
+    	debug_path = pathfinding_get_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
+    	
+    	// Print Out Path Details
+    	show_debug_message("// Path Details");
+    	
+    	if (!is_undefined(debug_path))
+    	{
+    		for (var temp_path_index = 0; temp_path_index < ds_list_size(debug_path); temp_path_index++)
+	    	{
+	    		// Find Path Point
+	    		var temp_path_point = ds_list_find_value(debug_path, temp_path_index);
+	    		
+	    		// Print Path Details
+	    		show_debug_message(string(temp_path_point));
+	    	}
+    	}
+    	
+    	show_debug_message("");
+    }
 }
 else if (mouse_check_button_pressed(mb_right))
 {
-    
+    // Pathfinding Debug Path Widget Behaviour
+    if (pathfinding_debug_path_widgets_enabled)
+    {
+    	// Remove Previous Path
+    	if (!is_undefined(debug_path))
+    	{
+    		ds_list_destroy(debug_path);
+    		debug_path = -1;
+    	}
+    	
+    	// Set New Debug Path Coordinates
+    	debug_path_end_x = GameManager.cursor_x + LightingEngine.render_x;
+    	debug_path_end_y = GameManager.cursor_y + LightingEngine.render_y;
+    	
+    	// Recalculate Path
+    	debug_path = pathfinding_get_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
+    	
+    	// Print Out Path Details
+    	show_debug_message("// Path Details");
+    	
+    	if (!is_undefined(debug_path))
+    	{
+    		for (var temp_path_index = 0; temp_path_index < ds_list_size(debug_path); temp_path_index++)
+	    	{
+	    		// Find Path Point
+	    		var temp_path_point = ds_list_find_value(debug_path, temp_path_index);
+	    		
+	    		// Print Path Details
+	    		show_debug_message(string(temp_path_point));
+	    	}
+    	}
+    	
+    	show_debug_message("");
+    }
 }
 
 if (mouse_check_button_released(mb_left))

@@ -63,10 +63,10 @@ if (global.debug_surface_enabled)
 	            var temp_edge_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_second_node_index);
 	            
 	            // Draw Edge Widget
-	            draw_set_color(c_black);
+	            draw_set_color(color_indigo_blue);
 	            draw_line_width(temp_edge_first_node.node_position_x - LightingEngine.render_x, temp_edge_first_node.node_position_y - LightingEngine.render_y, temp_edge_second_node.node_position_x - LightingEngine.render_x, temp_edge_second_node.node_position_y - LightingEngine.render_y, 3);
 	            
-	            draw_set_color(c_white);
+	            draw_set_color(color_cerulean_blue);
 	            draw_line_width(temp_edge_first_node.node_position_x - LightingEngine.render_x, temp_edge_first_node.node_position_y - LightingEngine.render_y, temp_edge_second_node.node_position_x - LightingEngine.render_x, temp_edge_second_node.node_position_y - LightingEngine.render_y, 1);
 	        }
 	    }
@@ -81,46 +81,107 @@ if (global.debug_surface_enabled)
         	var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
         	
         	// Draw Node
-        	draw_set_color(c_purple);
-        	draw_line(temp_node_struct.anchor_position_x - LightingEngine.render_x, temp_node_struct.anchor_position_y - LightingEngine.render_y, temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y);
+        	draw_set_color(color_indigo_blue);
+        	draw_line_width(temp_node_struct.anchor_position_x - LightingEngine.render_x, temp_node_struct.anchor_position_y - LightingEngine.render_y, temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 2);
         	draw_circle(temp_node_struct.anchor_position_x - LightingEngine.render_x, temp_node_struct.anchor_position_y - LightingEngine.render_y, 3, false);
         	
-        	draw_set_color(c_white);
-        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 9, false);
-        	draw_set_color(c_black);
-        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 7, false);
-        	draw_set_color(c_white);
-        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 5, false);
+        	draw_set_color(color_light_blue);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 8, false);
+        	draw_set_color(color_cerulean_blue);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 6, false);
+        	draw_set_color(color_indigo_blue);
+        	draw_circle(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y, 4, false);
+        }
+        
+        //
+        if (pathfinding_node_info_widgets_enabled)
+        {
+        	for (var temp_node_id = ds_map_find_first(GameManager.pathfinding_node_ids_map); !is_undefined(temp_node_id); temp_node_id = ds_map_find_next(GameManager.pathfinding_node_ids_map, temp_node_id)) 
+	        {
+	        	// Find Node Index
+	        	var temp_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_node_id);
+	        	
+	        	// Find Node Data
+	        	var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
+	        	var temp_node_edges = ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_node_index);
+	        	
+	        	//
+	        	var temp_node_edges_text = "{ ";
+	        	
+	        	for (var q = 0; q < ds_list_size(temp_node_edges); q++)
+	        	{
+	        		temp_node_edges_text += $"{ds_list_find_value(temp_node_edges, q)} ";
+	        	}
+	        	
+	        	temp_node_edges_text += "}";
+	        	
+	        	// Print Node Information
+	            draw_text_outline(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y - 60, $"Node ID: {temp_node_id}");
+	            draw_text_outline(temp_node_struct.node_position_x - LightingEngine.render_x, temp_node_struct.node_position_y - LightingEngine.render_y - 58 + debug_menu_font_height, temp_node_edges_text);
+	        }
         }
         
         // Draw Edges
-	    for (var temp_edge_index = 0; temp_edge_index < ds_list_size(GameManager.pathfinding_edge_exists_list); temp_edge_index++)
-	    {
-	        // Check if Edge Exists
-	        if (ds_list_find_value(GameManager.pathfinding_edge_exists_list, temp_edge_index))
-	        {
-	            // Edge Exists - Draw Edge Widget
-	            var temp_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index);
-	            var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_edge_index);
-	            var temp_edge_weight = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
-	            
-	            // Find Edge Node Indexes
-	            var temp_edge_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.first_node_id);
-	            var temp_edge_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.second_node_id);
-	            
-	            // Find Edge Node Data
-	            var temp_edge_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_first_node_index);
-	            var temp_edge_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_second_node_index);
-	            
-	            // Find Midway Position between both Nodes
-	            var temp_edge_center_x = lerp(temp_edge_first_node.node_position_x, temp_edge_second_node.node_position_x, 0.5) - LightingEngine.render_x;
-	            var temp_edge_center_y = lerp(temp_edge_first_node.node_position_y, temp_edge_second_node.node_position_y, 0.5) - LightingEngine.render_y;
-	            
-	            // Print Edge Information
-	            draw_text_outline(temp_edge_center_x, temp_edge_center_y, temp_edge_type == 1 ? "Jump" : $"Distance: {temp_edge_weight.distance_weight}");
-	        }
-	    }
+        if (pathfinding_edge_info_widgets_enabled)
+        {
+        	for (var temp_edge_index = 0; temp_edge_index < ds_list_size(GameManager.pathfinding_edge_exists_list); temp_edge_index++)
+		    {
+		        // Check if Edge Exists
+		        if (ds_list_find_value(GameManager.pathfinding_edge_exists_list, temp_edge_index))
+		        {
+		            // Edge Exists - Draw Edge Widget
+		            var temp_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index);
+		            var temp_edge_nodes = ds_list_find_value(GameManager.pathfinding_edge_nodes_list, temp_edge_index);
+		            var temp_edge_weight = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
+		            
+		            // Find Edge Node Indexes
+		            var temp_edge_first_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.first_node_id);
+		            var temp_edge_second_node_index = ds_map_find_value(GameManager.pathfinding_node_ids_map, temp_edge_nodes.second_node_id);
+		            
+		            // Find Edge Node Data
+		            var temp_edge_first_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_first_node_index);
+		            var temp_edge_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_edge_second_node_index);
+		            
+		            // Find Midway Position between both Nodes
+		            var temp_edge_center_x = lerp(temp_edge_first_node.node_position_x, temp_edge_second_node.node_position_x, 0.5) - LightingEngine.render_x;
+		            var temp_edge_center_y = lerp(temp_edge_first_node.node_position_y, temp_edge_second_node.node_position_y, 0.5) - LightingEngine.render_y;
+		            
+		            // Print Edge Information
+		            draw_text_outline(temp_edge_center_x, temp_edge_center_y, temp_edge_type == 1 ? "Jump" : $"Distance: {temp_edge_weight.distance_weight}");
+		        }
+		    }
+        }
 	}
+
+	if (pathfinding_debug_path_widgets_enabled and !is_undefined(debug_path))
+    {
+    	for (var temp_path_index = 1; temp_path_index < ds_list_size(debug_path); temp_path_index++)
+    	{
+    		// Find Path Points
+    		var temp_path_point_a = ds_list_find_value(debug_path, temp_path_index - 1);
+    		var temp_path_point_b = ds_list_find_value(debug_path, temp_path_index);
+    		
+    		// Draw Edge Widget
+            draw_set_color(color_rose_taupe);
+            draw_line_width(temp_path_point_a.position_x - LightingEngine.render_x, temp_path_point_a.position_y - LightingEngine.render_y, temp_path_point_b.position_x - LightingEngine.render_x, temp_path_point_b.position_y - LightingEngine.render_y, 4);
+            
+            draw_set_color(color_pale_dogwood);
+            draw_line_width(temp_path_point_a.position_x - LightingEngine.render_x, temp_path_point_a.position_y - LightingEngine.render_y, temp_path_point_b.position_x - LightingEngine.render_x, temp_path_point_b.position_y - LightingEngine.render_y, 2);
+    	}
+    	
+    	for (var temp_path_index = 0; temp_path_index < ds_list_size(debug_path); temp_path_index++)
+    	{
+    		// Find Path Points
+    		var temp_path_point = ds_list_find_value(debug_path, temp_path_index);
+    		
+    		// Draw Node Widget
+            draw_set_color(color_rose_taupe);
+            draw_circle(temp_path_point.position_x - LightingEngine.render_x, temp_path_point.position_y - LightingEngine.render_y, 6, false);
+            
+            draw_set_color(color_pale_dogwood);
+            draw_circle(temp_path_point.position_x - LightingEngine.render_x, temp_path_point.position_y - LightingEngine.render_y, 5, false);
+    	}
+    }
 	
 	// Draw Box Shadows Widgets
 	if (lighting_engine_box_shadows_widgets_enabled)

@@ -52,7 +52,7 @@ else if (rendering_metallic_map_enabled)
 }
 else if (rendering_roughness_map_enabled)
 {
-	// Metallic Map
+	// Roughness Map
 	shader_set(shd_print_roughness_map);
 	
 	texture_set_stage(debug_roughness_map_printout_normal_texture_index, surface_get_texture(LightingEngine.normalmap_vector_surface));
