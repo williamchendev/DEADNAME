@@ -443,7 +443,7 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 /// @description Finds the closest coordinate that exists on any oPathEdge that exists in the room
 /// @param {real} x_position The X position to check for the closest coordinate to on a oPathEdge
 /// @param {real} y_position The Y position to check for the closest coordinate to on a oPathEdge
-/// @param {PathfindingEdgeType} edge_type Edge Type to pass as an optional argument, if this value is not undefined this function will only return a closest point on an edge that has a matching edge type to the one given
+/// @param {?PathfindingEdgeType} edge_type Edge Type to pass as an optional argument, if this value is not undefined this function will only return a closest point on an edge that has a matching edge type to the one given
 /// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y] and the Edge id it exists on [struct.edge_id]
 function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type = undefined)
 {
@@ -510,8 +510,8 @@ function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type 
 function pathfinding_get_path(start_x_position, start_y_position, end_x_position, end_y_position)
 {
 	// Find Edge Data for Start and End Coordinates
-	var temp_start_edge_data = pathfinder_get_closest_point_on_edge(start_x_position, start_y_position);
-	var temp_end_edge_data = pathfinder_get_closest_point_on_edge(end_x_position, end_y_position);
+	var temp_start_edge_data = pathfinder_get_closest_point_on_edge(start_x_position, start_y_position, PathfindingEdgeType.DefaultEdge);
+	var temp_end_edge_data = pathfinder_get_closest_point_on_edge(end_x_position, end_y_position, PathfindingEdgeType.DefaultEdge);
 	
 	// Check if Edge Data is Viable
 	if (is_undefined(temp_start_edge_data.edge_id) or is_undefined(temp_end_edge_data.edge_id)) 
