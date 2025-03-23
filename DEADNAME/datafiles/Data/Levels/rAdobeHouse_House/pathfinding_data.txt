@@ -1,16 +1,16 @@
 // Pathfinding Level Data - Level: "rAdobeHouse_House"
 
 // Node Data
-[Node]{node_id: 600000, node_position_x: -1529, node_position_y: 303}
-[Node]{node_id: 600001, node_position_x: -459, node_position_y: 303}
-[Node]{node_id: 600002, node_position_x: -424, node_position_y: 273}
-[Node]{node_id: 600003, node_position_x: -214, node_position_y: 273}
-[Node]{node_id: 600004, node_position_x: -189, node_position_y: 303}
-[Node]{node_id: 600005, node_position_x: 2412, node_position_y: 303}
+[Node]{node_name: "", node_id: 600005, node_position_x: 2412, node_position_y: 303}
+[Node]{node_name: "", node_id: 600002, node_position_x: -424, node_position_y: 273}
+[Node]{node_name: "", node_id: 600000, node_position_x: -1529, node_position_y: 303}
+[Node]{node_name: "", node_id: 600004, node_position_x: -189, node_position_y: 303}
+[Node]{node_name: "", node_id: 600003, node_position_x: -214, node_position_y: 273}
+[Node]{node_name: "", node_id: 600001, node_position_x: -459, node_position_y: 303}
 
 // Edge Data
-[Edge]{first_node_id: 600000, second_node_id: 600001, edge_type: Default}
-[Edge]{first_node_id: 600001, second_node_id: 600002, edge_type: Jump}
-[Edge]{first_node_id: 600002, second_node_id: 600003, edge_type: Default}
-[Edge]{first_node_id: 600003, second_node_id: 600004, edge_type: Jump}
-[Edge]{first_node_id: 600004, second_node_id: 600005, edge_type: Default}
+[Edge]{edge_name: "", first_node_id: 600000, second_node_id: 600001, edge_type: Default}
+[Edge]{edge_name: "", first_node_id: 600001, second_node_id: 600002, edge_type: Jump}
+[Edge]{edge_name: "", first_node_id: 600002, second_node_id: 600003, edge_type: Default}
+[Edge]{edge_name: "", first_node_id: 600003, second_node_id: 600004, edge_type: Jump}
+[Edge]{edge_name: "", first_node_id: 600004, second_node_id: 600005, edge_type: Default}

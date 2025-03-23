@@ -1,6 +1,6 @@
 {
     "GMEdit-Constructor":{
-        "runner":"YYC",
+        "runner":"VM",
         "runtime_type":"Stable",
         "runtime_version":"runtime-2024.11.0.226"
     }

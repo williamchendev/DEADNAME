@@ -1,8 +1,15 @@
 /// @description Insert description here
 // You can write your code in this editor
 
+enum DebugMenuWindowType
+{
+	Regular,
+	ContentScroll
+}
+
 // Debug Menu Font Settings
 debug_menu_font = font_Inno;
+debug_menu_font_height = 1;
 
 // Color Settings
 color_light_blue = make_color_rgb(193, 238, 255);
@@ -41,10 +48,24 @@ ribbon_menu_option_toggle_box_horizontal_padding = 10;
 
 ribbon_menu_option_toggle_box_size = 7;
 
+// Debug Menu Windows Settings
+window_header = 16;
+window_border = 2;
+
+window_title_horizontal_offset = 4;
+
+window_exit_button_size = 10;
+window_exit_button_horizontal_offset = 10;
+
+window_content_text_horizontal_padding = 12;
+window_content_text_vertical_padding = 8;
+
 // Debug Menu Widget Settings
 fps_counter = false;
 fps_counter_width = 60;
 fps_counter_height = 8;
+
+debug_pathfinding_closest_point = pathfinder_get_closest_point_on_edge(0, 0, PathfindingEdgeType.DefaultEdge);
 
 debug_path = undefined;
 debug_path_start_x = 0;
@@ -80,6 +101,17 @@ ribbon_menu_tab_clicked_select_index = -1;
 ribbon_menu_window_option_clicked = false;
 ribbon_menu_window_option_hover_select_index = -1;
 ribbon_menu_window_option_clicked_select_index = -1;
+
+// Debug Menu Window Select Variables
+window_header_hover_select_index = -1;
+window_header_clicked_select_index = -1;
+
+window_exit_button_clicked = false;
+window_exit_button_hover_select_index = -1;
+window_exit_button_clicked_select_index = -1;
+
+window_cursor_x_offset = -1;
+window_cursor_y_offset = -1;
 
 // Debug Menu Shader Indexes
 debug_metallic_map_printout_normal_texture_index = shader_get_sampler_index(shd_print_metallic_map, "gm_NormalMap_Texture");
@@ -328,9 +360,10 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 	
                 	// Find Node Data
                 	var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
+                	var temp_node_name = ds_list_find_value(GameManager.pathfinding_node_name_list, temp_node_index);
                 	
                 	// Add Node Data
-                	temp_pathfinding_data_report += $"\nNode_ID:{temp_node_id}, Node_X:{temp_node_struct.node_position_x}, Node_Y:{temp_node_struct.node_position_y}";
+                	temp_pathfinding_data_report += $"\nNode_Name: \"{temp_node_name}\", Node_ID: {temp_node_id}, Node_Position: ({temp_node_struct.node_position_x}, {temp_node_struct.node_position_y})";
                 }
                 
                 //
@@ -341,12 +374,30 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 	// Find Edge Index
                 	var temp_edge_index = ds_map_find_value(GameManager.pathfinding_edge_ids_map, temp_edge_id);
                 	
+                	// Find Edge Type
+                	var temp_edge_type = "";
+                	
+                	switch (ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index))
+                	{
+                		case PathfindingEdgeType.JumpEdge:
+                			temp_edge_type = "Jump";
+                			break;
+        				case PathfindingEdgeType.TeleportEdge:
+        					temp_edge_type = "Teleport";
+        					break;
+    					case PathfindingEdgeType.DefaultEdge:
+    					default:
+    						temp_edge_type = "Default";
+    						break;
+                	}
+                	
                 	// Add Node Data
-                	temp_pathfinding_data_report += $"\nEdge_ID:{temp_edge_id}, Edge_Type:{ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_edge_index)}";
+                	temp_pathfinding_data_report += $"\nEdge_Name: \"{ds_list_find_value(GameManager.pathfinding_edge_name_list, temp_edge_index)}\", Edge_ID: {temp_edge_id}, Edge_Type: {temp_edge_type}";
                 }
                 
                 //
                 temp_pathfinding_data_report += "\n";
+                GameManager.debug_menu.create_scroll_window(300, 240, "Printout", "Output:", temp_pathfinding_data_report);
                 show_debug_message(temp_pathfinding_data_report);
             },
             option_toggle: undefined
@@ -384,7 +435,7 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Pathfinding] =
                 if (!is_undefined(GameManager.debug_menu.debug_path))
 		    	{
 		    		ds_list_destroy(GameManager.debug_menu.debug_path);
-		    		GameManager.debug_menu.debug_path = -1;
+		    		GameManager.debug_menu.debug_path = undefined;
 		    	}
             },
             option_toggle: function()
@@ -525,6 +576,50 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.OptionTemplate] =
     ]
 };
 
+// Debug Menu Windows
+windows_ds_list = ds_list_create();
+
+// Debug Menu Window Methods
+create_regular_window = function(window_width, window_height, window_title, window_content)
+{
+	with (oDebugMenu)
+	{
+		var temp_window = 
+		{
+			window_x: round((GameManager.game_width / 2) - (window_width / 2)),
+			window_y: round((GameManager.game_height / 2) - (window_height / 2) + ((ribbon_menu_start_vertical_offset + debug_menu_font_height + ribbon_menu_vertical_spacing) * 0.5)),
+			window_width: window_width, 
+			window_height: window_height,
+			window_title: window_title,
+			window_type: DebugMenuWindowType.Regular,
+			window_content: window_content
+		};
+		
+		ds_list_add(windows_ds_list, temp_window);
+	}
+}
+
+create_scroll_window = function(window_width, window_height, window_title, window_content, window_scroll_text)
+{
+	with (oDebugMenu)
+	{
+		var temp_window = 
+		{
+			window_x: round((GameManager.game_width / 2) - (window_width / 2)),
+			window_y: round((GameManager.game_height / 2) - (window_height / 2) + ((ribbon_menu_start_vertical_offset + debug_menu_font_height + ribbon_menu_vertical_spacing) * 0.5)),
+			window_width: window_width, 
+			window_height: window_height,
+			window_title: window_title,
+			window_type: DebugMenuWindowType.ContentScroll,
+			window_content: window_content,
+			window_scroll_text: string_split(window_scroll_text, "\n"),
+			window_scroll_index: 0
+		};
+		
+		ds_list_add(windows_ds_list, temp_window);
+	}
+}
+
 // Generate Font Spacing Variables
 draw_set_font(debug_menu_font);
 debug_menu_font_height = string_height("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -544,3 +639,8 @@ for (var i = 0; i < array_length(ribbon_menu_tabs); i++)
     // Set Ribbon Menu Tab Window Max Width
     ribbon_menu_tabs[i].tab_window_width = temp_ribbon_menu_tab_window_max_text_width;
 }
+
+//
+create_regular_window(200, 100, "(//// w /////)", "Gay sexy sex woot woot ^w^");
+create_regular_window(200, 100, "Hi there!", "Hey Abby :3");
+create_regular_window(200, 100, "UwU!", "What is up");

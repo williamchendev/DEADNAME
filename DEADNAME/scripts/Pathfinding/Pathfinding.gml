@@ -6,7 +6,7 @@ enum PathfindingEdgeType
 }
 
 /// @function pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
-function pathfinding_add_node(position_x, position_y, node_id = undefined)
+function pathfinding_add_node(position_x, position_y, node_id = undefined, node_name = "")
 {
 	// Check if Node already exists
 	if (!is_undefined(node_id) and !is_undefined(ds_map_find_value(GameManager.pathfinding_node_ids_map, node_id)))
@@ -65,6 +65,7 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 		// Set Pathfinding Node's Data at the Available Deleted Node Index within the Pathfinding Nodes DS Lists
 		ds_list_set(GameManager.pathfinding_node_exists_list, temp_node_index, true);
 		ds_list_set(GameManager.pathfinding_node_struct_list, temp_node_index, { node_position_x: position_x, node_position_y: position_y, anchor_position_x: temp_raycast.collision_x, anchor_position_y: temp_raycast.collision_y });
+		ds_list_set(GameManager.pathfinding_node_name_list, temp_node_index, node_name);
 		ds_list_clear(ds_list_find_value(GameManager.pathfinding_node_edges_list, temp_node_index));
 	}
 	else
@@ -72,6 +73,7 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined)
 		// Add New Pathfinding Node's Data to Pathfinding Nodes DS Lists
 		ds_list_add(GameManager.pathfinding_node_exists_list, true);
 		ds_list_add(GameManager.pathfinding_node_struct_list, { node_position_x: position_x, node_position_y: position_y, anchor_position_x: temp_raycast.collision_x, anchor_position_y: temp_raycast.collision_y });
+		ds_list_add(GameManager.pathfinding_node_name_list, node_name);
 		ds_list_add_list(GameManager.pathfinding_node_edges_list, ds_list_create());
 	}
 }
@@ -147,21 +149,11 @@ function pathfinding_remove_node(node_id)
 /// @returns {string} Returns the Edge ID of the two given Nodes
 function pathfinding_generate_edge_id(first_node_id, second_node_id)
 {
-	if (is_string(first_node_id) or is_string(second_node_id))
-	{
-		var first_node_id_as_string = string(first_node_id);
-		var second_node_id_as_string = string(second_node_id);
-		
-		return (first_node_id_as_string < second_node_id_as_string) ? $"[{first_node_id_as_string}][{second_node_id_as_string}]" : $"[{second_node_id_as_string}][{first_node_id_as_string}]";
-	}
-	else
-	{
-		return (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
-	}
+	return (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
 }
 
 /// pathfinding_add_edge(first_node_id, second_node_id, edge_type);
-function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
+function pathfinding_add_edge(first_node_id, second_node_id, edge_type, edge_name = "")
 {
 	// Check if both Nodes share the same Node ID
 	if (first_node_id == second_node_id)
@@ -223,6 +215,7 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 		ds_list_set(GameManager.pathfinding_edge_nodes_list, temp_edge_index, { first_node_id: first_node_id, second_node_id: second_node_id });
 		ds_list_set(GameManager.pathfinding_edge_types_list, temp_edge_index, edge_type);
 		ds_list_set(GameManager.pathfinding_edge_weights_list, temp_edge_index, temp_edge_weight_struct);
+		ds_list_set(GameManager.pathfinding_edge_name_list, temp_edge_index, edge_name);
 	}
 	else
 	{
@@ -231,6 +224,7 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type)
 		ds_list_add(GameManager.pathfinding_edge_nodes_list, { first_node_id: first_node_id, second_node_id: second_node_id });
 		ds_list_add(GameManager.pathfinding_edge_types_list, edge_type);
 		ds_list_add(GameManager.pathfinding_edge_weights_list, temp_edge_weight_struct);
+		ds_list_add(GameManager.pathfinding_edge_name_list, edge_name);
 	}
 	
 	// Add Node IDs to Nodes' Edge Reference DS Lists
@@ -661,9 +655,10 @@ function pathfinding_save_level_data()
 		
 		// Find Node Data
 		var temp_node_struct = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_node_index);
+		var temp_node_name = ds_list_find_value(GameManager.pathfinding_node_name_list, temp_node_index);
 		
 		// Add Node Data
-		temp_pathfinding_data += $"\n[Node]\{node_id: {string(temp_node_id)}, node_position_x: {temp_node_struct.node_position_x}, node_position_y: {temp_node_struct.node_position_y}\}";
+		temp_pathfinding_data += $"\n[Node]\{node_name: \"{temp_node_name}\", node_id: {string(temp_node_id)}, node_position_x: {temp_node_struct.node_position_x}, node_position_y: {temp_node_struct.node_position_y}\}";
 	}
 	
 	// Add Space
@@ -701,8 +696,11 @@ function pathfinding_save_level_data()
 		// Find Edge Weight
 		var temp_edge_weights = ds_list_find_value(GameManager.pathfinding_edge_weights_list, temp_edge_index);
 		
+		// Find Edge Name
+		var temp_edge_name = ds_list_find_value(GameManager.pathfinding_edge_name_list, temp_edge_index);
+		
 		// Add Edge Data
-		temp_pathfinding_data += $"\n[Edge]\{first_node_id: {temp_edge_nodes.first_node_id}, second_node_id: {temp_edge_nodes.second_node_id}, edge_type: {temp_edge_type_as_string}\}";
+		temp_pathfinding_data += $"\n[Edge]\{edge_name: \"{temp_edge_name}\", first_node_id: {temp_edge_nodes.first_node_id}, second_node_id: {temp_edge_nodes.second_node_id}, edge_type: {temp_edge_type_as_string}\}";
 	}
 	
 	temp_pathfinding_data += "\n";
@@ -780,6 +778,7 @@ function pathfinding_load_level_data()
 	    {
 	    	case "Node":
 	    		// Establish Node Data
+	    		var temp_node_name = "";
 	    		var temp_node_id = undefined;
 	    		var temp_node_position_x = undefined;
 	    		var temp_node_position_y = undefined;
@@ -800,8 +799,13 @@ function pathfinding_load_level_data()
 	    				// Check Node Data Type and set according Node Data Value
 	    				switch (temp_node_data_type)
 	    				{
+	    					case "node_name":
+	    						var temp_node_data_value_quote_start_index = string_pos("\"", temp_node_data_value);
+	    						var temp_node_data_value_quote_end_index = string_last_pos("\"", temp_node_data_value);
+	    						temp_node_name = string_copy(temp_node_data_value, temp_node_data_value_quote_start_index + 1, temp_node_data_value_quote_end_index - temp_node_data_value_quote_start_index - 1);
+	    						break;
 	    					case "node_id":
-	    						temp_node_id = (string_digits(temp_node_data_value) == temp_node_data_value) ? int64(temp_node_data_value) : temp_node_data_value;
+	    						temp_node_id = int64(temp_node_data_value);
 	    						break;
     						case "node_position_x":
     							temp_node_position_x = real(temp_node_data_value);
@@ -819,7 +823,7 @@ function pathfinding_load_level_data()
 	    		// Check if Node Data is Valid
     			if (!is_undefined(temp_node_id) and !is_undefined(temp_node_position_x) and !is_undefined(temp_node_position_y))
     			{
-    				pathfinding_add_node(temp_node_position_x, temp_node_position_y, temp_node_id);
+    				pathfinding_add_node(temp_node_position_x, temp_node_position_y, temp_node_id, temp_node_name);
     			}
     			else
     			{
@@ -828,6 +832,7 @@ function pathfinding_load_level_data()
 	    		break;
     		case "Edge":
     			// Establish Edge Data
+    			var temp_edge_name = "";
     			var temp_edge_first_node_id = undefined;
 	    		var temp_edge_second_node_id = undefined;
 	    		var temp_edge_type = undefined;
@@ -848,11 +853,16 @@ function pathfinding_load_level_data()
 	    				// Check Edge Data Type and set according Edge Data Value
 	    				switch (temp_edge_data_type)
 	    				{
+	    					case "edge_name":
+	    						var temp_edge_data_value_quote_start_index = string_pos("\"", temp_edge_data_value);
+	    						var temp_edge_data_value_quote_end_index = string_last_pos("\"", temp_edge_data_value);
+	    						temp_edge_name = string_copy(temp_edge_data_value, temp_edge_data_value_quote_start_index + 1, temp_edge_data_value_quote_end_index - temp_edge_data_value_quote_start_index - 1);
+	    						break;
 	    					case "first_node_id":
-	    						temp_edge_first_node_id = (string_digits(temp_edge_data_value) == temp_edge_data_value) ? int64(temp_edge_data_value) : temp_edge_data_value;
+	    						temp_edge_first_node_id = int64(temp_edge_data_value);
 	    						break;
     						case "second_node_id":
-    							temp_edge_second_node_id = (string_digits(temp_edge_data_value) == temp_edge_data_value) ? int64(temp_edge_data_value) : temp_edge_data_value;
+    							temp_edge_second_node_id = int64(temp_edge_data_value);
 	    						break;
     						case "edge_type":
     							switch (temp_edge_data_value)
@@ -878,7 +888,7 @@ function pathfinding_load_level_data()
 	    		// Check if Edge Data is Valid
     			if (!is_undefined(temp_edge_first_node_id) and !is_undefined(temp_edge_second_node_id) and !is_undefined(temp_edge_type))
     			{
-    				pathfinding_add_edge(temp_edge_first_node_id, temp_edge_second_node_id, temp_edge_type);
+    				pathfinding_add_edge(temp_edge_first_node_id, temp_edge_second_node_id, temp_edge_type, temp_edge_name);
     			}
     			else
     			{
@@ -906,6 +916,7 @@ function pathfinding_clear_level_data()
 	ds_list_clear(GameManager.pathfinding_node_exists_list);
 	ds_list_clear(GameManager.pathfinding_node_edges_list);
 	ds_list_clear(GameManager.pathfinding_node_struct_list);
+	ds_list_clear(GameManager.pathfinding_node_name_list);
 	
 	ds_list_clear(GameManager.pathfinding_node_deleted_indexes_list);
 	
@@ -916,6 +927,7 @@ function pathfinding_clear_level_data()
 	ds_list_clear(GameManager.pathfinding_edge_nodes_list);
 	ds_list_clear(GameManager.pathfinding_edge_types_list);
 	ds_list_clear(GameManager.pathfinding_edge_weights_list);
+	ds_list_clear(GameManager.pathfinding_edge_name_list);
 	
 	ds_list_clear(GameManager.pathfinding_edge_deleted_indexes_list);
 }

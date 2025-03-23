@@ -151,6 +151,16 @@ if (global.debug_surface_enabled)
 		        }
 		    }
         }
+        
+        // Draw Closest Point on Pathfinding Map to Cursor
+        if (debug_pathfinding_closest_point.edge_id != undefined)
+        {
+            draw_set_color(color_pale_dogwood);
+            draw_circle(debug_pathfinding_closest_point.return_x - LightingEngine.render_x, debug_pathfinding_closest_point.return_y - LightingEngine.render_y, 7, false);
+            
+            draw_set_color(color_rose_taupe);
+            draw_circle(debug_pathfinding_closest_point.return_x - LightingEngine.render_x, debug_pathfinding_closest_point.return_y - LightingEngine.render_y, 5, false);
+        }
 	}
 
 	if (pathfinding_debug_path_widgets_enabled and !is_undefined(debug_path))
@@ -240,6 +250,117 @@ draw_rectangle(0, 0, GameManager.game_width, ribbon_menu_start_vertical_offset +
 
 draw_set_color(color_cerulean_blue);
 draw_rectangle(0, 0, GameManager.game_width, ribbon_menu_start_vertical_offset + debug_menu_font_height + ribbon_menu_vertical_spacing, false);
+
+// Draw Windows
+for (var w = 0; w < ds_list_size(windows_ds_list); w++)
+{
+	// Find Window
+	var temp_window = ds_list_find_value(windows_ds_list, w);
+	
+	// Draw Window Background
+	draw_set_color(color_cerulean_blue);
+	draw_rectangle(temp_window.window_x, temp_window.window_y, temp_window.window_x + temp_window.window_width + (window_border * 2), temp_window.window_y + temp_window.window_height + (window_border * 2) + window_header, false);
+
+	draw_set_color(color_indigo_blue);
+	draw_rectangle(temp_window.window_x + window_border, temp_window.window_y + window_border + window_header, temp_window.window_x + temp_window.window_width + window_border, temp_window.window_y + temp_window.window_height + window_border + window_header, false);
+	
+	// Draw Window Header Title
+	draw_set_color(color_light_blue);
+	draw_text(temp_window.window_x + window_title_horizontal_offset, temp_window.window_y + (window_header / 2) - (debug_menu_font_height / 2) + 1, temp_window.window_title);
+	
+	// Draw Windox Exit Button
+	if (window_exit_button_clicked and window_exit_button_clicked_select_index == w and window_exit_button_hover_select_index == w)
+	{
+		draw_set_color(color_rose_taupe);
+		draw_rectangle
+		(
+			temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset - (window_exit_button_size / 2) - 1, 
+			temp_window.window_y + (window_header / 2) - (window_exit_button_size / 2),
+			temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset + (window_exit_button_size / 2) + 1, 
+			temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2) + 2,
+			false
+		);
+	}
+	
+	draw_set_color((window_exit_button_clicked and window_exit_button_clicked_select_index == w and window_exit_button_hover_select_index == w) ? color_pale_dogwood : color_rose_taupe);
+	draw_rectangle
+	(
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset - (window_exit_button_size / 2), 
+		temp_window.window_y + (window_header / 2) - (window_exit_button_size / 2) + 1,
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset + (window_exit_button_size / 2), 
+		temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2) + 1,
+		false
+	);
+	
+	// Draw Window Exit Button Cross
+	draw_set_color((window_exit_button_clicked and window_exit_button_clicked_select_index == w and window_exit_button_hover_select_index == w) ? color_rose_taupe : color_pale_dogwood);
+	draw_line_width
+	(
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset - (window_exit_button_size / 2) + 1, 
+		temp_window.window_y + (window_header / 2) - (window_exit_button_size / 2) + 2,
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset + (window_exit_button_size / 2) - 1, 
+		temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2),
+		2
+	);
+	
+	draw_line_width
+	(
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset + (window_exit_button_size / 2) - 1, 
+		temp_window.window_y + (window_header / 2) - (window_exit_button_size / 2) + 1,
+		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset - (window_exit_button_size / 2) + 1, 
+		temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2) - 1,
+		2
+	);
+	
+	switch (temp_window.window_type)
+	{
+		case DebugMenuWindowType.ContentScroll:
+			draw_set_color(color_light_blue);
+			for (var q = 0; q < array_length(temp_window.window_scroll_text); q++)
+			{
+				draw_text
+				(
+					temp_window.window_x + window_border + window_content_text_horizontal_padding,
+					temp_window.window_y + window_border + window_header + window_content_text_vertical_padding + ((q + 1) * (debug_menu_font_height + 4)),
+					temp_window.window_scroll_text[q]
+				);
+			}
+			
+			draw_set_color(color_rose_taupe);
+			
+			draw_rectangle
+			(
+				temp_window.window_x + window_border, 
+				temp_window.window_y + window_header + window_border,
+				temp_window.window_x + temp_window.window_width + window_border, 
+				temp_window.window_y + window_header + window_border + window_content_text_vertical_padding + debug_menu_font_height,
+				false
+			);
+			
+			draw_rectangle
+			(
+				temp_window.window_x + window_border, 
+				temp_window.window_y + temp_window.window_height + window_header + window_border - window_content_text_vertical_padding,
+				temp_window.window_x + temp_window.window_width + window_border, 
+				temp_window.window_y + temp_window.window_height + window_header + window_border,
+				false
+			);
+			break;
+		case DebugMenuWindowType.Regular:
+		default:
+			break;
+	}
+	// Draw Window Content
+	draw_set_color(color_light_blue);
+	draw_text_ext
+	(
+		temp_window.window_x + window_border + window_content_text_horizontal_padding, 
+		temp_window.window_y + window_border + window_header + window_content_text_vertical_padding,  
+		temp_window.window_content,
+		2,
+		temp_window.window_width - (window_content_text_horizontal_padding * 2)
+	);
+}
 
 // Draw Debug Menu - Ribbon Menu Tabs
 var temp_ribbon_menu_width = 0;

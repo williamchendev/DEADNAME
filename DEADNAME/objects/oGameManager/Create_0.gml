@@ -65,6 +65,7 @@ pathfinding_node_ids_map = ds_map_create();
 pathfinding_node_exists_list = ds_list_create();
 pathfinding_node_edges_list = ds_list_create();
 pathfinding_node_struct_list = ds_list_create();
+pathfinding_node_name_list = ds_list_create();
 
 pathfinding_node_deleted_indexes_list = ds_list_create();
 
@@ -75,6 +76,7 @@ pathfinding_edge_exists_list = ds_list_create();
 pathfinding_edge_nodes_list = ds_list_create();
 pathfinding_edge_types_list = ds_list_create();
 pathfinding_edge_weights_list = ds_list_create();
+pathfinding_edge_name_list = ds_list_create();
 
 pathfinding_edge_deleted_indexes_list = ds_list_create();
 
