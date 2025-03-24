@@ -1,3 +1,4 @@
+// Pathfinding Enums
 enum PathfindingEdgeType
 {
 	DefaultEdge,
@@ -6,6 +7,11 @@ enum PathfindingEdgeType
 }
 
 /// @function pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
+/// @description Places a new Pathfinding Node in the active Scene
+/// @param {real} position_x The x Coordinate of the new Node's Position
+/// @param {real} position_y The y Coordinate of the new Node's Position
+/// @param {?int} node_id The unique ID of the given Node, used for saving and loading Nodes and creating their unique Edges consistently
+/// @param {string} node_name The unique name of the new Node
 function pathfinding_add_node(position_x, position_y, node_id = undefined, node_name = "")
 {
 	// Check if Node already exists
@@ -144,15 +150,20 @@ function pathfinding_remove_node(node_id)
 
 /// @function pathfinding_generate_edge_id(first_node_id, second_node_id);
 /// @description Generates the Edge ID shared by the two given Nodes, based on the Node IDs being sorted (lowest ID comes first, highest ID comes second)
-/// @param {any} first_node_id The first Node's ID to create the concatenated Edge ID off of
-/// @param {any} second_node_id The second Node's ID to create the concatenated Edge ID off of
+/// @param {int} first_node_id The first Node's ID to create the concatenated Edge ID off of
+/// @param {int} second_node_id The second Node's ID to create the concatenated Edge ID off of
 /// @returns {string} Returns the Edge ID of the two given Nodes
 function pathfinding_generate_edge_id(first_node_id, second_node_id)
 {
 	return (first_node_id < second_node_id) ? $"[{first_node_id}][{second_node_id}]" : $"[{second_node_id}][{first_node_id}]";
 }
 
-/// pathfinding_add_edge(first_node_id, second_node_id, edge_type);
+/// @function pathfinding_add_edge(first_node_id, second_node_id, edge_type, edge_name);
+/// @description Creates a new Edge between two Pathfinding Nodes in the active Scene
+/// @param {int} first_node_id The first Node's ID to create the new Pathfinding Edge with
+/// @param {int} second_node_id The second Node's ID to create the new Pathfinding Edge with
+/// @param {PathfindingEdgeType} edge_type The new created Pathfinding Edge's type, used to determine Pathfinding Behaviours during platforming
+/// @param {string} edge_name The unique name of the new Edge
 function pathfinding_add_edge(first_node_id, second_node_id, edge_type, edge_name = "")
 {
 	// Check if both Nodes share the same Node ID
@@ -235,7 +246,10 @@ function pathfinding_add_edge(first_node_id, second_node_id, edge_type, edge_nam
 	ds_list_add(temp_second_node_edges_list, first_node_id);
 }
 
-/// pathfinding_remove_edge(first_node_id, second_node_id);
+/// @function pathfinding_remove_edge(first_node_id, second_node_id);
+/// @description Deletes the Edge between two given Pathfinding Node IDs in the active Scene
+/// @param {int} first_node_id The first Node's ID in the Pathfinding Edge to delete
+/// @param {int} second_node_id The second Node's ID in the Pathfinding Edge to delete
 function pathfinding_remove_edge(first_node_id, second_node_id)
 {
 	// Check if both Nodes Exist
@@ -298,6 +312,11 @@ function pathfinding_create_edge_weight(first_node_index, second_node_index, edg
 	return temp_weight_struct;
 }
 
+/// @function pathfinding_find_edge_weight(first_node_id, second_node_id);
+/// @description Finds the weight of the Pathfinding Edge between two given Pathfinding Node IDs in the active Scene and returns it as a real value, returns Undefined if the edge does not exist
+/// @param {int} first_node_id The first Node's ID in the Pathfinding Edge find the Weights of
+/// @param {int} second_node_id The second Node's ID in the Pathfinding Edge find the Weights of
+/// @returns {?real} Returns the cumulative weight of the edge between the given Node IDs, and returns Undefined if the Edge does not exist
 function pathfinding_find_edge_weight(first_node_id, second_node_id)
 {
 	// Create Edge ID based on the given Node IDs and Find Edge Index
@@ -318,6 +337,10 @@ function pathfinding_find_edge_weight(first_node_id, second_node_id)
 	return temp_node_edge_struct.distance_weight + temp_node_edge_struct.hazard_weight;
 }
 
+/// @function pathfinding_find_path_weight(path_list);
+/// @description Finds the weight of the Pathfinding Path throughout all of its indexed Pathfinding Node IDs as connected Pathfinding Edges in the active Scene and returns it as a real value
+/// @param {ds_list:int} path_list A list of Node Indexes in a Pathfinding Path to find the cumulative weight of
+/// @returns {real} Returns the cumulative weight of all the edges between the given Pathfinding Path of connected Node IDs
 function pathfinding_find_path_weight(path_list)
 {
 	// Check if Path List contains less than 2 nodes
@@ -343,6 +366,12 @@ function pathfinding_find_path_weight(path_list)
 	return temp_weight;
 }
 
+/// @function pathfinding_recursive(start_node_id, end_node_id, path_list);
+/// @description Finds the shortest Path between Pathfinding Nodes indexed in the active Scene via its Recursive A* Pathfinding Function
+/// @param {int} start_node_id The Pathfinding Node ID of the starting node in the Pathfidning Path to create
+/// @param {int} end_node_id The Pathfinding Node ID of the ending node in the Pathfidning Path to create
+/// @param {ds_list:int} path_list The Pathfinding Path DS List of Pathfinding Node IDs for the recursive function to create from and add to
+/// @returns {?ds_list:int} A Pathfinding Path DS List of Pathfinding Node IDs with the shortest Weight between the two given Pathfinding Node IDs, returns Undefined if the Path is unviable
 function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_create())
 {
 	// Index Start Node in Array
@@ -625,6 +654,8 @@ function pathfinding_get_path(start_x_position, start_y_position, end_x_position
 	return temp_path;
 }
 
+/// @function pathfinding_save_level_data();
+/// @description Saves the Pathfinding Data of the active Scene to a local File
 function pathfinding_save_level_data()
 {
 	// Establish Level File Directory
@@ -711,6 +742,8 @@ function pathfinding_save_level_data()
 	file_text_close(temp_pathfinding_data_file);
 }
 
+/// @function pathfinding_load_level_data();
+/// @description Loads the Pathfinding Data of the active Scene from a local File
 function pathfinding_load_level_data()
 {
 	// Check if Pathfinding Level File Exists
@@ -908,6 +941,8 @@ function pathfinding_load_level_data()
 	file_text_close(temp_pathfinding_data_file);
 }
 
+/// @function pathfinding_clear_level_data();
+/// @description Clears the Pathfinding Data of the active Scene from the GameManager
 function pathfinding_clear_level_data()
 {
 	// Reset Pathfinding Node DS Map & Lists

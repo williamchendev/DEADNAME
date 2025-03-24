@@ -315,17 +315,42 @@ for (var w = 0; w < ds_list_size(windows_ds_list); w++)
 	switch (temp_window.window_type)
 	{
 		case DebugMenuWindowType.ContentScroll:
+			
+		
+			//
 			draw_set_color(color_light_blue);
+			
 			for (var q = 0; q < array_length(temp_window.window_scroll_text); q++)
 			{
+				//
+				var temp_window_scroll_text_line = temp_window.window_scroll_text[q];
+				
+				if (string_width(temp_window_scroll_text_line) > temp_window.window_width - (window_content_text_horizontal_padding * 2))
+				{
+					for (var l = string_length(temp_window_scroll_text_line); l > 0; l--)
+					{
+						//
+						var temp_window_scroll_text_line_truncated = $"{string_copy(temp_window_scroll_text_line, 0, l)}...";
+						
+						if (string_width(temp_window_scroll_text_line_truncated) <= temp_window.window_width - (window_content_text_horizontal_padding * 2))
+						{
+							//
+							temp_window_scroll_text_line = temp_window_scroll_text_line_truncated;
+							break;
+						}
+					}
+				}
+				
+				//
 				draw_text
 				(
 					temp_window.window_x + window_border + window_content_text_horizontal_padding,
 					temp_window.window_y + window_border + window_header + window_content_text_vertical_padding + ((q + 1) * (debug_menu_font_height + 4)),
-					temp_window.window_scroll_text[q]
+					temp_window_scroll_text_line
 				);
 			}
 			
+			//
 			draw_set_color(color_rose_taupe);
 			
 			draw_rectangle

@@ -601,6 +601,34 @@ create_regular_window = function(window_width, window_height, window_title, wind
 
 create_scroll_window = function(window_width, window_height, window_title, window_content, window_scroll_text)
 {
+	//
+	var temp_window_scroll_text = string_split(window_scroll_text, "\n");
+	
+	for (var q = 0; q < array_length(temp_window_scroll_text); q++)
+	{
+		//
+		var temp_window_scroll_text_line = temp_window_scroll_text[q];
+		
+		if (string_width(temp_window_scroll_text_line) > window_width - (window_content_text_horizontal_padding * 2))
+		{
+			for (var l = string_length(temp_window_scroll_text_line); l > 0; l--)
+			{
+				//
+				var temp_window_scroll_text_line_truncated = $"{string_copy(temp_window_scroll_text_line, 0, l)}...";
+				
+				if (string_width(temp_window_scroll_text_line_truncated) <= window_width - (window_content_text_horizontal_padding * 2))
+				{
+					//
+					temp_window_scroll_text_line = temp_window_scroll_text_line_truncated;
+					break;
+				}
+			}
+		}
+		
+		//
+		temp_window_scroll_text[q] = temp_window_scroll_text_line;
+	}
+	
 	with (oDebugMenu)
 	{
 		var temp_window = 
@@ -612,7 +640,7 @@ create_scroll_window = function(window_width, window_height, window_title, windo
 			window_title: window_title,
 			window_type: DebugMenuWindowType.ContentScroll,
 			window_content: window_content,
-			window_scroll_text: string_split(window_scroll_text, "\n"),
+			window_scroll_text: temp_window_scroll_text,
 			window_scroll_index: 0
 		};
 		
