@@ -1,12 +1,19 @@
 /// @description Asset Organization & Creation
 // Iterates through the organized Lighting Engine Objects and performs their behaviours in order, then destroys the worker
 
-// Check if Room is Start Screen
-if (room_get_name(room) == "_TitleScreen")
+// Check if Scene Type is a Platformer
+switch (scene_get_type())
 {
-	// Destroy Instance and Exit Behaviour
-	instance_destroy();
-	return;
+	case SceneType.Platformer:
+		// Ignore Self-Destruct - Scene is a Platformer Level & needs Lighting Engine Initialization
+		break;
+	case SceneType.Title:
+	case SceneType.WorldMap:
+	default:
+		// Destroy Instance and Exit Behaviour
+		instance_destroy();
+		return;
+		break;
 }
 
 // Set Room Width & Height to match Game Size

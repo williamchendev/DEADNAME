@@ -16,7 +16,7 @@ for (var i = 0; i < 200; i++)
 	var debug_path_end_y = irandom_range(-2000, 2000);
 	
 	// Recalculate Path
-	debug_path = pathfinding_get_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
+	debug_path = pathfinding_create_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
 }
 
 

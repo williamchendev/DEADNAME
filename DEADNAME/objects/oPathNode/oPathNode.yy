@@ -9,8 +9,8 @@
   "name":"oPathNode",
   "overriddenProperties":[],
   "parent":{
-    "name":"Pathfinding",
-    "path":"folders/Objects/System/Pathfinding.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

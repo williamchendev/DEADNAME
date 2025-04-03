@@ -34,6 +34,7 @@ unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End
 animation_asymptotic_tolerance = 0.1;
 
 jump_peak_threshold = 0.8;
+jump_pathfinding_behaviour_target_padding = -3;
 squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
@@ -159,6 +160,17 @@ input_reload = false;
 
 input_cursor_x = 0;
 input_cursor_y = 0;
+
+// Pathfinding Variables
+pathfinding_path = undefined;
+pathfinding_path_index = 0;
+
+pathfinding_path_start_x = 0;
+pathfinding_path_start_y = 0;
+pathfinding_path_end_x = 0;
+pathfinding_path_end_y = 0;
+
+pathfinding_jump = false;
 
 // Trig Variables
 trig_sine = 0;

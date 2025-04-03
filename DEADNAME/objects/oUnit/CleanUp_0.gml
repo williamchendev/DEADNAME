@@ -23,3 +23,10 @@ if (weapon_equipped != noone)
 // Clean Up Unit's Platform DS List
 ds_list_destroy(platform_list);
 platform_list = -1;
+
+// Clean Up Unit's Pathfinding Path DS List
+if (!is_undefined(pathfinding_path))
+{
+	pathfinding_delete_path(pathfinding_path);
+	pathfinding_path = undefined;
+}

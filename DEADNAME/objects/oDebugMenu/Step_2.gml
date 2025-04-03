@@ -132,7 +132,7 @@ for (var w = 0; w < ds_list_size(windows_ds_list); w++)
         temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset - (window_exit_button_size / 2), 
 		temp_window.window_y + (window_header / 2) - (window_exit_button_size / 2) + 1,
 		temp_window.window_x + temp_window.window_width + (window_border * 2) - window_exit_button_horizontal_offset + (window_exit_button_size / 2), 
-		temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2) + 1,
+		temp_window.window_y + (window_header / 2) + (window_exit_button_size / 2) + 1
     );
     
     if (temp_window_exit_button_collision)
@@ -244,7 +244,7 @@ if (mouse_check_button_pressed(mb_left))
     	debug_path_start_y = GameManager.cursor_y + LightingEngine.render_y;
     	
     	// Recalculate Path
-    	debug_path = pathfinding_get_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
+    	debug_path = pathfinding_create_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
     	
     	// Print Out Path Details
     	show_debug_message("// Path Details");
@@ -282,7 +282,7 @@ else if (mouse_check_button_pressed(mb_right))
     	debug_path_end_y = GameManager.cursor_y + LightingEngine.render_y;
     	
     	// Recalculate Path
-    	debug_path = pathfinding_get_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
+    	debug_path = pathfinding_create_path(debug_path_start_x, debug_path_start_y, debug_path_end_x, debug_path_end_y);
     	
     	// Print Out Path Details
     	show_debug_message("// Path Details");

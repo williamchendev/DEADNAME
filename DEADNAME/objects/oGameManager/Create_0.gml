@@ -95,6 +95,9 @@ game_width = 640;
 game_height = 360;
 game_scale = max(1, round(display_get_width() / game_width) - 1);
 
+// Player Unit Variables
+player_unit = undefined;
+
 // Resolution Methods
 set_game_resolution_mode = function(resolution_mode)
 {

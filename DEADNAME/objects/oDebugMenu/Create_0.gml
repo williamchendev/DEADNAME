@@ -7,6 +7,9 @@ enum DebugMenuWindowType
 	ContentScroll
 }
 
+// Debug - Reset Sprite Index
+sprite_index = -1;
+
 // Debug Menu Font Settings
 debug_menu_font = font_Inno;
 debug_menu_font_height = 1;

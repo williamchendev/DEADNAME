@@ -22,11 +22,203 @@ if (player_input)
 	input_cursor_y = GameManager.cursor_y + LightingEngine.render_y;
 	
 	// DEBUG
+	GameManager.player_unit = id;
 	LightingEngine.render_position(x - (GameManager.game_width * 0.5), y - (GameManager.game_height * 0.7));
 }
 else
 {
-	
+	//
+	if (is_undefined(GameManager.player_unit))
+	{
+		
+	}
+	else if (is_undefined(pathfinding_path) or (x_velocity == 0 and GameManager.player_unit.x_velocity == 0 and abs(x - GameManager.player_unit.x) < 24))
+	{
+		//
+		pathfinding_path_start_x = x;
+		pathfinding_path_start_y = y;
+		pathfinding_path_end_x = GameManager.player_unit.x + (random_range(25, 84) * (random(1.0) > 0.5 ? 1 : -1));
+		pathfinding_path_end_y = GameManager.player_unit.y;
+		
+		//
+		pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
+		pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : pathfinding_path.path_size >= 2 ? 1 : 0;
+	}
+	else if (abs(x - GameManager.player_unit.x) > 84 or abs(y - GameManager.player_unit.y) > 48 or pathfinding_path_index < pathfinding_path.path_size)
+	{
+		//
+		var temp_recalc = GameManager.player_unit.x_velocity != 0 and point_distance(GameManager.player_unit.x, GameManager.player_unit.y, ds_list_find_value(pathfinding_path, ds_list_size(pathfinding_path) - 1).position_x, ds_list_find_value(pathfinding_path, ds_list_size(pathfinding_path) - 1).position_y) > 32;
+		
+		if (temp_recalc)
+		{
+			pathfinding_path_start_x = x;
+			pathfinding_path_start_y = y;
+			pathfinding_path_end_x = GameManager.player_unit.x + (random_range(25, 84) * (random(1.0) > 0.5 ? 1 : -1));
+			pathfinding_path_end_y = GameManager.player_unit.y;
+			
+			var temp_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
+			
+			ds_list_destroy(pathfinding_path);
+			pathfinding_path = undefined;
+			
+			pathfinding_path = temp_path;
+			pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+		}
+		
+		if (!is_undefined(pathfinding_path))
+		{
+			//
+			while (pathfinding_path_index < pathfinding_path.path_size)
+			{
+				//
+				var temp_pathfinding_path_target = ds_list_find_value(pathfinding_path, pathfinding_path_index);
+				
+				var temp_pathfinding_target_horizontal_position_reached = false;
+				var temp_pathfinding_target_vertical_position_reached = true;
+				
+				//
+				if (x - run_spd > temp_pathfinding_path_target.position_x)
+				{
+					//
+					input_left = true;
+					input_right = false;
+				}
+				else if (x + run_spd < temp_pathfinding_path_target.position_x)
+				{
+					//
+					input_left = false;
+					input_right = true;
+				}
+				else
+				{
+					//
+					input_left = false;
+					input_right = false;
+					
+					//
+					temp_pathfinding_target_horizontal_position_reached = true;
+				}
+				
+				//
+				if (temp_pathfinding_path_target.edge_type == PathfindingEdgeType.JumpEdge)
+				{
+					//
+					temp_pathfinding_target_vertical_position_reached = false;
+					
+					//
+					if (ds_list_find_value(pathfinding_path, max(0, pathfinding_path_index - 1)).position_y > ds_list_find_value(pathfinding_path, pathfinding_path_index).position_y)
+					{
+						if (y > temp_pathfinding_path_target.position_y + (grounded ? 0 : jump_pathfinding_behaviour_target_padding))
+						{
+							//
+							if (!grounded)
+							{
+								input_jump_hold = true;
+								pathfinding_jump = false;
+							
+								if (y_velocity > 0) 
+								{
+									input_double_jump = true;
+								}
+							}
+							else
+							{
+								if (pathfinding_jump)
+								{
+									input_jump_hold = true;
+									pathfinding_jump = false;
+								}
+								else if (alarm_get(1) == -1 || alarm_get(1) == 0)
+								{
+									alarm_set(1, 15);
+								}
+							}
+						}
+						else
+						{
+							input_jump_hold = false;
+							input_double_jump = false;
+							pathfinding_jump = false;
+						}
+					}
+					else
+					{
+						input_jump_hold = false;
+						input_double_jump = false;
+						pathfinding_jump = false;
+					}
+					
+					if (y < temp_pathfinding_path_target.position_y)
+					{
+						//
+						if (y_velocity == 0)
+						{
+							input_drop_down = true;
+						}
+						else
+						{
+							input_drop_down = false;
+						}
+					}
+					else
+					{
+						input_drop_down = false;
+					}
+					
+					if (abs(y - temp_pathfinding_path_target.position_y) < 1)
+					{
+						temp_pathfinding_target_vertical_position_reached = true;
+					}
+				}
+				else
+				{
+					input_jump_hold = false;
+					input_double_jump = false;
+					input_drop_down = false;
+				}
+				
+				//
+				if (temp_pathfinding_target_horizontal_position_reached and temp_pathfinding_target_vertical_position_reached)
+				{
+					pathfinding_path_index++;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+	else 
+	{
+		//
+		input_left = false;
+		input_right = false;
+		
+		if (abs(x - GameManager.player_unit.x) >= 24)
+		{
+			// Preset Player Controls
+			input_left = GameManager.player_unit.input_left;
+			input_right = GameManager.player_unit.input_right;
+			
+			if (input_left or input_right) 
+			{
+				var temp_hypothetical_horizontal_movement = (input_left ? -1 : 1) * (weapon_aim || unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload ? walk_spd : run_spd);
+				
+				if (abs((x + temp_hypothetical_horizontal_movement) - GameManager.player_unit.x) > 64)
+				{
+					input_left = false;
+					input_right = false;
+				}
+			}
+		}
+		
+		// 
+		input_drop_down = GameManager.player_unit.input_drop_down;
+		
+		input_jump_hold = GameManager.player_unit.input_jump_hold;
+		input_double_jump = GameManager.player_unit.input_double_jump;
+	}
 }
 
 // MOVEMENT //
@@ -477,6 +669,10 @@ else
 				
 				if (!platform_free(x, y + 1, platform_list))
 				{
+					// Reset Velocities
+					y_velocity = 0;
+					grav_velocity = 0;
+					
 					// Hit collider below Unit
 					grounded = true;
 					double_jump = true;
