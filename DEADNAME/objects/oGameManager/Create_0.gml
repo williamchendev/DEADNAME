@@ -18,6 +18,9 @@ sprite_index = noone;
 // Game Manager Singleton
 global.game_manager = id;
 
+// Squad Behaviour Director
+squad_behaviour_director = undefined;
+
 // Resolution Settings
 enum GameResolutionMode
 {

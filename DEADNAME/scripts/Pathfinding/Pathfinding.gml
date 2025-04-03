@@ -459,6 +459,7 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	path_list = -1;
 	
 	// Return Compared Path List
+	// Feather ignore once GM1045
 	return temp_path_list;
 }
 

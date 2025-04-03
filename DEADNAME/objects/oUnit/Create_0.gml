@@ -7,6 +7,9 @@ lighting_engine_add_unit(id);
 // Unit Behaviour Settings
 canmove = true;
 
+// Health Settings
+health = 3;
+
 // Physics Settings
 run_spd = 3; // Running Speed
 walk_spd = 1; // Walk Speed
