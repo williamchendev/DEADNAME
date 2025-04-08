@@ -235,6 +235,7 @@
     {"name":"font_Small","order":1,"path":"fonts/font_Small/font_Small.yy",},
     {"name":"font_Title","order":3,"path":"fonts/font_Title/font_Title.yy",},
     {"name":"oDebug_MovingPointLight","order":1,"path":"objects/oDebug_MovingPointLight/oDebug_MovingPointLight.yy",},
+    {"name":"oDebugCreateSquad","order":2,"path":"objects/oDebugCreateSquad/oDebugCreateSquad.yy",},
     {"name":"oDebugStressTest","order":7,"path":"objects/oDebugStressTest/oDebugStressTest.yy",},
     {"name":"oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill","order":2,"path":"objects/oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill/oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill.yy",},
     {"name":"oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks","order":3,"path":"objects/oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks/oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks.yy",},

@@ -1,211 +1,85 @@
 /// @description Unit Update Event
 
-// INPUT //
-#region Input Behaviour
-if (player_input) 
+// Unit Behaviour //
+#region Unit Behaviour
+if (!player_input)
 {
-	// Preset Player Controls
-	input_left = keyboard_check(GameManager.left_check);
-	input_right = keyboard_check(GameManager.right_check);
-
-	input_drop_down = keyboard_check_pressed(GameManager.down_check);
+	// Establish Behaviour Variables
+	var temp_follow_behaviour_unit_instance = undefined;
 	
-	input_jump_hold = keyboard_check(GameManager.jump_check);
-	input_double_jump = keyboard_check_pressed(GameManager.jump_check);
-	
-	input_attack = mouse_check_button(mb_left);
-	input_aim = mouse_check_button(mb_right);
-	
-	input_reload = keyboard_check_pressed(GameManager.reload_check);
-	
-	input_cursor_x = GameManager.cursor_x + LightingEngine.render_x;
-	input_cursor_y = GameManager.cursor_y + LightingEngine.render_y;
-	
-	// DEBUG
-	GameManager.player_unit = id;
-	LightingEngine.render_position(x - (GameManager.game_width * 0.5), y - (GameManager.game_height * 0.7));
-}
-else
-{
-	//
-	if (is_undefined(GameManager.player_unit))
+	// Squad Behaviour
+	if (squad_id != SquadIDNull)
+	{
+		// Establish Squad Index
+		var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
+		
+		// Check if Squad Index Exists
+		if (!is_undefined(temp_squad_index) and ds_list_find_value(GameManager.squad_behaviour_director.squad_exists_list, temp_squad_index))
+	    {
+	        // Establish Squad Leader
+	        var temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
+	        
+	        // Behaviour tree if Squad Leader or not
+	        if (id == temp_squad_leader_instance)
+	        {
+	        	
+	        }
+	        else if (temp_squad_leader_instance.player_input and abs(x - temp_squad_leader_instance.x) < 64 and abs(y - temp_squad_leader_instance.y) < 48 and !pathfinding_path_ended and !temp_squad_leader_instance.pathfinding_path_ended)
+	        {
+	        	//
+	        	temp_follow_behaviour_unit_instance = temp_squad_leader_instance;
+	        }
+	        else if (!pathfinding_path_ended and pathfinding_recalculate)
+	    	{
+	    		//
+	    		pathfinding_recalculate = false;
+	    		
+	    		//
+	    		pathfinding_path_start_x = x;
+	    		pathfinding_path_start_y = y;
+	    		
+	    		//
+				var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
+				
+				//
+				pathfinding_delete_path(pathfinding_path);
+				pathfinding_path = undefined;
+				
+				//
+				pathfinding_path = temp_recalculated_path;
+				pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+	    	}
+	    }
+	    else
+	    {
+	    	// Squad does not exist - Remove self from Squad
+	    	squad_id = SquadIDNull;
+	    }
+	}
+	else
 	{
 		
 	}
-	else if (is_undefined(pathfinding_path) or (x_velocity == 0 and GameManager.player_unit.x_velocity == 0 and abs(x - GameManager.player_unit.x) < 24))
-	{
-		//
-		pathfinding_path_start_x = x;
-		pathfinding_path_start_y = y;
-		pathfinding_path_end_x = GameManager.player_unit.x + (random_range(25, 84) * (random(1.0) > 0.5 ? 1 : -1));
-		pathfinding_path_end_y = GameManager.player_unit.y;
-		
-		//
-		pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
-		pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : pathfinding_path.path_size >= 2 ? 1 : 0;
-	}
-	else if (abs(x - GameManager.player_unit.x) > 84 or abs(y - GameManager.player_unit.y) > 48 or pathfinding_path_index < pathfinding_path.path_size)
-	{
-		//
-		var temp_recalc = GameManager.player_unit.x_velocity != 0 and point_distance(GameManager.player_unit.x, GameManager.player_unit.y, ds_list_find_value(pathfinding_path, ds_list_size(pathfinding_path) - 1).position_x, ds_list_find_value(pathfinding_path, ds_list_size(pathfinding_path) - 1).position_y) > 32;
-		
-		if (temp_recalc)
-		{
-			pathfinding_path_start_x = x;
-			pathfinding_path_start_y = y;
-			pathfinding_path_end_x = GameManager.player_unit.x + (random_range(25, 84) * (random(1.0) > 0.5 ? 1 : -1));
-			pathfinding_path_end_y = GameManager.player_unit.y;
-			
-			var temp_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
-			
-			ds_list_destroy(pathfinding_path);
-			pathfinding_path = undefined;
-			
-			pathfinding_path = temp_path;
-			pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
-		}
-		
-		if (!is_undefined(pathfinding_path))
-		{
-			//
-			while (pathfinding_path_index < pathfinding_path.path_size)
-			{
-				//
-				var temp_pathfinding_path_target = ds_list_find_value(pathfinding_path, pathfinding_path_index);
-				
-				var temp_pathfinding_target_horizontal_position_reached = false;
-				var temp_pathfinding_target_vertical_position_reached = true;
-				
-				//
-				if (x - run_spd > temp_pathfinding_path_target.position_x)
-				{
-					//
-					input_left = true;
-					input_right = false;
-				}
-				else if (x + run_spd < temp_pathfinding_path_target.position_x)
-				{
-					//
-					input_left = false;
-					input_right = true;
-				}
-				else
-				{
-					//
-					input_left = false;
-					input_right = false;
-					
-					//
-					temp_pathfinding_target_horizontal_position_reached = true;
-				}
-				
-				//
-				if (temp_pathfinding_path_target.edge_type == PathfindingEdgeType.JumpEdge)
-				{
-					//
-					temp_pathfinding_target_vertical_position_reached = false;
-					
-					//
-					if (ds_list_find_value(pathfinding_path, max(0, pathfinding_path_index - 1)).position_y > ds_list_find_value(pathfinding_path, pathfinding_path_index).position_y)
-					{
-						if (y > temp_pathfinding_path_target.position_y + (grounded ? 0 : jump_pathfinding_behaviour_target_padding))
-						{
-							//
-							if (!grounded)
-							{
-								input_jump_hold = true;
-								pathfinding_jump = false;
-							
-								if (y_velocity > 0) 
-								{
-									input_double_jump = true;
-								}
-							}
-							else
-							{
-								if (pathfinding_jump)
-								{
-									input_jump_hold = true;
-									pathfinding_jump = false;
-								}
-								else if (alarm_get(1) == -1 || alarm_get(1) == 0)
-								{
-									alarm_set(1, 15);
-								}
-							}
-						}
-						else
-						{
-							input_jump_hold = false;
-							input_double_jump = false;
-							pathfinding_jump = false;
-						}
-					}
-					else
-					{
-						input_jump_hold = false;
-						input_double_jump = false;
-						pathfinding_jump = false;
-					}
-					
-					if (y < temp_pathfinding_path_target.position_y)
-					{
-						//
-						if (y_velocity == 0)
-						{
-							input_drop_down = true;
-						}
-						else
-						{
-							input_drop_down = false;
-						}
-					}
-					else
-					{
-						input_drop_down = false;
-					}
-					
-					if (abs(y - temp_pathfinding_path_target.position_y) < 1)
-					{
-						temp_pathfinding_target_vertical_position_reached = true;
-					}
-				}
-				else
-				{
-					input_jump_hold = false;
-					input_double_jump = false;
-					input_drop_down = false;
-				}
-				
-				//
-				if (temp_pathfinding_target_horizontal_position_reached and temp_pathfinding_target_vertical_position_reached)
-				{
-					pathfinding_path_index++;
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-	}
-	else 
-	{
-		//
+	
+    
+    // Universal Pathfinding Movement Behaviour
+    if (!is_undefined(temp_follow_behaviour_unit_instance))
+    {
+    	//
 		input_left = false;
 		input_right = false;
 		
-		if (abs(x - GameManager.player_unit.x) >= 24)
+		if (abs(x - temp_follow_behaviour_unit_instance.x) >= 24)
 		{
 			// Preset Player Controls
-			input_left = GameManager.player_unit.input_left;
-			input_right = GameManager.player_unit.input_right;
+			input_left = temp_follow_behaviour_unit_instance.input_left;
+			input_right = temp_follow_behaviour_unit_instance.input_right;
 			
 			if (input_left or input_right) 
 			{
 				var temp_hypothetical_horizontal_movement = (input_left ? -1 : 1) * (weapon_aim || unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload ? walk_spd : run_spd);
 				
-				if (abs((x + temp_hypothetical_horizontal_movement) - GameManager.player_unit.x) > 64)
+				if (abs((x + temp_hypothetical_horizontal_movement) - temp_follow_behaviour_unit_instance.x) > 64)
 				{
 					input_left = false;
 					input_right = false;
@@ -214,11 +88,167 @@ else
 		}
 		
 		// 
-		input_drop_down = GameManager.player_unit.input_drop_down;
+		input_drop_down = temp_follow_behaviour_unit_instance.input_drop_down;
 		
-		input_jump_hold = GameManager.player_unit.input_jump_hold;
-		input_double_jump = GameManager.player_unit.input_double_jump;
-	}
+		//
+		input_jump_hold = temp_follow_behaviour_unit_instance.input_jump_hold;
+		input_double_jump = temp_follow_behaviour_unit_instance.input_double_jump;
+		
+		//
+		if (!is_undefined(pathfinding_path) and pathfinding_path.path_size > 0)
+		{
+			// Toggle Recalculate Pathfinding
+			pathfinding_recalculate = true;
+			
+			// Establish Final Target Position in Path
+			var temp_pathfinding_path_target_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
+			var temp_pathfinding_path_target_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
+			
+			if (abs(x - temp_pathfinding_path_target_position_x) < run_spd and abs(y - temp_pathfinding_path_target_position_y) < 1)
+			{
+				pathfinding_path_index = pathfinding_path.path_size;
+				pathfinding_path_ended = true;
+				pathfinding_recalculate = false;
+			}
+		}
+    }
+    else if (!pathfinding_path_ended and !is_undefined(pathfinding_path) and pathfinding_path_index < pathfinding_path.path_size)
+    {
+    	//
+		while (pathfinding_path_index < pathfinding_path.path_size)
+		{
+			//
+			var temp_pathfinding_path_target_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path_index);
+			var temp_pathfinding_path_target_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path_index);
+			var temp_pathfinding_path_target_edge_id = ds_list_find_value(pathfinding_path.edge_id, pathfinding_path_index);
+			var temp_pathfinding_path_target_edge_type = ds_list_find_value(pathfinding_path.edge_type, pathfinding_path_index);
+			
+			var temp_pathfinding_target_horizontal_position_reached = false;
+			var temp_pathfinding_target_vertical_position_reached = true;
+			
+			//
+			if (x - run_spd > temp_pathfinding_path_target_position_x)
+			{
+				//
+				input_left = true;
+				input_right = false;
+			}
+			else if (x + run_spd < temp_pathfinding_path_target_position_x)
+			{
+				//
+				input_left = false;
+				input_right = true;
+			}
+			else
+			{
+				//
+				input_left = false;
+				input_right = false;
+				
+				//
+				temp_pathfinding_target_horizontal_position_reached = true;
+			}
+			
+			//
+			if (temp_pathfinding_path_target_edge_type == PathfindingEdgeType.JumpEdge)
+			{
+				//
+				temp_pathfinding_target_vertical_position_reached = false;
+				
+				//
+				if (ds_list_find_value(pathfinding_path.position_y, max(0, pathfinding_path_index - 1)) > ds_list_find_value(pathfinding_path.position_y, pathfinding_path_index))
+				{
+					if (y > temp_pathfinding_path_target_position_y + (grounded ? 0 : jump_pathfinding_behaviour_target_padding))
+					{
+						//
+						if (!grounded)
+						{
+							input_jump_hold = true;
+							pathfinding_jump = false;
+						
+							if (y_velocity > 0) 
+							{
+								input_double_jump = true;
+							}
+						}
+						else
+						{
+							if (pathfinding_jump)
+							{
+								input_jump_hold = true;
+								pathfinding_jump = false;
+							}
+							else if (alarm_get(1) == -1 || alarm_get(1) == 0)
+							{
+								alarm_set(1, 15);
+							}
+						}
+					}
+					else
+					{
+						input_jump_hold = false;
+						input_double_jump = false;
+						pathfinding_jump = false;
+					}
+				}
+				else
+				{
+					input_jump_hold = false;
+					input_double_jump = false;
+					pathfinding_jump = false;
+				}
+				
+				if (y < temp_pathfinding_path_target_position_y)
+				{
+					//
+					if (y_velocity == 0)
+					{
+						input_drop_down = true;
+					}
+					else
+					{
+						input_drop_down = false;
+					}
+				}
+				else
+				{
+					input_drop_down = false;
+				}
+				
+				if (abs(y - temp_pathfinding_path_target_position_y) < 1)
+				{
+					temp_pathfinding_target_vertical_position_reached = true;
+				}
+			}
+			else
+			{
+				input_jump_hold = false;
+				input_double_jump = false;
+				input_drop_down = false;
+			}
+			
+			//
+			if (temp_pathfinding_target_horizontal_position_reached and temp_pathfinding_target_vertical_position_reached)
+			{
+				pathfinding_path_index++;
+				pathfinding_path_ended = (pathfinding_path_index == pathfinding_path.path_size);
+			}
+			else
+			{
+				break;
+			}
+		}
+    }
+    else
+    {
+    	input_left = false;
+		input_right = false;
+		
+		input_drop_down = false;
+		
+		input_jump_hold = false;
+		input_double_jump = false;
+    }
 }
 
 // MOVEMENT //

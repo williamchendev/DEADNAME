@@ -463,13 +463,13 @@ function pathfinding_recursive(start_node_id, end_node_id, path_list = ds_list_c
 	return temp_path_list;
 }
 
-/// @function pathfinder_get_closest_point_on_edge(x_position, y_position);
+/// @function pathfinding_get_closest_point_on_edge(x_position, y_position);
 /// @description Finds the closest coordinate that exists on any oPathEdge that exists in the room
 /// @param {real} x_position The X position to check for the closest coordinate to on a oPathEdge
 /// @param {real} y_position The Y position to check for the closest coordinate to on a oPathEdge
 /// @param {?PathfindingEdgeType} edge_type Edge Type to pass as an optional argument, if this value is not undefined this function will only return a closest point on an edge that has a matching edge type to the one given
 /// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y] and the Edge id it exists on [struct.edge_id]
-function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type = undefined)
+function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type = undefined)
 {
 	// Establish Return Variables
 	var temp_position_x = x_position;
@@ -534,8 +534,8 @@ function pathfinder_get_closest_point_on_edge(x_position, y_position, edge_type 
 function pathfinding_create_path(start_x_position, start_y_position, end_x_position, end_y_position)
 {
 	// Find Edge Data for Start and End Coordinates
-	var temp_start_edge_data = pathfinder_get_closest_point_on_edge(start_x_position, start_y_position, undefined);
-	var temp_end_edge_data = pathfinder_get_closest_point_on_edge(end_x_position, end_y_position, PathfindingEdgeType.DefaultEdge);
+	var temp_start_edge_data = pathfinding_get_closest_point_on_edge(start_x_position, start_y_position, undefined);
+	var temp_end_edge_data = pathfinding_get_closest_point_on_edge(end_x_position, end_y_position, PathfindingEdgeType.DefaultEdge);
 	
 	// Check if Edge Data is Viable
 	if (is_undefined(temp_start_edge_data.edge_id) or is_undefined(temp_end_edge_data.edge_id)) 
@@ -621,7 +621,6 @@ function pathfinding_create_path(start_x_position, start_y_position, end_x_posit
 	
 	// Add Start Position, Edge ID, and Edge Type
 	var temp_start_edge_type = ds_list_find_value(GameManager.pathfinding_edge_types_list, temp_start_edge_index);
-	ds_list_add(temp_path, { position_x: temp_start_edge_data.return_x, position_y: temp_start_edge_data.return_y, edge_id: temp_start_edge_data.edge_id, edge_type: temp_start_edge_type });
 	
 	ds_list_add(temp_path_position_x_list, temp_start_edge_data.return_x);
 	ds_list_add(temp_path_position_y_list, temp_start_edge_data.return_y);
@@ -723,16 +722,23 @@ function pathfinding_delete_path(pathfinding_path)
 function pathfinding_recalculate_path(old_path_index, old_path, new_path)
 {
 	//
-	var temp_old_path_target = ds_list_find_value(old_path, clamp(old_path_index, 0, ds_list_size(old_path) - 1));
+	var temp_old_path_index_clamped = clamp(old_path_index, 0, old_path.path_size - 1);
+	
+	//
+	var temp_old_path_position_x = ds_list_find_value(old_path.position_x, temp_old_path_index_clamped);
+	var temp_old_path_position_y = ds_list_find_value(old_path.position_y, temp_old_path_index_clamped);
+	var temp_old_path_edge_id = ds_list_find_value(old_path.edge_id, temp_old_path_index_clamped);
 	
 	//
 	var temp_new_path_index = 0;
 	
-	for (var i = ds_list_size(new_path) - 1; i >= 0; i--)
+	for (var i = new_path.path_size - 1; i >= 0; i--)
 	{
-		var temp_new_path_target = ds_list_find_value(new_path, i);
+		var temp_new_path_position_x = ds_list_find_value(new_path.position_x, i);
+		var temp_new_path_position_y = ds_list_find_value(new_path.position_y, i);
+		var temp_new_path_edge_id = ds_list_find_value(new_path.edge_id, i);
 		
-		if (temp_old_path_target.edge_id == temp_new_path_target.edge_id and temp_old_path_target.position_x == temp_new_path_target.position_x and temp_old_path_target.position_y == temp_new_path_target.position_y)
+		if (temp_old_path_edge_id == temp_new_path_edge_id and temp_old_path_position_x == temp_new_path_position_x and temp_old_path_position_y == temp_new_path_position_y)
 		{
 			temp_new_path_index = i;
 			break;
@@ -742,8 +748,14 @@ function pathfinding_recalculate_path(old_path_index, old_path, new_path)
 	//
 	for (var q = 1; q < temp_new_path_index; q++)
 	{
-		ds_list_delete(new_path, 1);
+		ds_list_delete(new_path.position_x, 1);
+		ds_list_delete(new_path.position_y, 1);
+		ds_list_delete(new_path.edge_id, 1);
+		ds_list_delete(new_path.edge_type, 1);
 	}
+	
+	//
+	new_path.path_size = ds_list_size(new_path.edge_id);
 	
 	//
 	return new_path;

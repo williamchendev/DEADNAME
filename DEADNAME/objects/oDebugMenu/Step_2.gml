@@ -331,5 +331,5 @@ if (mouse_check_button_released(mb_left))
 // Pathfinding Widgets
 if (pathfinding_widgets_enabled)
 {
-	debug_pathfinding_closest_point = pathfinder_get_closest_point_on_edge(GameManager.cursor_x + LightingEngine.render_x, GameManager.cursor_y + LightingEngine.render_y);
+	debug_pathfinding_closest_point = pathfinding_get_closest_point_on_edge(GameManager.cursor_x + LightingEngine.render_x, GameManager.cursor_y + LightingEngine.render_y);
 }

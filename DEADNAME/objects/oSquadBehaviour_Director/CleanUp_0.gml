@@ -1,14 +1,14 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-//
+// Destroy DS Maps
 ds_map_destroy(squad_ids_map);
 squad_ids_map = -1;
 
 ds_map_destroy(squad_factions_map);
 squad_factions_map = -1;
 
-//
+// Destroy DS Lists
 ds_list_destroy(squad_exists_list);
 squad_exists_list = -1;
 
@@ -23,6 +23,15 @@ squad_faction_list = -1;
 
 ds_list_destroy(squad_behaviour_list);
 squad_behaviour_list = -1;
+
+ds_list_destroy(squad_sub_behaviour_list);
+squad_sub_behaviour_list = -1;
+
+ds_list_destroy(squad_movement_list);
+squad_movement_list = -1;
+
+ds_list_destroy(squad_movement_target_list);
+squad_movement_target_list = -1;
 
 ds_list_destroy(squad_luck_list);
 squad_luck_list = -1;

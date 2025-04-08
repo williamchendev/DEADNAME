@@ -68,7 +68,7 @@ fps_counter = false;
 fps_counter_width = 60;
 fps_counter_height = 8;
 
-debug_pathfinding_closest_point = pathfinder_get_closest_point_on_edge(0, 0, PathfindingEdgeType.DefaultEdge);
+debug_pathfinding_closest_point = pathfinding_get_closest_point_on_edge(0, 0, PathfindingEdgeType.DefaultEdge);
 
 debug_path = undefined;
 debug_path_start_x = 0;

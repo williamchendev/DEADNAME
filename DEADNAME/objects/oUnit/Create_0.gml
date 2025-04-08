@@ -64,9 +64,6 @@ firearm_idle_safety_angle = -15;
 firearm_moving_safety_angle = -45;
 firearm_reload_safety_angle = 15;
 
-// Unit Behaviour Variables
-ground_contact_vertical_offset = 0;
-
 // Physics Variables
 platform_list = ds_list_create();
 
@@ -97,6 +94,8 @@ draw_yscale = 1;
 
 draw_angle = 0;
 draw_angle_value = 0;
+
+ground_contact_vertical_offset = 0;
 
 hand_fumble_animation_timer = 0;
 hand_fumble_animation_cycle_timer = 0;
@@ -167,6 +166,9 @@ input_cursor_y = 0;
 // Pathfinding Variables
 pathfinding_path = undefined;
 pathfinding_path_index = 0;
+pathfinding_path_ended = false;
+
+pathfinding_recalculate = false;
 
 pathfinding_path_start_x = 0;
 pathfinding_path_start_y = 0;
