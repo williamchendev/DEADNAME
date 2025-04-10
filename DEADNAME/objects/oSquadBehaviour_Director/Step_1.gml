@@ -91,6 +91,10 @@ repeat (squad_count)
                 
                 pathfinding_recalculate = false;
                 pathfinding_path_ended = false;
+                pathfinding_jump = true;
+                
+                pathfinding_delete_path(pathfinding_path);
+                pathfinding_path = undefined;
                 
                 pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
                 pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
@@ -123,6 +127,10 @@ repeat (squad_count)
                     
                     pathfinding_recalculate = false;
                     pathfinding_path_ended = false;
+                    pathfinding_jump = true;
+                    
+                    pathfinding_delete_path(pathfinding_path);
+                    pathfinding_path = undefined;
                     
                     pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
                     pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);

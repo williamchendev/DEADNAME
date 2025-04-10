@@ -175,7 +175,7 @@ pathfinding_path_start_y = 0;
 pathfinding_path_end_x = 0;
 pathfinding_path_end_y = 0;
 
-pathfinding_jump = false;
+pathfinding_jump = true;
 
 // Trig Variables
 trig_sine = 0;

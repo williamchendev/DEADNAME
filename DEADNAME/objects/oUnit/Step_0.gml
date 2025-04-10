@@ -32,9 +32,6 @@ if (!player_input)
 	        else if (!pathfinding_path_ended and pathfinding_recalculate)
 	    	{
 	    		//
-	    		pathfinding_recalculate = false;
-	    		
-	    		//
 	    		pathfinding_path_start_x = x;
 	    		pathfinding_path_start_y = y;
 	    		
@@ -44,6 +41,10 @@ if (!player_input)
 				//
 				pathfinding_delete_path(pathfinding_path);
 				pathfinding_path = undefined;
+				
+				//
+				pathfinding_recalculate = false;
+				pathfinding_jump = true;
 				
 				//
 				pathfinding_path = temp_recalculated_path;
@@ -230,6 +231,10 @@ if (!player_input)
 			//
 			if (temp_pathfinding_target_horizontal_position_reached and temp_pathfinding_target_vertical_position_reached)
 			{
+				//
+				pathfinding_jump = true;
+				
+				//
 				pathfinding_path_index++;
 				pathfinding_path_ended = (pathfinding_path_index == pathfinding_path.path_size);
 			}
