@@ -40,6 +40,9 @@ squad_movement_target_list = -1;
 ds_list_destroy(squad_luck_list);
 squad_luck_list = -1;
 
+ds_list_destroy(squad_direction_list);
+squad_direction_list = -1;
+
 ds_list_destroy(squad_leader_list);
 squad_leader_list = -1;
 

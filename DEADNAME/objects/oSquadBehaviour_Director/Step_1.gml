@@ -100,10 +100,22 @@ repeat (squad_count)
                 pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
             }
             
-            //
-            var temp_squad_spacing_count = 0;
-            var temp_squad_spacing_padding = 1;
-            var temp_squad_spacing_direction = 1;
+            // Establish Squad Spacing Variables
+            var temp_squad_spacing_count = -((ds_list_size(temp_squad_unit_instances_list) - 1) div 2);
+            
+            // Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
+            if ((ds_list_size(temp_squad_unit_instances_list) - 1) mod 2 == 1)
+            {
+            	if (!is_undefined(temp_squad_leader_instance.pathfinding_path) and temp_squad_leader_instance.pathfinding_path.path_size >= 2)
+	            {
+	            	var temp_squad_spacing_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 1);
+	            	var temp_squad_spacing_second_to_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 2);
+	            	var temp_squad_spacing_last_path_position_direction = sign(temp_squad_spacing_last_path_position_x - temp_squad_spacing_second_to_last_path_position_x);
+	            	temp_squad_spacing_count += (temp_squad_spacing_last_path_position_direction == 0 ? ds_list_find_value(squad_direction_list, temp_squad_index) : temp_squad_spacing_last_path_position_direction) == -1 ? -1 : 0;
+	            }
+            }
+            
+            show_debug_message(temp_squad_spacing_count);
             
             for (var temp_pathfinding_squad_unit_index = 0; temp_pathfinding_squad_unit_index < ds_list_size(temp_squad_unit_instances_list); temp_pathfinding_squad_unit_index++)
             {
@@ -122,7 +134,7 @@ repeat (squad_count)
                     pathfinding_path_start_x = x;
                     pathfinding_path_start_y = y;
                     
-                    pathfinding_path_end_x = temp_squad_leader_instance.pathfinding_path_end_x + (temp_squad_spacing_direction * temp_squad_spacing_padding * 24) + random_range(-8, 8);
+                    pathfinding_path_end_x = temp_squad_leader_instance.pathfinding_path_end_x + (temp_squad_spacing_count * 24) + random_range(-8, 8);
                     pathfinding_path_end_y = temp_squad_leader_instance.pathfinding_path_end_y;
                     
                     pathfinding_recalculate = false;
@@ -138,12 +150,10 @@ repeat (squad_count)
                 
                 //
                 temp_squad_spacing_count++;
-                temp_squad_spacing_direction *= -1;
                 
-                if (temp_squad_spacing_count == 2)
+                if (temp_squad_spacing_count == 0)
                 {
-                    temp_squad_spacing_count = 0;
-                    temp_squad_spacing_padding++;
+                    temp_squad_spacing_count++;
                 }
             }
         }
