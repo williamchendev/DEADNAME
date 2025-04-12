@@ -115,8 +115,6 @@ repeat (squad_count)
 	            }
             }
             
-            show_debug_message(temp_squad_spacing_count);
-            
             for (var temp_pathfinding_squad_unit_index = 0; temp_pathfinding_squad_unit_index < ds_list_size(temp_squad_unit_instances_list); temp_pathfinding_squad_unit_index++)
             {
                 // Find Squad Unit Instance
