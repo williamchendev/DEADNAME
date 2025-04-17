@@ -54,7 +54,7 @@ if (!player_input)
 	            // Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
 	            if ((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) mod 2 == 1)
 	            {
-	            	temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? ds_list_find_value(GameManager.squad_behaviour_director.squad_direction_list, temp_squad_index) : temp_squad_leader_instance.draw_xscale) == -1 ? -1 : 0;
+	            	temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? ds_list_find_value(GameManager.squad_behaviour_director.squad_direction_list, temp_squad_index) : sign(temp_squad_leader_instance.draw_xscale)) == -1 ? -1 : 0;
 	            }
 	            
 	            // Find movement position of Player Input Squad Unit from Squad Leader
@@ -218,7 +218,7 @@ if (!player_input)
 		input_double_jump = temp_follow_behaviour_unit_instance.input_double_jump;
 		
 		//
-		if (!is_undefined(pathfinding_path) and pathfinding_path.path_size > 0)
+		if (!is_undefined(pathfinding_path) and !pathfinding_path_ended and pathfinding_path.path_size > 0)
 		{
 			// Toggle Recalculate Pathfinding
 			pathfinding_recalculate = true;
