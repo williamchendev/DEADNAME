@@ -7,11 +7,15 @@ if (!player_input)
 	// Establish Behaviour Variables
 	var temp_follow_behaviour_unit_instance = undefined;
 	
+	var temp_follow_behaviour_squad_movement_position_x = x;
+    var temp_follow_behaviour_squad_movement_position_y = y;
+	
 	// Unit Squad Behaviour
 	if (squad_id != SquadIDNull)
 	{
-		// Establish Squad Index
+		// Establish Squad Index & Squad Properties
 		var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
+		var temp_squad_properties = ds_list_find_value(GameManager.squad_behaviour_director.squad_properties_list, temp_squad_index);
 		
 		// Check if Squad Index Exists
 		if (!is_undefined(temp_squad_index) and ds_list_find_value(GameManager.squad_behaviour_director.squad_exists_list, temp_squad_index))
@@ -44,7 +48,8 @@ if (!player_input)
 	        else if (temp_squad_leader_instance.player_input)
 	        {
 	        	// Establish Player Input Squad Unit Follow Conditions
-	        	var temp_player_input_squad_unit_follow_condition_within_range = abs(x - temp_squad_leader_instance.x) <= 84 and abs(y - temp_squad_leader_instance.y) <= 48;
+	        	var temp_player_input_squad_unit_follow_condition_within_range_horizontal = abs(x - temp_squad_leader_instance.x) <= temp_squad_properties.following_range_horizontal_distance;
+	        	var temp_player_input_squad_unit_follow_condition_within_range_vertical = abs(y - temp_squad_leader_instance.y) <= temp_squad_properties.following_range_vertical_distance;
 	        	var temp_player_input_squad_unit_follow_condition_leader_is_moving = temp_squad_leader_instance.x_velocity != 0 or temp_squad_leader_instance.y_velocity != 0;
 	        	
 	        	// Establish Player Input Squad Unit Follow Spacing
@@ -54,13 +59,13 @@ if (!player_input)
 	            // Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
 	            if ((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) mod 2 == 1)
 	            {
-	            	temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? ds_list_find_value(GameManager.squad_behaviour_director.squad_direction_list, temp_squad_index) : sign(temp_squad_leader_instance.draw_xscale)) == -1 ? -1 : 0;
+	            	temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? temp_squad_properties.facing_direction : sign(temp_squad_leader_instance.draw_xscale)) == -1 ? -1 : 0;
 	            }
 	            
 	            // Find movement position of Player Input Squad Unit from Squad Leader
-	            var temp_player_input_squad_unit_movement_position_x = temp_squad_leader_instance.x;
-	            var temp_player_input_squad_unit_movement_position_y = temp_squad_leader_instance.y;
-	            
+	            temp_follow_behaviour_squad_movement_position_x = temp_squad_leader_instance.x;
+    			temp_follow_behaviour_squad_movement_position_y = temp_squad_leader_instance.y;
+    			
 	            for (var temp_player_input_pathfinding_squad_unit_index = 0; temp_player_input_pathfinding_squad_unit_index < ds_list_size(temp_player_input_squad_unit_instances_list); temp_player_input_pathfinding_squad_unit_index++)
 	            {
 	                // Find Squad Unit Instance
@@ -74,8 +79,8 @@ if (!player_input)
 	                else if (id == temp_player_input_pathfinding_squad_unit_instance)
 	                {
 	                	var temp_player_input_squad_unit_movement_closest_point = pathfinding_get_closest_point_on_edge(temp_squad_leader_instance.x + (temp_player_input_squad_spacing_count * 24), temp_squad_leader_instance.y, PathfindingEdgeType.DefaultEdge);
-	                	temp_player_input_squad_unit_movement_position_x = temp_player_input_squad_unit_movement_closest_point.return_x;
-	                    temp_player_input_squad_unit_movement_position_y = temp_player_input_squad_unit_movement_closest_point.return_y;
+	                	temp_follow_behaviour_squad_movement_position_x = temp_player_input_squad_unit_movement_closest_point.return_x;
+	                    temp_follow_behaviour_squad_movement_position_y = temp_player_input_squad_unit_movement_closest_point.return_y;
 	                }
 	                
 	                //
@@ -87,6 +92,7 @@ if (!player_input)
 	                }
 	            }
 	        	
+	        	//
 	        	if (!pathfinding_recalculate)
 	        	{
 	        		if (!is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
@@ -94,14 +100,7 @@ if (!player_input)
 	        			var temp_player_input_squad_unit_path_end_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
 	        			var temp_player_input_squad_unit_path_end_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
 	        			
-	        			if (point_distance(temp_player_input_squad_unit_movement_position_x, temp_player_input_squad_unit_movement_position_y, temp_player_input_squad_unit_path_end_x, temp_player_input_squad_unit_path_end_y) > 18)
-	        			{
-	        				pathfinding_recalculate = true;
-	        			}
-	        		}
-	        		else
-	        		{
-	        			if (point_distance(temp_player_input_squad_unit_movement_position_x, temp_player_input_squad_unit_movement_position_y, x, y) > 18)
+	        			if (point_distance(temp_follow_behaviour_squad_movement_position_x, temp_follow_behaviour_squad_movement_position_y, temp_player_input_squad_unit_path_end_x, temp_player_input_squad_unit_path_end_y) > (temp_squad_properties.squad_random_spacing * 2) + 2)
 	        			{
 	        				pathfinding_recalculate = true;
 	        			}
@@ -109,20 +108,24 @@ if (!player_input)
 	        	}
 	        	
 	        	// Player Input Squad Unit Following Behaviour
-	        	if (temp_player_input_squad_unit_follow_condition_within_range and temp_player_input_squad_unit_follow_condition_leader_is_moving)
+	        	if (temp_player_input_squad_unit_follow_condition_within_range_horizontal and temp_player_input_squad_unit_follow_condition_within_range_vertical and temp_player_input_squad_unit_follow_condition_leader_is_moving)
 	        	{
 	        		// Unit within follow range - Unit matches Player Unit's Input Condition
         			temp_follow_behaviour_unit_instance = temp_squad_leader_instance;
+        			
+        			//
+        			input_attack = temp_squad_leader_instance.input_attack;
+					input_aim = temp_squad_leader_instance.input_aim;
 	        	}
 	        	else if (pathfinding_recalculate)
 	        	{
     				pathfinding_path_start_x = x;
                     pathfinding_path_start_y = y;
                     
-                    pathfinding_path_end_x = temp_player_input_squad_unit_movement_position_x + random_range(-8, 8);
-                    pathfinding_path_end_y = temp_player_input_squad_unit_movement_position_y;
+                    pathfinding_path_end_x = temp_follow_behaviour_squad_movement_position_x + random_range(-temp_squad_properties.squad_random_spacing, temp_squad_properties.squad_random_spacing);
+                    pathfinding_path_end_y = temp_follow_behaviour_squad_movement_position_y;
     				
-    				if (!is_undefined(pathfinding_path) and pathfinding_recalculate)
+    				if (!is_undefined(pathfinding_path))
     				{
     					//
 						var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
@@ -154,6 +157,11 @@ if (!player_input)
 	        	{
 	        		input_attack = temp_squad_leader_instance.input_attack;
 					input_aim = temp_squad_leader_instance.input_aim;
+	        	}
+	        	else
+	        	{
+	        		input_attack = false;
+					input_aim = false;
 	        	}
 	        	
 	        	input_cursor_x = temp_squad_leader_instance.input_cursor_x;
@@ -199,14 +207,16 @@ if (!player_input)
 		input_left = temp_follow_behaviour_unit_instance.input_left;
 		input_right = temp_follow_behaviour_unit_instance.input_right;
 		
+		var temp_hypothetical_horizontal_movement = (input_left ? -1 : 1) * (weapon_aim || unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload ? walk_spd : run_spd);
+		
 		if (input_left or input_right) 
 		{
-			var temp_hypothetical_horizontal_movement = (input_left ? -1 : 1) * (weapon_aim || unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload ? walk_spd : run_spd);
-			
-			if (abs((x + temp_hypothetical_horizontal_movement) - temp_follow_behaviour_unit_instance.x) > 64)
+			if (abs((x + temp_hypothetical_horizontal_movement) - temp_follow_behaviour_unit_instance.x) > ds_list_find_value(GameManager.squad_behaviour_director.squad_properties_list, temp_squad_index).following_range_horizontal_distance)
 			{
 				input_left = false;
 				input_right = false;
+				
+				temp_hypothetical_horizontal_movement = 0;
 			}
 		}
 		
@@ -217,22 +227,20 @@ if (!player_input)
 		input_jump_hold = temp_follow_behaviour_unit_instance.input_jump_hold;
 		input_double_jump = temp_follow_behaviour_unit_instance.input_double_jump;
 		
-		//
-		if (!is_undefined(pathfinding_path) and !pathfinding_path_ended and pathfinding_path.path_size > 0)
+		// Toggle Recalculate Pathfinding
+		if (point_distance(x + temp_hypothetical_horizontal_movement, y, temp_follow_behaviour_squad_movement_position_x, temp_follow_behaviour_squad_movement_position_y) < (temp_squad_properties.squad_random_spacing * 2) + 2)
 		{
-			// Toggle Recalculate Pathfinding
-			pathfinding_recalculate = true;
-			
-			// Establish Final Target Position in Path
-			var temp_pathfinding_path_target_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
-			var temp_pathfinding_path_target_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
-			
-			if (abs(x - temp_pathfinding_path_target_position_x) < run_spd and abs(y - temp_pathfinding_path_target_position_y) < 1)
+			if (!is_undefined(pathfinding_path))
 			{
 				pathfinding_path_index = pathfinding_path.path_size;
-				pathfinding_path_ended = true;
-				pathfinding_recalculate = false;
 			}
+			
+			pathfinding_path_ended = true;
+			pathfinding_recalculate = false;
+		}
+		else
+		{
+			pathfinding_recalculate = true;
 		}
     }
     else if (!pathfinding_path_ended and !is_undefined(pathfinding_path) and pathfinding_path_index < pathfinding_path.path_size)
