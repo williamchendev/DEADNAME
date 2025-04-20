@@ -54,7 +54,8 @@ squad_faction_list = ds_list_create();
 squad_behaviour_list = ds_list_create();
 squad_sub_behaviour_list = ds_list_create();
 squad_movement_list = ds_list_create();
-squad_movement_target_list = ds_list_create();
+squad_movement_target_x_list = ds_list_create();
+squad_movement_target_y_list = ds_list_create();
 squad_luck_list = ds_list_create();
 squad_properties_list = ds_list_create();
 squad_leader_list = ds_list_create();
@@ -112,7 +113,8 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
     ds_list_add(GameManager.squad_behaviour_director.squad_behaviour_list, SquadBehaviour.Idle);
     ds_list_add(GameManager.squad_behaviour_director.squad_sub_behaviour_list, SquadSubBehaviour.Default);
     ds_list_add(GameManager.squad_behaviour_director.squad_movement_list, SquadMovement.None);
-    ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_list, { position_x: 0, position_y: 0 });
+    ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_x_list, 0);
+    ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_y_list, 0);
     ds_list_add(GameManager.squad_behaviour_director.squad_luck_list, 1.0);
     ds_list_add(GameManager.squad_behaviour_director.squad_leader_list, undefined);
     ds_list_add_list(GameManager.squad_behaviour_director.squad_units_list, ds_list_create());
@@ -124,6 +126,7 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
     	{
     		following_range_horizontal_distance: 84,
     		following_range_vertical_distance: 64,
+    		squad_unit_spacing: 24,
     		squad_random_spacing: 8,
     		facing_direction: random(1.0) > 0.5 ? 1 : -1
     	}
