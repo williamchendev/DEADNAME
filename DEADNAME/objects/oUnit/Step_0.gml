@@ -161,26 +161,64 @@ if (!player_input)
 		        	}
 	        	}
 	        }
-	        else if (!pathfinding_path_ended and pathfinding_recalculate)
+	        else if (pathfinding_recalculate)
 	    	{
-	    		//
-	    		pathfinding_path_start_x = x;
-	    		pathfinding_path_start_y = y;
-	    		
-	    		//
-				var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
+				// Check if Unit's Pathfinding Path Recalculation Condition is Valid
+				var temp_squad_movement_recalculate_command_valid = true;
 				
-				//
-				pathfinding_delete_path(pathfinding_path);
-				pathfinding_path = undefined;
+				if (!is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
+				{
+					var temp_last_path_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
+					var temp_last_path_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
+					
+					if (point_distance(pathfinding_path_end_x, pathfinding_path_end_y, temp_last_path_position_x, temp_last_path_position_y) <= 1)
+					{
+						temp_squad_movement_recalculate_command_valid = false;
+					}
+				}
 				
-				//
-				pathfinding_recalculate = false;
-				pathfinding_jump = true;
-				
-				//
-				pathfinding_path = temp_recalculated_path;
-				pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+				// Recalculate Unit's Individual Squad Path
+				if (temp_squad_movement_recalculate_command_valid)
+				{
+					// Set Unit Pathfinding Path Start
+					pathfinding_path_start_x = x;
+					pathfinding_path_start_y = y;
+					
+					// Reset and Calculate Path Data
+					if (!is_undefined(pathfinding_path))
+					{
+						// Create Recalculated Path
+						var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
+						
+						// Delete and Reset Previous Path
+						pathfinding_delete_path(pathfinding_path);
+						pathfinding_path = undefined;
+						
+						// Set New Path and Reset Pathfinding Index
+						pathfinding_path = temp_recalculated_path;
+						pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+					}
+					else
+					{
+						// Delete and Reset Previous Path
+						pathfinding_delete_path(pathfinding_path);
+						pathfinding_path = undefined;
+						
+						// Calculate New Path and Reset Pathfinding Index
+						pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
+						pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+					}
+					
+					// Reset Pathfinding Variables
+					pathfinding_recalculate = false;
+					pathfinding_path_ended = false;
+					pathfinding_jump = true;
+				}
+				else
+				{
+					// Recalculation was invalid
+					pathfinding_recalculate = false;
+				}
 	    	}
 	    }
 	    else

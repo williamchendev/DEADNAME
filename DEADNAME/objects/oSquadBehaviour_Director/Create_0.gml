@@ -124,6 +124,7 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
     (
     	GameManager.squad_behaviour_director.squad_properties_list, 
     	{
+    		sight_radius: 180,
     		following_range_horizontal_distance: 84,
     		following_range_vertical_distance: 64,
     		squad_unit_spacing: 24,
@@ -431,4 +432,25 @@ faction_set_realtionship = function(first_faction_id, second_faction_id, faction
 		default:
 			break;
     }
+}
+
+faction_get_realtionship = function(first_faction_id, second_faction_id)
+{
+	// Create Factions in case they have not been added
+	create_faction(first_faction_id);
+	create_faction(second_faction_id);
+	
+	// Return Faction Relationship
+	var temp_first_faction_index = ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, first_faction_id);
+	
+	if (ds_list_find_index(ds_list_find_value(GameManager.squad_behaviour_director.faction_enemies_list, temp_first_faction_index), second_faction_id) != -1)
+	{
+		return FactionRelationship.Hostile;
+	}
+	else if (ds_list_find_index(ds_list_find_value(GameManager.squad_behaviour_director.faction_allies_list, temp_first_faction_index), second_faction_id) != -1)
+	{
+		return FactionRelationship.Allied;
+	}
+	
+	return FactionRelationship.Neutral;
 }
