@@ -530,7 +530,7 @@ function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type
 /// @param {real} start_x_position The X position in the world to start pathfinding from
 /// @param {real} start_y_position The Y position in the world to start pathfinding from
 /// @param {real} end_x_position The X position in the world to end the path at
-/// @param {real} end_x_position The Y position in the world to end the path at
+/// @param {real} end_y_position The Y position in the world to end the path at
 function pathfinding_create_path(start_x_position, start_y_position, end_x_position, end_y_position)
 {
 	// Find Edge Data for Start and End Coordinates

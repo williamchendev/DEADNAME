@@ -22,57 +22,208 @@ repeat (squad_count)
     var temp_squad_movement_target_x = ds_list_find_value(squad_movement_target_x_list, temp_squad_index);
     var temp_squad_movement_target_y = ds_list_find_value(squad_movement_target_y_list, temp_squad_index);
     
-    // Find Squad Units List
+    // Establish Squad Leader Instance and Squad Leader Variables
     var temp_squad_leader_instance = ds_list_find_value(squad_leader_list, temp_squad_index);
+    var temp_squad_leader_half_height = (temp_squad_leader_instance.bbox_bottom - temp_squad_leader_instance.bbox_top) * 0.5;
+    
+    // Establish Squad Units List
     var temp_squad_unit_instances_list = ds_list_find_value(squad_units_list, temp_squad_index);
+    
+    // Calculate Squad Combat Sight Behaviour
+    if (ds_list_find_value(squad_combat_active_list, temp_squad_index))
+    {
+    	// Create Squad Leader Unit Collision List
+        var temp_squad_sight_collision_list = ds_list_create();
+        var temp_squad_sight_collision_list_count = collision_circle_list(temp_squad_leader_instance.x, temp_squad_leader_instance.y - temp_squad_leader_half_height, temp_squad_properties.sight_radius, oUnit, false, true, temp_squad_sight_collision_list, true);
+        
+        // Check if Units are within Combat Range
+        var temp_hostile_unit_list = ds_list_create();
+        var temp_hostile_distance_list = ds_list_create();
+        
+        // Iterate through Squad Leader Unit Collision List Unit Entries
+        var temp_squad_sight_collision_index = 0;
+        
+        repeat (temp_squad_sight_collision_list_count)
+        {
+        	// Find Collision Unit Instance
+        	var temp_squad_sight_collision_instance = ds_list_find_value(temp_squad_sight_collision_list, temp_squad_sight_collision_index);
+        	
+        	// Check if Collision Unit shares same Faction Allegiance
+        	if (temp_squad_sight_collision_instance.faction_id == temp_squad_faction)
+        	{
+        		// Increment Collision Unit Index and Skip Unit
+        		temp_squad_sight_collision_index++;
+        		continue;
+        	}
+        	
+        	// Find Collision Unit Squad Index
+        	var temp_squad_sight_collision_instance_squad_index = ds_map_find_value(squad_ids_map, temp_squad_sight_collision_instance.squad_id);
+        	
+        	// Check if Collision Unit Squad Exists
+        	if (!is_undefined(temp_squad_sight_collision_instance_squad_index) and ds_list_find_value(squad_exists_list, temp_squad_sight_collision_instance_squad_index))
+        	{
+        		// Check Relationship between Collision Unit's Faction to Squad Leader's Faction
+        		var temp_squad_sight_collision_instance_squad_faction_relationship = faction_get_realtionship(temp_squad_faction, temp_squad_sight_collision_instance.faction_id);
+        		
+        		// Hostile Collision Unit Squad Faction Behaviour
+        		if (temp_squad_sight_collision_instance_squad_faction_relationship == FactionRelationship.Hostile)
+        		{
+        			// Find Collision Center of Hostile Unit
+        			var temp_hostile_unit_half_height = (temp_squad_sight_collision_instance.bbox_bottom - temp_squad_sight_collision_instance.bbox_top) * 0.5;
+        			
+        			// Check if Squad Leader and Hostile Unit share continuous Line of Sight
+        			if (!collision_line(temp_squad_leader_instance.x, temp_squad_leader_instance.y - temp_squad_leader_half_height, temp_squad_sight_collision_instance.x, temp_squad_sight_collision_instance.y - temp_hostile_unit_half_height, oSolid, false, true))
+        			{
+        				// Calculate Hostile Unit's Distance from Squad Leader
+	        			var temp_hostile_unit_distance = point_distance(temp_squad_leader_instance.x, temp_squad_leader_instance.y, temp_squad_sight_collision_instance.x, temp_squad_sight_collision_instance.y);
+	        			
+	        			// Insertion Sort Hostile Unit based on Hostile Unit's Distance to Squad Leader
+	        			var temp_sorted_insert_index = 0;
+	        			
+	        			repeat (ds_list_size(temp_hostile_unit_list))
+	        			{
+	        				// Distance at Index is larger than insertion Hostile Unit's Distance
+	        				if (temp_hostile_unit_distance < ds_list_find_value(temp_hostile_distance_list, temp_sorted_insert_index))
+	        				{
+	        					break;
+	        				}
+	        				
+	        				// Increment Insertion Index
+	        				temp_sorted_insert_index++;
+	        			}
+	        			
+	        			// Insert Hostile Unit and Hostile Unit's Distance to Squad Leader
+	        			ds_list_insert(temp_hostile_unit_list, temp_sorted_insert_index, temp_squad_sight_collision_instance);
+	        			ds_list_insert(temp_hostile_distance_list, temp_sorted_insert_index, temp_hostile_unit_distance);
+        			}
+        		}
+        	}
+        	
+        	// Increment Collision Unit Index
+        	temp_squad_sight_collision_index++;
+        }
+        
+        // Destroy Squad Leader Unit Collision DS List
+        ds_list_destroy(temp_squad_sight_collision_list);
+        temp_squad_sight_collision_list = -1;
+        
+        // Assign Squad Units Hostile Entities as Combat Targets
+        if (ds_list_size(temp_hostile_unit_list) > 0)
+        {
+        	// Duplicate Squad Units List for Combat Assignments
+	        var temp_squad_combat_unit_list = ds_list_create();
+	        ds_list_copy(temp_squad_combat_unit_list, temp_squad_unit_instances_list);
+	        
+	        // Iterate through Hostile Units and Attempt to Assign Targets based on Proximity and Priority
+	        var temp_hostile_unit_index = 0;
+	        
+	        repeat (ds_list_size(temp_squad_unit_instances_list))
+	        {
+	        	// Find Hostile Unit Instance
+	        	var temp_hostile_unit_instance = ds_list_find_value(temp_hostile_unit_list, temp_hostile_unit_index);
+	        	
+	        	// Find Collision Center of Hostile Unit
+	        	var temp_hostile_unit_half_height = (temp_hostile_unit_instance.bbox_bottom - temp_hostile_unit_instance.bbox_top) * 0.5;
+	        	
+	        	// Establish Empty Unit Assignment
+	        	var temp_hostile_unit_assigned_squad_unit = undefined;
+	        	var temp_hostile_unit_assigned_squad_unit_index = -1;
+	        	var temp_hostile_unit_assigned_squad_unit_distance = undefined;
+	        	var temp_hostile_unit_assigned_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+	        	
+	        	// Iterate through Squad Units awaiting Combat Assignments
+	        	var temp_squad_combat_unit_unit_index = 0;
+	        	
+	        	repeat (ds_list_size(temp_squad_combat_unit_list))
+	        	{
+	        		// Find Squad Unit Available to take Combat Assignment
+	        		var temp_squad_combat_unit_unit_instance = ds_list_find_value(temp_squad_combat_unit_list, temp_squad_combat_unit_unit_index);
+	        		
+	        		// Find Collision Center of Squad Unit
+	        		var temp_squad_unit_assignment_half_height = (temp_squad_combat_unit_unit_instance.bbox_bottom - temp_squad_combat_unit_unit_instance.bbox_top) * 0.5;
+	        		
+	        		//
+	        		if (collision_line(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_unit_instance.x, temp_squad_combat_unit_unit_instance.y - temp_squad_unit_assignment_half_height, oSolid, false, true))
+        			{
+        				//
+        				temp_squad_combat_unit_unit_index++;
+        				continue;
+        			}
+	        		
+	        		//
+	        		var temp_hostile_unit_assignment_distance = point_distance(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_unit_instance.x, temp_squad_combat_unit_unit_instance.y - temp_squad_unit_assignment_half_height);
+	        		var temp_hostile_unit_assignment_priority_rank = temp_hostile_unit_assignment_distance < temp_squad_properties.close_combat_radius ? UnitCombatPriorityRank.CloseCombat : temp_squad_combat_unit_unit_instance.unit_priority_rank;
+	        		
+	        		//
+	        		if (temp_hostile_unit_assigned_squad_unit_index == -1)
+	        		{
+	        			temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_unit_instance;
+	        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_unit_index;
+	        			temp_hostile_unit_assigned_squad_unit_distance = temp_hostile_unit_assignment_distance;
+	        			temp_hostile_unit_assigned_priority_rank = temp_hostile_unit_assignment_priority_rank;
+	        		}
+	        		else
+	        		{
+	        			if (temp_hostile_unit_assignment_priority_rank < temp_hostile_unit_assigned_priority_rank or (temp_hostile_unit_assignment_priority_rank == temp_hostile_unit_assigned_priority_rank and temp_hostile_unit_assignment_distance < temp_hostile_unit_assigned_squad_unit_distance))
+	        			{
+	        				temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_unit_instance;
+		        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_unit_index;
+		        			temp_hostile_unit_assigned_squad_unit_distance = temp_hostile_unit_assignment_distance;
+		        			temp_hostile_unit_assigned_priority_rank = temp_hostile_unit_assignment_priority_rank;
+	        			}
+	        		}
+	        		
+	        		//
+	        		temp_squad_combat_unit_unit_index++;
+	        	}
+	        	
+	        	//
+	        	if (temp_hostile_unit_assigned_squad_unit_index != -1)
+        		{
+        			//
+        			temp_hostile_unit_assigned_squad_unit.combat_target = temp_hostile_unit_assigned_squad_unit;
+        			temp_hostile_unit_assigned_squad_unit.combat_priority_rank = temp_hostile_unit_assigned_priority_rank;
+        			
+        			//
+        			temp_hostile_unit_assigned_squad_unit.combat_strategy = UnitCombatStrategy.FireUntilNeutralized;
+        			
+        			//
+        			ds_list_delete(temp_squad_combat_unit_list, temp_hostile_unit_assigned_squad_unit_index);
+        		}
+	        	
+	        	// Increment Hostile Unit Index
+	        	temp_hostile_unit_index++;
+	        	
+	        	if (temp_hostile_unit_index == ds_list_size(temp_hostile_unit_list))
+	        	{
+	        		temp_hostile_unit_index = 0;
+	        	}
+	        }
+	        
+	        // Perform Behaviour Assignment with Squad Combat Units without valid Hostile Units to target
+	        if (ds_list_size(temp_squad_combat_unit_list) > 0)
+	        {
+	        	
+	        }
+	        
+	        // Clear Squad Combat Unit Instances DS Lists
+	        ds_list_destroy(temp_squad_combat_unit_list);
+	        temp_squad_combat_unit_list = -1;
+        }
+        
+        // Clear Hostile Collision DS Lists
+        ds_list_destroy(temp_hostile_unit_list);
+        temp_hostile_unit_list = -1;
+        
+        ds_list_destroy(temp_hostile_distance_list);
+        temp_hostile_distance_list = -1;
+    }
     
     // Determine Squad Behaviour if Squad Leader is the Player or not
     if (!temp_squad_leader_instance.player_input)
     {
         // Establish Squad Leader Direction Variables
         var temp_calculate_squad_pathfinding_targets = false;
-        
-        // Create Squad Leader Unit Collision List
-        var temp_squad_leader_unit_circle_collision_list = ds_list_create();
-        var temp_squad_leader_unit_circle_collision_list_count = collision_circle_list(temp_squad_leader_instance.x, temp_squad_leader_instance.y, temp_squad_properties.sight_radius, oUnit, false, true, temp_squad_leader_unit_circle_collision_list, true);
-        
-        var temp_squad_leader_squad_collision_squad_ids_list = ds_list_create();
-        
-        // Iterate through Squad Leader Unit Collision List Unit Entries
-        var temp_squad_leader_unit_circle_collision_index = 0;
-        
-        repeat (temp_squad_leader_unit_circle_collision_list_count)
-        {
-        	// Find Collision Unit Instance
-        	var temp_squad_leader_unit_circle_collision_instance = ds_list_find_value(temp_squad_leader_unit_circle_collision_list, temp_squad_leader_unit_circle_collision_index);
-        	
-        	// Find Collision Unit Squad Index
-        	var temp_squad_leader_unit_circle_collision_instance_squad_index = ds_map_find_value(squad_ids_map, temp_squad_leader_unit_circle_collision_instance.squad_id);
-        	
-        	// Check if Collision Unit Squad Exists
-        	if (!is_undefined(temp_squad_leader_unit_circle_collision_instance_squad_index) and ds_list_find_value(squad_exists_list, temp_squad_leader_unit_circle_collision_instance_squad_index))
-        	{
-        		// Find Collision Unit Squad Faction & Faction Relationship to Squad Leader's Faction
-        		var temp_squad_leader_unit_circle_collision_instance_squad_faction = ds_list_find_value(squad_faction_list, temp_squad_leader_unit_circle_collision_instance_squad_index);
-        		var temp_squad_leader_unit_circle_collision_instance_squad_faction_relationship = faction_get_realtionship(temp_squad_faction, temp_squad_leader_unit_circle_collision_instance_squad_faction);
-        		
-        		// Hostile Collision Unit Squad Faction Behaviour
-        		if (temp_squad_leader_unit_circle_collision_instance_squad_faction_relationship == FactionRelationship.Hostile and ds_list_find_index(temp_squad_leader_squad_collision_squad_ids_list, temp_squad_leader_unit_circle_collision_instance.squad_id) == -1)
-        		{
-        			ds_list_add(temp_squad_leader_squad_collision_squad_ids_list, temp_squad_leader_unit_circle_collision_instance.squad_id);
-        		}
-        	}
-        	
-        	// Increment Collision Unit Index
-        	temp_squad_leader_unit_circle_collision_index++;
-        }
-        
-        // Destroy Squad Leader Unit Collision DS List
-        ds_list_destroy(temp_squad_leader_unit_circle_collision_list);
-        temp_squad_leader_unit_circle_collision_list = -1;
-        
-        ds_list_destroy(temp_squad_leader_squad_collision_squad_ids_list);
-        temp_squad_leader_squad_collision_squad_ids_list = -1;
         
         // Squad Leader Finite State Direction Behaviour Tree
         switch (ds_list_find_value(squad_behaviour_list, temp_squad_index))
@@ -104,19 +255,17 @@ repeat (squad_count)
         switch (ds_list_find_value(squad_movement_list, temp_squad_index))
         {
             case SquadMovement.Moving:
-                // Check if Movement is Finished
+                // Iterate through all Units in Squad to check if their Movement is Finished
+                var temp_moving_squad_unit_index = 0;
                 var temp_squad_units_finished_moving_count = 0;
                 
-                for (var temp_moving_squad_unit_index = 0; temp_moving_squad_unit_index < ds_list_size(temp_squad_unit_instances_list); temp_moving_squad_unit_index++)
+                repeat (ds_list_size(temp_squad_unit_instances_list))
                 {
-                    // Find Squad Unit Instance
-                    var temp_moving_squad_unit_instance = ds_list_find_value(temp_squad_unit_instances_list, temp_moving_squad_unit_index);
-                    
                     // Add up count of all Squad Unit Instances that have finished Pathfinding
-                    if (temp_moving_squad_unit_instance.pathfinding_path_ended)
-                    {
-                        temp_squad_units_finished_moving_count++;
-                    }
+                    temp_squad_units_finished_moving_count += ds_list_find_value(temp_squad_unit_instances_list, temp_moving_squad_unit_index).pathfinding_path_ended ? 1 : 0;
+                    
+                    // Increment Unit Index
+                    temp_moving_squad_unit_index++;
                 }
                 
                 // Check if count of Squad Unit Instances that have finished their Pathfinding matches Squad Unit Count

@@ -41,6 +41,26 @@ enum UnitFirearmReloadAnimationState
 	InterruptReloadChargeBoltHandle_PrimaryHandFirearmPushForwardBoltHandle,
 }
 
+// Unit Combat Enums
+enum UnitCombatStrategy
+{
+	FireUntilNeutralized,
+	NullStrategy
+}
+
+enum UnitCombatPriorityRank
+{
+	PriorityCombat,
+	CloseCombat,
+	ArchitectCombat,
+	GroundVehicleCombat,
+	EliteCombat,
+	InfantryCombat,
+	SupportHighPriorityCombat,
+	SupportLowPriorityCombat,
+	NullPriorityCombat
+}
+
 // Unit Character Pack Enums
 enum UnitPack
 {

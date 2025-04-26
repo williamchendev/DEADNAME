@@ -121,6 +121,11 @@ firearm_weapon_primary_hand_pivot_transition_value = 0;
 firearm_weapon_hip_pivot_to_aim_pivot_transition_value = 0;
 firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
 
+// Combat Variables
+combat_target = undefined;
+combat_strategy = UnitCombatStrategy.NullStrategy;
+combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+
 // Weapons
 weapon_active = false;
 weapon_reload = false;
