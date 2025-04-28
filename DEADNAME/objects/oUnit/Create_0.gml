@@ -126,6 +126,8 @@ combat_target = undefined;
 combat_strategy = UnitCombatStrategy.NullStrategy;
 combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
 
+combat_sight_calculation_delay = irandom_range(0, GameManager.sight_collision_calculation_frame_delay);
+
 // Weapons
 weapon_active = false;
 weapon_reload = false;
@@ -174,7 +176,7 @@ input_cursor_y = 0;
 // Pathfinding Variables
 pathfinding_path = undefined;
 pathfinding_path_index = 0;
-pathfinding_path_ended = false;
+pathfinding_path_ended = true;
 
 pathfinding_recalculate = false;
 

@@ -48,50 +48,6 @@ if (!player_input)
 				            break;
 		        	}
 		        }
-		        
-		        // Combat Targeting
-		        if (!is_undefined(combat_target))
-		        {
-		        	if (instance_exists(combat_target))
-		        	{
-		        		//
-		        		if (collision_line(x, bbox_top, combat_target.x, combat_target.bbox_top, oSolid, false, true) or point_distance(x, bbox_top, combat_target.x, combat_target.bbox_top) > temp_squad_properties.sight_ignore_radius)
-	        			{
-	        				//
-	        				input_aim = false;
-	        				
-	        				//
-	        				combat_target = undefined;
-			        		combat_strategy = UnitCombatStrategy.NullStrategy;
-							combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
-	        			}
-	        			else
-	        			{
-	        				//
-		        			//input_attack = temp_squad_leader_instance.input_attack;
-		        			if (pathfinding_path_ended)
-		        			{
-		        				input_aim = true;
-		        				
-		        				input_cursor_x = combat_target.x;
-								input_cursor_y = combat_target.bbox_top;
-		        			}
-							//
-							
-							
-	        			}
-		        	}
-		        	else
-		        	{
-		        		//
-		        		input_aim = false;
-		        		
-		        		//
-		        		combat_target = undefined;
-		        		combat_strategy = UnitCombatStrategy.NullStrategy;
-						combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
-		        	}
-		        }
 	        	
 	        	// Recalculate Non-Player Squad Leader's Squad Unit Pathfinding Behaviour
 	        	if (pathfinding_recalculate)
@@ -156,6 +112,11 @@ if (!player_input)
 	        }
 	        else
 	        {
+	        	// Unit is matching Player Unit's Attack Behaviour - Remove Combat Assignment
+    			combat_target = undefined;
+				combat_strategy = UnitCombatStrategy.NullStrategy;
+				combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+				
 	        	// Establish Player Input Squad Unit Follow Conditions
 	        	var temp_player_input_squad_unit_follow_condition_within_range_horizontal = abs(x - temp_squad_leader_instance.x) <= temp_squad_properties.following_range_horizontal_distance;
 	        	var temp_player_input_squad_unit_follow_condition_within_range_vertical = abs(y - temp_squad_leader_instance.y) <= temp_squad_properties.following_range_vertical_distance;
@@ -496,6 +457,63 @@ if (!player_input)
 		input_double_jump = false;
     }
 }
+
+// COMBAT //
+// Combat Behaviour
+if (!is_undefined(combat_target))
+{
+	// Check if Combat Assignment's Unit Instance still Exists
+	if (instance_exists(combat_target))
+	{
+		// 
+		var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
+		
+		//
+		input_cursor_x = combat_target.x;
+		input_cursor_y = combat_target.y - temp_combat_target_half_height;
+		
+		if (pathfinding_path_ended)
+		{
+			input_aim = true;
+		}
+		else
+		{
+			input_aim = false;
+		}
+		
+		// Combat Line of Sight Calculation
+		if (combat_sight_calculation_delay <= 0)
+		{
+			//
+			var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
+			
+			// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
+			if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_squad_properties.sight_ignore_radius)
+			{
+				//
+				input_aim = false;
+				input_attack = false;
+				
+				//
+				combat_target = undefined;
+	    		combat_strategy = UnitCombatStrategy.NullStrategy;
+				combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+			}
+		}
+	}
+	else
+	{
+		// Combat Assignment's Unit Instance has been neutralized
+		input_aim = false;
+		
+		// Reset Combat Assignment Variables
+		combat_target = undefined;
+		combat_strategy = UnitCombatStrategy.NullStrategy;
+		combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+	}
+}
+
+combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= 0 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
 
 // MOVEMENT //
 // Movement Behaviour

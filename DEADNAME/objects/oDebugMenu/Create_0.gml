@@ -671,7 +671,7 @@ for (var i = 0; i < array_length(ribbon_menu_tabs); i++)
     ribbon_menu_tabs[i].tab_window_width = temp_ribbon_menu_tab_window_max_text_width;
 }
 
-//
-create_regular_window(200, 100, "(//// w /////)", "Gay sexy sex woot woot ^w^");
-create_regular_window(200, 100, "Hi there!", "Hey Abby :3");
-create_regular_window(200, 100, "UwU!", "What is up");
+// DEBUG MENU WINDOW TEST
+//create_regular_window(200, 100, "(//// w /////)", "Gay sexy sex woot woot ^w^");
+//create_regular_window(200, 100, "Hi there!", "Hey Abby :3");
+//create_regular_window(200, 100, "UwU!", "What is up");
