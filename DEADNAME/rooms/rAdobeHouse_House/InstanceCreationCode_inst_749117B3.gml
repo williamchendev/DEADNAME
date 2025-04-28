@@ -1,1 +1,0 @@
-GameManager.squad_behaviour_director.faction_set_realtionship("Moralists", "Evil", FactionRelationship.Hostile);

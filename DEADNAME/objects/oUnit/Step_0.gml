@@ -460,60 +460,56 @@ if (!player_input)
 
 // COMBAT //
 // Combat Behaviour
-if (!is_undefined(combat_target))
+if (!is_undefined(combat_target) and instance_exists(combat_target))
 {
-	// Check if Combat Assignment's Unit Instance still Exists
-	if (instance_exists(combat_target))
+	// 
+	var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
+	
+	//
+	input_cursor_x = combat_target.x;
+	input_cursor_y = combat_target.y - temp_combat_target_half_height;
+	
+	if (pathfinding_path_ended)
 	{
-		// 
-		var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
-		
-		//
-		input_cursor_x = combat_target.x;
-		input_cursor_y = combat_target.y - temp_combat_target_half_height;
-		
-		if (pathfinding_path_ended)
-		{
-			input_aim = true;
-		}
-		else
-		{
-			input_aim = false;
-		}
-		
-		// Combat Line of Sight Calculation
-		if (combat_sight_calculation_delay <= 0)
-		{
-			//
-			var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
-			
-			// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
-			if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_squad_properties.sight_ignore_radius)
-			{
-				//
-				input_aim = false;
-				input_attack = false;
-				
-				//
-				combat_target = undefined;
-	    		combat_strategy = UnitCombatStrategy.NullStrategy;
-				combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
-			}
-		}
+		input_aim = true;
 	}
 	else
 	{
-		// Combat Assignment's Unit Instance has been neutralized
 		input_aim = false;
+	}
+	
+	// Combat Line of Sight Calculation
+	if (combat_sight_calculation_delay == 0)
+	{
+		//
+		var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
 		
-		// Reset Combat Assignment Variables
-		combat_target = undefined;
-		combat_strategy = UnitCombatStrategy.NullStrategy;
-		combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+		// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
+		if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_squad_properties.sight_ignore_radius)
+		{
+			//
+			input_aim = false;
+			input_attack = false;
+			
+			//
+			combat_target = undefined;
+    		combat_strategy = UnitCombatStrategy.NullStrategy;
+			combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+		}
 	}
 }
+else
+{
+	// Combat Assignment's Unit Instance has been neutralized
+	input_aim = false;
+	
+	// Reset Combat Assignment Variables
+	combat_target = undefined;
+	combat_strategy = UnitCombatStrategy.NullStrategy;
+	combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+}
 
-combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= 0 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
+combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= -1 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
 
 // MOVEMENT //
 // Movement Behaviour

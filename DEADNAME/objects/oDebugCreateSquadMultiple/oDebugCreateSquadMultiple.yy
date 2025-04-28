@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"oDebugCreateSquad",
+  "%Name":"oDebugCreateSquadMultiple",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oDebugCreateSquad",
+  "name":"oDebugCreateSquadMultiple",
   "overriddenProperties":[],
   "parent":{
     "name":"Units",
@@ -26,9 +26,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"squad_id","filters":[],"listItems":[],"multiselect":false,"name":"squad_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"group1","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"squad_num","filters":[],"listItems":[],"multiselect":false,"name":"squad_num","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"squad_faction_id","filters":[],"listItems":[],"multiselect":false,"name":"squad_faction_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Moralists","varType":2,},
-    {"$GMObjectProperty":"v1","%Name":"create_player_squad","filters":[],"listItems":[],"multiselect":false,"name":"create_player_squad","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"squad_leader_unit_pack","filters":[],"listItems":[],"multiselect":false,"name":"squad_leader_unit_pack","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"squad_unit_pack","filters":[],"listItems":[],"multiselect":false,"name":"squad_unit_pack","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
   ],
