@@ -776,20 +776,40 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
-	limb_anchor_left_arm_x: -6,
-	limb_anchor_left_arm_y: -32,
+	limb_anchor_left_arm_x: -8,
+	limb_anchor_left_arm_y: -33,
 	
-	limb_anchor_right_arm_x: 4,
-	limb_anchor_right_arm_y: -32,
+	limb_anchor_right_arm_x: 2,
+	limb_anchor_right_arm_y: -33,
 	
-	equipment_inventory_x: -8,
-	equipment_inventory_y: -21,
+	equipment_inventory_x: -6,
+	equipment_inventory_y: -24,
 	
-	equipment_firearm_hip_x: -4,
-	equipment_firearm_hip_y: -28,
+	equipment_firearm_hip_x: -2,
+	equipment_firearm_hip_y: -27,
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -40,
+	
+	// Limb Animation Settings
+	limb_idle_animation_extension_percent: 0.95,
+	limb_idle_animation_ambient_move_width: 2,
+	limb_left_arm_idle_animation_angle: -5,
+	limb_right_arm_idle_animation_angle: 13,
+		
+	limb_left_arm_walk_animation_extension_percent: 0.9,
+	limb_left_arm_walk_animation_ambient_move_width: 2,
+	limb_left_arm_walk_animation_ambient_move_height: 1,
+	limb_left_arm_walk_animation_angle: -9,
+	
+	limb_right_arm_walk_animation_extension_percent: 0.9,
+	limb_right_arm_walk_animation_ambient_move_width: 2,
+	limb_right_arm_walk_animation_ambient_move_height: 1,
+	limb_right_arm_walk_animation_angle: 12,
+	
+	limb_jump_animation_extension_percent: 0.95,
+	limb_left_arm_jump_animation_angle: -13,
+	limb_right_arm_jump_animation_angle: 18,
 }
 
 // Northern Brigade Officer
@@ -870,40 +890,40 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
-	limb_anchor_left_arm_x: -4,
+	limb_anchor_left_arm_x: -8,
 	limb_anchor_left_arm_y: -32,
 	
 	limb_anchor_right_arm_x: 4,
 	limb_anchor_right_arm_y: -32,
 	
-	equipment_inventory_x: -8,
-	equipment_inventory_y: -21,
+	equipment_inventory_x: -7,
+	equipment_inventory_y: -23,
 	
-	equipment_firearm_hip_x: -4,
-	equipment_firearm_hip_y: -28,
+	equipment_firearm_hip_x: -2,
+	equipment_firearm_hip_y: -27,
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -40,
 	
 	// Limb Animation Settings
-	limb_idle_animation_extension_percent: 0.4,
-	limb_idle_animation_ambient_move_width: 0,
-	limb_left_arm_idle_animation_angle: 4,
-	limb_right_arm_idle_animation_angle: -20,
+	limb_idle_animation_extension_percent: 0.95,
+	limb_idle_animation_ambient_move_width: 2,
+	limb_left_arm_idle_animation_angle: -5,
+	limb_right_arm_idle_animation_angle: 13,
 		
-	limb_left_arm_walk_animation_extension_percent: 0.45,
+	limb_left_arm_walk_animation_extension_percent: 0.9,
 	limb_left_arm_walk_animation_ambient_move_width: 2,
 	limb_left_arm_walk_animation_ambient_move_height: 1,
-	limb_left_arm_walk_animation_angle: 20,
-		
-	limb_right_arm_walk_animation_extension_percent: 0.55,
+	limb_left_arm_walk_animation_angle: -9,
+	
+	limb_right_arm_walk_animation_extension_percent: 0.9,
 	limb_right_arm_walk_animation_ambient_move_width: 2,
 	limb_right_arm_walk_animation_ambient_move_height: 1,
-	limb_right_arm_walk_animation_angle: 45,
-		
-	limb_jump_animation_extension_percent: 0.65,
-	limb_left_arm_jump_animation_angle: -14,
-	limb_right_arm_jump_animation_angle: 24,
+	limb_right_arm_walk_animation_angle: 12,
+	
+	limb_jump_animation_extension_percent: 0.95,
+	limb_left_arm_jump_animation_angle: -13,
+	limb_right_arm_jump_animation_angle: 18,
 }
 
 

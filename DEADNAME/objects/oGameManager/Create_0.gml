@@ -40,6 +40,9 @@ debug_game_height = 720;
 // System Settings
 data_directory = $"{program_directory}\Data\\";
 
+// AI Calculation Settings
+sight_collision_calculation_frame_delay = 5;
+
 // Debug Settings
 global.debug = false;
 debug_overlay_enabled = false;

@@ -23,29 +23,138 @@ if (!player_input)
 	        // Establish Squad Leader
 	        var temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
 	        
-	        // Squad Unit Behaviour tree
-	        if (id == temp_squad_leader_instance)
+	        // Check if Squad Unit belongs to Player Squad Leader controlled Squad
+	        if (!temp_squad_leader_instance.player_input)
 	        {
-	        	// Establish Squad Behaviour Type
-	        	var temp_squad_behaviour = ds_list_find_value(GameManager.squad_behaviour_director.squad_behaviour_list, temp_squad_index);
+	        	// Squad Unit Behaviour tree
+		        if (id == temp_squad_leader_instance)
+		        {
+		        	// Establish Squad Behaviour Type
+		        	var temp_squad_behaviour = ds_list_find_value(GameManager.squad_behaviour_director.squad_behaviour_list, temp_squad_index);
+		        	
+		        	// Squad Leader Behaviour
+		        	switch (temp_squad_behaviour)
+		        	{
+		        		case SquadBehaviour.Hunting:
+				            break;
+				        case SquadBehaviour.Patrol:
+				            break;
+				        case SquadBehaviour.Sentry:
+				            break;
+				        case SquadBehaviour.Action:
+				            break;
+				        case SquadBehaviour.Idle:
+				        default:
+				            break;
+		        	}
+		        }
+		        
+		        // Combat Targeting
+		        if (!is_undefined(combat_target))
+		        {
+		        	if (instance_exists(combat_target))
+		        	{
+		        		//
+		        		if (collision_line(x, bbox_top, combat_target.x, combat_target.bbox_top, oSolid, false, true) or point_distance(x, bbox_top, combat_target.x, combat_target.bbox_top) > temp_squad_properties.sight_ignore_radius)
+	        			{
+	        				//
+	        				input_aim = false;
+	        				
+	        				//
+	        				combat_target = undefined;
+			        		combat_strategy = UnitCombatStrategy.NullStrategy;
+							combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+	        			}
+	        			else
+	        			{
+	        				//
+		        			//input_attack = temp_squad_leader_instance.input_attack;
+		        			if (pathfinding_path_ended)
+		        			{
+		        				input_aim = true;
+		        				
+		        				input_cursor_x = combat_target.x;
+								input_cursor_y = combat_target.bbox_top;
+		        			}
+							//
+							
+							
+	        			}
+		        	}
+		        	else
+		        	{
+		        		//
+		        		input_aim = false;
+		        		
+		        		//
+		        		combat_target = undefined;
+		        		combat_strategy = UnitCombatStrategy.NullStrategy;
+						combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+		        	}
+		        }
 	        	
-	        	// Squad Leader Behaviour
-	        	switch (temp_squad_behaviour)
-	        	{
-	        		case SquadBehaviour.Hunting:
-			            break;
-			        case SquadBehaviour.Patrol:
-			            break;
-			        case SquadBehaviour.Sentry:
-			            break;
-			        case SquadBehaviour.Action:
-			            break;
-			        case SquadBehaviour.Idle:
-			        default:
-			            break;
-	        	}
+	        	// Recalculate Non-Player Squad Leader's Squad Unit Pathfinding Behaviour
+	        	if (pathfinding_recalculate)
+		    	{
+					// Check if Unit's Pathfinding Path Recalculation Condition is Valid
+					var temp_squad_movement_recalculate_command_valid = true;
+					
+					if (!is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
+					{
+						var temp_last_path_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
+						var temp_last_path_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
+						
+						if (point_distance(pathfinding_path_end_x, pathfinding_path_end_y, temp_last_path_position_x, temp_last_path_position_y) <= 1)
+						{
+							temp_squad_movement_recalculate_command_valid = false;
+						}
+					}
+					
+					// Recalculate Unit's Individual Squad Path
+					if (temp_squad_movement_recalculate_command_valid)
+					{
+						// Set Unit Pathfinding Path Start
+						pathfinding_path_start_x = x;
+						pathfinding_path_start_y = y;
+						
+						// Reset and Calculate Path Data
+						if (!is_undefined(pathfinding_path))
+						{
+							// Create Recalculated Path
+							var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
+							
+							// Delete and Reset Previous Path
+							pathfinding_delete_path(pathfinding_path);
+							pathfinding_path = undefined;
+							
+							// Set New Path and Reset Pathfinding Index
+							pathfinding_path = temp_recalculated_path;
+							pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+						}
+						else
+						{
+							// Delete and Reset Previous Path
+							pathfinding_delete_path(pathfinding_path);
+							pathfinding_path = undefined;
+							
+							// Calculate New Path and Reset Pathfinding Index
+							pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
+							pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+						}
+						
+						// Reset Pathfinding Variables
+						pathfinding_recalculate = false;
+						pathfinding_path_ended = false;
+						pathfinding_jump = true;
+					}
+					else
+					{
+						// Recalculation was invalid
+						pathfinding_recalculate = false;
+					}
+		    	}
 	        }
-	        else if (temp_squad_leader_instance.player_input)
+	        else
 	        {
 	        	// Establish Player Input Squad Unit Follow Conditions
 	        	var temp_player_input_squad_unit_follow_condition_within_range_horizontal = abs(x - temp_squad_leader_instance.x) <= temp_squad_properties.following_range_horizontal_distance;
@@ -161,65 +270,6 @@ if (!player_input)
 		        	}
 	        	}
 	        }
-	        else if (pathfinding_recalculate)
-	    	{
-				// Check if Unit's Pathfinding Path Recalculation Condition is Valid
-				var temp_squad_movement_recalculate_command_valid = true;
-				
-				if (!is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
-				{
-					var temp_last_path_position_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
-					var temp_last_path_position_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
-					
-					if (point_distance(pathfinding_path_end_x, pathfinding_path_end_y, temp_last_path_position_x, temp_last_path_position_y) <= 1)
-					{
-						temp_squad_movement_recalculate_command_valid = false;
-					}
-				}
-				
-				// Recalculate Unit's Individual Squad Path
-				if (temp_squad_movement_recalculate_command_valid)
-				{
-					// Set Unit Pathfinding Path Start
-					pathfinding_path_start_x = x;
-					pathfinding_path_start_y = y;
-					
-					// Reset and Calculate Path Data
-					if (!is_undefined(pathfinding_path))
-					{
-						// Create Recalculated Path
-						var temp_recalculated_path = pathfinding_recalculate_path(pathfinding_path_index, pathfinding_path, pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y));
-						
-						// Delete and Reset Previous Path
-						pathfinding_delete_path(pathfinding_path);
-						pathfinding_path = undefined;
-						
-						// Set New Path and Reset Pathfinding Index
-						pathfinding_path = temp_recalculated_path;
-						pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
-					}
-					else
-					{
-						// Delete and Reset Previous Path
-						pathfinding_delete_path(pathfinding_path);
-						pathfinding_path = undefined;
-						
-						// Calculate New Path and Reset Pathfinding Index
-						pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
-						pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
-					}
-					
-					// Reset Pathfinding Variables
-					pathfinding_recalculate = false;
-					pathfinding_path_ended = false;
-					pathfinding_jump = true;
-				}
-				else
-				{
-					// Recalculation was invalid
-					pathfinding_recalculate = false;
-				}
-	    	}
 	    }
 	    else
 	    {

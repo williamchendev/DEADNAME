@@ -40,8 +40,14 @@ squad_movement_target_x_list = -1;
 ds_list_destroy(squad_movement_target_y_list);
 squad_movement_target_y_list = -1;
 
-ds_list_destroy(squad_combat_active_list);
-squad_combat_active_list = -1;
+ds_list_destroy(squad_sight_active_list);
+squad_sight_active_list = -1;
+
+ds_list_destroy(squad_sight_value_list);
+squad_sight_value_list = -1;
+
+ds_list_destroy(squad_sight_calculation_delay_list);
+squad_sight_calculation_delay_list = -1;
 
 ds_list_destroy(squad_luck_list);
 squad_luck_list = -1;

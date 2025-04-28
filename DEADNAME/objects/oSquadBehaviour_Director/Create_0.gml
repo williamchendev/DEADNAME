@@ -56,7 +56,9 @@ squad_sub_behaviour_list = ds_list_create();
 squad_movement_list = ds_list_create();
 squad_movement_target_x_list = ds_list_create();
 squad_movement_target_y_list = ds_list_create();
-squad_combat_active_list = ds_list_create();
+squad_sight_active_list = ds_list_create();
+squad_sight_value_list = ds_list_create();
+squad_sight_calculation_delay_list = ds_list_create();
 squad_luck_list = ds_list_create();
 squad_properties_list = ds_list_create();
 squad_leader_list = ds_list_create();
@@ -116,7 +118,9 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
     ds_list_add(GameManager.squad_behaviour_director.squad_movement_list, SquadMovement.None);
     ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_x_list, 0);
     ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_y_list, 0);
-    ds_list_add(GameManager.squad_behaviour_director.squad_combat_active_list, true);
+    ds_list_add(GameManager.squad_behaviour_director.squad_sight_active_list, true);
+    ds_list_add(GameManager.squad_behaviour_director.squad_sight_value_list, 0);
+    ds_list_add(GameManager.squad_behaviour_director.squad_sight_calculation_delay_list, irandom_range(0, GameManager.sight_collision_calculation_frame_delay));
     ds_list_add(GameManager.squad_behaviour_director.squad_luck_list, 1.0);
     ds_list_add(GameManager.squad_behaviour_director.squad_leader_list, undefined);
     ds_list_add_list(GameManager.squad_behaviour_director.squad_units_list, ds_list_create());
@@ -126,8 +130,12 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
     (
     	GameManager.squad_behaviour_director.squad_properties_list, 
     	{
-    		sight_radius: 260,
-    		close_combat_radius: 80,
+    		sight_min_radius: 420,
+    		sight_max_radius: 720,
+    		sight_ignore_radius: 820,
+    		sight_value_increment: 0.1,
+    		sight_value_decrement: 0.02,
+    		close_combat_radius: 100,
     		following_range_horizontal_distance: 84,
     		following_range_vertical_distance: 64,
     		squad_unit_spacing: 24,

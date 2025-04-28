@@ -34,7 +34,7 @@
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
-  "solid":false,
+  "solid":true,
   "spriteId":{
     "name":"sDebug_System_Worker",
     "path":"sprites/sDebug_System_Worker/sDebug_System_Worker.yy",

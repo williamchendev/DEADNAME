@@ -30,11 +30,18 @@ repeat (squad_count)
     var temp_squad_unit_instances_list = ds_list_find_value(squad_units_list, temp_squad_index);
     
     // Calculate Squad Combat Sight Behaviour
-    if (ds_list_find_value(squad_combat_active_list, temp_squad_index))
+    var temp_squad_sight_active = ds_list_find_value(squad_sight_active_list, temp_squad_index);
+    var temp_sight_calculation_delay = ds_list_find_value(squad_sight_calculation_delay_list, temp_squad_index) - 1;
+    
+    if (temp_squad_sight_active and temp_sight_calculation_delay <= 0)
     {
+    	// Calculate Squad Combat Sight Radius
+    	var temp_squad_sight_value = ds_list_find_value(squad_sight_value_list, temp_squad_index);
+    	var temp_squad_sight_radius = lerp(temp_squad_properties.sight_min_radius, temp_squad_properties.sight_max_radius, temp_squad_sight_value);
+    	
     	// Create Squad Leader Unit Collision List
         var temp_squad_sight_collision_list = ds_list_create();
-        var temp_squad_sight_collision_list_count = collision_circle_list(temp_squad_leader_instance.x, temp_squad_leader_instance.y - temp_squad_leader_half_height, temp_squad_properties.sight_radius, oUnit, false, true, temp_squad_sight_collision_list, true);
+        var temp_squad_sight_collision_list_count = collision_circle_list(temp_squad_leader_instance.x, temp_squad_leader_instance.y - temp_squad_leader_half_height, temp_squad_sight_radius, oUnit, false, true, temp_squad_sight_collision_list, true);
         
         // Check if Units are within Combat Range
         var temp_hostile_unit_list = ds_list_create();
@@ -107,9 +114,13 @@ repeat (squad_count)
         ds_list_destroy(temp_squad_sight_collision_list);
         temp_squad_sight_collision_list = -1;
         
-        // Assign Squad Units Hostile Entities as Combat Targets
+        // Hostile Entities Within Squad Leader Sight Radius Behaviour
         if (ds_list_size(temp_hostile_unit_list) > 0)
         {
+        	// Increase Sight Range by incrementing Sight Value
+        	temp_squad_sight_value += temp_squad_properties.sight_value_increment;
+        	ds_list_set(squad_sight_value_list, temp_squad_index, clamp(temp_squad_sight_value, 0, 1));
+        	
         	// Duplicate Squad Units List for Combat Assignments
 	        var temp_squad_combat_unit_list = ds_list_create();
 	        ds_list_copy(temp_squad_combat_unit_list, temp_squad_unit_instances_list);
@@ -132,66 +143,77 @@ repeat (squad_count)
 	        	var temp_hostile_unit_assigned_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
 	        	
 	        	// Iterate through Squad Units awaiting Combat Assignments
-	        	var temp_squad_combat_unit_unit_index = 0;
+	        	var temp_squad_combat_unit_index = 0;
 	        	
 	        	repeat (ds_list_size(temp_squad_combat_unit_list))
 	        	{
 	        		// Find Squad Unit Available to take Combat Assignment
-	        		var temp_squad_combat_unit_unit_instance = ds_list_find_value(temp_squad_combat_unit_list, temp_squad_combat_unit_unit_index);
+	        		var temp_squad_combat_unit_instance = ds_list_find_value(temp_squad_combat_unit_list, temp_squad_combat_unit_index);
 	        		
 	        		// Find Collision Center of Squad Unit
-	        		var temp_squad_unit_assignment_half_height = (temp_squad_combat_unit_unit_instance.bbox_bottom - temp_squad_combat_unit_unit_instance.bbox_top) * 0.5;
+	        		var temp_squad_unit_assignment_half_height = (temp_squad_combat_unit_instance.bbox_bottom - temp_squad_combat_unit_instance.bbox_top) * 0.5;
 	        		
-	        		//
-	        		if (collision_line(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_unit_instance.x, temp_squad_combat_unit_unit_instance.y - temp_squad_unit_assignment_half_height, oSolid, false, true))
+	        		// Check if Squad Combat Unit and Hostile Unit Assignment share continuous Line of Sight
+	        		if (collision_line(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_instance.x, temp_squad_combat_unit_instance.y - temp_squad_unit_assignment_half_height, oSolid, false, true))
         			{
-        				//
-        				temp_squad_combat_unit_unit_index++;
+        				// No continuous Line of Sight - Skip Combat Assignment
+        				temp_squad_combat_unit_index++;
         				continue;
         			}
 	        		
-	        		//
-	        		var temp_hostile_unit_assignment_distance = point_distance(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_unit_instance.x, temp_squad_combat_unit_unit_instance.y - temp_squad_unit_assignment_half_height);
-	        		var temp_hostile_unit_assignment_priority_rank = temp_hostile_unit_assignment_distance < temp_squad_properties.close_combat_radius ? UnitCombatPriorityRank.CloseCombat : temp_squad_combat_unit_unit_instance.unit_priority_rank;
+	        		// Establish Combat Assignment's Distance and Priority Rank for Comparison with other possible Combat Assignments
+	        		var temp_hostile_unit_assignment_distance = point_distance(temp_hostile_unit_instance.x, temp_hostile_unit_instance.y - temp_hostile_unit_half_height, temp_squad_combat_unit_instance.x, temp_squad_combat_unit_instance.y - temp_squad_unit_assignment_half_height);
+	        		var temp_hostile_unit_assignment_priority_rank = temp_hostile_unit_assignment_distance < temp_squad_properties.close_combat_radius ? UnitCombatPriorityRank.CloseCombat : temp_squad_combat_unit_instance.unit_priority_rank;
 	        		
-	        		//
+	        		// Check if Combat Assignment is outside the sight radius and must be ignored
+	        		if (temp_hostile_unit_assignment_distance > temp_squad_sight_radius)
+	        		{
+	        			// Combat Assignment is outside of Sight Radius and must be ignored - Skip Combat Assignment
+	        			temp_squad_combat_unit_index++;
+        				continue;
+	        		}
+	        		
+	        		// Compare and Store Combat Assignment
 	        		if (temp_hostile_unit_assigned_squad_unit_index == -1)
 	        		{
-	        			temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_unit_instance;
-	        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_unit_index;
+	        			// Combat Assignment does not exist - Store Combat Assignment with no comparison
+	        			temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_instance;
+	        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_index;
 	        			temp_hostile_unit_assigned_squad_unit_distance = temp_hostile_unit_assignment_distance;
 	        			temp_hostile_unit_assigned_priority_rank = temp_hostile_unit_assignment_priority_rank;
 	        		}
-	        		else
+	        		else if (temp_hostile_unit_assignment_priority_rank < temp_hostile_unit_assigned_priority_rank or (temp_hostile_unit_assignment_priority_rank == temp_hostile_unit_assigned_priority_rank and temp_hostile_unit_assignment_distance < temp_hostile_unit_assigned_squad_unit_distance))
 	        		{
-	        			if (temp_hostile_unit_assignment_priority_rank < temp_hostile_unit_assigned_priority_rank or (temp_hostile_unit_assignment_priority_rank == temp_hostile_unit_assigned_priority_rank and temp_hostile_unit_assignment_distance < temp_hostile_unit_assigned_squad_unit_distance))
-	        			{
-	        				temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_unit_instance;
-		        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_unit_index;
-		        			temp_hostile_unit_assigned_squad_unit_distance = temp_hostile_unit_assignment_distance;
-		        			temp_hostile_unit_assigned_priority_rank = temp_hostile_unit_assignment_priority_rank;
-	        			}
+	        			// Compare Combat Assignment - If Combat Assignment has a superior Priority or equal priority and smaller distance, store the new Combat Assignment
+        				temp_hostile_unit_assigned_squad_unit = temp_squad_combat_unit_instance;
+	        			temp_hostile_unit_assigned_squad_unit_index = temp_squad_combat_unit_index;
+	        			temp_hostile_unit_assigned_squad_unit_distance = temp_hostile_unit_assignment_distance;
+	        			temp_hostile_unit_assigned_priority_rank = temp_hostile_unit_assignment_priority_rank;
 	        		}
 	        		
-	        		//
-	        		temp_squad_combat_unit_unit_index++;
+	        		// Increment Squad Unit Index
+	        		temp_squad_combat_unit_index++;
 	        	}
 	        	
-	        	//
+	        	// Set Squad Unit's Combat Assignment if the Combat Assignment exists and is valid
 	        	if (temp_hostile_unit_assigned_squad_unit_index != -1)
         		{
-        			//
-        			temp_hostile_unit_assigned_squad_unit.combat_target = temp_hostile_unit_assigned_squad_unit;
-        			temp_hostile_unit_assigned_squad_unit.combat_priority_rank = temp_hostile_unit_assigned_priority_rank;
+        			// Check if new Combat Assignment's Priority Rank is better than the Squad Unit's current Combat Assignment's Priority Rank
+        			if (temp_hostile_unit_assigned_priority_rank < temp_hostile_unit_assigned_squad_unit.combat_priority_rank)
+        			{
+        				// Set Squad Unit's Combat Assignment Properties
+	        			temp_hostile_unit_assigned_squad_unit.combat_target = temp_hostile_unit_instance;
+	        			temp_hostile_unit_assigned_squad_unit.combat_priority_rank = temp_hostile_unit_assigned_priority_rank;
+	        			
+	        			// Select Combat Strategy for Squad Unit's Combat Assignment
+	        			temp_hostile_unit_assigned_squad_unit.combat_strategy = UnitCombatStrategy.FireUntilNeutralized;
+        			}
         			
-        			//
-        			temp_hostile_unit_assigned_squad_unit.combat_strategy = UnitCombatStrategy.FireUntilNeutralized;
-        			
-        			//
+        			// Attempted Combat Assignment - Remove Squad Unit from List of Units awaiting Combat Assignments
         			ds_list_delete(temp_squad_combat_unit_list, temp_hostile_unit_assigned_squad_unit_index);
         		}
 	        	
-	        	// Increment Hostile Unit Index
+	        	// Increment Hostile Unit Index and loop through Hostile Unit List to distribute Combat Assignments across Squad Units
 	        	temp_hostile_unit_index++;
 	        	
 	        	if (temp_hostile_unit_index == ds_list_size(temp_hostile_unit_list))
@@ -210,6 +232,12 @@ repeat (squad_count)
 	        ds_list_destroy(temp_squad_combat_unit_list);
 	        temp_squad_combat_unit_list = -1;
         }
+        else
+        {
+        	// No Hostile Units Within Squad Leader's Sight Range - Decrease Sight Range by decrementing Sight Value
+        	temp_squad_sight_value -= temp_squad_properties.sight_value_decrement;
+        	ds_list_set(squad_sight_value_list, temp_squad_index, clamp(temp_squad_sight_value, 0, 1));
+        }
         
         // Clear Hostile Collision DS Lists
         ds_list_destroy(temp_hostile_unit_list);
@@ -218,6 +246,13 @@ repeat (squad_count)
         ds_list_destroy(temp_hostile_distance_list);
         temp_hostile_distance_list = -1;
     }
+    else if (!temp_squad_sight_active)
+    {
+    	// Combat Sight Disabled - Reset Squad Sight Value
+    	ds_list_set(squad_sight_value_list, temp_squad_index, 0);
+    }
+    
+    ds_list_set(squad_sight_calculation_delay_list, temp_squad_index, temp_sight_calculation_delay <= 0 ? GameManager.sight_collision_calculation_frame_delay : temp_sight_calculation_delay);
     
     // Determine Squad Behaviour if Squad Leader is the Player or not
     if (!temp_squad_leader_instance.player_input)
@@ -242,9 +277,17 @@ repeat (squad_count)
 	    }
 	    
 	    /// @DEBUG IF YOU COULD NOT GUESS
-        if (mouse_check_button_pressed(mb_left))
+        if (mouse_check_button_pressed(mb_left) and temp_squad_faction == "Moralists")
         {
             temp_calculate_squad_pathfinding_targets = true;
+            
+            // Set Squad Movement Target
+            temp_squad_movement_target_x = GameManager.cursor_x + LightingEngine.render_x;
+            temp_squad_movement_target_y = GameManager.cursor_y + LightingEngine.render_y;
+        }
+        else if (mouse_check_button_pressed(mb_right) and temp_squad_faction == "Evil")
+        {
+        	temp_calculate_squad_pathfinding_targets = true;
             
             // Set Squad Movement Target
             temp_squad_movement_target_x = GameManager.cursor_x + LightingEngine.render_x;
