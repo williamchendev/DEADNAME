@@ -201,12 +201,16 @@ repeat (squad_count)
         			// Check if new Combat Assignment's Priority Rank is better than the Squad Unit's current Combat Assignment's Priority Rank
         			if (temp_hostile_unit_assigned_priority_rank < temp_hostile_unit_assigned_squad_unit.combat_priority_rank)
         			{
-        				// Set Squad Unit's Combat Assignment Properties
-	        			temp_hostile_unit_assigned_squad_unit.combat_target = temp_hostile_unit_instance;
-	        			temp_hostile_unit_assigned_squad_unit.combat_priority_rank = temp_hostile_unit_assigned_priority_rank;
-	        			
-	        			// Select Combat Strategy for Squad Unit's Combat Assignment
-	        			temp_hostile_unit_assigned_squad_unit.combat_strategy = UnitCombatStrategy.FireUntilNeutralized;
+						// Set Squad Unit's Combat Assignment Properties
+						temp_hostile_unit_assigned_squad_unit.combat_target = temp_hostile_unit_instance;
+						temp_hostile_unit_assigned_squad_unit.combat_priority_rank = temp_hostile_unit_assigned_priority_rank;
+						
+						// Select Combat Strategy for Squad Unit's Combat Assignment
+						temp_hostile_unit_assigned_squad_unit.combat_strategy = UnitCombatStrategy.FireUntilNeutralized;
+						
+						// Reset Combat Aim Variables
+						temp_hostile_unit_assigned_squad_unit.combat_target_aim_value = 0;
+						temp_hostile_unit_assigned_squad_unit.combat_target_vertical_interpolation = random_range(temp_hostile_unit_assigned_squad_unit.combat_target_vertical_interpolation_min, temp_hostile_unit_assigned_squad_unit.combat_target_vertical_interpolation_max);
         			}
         			
         			// Attempted Combat Assignment - Remove Squad Unit from List of Units awaiting Combat Assignments
@@ -373,28 +377,28 @@ repeat (squad_count)
 						pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
 	                	pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
 					}
-	                
-	                // Reset Pathfinding Variables
-	                pathfinding_recalculate = false;
-	                pathfinding_path_ended = false;
-	                pathfinding_jump = true;
+	            	
+			        // Reset Pathfinding Variables
+			        pathfinding_recalculate = false;
+			        pathfinding_path_ended = false;
+			        pathfinding_jump = true;
 	            }
             }
             
             // Establish Squad Spacing Variables
             var temp_squad_spacing_count = -((ds_list_size(temp_squad_unit_instances_list) - 1) div 2);
             
-            // Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
-            if ((ds_list_size(temp_squad_unit_instances_list) - 1) mod 2 == 1)
-            {
-            	if (!is_undefined(temp_squad_leader_instance.pathfinding_path) and temp_squad_leader_instance.pathfinding_path.path_size >= 2)
-	            {
-	            	var temp_squad_spacing_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 1);
-	            	var temp_squad_spacing_second_to_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 2);
-	            	var temp_squad_spacing_last_path_position_direction = sign(temp_squad_spacing_last_path_position_x - temp_squad_spacing_second_to_last_path_position_x);
-	            	temp_squad_spacing_count += (temp_squad_spacing_last_path_position_direction == 0 ? temp_squad_properties.facing_direction : temp_squad_spacing_last_path_position_direction) == -1 ? -1 : 0;
-	            }
-            }
+			// Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
+			if ((ds_list_size(temp_squad_unit_instances_list) - 1) mod 2 == 1)
+			{
+				if (!is_undefined(temp_squad_leader_instance.pathfinding_path) and temp_squad_leader_instance.pathfinding_path.path_size >= 2)
+			    {
+			    	var temp_squad_spacing_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 1);
+			    	var temp_squad_spacing_second_to_last_path_position_x = ds_list_find_value(temp_squad_leader_instance.pathfinding_path.position_x, temp_squad_leader_instance.pathfinding_path.path_size - 2);
+			    	var temp_squad_spacing_last_path_position_direction = sign(temp_squad_spacing_last_path_position_x - temp_squad_spacing_second_to_last_path_position_x);
+			    	temp_squad_spacing_count += (temp_squad_spacing_last_path_position_direction == 0 ? temp_squad_properties.facing_direction : temp_squad_spacing_last_path_position_direction) == -1 ? -1 : 0;
+			    }
+			}
             
             // Set Squad Unit Pathfinding to be spaced out around Squad Leader at the Squad Movement Target
             for (var temp_pathfinding_squad_unit_index = 0; temp_pathfinding_squad_unit_index < ds_list_size(temp_squad_unit_instances_list); temp_pathfinding_squad_unit_index++)
@@ -408,11 +412,11 @@ repeat (squad_count)
                     continue;
                 }
                 
-                // Check to see if Unit Path Recalculation is Valid - Both Unit Pathfinding Path Exists and Unit is moving conditions must be met
-                if (!is_undefined(temp_pathfinding_squad_unit_instance.pathfinding_path) and temp_pathfinding_squad_unit_instance.pathfinding_path.path_size >= 1 and !temp_pathfinding_squad_unit_instance.pathfinding_path_ended)
-                {
-                	temp_pathfinding_squad_unit_instance.pathfinding_recalculate = true;
-                }
+				// Check to see if Unit Path Recalculation is Valid - Both Unit Pathfinding Path Exists and Unit is moving conditions must be met
+				if (!is_undefined(temp_pathfinding_squad_unit_instance.pathfinding_path) and temp_pathfinding_squad_unit_instance.pathfinding_path.path_size >= 1 and !temp_pathfinding_squad_unit_instance.pathfinding_path_ended)
+				{
+					temp_pathfinding_squad_unit_instance.pathfinding_recalculate = true;
+				}
                 
                 // Set Squad Unit's Pathfinding to match Squad Leader
                 with (temp_pathfinding_squad_unit_instance)
@@ -446,7 +450,7 @@ repeat (squad_count)
 						
 						// Calculate New Path and Reset Pathfinding Index
 						pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y);
-	                	pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+						pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
 					}
                     
                     // Reset Pathfinding Variables

@@ -460,41 +460,105 @@ if (!player_input)
 
 // COMBAT //
 // Combat Behaviour
-if (!is_undefined(combat_target) and instance_exists(combat_target))
+if (player_input)
 {
-	// 
-	var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
 	
-	//
-	input_cursor_x = combat_target.x;
-	input_cursor_y = combat_target.y - temp_combat_target_half_height;
+}
+else if (!is_undefined(combat_target) and instance_exists(combat_target))
+{
+	// Calculate Weapon's Target Vertical Interpolation Height
+	var temp_combat_target_vertical_interpolation_height = lerp(combat_target.bbox_bottom, combat_target.bbox_top, combat_target_vertical_interpolation) - combat_target.y;
 	
-	if (pathfinding_path_ended)
+	// Pull Combat Target Unit's Pre-calc Slope Angle
+	trig_sine = combat_target.draw_angle_trig_sine;
+	trig_cosine = combat_target.draw_angle_trig_cosine;
+	
+	// Calculate Weapon's Target Position
+	input_cursor_x = combat_target.x + rot_point_x(0, temp_combat_target_vertical_interpolation_height);
+	input_cursor_y = combat_target.y + rot_point_y(0, temp_combat_target_vertical_interpolation_height);
+	
+	// Combat Weapon Behaviour
+	switch (unit_equipment_animation_state)
 	{
-		input_aim = true;
-	}
-	else
-	{
-		input_aim = false;
+		case UnitEquipmentAnimationState.FirearmReload:
+			// Reset Weapon Reload Behaviour
+	    	input_reload = false;
+			break;
+		default:
+			// Combat Aim Weapon Behaviour
+			if (pathfinding_path_ended)
+			{
+				input_aim = true;
+			}
+			else
+			{
+				input_aim = false;
+			}
+			
+			// Combat Weapon Attack Behaviour
+			if (input_aim)
+			{
+				combat_target_aim_value += combat_target_aim_recovery_spd * frame_delta;
+				
+				if (combat_target_aim_value >= 1.0)
+				{
+					combat_attack_delay -= frame_delta;
+					
+					if (combat_attack_delay <= 0)
+					{
+						input_attack = true;
+						combat_target_aim_value = 0;
+						combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_max);
+					}
+				}
+			}
+			
+			// Combat Weapon Behaviours
+			if (weapon_active)
+			{
+				switch (global.weapon_packs[weapon_equipped.weapon_pack].weapon_type)
+				{
+				    case WeaponType.DefaultFirearm:
+				    case WeaponType.BoltActionFirearm:
+				        // Check Firearm Weapon Reload Behaviour
+				        if (weapon_equipped.firearm_ammo <= 0)
+				        {
+				        	//
+				        	input_reload = true;
+				        	
+				        	//
+				        	input_aim = false;
+				        	input_attack = false;
+				        }
+				        break;
+				    default:
+				        break;
+				}
+			}
+			break;
 	}
 	
 	// Combat Line of Sight Calculation
 	if (combat_sight_calculation_delay == 0)
 	{
-		//
+		// Calculate Unit and Combat Target's Half Height
 		var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
+		var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
 		
 		// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
 		if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_squad_properties.sight_ignore_radius)
 		{
-			//
+			// Unit's line of sight with Combat Assignment's Unit Instance has been broken
 			input_aim = false;
 			input_attack = false;
 			
-			//
+			// Reset Combat Assignment Variables
 			combat_target = undefined;
     		combat_strategy = UnitCombatStrategy.NullStrategy;
 			combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+			
+			// Reset Combat Aim Variables
+			combat_target_aim_value = 0;
 		}
 	}
 }
@@ -507,6 +571,9 @@ else
 	combat_target = undefined;
 	combat_strategy = UnitCombatStrategy.NullStrategy;
 	combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+	
+	// Reset Combat Aim Variables
+	combat_target_aim_value = 0;
 }
 
 combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= -1 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
@@ -656,7 +723,7 @@ if (canmove)
 						if (firearm_weapon_primary_hand_pivot_transition_value <= animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value <= animation_asymptotic_tolerance)
 						{
 							// Weapon Attack Behaviour - Attack with Firearm
-							var temp_weapon_attack = weapon_equipped.update_weapon_attack();
+							var temp_weapon_attack = weapon_equipped.update_weapon_attack(combat_target);
 							
 							// Weapon Attack Unit Behaviour
 							if (temp_weapon_attack)
@@ -988,6 +1055,11 @@ else
 draw_xscale = lerp(draw_xscale, sign(draw_xscale), squash_stretch_reset_spd * frame_delta);
 draw_yscale = lerp(draw_yscale, 1, squash_stretch_reset_spd * frame_delta);
 draw_angle_value = lerp(draw_angle_value, draw_angle, slope_angle_lerp_spd * frame_delta);
+
+// Pre-calc Unit's Slope Rotation
+rot_prefetch(draw_angle_value);
+draw_angle_trig_sine = trig_sine;
+draw_angle_trig_cosine = trig_cosine;
 #endregion
 
 // WEAPON //
@@ -1471,8 +1543,9 @@ switch (unit_equipment_animation_state)
 		var temp_firearm_facing_sign = sign(draw_xscale);
 		animation_speed_direction = 1;
 		
-		// Pre-calc Unit's Slope Rotation
-		rot_prefetch(draw_angle_value);
+		// Pull Unit's Slope Rotation
+		trig_sine = draw_angle_trig_sine;
+		trig_cosine = draw_angle_trig_cosine;
 	
 		// Firearm Reload Animation
 		var temp_firearm_ambient_angle;
@@ -1630,8 +1703,11 @@ switch (unit_equipment_animation_state)
 		// Reset Animation Speed Direction
 		animation_speed_direction = 1;
 		
+		// Pull Unit's Slope Rotation
+		trig_sine = draw_angle_trig_sine;
+		trig_cosine = draw_angle_trig_cosine;
+		
 		// Update Limb Anchor Trig Values
-		rot_prefetch(draw_angle_value);
 		limb_primary_arm.anchor_trig_sine = trig_sine;
 		limb_primary_arm.anchor_trig_cosine = trig_cosine;
 		limb_secondary_arm.anchor_trig_sine = trig_sine;

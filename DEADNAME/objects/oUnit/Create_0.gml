@@ -64,6 +64,15 @@ firearm_idle_safety_angle = -15;
 firearm_moving_safety_angle = -45;
 firearm_reload_safety_angle = 15;
 
+// Combat Settings
+combat_target_aim_recovery_spd = 0.1;
+
+combat_target_vertical_interpolation_min = 0.4;
+combat_target_vertical_interpolation_max = 0.85;
+
+combat_attack_delay_min = 2;
+combat_attack_delay_max = 22;
+
 // Physics Variables
 platform_list = ds_list_create();
 
@@ -95,6 +104,9 @@ draw_yscale = 1;
 draw_angle = 0;
 draw_angle_value = 0;
 
+draw_angle_trig_sine = 0;
+draw_angle_trig_cosine = 1;
+
 ground_contact_vertical_offset = 0;
 
 hand_fumble_animation_timer = 0;
@@ -125,6 +137,11 @@ firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
 combat_target = undefined;
 combat_strategy = UnitCombatStrategy.NullStrategy;
 combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+
+combat_target_aim_value = 0;
+combat_target_vertical_interpolation = 0.5;
+
+combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_max);
 
 combat_sight_calculation_delay = irandom_range(0, GameManager.sight_collision_calculation_frame_delay);
 

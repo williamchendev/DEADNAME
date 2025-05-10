@@ -67,7 +67,7 @@ class WeaponClass define
 		
 	}
 	
-	static update_weapon_attack = function()
+	static update_weapon_attack = function(weapon_target = undefined)
 	{
 		
 	}
@@ -186,7 +186,7 @@ class FirearmClass extends WeaponClass define
 		}
 	}
 	
-	static update_weapon_attack = function()
+	static update_weapon_attack = function(weapon_target = undefined)
 	{
 		// Invalid Weapon Attack Behaviour
 		if (firearm_attack_delay > 0)
@@ -218,6 +218,8 @@ class FirearmClass extends WeaponClass define
 		weapon_vertical_recoil_target = -rot_point_y(temp_firearm_recoil_horizontal_offset, temp_firearm_recoil_vertical_offset);
 		
 		weapon_angle_recoil_target = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
+		
+		// Attack Weapon Target
 		
 		// Set Firearm Timers
 		firearm_attack_delay = global.weapon_packs[weapon_pack].firearm_attack_delay;

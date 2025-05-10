@@ -238,6 +238,7 @@
     {"name":"oDebugCreateSquad","order":2,"path":"objects/oDebugCreateSquad/oDebugCreateSquad.yy",},
     {"name":"oDebugCreateSquadMultiple","order":9,"path":"objects/oDebugCreateSquadMultiple/oDebugCreateSquadMultiple.yy",},
     {"name":"oDebugSetFactionHostile","order":10,"path":"objects/oDebugSetFactionHostile/oDebugSetFactionHostile.yy",},
+    {"name":"oDebugSmokeTrail","order":14,"path":"objects/oDebugSmokeTrail/oDebugSmokeTrail.yy",},
     {"name":"oDebugStressTest","order":7,"path":"objects/oDebugStressTest/oDebugStressTest.yy",},
     {"name":"oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill","order":2,"path":"objects/oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill/oEnvironment_AdobeHouse_BulkStatic_ArkovianTruckStill.yy",},
     {"name":"oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks","order":3,"path":"objects/oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks/oEnvironment_AdobeHouse_BulkStatic_BrownDesertRocks.yy",},
