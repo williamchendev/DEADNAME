@@ -219,7 +219,30 @@ class FirearmClass extends WeaponClass define
 		
 		weapon_angle_recoil_target = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
 		
+		// FIX PLEASE THANK YOU
+		rot_prefetch(temp_firing_angle);
+		var temp_firearm_muzzle_horizontal_offset = rot_point_x(0, 0);
+		var temp_firearm_muzzle_vertical_offset = rot_point_y(0, 0);
+		
 		// Attack Weapon Target
+		if (!is_undefined(weapon_target) and instance_exists(weapon_target))
+		{
+			for (var i = 0; i < 600; i++)
+			{
+				var temp_firearm_projectile_impact_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(i, 0);
+				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_horizontal_offset + rot_point_y(i, 0);
+				
+				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
+				{
+					//
+					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target.depth, oDebugHitMarker, {start_x: weapon_x, start_y: weapon_y});
+					
+					//
+					weapon_target.unit_health--;
+					break;
+				}
+			}
+		}
 		
 		// Set Firearm Timers
 		firearm_attack_delay = global.weapon_packs[weapon_pack].firearm_attack_delay;

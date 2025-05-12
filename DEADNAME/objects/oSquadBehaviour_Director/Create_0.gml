@@ -194,7 +194,7 @@ add_unit_to_squad = function(squad_id, squad_unit)
     var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
     
     // Check if Squad Index Exists
-    if (!is_undefined(temp_squad_index))
+    if (is_undefined(temp_squad_index))
     {
         // Squad does not exists, unable to add Unit to Squad - Early Return
         return;
@@ -250,7 +250,7 @@ remove_unit_from_squad = function(squad_id, squad_unit)
     var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
     
     // Check if Squad Index Exists
-    if (!is_undefined(temp_squad_index))
+    if (is_undefined(temp_squad_index))
     {
         // Squad does not exists, unable to remove Unit from Squad - Early Return
         return;
@@ -261,16 +261,19 @@ remove_unit_from_squad = function(squad_id, squad_unit)
         var temp_squad_units_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
         
         // Find Squad Unit Index in Squad Units List
-        var temp_squad_unit_in_units_list_index = ds_map_find_value(temp_squad_units_list, squad_unit);
+        var temp_squad_unit_in_units_list_index = ds_list_find_index(temp_squad_units_list, squad_unit);
         
         // Check if Squad Unit exists in Squad Units List
-        if (!is_undefined(temp_squad_unit_in_units_list_index))
+        if (is_undefined(temp_squad_unit_in_units_list_index))
         {
             // Squad Unit is not in Squad with Squad ID - Early Return
             return;
         }
         else
         {
+			// Find Squad Faction
+			var squad_faction = ds_list_find_value(GameManager.squad_behaviour_director.squad_faction_list, temp_squad_index);
+			
             // Delete Unit from Squad Units
             ds_list_delete(temp_squad_units_list, temp_squad_unit_in_units_list_index);
             
@@ -358,7 +361,7 @@ set_unit_as_squad_leader = function(squad_id, squad_unit)
         var temp_squad_unit_in_units_list_index = ds_map_find_value(temp_squad_units_list, squad_unit);
         
         // Check if Squad Unit exists in Squad Units List
-        if (!is_undefined(temp_squad_unit_in_units_list_index))
+        if (is_undefined(temp_squad_unit_in_units_list_index))
         {
             // Squad Unit is not in Squad with Squad ID - Early Return
             return;

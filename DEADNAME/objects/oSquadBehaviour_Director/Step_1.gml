@@ -14,6 +14,10 @@ repeat (squad_count)
         continue;
     }
     
+    // Establish Squad Leader & Squad Units List
+    var temp_squad_leader_instance = ds_list_find_value(squad_leader_list, temp_squad_index);
+    var temp_squad_unit_instances_list = ds_list_find_value(squad_units_list, temp_squad_index);
+    
     // Establish Squad Properties
     var temp_squad_properties = ds_list_find_value(squad_properties_list, temp_squad_index);
     var temp_squad_faction = ds_list_find_value(squad_faction_list, temp_squad_index);
@@ -22,12 +26,8 @@ repeat (squad_count)
     var temp_squad_movement_target_x = ds_list_find_value(squad_movement_target_x_list, temp_squad_index);
     var temp_squad_movement_target_y = ds_list_find_value(squad_movement_target_y_list, temp_squad_index);
     
-    // Establish Squad Leader Instance and Squad Leader Variables
-    var temp_squad_leader_instance = ds_list_find_value(squad_leader_list, temp_squad_index);
+    // Establish Squad Leader Variables
     var temp_squad_leader_half_height = (temp_squad_leader_instance.bbox_bottom - temp_squad_leader_instance.bbox_top) * 0.5;
-    
-    // Establish Squad Units List
-    var temp_squad_unit_instances_list = ds_list_find_value(squad_units_list, temp_squad_index);
     
     // Calculate Squad Combat Sight Behaviour
     var temp_squad_sight_active = ds_list_find_value(squad_sight_active_list, temp_squad_index);

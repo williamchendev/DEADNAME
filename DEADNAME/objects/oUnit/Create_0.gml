@@ -8,7 +8,7 @@ lighting_engine_add_unit(id);
 canmove = true;
 
 // Health Settings
-health = 3;
+unit_health = 1;
 
 // Physics Settings
 run_spd = 3; // Running Speed
@@ -65,6 +65,8 @@ firearm_moving_safety_angle = -45;
 firearm_reload_safety_angle = 15;
 
 // Combat Settings
+sight_ignore_radius = 820;
+
 combat_target_aim_recovery_spd = 0.1;
 
 combat_target_vertical_interpolation_min = 0.4;

@@ -1,27 +1,46 @@
 /// @description Unit Update Event
 
+// Health & Death Behaviour //
+if (unit_health <= 0)
+{
+	//
+	if (squad_id != SquadIDNull)
+	{
+		GameManager.squad_behaviour_director.remove_unit_from_squad(squad_id, id);
+	}
+	
+	//
+	unit_create_ragdoll(id);
+	instance_destroy();
+	return;
+}
+
 // Unit Behaviour //
 #region Unit Behaviour
 if (!player_input)
 {
 	// Establish Behaviour Variables
-	var temp_follow_behaviour_unit_instance = undefined;
+	var temp_squad_properties = undefined;
+	var temp_squad_leader_instance = undefined;
 	
+	var temp_follow_behaviour_unit_instance = undefined;
 	var temp_follow_behaviour_squad_movement_position_x = x;
     var temp_follow_behaviour_squad_movement_position_y = y;
 	
 	// Unit Squad Behaviour
 	if (squad_id != SquadIDNull)
 	{
-		// Establish Squad Index & Squad Properties
+		// Establish Squad Index
 		var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
-		var temp_squad_properties = ds_list_find_value(GameManager.squad_behaviour_director.squad_properties_list, temp_squad_index);
+		
+		// Establish Squad Properties
+		temp_squad_properties = ds_list_find_value(GameManager.squad_behaviour_director.squad_properties_list, temp_squad_index);
 		
 		// Check if Squad Index Exists
 		if (!is_undefined(temp_squad_index) and ds_list_find_value(GameManager.squad_behaviour_director.squad_exists_list, temp_squad_index))
 	    {
 	        // Establish Squad Leader
-	        var temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
+	        temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
 	        
 	        // Check if Squad Unit belongs to Player Squad Leader controlled Squad
 	        if (!temp_squad_leader_instance.player_input)
@@ -428,7 +447,7 @@ if (!player_input)
 				if (pathfinding_path_ended)
 				{
 					// Path Ended Behaviour Condition Tree
-					if (temp_squad_leader_instance.player_input)
+					if (!is_undefined(temp_squad_leader_instance) and temp_squad_leader_instance.player_input)
 					{
 						// Player Squad Leader - Squad Unit Facing Direction Match Behaviour
 						draw_xscale = temp_squad_leader_instance.draw_xscale != 0 ? sign(temp_squad_leader_instance.draw_xscale) * abs(draw_xscale) : draw_xscale;
@@ -456,127 +475,134 @@ if (!player_input)
 		input_jump_hold = false;
 		input_double_jump = false;
     }
-}
-
-// COMBAT //
-// Combat Behaviour
-if (player_input)
-{
-	
-}
-else if (!is_undefined(combat_target) and instance_exists(combat_target))
-{
-	// Calculate Weapon's Target Vertical Interpolation Height
-	var temp_combat_target_vertical_interpolation_height = lerp(combat_target.bbox_bottom, combat_target.bbox_top, combat_target_vertical_interpolation) - combat_target.y;
-	
-	// Pull Combat Target Unit's Pre-calc Slope Angle
-	trig_sine = combat_target.draw_angle_trig_sine;
-	trig_cosine = combat_target.draw_angle_trig_cosine;
-	
-	// Calculate Weapon's Target Position
-	input_cursor_x = combat_target.x + rot_point_x(0, temp_combat_target_vertical_interpolation_height);
-	input_cursor_y = combat_target.y + rot_point_y(0, temp_combat_target_vertical_interpolation_height);
-	
-	// Combat Weapon Behaviour
-	switch (unit_equipment_animation_state)
+    
+    // COMBAT //
+	// Combat Behaviour
+	if (!is_undefined(combat_target) and instance_exists(combat_target))
 	{
-		case UnitEquipmentAnimationState.FirearmReload:
-			// Reset Weapon Reload Behaviour
-	    	input_reload = false;
-			break;
-		default:
-			// Combat Aim Weapon Behaviour
-			if (pathfinding_path_ended)
-			{
-				input_aim = true;
-			}
-			else
-			{
-				input_aim = false;
-			}
-			
-			// Combat Weapon Attack Behaviour
-			if (input_aim)
-			{
-				combat_target_aim_value += combat_target_aim_recovery_spd * frame_delta;
-				
-				if (combat_target_aim_value >= 1.0)
+		// Calculate Weapon's Target Vertical Interpolation Height
+		var temp_combat_target_vertical_interpolation_height = lerp(combat_target.bbox_bottom, combat_target.bbox_top, combat_target_vertical_interpolation) - combat_target.y;
+		
+		// Pull Combat Target Unit's Pre-calc Slope Angle
+		trig_sine = combat_target.draw_angle_trig_sine;
+		trig_cosine = combat_target.draw_angle_trig_cosine;
+		
+		// Calculate Weapon's Target Position
+		input_cursor_x = combat_target.x + rot_point_x(0, temp_combat_target_vertical_interpolation_height);
+		input_cursor_y = combat_target.y + rot_point_y(0, temp_combat_target_vertical_interpolation_height);
+		
+		// Combat Weapon Behaviour
+		switch (unit_equipment_animation_state)
+		{
+			case UnitEquipmentAnimationState.FirearmReload:
+				// Reset Weapon Reload Behaviour
+		    	input_reload = false;
+				break;
+			default:
+				// Combat Aim Weapon Behaviour
+				if (pathfinding_path_ended)
 				{
-					combat_attack_delay -= frame_delta;
+					input_aim = true;
+				}
+				else
+				{
+					input_aim = false;
+				}
+				
+				// Combat Weapon Attack Behaviour
+				if (input_aim)
+				{
+					//
+					combat_target_aim_value += combat_target_aim_recovery_spd * frame_delta;
 					
-					if (combat_attack_delay <= 0)
+					//
+					if (combat_target_aim_value >= 1.0)
 					{
-						input_attack = true;
-						combat_target_aim_value = 0;
-						combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_max);
+						//
+						combat_attack_delay -= frame_delta;
+						
+						//
+						if (combat_attack_delay <= 0)
+						{
+							//
+							input_attack = true;
+							
+							//
+							combat_target_aim_value = 0;
+							combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_max);
+						}
 					}
 				}
-			}
-			
-			// Combat Weapon Behaviours
-			if (weapon_active)
-			{
-				switch (global.weapon_packs[weapon_equipped.weapon_pack].weapon_type)
+				
+				// Combat Weapon Behaviours
+				if (weapon_active)
 				{
-				    case WeaponType.DefaultFirearm:
-				    case WeaponType.BoltActionFirearm:
-				        // Check Firearm Weapon Reload Behaviour
-				        if (weapon_equipped.firearm_ammo <= 0)
-				        {
-				        	//
-				        	input_reload = true;
-				        	
-				        	//
-				        	input_aim = false;
-				        	input_attack = false;
-				        }
-				        break;
-				    default:
-				        break;
+					switch (global.weapon_packs[weapon_equipped.weapon_pack].weapon_type)
+					{
+					    case WeaponType.DefaultFirearm:
+					    case WeaponType.BoltActionFirearm:
+					        // Check Firearm Weapon Reload Behaviour
+					        if (weapon_equipped.firearm_ammo <= 0)
+					        {
+					        	//
+					        	input_reload = true;
+					        	
+					        	//
+					        	input_aim = false;
+					        	input_attack = false;
+					        }
+					        break;
+					    default:
+					        break;
+					}
 				}
-			}
-			break;
-	}
-	
-	// Combat Line of Sight Calculation
-	if (combat_sight_calculation_delay == 0)
-	{
-		// Calculate Unit and Combat Target's Half Height
-		var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
-		var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
+				break;
+		}
 		
-		// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
-		if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_squad_properties.sight_ignore_radius)
+		// Combat Line of Sight Calculation
+		if (combat_sight_calculation_delay == 0)
 		{
-			// Unit's line of sight with Combat Assignment's Unit Instance has been broken
-			input_aim = false;
-			input_attack = false;
+			// Calculate Unit and Combat Target's Half Height
+			var temp_unit_half_height = (bbox_bottom - bbox_top) * 0.5;
+			var temp_combat_target_half_height = (combat_target.bbox_bottom - combat_target.bbox_top) * 0.5;
 			
-			// Reset Combat Assignment Variables
-			combat_target = undefined;
-    		combat_strategy = UnitCombatStrategy.NullStrategy;
-			combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+			// Calculate Sight Ignore Radius
+			var temp_sight_ignore_radius = (squad_id != SquadIDNull) ? temp_squad_properties.sight_ignore_radius : sight_ignore_radius;
 			
-			// Reset Combat Aim Variables
-			combat_target_aim_value = 0;
+			// Check if this Unit Instance and Combat Assignment's Unit Instance share continuous Line of Sight
+			if (collision_line(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height, oSolid, false, true) or point_distance(x, y - temp_unit_half_height, combat_target.x, combat_target.y - temp_combat_target_half_height) > temp_sight_ignore_radius)
+			{
+				// Unit's line of sight with Combat Assignment's Unit Instance has been broken
+				input_aim = false;
+				input_attack = false;
+				
+				// Reset Combat Assignment Variables
+				combat_target = undefined;
+	    		combat_strategy = UnitCombatStrategy.NullStrategy;
+				combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+				
+				// Reset Combat Aim Variables
+				combat_target_aim_value = 0;
+			}
 		}
 	}
-}
-else
-{
-	// Combat Assignment's Unit Instance has been neutralized
-	input_aim = false;
+	else
+	{
+		// Combat Assignment's Unit Instance has been neutralized
+		input_aim = false;
+		input_attack = false;
+		
+		// Reset Combat Assignment Variables
+		combat_target = undefined;
+		combat_strategy = UnitCombatStrategy.NullStrategy;
+		combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
+		
+		// Reset Combat Aim Variables
+		combat_target_aim_value = 0;
+	}
 	
-	// Reset Combat Assignment Variables
-	combat_target = undefined;
-	combat_strategy = UnitCombatStrategy.NullStrategy;
-	combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
-	
-	// Reset Combat Aim Variables
-	combat_target_aim_value = 0;
+	combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= -1 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
 }
-
-combat_sight_calculation_delay = combat_sight_calculation_delay - 1 <= -1 ? GameManager.sight_collision_calculation_frame_delay : combat_sight_calculation_delay - 1;
 
 // MOVEMENT //
 // Movement Behaviour
