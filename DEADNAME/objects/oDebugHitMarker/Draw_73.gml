@@ -40,10 +40,4 @@ for (var i = 0; i < temp_trail_length; i++)
 
 draw_primitive_end();
 
-if (hitmarker_destroy_timer > 0)
-{
-	draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x + hitmarker_dropshadow_horizontal_offset, y - LightingEngine.render_y + hitmarker_dropshadow_vertical_offset, 1, 1, image_angle, c_black, 1);
-	draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x, y - LightingEngine.render_y, 1, 1, image_angle, c_white, 1);
-}
-
 surface_reset_target();
