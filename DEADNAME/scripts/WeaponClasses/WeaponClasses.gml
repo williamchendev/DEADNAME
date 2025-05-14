@@ -219,26 +219,49 @@ class FirearmClass extends WeaponClass define
 		
 		weapon_angle_recoil_target = random_range(global.weapon_packs[weapon_pack].firearm_random_recoil_angle_min, global.weapon_packs[weapon_pack].firearm_random_recoil_angle_max);
 		
-		// FIX PLEASE THANK YOU
+		// Firearm Muzzle Position
 		rot_prefetch(temp_firing_angle);
-		var temp_firearm_muzzle_horizontal_offset = rot_point_x(0, 0);
-		var temp_firearm_muzzle_vertical_offset = rot_point_y(0, 0);
+		var temp_firearm_muzzle_horizontal_offset = rot_point_x(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
+		var temp_firearm_muzzle_vertical_offset = rot_point_y(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
 		
 		// Attack Weapon Target
-		if (!is_undefined(weapon_target) and instance_exists(weapon_target))
+		if (random(1.0) < 0.25 and !is_undefined(weapon_target) and instance_exists(weapon_target))
 		{
-			for (var i = 0; i < 600; i++)
+			//
+			for (var i = 0; i <= 600; i++)
 			{
 				var temp_firearm_projectile_impact_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(i, 0);
-				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_horizontal_offset + rot_point_y(i, 0);
+				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
 				
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
 				{
 					//
-					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target.depth, oDebugHitMarker, {start_x: weapon_x, start_y: weapon_y});
+					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker, { start_x: weapon_x + temp_firearm_muzzle_horizontal_offset, start_y: weapon_y + temp_firearm_muzzle_vertical_offset, trail_angle: temp_firing_angle});
+					
+					//
+					weapon_target.combat_attack_impulse_power = 50;
+					weapon_target.combat_attack_impulse_position_x = temp_firearm_projectile_impact_x;
+					weapon_target.combat_attack_impulse_position_y = temp_firearm_projectile_impact_y;
+					weapon_target.combat_attack_impulse_horizontal_vector = trig_cosine;
+					weapon_target.combat_attack_impulse_vertical_vector = trig_sine;
 					
 					//
 					weapon_target.unit_health--;
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (var i = 0; i <= 600; i++)
+			{
+				var temp_firearm_projectile_impact_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(i, 0);
+				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
+				
+				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid) or i == 600)
+				{
+					//
+					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker, { start_x: weapon_x + temp_firearm_muzzle_horizontal_offset, start_y: weapon_y + temp_firearm_muzzle_vertical_offset, trail_angle: temp_firing_angle});
 					break;
 				}
 			}

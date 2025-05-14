@@ -159,6 +159,10 @@ global.weapon_packs[WeaponPack.Corso] =
 
 	firearm_reload_offset_x: 0,
 	firearm_reload_offset_y: -7,
+	
+	// Weapon Muzzle Positions
+	firearm_muzzle_x: 29,
+	firearm_muzzle_y: -1,
 }
 
 // SMG Weapon Pack

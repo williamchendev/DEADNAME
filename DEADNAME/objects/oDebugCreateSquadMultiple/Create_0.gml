@@ -12,6 +12,7 @@ for (var i = 0; i < squad_num; i++)
 		{
 			squad_id: $"{self.squad_faction_id}_{id}_squad{i}",
 			squad_faction_id: self.squad_faction_id,
+			squad_size: self.squad_size,
 			squad_leader_unit_pack: self.squad_leader_unit_pack,
 			squad_unit_pack: self.squad_unit_pack
 		}

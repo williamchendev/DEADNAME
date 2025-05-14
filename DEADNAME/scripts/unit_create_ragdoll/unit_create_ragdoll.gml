@@ -316,6 +316,21 @@ function unit_create_ragdoll(unit_instance)
 			phy_rotation = -90 - unit_instance.limb_secondary_arm.limb_pivot_b_angle;
 		}
 	}
+	
+	//
+	if (unit_instance.combat_attack_impulse_power > 0)
+	{
+		//
+		with (temp_ragdoll_struct.chest)
+		{
+			//
+			var temp_combat_impulse_horizontal_vector = unit_instance.combat_attack_impulse_power * unit_instance.combat_attack_impulse_horizontal_vector;
+			var temp_combat_impulse_vertical_vector = unit_instance.combat_attack_impulse_power * unit_instance.combat_attack_impulse_vertical_vector;
+			
+			//
+			physics_apply_local_impulse(unit_instance.combat_attack_impulse_position_x - x, unit_instance.combat_attack_impulse_position_y - y, temp_combat_impulse_horizontal_vector, temp_combat_impulse_vertical_vector);
+		}
+	}
 
 	// Return Ragdoll UnitBody Limbs Struct
 	return temp_ragdoll_struct;

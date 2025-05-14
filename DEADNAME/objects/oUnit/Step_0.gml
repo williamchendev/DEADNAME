@@ -11,6 +11,8 @@ if (unit_health <= 0)
 	
 	//
 	unit_create_ragdoll(id);
+	
+	//
 	instance_destroy();
 	return;
 }

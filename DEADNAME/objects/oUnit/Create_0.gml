@@ -147,6 +147,12 @@ combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_
 
 combat_sight_calculation_delay = irandom_range(0, GameManager.sight_collision_calculation_frame_delay);
 
+combat_attack_impulse_power = -1;
+combat_attack_impulse_position_x = 0;
+combat_attack_impulse_position_y = 0;
+combat_attack_impulse_horizontal_vector = 0;
+combat_attack_impulse_vertical_vector = 0;
+
 // Weapons
 weapon_active = false;
 weapon_reload = false;
