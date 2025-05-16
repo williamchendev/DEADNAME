@@ -18,6 +18,7 @@ enum LightingEngineObjectType
 {
     Dynamic_Basic,
     Dynamic_Particle,
+    Dynamic_Primitive,
     Dynamic_Unit,
     BulkStatic_Region,
     BulkStatic_Layer
@@ -423,6 +424,58 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 	
 	// Object was successfully added to Sub Layer - Return True
 	return true;
+}
+
+//
+function lighting_engine_remove_object(object_id)
+{
+	// Search Midground Sub-Layers for Object Index
+	for (var temp_mid_sub_layer_index = 0; temp_mid_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list); temp_mid_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_mid_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			//
+			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_mid_sub_layer_index);
+			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_mid_sub_layer_index);
+			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
+			return;
+		}
+	}
+	
+	// Search Background Sub-Layers for Object Index
+	for (var temp_back_sub_layer_index = 0; temp_back_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_back_layer_sub_layer_object_list); temp_back_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_back_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			//
+			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_back_sub_layer_index);
+			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_back_sub_layer_index);
+			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
+			return;
+		}
+	}
+	
+	// Search Foreground Sub-Layers for Object Index
+	for (var temp_front_sub_layer_index = 0; temp_front_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_front_layer_sub_layer_object_list); temp_front_sub_layer_index++)
+	{
+		// Attempt to find Object Index and Early Return Object Index if Exists
+		var temp_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_front_sub_layer_index), object_id);
+		
+		if (temp_object_index != -1)
+		{
+			//
+			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_front_sub_layer_index);
+			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_front_sub_layer_index);
+			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
+			return;
+		}
+	}
 }
 
 // Lighting Engine Layer Method: Find Object Index

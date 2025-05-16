@@ -168,16 +168,16 @@ function lighting_engine_render_layer(render_layer_type)
 				shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
 				
 				// Set Sub Layer Depth
-    			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
-    			
-    			// Set Camera Offset
+				shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+				
+				// Set Camera Offset
 				shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 				break;
 		}
 		
 		// Iterate through Sub Layer's Objects List
 		var temp_sub_layer_object_index = 0;
-	
+		
 		repeat (ds_list_size(temp_sub_layer_object_type_list))
 		{
 			// Get Sub Layer Object and Object Type
@@ -305,7 +305,73 @@ function lighting_engine_render_layer(render_layer_type)
 						
 						// Retore Default Dynamic Sprite Shader
 						shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
-		    			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+					}
+					break;
+				case LightingEngineObjectType.Dynamic_Primitive:
+					// Draw Dynamic Smoke Trail
+					with (temp_sub_layer_object)
+					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
+						// Reset Default Dynamic Sprite Shader
+						shader_reset();
+						
+						// Set & Prepare Dynamic Particle Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_primitive);
+						
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+						
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_metallic_index, metallic ? 1 : 0);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_roughness_index, max(roughness, 0.01));
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_emissive_index, emissive);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_emissive_multiplier_index, emissive_multiplier);
+						
+						// Draw Smoke Trail Bezier Curve
+						draw_primitive_begin(pr_trianglestrip);
+						
+						draw_vertex_color(x, y, trail_start_color, trail_start_alpha);
+						draw_vertex_color(x, y, trail_start_color, trail_start_alpha);
+						
+						var temp_trail_length = trail_segments * trail_segment_divisions;
+						
+						for (var i = 0; i < temp_trail_length; i++)
+						{
+							var temp_trail_weight = trail_weights[i div trail_segment_divisions];
+							
+							var temp_trail_v = (i mod trail_segment_divisions) / trail_segment_divisions;
+							var temp_trail_pa = lerp(0, temp_trail_weight, temp_trail_v);
+							var temp_trail_pb = lerp(0, trail_segment_divisions, temp_trail_v);
+							var temp_trail_pc = lerp(temp_trail_weight, 0, temp_trail_v);
+							var temp_trail_pd = lerp(temp_trail_pa, temp_trail_pb, temp_trail_v);
+							var temp_trail_pe = lerp(temp_trail_pb, temp_trail_pc, temp_trail_v);
+							var temp_trail_p = lerp(temp_trail_pd, temp_trail_pe, temp_trail_v);
+							
+							var temp_pos_x = x + (i * trail_segment_length * trail_vector_h) + (temp_trail_p * trail_vector_v);
+							var temp_pos_y = y + (i * trail_segment_length * -trail_vector_v) + (temp_trail_p * trail_vector_h);
+							
+							var temp_trail_progress = i / temp_trail_length;
+							var temp_trail_color = trail_start_color;
+							var temp_trail_alpha = lerp(trail_start_alpha, trail_end_alpha, temp_trail_progress);
+							
+							draw_vertex_color(temp_pos_x + (trail_thickness * trail_vector_v), temp_pos_y + (trail_thickness * trail_vector_h), temp_trail_color, temp_trail_alpha * (trail_alpha * trail_alpha));
+							draw_vertex_color(temp_pos_x + (-trail_thickness * trail_vector_v), temp_pos_y + (-trail_thickness * trail_vector_h), temp_trail_color, temp_trail_alpha * (trail_alpha * trail_alpha));
+						}
+						
+						draw_primitive_end();
+						
+						// Reset Dynamic Particle Shader
+						shader_reset();
+						
+						// Retore Default Dynamic Sprite Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
 						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 					}
 					break;
@@ -321,7 +387,7 @@ function lighting_engine_render_layer(render_layer_type)
 						
 						// Draw Secondary Arm rendered behind Unit Body
 						limb_secondary_arm.render_behaviour();
-					
+						
 						// Draw Unit Body
 						lighting_engine_render_sprite_ext
 						(

@@ -86,5 +86,3 @@ if (hitmarker_destroy_timer > 0)
 	//
 	surface_reset_target();
 }
-
-return;

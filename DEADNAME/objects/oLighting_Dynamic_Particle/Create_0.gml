@@ -18,7 +18,7 @@ else
 {
     // Add Dynamic Particle to Sub Layer by Sub Layer Name
     var temp_dynamic_particle_layer = sub_layer_use_default_layer ? LightingEngineDefaultLayer : (sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name);
-    var temp_successfully_added_particle = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Basic, temp_dynamic_particle_layer);
+    var temp_successfully_added_particle = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_Basic, temp_dynamic_particle_layer, sub_layer_index);
     
     // Update Dynamic Particle's Sub-Layer
     sub_layer_name = temp_dynamic_particle_layer;
@@ -27,6 +27,7 @@ else
     if (!temp_successfully_added_particle)
     {
         show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Particle System \"{object_get_name(object_index)}\" to Lighting Engine Sub Layer with name \"{sub_layer_use_default_layer ? LightingEngineDefaultLayer : temp_dynamic_particle_layer}\"");
+        instance_destroy();
         return;
     }
 }

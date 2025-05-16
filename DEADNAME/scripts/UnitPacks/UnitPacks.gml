@@ -11,6 +11,7 @@ enum UnitAnimationState
 enum UnitEquipmentAnimationState
 {
     None,
+    Melee,
     Firearm,
     FirearmReload
 }

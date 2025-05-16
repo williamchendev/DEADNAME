@@ -17,6 +17,9 @@ class WeaponClass define
 		// Set Weapon Pack
 		weapon_pack = init_weapon_pack;
 		
+		// Init Weapon Unit
+		weapon_unit = noone;
+		
 		// Init Weapon Properties
 		weapon_sprite = global.weapon_packs[init_weapon_pack].weapon_sprite;
 		weapon_normalmap = global.weapon_packs[init_weapon_pack].weapon_normalmap;
@@ -51,6 +54,31 @@ class WeaponClass define
 	    weapon_xscale = 1;
 	    weapon_yscale = 1;
 	    weapon_facing_sign = 1;
+	}
+	
+	// Equip Methods
+	static equip_weapon = function(unit_instance)
+	{
+		// Reset Weapon Physics
+		init_weapon_physics();
+		
+		// Set Weapon Unit
+		weapon_unit = unit_instance;
+		
+		// Set Unit Weapon Behaviour
+		unit_instance.weapon_active = true;
+		unit_instance.weapon_equipped = self;
+		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Melee;
+		unit_instance.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+	}
+	
+	static unequip_weapon = function()
+	{
+		// Set Unit Weapon Behaviour
+		unit_instance.weapon_active = false;
+		unit_instance.weapon_equipped = noone;
+		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+		unit_instance.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 	}
 	
 	// Update Methods
@@ -142,6 +170,22 @@ class FirearmClass extends WeaponClass define
 	    weapon_horizontal_recoil_target = 0;
 	    weapon_vertical_recoil_target = 0;
 	    weapon_angle_recoil_target = 0;
+	}
+	
+	// Equip Methods
+	static equip_weapon = function(unit_instance)
+	{
+		// Default Equip Weapon Behaviour
+		super.equip_weapon(unit_instance);
+		
+		// Set Unit Weapon Behaviour
+		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
+	}
+	
+	static unequip_weapon = function()
+	{
+		// Default Unequip Weapon Behaviour
+		super.unequip_weapon();
 	}
 	
 	// Update Methods
@@ -236,7 +280,11 @@ class FirearmClass extends WeaponClass define
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
 				{
 					//
-					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker, { start_x: weapon_x + temp_firearm_muzzle_horizontal_offset, start_y: weapon_y + temp_firearm_muzzle_vertical_offset, trail_angle: temp_firing_angle});
+					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker);
+					
+					//
+					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) : -1;
+					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index });
 					
 					//
 					weapon_target.combat_attack_impulse_power = 50;
@@ -261,7 +309,11 @@ class FirearmClass extends WeaponClass define
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid) or i == 600)
 				{
 					//
-					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker, { start_x: weapon_x + temp_firearm_muzzle_horizontal_offset, start_y: weapon_y + temp_firearm_muzzle_vertical_offset, trail_angle: temp_firing_angle});
+					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker);
+					
+					//
+					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) : -1;
+					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index });
 					break;
 				}
 			}

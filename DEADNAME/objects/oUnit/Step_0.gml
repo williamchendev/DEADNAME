@@ -13,7 +13,7 @@ if (unit_health <= 0)
 	unit_create_ragdoll(id);
 	
 	//
-	instance_destroy();
+	lighting_engine_remove_object(id);
 	return;
 }
 

@@ -166,10 +166,8 @@ weapon_equipped = noone;
 // Weapons DEBUG
 if (true)
 {
-	weapon_active = true;
-	weapon_equipped = create_weapon_from_weapon_pack(WeaponPack.Corso);
-	weapon_equipped.init_weapon_physics();
-	unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm; // DEBUG
+	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
+	temp_weapon_instance.equip_weapon(id);
 }
 
 // Unit Limb Arms
