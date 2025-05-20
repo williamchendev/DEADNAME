@@ -451,7 +451,7 @@
     {"id":{"name":"shd_directional_light_shadows","path":"shaders/shd_directional_light_shadows/shd_directional_light_shadows.yy",},},
     {"id":{"name":"shd_distortion_effect_render","path":"shaders/shd_distortion_effect_render/shd_distortion_effect_render.yy",},},
     {"id":{"name":"shd_mrt_deferred_lighting_bulk_static_sprite","path":"shaders/shd_mrt_deferred_lighting_bulk_static_sprite/shd_mrt_deferred_lighting_bulk_static_sprite.yy",},},
-    {"id":{"name":"shd_mrt_deferred_lighting_dynamic_primitive","path":"shaders/shd_mrt_deferred_lighting_dynamic_primitive/shd_mrt_deferred_lighting_dynamic_primitive.yy",},},
+    {"id":{"name":"shd_mrt_deferred_lighting_dynamic_smoke_trail","path":"shaders/shd_mrt_deferred_lighting_dynamic_smoke_trail/shd_mrt_deferred_lighting_dynamic_smoke_trail.yy",},},
     {"id":{"name":"shd_mrt_deferred_lighting_dynamic_sprite","path":"shaders/shd_mrt_deferred_lighting_dynamic_sprite/shd_mrt_deferred_lighting_dynamic_sprite.yy",},},
     {"id":{"name":"shd_mrt_deferred_lighting_particle_system","path":"shaders/shd_mrt_deferred_lighting_particle_system/shd_mrt_deferred_lighting_particle_system.yy",},},
     {"id":{"name":"shd_mrt_distortion_sprite","path":"shaders/shd_mrt_distortion_sprite/shd_mrt_distortion_sprite.yy",},},

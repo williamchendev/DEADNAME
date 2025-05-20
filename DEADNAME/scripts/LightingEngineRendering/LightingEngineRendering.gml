@@ -309,7 +309,7 @@ function lighting_engine_render_layer(render_layer_type)
 						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 					}
 					break;
-				case LightingEngineObjectType.Dynamic_Primitive:
+				case LightingEngineObjectType.Dynamic_SmokeTrail:
 					// Draw Dynamic Smoke Trail
 					with (temp_sub_layer_object)
 					{
@@ -322,46 +322,64 @@ function lighting_engine_render_layer(render_layer_type)
 						// Reset Default Dynamic Sprite Shader
 						shader_reset();
 						
-						// Set & Prepare Dynamic Particle Shader
-						shader_set(shd_mrt_deferred_lighting_dynamic_primitive);
+						// Set & Prepare Dynamic Smoke Trail Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_smoke_trail);
 						
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_layer_depth_index, temp_sub_layer_depth);
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
 						
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_metallic_index, metallic ? 1 : 0);
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_roughness_index, max(roughness, 0.01));
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_emissive_index, emissive);
-						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_primitive_shader_emissive_multiplier_index, emissive_multiplier);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_metallic_index, metallic ? 1 : 0);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_roughness_index, max(roughness, 0.01));
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_emissive_index, emissive);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_smoke_trail_shader_emissive_multiplier_index, emissive_multiplier);
 						
 						// Draw Smoke Trail Bezier Curve
 						draw_primitive_begin(pr_trianglestrip);
 						
-						draw_vertex_color(x, y, trail_start_color, trail_start_alpha);
-						draw_vertex_color(x, y, trail_start_color, trail_start_alpha);
-						
-						var temp_trail_length = trail_segments * trail_segment_divisions;
+						//
+						var temp_trail_length = trail_segments * trail_segments_divisions;
 						
 						for (var i = 0; i < temp_trail_length; i++)
 						{
-							var temp_trail_weight = trail_weights[i div trail_segment_divisions];
+							var temp_trail_segment = i div trail_segments_divisions;
 							
-							var temp_trail_v = (i mod trail_segment_divisions) / trail_segment_divisions;
-							var temp_trail_pa = lerp(0, temp_trail_weight, temp_trail_v);
-							var temp_trail_pb = lerp(0, trail_segment_divisions, temp_trail_v);
-							var temp_trail_pc = lerp(temp_trail_weight, 0, temp_trail_v);
-							var temp_trail_pd = lerp(temp_trail_pa, temp_trail_pb, temp_trail_v);
-							var temp_trail_pe = lerp(temp_trail_pb, temp_trail_pc, temp_trail_v);
-							var temp_trail_p = lerp(temp_trail_pd, temp_trail_pe, temp_trail_v);
+							var temp_trail_segment_bezier_weight_h = trail_segment_bezier_weight_h[temp_trail_segment];
+							var temp_trail_segment_bezier_weight_v = trail_segment_bezier_weight_v[temp_trail_segment];
 							
-							var temp_pos_x = x + (i * trail_segment_length * trail_vector_h) + (temp_trail_p * trail_vector_v);
-							var temp_pos_y = y + (i * trail_segment_length * -trail_vector_v) + (temp_trail_p * trail_vector_h);
+							var temp_trail_v = (i mod trail_segments_divisions) / trail_segments_divisions;
 							
-							var temp_trail_progress = i / temp_trail_length;
-							var temp_trail_color = trail_start_color;
-							var temp_trail_alpha = lerp(trail_start_alpha, trail_end_alpha, temp_trail_progress);
+							var temp_trail_pah = lerp(0, temp_trail_segment_bezier_weight_h, temp_trail_v);
+							var temp_trail_pbh = lerp(0, trail_segments_divisions, temp_trail_v);
+							var temp_trail_pch = lerp(temp_trail_segment_bezier_weight_h, 0, temp_trail_v);
+							var temp_trail_pdh = lerp(temp_trail_pah, temp_trail_pbh, temp_trail_v);
+							var temp_trail_peh = lerp(temp_trail_pbh, temp_trail_pch, temp_trail_v);
+							var temp_trail_ph = lerp(temp_trail_pdh, temp_trail_peh, temp_trail_v);
 							
-							draw_vertex_color(temp_pos_x + (trail_thickness * trail_vector_v), temp_pos_y + (trail_thickness * trail_vector_h), temp_trail_color, temp_trail_alpha * (trail_alpha * trail_alpha));
-							draw_vertex_color(temp_pos_x + (-trail_thickness * trail_vector_v), temp_pos_y + (-trail_thickness * trail_vector_h), temp_trail_color, temp_trail_alpha * (trail_alpha * trail_alpha));
+							var temp_trail_pav = lerp(0, temp_trail_segment_bezier_weight_v, temp_trail_v);
+							var temp_trail_pbv = lerp(0, trail_segments_divisions, temp_trail_v);
+							var temp_trail_pcv = lerp(temp_trail_segment_bezier_weight_v, 0, temp_trail_v);
+							var temp_trail_pdv = lerp(temp_trail_pav, temp_trail_pbv, temp_trail_v);
+							var temp_trail_pev = lerp(temp_trail_pbv, temp_trail_pcv, temp_trail_v);
+							var temp_trail_pv = lerp(temp_trail_pdv, temp_trail_pev, temp_trail_v);
+							
+							var temp_trail_prev_position_x = temp_trail_segment - 1 > 0 ? trail_segment_position_x[temp_trail_segment - 1] : 0;
+							var temp_trail_position_x = lerp(temp_trail_prev_position_x, trail_segment_position_x[temp_trail_segment], temp_trail_v);
+							
+							var temp_trail_prev_position_y = temp_trail_segment - 1 > 0 ? trail_segment_position_y[temp_trail_segment - 1] : 0;
+							var temp_trail_position_y = lerp(temp_trail_prev_position_y, trail_segment_position_y[temp_trail_segment], temp_trail_v);
+							
+							var temp_trail_prev_thickness = temp_trail_segment - 1 > 0 ? trail_segment_thickness[temp_trail_segment - 1] : 0.5;
+							var temp_trail_thickness = lerp(temp_trail_prev_thickness, trail_segment_thickness[temp_trail_segment], temp_trail_v);
+							
+							var temp_trail_progress = i / max(temp_trail_length * trail_alpha, 1);
+							var temp_trail_color = merge_color(trail_start_color, trail_end_color, 1 - trail_alpha);
+							var temp_trail_alpha = 1 - (temp_trail_progress * temp_trail_progress);
+							
+							var temp_pos_x = x + temp_trail_position_x + (((i * trail_segments_length) + temp_trail_ph) * trail_vector_h) + (temp_trail_pv * trail_vector_v);
+							var temp_pos_y = y + temp_trail_position_y + (((i * trail_segments_length) + temp_trail_ph) * -trail_vector_v) + (temp_trail_pv * trail_vector_h);
+							
+							draw_vertex_texture_color(temp_pos_x + (temp_trail_thickness * trail_vector_v), temp_pos_y + (temp_trail_thickness * trail_vector_h), temp_trail_progress, 0, temp_trail_color, temp_trail_alpha * trail_alpha);
+							draw_vertex_texture_color(temp_pos_x + (-temp_trail_thickness * trail_vector_v), temp_pos_y + (-temp_trail_thickness * trail_vector_h), temp_trail_progress, 1, temp_trail_color, temp_trail_alpha * trail_alpha);
 						}
 						
 						draw_primitive_end();

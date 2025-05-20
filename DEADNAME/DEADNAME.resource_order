@@ -366,7 +366,7 @@
     {"name":"shd_blur_vertical","order":1,"path":"shaders/shd_blur_vertical/shd_blur_vertical.yy",},
     {"name":"shd_directional_light_shadows","order":1,"path":"shaders/shd_directional_light_shadows/shd_directional_light_shadows.yy",},
     {"name":"shd_distortion_effect_render","order":1,"path":"shaders/shd_distortion_effect_render/shd_distortion_effect_render.yy",},
-    {"name":"shd_mrt_deferred_lighting_dynamic_primitive","order":2,"path":"shaders/shd_mrt_deferred_lighting_dynamic_primitive/shd_mrt_deferred_lighting_dynamic_primitive.yy",},
+    {"name":"shd_mrt_deferred_lighting_dynamic_smoke_trail","order":5,"path":"shaders/shd_mrt_deferred_lighting_dynamic_smoke_trail/shd_mrt_deferred_lighting_dynamic_smoke_trail.yy",},
     {"name":"shd_mrt_deferred_lighting_dynamic_sprite","order":1,"path":"shaders/shd_mrt_deferred_lighting_dynamic_sprite/shd_mrt_deferred_lighting_dynamic_sprite.yy",},
     {"name":"shd_mrt_deferred_lighting_particle_system","order":3,"path":"shaders/shd_mrt_deferred_lighting_particle_system/shd_mrt_deferred_lighting_particle_system.yy",},
     {"name":"shd_mrt_distortion_sprite","order":4,"path":"shaders/shd_mrt_distortion_sprite/shd_mrt_distortion_sprite.yy",},

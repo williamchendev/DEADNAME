@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_mrt_deferred_lighting_dynamic_primitive",
-  "name":"shd_mrt_deferred_lighting_dynamic_primitive",
+  "%Name":"shd_mrt_deferred_lighting_dynamic_smoke_trail",
+  "name":"shd_mrt_deferred_lighting_dynamic_smoke_trail",
   "parent":{
     "name":"Sprites",
     "path":"folders/Shaders/Sprites.yy",
