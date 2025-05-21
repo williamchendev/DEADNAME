@@ -23,7 +23,7 @@ const float HalfPi = 1.57079632679;
 void main()
 {
 	//
-	float SmokeTrail_Depth = 1.0 - (v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y);
+	float SmokeTrail_Depth = ((1.0 - (v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y)) * v_vColour.a) + (1.0 - v_vColour.a);
 	
 	// MRT[0] Diffuse Color Layer: Draw Smoke Trail Diffuse Color
     gl_FragData[0] = v_vColour;

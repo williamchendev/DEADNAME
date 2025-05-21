@@ -15,7 +15,7 @@ else
 {
     // Add Dynamic Smoke Trail to Sub Layer by Sub Layer Name
     var temp_dynamic_object_layer = sub_layer_use_default_layer ? LightingEngineDefaultLayer : (sub_layer_name == LightingEngineUseGameMakerLayerName ? layer_get_name(layer) : sub_layer_name);
-    var temp_successfully_added_object = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_SmokeTrail, temp_dynamic_object_layer);
+    var temp_successfully_added_object = lighting_engine_add_object(id, LightingEngineObjectType.Dynamic_SmokeTrail, temp_dynamic_object_layer, sub_layer_index);
     
     // Update Dynamic Smoke Trail's Sub-Layer
     sub_layer_name = temp_dynamic_object_layer;
@@ -90,3 +90,4 @@ for (var i = 0; i < trail_segments; i++)
 }
 
 trail_alpha = trail_start_alpha;
+trail_color = 0;

@@ -372,8 +372,8 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 				}
 				else
 				{
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_sub_layer_index), sub_layer_index, object_id);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_sub_layer_index), sub_layer_index, object_type);
 				}
 				break;
 			case LightingEngineRenderLayerType.Front:
@@ -386,8 +386,8 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 				}
 				else
 				{
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_sub_layer_index), sub_layer_index, object_id);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_sub_layer_index), sub_layer_index, object_type);
 				}
 				break;
 			case LightingEngineRenderLayerType.Mid:
@@ -401,8 +401,8 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 				}
 				else
 				{
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
-					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), sub_layer_index, object_id);
+					ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), sub_layer_index, object_type);
 				}
 				break;
 		}
@@ -417,8 +417,8 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 		}
 		else
 		{
-			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), object_id, sub_layer_index);
-			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), object_type, sub_layer_index);
+			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_sub_layer_index), sub_layer_index, object_id);
+			ds_list_insert(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_sub_layer_index), sub_layer_index, object_type);
 		}
 	}
 	

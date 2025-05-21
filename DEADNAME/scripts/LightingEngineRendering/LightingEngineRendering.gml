@@ -372,14 +372,21 @@ function lighting_engine_render_layer(render_layer_type)
 							var temp_trail_thickness = lerp(temp_trail_prev_thickness, trail_segment_thickness[temp_trail_segment], temp_trail_v);
 							
 							var temp_trail_progress = i / max(temp_trail_length * trail_alpha, 1);
-							var temp_trail_color = merge_color(trail_start_color, trail_end_color, 1 - trail_alpha);
 							var temp_trail_alpha = 1 - (temp_trail_progress * temp_trail_progress);
+							var temp_trail_color = merge_color(trail_start_color, trail_end_color, temp_trail_alpha * trail_color);
 							
 							var temp_pos_x = x + temp_trail_position_x + (((i * trail_segments_length) + temp_trail_ph) * trail_vector_h) + (temp_trail_pv * trail_vector_v);
 							var temp_pos_y = y + temp_trail_position_y + (((i * trail_segments_length) + temp_trail_ph) * -trail_vector_v) + (temp_trail_pv * trail_vector_h);
 							
-							draw_vertex_texture_color(temp_pos_x + (temp_trail_thickness * trail_vector_v), temp_pos_y + (temp_trail_thickness * trail_vector_h), temp_trail_progress, 0, temp_trail_color, temp_trail_alpha * trail_alpha);
-							draw_vertex_texture_color(temp_pos_x + (-temp_trail_thickness * trail_vector_v), temp_pos_y + (-temp_trail_thickness * trail_vector_h), temp_trail_progress, 1, temp_trail_color, temp_trail_alpha * trail_alpha);
+							if (trail_length < 0 or i * trail_segments_length < trail_length)
+							{
+								draw_vertex_texture_color(temp_pos_x + (temp_trail_thickness * trail_vector_v), temp_pos_y + (temp_trail_thickness * trail_vector_h), temp_trail_progress, 0, temp_trail_color, temp_trail_alpha * trail_alpha);
+								draw_vertex_texture_color(temp_pos_x + (-temp_trail_thickness * trail_vector_v), temp_pos_y + (-temp_trail_thickness * trail_vector_h), temp_trail_progress, 1, temp_trail_color, temp_trail_alpha * trail_alpha);
+							}
+							else
+							{
+								break;
+							}
 						}
 						
 						draw_primitive_end();

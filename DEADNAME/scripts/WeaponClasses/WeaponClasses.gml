@@ -283,8 +283,15 @@ class FirearmClass extends WeaponClass define
 					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker);
 					
 					//
-					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) : -1;
-					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index });
+					for (var q = 0; q < 5; q++)
+					{
+						var temp_smoke_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+						instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oDebug_Test_Clouds, { movement_direction_h: rot_point_x(1, 0), movement_direction_v: rot_point_y(1, 0), sub_layer_index: temp_smoke_sub_layer_index });
+					}
+					
+					//
+					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index, trail_length: i });
 					
 					//
 					weapon_target.combat_attack_impulse_power = 50;
@@ -312,8 +319,15 @@ class FirearmClass extends WeaponClass define
 					instance_create_depth(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, 0, oDebugHitMarker);
 					
 					//
-					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) : -1;
-					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index });
+					for (var q = 0; q < 5; q++)
+					{
+						var temp_smoke_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+						instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oDebug_Test_Clouds, { movement_direction_h: rot_point_x(1, 0), movement_direction_v: rot_point_y(1, 0), sub_layer_index: temp_smoke_sub_layer_index });
+					}
+					
+					//
+					var temp_smoke_trail_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+					instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_smoke_trail_sub_layer_index, trail_length: i });
 					break;
 				}
 			}

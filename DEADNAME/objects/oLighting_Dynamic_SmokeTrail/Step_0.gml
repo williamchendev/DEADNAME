@@ -19,9 +19,13 @@ for (var i = 0; i < trail_segments; i++)
 
 // Smoke Trail Weight & Thickness Mult Decay
 trail_weight_spd *= power(trail_weight_mult, frame_delta);
+
 trail_thickness_decay_spd *= power(trail_thickness_decay_mult, frame_delta);
 
-// Smoke Trail Alpha Calculation
+// Smoke Trail Color & Alpha Calculation
+trail_color += trail_color_spd * frame_delta;
+trail_color = trail_color > 1 ? 1 : trail_color;
+
 trail_alpha -= trail_alpha_decay * frame_delta;
 trail_alpha = trail_alpha < 0 ? 0 : trail_alpha;
 
