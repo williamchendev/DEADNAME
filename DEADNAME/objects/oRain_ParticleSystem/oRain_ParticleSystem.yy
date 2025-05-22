@@ -12,7 +12,7 @@
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Particle","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"propertyId":{"name":"metallic","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Particle","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.1",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Particle","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.3",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Particle","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
   ],
   "parent":{
     "name":"Entities",

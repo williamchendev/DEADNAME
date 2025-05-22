@@ -4,6 +4,9 @@
 // Inherit the parent event
 event_inherited();
 
+// Allow Distortion Effect
+visible = true;
+
 // Create Particle System
 part_system_draw_order(dynamic_particle_system, true);
 part_system_automatic_update(dynamic_particle_system, false);
@@ -17,7 +20,7 @@ part_type_speed(rain_particle, 1, 1, 0, 0);
 part_type_direction(rain_particle, 270, 360, 0, 0);
 part_type_gravity(rain_particle, 0.7, 270);
 part_type_orientation(rain_particle, 0, 0, 0, 0, true);
-part_type_colour3(rain_particle, $FFFFFF, $FFFFFF, $FFFFFF);
+part_type_colour3(rain_particle, #f282b9, #f282b9, #f282b9);
 part_type_alpha3(rain_particle, 0.8, 0.6, 0.3);
 part_type_blend(rain_particle, false);
 part_type_life(rain_particle, 28, 38);

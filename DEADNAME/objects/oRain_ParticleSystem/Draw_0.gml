@@ -19,3 +19,5 @@ part_system_drawit(dynamic_particle_system);
 // Reset MRT Distortion Effect Surfaces & Shader
 surface_reset_target();
 shader_reset();
+
+gpu_set_blendmode(bm_normal);
