@@ -1,0 +1,25 @@
+{
+  "$GMParticleSystem":"",
+  "%Name":"RainParticle",
+  "backdropHeight":360,
+  "backdropImageOpacity":0.5,
+  "backdropImagePath":"",
+  "backdropWidth":640,
+  "backdropXOffset":0.0,
+  "backdropYOffset":0.0,
+  "drawOrder":0,
+  "emitters":[
+    {"$GMPSEmitter":"","%Name":"Emitter","additiveBlend":false,"directionIncrease":0.0,"directionMax":300.0,"directionMin":270.0,"directionWiggle":0.0,"distribution":0,"editorColour":1090519039,"editorDrawShape":true,"emitCount":100,"emitDelayMax":0.0,"emitDelayMin":0.0,"emitDelayUnits":0,"emitIntervalMax":0.0,"emitIntervalMin":0.0,"emitIntervalUnits":0,"enabled":true,"endColour":1687750446,"GMPresetName":null,"gravityDirection":270.0,"gravityForce":0.7,"headPosition":0.0,"lifetimeMax":34.0,"lifetimeMin":30.0,"linkedEmitter":null,"locked":false,"midColour":3372188223,"mode":0,"name":"Emitter","orientationIncrease":0.0,"orientationMax":0.0,"orientationMin":0.0,"orientationRelative":true,"orientationWiggle":0.0,"regionH":1.0,"regionW":1000.0,"regionX":0.0,"regionY":-234.0,"resourceType":"GMPSEmitter","resourceVersion":"2.0","scaleX":3.0,"scaleY":0.6,"shape":3,"sizeIncrease":-0.001,"sizeMax":0.3,"sizeMin":0.1,"sizeWiggle":0.01,"spawnOnDeathCount":1,"spawnOnDeathGMPreset":null,"spawnOnDeathId":null,"spawnOnUpdateCount":1,"spawnOnUpdateGMPreset":null,"spawnOnUpdateId":null,"speedIncrease":0.0,"speedMax":1.0,"speedMin":1.0,"speedWiggle":0.0,"spriteAnimate":false,"spriteId":null,"spriteRandom":false,"spriteStretch":true,"startColour":4294967295,"texture":3,},
+  ],
+  "name":"RainParticle",
+  "parent":{
+    "name":"Particle Systems",
+    "path":"folders/Particle Systems.yy",
+  },
+  "resourceType":"GMParticleSystem",
+  "resourceVersion":"2.0",
+  "showBackdrop":true,
+  "showBackdropImage":false,
+  "xorigin":0,
+  "yorigin":0,
+}
