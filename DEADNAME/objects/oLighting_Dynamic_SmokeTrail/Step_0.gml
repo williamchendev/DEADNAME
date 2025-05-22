@@ -33,5 +33,5 @@ trail_alpha = trail_alpha < 0 ? 0 : trail_alpha;
 if (trail_alpha <= 0)
 {
 	// Destroy Smoke Trail
-	lighting_engine_remove_object(id);
+	instance_destroy();
 }

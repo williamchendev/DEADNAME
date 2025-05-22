@@ -14,6 +14,9 @@ if (unit_health <= 0)
 	
 	//
 	lighting_engine_remove_object(id);
+	
+	//
+	instance_destroy(id);
 	return;
 }
 

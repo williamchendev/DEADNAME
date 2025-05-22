@@ -7,6 +7,13 @@ x += movement_direction_h * movement_spd * frame_delta;
 y += movement_direction_v * movement_spd * frame_delta;
 
 //
+image_angle += rotation_spd * movement_spd * frame_delta;
+
+//
+image_alpha -= alpha_decay * frame_delta;
+image_alpha = image_alpha < 0 ? 0 : image_alpha;
+
+//
 size *= power(size_decay, frame_delta);
 
 image_xscale = size;
@@ -14,5 +21,5 @@ image_yscale = size;
 
 if (size <= 0)
 {
-	lighting_engine_remove_object(id);
+	instance_destroy();
 }

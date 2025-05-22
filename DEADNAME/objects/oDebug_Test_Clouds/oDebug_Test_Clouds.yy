@@ -8,13 +8,13 @@
   "managed":true,
   "name":"oDebug_Test_Clouds",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resource":{"name":"sCloudsTest_NormalMap","path":"sprites/sCloudsTest_NormalMap/sCloudsTest_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sCloudsTest_NormalMap",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
-    "name":"Entities",
-    "path":"folders/Objects/Entities.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_Object",
@@ -34,8 +34,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"movement_direction_h","filters":[],"listItems":[],"multiselect":false,"name":"movement_direction_h","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"movement_direction_v","filters":[],"listItems":[],"multiselect":false,"name":"movement_direction_v","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"movement_angle","filters":[],"listItems":[],"multiselect":false,"name":"movement_angle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

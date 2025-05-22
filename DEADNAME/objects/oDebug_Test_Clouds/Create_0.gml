@@ -11,13 +11,24 @@ image_angle = random(360);
 image_alpha = 0.7;
 
 //
-movement_spd = 1;
-movement_spd_decay = random_range(0.92, 0.97);
-
-movement_direction_h += random_range(-1, 1);
-movement_direction_v += random_range(-1, 1);
+size = random_range(0.8, 1.6);
+size_decay = random_range(0.92, 0.98);
 
 //
-size = random_range(0.5, 1.3);
+alpha_decay = 0.008;
 
-size_decay = random_range(0.9, 0.98);
+//
+rotation_spd = random_range(-3, 3);
+
+//
+movement_spd = 2.5 - size;
+movement_spd_decay = random_range(0.93, 0.99);
+
+//
+movement_angle += random_range(-35, 35);
+
+movement_direction_h = dcos(movement_angle) + random_range(-0.25, 0.25);
+movement_direction_v = -dsin(movement_angle) + random_range(-0.25, 0.25);
+
+
+

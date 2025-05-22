@@ -158,8 +158,7 @@ function lighting_engine_remove_object_from_sub_layer(sub_layer_object_list, sub
 			temp_sub_layer_object = -1;
 			break;
 		default:
-			// Default Object Type Condition: Destroy Game Object
-			instance_destroy(temp_sub_layer_object);
+			// Default Object Type Condition: Skip
 			break;
 	}
 	
@@ -426,9 +425,31 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 	return true;
 }
 
-//
+// Lighting Engine Layer Method: Remove Object Index from Lighting Engine Rendering Pipeline
+/// @function lighting_engine_remove_object(object_id);
+/// @description Finds the given Object Instance's index within the Lighting Engine and removes it from the Rendering Pipeline
+/// @param {any} object_id - The Object Instance to remove from the Lighting Engine Render Pipeline
 function lighting_engine_remove_object(object_id)
 {
+	// Check if Lighting Engine Worker Exists
+	if (instance_exists(LightingEngine.lighting_engine_worker))
+	{
+		// Lighting Engine has destroyed all listings of Render Objects within its DS Lists - Early Return
+		return;
+	}
+	
+	// Search Default Sub Layer for Object ID
+	var temp_default_sub_layer_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, LightingEngine.lighting_engine_default_layer_index), object_id);
+	
+	if (temp_default_sub_layer_object_index != -1)
+	{
+		// Object Exists on Default Sub Layer - Remove Object from Sub Layer
+		var temp_object_default_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, LightingEngine.lighting_engine_default_layer_index);
+		var temp_object_type_default_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, LightingEngine.lighting_engine_default_layer_index);
+		lighting_engine_remove_object_from_sub_layer(temp_object_default_sub_layer_list, temp_object_type_default_sub_layer_list, temp_default_sub_layer_object_index);
+		return;
+	}
+	
 	// Search Midground Sub-Layers for Object Index
 	for (var temp_mid_sub_layer_index = 0; temp_mid_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list); temp_mid_sub_layer_index++)
 	{
@@ -437,7 +458,7 @@ function lighting_engine_remove_object(object_id)
 		
 		if (temp_object_index != -1)
 		{
-			//
+			// Object Exists on Midground Sub Layer - Remove Object from Sub Layer
 			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, temp_mid_sub_layer_index);
 			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_type_list, temp_mid_sub_layer_index);
 			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
@@ -453,7 +474,7 @@ function lighting_engine_remove_object(object_id)
 		
 		if (temp_object_index != -1)
 		{
-			//
+			// Object Exists on Background Sub Layer - Remove Object from Sub Layer
 			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_list, temp_back_sub_layer_index);
 			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_object_type_list, temp_back_sub_layer_index);
 			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
@@ -469,7 +490,7 @@ function lighting_engine_remove_object(object_id)
 		
 		if (temp_object_index != -1)
 		{
-			//
+			// Object Exists on Foreground Sub Layer - Remove Object from Sub Layer
 			var temp_object_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_front_sub_layer_index);
 			var temp_object_type_sub_layer_list = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_front_sub_layer_index);
 			lighting_engine_remove_object_from_sub_layer(temp_object_sub_layer_list, temp_object_type_sub_layer_list, temp_object_index);
@@ -485,6 +506,14 @@ function lighting_engine_remove_object(object_id)
 /// @returns {int} Returns the Object's Index within the Sub-Layer's Object List if it exists, if the Object's Index is not stored in the Lighting Engine's Sub-Layer Object Lists then this function returns -1 by default
 function lighting_engine_find_object_index(object_id)
 {
+	// Search Default Sub Layer for Object ID
+	var temp_default_sub_layer_object_index = ds_list_find_index(ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list, LightingEngine.lighting_engine_default_layer_index), object_id);
+	
+	if (temp_default_sub_layer_object_index != -1)
+	{
+		return temp_default_sub_layer_object_index;
+	}
+	
 	// Search Midground Sub-Layers for Object Index
 	for (var temp_mid_sub_layer_index = 0; temp_mid_sub_layer_index < ds_list_size(LightingEngine.lighting_engine_mid_layer_sub_layer_object_list); temp_mid_sub_layer_index++)
 	{
