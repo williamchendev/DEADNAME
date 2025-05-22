@@ -1,21 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"oMuzzleFlare_Medium",
+  "%Name":"oFirearm_MuzzleFlare_Medium",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oMuzzleFlare_Medium",
+  "name":"oFirearm_MuzzleFlare_Medium",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_render_background_layer","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_render_foreground_layer","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_radius","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"80",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_distance_fade","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_render_background_layer","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_render_foreground_layer","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_radius","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"80",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_distance_fade","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"0.5",},
   ],
   "parent":{
-    "name":"MuzzleFlare",
-    "path":"folders/Objects/Entities/MuzzleFlare.yy",
+    "name":"Firearms",
+    "path":"folders/Objects/Entities/Firearms.yy",
   },
   "parentObjectId":{
     "name":"oLightingEngine_Source_PointLight",

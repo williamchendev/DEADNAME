@@ -3,19 +3,20 @@
 // Health & Death Behaviour //
 if (unit_health <= 0)
 {
-	//
+	// Check if Unit is in Squad
 	if (squad_id != SquadIDNull)
 	{
+		// Remove Unit from Squad
 		GameManager.squad_behaviour_director.remove_unit_from_squad(squad_id, id);
 	}
 	
-	//
+	// Create Unit Ragdoll
 	unit_create_ragdoll(id);
 	
-	//
+	// Remove Unit from Lighting Engine
 	lighting_engine_remove_object(id);
 	
-	//
+	// Destroy Instance & Early Return
 	instance_destroy(id);
 	return;
 }

@@ -63,6 +63,13 @@ global.weapon_packs[WeaponPack.Default] =
     // Weapon Properties
     firearm_attack_delay: 10,
     
+    // Weapon FX
+    firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Cloud,
+    firearm_muzzle_smoke_min: 4,
+    firearm_muzzle_smoke_max: 6,
+    
+    firearm_muzzle_flare_object: oFirearm_MuzzleFlare_Medium,
+    
     // Weapon Recoil
     firearm_recoil_recovery_delay: 2,
     
@@ -123,6 +130,14 @@ global.weapon_packs[WeaponPack.Corso] =
     
     // Weapon Properties
     firearm_attack_delay: 14,
+    firearm_attack_distance: 600,
+    
+    // Weapon FX
+    firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Cloud,
+    firearm_muzzle_smoke_min: 4,
+    firearm_muzzle_smoke_max: 6,
+    
+    firearm_muzzle_flare_object: oFirearm_MuzzleFlare_Medium,
     
     // Weapon Recoil
     firearm_recoil_recovery_delay: 9,
@@ -181,4 +196,11 @@ global.weapon_packs[WeaponPack.SMG] =
     metallic: false,
     roughness: 0.2,
     emissive: 0,
+    
+    // Weapon FX
+    firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Cloud,
+    firearm_muzzle_smoke_min: 4,
+    firearm_muzzle_smoke_max: 6,
+    
+    firearm_muzzle_flare_object: oFirearm_MuzzleFlare_Medium,
 }
