@@ -13,5 +13,4 @@ switch (scene_get_type())
 		// Destroy Instance and Exit Behaviour
 		instance_destroy();
 		return;
-		break;
 }

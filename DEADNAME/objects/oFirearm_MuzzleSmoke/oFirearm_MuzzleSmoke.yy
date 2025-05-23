@@ -1,20 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"oFirearm_MuzzleSmoke_Cloud",
+  "%Name":"oFirearm_MuzzleSmoke",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oFirearm_MuzzleSmoke_Cloud",
+  "name":"oFirearm_MuzzleSmoke",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resource":{"name":"sCloudsTest_NormalMap","path":"sprites/sCloudsTest_NormalMap/sCloudsTest_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sCloudsTest_NormalMap",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
-    "name":"Firearms",
-    "path":"folders/Objects/Entities/Firearms.yy",
+    "name":"MuzzleSmoke",
+    "path":"folders/Objects/Entities/Firearms/MuzzleSmoke.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_Object",

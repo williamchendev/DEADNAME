@@ -360,7 +360,7 @@ class FirearmClass extends WeaponClass define
 		}
 		
 		// Firearm Smoke Trail
-		instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, oLighting_Dynamic_SmokeTrail, { image_angle: temp_firing_angle, sub_layer_index: temp_firearm_sub_layer_index, trail_length: temp_firearm_attack_distance });
+		instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, global.weapon_packs[weapon_pack].firearm_smoke_trail_object, { image_angle: temp_firing_angle, sub_layer_index: temp_firearm_sub_layer_index, trail_length: temp_firearm_attack_distance });
 		
 		// Impact Hitmarker
 		var temp_impact_hitmarker = instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_HitMarker);

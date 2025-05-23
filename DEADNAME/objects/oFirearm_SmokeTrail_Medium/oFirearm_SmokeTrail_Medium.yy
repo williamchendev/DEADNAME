@@ -1,17 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"oFirearm_MuzzleFlare_Medium",
+  "%Name":"oFirearm_SmokeTrail_Medium",
   "eventList":[],
   "managed":true,
-  "name":"oFirearm_MuzzleFlare_Medium",
+  "name":"oFirearm_SmokeTrail_Medium",
   "overriddenProperties":[],
   "parent":{
-    "name":"MuzzleFlare",
-    "path":"folders/Objects/Entities/Firearms/MuzzleFlare.yy",
+    "name":"SmokeTrail",
+    "path":"folders/Objects/Entities/Firearms/SmokeTrail.yy",
   },
   "parentObjectId":{
-    "name":"oFirearm_MuzzleFlare",
-    "path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",
+    "name":"oLighting_Dynamic_SmokeTrail",
+    "path":"objects/oLighting_Dynamic_SmokeTrail/oLighting_Dynamic_SmokeTrail.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -30,10 +30,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sDebug_Lighting_Icon_SpotLight",
-    "path":"sprites/sDebug_Lighting_Icon_SpotLight/sDebug_Lighting_Icon_SpotLight.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":false,
 }

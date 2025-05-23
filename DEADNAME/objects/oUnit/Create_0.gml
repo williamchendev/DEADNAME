@@ -60,10 +60,6 @@ firearm_aiming_angle_transition_spd = 0.17;
 firearm_recoil_recovery_spd = 0.2;
 firearm_recoil_angle_recovery_spd = 0.1;
 
-firearm_idle_safety_angle = -15;
-firearm_moving_safety_angle = -45;
-firearm_reload_safety_angle = 15;
-
 // Combat Settings
 sight_ignore_radius = 820;
 
@@ -166,7 +162,7 @@ weapon_equipped = noone;
 // Weapons DEBUG
 if (true)
 {
-	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
+	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.SMG);
 	temp_weapon_instance.equip_weapon(id);
 }
 

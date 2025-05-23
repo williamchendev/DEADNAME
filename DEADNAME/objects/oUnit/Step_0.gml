@@ -1621,7 +1621,7 @@ switch (unit_equipment_animation_state)
 					break;
 				default:
 					// Point firearm at Reload Safety Angle
-					temp_firearm_ambient_angle = (draw_xscale < 0 ? 180 + draw_angle_value : draw_angle_value) + (firearm_reload_safety_angle * temp_firearm_facing_sign);
+					temp_firearm_ambient_angle = (draw_xscale < 0 ? 180 + draw_angle_value : draw_angle_value) + (global.weapon_packs[weapon_equipped.weapon_pack].firearm_reload_safety_angle * temp_firearm_facing_sign);
 					break;
 			}
 			
@@ -1657,7 +1657,7 @@ switch (unit_equipment_animation_state)
 				firearm_weapon_hip_pivot_to_aim_pivot_transition_value = lerp(firearm_weapon_hip_pivot_to_aim_pivot_transition_value, 0, firearm_aiming_hip_transition_spd * frame_delta);
 				
 				// Point firearm at Idle Safety Angle if Idle, point firearm at Moving Safety Angle if Moving
-				temp_firearm_ambient_angle = (draw_xscale < 0 ? 180 + draw_angle_value : draw_angle_value) + ((x_velocity == 0) ? (firearm_idle_safety_angle * temp_firearm_facing_sign) : (firearm_moving_safety_angle * temp_firearm_facing_sign));
+				temp_firearm_ambient_angle = (draw_xscale < 0 ? 180 + draw_angle_value : draw_angle_value) + ((x_velocity == 0) ? (global.weapon_packs[weapon_equipped.weapon_pack].firearm_idle_safety_angle * temp_firearm_facing_sign) : (global.weapon_packs[weapon_equipped.weapon_pack].firearm_moving_safety_angle * temp_firearm_facing_sign));
 			}
 		}
 		
