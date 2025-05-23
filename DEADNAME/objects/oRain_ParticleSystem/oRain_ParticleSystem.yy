@@ -15,8 +15,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Particle","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Particle/oLighting_Dynamic_Particle.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
   ],
   "parent":{
-    "name":"Entities",
-    "path":"folders/Objects/Entities.yy",
+    "name":"Rain",
+    "path":"folders/Objects/Entities/Rain.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_Particle",

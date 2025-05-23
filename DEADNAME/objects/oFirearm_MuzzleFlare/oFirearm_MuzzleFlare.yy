@@ -46,8 +46,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_Icon_SpotLight",
-    "path":"sprites/sDebug_Lighting_Icon_SpotLight/sDebug_Lighting_Icon_SpotLight.yy",
+    "name":"sDebug_Lighting_Icon_PointLight",
+    "path":"sprites/sDebug_Lighting_Icon_PointLight/sDebug_Lighting_Icon_PointLight.yy",
   },
   "spriteMaskId":null,
   "visible":false,

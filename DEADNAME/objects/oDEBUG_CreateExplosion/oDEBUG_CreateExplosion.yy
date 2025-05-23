@@ -1,18 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"oFirearm_MuzzleFlare_Medium",
-  "eventList":[],
+  "%Name":"oDEBUG_CreateExplosion",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"oFirearm_MuzzleFlare_Medium",
+  "name":"oDEBUG_CreateExplosion",
   "overriddenProperties":[],
   "parent":{
-    "name":"MuzzleFlare",
-    "path":"folders/Objects/Entities/Firearms/MuzzleFlare.yy",
+    "name":"Explosion",
+    "path":"folders/Objects/Entities/Explosion.yy",
   },
-  "parentObjectId":{
-    "name":"oFirearm_MuzzleFlare",
-    "path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -31,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sDebug_Lighting_Icon_PointLight",
-    "path":"sprites/sDebug_Lighting_Icon_PointLight/sDebug_Lighting_Icon_PointLight.yy",
+    "name":"sDebug_System_Worker",
+    "path":"sprites/sDebug_System_Worker/sDebug_System_Worker.yy",
   },
   "spriteMaskId":null,
   "visible":false,

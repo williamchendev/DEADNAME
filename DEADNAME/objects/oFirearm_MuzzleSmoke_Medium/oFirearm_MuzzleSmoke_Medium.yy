@@ -10,8 +10,8 @@
     "path":"folders/Objects/Entities/Firearms/MuzzleSmoke.yy",
   },
   "parentObjectId":{
-    "name":"oFirearm_MuzzleSmoke",
-    "path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",
+    "name":"oSmokeCloud",
+    "path":"objects/oSmokeCloud/oSmokeCloud.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

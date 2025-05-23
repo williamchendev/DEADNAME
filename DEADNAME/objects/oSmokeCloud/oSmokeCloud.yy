@@ -1,20 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"oFirearm_MuzzleSmoke",
+  "%Name":"oSmokeCloud",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oFirearm_MuzzleSmoke",
+  "name":"oSmokeCloud",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resource":{"name":"sCloudsTest_NormalMap","path":"sprites/sCloudsTest_NormalMap/sCloudsTest_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sCloudsTest_NormalMap",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
-    "name":"MuzzleSmoke",
-    "path":"folders/Objects/Entities/Firearms/MuzzleSmoke.yy",
+    "name":"SmokeCloud",
+    "path":"folders/Objects/Entities/SmokeCloud.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_Object",
@@ -34,8 +34,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"muzzle_offset_min","filters":[],"listItems":[],"multiselect":false,"name":"muzzle_offset_min","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"muzzle_offset_max","filters":[],"listItems":[],"multiselect":false,"name":"muzzle_offset_max","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"spawn_offset_min","filters":[],"listItems":[],"multiselect":false,"name":"spawn_offset_min","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"spawn_offset_max","filters":[],"listItems":[],"multiselect":false,"name":"spawn_offset_max","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"movement_spd","filters":[],"listItems":[],"multiselect":false,"name":"movement_spd","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2.5","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"movement_decay_min","filters":[],"listItems":[],"multiselect":false,"name":"movement_decay_min","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.93","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"movement_decay_max","filters":[],"listItems":[],"multiselect":false,"name":"movement_decay_max","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.99","varType":0,},

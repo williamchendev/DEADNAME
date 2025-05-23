@@ -11,7 +11,7 @@ image_index = irandom_range(0, sprite_get_number(sprite_index) - 1);
 image_alpha = alpha;
 
 // Smoke Cloud Muzzle Position Offset Behaviour
-var temp_muzzle_position_offset = random_range(muzzle_offset_min, muzzle_offset_max);
+var temp_muzzle_position_offset = random_range(spawn_offset_min, spawn_offset_max);
 x += dcos(image_angle) * temp_muzzle_position_offset;
 y += -dsin(image_angle) * temp_muzzle_position_offset;
 
