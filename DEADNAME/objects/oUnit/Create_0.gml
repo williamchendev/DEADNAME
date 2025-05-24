@@ -8,7 +8,8 @@ lighting_engine_add_unit(id);
 canmove = true;
 
 // Health Settings
-unit_health = 1;
+unit_health = 3;
+unit_luck = 1;
 
 // Physics Settings
 run_spd = 3; // Running Speed

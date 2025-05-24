@@ -289,81 +289,117 @@ class FirearmClass extends WeaponClass define
 		var temp_firearm_muzzle_horizontal_offset = rot_point_x(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
 		var temp_firearm_muzzle_vertical_offset = rot_point_y(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
 		
-		// Firearm Sub Layer Index
-		var temp_firearm_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
-		
-		// Firearm Muzzle Smoke
-		var temp_firearm_muzzle_smoke_count = irandom_range(global.weapon_packs[weapon_pack].firearm_muzzle_smoke_min, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_max);
-		
-		for (var temp_firearm_muzzle_smoke_index = 0; temp_firearm_muzzle_smoke_index < temp_firearm_muzzle_smoke_count; temp_firearm_muzzle_smoke_index++)
-		{
-			instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object, { image_angle: temp_firing_angle, sub_layer_index: temp_firearm_sub_layer_index });
-		}
-		
-		// Muzzle Flare
-		if (instance_exists(firearm_muzzle_flare))
-		{
-			instance_destroy(firearm_muzzle_flare);
-		}
-		
-		firearm_muzzle_flare = instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, global.weapon_packs[weapon_pack].firearm_muzzle_flare_object);
-		
 		// Attack Weapon Target
+		var temp_firearm_attack_success = random(1.0) < global.weapon_packs[weapon_pack].firearm_attack_hit_percentage and !is_undefined(weapon_target) and instance_exists(weapon_target);
+		
+		var temp_firearm_attack_hit = false;
+		var temp_firearm_attack_contact = false;
 		var temp_firearm_attack_distance = 0;
 		
-		if (random(1.0) < 0.25 and !is_undefined(weapon_target) and instance_exists(weapon_target))
+		if (temp_firearm_attack_success)
 		{
-			//
+			// Calculate Squad Luck Damage
+			var temp_weapon_target_squad_luck_exists = false;
+			
+			if (weapon_target.squad_id != SquadIDNull)
+			{
+				// Find Weapon Target Squad
+				var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, weapon_target.squad_id);
+				
+				// Check if Squad Exists
+				if (temp_squad_index != -1)
+				{
+					// Calculate Squad Luck
+					var temp_squad_luck = ds_list_find_value(GameManager.squad_behaviour_director.squad_luck_list, temp_squad_index);
+					
+					// Check if Squad Luck has not been broken
+					if (temp_squad_luck > 0)
+					{
+						// Set Squad Luck to absorb Weapon Luck Damage
+						temp_weapon_target_squad_luck_exists = true;
+						ds_list_set(GameManager.squad_behaviour_director.squad_luck_list, temp_squad_index, max(temp_squad_luck - global.weapon_packs[weapon_pack].firearm_attack_luck_damage, 0));
+					}
+				}
+			}
+			
+			// Calculate Weapon Target Luck Damage
+			if (!temp_weapon_target_squad_luck_exists)
+			{
+				// Check if Weapon Target Unit is Lucky
+				if (weapon_target.unit_luck > 0)
+				{
+					// Calculate Unit's Luck Damage
+					weapon_target.unit_luck = max(weapon_target.unit_luck - global.weapon_packs[weapon_pack].firearm_attack_luck_damage, 0);
+				}
+				else
+				{
+					// Weapon Target has depleted their Unit and Squad Luck values - Firearm Attack successfully hits Weapon Target
+					temp_firearm_attack_hit = true;
+				}
+			}
+		}
+		
+		if (temp_firearm_attack_hit)
+		{
+			// Calculate Firearm Attack as Hit Shot
 			for (var i = 0; i <= global.weapon_packs[weapon_pack].firearm_attack_distance; i++)
 			{
-				//
+				// Update Firearm's Attack Distance
 				temp_firearm_attack_distance = i;
 				
-				//
+				// Update Firearm's Projectile Impact Position
 				var temp_firearm_projectile_impact_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(i, 0);
 				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
 				
-				//
+				// Check if Firearm's Projectile has made Contact with Weapon Target
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
 				{
-					//
+					// Update Unit Combat Attack Impulse Properties
 					weapon_target.combat_attack_impulse_power = 50;
 					weapon_target.combat_attack_impulse_position_x = temp_firearm_projectile_impact_x;
 					weapon_target.combat_attack_impulse_position_y = temp_firearm_projectile_impact_y;
 					weapon_target.combat_attack_impulse_horizontal_vector = trig_cosine;
 					weapon_target.combat_attack_impulse_vertical_vector = trig_sine;
 					
-					//
-					weapon_target.unit_health--;
+					// Update Unit Health
+					weapon_target.unit_health -= global.weapon_packs[weapon_pack].firearm_attack_damage;
+					
+					// Firearm Projectile Contact has been made
+					temp_firearm_attack_contact = true;
 					break;
 				}
 			}
 		}
 		else
 		{
-			//
+			// Calculate Firearm Attack as Missed Shot
 			for (var i = 0; i <= global.weapon_packs[weapon_pack].firearm_attack_distance; i++)
 			{
-				//
+				// Update Firearm's Attack Distance
 				temp_firearm_attack_distance = i;
 				
-				//
+				// Update Firearm's Projectile Impact Position
 				var temp_firearm_projectile_impact_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(i, 0);
 				var temp_firearm_projectile_impact_y = weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
 				
-				//
-				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid) or i == global.weapon_packs[weapon_pack].firearm_attack_distance)
+				// Check if Firearm's Projectile has made Contact with Physics Solid
+				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid))
 				{
+					// Firearm Projectile Contact has been made
+					temp_firearm_attack_contact = true;
 					break;
 				}
 			}
 		}
 		
-		// Firearm Smoke Trail
-		instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, 0, global.weapon_packs[weapon_pack].firearm_smoke_trail_object, { image_angle: temp_firing_angle, sub_layer_index: temp_firearm_sub_layer_index, trail_length: temp_firearm_attack_distance });
-		
 		// Impact Hitmarker
-		var temp_impact_hitmarker = instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_HitMarker);
+		if (temp_firearm_attack_contact)
+		{
+			instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_HitMarker);
+		}
+		
+		// Firing Effect
+		fire_firearm(weapon_x + temp_firearm_muzzle_horizontal_offset, weapon_y + temp_firearm_muzzle_vertical_offset, temp_firing_angle, temp_firearm_attack_distance);
 		
 		// Set Firearm Timers
 		firearm_attack_delay = global.weapon_packs[weapon_pack].firearm_attack_delay;
@@ -374,6 +410,45 @@ class FirearmClass extends WeaponClass define
 	}
 	
 	// Firearm Behaviours
+	static fire_firearm = function(muzzle_x, muzzle_y, attack_direction, attack_distance)
+	{
+		// Firearm Sub Layer Index
+		var temp_firearm_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+		
+		// Firearm Smoke Trail
+		if (global.weapon_packs[weapon_pack].firearm_smoke_trail_object != noone)
+		{
+			// Create Firearm Smoke Trail Instance
+			instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_smoke_trail_object, { image_angle: attack_direction, sub_layer_index: temp_firearm_sub_layer_index, trail_length: attack_distance });
+		}
+		
+		// Firearm Muzzle Smoke
+		if (global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object != noone)
+		{
+			// Create Random Amount of Muzzle Smoke Clouds
+			var temp_firearm_muzzle_smoke_count = irandom_range(global.weapon_packs[weapon_pack].firearm_muzzle_smoke_min, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_max);
+		
+			// Create Smoke Clouds
+			for (var temp_firearm_muzzle_smoke_index = 0; temp_firearm_muzzle_smoke_index < temp_firearm_muzzle_smoke_count; temp_firearm_muzzle_smoke_index++)
+			{
+				instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object, { image_angle: attack_direction, sub_layer_index: temp_firearm_sub_layer_index });
+			}
+		}
+		
+		// Muzzle Flare
+		if (global.weapon_packs[weapon_pack].firearm_muzzle_flare_object != noone)
+		{
+			// Destroy existing Firearm Muzzle Flare to replace with new Fresh Muzzle Flare Instance
+			if (instance_exists(firearm_muzzle_flare))
+			{
+				instance_destroy(firearm_muzzle_flare);
+			}
+			
+			// Create Muzzle Flare Instance
+			firearm_muzzle_flare = instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_flare_object);
+		}
+	}
+	
 	static reload_firearm = function(reload_rounds_count = undefined)
 	{
 		// DEBUG

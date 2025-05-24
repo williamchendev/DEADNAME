@@ -5,17 +5,17 @@
   "managed":true,
   "name":"oFirearm_MuzzleSmoke_Small",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oSmokeCloud","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"propertyId":{"name":"size_min","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.3",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oSmokeCloud","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"propertyId":{"name":"size_max","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oSmokeCloud","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"propertyId":{"name":"movement_spd","path":"objects/oSmokeCloud/oSmokeCloud.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.8",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleSmoke","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"propertyId":{"name":"size_min","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.3",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleSmoke","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"propertyId":{"name":"size_max","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleSmoke","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"propertyId":{"name":"movement_spd","path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.8",},
   ],
   "parent":{
     "name":"MuzzleSmoke",
     "path":"folders/Objects/Entities/Firearms/MuzzleSmoke.yy",
   },
   "parentObjectId":{
-    "name":"oSmokeCloud",
-    "path":"objects/oSmokeCloud/oSmokeCloud.yy",
+    "name":"oFirearm_MuzzleSmoke",
+    "path":"objects/oFirearm_MuzzleSmoke/oFirearm_MuzzleSmoke.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
