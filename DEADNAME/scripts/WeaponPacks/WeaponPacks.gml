@@ -131,10 +131,10 @@ global.weapon_packs[WeaponPack.Corso] =
     // Weapon Properties
     firearm_attack_delay: 14,
     firearm_attack_distance: 600,
-    firearm_attack_hit_percentage: 0.25,
+    firearm_attack_hit_percentage: 0.5,
     
     firearm_attack_damage: 3,
-    firearm_attack_luck_damage: 0.2,
+    firearm_attack_luck_damage: 0.7,
     
     // Weapon FX
     firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Medium,

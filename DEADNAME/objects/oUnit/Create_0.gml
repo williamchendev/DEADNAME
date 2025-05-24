@@ -9,7 +9,7 @@ canmove = true;
 
 // Health Settings
 unit_health = 3;
-unit_luck = 1;
+unit_luck = max(random_range(-2.0, 1.0), 0);
 
 // Physics Settings
 run_spd = 3; // Running Speed
@@ -163,7 +163,7 @@ weapon_equipped = noone;
 // Weapons DEBUG
 if (true)
 {
-	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.SMG);
+	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
 	temp_weapon_instance.equip_weapon(id);
 }
 
