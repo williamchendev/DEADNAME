@@ -1,19 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"oImpact_HitMarker",
+  "%Name":"oImpact_Hitmarker",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oImpact_HitMarker",
+  "name":"oImpact_Hitmarker",
   "overriddenProperties":[],
   "parent":{
     "name":"Firearms",
     "path":"folders/Objects/Entities/Firearms.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oLighting_Dynamic_Unlit_Object",
+    "path":"objects/oLighting_Dynamic_Unlit_Object/oLighting_Dynamic_Unlit_Object.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -41,5 +43,5 @@
     "path":"sprites/sImpact_Hitmarkers/sImpact_Hitmarkers.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

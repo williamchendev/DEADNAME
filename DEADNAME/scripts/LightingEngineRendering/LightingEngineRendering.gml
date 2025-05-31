@@ -464,6 +464,65 @@ function lighting_engine_render_layer(render_layer_type)
 	}
 }
 
+/// @function lighting_engine_render_unlit_layer();
+/// @description Draws the Lighting Engine's Unlit Layer
+function lighting_engine_render_unlit_layer()
+{
+	// Enable Unlit Sprite Shader
+	shader_set(shd_unlit_sprite);
+	
+	// Set Unlit Sprite Shader's Camera Offset & Surface Size
+	shader_set_uniform_f(LightingEngine.unlit_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+	shader_set_uniform_f(LightingEngine.unlit_sprite_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
+	
+	// Set Unlit Sprite Shader's PBR Detail Map Texture
+	texture_set_stage(LightingEngine.unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
+	
+	// Iterate through Lighting Engine's Unlit Layer Object List
+	var temp_unlit_object_index = 0;
+	
+	repeat (ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_list))
+	{
+		// Find Unlit Object's Properties
+		var temp_unlit_object_instance = ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_list, temp_unlit_object_index);
+		var temp_unlit_object_type = ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_type_list, temp_unlit_object_index);
+		var temp_unlit_object_depth = ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, temp_unlit_object_index);
+		
+		// Set Unlit Sprite Shader's Object Depth
+		shader_set_uniform_f(LightingEngine.unlit_sprite_shader_layer_depth_index, temp_unlit_object_depth);
+		
+		// Unlit Object Rendering Behaviour
+		switch (temp_unlit_object_type)
+		{
+			case LightingEngineUnlitObjectType.Hitmarker:
+				// Hitmarker Unlit Object Render Behaviour
+				with (temp_unlit_object_instance)
+				{
+					draw_sprite_ext(sprite_index, image_index, x + hitmarker_dropshadow_horizontal_offset, y + hitmarker_dropshadow_vertical_offset, 1, 1, image_angle, c_black, 1);
+					draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, image_angle, c_white, 1);
+				}
+				break;
+			case LightingEngineUnlitObjectType.Empty:
+			default:
+				// Empty Unlit Object Type - Skip Object Render
+				break;
+		}
+		
+		// Increment Unlit Object Index
+		temp_unlit_object_index++;
+	}
+	
+	// Reset Shader Properties
+	shader_reset();
+}
+
+/// @function lighting_engine_render_ui_layer();
+/// @description Draws the Lighting Engine's UI Layer
+function lighting_engine_render_ui_layer()
+{
+	
+}
+
 /// @function lighting_engine_render_clear_surfaces();
 /// @description Clears all surfaces used by the Game's Rendering System - Mostly used when changing the Game Scene Type, Game Window's Resolution, or Ending the Game
 function lighting_engine_render_clear_surfaces()

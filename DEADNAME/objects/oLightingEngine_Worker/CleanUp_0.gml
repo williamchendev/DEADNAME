@@ -14,3 +14,23 @@ dynamic_object_list = -1;
 
 ds_list_destroy(dynamic_type_list);
 dynamic_type_list = -1;
+
+// Destroy Unlit Object DS Lists
+ds_list_destroy(unlit_object_list);
+unlit_object_list = -1;
+
+ds_list_destroy(unlit_type_list);
+unlit_type_list = -1;
+
+ds_list_destroy(unlit_depth_list);
+unlit_depth_list = -1;
+
+// Destroy Unlit Object DS Lists
+ds_list_destroy(ui_object_list);
+unlit_object_list = -1;
+
+ds_list_destroy(ui_type_list);
+ui_type_list = -1;
+
+ds_list_destroy(ui_depth_list);
+ui_depth_list = -1;

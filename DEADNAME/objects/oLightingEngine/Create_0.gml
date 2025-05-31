@@ -214,6 +214,14 @@ mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_
 // MRT Distortion Sprite Shader Indexes
 mrt_distortion_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_distortion_sprite, "in_Camera_Offset");
 
+// Unlit Sprite Shader Indexes
+unlit_sprite_shader_camera_offset_index  = shader_get_uniform(shd_unlit_sprite, "in_Camera_Offset");
+unlit_sprite_shader_surface_size_index = shader_get_uniform(shd_unlit_sprite, "in_SurfaceSize");
+
+unlit_sprite_shader_layer_depth_index = shader_get_uniform(shd_unlit_sprite, "in_Layer_Depth");
+
+unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_unlit_sprite, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
+
 // Point Light Blend Shader Indexes
 point_light_shader_camera_offset_index = shader_get_uniform(shd_point_light_blend, "in_Camera_Offset");
 
@@ -381,6 +389,16 @@ lighting_engine_front_layer_sub_layer_depth_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_type_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_list = ds_list_create();
 lighting_engine_front_layer_sub_layer_object_type_list = ds_list_create();
+
+// Lighting Engine Unlit Layer DS Lists
+lighting_engine_unlit_layer_object_list = ds_list_create();
+lighting_engine_unlit_layer_object_type_list = ds_list_create();
+lighting_engine_unlit_layer_object_depth_list = ds_list_create();
+
+// Lighting Engine UI Layer DS Lists
+lighting_engine_ui_layer_object_list = ds_list_create();
+lighting_engine_ui_layer_object_type_list = ds_list_create();
+lighting_engine_ui_layer_object_depth_list = ds_list_create();
 
 // Lighting Engine Culling Regions DS Map
 lighting_engine_culling_regions_map = ds_map_create();

@@ -136,6 +136,8 @@ global.weapon_packs[WeaponPack.Corso] =
     firearm_attack_damage: 3,
     firearm_attack_luck_damage: 0.7,
     
+    firearm_attack_impulse_power: 50,
+    
     // Weapon FX
     firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Medium,
     firearm_muzzle_smoke_min: 4,
@@ -219,6 +221,8 @@ global.weapon_packs[WeaponPack.SMG] =
     
     firearm_attack_damage: 2,
     firearm_attack_luck_damage: 0.2,
+    
+    firearm_attack_impulse_power: 35,
     
     // Weapon FX
     firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Small,

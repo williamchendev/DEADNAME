@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_unlit_sprite",
+  "name":"shd_unlit_sprite",
+  "parent":{
+    "name":"Sprites",
+    "path":"folders/Shaders/Sprites.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

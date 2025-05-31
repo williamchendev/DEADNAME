@@ -76,6 +76,9 @@ shader_reset();
 // Render Bloom Surface over Post Processing's Deferred Lighting Surface
 surface_set_target(post_processing_surface);
 
+// Render Unlit Layer before Bloom Effect is Applied
+lighting_engine_render_unlit_layer();
+
 // Set Premultiply Blendmode - Correctly Layers Premultiplied Transparent Bloom Surface over other Surfaces
 gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 

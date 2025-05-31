@@ -355,7 +355,7 @@ class FirearmClass extends WeaponClass define
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
 				{
 					// Update Unit Combat Attack Impulse Properties
-					weapon_target.combat_attack_impulse_power = 50;
+					weapon_target.combat_attack_impulse_power = global.weapon_packs[weapon_pack].firearm_attack_impulse_power;
 					weapon_target.combat_attack_impulse_position_x = temp_firearm_projectile_impact_x;
 					weapon_target.combat_attack_impulse_position_y = temp_firearm_projectile_impact_y;
 					weapon_target.combat_attack_impulse_horizontal_vector = trig_cosine;
@@ -395,7 +395,7 @@ class FirearmClass extends WeaponClass define
 		// Impact Hitmarker
 		if (temp_firearm_attack_contact)
 		{
-			instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_HitMarker);
+			instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_Hitmarker);
 		}
 		
 		// Firing Effect

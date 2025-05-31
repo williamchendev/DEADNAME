@@ -24,6 +24,18 @@ enum LightingEngineObjectType
     BulkStatic_Layer
 }
 
+enum LightingEngineUnlitObjectType
+{
+	Empty,
+    Hitmarker
+}
+
+enum LightingEngineUIObjectType
+{
+	Empty,
+    Dialogue
+}
+
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
 /// @function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_layer_type, render_layer_type);
 /// @description Adds a new Sub-Layer to the active scene in the Lighting Engine's Rendering Pipeline with the given properties
@@ -327,13 +339,21 @@ function lighting_engine_delete_all_sub_layers()
 	ds_list_clear(LightingEngine.lighting_engine_front_layer_sub_layer_type_list);
 	ds_list_clear(LightingEngine.lighting_engine_front_layer_sub_layer_object_list);
 	ds_list_clear(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list);
+	
+	ds_list_clear(LightingEngine.lighting_engine_unlit_layer_object_list);
+	ds_list_clear(LightingEngine.lighting_engine_unlit_layer_object_type_list);
+	ds_list_clear(LightingEngine.lighting_engine_unlit_layer_object_depth_list);
+	
+	ds_list_clear(LightingEngine.lighting_engine_ui_layer_object_list);
+	ds_list_clear(LightingEngine.lighting_engine_ui_layer_object_type_list);
+	ds_list_clear(LightingEngine.lighting_engine_ui_layer_object_depth_list);
 }
 
 // Lighting Engine Layer Method: Add Object to Sub Layer
 /// @function lighting_engine_add_object(object_id, object_type, sub_layer_name, sub_layer_index);
 /// @description Adds an Object to the Lighting Engine's Rendering System with the given properties
-/// @param {any} object_id - The Object Instance to index into a Sub-Layer add to the Lighting Engine's Rendering System
-/// @param {int<LightingEngineObjectType>} object_type - The Object's Type to determine how it will be rendering by the Lighting Engine during its rendering process
+/// @param {any} object_id - The Object Instance to index into a Sub-Layer and add to the Lighting Engine's Rendering System
+/// @param {int<LightingEngineObjectType>} object_type - The Object's Type to determine how it will be drawn by the Lighting Engine during its rendering process
 /// @param {string} sub_layer_name - The name of the Sub-Layer to add the Object Instance to as to determine the Object's order during the rendering process
 /// @param {real} sub_layer_index - The index within the Sub-Layer's Object List to determine the Object's order being rendered within its own Sub-Layer, by default this is -1 which will add the Object to the front of the Sub-Layer's drawing order
 /// @returns {bool} Returns if the Object could be successfully added to the given Sub-Layer within the Lighting Engine
@@ -563,3 +583,159 @@ function lighting_engine_add_unit(unit_id, sub_layer_name = LightingEngineDefaul
 {
 	lighting_engine_add_object(unit_id, LightingEngineObjectType.Dynamic_Unit, sub_layer_name);
 }
+
+// Lighting Engine Layer Methods: Add Unlit Object to Render Pipeline
+/// @function lighting_engine_add_unlit_object(object_id, object_type, object_depth);
+/// @description Adds an Unlit Object to the Lighting Engine's Rendering System with the given properties
+/// @param {any} object_id - The Unlit Object Instance to index into the Unlit Layer and add to the Lighting Engine's Rendering System
+/// @param {int<LightingEngineUnlitObjectType>} object_type - The Unlit Object's Type to determine how it will be drawn by the Lighting Engine during its rendering process
+/// @param {real} object_depth - The depth of the Unlit Object as to determine the Object's order during the rendering process
+/// @returns {bool} Returns if the Object could be successfully added to the Unlit Layer within the Lighting Engine
+function lighting_engine_add_unlit_object(object_id, object_type, object_depth = 0)
+{
+	// Check if Object already exists in the Unlit Layer
+	if (ds_list_find_index(LightingEngine.lighting_engine_unlit_layer_object_list, object_id) != -1)
+	{
+		// Object was already added to Unlit Layer - Return False
+		return false;
+	}
+	
+	// Check Object's Depth and add Object to Render Pipeline based on its order relative to the depth of the objects on the Unlit Layer
+	if (ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) == 0 or object_depth > ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) - 1))
+	{
+		// Add Object to the end of the Unlit Layer Render Order
+		ds_list_add(LightingEngine.lighting_engine_unlit_layer_object_list, object_id);
+		ds_list_add(LightingEngine.lighting_engine_unlit_layer_object_type_list, object_type);
+		ds_list_add(LightingEngine.lighting_engine_unlit_layer_object_depth_list, object_depth);
+		
+		// Object was successfully added to Unlit Layer - Return True
+		return true;
+	}
+	
+	for (var temp_unlit_layer_depth_index = ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) - 2; temp_unlit_layer_depth_index >= 0; temp_unlit_layer_depth_index--)
+	{
+		// Find the Depth of the given object within the Unlit Layer Render Order
+		var temp_unlit_layer_depth = ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, temp_unlit_layer_depth_index);
+		
+		// Compare Added Object Depth to Unlit Layer Object Depth
+		if (object_depth >= temp_unlit_layer_depth)
+		{
+			// Insert Object into Unlit Layer Order at the given Index
+			ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_list, temp_unlit_layer_depth_index, object_id);
+			ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_type_list, temp_unlit_layer_depth_index, object_type);
+			ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_depth_list, temp_unlit_layer_depth_index, object_depth);
+			
+			// Object was successfully added to Unlit Layer - Return True
+			return true;
+		}
+	}
+	
+	// Add Object to the start of the Unlit Layer Render Order
+	ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_list, 0, object_id);
+	ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_type_list, 0, object_type);
+	ds_list_insert(LightingEngine.lighting_engine_unlit_layer_object_depth_list, 0, object_depth);
+	
+	// Object was successfully added to Unlit Layer - Return True
+	return true;
+}
+
+// Lighting Engine Layer Methods: Remove Unlit Object from Render Pipeline
+/// @function lighting_engine_remove_unlit_object(object_id);
+/// @description Finds the given Unlit Object Instance's index within the Lighting Engine's Unlit Layer and removes it from the Rendering Pipeline
+/// @param {any} object_id - The Unlit Object Instance to remove from the Lighting Engine Render Pipeline
+function lighting_engine_remove_unlit_object(object_id)
+{
+	// Find Index of Unlit Object within Unlit Layer Render Order
+	var temp_unlit_object_index = ds_list_find_index(LightingEngine.lighting_engine_unlit_layer_object_list, object_id);
+	
+	// Check if Object exists in the Unlit Layer
+	if (temp_unlit_object_index == -1)
+	{
+		// Object does not exist on Unlit Layer - Early Return
+		return;
+	}
+	
+	// Delete Object from Unlit Layer Render Order
+	ds_list_delete(LightingEngine.lighting_engine_unlit_layer_object_list, temp_unlit_object_index);
+	ds_list_delete(LightingEngine.lighting_engine_unlit_layer_object_type_list, temp_unlit_object_index);
+	ds_list_delete(LightingEngine.lighting_engine_unlit_layer_object_depth_list, temp_unlit_object_index);
+}
+
+// Lighting Engine Layer Methods: Add UI Object to Render Pipeline
+/// @function lighting_engine_add_ui_object(object_id, object_type, object_depth);
+/// @description Adds an UI Object to the Lighting Engine's Rendering System with the given properties
+/// @param {any} object_id - The UI Object Instance to index into the UI Layer and add to the Lighting Engine's Rendering System
+/// @param {int<LightingEngineUIObjectType>} object_type - The UI Object's Type to determine how it will be drawn by the Lighting Engine during its rendering process
+/// @param {real} object_depth - The depth of the UI Object as to determine the Object's order during the rendering process
+/// @returns {bool} Returns if the Object could be successfully added to the UI Layer within the Lighting Engine
+function lighting_engine_add_ui_object(object_id, object_type, object_depth = 0)
+{
+	// Check if Object already exists in the UI Layer
+	if (ds_list_find_index(LightingEngine.lighting_engine_ui_layer_object_list, object_id) != -1)
+	{
+		// Object was already added to UI Layer - Return False
+		return false;
+	}
+	
+	// Check Object's Depth and add Object to Render Pipeline based on its order relative to the depth of the objects on the UI Layer
+	if (ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) == 0 or object_depth > ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) - 1))
+	{
+		// Add Object to the end of the UI Layer Render Order
+		ds_list_add(LightingEngine.lighting_engine_ui_layer_object_list, object_id);
+		ds_list_add(LightingEngine.lighting_engine_ui_layer_object_type_list, object_type);
+		ds_list_add(LightingEngine.lighting_engine_ui_layer_object_depth_list, object_depth);
+		
+		// Object was successfully added to UI Layer - Return True
+		return true;
+	}
+	
+	for (var temp_ui_layer_depth_index = ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) - 2; temp_ui_layer_depth_index >= 0; temp_ui_layer_depth_index--)
+	{
+		// Find the Depth of the given object within the UI Layer Render Order
+		var temp_ui_layer_depth = ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_depth_list, temp_ui_layer_depth_index);
+		
+		// Compare Added Object Depth to UI Layer Object Depth
+		if (object_depth >= temp_ui_layer_depth)
+		{
+			// Insert Object into UI Layer Order at the given Index
+			ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_list, temp_ui_layer_depth_index, object_id);
+			ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_type_list, temp_ui_layer_depth_index, object_type);
+			ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_depth_list, temp_ui_layer_depth_index, object_depth);
+			
+			// Object was successfully added to UI Layer - Return True
+			return true;
+		}
+	}
+	
+	// Add Object to the start of the UI Layer Render Order
+	ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_list, 0, object_id);
+	ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_type_list, 0, object_type);
+	ds_list_insert(LightingEngine.lighting_engine_ui_layer_object_depth_list, 0, object_depth);
+	
+	// Object was successfully added to UI Layer - Return True
+	return true;
+}
+
+// Lighting Engine Layer Methods: Remove UI Object from Render Pipeline
+/// @function lighting_engine_remove_ui_object(object_id);
+/// @description Finds the given UI Object Instance's index within the Lighting Engine's UI Layer and removes it from the Rendering Pipeline
+/// @param {any} object_id - The UI Object Instance to remove from the Lighting Engine Render Pipeline
+function lighting_engine_remove_ui_object(object_id)
+{
+	// Find Index of UI Object within UI Layer Render Order
+	var temp_ui_object_index = ds_list_find_index(LightingEngine.lighting_engine_ui_layer_object_list, object_id);
+	
+	// Check if Object exists in the UI Layer
+	if (temp_ui_object_index == -1)
+	{
+		// Object does not exist on UI Layer - Early Return
+		return;
+	}
+	
+	// Delete Object from UI Layer Render Order
+	ds_list_delete(LightingEngine.lighting_engine_ui_layer_object_list, temp_ui_object_index);
+	ds_list_delete(LightingEngine.lighting_engine_ui_layer_object_type_list, temp_ui_object_index);
+	ds_list_delete(LightingEngine.lighting_engine_ui_layer_object_depth_list, temp_ui_object_index);
+}
+
+

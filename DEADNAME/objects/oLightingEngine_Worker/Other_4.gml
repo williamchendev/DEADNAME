@@ -218,6 +218,42 @@ for (var temp_dynamic_object_index = 0; temp_dynamic_object_index < ds_list_size
     }
 }
 
+// Iterate Initialization Behaviour for Unlit Objects
+for (var temp_unlit_object_index = 0; temp_unlit_object_index < ds_list_size(unlit_object_list); temp_unlit_object_index++)
+{
+	// Find Unlit Object at Index
+    var temp_unlit_object_instance = ds_list_find_value(unlit_object_list, temp_unlit_object_index);
+    var temp_unlit_object_type = ds_list_find_value(unlit_type_list, temp_unlit_object_index);
+    var temp_unlit_object_depth = ds_list_find_value(unlit_depth_list, temp_unlit_object_index);
+    
+    // Add Unlit Object to Lighting Engine
+    var temp_successfully_added_unlit_object = lighting_engine_add_unlit_object(temp_unlit_object_instance.id, temp_unlit_object_type, temp_unlit_object_depth);
+    
+    // Debug Flag - Unsuccessfully added Unlit Object to Lighting Engine
+    if (!temp_successfully_added_unlit_object)
+    {
+        show_debug_message($"Debug Warning! - Unsuccessfully added Unlit Object (Basic) \"{object_get_name(temp_unlit_object_instance.object_index)}\" to Lighting Engine");
+    }
+}
+
+// Iterate Initialization Behaviour for UI Objects
+for (var temp_ui_object_index = 0; temp_ui_object_index < ds_list_size(ui_object_list); temp_ui_object_index++)
+{
+	// Find UI Object at Index
+    var temp_ui_object_instance = ds_list_find_value(ui_object_list, temp_ui_object_index);
+    var temp_ui_object_type = ds_list_find_value(ui_type_list, temp_ui_object_index);
+    var temp_ui_object_depth = ds_list_find_value(ui_depth_list, temp_ui_object_index);
+    
+    // Add UI Object to Lighting Engine
+    var temp_successfully_added_ui_object = lighting_engine_add_ui_object(temp_ui_object_instance.id, temp_ui_object_type, temp_ui_object_depth);
+    
+    // Debug Flag - Unsuccessfully added UI Object to Lighting Engine
+    if (!temp_successfully_added_ui_object)
+    {
+        show_debug_message($"Debug Warning! - Unsuccessfully added UI Object (Basic) \"{object_get_name(temp_ui_object_instance.object_index)}\" to Lighting Engine");
+    }
+}
+
 // Lighting Engine's Worker Instance to Null
 LightingEngine.lighting_engine_worker = -1;
 
