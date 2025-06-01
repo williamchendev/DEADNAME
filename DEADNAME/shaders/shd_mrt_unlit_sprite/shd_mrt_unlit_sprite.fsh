@@ -1,5 +1,5 @@
 //
-// Unlit Sprite fragment shader for Inno's Deferred Lighting System
+// (Multi Render Target) Unlit Sprite fragment shader for Inno's Deferred Lighting System
 //
 
 // Interpolated Color & Rotate
@@ -32,6 +32,12 @@ void main()
 		return;
 	}
 	
-	// Draw Unlit Sprite
-	gl_FragColor = v_vColour * Diffuse;
+	// Draw Unlit Sprite Color Data to Render Color Post Processing Surface
+	gl_FragData[0] = v_vColour * Diffuse;
+	
+	// Draw Unlit Sprite Color Data to Diffuse Aggregate Color Surface
+	gl_FragData[1] = v_vColour * Diffuse;
+	
+	// Draw Unlit Sprite Default PBR Data to PBR Aggregate Detail Map Surface
+	gl_FragData[2] = vec4(0.5, 0.0, (in_Layer_Depth + 1.0) * 0.5, 1.0);
 }

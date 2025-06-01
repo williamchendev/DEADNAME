@@ -1,5 +1,5 @@
 //
-// Unlit Sprite vertex shader for Inno's Deferred Lighting System
+// (Multi Render Target) Unlit Sprite vertex shader for Inno's Deferred Lighting System
 //
 
 // Vertex Buffer Properties

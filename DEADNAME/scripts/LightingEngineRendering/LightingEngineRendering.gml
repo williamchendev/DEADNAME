@@ -468,15 +468,20 @@ function lighting_engine_render_layer(render_layer_type)
 /// @description Draws the Lighting Engine's Unlit Layer
 function lighting_engine_render_unlit_layer()
 {
+	// Set Unlit Layer's MRT Surface Targets
+	surface_set_target_ext(0, LightingEngine.post_processing_surface);
+	surface_set_target_ext(1, LightingEngine.diffuse_aggregate_color_surface);
+	surface_set_target_ext(2, LightingEngine.aggregate_prb_metalrough_emissive_depth_surface);
+	
 	// Enable Unlit Sprite Shader
-	shader_set(shd_unlit_sprite);
+	shader_set(shd_mrt_unlit_sprite);
 	
 	// Set Unlit Sprite Shader's Camera Offset & Surface Size
-	shader_set_uniform_f(LightingEngine.unlit_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
-	shader_set_uniform_f(LightingEngine.unlit_sprite_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
+	shader_set_uniform_f(LightingEngine.mrt_unlit_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+	shader_set_uniform_f(LightingEngine.mrt_unlit_sprite_shader_surface_size_index, GameManager.game_width + (LightingEngine.render_border * 2), GameManager.game_height + (LightingEngine.render_border * 2));
 	
 	// Set Unlit Sprite Shader's PBR Detail Map Texture
-	texture_set_stage(LightingEngine.unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
+	texture_set_stage(LightingEngine.mrt_unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index, surface_get_texture(LightingEngine.layered_prb_metalrough_emissive_depth_surface));
 	
 	// Iterate through Lighting Engine's Unlit Layer Object List
 	var temp_unlit_object_index = 0;
@@ -489,7 +494,7 @@ function lighting_engine_render_unlit_layer()
 		var temp_unlit_object_depth = ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, temp_unlit_object_index);
 		
 		// Set Unlit Sprite Shader's Object Depth
-		shader_set_uniform_f(LightingEngine.unlit_sprite_shader_layer_depth_index, temp_unlit_object_depth);
+		shader_set_uniform_f(LightingEngine.mrt_unlit_sprite_shader_layer_depth_index, temp_unlit_object_depth);
 		
 		// Unlit Object Rendering Behaviour
 		switch (temp_unlit_object_type)
@@ -512,7 +517,8 @@ function lighting_engine_render_unlit_layer()
 		temp_unlit_object_index++;
 	}
 	
-	// Reset Shader Properties
+	// Reset Surface & Shader
+	surface_reset_target();
 	shader_reset();
 }
 

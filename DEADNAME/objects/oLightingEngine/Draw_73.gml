@@ -45,6 +45,9 @@ draw_surface(diffuse_front_color_surface, 0, 0);
 surface_reset_target();
 shader_reset();
 
+/// Render Lighting Engine's Unlit Render Layer with interwoven object depth to Post Processing, Bloom Aggregate Diffuse Color, and Aggregate PBR Detail Map Surfaces
+lighting_engine_render_unlit_layer();
+
 // Enable Bloom Effect Shader and Surface Target
 surface_set_target(bloom_effect_surface);
 
@@ -75,9 +78,6 @@ shader_reset();
 
 // Render Bloom Surface over Post Processing's Deferred Lighting Surface
 surface_set_target(post_processing_surface);
-
-// Render Unlit Layer before Bloom Effect is Applied
-lighting_engine_render_unlit_layer();
 
 // Set Premultiply Blendmode - Correctly Layers Premultiplied Transparent Bloom Surface over other Surfaces
 gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);

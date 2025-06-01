@@ -28,7 +28,7 @@ slope_tolerance = 5; // Tolerance for walking up slopes in pixels
 slope_raycast_distance = 8; // Distance to raycast to solids beneath the unit to calculate slope angle
 slope_angle_lerp_spd = 0.15; // Speed to lerp the angle to the slope the player is standing on
 
-max_velocity = 10;
+max_velocity = 10; // Unit's Maximum Horizontal or Vertical Velocity
 
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
