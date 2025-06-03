@@ -911,7 +911,6 @@
     {"name":"inst_2EA3AC40","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_CE40527","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_6708BE2B","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
-    {"name":"inst_430E26E6","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -1014,9 +1013,6 @@
         {"$GMRInstance":"v1","%Name":"inst_3ECB9C21","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3ECB9C21","objectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"properties":[
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"propertyId":{"name":"shadows_enabled","path":"objects/oSolid/oSolid.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.395833,"scaleY":2.3333333,"x":-165.0,"y":70.0,},
-        {"$GMRInstance":"v1","%Name":"inst_430E26E6","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_430E26E6","objectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"properties":[
-            {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"propertyId":{"name":"shadows_enabled","path":"objects/oSolid/oSolid.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-          ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.395833,"scaleY":2.3333333,"x":256.0,"y":128.0,},
       ],"layers":[],"name":"Solids","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Foreground_Weather","depth":500,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_CE40527","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":true,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_CE40527","objectId":{"name":"oRain_ParticleSystem","path":"objects/oRain_ParticleSystem/oRain_ParticleSystem.yy",},"properties":[

@@ -526,7 +526,50 @@ function lighting_engine_render_unlit_layer()
 /// @description Draws the Lighting Engine's UI Layer
 function lighting_engine_render_ui_layer()
 {
+	// Set Lighting Engine's UI Surface as Surface Target
+	surface_set_target(LightingEngine.ui_surface);
 	
+	// Iterate through Lighting Engine's UI Layer Object List
+	var temp_ui_object_index = 0;
+	
+	repeat (ds_list_size(LightingEngine.lighting_engine_ui_layer_object_list))
+	{
+		// Find UI Object's Properties
+		var temp_ui_object_instance = ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_list, temp_ui_object_index);
+		var temp_ui_object_type = ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_type_list, temp_ui_object_index);
+		var temp_ui_object_depth = ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_depth_list, temp_ui_object_index);
+		
+		// UI Object Rendering Behaviour
+		switch (temp_ui_object_type)
+		{
+			case LightingEngineUIObjectType.Dialogue:
+				// Dialogue Box UI Object Render Behaviour
+				with (temp_ui_object_instance)
+				{
+					//
+					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
+					
+					//
+					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, temp_text_separation, text_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
+					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, temp_text_separation, text_wrap_width) + dialogue_box_vertical_padding;
+					
+					//
+					draw_set_color(c_black);
+					draw_roundrect(x - temp_dialogue_text_width - temp_breath_padding, y - temp_dialogue_text_height - temp_breath_padding, x + temp_dialogue_text_width + temp_breath_padding, y + temp_breath_padding, false);
+				}
+				break;
+			case LightingEngineUIObjectType.Empty:
+			default:
+				// Empty UI Object Type - Skip Object Render
+				break;
+		}
+		
+		// Increment UI Object Index
+		temp_ui_object_index++;
+	}
+	
+	// Reset Surface
+	surface_reset_target();
 }
 
 /// @function lighting_engine_render_clear_surfaces();
