@@ -12,7 +12,7 @@ if (dialogue_text_value < string_length(dialogue_text))
 dialogue_box_animation_value += dialogue_animation_speed * frame_delta;
 dialogue_box_animation_value = dialogue_box_animation_value >= 1 ? 0 : dialogue_box_animation_value;
 
-dialogue_box_breath_value = clamp(sin(dialogue_box_animation_value * 2 * pi), dialogue_breath_edge_clamp, dialogue_breath_padding - dialogue_breath_edge_clamp);
+dialogue_box_breath_value = clamp(dialogue_breath_padding * ((sin(dialogue_box_animation_value * 2 * pi) * 0.5) + 0.5), dialogue_breath_edge_clamp, dialogue_breath_padding - dialogue_breath_edge_clamp);
 
 // Update Position Behaviour
 if (instance_exists(dialogue_unit))
@@ -22,7 +22,7 @@ if (instance_exists(dialogue_unit))
 	trig_cosine = dialogue_unit.draw_angle_trig_cosine;
 	
 	// Find Unit Height
-	var temp_unit_height = dialogue_unit.bbox_bottom - dialogue_unit.bbox_top;
+	var temp_unit_height = (dialogue_unit.bbox_bottom - dialogue_unit.bbox_top) * dialogue_unit.draw_yscale;
 	
 	x = dialogue_unit.x + rot_point_x(0, -temp_unit_height);
 	y = dialogue_unit.y + rot_point_y(0, -temp_unit_height) - dialogue_unit_padding;

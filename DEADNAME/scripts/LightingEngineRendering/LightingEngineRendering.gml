@@ -549,13 +549,34 @@ function lighting_engine_render_ui_layer()
 					//
 					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
 					
+					var temp_x = x - LightingEngine.render_x;
+					var temp_y = y - LightingEngine.render_y - dialogue_breath_padding;
+					
 					//
-					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, temp_text_separation, text_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
-					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, temp_text_separation, text_wrap_width) + dialogue_box_vertical_padding;
+					var temp_dialogue_text_width = round((string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5);
+					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
+					
+					// 
+					
 					
 					//
 					draw_set_color(c_black);
-					draw_roundrect(x - temp_dialogue_text_width - temp_breath_padding, y - temp_dialogue_text_height - temp_breath_padding, x + temp_dialogue_text_width + temp_breath_padding, y + temp_breath_padding, false);
+					draw_set_alpha(image_alpha * image_alpha);
+					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value, false);
+					
+					//
+					draw_set_font(dialogue_font);
+					draw_set_halign(fa_center);
+					draw_set_valign(fa_middle);
+					
+					//
+					draw_set_color(merge_color(dialogue_text_color, c_black, 0.75));
+					draw_text_ext(temp_x + dialogue_font_horizontal_offset, temp_y + dialogue_font_vertical_offset + 1 - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					draw_text_ext(temp_x + dialogue_font_horizontal_offset + 1, temp_y + dialogue_font_vertical_offset + 1 - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					
+					//
+					draw_set_color(dialogue_text_color);
+					draw_text_ext(temp_x + dialogue_font_horizontal_offset, temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
 				}
 				break;
 			case LightingEngineUIObjectType.Empty:

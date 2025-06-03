@@ -911,6 +911,7 @@
     {"name":"inst_2EA3AC40","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_CE40527","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_6708BE2B","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
+    {"name":"inst_67946A2A","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -1463,6 +1464,7 @@
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":704.0,"y":288.0,},
         {"$GMRInstance":"v1","%Name":"inst_635D743E","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_635D743E","objectId":{"name":"oDebugSetFactionHostile","path":"objects/oDebugSetFactionHostile/oDebugSetFactionHostile.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":320.0,"y":288.0,},
         {"$GMRInstance":"v1","%Name":"inst_2EA3AC40","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":true,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2EA3AC40","objectId":{"name":"oDebug_MovingPointLight","path":"objects/oDebug_MovingPointLight/oDebug_MovingPointLight.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":96.0,},
+        {"$GMRInstance":"v1","%Name":"inst_67946A2A","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_67946A2A","objectId":{"name":"oDialogueBox","path":"objects/oDialogueBox/oDialogueBox.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":-64.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"SageBrushTree_Layer","depth":900,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_48AFF154","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_48AFF154","objectId":{"name":"oEnvironment_AdobeHouse_Dynamic_SageBrushTree","path":"objects/oEnvironment_AdobeHouse_Dynamic_SageBrushTree/oEnvironment_AdobeHouse_Dynamic_SageBrushTree.yy",},"properties":[
