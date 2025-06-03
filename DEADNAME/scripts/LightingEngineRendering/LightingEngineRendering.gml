@@ -503,6 +503,7 @@ function lighting_engine_render_unlit_layer()
 				// Hitmarker Unlit Object Render Behaviour
 				with (temp_unlit_object_instance)
 				{
+					// Draw Hitmarker Impact
 					draw_sprite_ext(sprite_index, image_index, x + hitmarker_dropshadow_horizontal_offset, y + hitmarker_dropshadow_vertical_offset, 1, 1, image_angle, c_black, 1);
 					draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, image_angle, c_white, 1);
 				}
@@ -546,37 +547,60 @@ function lighting_engine_render_ui_layer()
 				// Dialogue Box UI Object Render Behaviour
 				with (temp_ui_object_instance)
 				{
-					//
-					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
-					
-					var temp_x = x - LightingEngine.render_x;
-					var temp_y = y - LightingEngine.render_y - dialogue_breath_padding;
-					
-					//
-					var temp_dialogue_text_width = round((string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5);
-					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
-					
-					// 
-					
-					
-					//
-					draw_set_color(c_black);
-					draw_set_alpha(image_alpha * image_alpha);
-					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value, false);
-					
-					//
+					// Set Dialogue Font and Alignment
 					draw_set_font(dialogue_font);
 					draw_set_halign(fa_center);
 					draw_set_valign(fa_middle);
 					
-					//
-					draw_set_color(merge_color(dialogue_text_color, c_black, 0.75));
-					draw_text_ext(temp_x + dialogue_font_horizontal_offset, temp_y + dialogue_font_vertical_offset + 1 - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
-					draw_text_ext(temp_x + dialogue_font_horizontal_offset + 1, temp_y + dialogue_font_vertical_offset + 1 - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					// Create Dialogue Box's Display Text Sub-String
+					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
 					
-					//
+					// Find Dialogue Box's Width and Height
+					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
+					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
+					
+					// Find Dialogue Box's Position
+					var temp_x = x - LightingEngine.render_x;
+					var temp_y = y - LightingEngine.render_y;
+					
+					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
+					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
+					
+					// Set Dialogue Box's Transparency
+					draw_set_alpha(image_alpha * image_alpha);
+					
+					// Draw Dialogue Box's Tail
+					draw_set_color(c_white);
+					draw_sprite(sTextboxTriangle, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding);
+					
+					// Draw Dialogue Box
+					draw_set_color(c_black);
+					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value - dialogue_breath_padding, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value - dialogue_breath_padding, false);
+					
+					// Draw Dialogue Text's Contrast Drop Shadow
+					draw_set_color(merge_color(dialogue_text_color, c_black, dialogue_text_contrast_amount));
+					draw_text_ext(temp_text_x, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					draw_text_ext(temp_text_x + 1, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					
+					// Draw Dialogue Text
 					draw_set_color(dialogue_text_color);
-					draw_text_ext(temp_x + dialogue_font_horizontal_offset, temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5), temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					draw_text_ext(temp_text_x, temp_text_y, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					
+					// Draw Dialogue Box Continue Triangle
+					if (dialogue_triangle)
+					{
+						// Triangle Variables
+						var temp_tri_x = temp_x + temp_dialogue_text_width + dialogue_triangle_offset + dialogue_box_breath_value;
+						var temp_tri_y = temp_y + dialogue_triangle_offset + dialogue_box_breath_value - dialogue_breath_padding;
+						
+						// Draw Triangle's Contrast Drop Shadow
+						draw_set_color(c_gray);
+						draw_triangle(temp_tri_x + tri_x_1 + 1, temp_tri_y + tri_y_1 + 1, temp_tri_x + tri_x_2 + 1, temp_tri_y + tri_y_2 + 1, temp_tri_x + tri_x_3 + 1, temp_tri_y + tri_y_3 + 1, false);
+						
+						// Draw Triangle
+						draw_set_color(c_white);
+						draw_triangle(temp_tri_x + tri_x_1, temp_tri_y + tri_y_1, temp_tri_x + tri_x_2, temp_tri_y + tri_y_2, temp_tri_x + tri_x_3, temp_tri_y + tri_y_3, false);
+					}
 				}
 				break;
 			case LightingEngineUIObjectType.Empty:
