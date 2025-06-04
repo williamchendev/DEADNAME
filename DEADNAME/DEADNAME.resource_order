@@ -206,7 +206,7 @@
     {"name":"Damage","order":1,"path":"folders/Sprites/Effects/Materials/Damage.yy",},
     {"name":"Smoke","order":7,"path":"folders/Sprites/Effects/Smoke.yy",},
     {"name":"Squads","order":8,"path":"folders/Sprites/Effects/Squads.yy",},
-    {"name":"Textbox","order":9,"path":"folders/Sprites/Effects/Textbox.yy",},
+    {"name":"Dialogue","order":9,"path":"folders/Sprites/Effects/Dialogue.yy",},
     {"name":"Interactions","order":5,"path":"folders/Sprites/Interactions.yy",},
     {"name":"Cursor","order":1,"path":"folders/Sprites/Interactions/Cursor.yy",},
     {"name":"Doors","order":2,"path":"folders/Sprites/Interactions/Doors.yy",},

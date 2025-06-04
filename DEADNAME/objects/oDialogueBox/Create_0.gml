@@ -10,10 +10,10 @@ event_inherited();
 
 // Dialogue Box Settings
 dialogue_unit = noone;
-dialogue_text = "LETS FUCKING GO FUCK OFF FUCK OFF FUCK OFF!!";
+dialogue_text = "I need ZYRTEC allergy tablets (TM)! >w<";
 
 // Triangle Settings
-dialogue_triangle = true;
+dialogue_triangle = false;
 
 dialogue_triangle_angle = -15;
 dialogue_triangle_radius = 4;

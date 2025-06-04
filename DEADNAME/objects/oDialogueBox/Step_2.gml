@@ -18,6 +18,9 @@ dialogue_triangle_draw_angle = dialogue_triangle_angle + (dialogue_triangle_rota
 // Update Position Behaviour
 if (instance_exists(dialogue_unit))
 {
+	// Dialogue Box Facing Direction match Unit's Facing Direction Behaviour
+	image_xscale = sign(dialogue_unit.draw_xscale) != 0 ? sign(dialogue_unit.draw_xscale) : image_xscale;
+	
 	// Find Unit Rotation Angle
 	trig_sine = dialogue_unit.draw_angle_trig_sine;
 	trig_cosine = dialogue_unit.draw_angle_trig_cosine;
