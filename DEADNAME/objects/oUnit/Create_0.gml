@@ -97,7 +97,7 @@ animation_speed_direction = 1;
 draw_image_index = 0;
 draw_image_index_length = 0;
 
-draw_xscale = 1;
+draw_xscale = sign(image_xscale) != 0 ? sign(image_xscale) : 1;
 draw_yscale = 1;
 
 draw_angle = 0;

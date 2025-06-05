@@ -349,6 +349,7 @@
     {"name":"emod","order":1,"path":"scripts/emod/emod.yy",},
     {"name":"file_move","order":1,"path":"scripts/file_move/file_move.yy",},
     {"name":"filename_is_dir","order":2,"path":"scripts/filename_is_dir/filename_is_dir.yy",},
+    {"name":"find_unit_name","order":7,"path":"scripts/find_unit_name/find_unit_name.yy",},
     {"name":"instance_create_unit","order":6,"path":"scripts/instance_create_unit/instance_create_unit.yy",},
     {"name":"instance_link","order":1,"path":"scripts/instance_link/instance_link.yy",},
     {"name":"interp","order":2,"path":"scripts/interp/interp.yy",},

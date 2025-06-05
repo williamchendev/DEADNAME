@@ -591,7 +591,7 @@ function lighting_engine_render_ui_layer()
 					draw_set_alpha(image_alpha * image_alpha);
 					
 					// Draw Dialogue Box's Tail
-					draw_sprite_ext(dialogue_box_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
+					draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
 					
 					// Draw Dialogue Box's Round Rectangle Background
 					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value - dialogue_breath_padding, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value - dialogue_breath_padding, false);

@@ -416,6 +416,7 @@
     {"id":{"name":"file_list","path":"scripts/file_list/file_list.yy",},},
     {"id":{"name":"file_move","path":"scripts/file_move/file_move.yy",},},
     {"id":{"name":"filename_is_dir","path":"scripts/filename_is_dir/filename_is_dir.yy",},},
+    {"id":{"name":"find_unit_name","path":"scripts/find_unit_name/find_unit_name.yy",},},
     {"id":{"name":"foreach","path":"scripts/foreach/foreach.yy",},},
     {"id":{"name":"game_get_","path":"scripts/game_get_/game_get_.yy",},},
     {"id":{"name":"gml_classes","path":"scripts/gml_classes/gml_classes.yy",},},

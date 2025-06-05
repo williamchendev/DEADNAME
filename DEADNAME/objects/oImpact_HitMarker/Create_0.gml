@@ -15,7 +15,7 @@ hitmarker_image_index = irandom(sprite_get_number(hitmarker_sprite));
 trail_image_index = irandom(sprite_get_number(trail_sprite));
 
 // Set Random Hitmarker Rotation
-hitmarker_image_angle = irandom(360);
+hitmarker_image_angle = irandom(3) * 90;
 
 // Set Random Hitmarker Drop Shadow Offset
 hitmarker_dropshadow_horizontal_offset = random_range(-3, 3);

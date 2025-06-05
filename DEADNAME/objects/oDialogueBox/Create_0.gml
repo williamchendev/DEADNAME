@@ -43,4 +43,4 @@ trig_sine = 0;
 trig_cosine = 1;
 
 // @DEBUG
-dialogue_unit = instance_find(oUnit, 0);
+dialogue_unit = find_unit_name("Mel");

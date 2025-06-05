@@ -29,7 +29,7 @@ if (instance_exists(dialogue_unit))
 	var temp_unit_height = (dialogue_unit.bbox_bottom - dialogue_unit.bbox_top) * dialogue_unit.draw_yscale;
 	
 	x = dialogue_unit.x + rot_point_x(0, -temp_unit_height);
-	y = dialogue_unit.y + rot_point_y(0, -temp_unit_height) - dialogue_unit_padding;
+	y = dialogue_unit.y + rot_point_y(0, -temp_unit_height) - dialogue_tail_height - dialogue_unit_padding;
 }
 
 // Dialogue Box Triangle Behaviour
