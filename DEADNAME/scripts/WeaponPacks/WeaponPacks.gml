@@ -249,9 +249,9 @@ global.weapon_packs[WeaponPack.SMG] =
     firearm_random_recoil_vertical_max: 1.6,
     firearm_total_recoil_vertical: 2,
     
-    firearm_random_recoil_angle_min: -6,
+    firearm_random_recoil_angle_min: -2,
     firearm_random_recoil_angle_max: 6,
-    firearm_total_recoil_angle: 14,
+    firearm_total_recoil_angle: 8,
     
     // Weapon Bolt Operation
     firearm_bolt_handle_position_x: 0,

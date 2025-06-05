@@ -30,7 +30,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sDebug_Lighting_Dynamic_Particle",
+    "path":"sprites/sDebug_Lighting_Dynamic_Particle/sDebug_Lighting_Dynamic_Particle.yy",
+  },
   "spriteMaskId":null,
   "visible":false,
 }

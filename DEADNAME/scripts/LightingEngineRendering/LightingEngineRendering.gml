@@ -503,9 +503,29 @@ function lighting_engine_render_unlit_layer()
 				// Hitmarker Unlit Object Render Behaviour
 				with (temp_unlit_object_instance)
 				{
-					// Draw Hitmarker Impact
-					draw_sprite_ext(sprite_index, image_index, x + hitmarker_dropshadow_horizontal_offset, y + hitmarker_dropshadow_vertical_offset, 1, 1, image_angle, c_black, 1);
-					draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, image_angle, c_white, 1);
+					// Check if Hitmarker Impact made Impact
+					if (hitmarker_contact)
+					{
+						// Calculate Hitmarker & Trail Scale
+						var temp_hitmarker_sprite_scale = ((1 - trail_multiplier) * hitmarker_sprite_multiplier) + (1 - hitmarker_sprite_multiplier);
+						var temp_trail_sprite_scale = (trail_multiplier * trail_sprite_multiplier) + (1 - trail_sprite_multiplier);
+						
+						// Draw Hitmarker Impact Drop Shadow
+						draw_sprite_ext(hitmarker_sprite, hitmarker_image_index, x + hitmarker_dropshadow_horizontal_offset, y + hitmarker_dropshadow_vertical_offset, temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, hitmarker_image_angle, c_black, 1);
+						draw_sprite_ext(trail_sprite, trail_image_index, x + hitmarker_dropshadow_horizontal_offset, y + hitmarker_dropshadow_vertical_offset, temp_trail_sprite_scale * temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, trail_angle, c_black, 1);
+						
+						// Draw Hitmarker Impact
+						draw_sprite_ext(hitmarker_sprite, hitmarker_image_index, x, y, temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, hitmarker_image_angle, c_white, 1);
+						draw_sprite_ext(trail_sprite, trail_image_index, x, y, temp_trail_sprite_scale * temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, trail_angle, c_white, 1);
+						
+						// Draw Hitmarker Trail
+						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 1);
+					}
+					else
+					{
+						// Draw Hitmarker Trail (Missed Impact - Slightly Transparent)
+						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 0.35);
+					}
 				}
 				break;
 			case LightingEngineUnlitObjectType.Empty:

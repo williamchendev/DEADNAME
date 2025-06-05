@@ -266,6 +266,10 @@ function unit_create_ragdoll(unit_instance)
     
 	temp_ragdoll_struct.head = temp_ragdoll_head_obj;
 	temp_ragdoll_struct.head.ragdoll_group = temp_ragdoll_struct;
+	
+	// Create Ragdoll Fade Effect Object
+	var temp_ragdoll_fade_obj = instance_create_depth(0, 0, 0, oRagdollFade);
+	temp_ragdoll_fade_obj.ragdoll_group = temp_ragdoll_struct;
 
 	// Instantiate Joints between Limbs
 	physics_joint_revolute_create(temp_ragdoll_struct.head, temp_ragdoll_struct.chest, temp_ragdoll_struct.head.x, temp_ragdoll_struct.head.y, -45, 45, 1, 0, 0, 0, 0); 
@@ -317,17 +321,17 @@ function unit_create_ragdoll(unit_instance)
 		}
 	}
 	
-	//
+	// Apply Combat Physics Impulse Force to Unit Ragdoll
 	if (unit_instance.combat_attack_impulse_power > 0)
 	{
-		//
+		// Apply Physics Impulse to Ragdoll's Chest
 		with (temp_ragdoll_struct.chest)
 		{
-			//
+			// Physics Impulse Force Vector Math Calculation
 			var temp_combat_impulse_horizontal_vector = unit_instance.combat_attack_impulse_power * unit_instance.combat_attack_impulse_horizontal_vector;
 			var temp_combat_impulse_vertical_vector = unit_instance.combat_attack_impulse_power * unit_instance.combat_attack_impulse_vertical_vector;
 			
-			//
+			// Apply Force to Ragdoll Group
 			physics_apply_local_impulse(unit_instance.combat_attack_impulse_position_x - x, unit_instance.combat_attack_impulse_position_y - y, temp_combat_impulse_horizontal_vector, temp_combat_impulse_vertical_vector);
 		}
 	}

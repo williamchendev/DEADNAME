@@ -393,9 +393,12 @@ class FirearmClass extends WeaponClass define
 		}
 		
 		// Impact Hitmarker
-		if (temp_firearm_attack_contact)
+		var temp_hitmarker_x = weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0);
+		var temp_hitmarker_y = weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0);
+		
+		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height))
 		{
-			instance_create_depth(weapon_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0), weapon_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0), 0, oImpact_Hitmarker);
+			instance_create_depth(temp_hitmarker_x, temp_hitmarker_y, 0, oImpact_Hitmarker, { hitmarker_contact: temp_firearm_attack_contact, trail_angle: (temp_firing_angle + 540) mod 360, trail_distance: temp_firearm_attack_distance });
 		}
 		
 		// Firing Effect

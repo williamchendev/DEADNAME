@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sCloudsTest_DiffuseMap",
-    "path":"sprites/sCloudsTest_DiffuseMap/sCloudsTest_DiffuseMap.yy",
+    "name":"sClouds_Medium_DiffuseMap",
+    "path":"sprites/sClouds_Medium_DiffuseMap/sClouds_Medium_DiffuseMap.yy",
   },
   "spriteMaskId":null,
   "visible":false,

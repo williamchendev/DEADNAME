@@ -9,7 +9,7 @@
   "name":"oFirearm_MuzzleSmoke",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.5",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resource":{"name":"sCloudsTest_NormalMap","path":"sprites/sCloudsTest_NormalMap/sCloudsTest_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sCloudsTest_NormalMap",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resource":{"name":"sClouds_Medium_NormalMap","path":"sprites/sClouds_Medium_NormalMap/sClouds_Medium_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sClouds_Medium_NormalMap",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
   ],
   "parent":{
@@ -53,8 +53,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sCloudsTest_DiffuseMap",
-    "path":"sprites/sCloudsTest_DiffuseMap/sCloudsTest_DiffuseMap.yy",
+    "name":"sClouds_Medium_DiffuseMap",
+    "path":"sprites/sClouds_Medium_DiffuseMap/sClouds_Medium_DiffuseMap.yy",
   },
   "spriteMaskId":null,
   "visible":false,
