@@ -105,7 +105,7 @@ global.weapon_packs[WeaponPack.Default] =
 
 	firearm_reload_offset_x: 0,
 	firearm_reload_offset_y: 6,
-}
+};
 
 // Corso Bolt-Action Rifle Weapon Pack
 global.weapon_packs[WeaponPack.Corso] =
@@ -191,7 +191,7 @@ global.weapon_packs[WeaponPack.Corso] =
 	// Weapon Muzzle Positions
 	firearm_muzzle_x: 29,
 	firearm_muzzle_y: -1,
-}
+};
 
 // SMG Weapon Pack
 global.weapon_packs[WeaponPack.SMG] =
@@ -277,4 +277,4 @@ global.weapon_packs[WeaponPack.SMG] =
 	// Weapon Muzzle Positions
 	firearm_muzzle_x: 18,
 	firearm_muzzle_y: 0,
-}
+};

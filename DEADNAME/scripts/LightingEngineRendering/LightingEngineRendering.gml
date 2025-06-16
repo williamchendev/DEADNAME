@@ -336,7 +336,7 @@ function lighting_engine_render_layer(render_layer_type)
 						// Draw Smoke Trail Bezier Curve
 						draw_primitive_begin(pr_trianglestrip);
 						
-						//
+						// Iterate through Smoke Trail Segments to draw a connected Bezier Curve
 						var temp_trail_length = trail_segments * trail_segments_divisions;
 						
 						for (var i = 0; i < temp_trail_length; i++)
@@ -581,7 +581,7 @@ function lighting_engine_render_ui_layer()
 					
 					// Find Dialogue Box's Position
 					var temp_x = x - LightingEngine.render_x;
-					var temp_y = y - LightingEngine.render_y;
+					var temp_y = y - LightingEngine.render_y + dialogue_box_instance_chain_vertical_offset;
 					
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
@@ -591,7 +591,10 @@ function lighting_engine_render_ui_layer()
 					draw_set_alpha(image_alpha * image_alpha);
 					
 					// Draw Dialogue Box's Tail
-					draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
+					if (dialogue_tail)
+					{
+						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
+					}
 					
 					// Draw Dialogue Box's Round Rectangle Background
 					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value - dialogue_breath_padding, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value - dialogue_breath_padding, false);
@@ -634,6 +637,10 @@ function lighting_engine_render_ui_layer()
 	
 	// Reset Surface
 	surface_reset_target();
+	
+	//
+	draw_set_alpha(1);
+	draw_set_color(c_white);
 }
 
 /// @function lighting_engine_render_clear_surfaces();

@@ -187,7 +187,7 @@ global.unit_packs[UnitPack.Default] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
-}
+};
 
 // Moralist William
 global.unit_packs[UnitPack.MoralistWilliam] = 
@@ -301,7 +301,7 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
-}
+};
 
 // Wolf
 global.unit_packs[UnitPack.Wolf] = 
@@ -395,7 +395,7 @@ global.unit_packs[UnitPack.Wolf] =
 	
 	equipment_firearm_aim_x: 3,
 	equipment_firearm_aim_y: -29,
-}
+};
 
 // Director
 global.unit_packs[UnitPack.Director] = 
@@ -509,7 +509,7 @@ global.unit_packs[UnitPack.Director] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
-}
+};
 
 // Knives
 global.unit_packs[UnitPack.Knives] = 
@@ -603,7 +603,7 @@ global.unit_packs[UnitPack.Knives] =
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -38,
-}
+};
 
 // Martyr
 global.unit_packs[UnitPack.Martyr] = 
@@ -697,7 +697,7 @@ global.unit_packs[UnitPack.Martyr] =
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -38,
-}
+};
 
 // Northern Brigade Soldier
 global.unit_packs[UnitPack.NorthernBrigadeSoldier] = 
@@ -811,7 +811,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -13,
 	limb_right_arm_jump_animation_angle: 18,
-}
+};
 
 // Northern Brigade Officer
 global.unit_packs[UnitPack.NorthernBrigadeOfficer] = 
@@ -925,7 +925,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -13,
 	limb_right_arm_jump_animation_angle: 18,
-}
+};
 
 
 

@@ -33,7 +33,8 @@ enum LightingEngineUnlitObjectType
 enum LightingEngineUIObjectType
 {
 	Empty,
-    Dialogue
+    Dialogue,
+    DialogueTail
 }
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours
@@ -451,8 +452,8 @@ function lighting_engine_add_object(object_id, object_type, sub_layer_name = Lig
 /// @param {any} object_id - The Object Instance to remove from the Lighting Engine Render Pipeline
 function lighting_engine_remove_object(object_id)
 {
-	// Check if Lighting Engine Worker Exists
-	if (instance_exists(LightingEngine.lighting_engine_worker))
+	// Check if Lighting Engine or Lighting Engine Worker Exists
+	if (!instance_exists(LightingEngine) or instance_exists(LightingEngine.lighting_engine_worker))
 	{
 		// Lighting Engine has destroyed all listings of Render Objects within its DS Lists - Early Return
 		return;
@@ -645,6 +646,13 @@ function lighting_engine_add_unlit_object(object_id, object_type, object_depth =
 /// @param {any} object_id - The Unlit Object Instance to remove from the Lighting Engine Render Pipeline
 function lighting_engine_remove_unlit_object(object_id)
 {
+	// Check if Lighting Engine or Lighting Engine Worker Exists
+	if (!instance_exists(LightingEngine) or instance_exists(LightingEngine.lighting_engine_worker))
+	{
+		// Lighting Engine has destroyed all listings of Render Objects within its DS Lists - Early Return
+		return;
+	}
+	
 	// Find Index of Unlit Object within Unlit Layer Render Order
 	var temp_unlit_object_index = ds_list_find_index(LightingEngine.lighting_engine_unlit_layer_object_list, object_id);
 	
@@ -722,6 +730,13 @@ function lighting_engine_add_ui_object(object_id, object_type, object_depth = 0)
 /// @param {any} object_id - The UI Object Instance to remove from the Lighting Engine Render Pipeline
 function lighting_engine_remove_ui_object(object_id)
 {
+	// Check if Lighting Engine or Lighting Engine Worker Exists
+	if (!instance_exists(LightingEngine) or instance_exists(LightingEngine.lighting_engine_worker))
+	{
+		// Lighting Engine has destroyed all listings of Render Objects within its DS Lists - Early Return
+		return;
+	}
+	
 	// Find Index of UI Object within UI Layer Render Order
 	var temp_ui_object_index = ds_list_find_index(LightingEngine.lighting_engine_ui_layer_object_list, object_id);
 	
