@@ -40,7 +40,7 @@ else if (dialogue_continue)
 }
 
 // Update Position Behaviour
-if (instance_exists(dialogue_unit))
+if (!instance_exists(cutscene_instance) and instance_exists(dialogue_unit))
 {
 	// Dialogue Box Facing Direction match Unit's Facing Direction Behaviour
 	image_xscale = sign(dialogue_unit.draw_xscale) != 0 ? sign(dialogue_unit.draw_xscale) : image_xscale;
@@ -112,6 +112,10 @@ if (instance_exists(dialogue_unit))
 		
 		//
 		dialogue_box_instance_chain_vertical_offset = temp_vertical_offset;
+		
+		//
+		dialogue_tail.x = x;
+		dialogue_tail.y = y - temp_vertical_offset;
 	}
 }
 

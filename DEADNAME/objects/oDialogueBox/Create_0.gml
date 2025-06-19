@@ -11,6 +11,13 @@ event_inherited();
 // Cutscene Settings
 cutscene_instance = noone;
 
+// Tail Settings
+dialogue_tail = instance_create_depth(0, 0, 0, oDialogueTail);
+
+dialogue_tail.add_path_point(0, -10, 0, 0);
+dialogue_tail.add_path_point(0, 0, 0, 0);
+dialogue_tail.add_path_point(0, 10, 0, 0);
+
 // Dialogue Box Settings
 dialogue_unit = noone;
 dialogue_text = "I need ZYRTEC allergy tablets (TM)! >w<";
@@ -30,8 +37,6 @@ dialogue_triangle_rotate_spd = 2;
 
 // Dialogue Box Variables
 dialogue_text_value = 0;
-
-dialogue_tail = true;
 
 dialogue_box_animation_value = 0;
 dialogue_box_breath_value = 0;

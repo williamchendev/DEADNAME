@@ -602,7 +602,7 @@ function lighting_engine_add_unlit_object(object_id, object_type, object_depth =
 	}
 	
 	// Check Object's Depth and add Object to Render Pipeline based on its order relative to the depth of the objects on the Unlit Layer
-	if (ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) == 0 or object_depth > ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) - 1))
+	if (ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) == 0 or object_depth >= ds_list_find_value(LightingEngine.lighting_engine_unlit_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_unlit_layer_object_depth_list) - 1))
 	{
 		// Add Object to the end of the Unlit Layer Render Order
 		ds_list_add(LightingEngine.lighting_engine_unlit_layer_object_list, object_id);
@@ -686,7 +686,7 @@ function lighting_engine_add_ui_object(object_id, object_type, object_depth = 0)
 	}
 	
 	// Check Object's Depth and add Object to Render Pipeline based on its order relative to the depth of the objects on the UI Layer
-	if (ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) == 0 or object_depth > ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) - 1))
+	if (ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) == 0 or object_depth >= ds_list_find_value(LightingEngine.lighting_engine_ui_layer_object_depth_list, ds_list_size(LightingEngine.lighting_engine_ui_layer_object_depth_list) - 1))
 	{
 		// Add Object to the end of the UI Layer Render Order
 		ds_list_add(LightingEngine.lighting_engine_ui_layer_object_list, object_id);
