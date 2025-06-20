@@ -10,31 +10,42 @@ event_inherited();
 
 //
 path_segment_divisions = 10;
-
 path_thickness = 2;
 
 //
 path_count = 0;
 
-path_x_coordinate_array = array_create(0);
-path_y_coordinate_array = array_create(0);
+path_x_coordinate_list = ds_list_create();
+path_y_coordinate_list = ds_list_create();
 
-path_h_vector_array = array_create(0);
-path_v_vector_array = array_create(0);
+path_h_vector_list = ds_list_create();
+path_v_vector_list = ds_list_create();
+
+path_thickness_list = ds_list_create();
 
 //
-add_path_point = function(x_coordinate, y_coordinate, h_vector, v_vector)
+add_path_point = function(x_coordinate, y_coordinate, h_vector, v_vector, thickness = 1)
 {
-	array_set(path_x_coordinate_array, path_count, x_coordinate);
-	array_set(path_y_coordinate_array, path_count, y_coordinate);
+	ds_list_add(path_x_coordinate_list, x_coordinate);
+	ds_list_add(path_y_coordinate_list, y_coordinate);
 	
-	array_set(path_h_vector_array, path_count, h_vector);
-	array_set(path_v_vector_array, path_count, v_vector);
+	ds_list_add(path_h_vector_list, h_vector);
+	ds_list_add(path_v_vector_list, v_vector);
+	
+	ds_list_add(path_thickness_list, thickness);
 	
 	path_count++;
 }
 
-//
-//add_path_point(160, 200, 50, 0);
-//add_path_point(160, 220, 0, 0);
-//add_path_point(160, 240, -50, 0);
+clear_all_points = function()
+{
+	ds_list_clear(path_x_coordinate_list);
+	ds_list_clear(path_y_coordinate_list);
+	
+	ds_list_clear(path_h_vector_list);
+	ds_list_clear(path_v_vector_list);
+	
+	ds_list_clear(path_thickness_list);
+	
+	path_count = 0;
+}

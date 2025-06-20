@@ -18,9 +18,3 @@ cutscene_dialogue_boxes = -1;
 
 ds_list_destroy(cutscene_units);
 cutscene_units = -1;
-
-ds_list_destroy(cutscene_unit_h_positions);
-cutscene_unit_h_positions = -1;
-
-ds_list_destroy(cutscene_unit_v_positions);
-cutscene_unit_v_positions = -1;

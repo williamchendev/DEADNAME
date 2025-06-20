@@ -54,69 +54,6 @@ if (!instance_exists(cutscene_instance) and instance_exists(dialogue_unit))
 	
 	x = dialogue_unit.x + rot_point_x(0, -temp_unit_height);
 	y = dialogue_unit.y + rot_point_y(0, -temp_unit_height) - dialogue_tail_height - dialogue_unit_padding;
-	
-	// Find Comic Book Style Vertical Offset from Dialogue Box Instance Following Chain's Cumulative Height
-	if (instance_exists(dialogue_box_instance_following))
-	{
-		//
-		var temp_vertical_offset = 0;
-		var temp_dialogue_box_instance_following = dialogue_box_instance_following;
-		var temp_dialogue_box_unit = dialogue_unit;
-		
-		//
-		var i = 0;
-		
-		while (i < dialogue_box_instance_following_chain_max)
-		{
-			//
-			with (temp_dialogue_box_instance_following)
-			{
-				//
-				var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
-				var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
-				
-				//
-				temp_vertical_offset -= temp_dialogue_text_height + (dialogue_breath_padding * 2) + (dialogue_box_instance_following_separation * (dialogue_unit == temp_dialogue_box_unit ? 0.5 : 1.0));
-			}
-			
-			//
-			if (temp_dialogue_box_instance_following.dialogue_unit == dialogue_unit)
-			{
-				dialogue_tail = false;
-			}
-			
-			//
-			if (!instance_exists(temp_dialogue_box_instance_following.dialogue_box_instance_following))
-			{
-				//
-				break;
-			}
-			else
-			{
-				//
-				temp_dialogue_box_unit = temp_dialogue_box_instance_following.dialogue_unit;
-				temp_dialogue_box_instance_following = temp_dialogue_box_instance_following.dialogue_box_instance_following;
-			}
-			
-			//
-			i++;
-		}
-		
-		//
-		if (temp_vertical_offset > 100 or i >= dialogue_box_instance_following_chain_max)
-		{
-			//
-			instance_destroy();
-			return;
-		}
-		
-		//
-		dialogue_box_instance_chain_vertical_offset = temp_vertical_offset;
-		
-		//
-		dialogue_tail.x = x;
-		dialogue_tail.y = y - temp_vertical_offset;
-	}
 }
 
 //

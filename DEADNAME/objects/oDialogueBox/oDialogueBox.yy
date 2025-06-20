@@ -4,6 +4,7 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":1,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"oDialogueBox",
@@ -44,6 +45,7 @@
     {"$GMObjectProperty":"v1","%Name":"dialogue_font_height","filters":[],"listItems":[],"multiselect":false,"name":"dialogue_font_height","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"7","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"dialogue_font_wrap_width","filters":[],"listItems":[],"multiselect":false,"name":"dialogue_font_wrap_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"140","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"dialogue_font_separation","filters":[],"listItems":[],"multiselect":false,"name":"dialogue_font_separation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"dialogue_tail","filters":[],"listItems":[],"multiselect":false,"name":"dialogue_tail","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"dialogue_tail_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"dialogue_tail_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sDialogueBox_Tail","path":"sprites/sDialogueBox_Tail/sDialogueBox_Tail.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sDialogueBox_Tail","varType":5,},

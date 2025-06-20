@@ -592,12 +592,10 @@ function lighting_engine_render_ui_layer()
 					draw_set_alpha(image_alpha * image_alpha);
 					
 					// Draw Dialogue Box's Tail
-					/*
 					if (dialogue_tail)
 					{
 						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
 					}
-					*/
 					
 					// Draw Dialogue Box's Round Rectangle Background
 					draw_roundrect(temp_x - temp_dialogue_text_width - dialogue_box_breath_value, temp_y - temp_dialogue_text_height - dialogue_box_breath_value - dialogue_breath_padding, temp_x + temp_dialogue_text_width + dialogue_box_breath_value, temp_y + dialogue_box_breath_value - dialogue_breath_padding, false);
@@ -648,18 +646,22 @@ function lighting_engine_render_ui_layer()
 					repeat (path_count - 1)
 					{
 						//
-						var temp_path_segment_start_x_coordinate = path_x_coordinate_array[temp_path_index];
-						var temp_path_segment_start_y_coordinate = path_y_coordinate_array[temp_path_index];
+						var temp_path_segment_start_x_coordinate = ds_list_find_value(path_x_coordinate_list, temp_path_index);
+						var temp_path_segment_start_y_coordinate = ds_list_find_value(path_y_coordinate_list, temp_path_index);
 						
-						var temp_path_segment_end_x_coordinate = path_x_coordinate_array[temp_path_index + 1];
-						var temp_path_segment_end_y_coordinate = path_y_coordinate_array[temp_path_index + 1];
+						var temp_path_segment_end_x_coordinate = ds_list_find_value(path_x_coordinate_list, temp_path_index + 1);
+						var temp_path_segment_end_y_coordinate = ds_list_find_value(path_y_coordinate_list, temp_path_index + 1);
 						
 						//
-						var temp_path_segment_start_h_vector = path_h_vector_array[temp_path_index];
-						var temp_path_segment_start_v_vector = path_v_vector_array[temp_path_index];
+						var temp_path_segment_start_h_vector = ds_list_find_value(path_h_vector_list, temp_path_index);
+						var temp_path_segment_start_v_vector = ds_list_find_value(path_v_vector_list, temp_path_index);
 						
-						var temp_path_segment_end_h_vector = path_h_vector_array[temp_path_index + 1];
-						var temp_path_segment_end_v_vector = path_v_vector_array[temp_path_index + 1];
+						var temp_path_segment_end_h_vector = ds_list_find_value(path_h_vector_list, temp_path_index + 1);
+						var temp_path_segment_end_v_vector = ds_list_find_value(path_v_vector_list, temp_path_index + 1);
+						
+						//
+						var temp_path_segment_start_thickness = ds_list_find_value(path_thickness_list, temp_path_index);
+						var temp_path_segment_end_thickness = ds_list_find_value(path_thickness_list, temp_path_index + 1);
 						
 						//
 						var temp_path_x = temp_path_segment_start_x_coordinate;
@@ -698,16 +700,11 @@ function lighting_engine_render_ui_layer()
 							temp_path_v = temp_path_v / temp_path_vector_dis;
 							
 							//
-							var temp_thickness = path_thickness;
-							
-							if (temp_path_index == path_count - 2)
-							{
-								temp_thickness = path_thickness * (1 - temp_path_segment_percent);
-							}
+							var temp_thickness = lerp(temp_path_segment_start_thickness, temp_path_segment_end_thickness, temp_path_segment_percent) * path_thickness;
 							
 							//
-							draw_vertex_color(x + temp_path_ph + (-temp_thickness * temp_path_v) - LightingEngine.render_x, y + temp_path_pv + (temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
-							draw_vertex_color(x + temp_path_ph + (temp_thickness * temp_path_v) - LightingEngine.render_x, y + temp_path_pv + (-temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
+							draw_vertex_color(temp_path_ph + (-temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
+							draw_vertex_color(temp_path_ph + (temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (-temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
 							
 							//
 							temp_path_x = temp_path_ph;

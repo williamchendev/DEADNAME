@@ -12,11 +12,7 @@ event_inherited();
 cutscene_instance = noone;
 
 // Tail Settings
-dialogue_tail = instance_create_depth(0, 0, 0, oDialogueTail);
-
-dialogue_tail.add_path_point(0, -10, 0, 0);
-dialogue_tail.add_path_point(0, 0, 0, 0);
-dialogue_tail.add_path_point(0, 10, 0, 0);
+dialogue_tail_instance = noone;
 
 // Dialogue Box Settings
 dialogue_unit = noone;
