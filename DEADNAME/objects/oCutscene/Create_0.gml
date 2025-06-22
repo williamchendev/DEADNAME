@@ -270,6 +270,9 @@ calculate_cutscene_dialogue_orientation = function()
 		var temp_dialogue_box_inst = ds_list_find_value(cutscene_dialogue_boxes, temp_dialogue_box_index);
 		
 		//
+		temp_dialogue_box_inst.dialogue_tail_instance.dialogue_tail_end_y = temp_dialogue_box_inst.dialogue_tail_end_y;
+		
+		//
 		temp_dialogue_box_inst.dialogue_tail_instance.clear_all_points();
 		
 		// Establish Variables for Dialogue Box Chain and Dialogue Box Unit Comparison
@@ -306,7 +309,7 @@ calculate_cutscene_dialogue_orientation = function()
 				var temp_dialogue_tail_point_y = temp_dialogue_box_chain_inst.y;
 				
 				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.5), -50, 0, 1);
-				temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.25), -25 * temp_dialogue_box_chain_inst.image_xscale, 0, 1);
+				temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.15), -25 * temp_dialogue_box_chain_inst.image_xscale, 0, 1.4);
 				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y, 50, 0, 1);
 			}
 			
@@ -335,7 +338,7 @@ calculate_cutscene_dialogue_orientation = function()
 		}
 		
 		//
-		temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y, -25 * temp_dialogue_box_inst.image_xscale, -25, 0.35);
+		temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y, -25 * temp_dialogue_box_inst.image_xscale, -25, 0.15);
 	}
 	
 	//

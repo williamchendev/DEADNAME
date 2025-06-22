@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_vertical_fade",
+  "name":"shd_vertical_fade",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

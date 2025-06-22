@@ -24,6 +24,9 @@ path_v_vector_list = ds_list_create();
 path_thickness_list = ds_list_create();
 
 //
+dialogue_tail_end_y = y;
+
+//
 add_path_point = function(x_coordinate, y_coordinate, h_vector, v_vector, thickness = 1)
 {
 	ds_list_add(path_x_coordinate_list, x_coordinate);

@@ -401,6 +401,7 @@
     {"name":"shd_post_process_render","order":2,"path":"shaders/shd_post_process_render/shd_post_process_render.yy",},
     {"name":"shd_print_metallic_map","order":1,"path":"shaders/shd_print_metallic_map/shd_print_metallic_map.yy",},
     {"name":"shd_print_roughness_map","order":2,"path":"shaders/shd_print_roughness_map/shd_print_roughness_map.yy",},
+    {"name":"shd_vertical_fade","order":2,"path":"shaders/shd_vertical_fade/shd_vertical_fade.yy",},
     {"name":"shd_white_pixel_binary","order":1,"path":"shaders/shd_white_pixel_binary/shd_white_pixel_binary.yy",},
     {"name":"sAdobeHouse_Back_DiffuseMap","order":1,"path":"sprites/sAdobeHouse_Back_DiffuseMap/sAdobeHouse_Back_DiffuseMap.yy",},
     {"name":"sAdobeHouse_Back_NormalMap","order":1,"path":"sprites/sAdobeHouse_Back_NormalMap/sAdobeHouse_Back_NormalMap.yy",},

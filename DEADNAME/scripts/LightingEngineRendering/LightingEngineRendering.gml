@@ -568,6 +568,13 @@ function lighting_engine_render_ui_layer()
 				// Dialogue Box UI Object Render Behaviour
 				with (temp_ui_object_instance)
 				{
+					//
+					shader_set(shd_vertical_fade);
+					
+					//
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 24);
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
+					
 					// Set Dialogue Font and Alignment
 					draw_set_font(dialogue_font);
 					draw_set_halign(fa_center);
@@ -586,6 +593,9 @@ function lighting_engine_render_ui_layer()
 					
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
+					
+					//
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
 					
 					// Set Dialogue Box Color and Transparency
 					draw_set_color(dialogue_box_color);
@@ -624,6 +634,9 @@ function lighting_engine_render_ui_layer()
 						draw_set_color(c_white);
 						draw_triangle(temp_tri_x + tri_x_1, temp_tri_y + tri_y_1, temp_tri_x + tri_x_2, temp_tri_y + tri_y_2, temp_tri_x + tri_x_3, temp_tri_y + tri_y_3, false);
 					}
+					
+					//
+					shader_reset();
 				}
 				break;
 			case LightingEngineUIObjectType.DialogueTail:
@@ -636,6 +649,13 @@ function lighting_engine_render_ui_layer()
 						// Bezier Curve Path is invalid
 						break;
 					}
+					
+					//
+					shader_set(shd_vertical_fade);
+					
+					//
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 0.5);
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
 					
 					// Draw Dialogue Tail Bezier Curve as Triangle Strip Primitive
 					draw_primitive_begin(pr_trianglestrip);
@@ -715,8 +735,14 @@ function lighting_engine_render_ui_layer()
 						temp_path_index++;
 					}
 					
+					//
+					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
+					
 					// End Vertex Creation and Draw Traingle Strip Primitive
 					draw_primitive_end();
+					
+					//
+					shader_reset();
 				}
 				break;
 			case LightingEngineUIObjectType.Empty:

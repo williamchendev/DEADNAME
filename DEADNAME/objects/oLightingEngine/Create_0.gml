@@ -359,6 +359,11 @@ distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd
 distortion_effect_render_shader_distortion_horizontal_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Horizontal_Channel_Texture");
 distortion_effect_render_shader_distortion_vertical_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Vertical_Channel_Texture");
 
+// Vertical Fade Shader Indexes
+vertical_fade_effect_shader_fade_position_index = shader_get_uniform(shd_vertical_fade, "in_FadePosition");
+vertical_fade_effect_shader_fade_offset_index = shader_get_uniform(shd_vertical_fade, "in_FadeOffset");
+vertical_fade_effect_shader_fade_height_index = shader_get_uniform(shd_vertical_fade, "in_FadeHeight");
+
 // Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;
 
