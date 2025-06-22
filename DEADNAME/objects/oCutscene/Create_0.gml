@@ -69,6 +69,9 @@ cutscene_dialogue_boxes = ds_list_create();
 
 cutscene_units = ds_list_create();
 
+// Dialogue Settings
+dialogue_fade_delay_offset = 4;
+
 //
 trig_cosine = 1;
 trig_sine = 0;
@@ -100,7 +103,9 @@ continue_cutscene_event = function()
 			temp_dialogue_box.dialogue_unit = find_unit_name(cutscene_events[cutscene_event_index].dialogue_unit);
 			temp_dialogue_box.dialogue_tail = false;
 			temp_dialogue_box.dialogue_tail_instance = instance_create_depth(x, y, 0, oDialogueTail);
+			temp_dialogue_box.dialogue_tail_instance.image_blend = temp_dialogue_box.dialogue_box_color;
 			temp_dialogue_box.dialogue_continue = true;
+			temp_dialogue_box.cutscene_dialogue = true;
 			temp_dialogue_box.cutscene_instance = id;
 			
 			// Add Previous Dialogue Box to Dialogue Box Chain
@@ -137,7 +142,7 @@ continue_cutscene_event = function()
 
 calculate_cutscene_dialogue_orientation = function()
 {
-	// Update Unit Positions
+	// Find Unit Dialogue Orientations and Positions
 	var temp_cutscene_unit_h_positions = ds_list_create();
 	var temp_cutscene_unit_v_positions = ds_list_create();
 	
@@ -163,17 +168,22 @@ calculate_cutscene_dialogue_orientation = function()
 	}
 	
 	// Iterate through all Dialogue Boxes to place them
-	var temp_cutscene_dialogue_box_tail_connections = ds_list_create();
-	
 	for (var temp_dialogue_box_index = ds_list_size(cutscene_dialogue_boxes) - 1; temp_dialogue_box_index >= 0; temp_dialogue_box_index--)
 	{
-		// 
+		// Find the Cutscene's Dialogue Box Instance
 		var temp_dialogue_box_inst = ds_list_find_value(cutscene_dialogue_boxes, temp_dialogue_box_index);
 		
-		//
-		var temp_dialogue_box_tail_connection_found = false;
+		// Check if Dialogue Box exists
+		if (!instance_exists(temp_dialogue_box_inst))
+		{
+			// Remove Instance of Dialogue Box from Cutscene Dialogue Box DS List
+			ds_list_delete(cutscene_dialogue_boxes, temp_dialogue_box_index);
+			
+			// Skip Dialogue Box Instance
+			continue;
+		}
 		
-		//
+		// Check if Dialogue Box's Unit still exists
 		if (instance_exists(temp_dialogue_box_inst.dialogue_unit))
 		{
 			// Dialogue Box Facing Direction match Unit's Facing Direction Behaviour
@@ -187,133 +197,145 @@ calculate_cutscene_dialogue_orientation = function()
 			temp_dialogue_box_inst.x = ds_list_find_value(temp_cutscene_unit_h_positions, temp_dialogue_unit_index);
 			temp_dialogue_box_inst.y = ds_list_find_value(temp_cutscene_unit_v_positions, temp_dialogue_unit_index) - temp_dialogue_box_inst.dialogue_tail_height - temp_dialogue_box_inst.dialogue_unit_padding;
 			
-			//
+			temp_dialogue_box_inst.dialogue_tail_end_x = ds_list_find_value(temp_cutscene_unit_h_positions, temp_dialogue_unit_index);
+			temp_dialogue_box_inst.dialogue_tail_end_y = ds_list_find_value(temp_cutscene_unit_v_positions, temp_dialogue_unit_index) - temp_dialogue_box_inst.dialogue_unit_padding;
+			
+			// Establish Dialogue Box (Texting Stack Style) Vertical Offset
 			var temp_vertical_offset = 0;
 			
 			// Find Comic Book Style Vertical Offset from Dialogue Box Instance Following Chain's Cumulative Height
 			if (instance_exists(temp_dialogue_box_inst.dialogue_box_instance_following))
 			{
-				//
+				// Establish Variables for Dialogue Box Chain and Dialogue Box Unit Comparison
 				var temp_dialogue_box_instance_following = temp_dialogue_box_inst.dialogue_box_instance_following;
 				var temp_dialogue_box_unit = temp_dialogue_box_inst.dialogue_unit;
 				
-				//
-				var i = 0;
+				// Iterate through Dialogue Box Chain
+				var temp_dialogue_box_chain_length = 0;
 				
-				while (i < temp_dialogue_box_inst.dialogue_box_instance_following_chain_max)
+				while (temp_dialogue_box_chain_length < temp_dialogue_box_inst.dialogue_box_instance_following_chain_max)
 				{
-					//
+					// Establish Variables and check Dialogue Box Dimensions
 					var temp_dialogue_text_width = 0;
 					var temp_dialogue_text_height = 0;
 					
 					with (temp_dialogue_box_instance_following)
 					{
-						//
+						// Set Font for Dialogue Width & Height Calculation
+						draw_set_font(dialogue_font);
+						
+						// Calculate Dialogue Box Width & Height
 						var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
-						temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
+						temp_dialogue_text_width = string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding;
 						temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
 						
-						//
-						temp_vertical_offset -= temp_dialogue_text_height + (dialogue_breath_padding * 2) + (dialogue_box_instance_following_separation * (dialogue_unit == temp_dialogue_box_unit ? 0.5 : 1.0));
+						// Calculate and add to Dialogue Box Cumulative Vertical Offset
+						temp_vertical_offset += temp_dialogue_text_height + (dialogue_breath_padding * 2) + (dialogue_box_instance_following_separation * (dialogue_unit == temp_dialogue_box_unit ? 0.5 : 1.0));
 					}
 					
-					//
-					if (!temp_dialogue_box_tail_connection_found)
-					{
-						if (temp_dialogue_box_inst.dialogue_unit == temp_dialogue_box_instance_following.dialogue_unit)
-						{
-							temp_dialogue_box_tail_connection_found = true;
-							ds_list_insert(temp_cutscene_dialogue_box_tail_connections, 0, temp_dialogue_box_instance_following);
-						}
-					}
-					
-					//
+					// Check if Dialogue Box Chain continues
 					if (!instance_exists(temp_dialogue_box_instance_following.dialogue_box_instance_following))
 					{
-						//
+						// Dialogue Box Chain does not continue - Break Loop
 						break;
 					}
 					else
 					{
-						//
+						// Dialogue Box Chain Continues - Set Dialogue Box Chain Instance and Dialogue Unit for comparison
 						temp_dialogue_box_unit = temp_dialogue_box_instance_following.dialogue_unit;
 						temp_dialogue_box_instance_following = temp_dialogue_box_instance_following.dialogue_box_instance_following;
 					}
 					
-					//
-					i++;
+					// Increment Dialogue Box Chain Length
+					temp_dialogue_box_chain_length++;
 				}
-				
-				//
-				temp_dialogue_box_inst.dialogue_box_instance_chain_vertical_offset = temp_vertical_offset;
 			}
-		}
-		
-		//
-		if (!temp_dialogue_box_tail_connection_found)
-		{
-			ds_list_insert(temp_cutscene_dialogue_box_tail_connections, 0, noone);
+			
+			// Add Dialogue Box Vertical Offset to Dialogue Box's Position
+			temp_dialogue_box_inst.y -= temp_vertical_offset;
+			
+			// Check Dialogue Box Max Vertical Offset
+			if (!temp_dialogue_box_inst.dialogue_fade and temp_vertical_offset >= temp_dialogue_box_inst.dialogue_box_max_vertical_offset)
+			{
+				// Dialogue Box's Vertical Offset has exceeded max Vertical Offset - Set Dialogue Box to fade and destroy itself
+				temp_dialogue_box_inst.dialogue_fade = true;
+			}
 		}
 	}
 	
-	// Iterate through all Dialogue Boxes to orient their Tails
-	for (var temp_dialogue_box_index = 0; temp_dialogue_box_index < ds_list_size(cutscene_dialogue_boxes); temp_dialogue_box_index++)
+	// Iterate through all Dialogue Boxes to place their Dialogue Box Tails
+	for (var temp_dialogue_box_index = ds_list_size(cutscene_dialogue_boxes) - 1; temp_dialogue_box_index >= 0; temp_dialogue_box_index--)
 	{
-		// 
+		// Find the Cutscene's Dialogue Box Instance
 		var temp_dialogue_box_inst = ds_list_find_value(cutscene_dialogue_boxes, temp_dialogue_box_index);
-		var temp_dialogue_box_connection_inst = ds_list_find_value(temp_cutscene_dialogue_box_tail_connections, temp_dialogue_box_index);
 		
 		//
 		temp_dialogue_box_inst.dialogue_tail_instance.clear_all_points();
 		
-		//
-		var temp_dialogue_box_inst_text_width = 0;
-		var temp_dialogue_box_inst_text_height = 0;
+		// Establish Variables for Dialogue Box Chain and Dialogue Box Unit Comparison
+		var temp_dialogue_box_chain_inst = temp_dialogue_box_inst;
+		var temp_dialogue_box_unit = temp_dialogue_box_inst.dialogue_unit;
 		
-		with (temp_dialogue_box_inst)
-		{
-			// Create Dialogue Box's Display Text Sub-String
-			var temp_dialogue_box_inst_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
-			
-			// Find Dialogue Box's Width and Height
-			temp_dialogue_box_inst_text_width = (string_width_ext(temp_dialogue_box_inst_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
-			temp_dialogue_box_inst_text_height = string_height_ext(temp_dialogue_box_inst_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding + (dialogue_breath_padding * 2);
-		}
+		// Iterate through Dialogue Box Chain
+		var temp_dialogue_box_chain_length = 0;
+		var temp_dialogue_box_chain_ends_with_unit_dialogue = false;
 		
-		//
-		var temp_dialogue_box_y = temp_dialogue_box_inst.y + temp_dialogue_box_inst.dialogue_box_instance_chain_vertical_offset;
-		
-		//
-		if (instance_exists(temp_dialogue_box_connection_inst))
+		while (temp_dialogue_box_chain_length < temp_dialogue_box_inst.dialogue_box_instance_following_chain_max)
 		{
 			//
-			var temp_dialogue_box_connection_inst_text_width = 0;
-			var temp_dialogue_box_connection_inst_text_height = 0;
-			
-			with (temp_dialogue_box_connection_inst)
+			if (temp_dialogue_box_inst.dialogue_unit == temp_dialogue_box_chain_inst.dialogue_unit)
 			{
-				// Create Dialogue Box's Display Text Sub-String
-				var temp_dialogue_box_connection_inst_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
+				// Establish Variables and check Dialogue Box Dimensions
+				var temp_dialogue_text_width = 0;
+				var temp_dialogue_text_height = 0;
 				
-				// Find Dialogue Box's Width and Height
-				temp_dialogue_box_connection_inst_text_width = (string_width_ext(temp_dialogue_box_connection_inst_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
-				temp_dialogue_box_connection_inst_text_height = string_height_ext(temp_dialogue_box_connection_inst_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding + (dialogue_breath_padding * 2);
+				with (temp_dialogue_box_chain_inst)
+				{
+					// Set Font for Dialogue Width & Height Calculation
+					draw_set_font(dialogue_font);
+					
+					// Calculate Dialogue Box Width & Height
+					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
+					temp_dialogue_text_width = string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding;
+					temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
+					temp_dialogue_text_height += (dialogue_breath_padding * 2) + (dialogue_box_instance_following_separation * (dialogue_unit == temp_dialogue_box_unit ? 0.5 : 1.0));
+				}
+				
+				//
+				var temp_dialogue_tail_point_x = temp_dialogue_box_inst.x;
+				var temp_dialogue_tail_point_y = temp_dialogue_box_chain_inst.y;
+				
+				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.5), -50, 0, 1);
+				temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.25), -25 * temp_dialogue_box_chain_inst.image_xscale, 0, 1);
+				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y, 50, 0, 1);
 			}
 			
-			//
-			var temp_dialogue_box_connection_y = temp_dialogue_box_connection_inst.y + temp_dialogue_box_connection_inst.dialogue_box_instance_chain_vertical_offset;
+			// Check if Dialogue Box Chain continues
+			if (!instance_exists(temp_dialogue_box_chain_inst.dialogue_box_instance_following))
+			{
+				// Dialogue Box Chain does not continue - Break Loop
+				temp_dialogue_box_chain_ends_with_unit_dialogue = temp_dialogue_box_inst.dialogue_unit == temp_dialogue_box_chain_inst.dialogue_unit;
+				break;
+			}
+			else
+			{
+				// Dialogue Box Chain Continues - Set Dialogue Box Chain Instance and Dialogue Unit for comparison
+				temp_dialogue_box_unit = temp_dialogue_box_chain_inst.dialogue_unit;
+				temp_dialogue_box_chain_inst = temp_dialogue_box_chain_inst.dialogue_box_instance_following;
+			}
 			
-			//
-			temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.x, temp_dialogue_box_y - (temp_dialogue_box_inst_text_height * 0.5), 50, 0, 1);
-			temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.x, temp_dialogue_box_connection_y - (temp_dialogue_box_connection_inst_text_height * 0.5), 50, 0, 1);
+			// Increment Dialogue Box Chain Length
+			temp_dialogue_box_chain_length++;
 		}
-		else
+		
+		//
+		if (!temp_dialogue_box_chain_ends_with_unit_dialogue)
 		{
-			//
-			temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.x, temp_dialogue_box_y - (temp_dialogue_box_inst_text_height * 0.5), 50, 0, 1);
-			temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.x, lerp(temp_dialogue_box_y - (temp_dialogue_box_inst_text_height * 0.5), temp_dialogue_box_inst.y, 0.7), 0, 0, 1);
-			temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.x, temp_dialogue_box_inst.y + temp_dialogue_box_inst.dialogue_tail_height, -50, 0, 0);
+			//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y - 12, 0, 0, 0.5);
 		}
+		
+		//
+		temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y, -25 * temp_dialogue_box_inst.image_xscale, -25, 0.35);
 	}
 	
 	//
@@ -322,13 +344,9 @@ calculate_cutscene_dialogue_orientation = function()
 	
 	ds_list_destroy(temp_cutscene_unit_v_positions);
 	temp_cutscene_unit_v_positions = -1;
-	
-	//
-	ds_list_destroy(temp_cutscene_dialogue_box_tail_connections);
-	temp_cutscene_dialogue_box_tail_connections = -1;
 }
 
-//
+// Check if Cutscene should be played
 if (play_cutscene_on_create)
 {
 	continue_cutscene_event();

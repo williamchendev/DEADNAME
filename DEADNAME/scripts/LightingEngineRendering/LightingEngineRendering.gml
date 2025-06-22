@@ -582,7 +582,7 @@ function lighting_engine_render_ui_layer()
 					
 					// Find Dialogue Box's Position
 					var temp_x = x - LightingEngine.render_x;
-					var temp_y = y - LightingEngine.render_y + dialogue_box_instance_chain_vertical_offset;
+					var temp_y = y - LightingEngine.render_y;
 					
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
@@ -700,11 +700,11 @@ function lighting_engine_render_ui_layer()
 							temp_path_v = temp_path_v / temp_path_vector_dis;
 							
 							//
-							var temp_thickness = lerp(temp_path_segment_start_thickness, temp_path_segment_end_thickness, temp_path_segment_percent) * path_thickness;
+							var temp_thickness = max(lerp(temp_path_segment_start_thickness, temp_path_segment_end_thickness, temp_path_segment_percent) * path_thickness, 0.5);
 							
 							//
-							draw_vertex_color(temp_path_ph + (-temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
-							draw_vertex_color(temp_path_ph + (temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (-temp_thickness * temp_path_h) - LightingEngine.render_y, c_black, 1);
+							draw_vertex_color(temp_path_ph + (-temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (temp_thickness * temp_path_h) - LightingEngine.render_y, image_blend, image_alpha * image_alpha);
+							draw_vertex_color(temp_path_ph + (temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (-temp_thickness * temp_path_h) - LightingEngine.render_y, image_blend, image_alpha * image_alpha);
 							
 							//
 							temp_path_x = temp_path_ph;

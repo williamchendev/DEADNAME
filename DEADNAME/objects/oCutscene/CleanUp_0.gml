@@ -2,13 +2,17 @@
 // You can write your code in this editor
 
 //
-for (var i = ds_list_size(cutscene_dialogue_boxes) - 1; i >= 0; i--)
+var temp_dialogue_fade_delay = 1;
+
+for (var i = 0; i < ds_list_size(cutscene_dialogue_boxes); i++)
 {
 	var temp_dialogue_box = ds_list_find_value(cutscene_dialogue_boxes, i);
 	
 	if (instance_exists(temp_dialogue_box))
 	{
-		instance_destroy(temp_dialogue_box);
+		// Activate Dialogue Box's Fade Destroy Behaviour
+		temp_dialogue_box.alarm[1] = temp_dialogue_fade_delay;
+		temp_dialogue_fade_delay += dialogue_fade_delay_offset;
 	}
 }
 
