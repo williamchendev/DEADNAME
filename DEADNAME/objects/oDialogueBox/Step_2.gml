@@ -5,8 +5,25 @@
 if (dialogue_text_value < string_length(dialogue_text))
 {
 	// Update Dialogue Text
-	dialogue_text_value += dialogue_text_speed * frame_delta;
-	dialogue_text_value = clamp(dialogue_text_value, 0, string_length(dialogue_text));
+	dialogue_raw_value += dialogue_text_speed * frame_delta;
+	
+	//
+	for (var i = 0; i < array_length(dialogue_word_end_positions_array); i++)
+	{
+		//
+		if (dialogue_raw_value >= dialogue_word_end_positions_array[i])
+		{
+			//
+			dialogue_text_value = dialogue_word_end_positions_array[i];
+		}
+		else
+		{
+			//
+			break;
+		}
+	}
+	
+	//dialogue_text_value = clamp(dialogue_text_value, 0, string_length(dialogue_text));
 	
 	// Dialogue Continue Behaviour
 	if (dialogue_continue)

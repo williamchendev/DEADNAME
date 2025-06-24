@@ -35,12 +35,39 @@ dialogue_triangle_rotate_range = 30;
 dialogue_triangle_rotate_spd = 2;
 
 // Dialogue Box Variables
-dialogue_text_value = 0;
-
 dialogue_box_animation_value = 0;
 dialogue_box_breath_value = 0;
 
 dialogue_triangle_draw_angle = 0;
+
+// Dialogue Text Variables
+dialogue_raw_value = 0;
+dialogue_text_value = 0;
+
+dialogue_word_end_positions_array = array_create(0);
+
+// Dialogue Functions
+set_dialogue_text = function(text)
+{
+	//
+	dialogue_text = text;
+	
+	//
+	var temp_dialogue_words_array = string_split_ext(string_lower(dialogue_text), [ "a", "e", "i", "o", "u", " ", ",", ".", "!", "?", "-" ], false);
+	
+	//
+	var temp_dialogue_text_length = 0;
+	
+	for (var i = 0; i < array_length(temp_dialogue_words_array); i++)
+	{
+		dialogue_word_end_positions_array[i] = temp_dialogue_text_length + string_length(temp_dialogue_words_array[i]);
+		temp_dialogue_text_length += string_length(temp_dialogue_words_array[i]) + 1;
+	}
+	
+	//
+	dialogue_raw_value = string_length(temp_dialogue_words_array[0]);
+	dialogue_text_value = string_length(temp_dialogue_words_array[0]);
+}
 
 // Fade Destroy Variables
 dialogue_fade = false;
