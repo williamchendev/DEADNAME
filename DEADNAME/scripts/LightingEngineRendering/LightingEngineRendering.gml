@@ -569,11 +569,13 @@ function lighting_engine_render_ui_layer()
 				with (temp_ui_object_instance)
 				{
 					//
-					shader_set(shd_vertical_fade);
+					surface_reset_target();
 					
 					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 24);
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
+					surface_set_target(LightingEngine.dialogue_surface);
+					
+					// Refresh Dialogue Surface Clear
+					draw_clear_alpha(c_black, 0);
 					
 					// Set Dialogue Font and Alignment
 					draw_set_font(dialogue_font);
@@ -584,8 +586,8 @@ function lighting_engine_render_ui_layer()
 					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
 					
 					// Find Dialogue Box's Width and Height
-					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
-					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
+					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, dialogue_font_separation, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
+					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
 					
 					// Find Dialogue Box's Position
 					var temp_x = x - LightingEngine.render_x;
@@ -594,17 +596,31 @@ function lighting_engine_render_ui_layer()
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
 					
-					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
-					
 					// Set Dialogue Box Color and Transparency
 					draw_set_color(dialogue_box_color);
-					draw_set_alpha(image_alpha * image_alpha);
+					draw_set_alpha(1);
 					
 					// Draw Dialogue Box's Tail
 					if (dialogue_tail)
 					{
-						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
+						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, 1);
+					}
+					else
+					{
+						//draw_triangle(dialogue_tail_x - LightingEngine.render_x, dialogue_tail_y - LightingEngine.render_y, temp_text_x - 6, temp_text_y, temp_text_x, temp_text_y, false);
+						// Draw Dialogue Tail Bezier Curve as Triangle Strip Primitive
+						draw_primitive_begin(pr_trianglestrip);
+						
+						//
+						draw_vertex_color(temp_text_x - 12 - dialogue_box_breath_value, temp_text_y, dialogue_box_color, 1);
+						draw_vertex_color(temp_text_x - 4 + dialogue_box_breath_value, temp_text_y, dialogue_box_color, 1);
+						draw_vertex_color(dialogue_tail_x - (dialogue_box_breath_value * 0.5) - 1 - LightingEngine.render_x, dialogue_tail_y - LightingEngine.render_y, dialogue_box_color, 1);
+						draw_vertex_color(dialogue_tail_x + (dialogue_box_breath_value * 0.5) + 1 - LightingEngine.render_x, dialogue_tail_y - LightingEngine.render_y, dialogue_box_color, 1);
+						
+						// End Vertex Creation and Draw Traingle Strip Primitive
+						draw_primitive_end();
+						
+						//draw_line_width(temp_text_x - 12, temp_text_y, dialogue_tail_x - LightingEngine.render_x, dialogue_tail_y - LightingEngine.render_y, 3);
 					}
 					
 					// Draw Dialogue Box's Round Rectangle Background
@@ -612,17 +628,17 @@ function lighting_engine_render_ui_layer()
 					
 					// Draw Dialogue Text's Contrast Drop Shadow
 					draw_set_color(merge_color(dialogue_text_color, c_black, dialogue_text_contrast_amount));
-					draw_text_ext(temp_text_x, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
-					draw_text_ext(temp_text_x + 1, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					draw_text_ext(temp_text_x, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation, dialogue_font_wrap_width);
+					draw_text_ext(temp_text_x + 1, temp_text_y + 1, temp_dialogue_text, dialogue_font_separation, dialogue_font_wrap_width);
 					
 					// Draw Dialogue Text
 					draw_set_color(dialogue_text_color);
-					draw_text_ext(temp_text_x, temp_text_y, temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width);
+					draw_text_ext(temp_text_x, temp_text_y, temp_dialogue_text, dialogue_font_separation, dialogue_font_wrap_width);
 					
 					// Draw Dialogue Box Continue Triangle
 					if (dialogue_triangle)
 					{
-						// Triangle Variables-
+						// Triangle Variables
 						var temp_tri_x = temp_x + temp_dialogue_text_width + dialogue_triangle_offset + dialogue_box_breath_value;
 						var temp_tri_y = temp_y + dialogue_triangle_offset + dialogue_box_breath_value - dialogue_breath_padding;
 						
@@ -636,13 +652,25 @@ function lighting_engine_render_ui_layer()
 					}
 					
 					//
-					shader_reset();
+					surface_reset_target();
+					
+					//
+					surface_set_target(LightingEngine.ui_surface);
+					
+					//
+					draw_surface_ext(LightingEngine.dialogue_surface, 0, 0, 1, 1, 0, c_white, image_alpha * image_alpha);
 				}
 				break;
 			case LightingEngineUIObjectType.DialogueTail:
 				// Dialogue Tail UI Object Render Behaviour
 				with (temp_ui_object_instance)
 				{
+					//
+					if (!render_enabled)
+					{
+						break;
+					}
+					
 					// Check if Dialogue Tail's Bezier Curve Path contains at least 2 points
 					if (path_count < 2)
 					{
@@ -650,12 +678,16 @@ function lighting_engine_render_ui_layer()
 						break;
 					}
 					
-					//
-					shader_set(shd_vertical_fade);
+					var temp_x_coordinate = ds_list_find_value(path_x_coordinate_list, 0) - LightingEngine.render_x;
+					var temp_y_coordinate = ds_list_find_value(path_y_coordinate_list, 0) - LightingEngine.render_y;
 					
-					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 0.5);
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
+					var temp_end_x_coordinate = ds_list_find_value(path_x_coordinate_list, path_count - 1) - LightingEngine.render_x;
+					var temp_end_y_coordinate = ds_list_find_value(path_y_coordinate_list, path_count - 1) - LightingEngine.render_y;
+					
+					draw_set_color(image_blend);
+					draw_set_alpha(image_alpha);
+					draw_triangle(temp_x_coordinate + (image_xscale * -22), temp_y_coordinate, temp_x_coordinate + (image_xscale * -16), temp_y_coordinate, temp_end_x_coordinate, temp_end_y_coordinate, false);
+					break;
 					
 					// Draw Dialogue Tail Bezier Curve as Triangle Strip Primitive
 					draw_primitive_begin(pr_trianglestrip);
@@ -734,9 +766,6 @@ function lighting_engine_render_ui_layer()
 						// Increment Path Index
 						temp_path_index++;
 					}
-					
-					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
 					
 					// End Vertex Creation and Draw Traingle Strip Primitive
 					draw_primitive_end();

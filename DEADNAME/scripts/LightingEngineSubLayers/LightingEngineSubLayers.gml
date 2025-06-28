@@ -237,7 +237,7 @@ function lighting_engine_delete_sub_layer(sub_layer_name)
 		case LightingEngineRenderLayerType.Front:
 			// Remove Sub Layer from Front Render Layer Organizational DS Lists
 			var temp_front_render_layer_sub_layer_index = ds_list_find_index(LightingEngine.lighting_engine_front_layer_sub_layer_name_list, sub_layer_name);
-		
+			
 			// Find Sub Layer Object and Object Type DS Lists to Delete
 			var temp_front_render_layer_sub_layer_object_list_to_delete = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_list, temp_front_render_layer_sub_layer_index);
 			var temp_front_render_layer_sub_layer_object_type_list_to_delete = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_object_type_list, temp_front_render_layer_sub_layer_index);

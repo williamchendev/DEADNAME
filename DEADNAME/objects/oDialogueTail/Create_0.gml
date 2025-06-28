@@ -13,6 +13,9 @@ path_segment_divisions = 10;
 path_thickness = 2;
 
 //
+render_enabled = false;
+
+//
 path_count = 0;
 
 path_x_coordinate_list = ds_list_create();

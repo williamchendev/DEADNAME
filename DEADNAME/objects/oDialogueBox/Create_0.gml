@@ -13,10 +13,11 @@ cutscene_dialogue = false;
 cutscene_instance = noone;
 
 // Tail Settings
-dialogue_tail_instance = noone;
+dialogue_tail_x = 0;
+dialogue_tail_y = 0;
 
-dialogue_tail_end_x = 0;
-dialogue_tail_end_y = 0;
+dialogue_origin_x = 0;
+dialogue_origin_y = 0;
 
 // Dialogue Box Settings
 dialogue_unit = noone;
@@ -72,7 +73,6 @@ set_dialogue_text = function(text)
 // Fade Destroy Variables
 dialogue_fade = false;
 dialogue_fade_timer = dialogue_fade_duration;
-dialogue_fade_tail_timer = dialogue_fade_tail_duration;
 
 // Triangle Variables
 dialogue_triangle = false;

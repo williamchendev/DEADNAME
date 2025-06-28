@@ -97,6 +97,7 @@ distortion_vertical_effect_surface = -1;
 post_processing_surface = -1;
 final_render_surface = -1;
 
+dialogue_surface = -1;
 ui_surface = -1;
 debug_surface = -1;
 
@@ -207,20 +208,20 @@ mrt_deferred_lighting_dynamic_smoke_trail_shader_emissive_index = shader_get_uni
 mrt_deferred_lighting_dynamic_smoke_trail_shader_emissive_multiplier_index = shader_get_uniform(shd_mrt_deferred_lighting_dynamic_smoke_trail, "in_EmissiveMultiplier");
 
 // MRT Deferred Lighting Bulk Static Sprite Shader Indexes
-mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
+mrt_deferred_lighting_bulk_static_sprite_shader_camera_offset_index = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Camera_Offset");
 
-mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index  = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
+mrt_deferred_lighting_bulk_static_sprite_shader_layer_depth_index = shader_get_uniform(shd_mrt_deferred_lighting_bulk_static_sprite, "in_Layer_Depth");
 
 // MRT Distortion Sprite Shader Indexes
-mrt_distortion_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_distortion_sprite, "in_Camera_Offset");
+mrt_distortion_sprite_shader_camera_offset_index = shader_get_uniform(shd_mrt_distortion_sprite, "in_Camera_Offset");
 
 // MRT Unlit Sprite Shader Indexes
-mrt_unlit_sprite_shader_camera_offset_index  = shader_get_uniform(shd_mrt_unlit_sprite, "in_Camera_Offset");
+mrt_unlit_sprite_shader_camera_offset_index = shader_get_uniform(shd_mrt_unlit_sprite, "in_Camera_Offset");
 mrt_unlit_sprite_shader_surface_size_index = shader_get_uniform(shd_mrt_unlit_sprite, "in_SurfaceSize");
 
 mrt_unlit_sprite_shader_layer_depth_index = shader_get_uniform(shd_mrt_unlit_sprite, "in_Layer_Depth");
 
-mrt_unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_mrt_unlit_sprite, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
+mrt_unlit_sprite_shader_prb_metalrough_emissive_depth_texture_index = shader_get_sampler_index(shd_mrt_unlit_sprite, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Point Light Blend Shader Indexes
 point_light_shader_camera_offset_index = shader_get_uniform(shd_point_light_blend, "in_Camera_Offset");
@@ -247,10 +248,10 @@ point_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_inde
 point_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseMap_MidLayer_Texture");
 point_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_point_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
 
-point_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
-point_light_shader_shadowmap_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
+point_light_shader_normalmap_texture_index = shader_get_sampler_index(shd_point_light_blend, "gm_NormalTexture");
+point_light_shader_shadowmap_texture_index = shader_get_sampler_index(shd_point_light_blend, "gm_ShadowTexture");
 
-point_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_point_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
+point_light_shader_prb_metalrough_emissive_depth_texture_index = shader_get_sampler_index(shd_point_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Spot Light Blend Shader Indexes
 spot_light_shader_camera_offset_index = shader_get_uniform(shd_spot_light_blend, "in_Camera_Offset");
@@ -280,10 +281,10 @@ spot_light_shader_diffusemap_texture_back_layer_index = shader_get_sampler_index
 spot_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_spot_light_blend, "gm_DiffuseMap_MidLayer_Texture");
 spot_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_spot_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
 
-spot_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
-spot_light_shader_shadows_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
+spot_light_shader_normalmap_texture_index = shader_get_sampler_index(shd_spot_light_blend, "gm_NormalTexture");
+spot_light_shader_shadows_texture_index = shader_get_sampler_index(shd_spot_light_blend, "gm_ShadowTexture");
 
-spot_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_spot_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
+spot_light_shader_prb_metalrough_emissive_depth_texture_index = shader_get_sampler_index(shd_spot_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Point Light & Spot Light Shadow Shader Indexes
 point_light_and_spot_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_point_light_and_spot_light_shadows, "in_Camera_Offset");
@@ -311,9 +312,9 @@ directional_light_shader_diffusemap_texture_back_layer_index = shader_get_sample
 directional_light_shader_diffusemap_texture_mid_layer_index = shader_get_sampler_index(shd_directional_light_blend, "gm_DiffuseMap_MidLayer_Texture");
 directional_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_index(shd_directional_light_blend, "gm_DiffuseMap_FrontLayer_Texture");
 
-directional_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_directional_light_blend, "gm_NormalTexture");
+directional_light_shader_normalmap_texture_index = shader_get_sampler_index(shd_directional_light_blend, "gm_NormalTexture");
 
-directional_light_shader_prb_metalrough_emissive_depth_texture_index  = shader_get_sampler_index(shd_directional_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
+directional_light_shader_prb_metalrough_emissive_depth_texture_index = shader_get_sampler_index(shd_directional_light_blend, "gm_PBR_MetallicRoughness_Emissive_Depth_Map_Texture");
 
 // Directional Light Shadow Shader Indexes
 directional_light_shadow_shader_camera_offset_index = shader_get_uniform(shd_directional_light_shadows, "in_Camera_Offset");
@@ -339,25 +340,25 @@ ambient_light_shader_diffusemap_texture_front_layer_index = shader_get_sampler_i
 ambient_light_shader_normalmap_texture_index  = shader_get_sampler_index(shd_ambient_occlusion_light_blend, "gm_NormalTexture");
 
 // Deferred Lighting & Background Post Process Rendering Shader Indexes
-post_process_lighting_render_shader_lightblend_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_Texture");
-post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index  = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_DotProduct_Texture");
+post_process_lighting_render_shader_lightblend_texture_index = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_Texture");
+post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index = shader_get_sampler_index(shd_post_process_render, "gm_LightBlend_DotProduct_Texture");
 
-post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_DepthSpecularBloomMap");
+post_process_lighting_render_shader_depth_specular_bloom_map_index = shader_get_sampler_index(shd_post_process_render, "gm_DepthSpecularBloomMap");
 
-post_process_lighting_render_shader_view_normal_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_ViewNormal_Texture");
+post_process_lighting_render_shader_view_normal_map_index = shader_get_sampler_index(shd_post_process_render, "gm_ViewNormal_Texture");
 
 // Bloom Effect Surface Rendering Shader Indexes
-bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");
-bloom_effect_render_shader_alpha_multiplier_index  = shader_get_uniform(shd_bloom_effect_render, "in_AlphaMult");
+bloom_effect_render_shader_surface_texel_size_index = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");
+bloom_effect_render_shader_alpha_multiplier_index = shader_get_uniform(shd_bloom_effect_render, "in_AlphaMult");
 
-bloom_effect_render_shader_diffusemap_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_DiffuseMap");
-bloom_effect_render_shader_emissivemap_index  = shader_get_sampler_index(shd_bloom_effect_render, "in_EmissiveMap");
+bloom_effect_render_shader_diffusemap_index = shader_get_sampler_index(shd_bloom_effect_render, "in_DiffuseMap");
+bloom_effect_render_shader_emissivemap_index = shader_get_sampler_index(shd_bloom_effect_render, "in_EmissiveMap");
 
 // Distortion Effect Surface Rendering Shader Indexes
 distortion_effect_render_shader_distortion_strength_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Strength");
 distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd_distortion_effect_render, "in_Distortion_Aspect");
-distortion_effect_render_shader_distortion_horizontal_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Horizontal_Channel_Texture");
-distortion_effect_render_shader_distortion_vertical_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Vertical_Channel_Texture");
+distortion_effect_render_shader_distortion_horizontal_texture_index = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Horizontal_Channel_Texture");
+distortion_effect_render_shader_distortion_vertical_texture_index = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Vertical_Channel_Texture");
 
 // Vertical Fade Shader Indexes
 vertical_fade_effect_shader_fade_position_index = shader_get_uniform(shd_vertical_fade, "in_FadePosition");

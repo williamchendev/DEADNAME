@@ -84,31 +84,24 @@ if (!cutscene_dialogue and instance_exists(dialogue_unit))
 	x = temp_unit_x_offset;
 	y = temp_unit_y_offset - dialogue_tail_height - dialogue_unit_padding;
 	
-	dialogue_tail_end_x = temp_unit_x_offset;
-	dialogue_tail_end_y = temp_unit_y_offset - dialogue_unit_padding;
+	dialogue_origin_x = temp_unit_x_offset;
+	dialogue_origin_y = temp_unit_y_offset - dialogue_unit_padding;
 }
 
 // Dialogue Fade Behaviour
 if (dialogue_fade)
 {
-	if (dialogue_fade_tail_timer > 0)
+	// Dialogue Box Fade Destroy Behaviour
+	dialogue_fade_timer -= frame_delta;
+
+	// Transparency Fade Behaviour
+	image_alpha = clamp(dialogue_fade_timer / dialogue_fade_duration, 0, 1);
+
+	// Destroy Dialogue Box
+	if (image_alpha == 0)
 	{
-		dialogue_fade_tail_timer -= frame_delta;
-	}
-	else
-	{
-		// Dialogue Box Fade Destroy Behaviour
-		dialogue_fade_timer -= frame_delta;
-	
-		// Transparency Fade Behaviour
-		image_alpha = clamp(dialogue_fade_timer / dialogue_fade_duration, 0, 1);
-	
-		// Destroy Dialogue Box
-		if (image_alpha == 0)
-		{
-			instance_destroy();
-			return;
-		}
+		instance_destroy();
+		return;
 	}
 }
 else if (dialogue_triangle)
@@ -128,14 +121,3 @@ dialogue_box_animation_value = dialogue_box_animation_value mod 1;
 
 dialogue_box_breath_value = clamp(dialogue_breath_padding * ((sin(dialogue_box_animation_value * 2 * pi) * 0.5) + 0.5), dialogue_breath_edge_clamp, dialogue_breath_padding - dialogue_breath_edge_clamp);
 dialogue_triangle_draw_angle = dialogue_triangle_angle + (dialogue_triangle_rotate_range * ((sin(dialogue_box_animation_value * 2 * pi * dialogue_triangle_rotate_spd) * 0.5) + 0.5));
-
-// Update Dialogue Tail Behaviour
-if (instance_exists(dialogue_tail_instance))
-{
-	//
-	dialogue_tail_instance.image_blend = dialogue_box_color;
-	
-	//
-	var temp_dialogue_tail_alpha = clamp(dialogue_fade_tail_timer / dialogue_fade_tail_duration, 0, 1);
-	dialogue_tail_instance.image_alpha = (image_alpha * 0.5) + (temp_dialogue_tail_alpha * 0.5);
-}
