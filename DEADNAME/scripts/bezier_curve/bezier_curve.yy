@@ -1,0 +1,14 @@
+{
+  "$GMScript":"v1",
+  "%Name":"bezier_curve",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"bezier_curve",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+  "tags":[],
+}

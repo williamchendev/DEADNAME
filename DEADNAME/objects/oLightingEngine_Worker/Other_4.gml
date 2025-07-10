@@ -254,8 +254,5 @@ for (var temp_ui_object_index = 0; temp_ui_object_index < ds_list_size(ui_object
     }
 }
 
-// Lighting Engine's Worker Instance to Null
-LightingEngine.lighting_engine_worker = -1;
-
 // Destroy Instance
 instance_destroy();

@@ -7,23 +7,21 @@ if (dialogue_text_value < string_length(dialogue_text))
 	// Update Dialogue Text
 	dialogue_raw_value += dialogue_text_speed * frame_delta;
 	
-	//
+	// Iterate through all Dialogue Text Split Array's End Positions to find where the Dialogue Raw Value matches
 	for (var i = 0; i < array_length(dialogue_word_end_positions_array); i++)
 	{
-		//
+		// Comparison of Dialogue Position Raw Value to Dialogue Text Split Array's End Position
 		if (dialogue_raw_value >= dialogue_word_end_positions_array[i])
 		{
-			//
+			// Dialogue Position Raw Value is beyond this Dialogue Text Split Array's End Position - Update Dialogue's Position Value
 			dialogue_text_value = dialogue_word_end_positions_array[i];
 		}
 		else
 		{
-			//
+			// Dialogue Position Raw Value is before this Dialogue Text Split Array's End Position - Do not update Dialogue's Position Value
 			break;
 		}
 	}
-	
-	//dialogue_text_value = clamp(dialogue_text_value, 0, string_length(dialogue_text));
 	
 	// Dialogue Continue Behaviour
 	if (dialogue_continue)
@@ -91,24 +89,17 @@ if (!cutscene_dialogue and instance_exists(dialogue_unit))
 // Dialogue Fade Behaviour
 if (dialogue_fade)
 {
-	if (dialogue_fade_tail_timer > 0)
+	// Dialogue Box Fade Destroy Behaviour
+	dialogue_fade_timer -= frame_delta;
+
+	// Transparency Fade Behaviour
+	image_alpha = clamp(dialogue_fade_timer / dialogue_fade_duration, 0, 1);
+
+	// Destroy Dialogue Box
+	if (image_alpha == 0)
 	{
-		dialogue_fade_tail_timer -= frame_delta;
-	}
-	else
-	{
-		// Dialogue Box Fade Destroy Behaviour
-		dialogue_fade_timer -= frame_delta;
-	
-		// Transparency Fade Behaviour
-		image_alpha = clamp(dialogue_fade_timer / dialogue_fade_duration, 0, 1);
-	
-		// Destroy Dialogue Box
-		if (image_alpha == 0)
-		{
-			instance_destroy();
-			return;
-		}
+		instance_destroy();
+		return;
 	}
 }
 else if (dialogue_triangle)
@@ -130,12 +121,4 @@ dialogue_box_breath_value = clamp(dialogue_breath_padding * ((sin(dialogue_box_a
 dialogue_triangle_draw_angle = dialogue_triangle_angle + (dialogue_triangle_rotate_range * ((sin(dialogue_box_animation_value * 2 * pi * dialogue_triangle_rotate_spd) * 0.5) + 0.5));
 
 // Update Dialogue Tail Behaviour
-if (instance_exists(dialogue_tail_instance))
-{
-	//
-	dialogue_tail_instance.image_blend = dialogue_box_color;
-	
-	//
-	var temp_dialogue_tail_alpha = clamp(dialogue_fade_tail_timer / dialogue_fade_tail_duration, 0, 1);
-	dialogue_tail_instance.image_alpha = (image_alpha * 0.5) + (temp_dialogue_tail_alpha * 0.5);
-}
+dialogue_tail_instance.image_blend = dialogue_box_color;

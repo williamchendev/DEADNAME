@@ -13,7 +13,7 @@ cutscene_dialogue = false;
 cutscene_instance = noone;
 
 // Tail Settings
-dialogue_tail_instance = noone;
+dialogue_tail_instance = instance_create_depth(0, 0, 0, oBezierCurve);
 
 dialogue_tail_end_x = 0;
 dialogue_tail_end_y = 0;
@@ -49,13 +49,13 @@ dialogue_word_end_positions_array = array_create(0);
 // Dialogue Functions
 set_dialogue_text = function(text)
 {
-	//
+	// Set Dialogue Text
 	dialogue_text = text;
 	
-	//
+	// Split Dialogue Text by Vowels and Punctuations to create the naturalistic text-speech typewriter effect
 	var temp_dialogue_words_array = string_split_ext(string_lower(dialogue_text), [ "a", "e", "i", "o", "u", " ", ",", ".", "!", "?", "-" ], false);
 	
-	//
+	// Iterate through Dialogue Text Split Array to find their end point positions within the Dialogue Text's Full String
 	var temp_dialogue_text_length = 0;
 	
 	for (var i = 0; i < array_length(temp_dialogue_words_array); i++)
@@ -64,7 +64,7 @@ set_dialogue_text = function(text)
 		temp_dialogue_text_length += string_length(temp_dialogue_words_array[i]) + 1;
 	}
 	
-	//
+	// Set the first Dialogue Text Split Array Value to appear in Dialogue Box
 	dialogue_raw_value = string_length(temp_dialogue_words_array[0]);
 	dialogue_text_value = string_length(temp_dialogue_words_array[0]);
 }
@@ -72,7 +72,6 @@ set_dialogue_text = function(text)
 // Fade Destroy Variables
 dialogue_fade = false;
 dialogue_fade_timer = dialogue_fade_duration;
-dialogue_fade_tail_timer = dialogue_fade_tail_duration;
 
 // Triangle Variables
 dialogue_triangle = false;

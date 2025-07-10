@@ -569,11 +569,14 @@ function lighting_engine_render_ui_layer()
 				with (temp_ui_object_instance)
 				{
 					//
-					shader_set(shd_vertical_fade);
+					surface_reset_target();
 					
 					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 24);
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
+					surface_set_target(LightingEngine.dialogue_surface);
+					draw_clear_alpha(c_black, 0);
+					
+					//
+					bezier_curve_draw(dialogue_tail_instance);
 					
 					// Set Dialogue Font and Alignment
 					draw_set_font(dialogue_font);
@@ -599,12 +602,12 @@ function lighting_engine_render_ui_layer()
 					
 					// Set Dialogue Box Color and Transparency
 					draw_set_color(dialogue_box_color);
-					draw_set_alpha(image_alpha * image_alpha);
+					draw_set_alpha(1);
 					
 					// Draw Dialogue Box's Tail
 					if (dialogue_tail)
 					{
-						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, image_alpha * image_alpha);
+						draw_sprite_ext(dialogue_tail_sprite, 0, temp_x, temp_y + dialogue_box_breath_value - dialogue_breath_padding, image_xscale, image_yscale, 0, dialogue_box_color, 1);
 					}
 					
 					// Draw Dialogue Box's Round Rectangle Background
@@ -636,113 +639,13 @@ function lighting_engine_render_ui_layer()
 					}
 					
 					//
-					shader_reset();
-				}
-				break;
-			case LightingEngineUIObjectType.DialogueTail:
-				// Dialogue Tail UI Object Render Behaviour
-				with (temp_ui_object_instance)
-				{
-					// Check if Dialogue Tail's Bezier Curve Path contains at least 2 points
-					if (path_count < 2)
-					{
-						// Bezier Curve Path is invalid
-						break;
-					}
+					surface_reset_target();
 					
 					//
-					shader_set(shd_vertical_fade);
+					surface_set_target(LightingEngine.ui_surface);
 					
 					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_height_index, 0.5);
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_offset_index, 110);
-					
-					// Draw Dialogue Tail Bezier Curve as Triangle Strip Primitive
-					draw_primitive_begin(pr_trianglestrip);
-					
-					// Iterate through Bezier Curve Path for Dialogue Tail
-					var temp_path_index = 0;
-					
-					repeat (path_count - 1)
-					{
-						//
-						var temp_path_segment_start_x_coordinate = ds_list_find_value(path_x_coordinate_list, temp_path_index);
-						var temp_path_segment_start_y_coordinate = ds_list_find_value(path_y_coordinate_list, temp_path_index);
-						
-						var temp_path_segment_end_x_coordinate = ds_list_find_value(path_x_coordinate_list, temp_path_index + 1);
-						var temp_path_segment_end_y_coordinate = ds_list_find_value(path_y_coordinate_list, temp_path_index + 1);
-						
-						//
-						var temp_path_segment_start_h_vector = ds_list_find_value(path_h_vector_list, temp_path_index);
-						var temp_path_segment_start_v_vector = ds_list_find_value(path_v_vector_list, temp_path_index);
-						
-						var temp_path_segment_end_h_vector = ds_list_find_value(path_h_vector_list, temp_path_index + 1);
-						var temp_path_segment_end_v_vector = ds_list_find_value(path_v_vector_list, temp_path_index + 1);
-						
-						//
-						var temp_path_segment_start_thickness = ds_list_find_value(path_thickness_list, temp_path_index);
-						var temp_path_segment_end_thickness = ds_list_find_value(path_thickness_list, temp_path_index + 1);
-						
-						//
-						var temp_path_x = temp_path_segment_start_x_coordinate;
-						var temp_path_y = temp_path_segment_start_y_coordinate;
-						
-						//
-						for (var i = 1; i <= path_segment_divisions; i++)
-						{
-							//
-							var temp_path_segment_percent = i / path_segment_divisions;
-							
-							//
-							var temp_path_pah = lerp(temp_path_segment_start_x_coordinate, temp_path_segment_start_x_coordinate + temp_path_segment_start_h_vector, temp_path_segment_percent);
-							var temp_path_pbh = lerp(temp_path_segment_start_x_coordinate, temp_path_segment_end_x_coordinate, temp_path_segment_percent);
-							var temp_path_pch = lerp(temp_path_segment_end_x_coordinate + temp_path_segment_end_h_vector, temp_path_segment_end_x_coordinate, temp_path_segment_percent);
-							var temp_path_pdh = lerp(temp_path_pah, temp_path_pbh, temp_path_segment_percent);
-							var temp_path_peh = lerp(temp_path_pbh, temp_path_pch, temp_path_segment_percent);
-							var temp_path_ph = lerp(temp_path_pdh, temp_path_peh, temp_path_segment_percent);
-							
-							//
-							var temp_path_pav = lerp(temp_path_segment_start_y_coordinate, temp_path_segment_start_y_coordinate + temp_path_segment_start_v_vector, temp_path_segment_percent);
-							var temp_path_pbv = lerp(temp_path_segment_start_y_coordinate, temp_path_segment_end_y_coordinate, temp_path_segment_percent);
-							var temp_path_pcv = lerp(temp_path_segment_end_y_coordinate + temp_path_segment_end_v_vector, temp_path_segment_end_y_coordinate, temp_path_segment_percent);
-							var temp_path_pdv = lerp(temp_path_pav, temp_path_pbv, temp_path_segment_percent);
-							var temp_path_pev = lerp(temp_path_pbv, temp_path_pcv, temp_path_segment_percent);
-							var temp_path_pv = lerp(temp_path_pdv, temp_path_pev, temp_path_segment_percent);
-							
-							//
-							var temp_path_h = temp_path_ph - temp_path_x;
-							var temp_path_v = temp_path_pv - temp_path_y;
-							
-							//
-							var temp_path_vector_dis = max(sqrt(sqr(temp_path_h) + sqr(temp_path_v)), 0.0001);
-							
-							temp_path_h = temp_path_h / temp_path_vector_dis;
-							temp_path_v = temp_path_v / temp_path_vector_dis;
-							
-							//
-							var temp_thickness = max(lerp(temp_path_segment_start_thickness, temp_path_segment_end_thickness, temp_path_segment_percent) * path_thickness, 0.5);
-							
-							//
-							draw_vertex_color(temp_path_ph + (-temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (temp_thickness * temp_path_h) - LightingEngine.render_y, image_blend, image_alpha * image_alpha);
-							draw_vertex_color(temp_path_ph + (temp_thickness * temp_path_v) - LightingEngine.render_x, temp_path_pv + (-temp_thickness * temp_path_h) - LightingEngine.render_y, image_blend, image_alpha * image_alpha);
-							
-							//
-							temp_path_x = temp_path_ph;
-							temp_path_y = temp_path_pv;
-						}
-						
-						// Increment Path Index
-						temp_path_index++;
-					}
-					
-					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
-					
-					// End Vertex Creation and Draw Traingle Strip Primitive
-					draw_primitive_end();
-					
-					//
-					shader_reset();
+					draw_surface_ext(LightingEngine.dialogue_surface, 0, 0, 1, 1, 0, c_white, image_alpha * image_alpha);
 				}
 				break;
 			case LightingEngineUIObjectType.Empty:

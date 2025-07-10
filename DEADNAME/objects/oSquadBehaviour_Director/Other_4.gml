@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Scene Type Detection Behaviour
+// Performs the Director's Scene Type Behaviour upon entering the new Scene
 
 // Check if Scene Type is a Platformer
 switch (scene_get_type())

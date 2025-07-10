@@ -16,25 +16,24 @@ enum LightingEngineSubLayerType
 // Lighting Engine Object Types
 enum LightingEngineObjectType
 {
-    Dynamic_Basic,
-    Dynamic_Particle,
-    Dynamic_SmokeTrail,
-    Dynamic_Unit,
-    BulkStatic_Region,
-    BulkStatic_Layer
+	Dynamic_Basic,
+	Dynamic_Particle,
+	Dynamic_SmokeTrail,
+	Dynamic_Unit,
+	BulkStatic_Region,
+	BulkStatic_Layer
 }
 
 enum LightingEngineUnlitObjectType
 {
 	Empty,
-    Hitmarker
+	Hitmarker
 }
 
 enum LightingEngineUIObjectType
 {
 	Empty,
-    Dialogue,
-    DialogueTail
+	Dialogue
 }
 
 // Lighting Engine Layer Methods: Create Sub Layer Behaviours

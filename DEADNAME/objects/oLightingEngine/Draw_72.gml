@@ -1,11 +1,14 @@
 /// @description MRT Scene & Lighting Draw
 // Draws Scene MRT Objects and Light Sources to Deferred Lighting Surfaces
 
-// Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
-gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+// Set Default Blendmode
+gpu_set_blendmode(bm_normal);
 
 // (UI Layer) Iterate through all Objects assigned to the Lighting Engine's UI Layer to be draw sequentially (from back to front) in a Painter's Sorted List
 lighting_engine_render_ui_layer();
+
+// Set Default MRT Blendmode - Correctly Layers Transparent Images over each other on Surfaces
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
 // (Back Layer) Enable MRT Layer Surfaces - Draw objects to three different surfaces simultaneously: Diffuse (Object Color), Normals (Object Surface Direction Lighting Vectors), PBR MetallicRoughness/Emissive/Depth (Object Lighting and Details Map)
 surface_set_target_ext(0, diffuse_back_color_surface);

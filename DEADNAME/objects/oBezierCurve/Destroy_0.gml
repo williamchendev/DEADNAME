@@ -1,10 +1,7 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Bezier Curve Destroy Event
+// Destroys all the Bezier Curve's Data Structures managing its Path
 
-// Inherit the parent event
-event_inherited();
-
-//
+// Destroy all Path Data Structure DS Lists
 ds_list_destroy(path_x_coordinate_list);
 path_x_coordinate_list = -1;
 

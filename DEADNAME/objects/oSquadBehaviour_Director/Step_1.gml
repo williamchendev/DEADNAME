@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Squad AI Update Behaviour
+// Iterates through all Sqauds and performs their state-machine decision making behaviours
 
 // Iterate through Squads and perform Squad Behaviours
 var temp_squad_index = 0;

@@ -114,6 +114,7 @@ distortion_vertical_effect_surface = -1;
 post_processing_surface = -1;
 final_render_surface = -1;
 
+dialogue_surface = -1;
 ui_surface = -1;
 
 debug_surface = -1;

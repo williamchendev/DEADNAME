@@ -24,7 +24,7 @@ cutscene_events[0] =
 {
 	cutscene_type: CutsceneEventType.Dialogue,
 	
-	dialogue_text: "Frrankly, You should be disgusted.",
+	dialogue_text: "I don't have what it takes to look my Unique in the eye",
 	dialogue_unit: "Mel"
 };
 
@@ -32,7 +32,7 @@ cutscene_events[1] =
 {
 	cutscene_type: CutsceneEventType.Dialogue,
 	
-	dialogue_text: "Our society is deeply fixated on shallow materialism, we don't have to keep killing each other.",
+	dialogue_text: ".. how could I tell him there's no future for me here.",
 	dialogue_unit: "Mel"
 };
 
@@ -40,7 +40,7 @@ cutscene_events[2] =
 {
 	cutscene_type: CutsceneEventType.Dialogue,
 	
-	dialogue_text: "At least... we can work together, tackle all the lowest hanging fruit, namely hunger.",
+	dialogue_text: "My destiny is in that satchel of explosives I've been using as a pillow for the past week",
 	dialogue_unit: "Mel"
 };
 
@@ -48,7 +48,7 @@ cutscene_events[3] =
 {
 	cutscene_type: CutsceneEventType.Dialogue,
 	
-	dialogue_text: "Listen after the Vampires are dead you're next.",
+	dialogue_text: "Well...",
 	dialogue_unit: "Charn"
 };
 
@@ -56,7 +56,7 @@ cutscene_events[4] =
 {
 	cutscene_type: CutsceneEventType.Dialogue,
 	
-	dialogue_text: "Capitalism may be the disease of the Skin, but you Communists are the disease of the Heart.",
+	dialogue_text: "at least you.",
 	dialogue_unit: "Charn"
 };
 
@@ -72,37 +72,36 @@ cutscene_units = ds_list_create();
 // Dialogue Settings
 dialogue_fade_delay_offset = 4;
 
-//
+// Trigonometry Variables
 trig_cosine = 1;
 trig_sine = 0;
 
 // Cutscene Functions
 continue_cutscene_event = function()
 {
-	//
+	// Set Cutscene Active (in case Cutscene was not active before)
 	cutscene_active = true;
 	
-	//
+	// Increment Cutscene Index
 	cutscene_event_index++;
 	
-	//
+	// Check if Cutscene has Ended
 	if (cutscene_event_index >= array_length(cutscene_events))
 	{
-		//
+		// Destroy Cutscene Object and End Cutscene Event
 		instance_destroy();
 		return;
 	}
 	
-	//
+	// Perform Cutscene Behaviour based on Cutscene Index's Cutscene Event Type
 	switch (cutscene_events[cutscene_event_index].cutscene_type)
 	{
 		case CutsceneEventType.Dialogue:
-			//
+			// Dialogue Cutscene Event - Create new Dialogue Box for Cutscene
 			var temp_dialogue_box = instance_create_depth(0, 0, 0, oDialogueBox);
-			temp_dialogue_box.dialogue_text = cutscene_events[cutscene_event_index].dialogue_text;
+			temp_dialogue_box.set_dialogue_text(cutscene_events[cutscene_event_index].dialogue_text);
 			temp_dialogue_box.dialogue_unit = find_unit_name(cutscene_events[cutscene_event_index].dialogue_unit);
-			temp_dialogue_box.dialogue_tail = false;
-			temp_dialogue_box.dialogue_tail_instance = instance_create_depth(x, y, 0, oDialogueTail);
+			temp_dialogue_box.dialogue_tail = true;
 			temp_dialogue_box.dialogue_tail_instance.image_blend = temp_dialogue_box.dialogue_box_color;
 			temp_dialogue_box.dialogue_continue = true;
 			temp_dialogue_box.cutscene_dialogue = true;
@@ -113,14 +112,16 @@ continue_cutscene_event = function()
 			{
 				// Previous Dialogue Box now follows the created Dialogue Box
 				cutscene_dialogue_box.dialogue_box_instance_following = temp_dialogue_box;
+				cutscene_dialogue_box.dialogue_tail = false;
 				
-				// 
+				// Create Dialogue Box Animation Offset by incrementing from the Cutscene's Last Dialogue Box's Animation Value
 				temp_dialogue_box.dialogue_box_animation_value = cutscene_dialogue_box.dialogue_box_animation_value + 0.25;
 			}
 			
+			// Update Cutscene's Last Dialogue Box Instance
 			cutscene_dialogue_box = temp_dialogue_box;
 			
-			//
+			// Add new Dialogue Box to Cutscene's List of Dialogue Boxes
 			ds_list_add(cutscene_dialogue_boxes, temp_dialogue_box);
 			
 			//
@@ -131,12 +132,12 @@ continue_cutscene_event = function()
 			break;
 		case CutsceneEventType.End:
 		default:
-			//
+			// End Cutscene - Destroy Cutscene Object and End Cutscene Event
 			instance_destroy();
 			break;
 	}
 	
-	//
+	// Update Cut
 	calculate_cutscene_dialogue_orientation();
 }
 
@@ -273,7 +274,10 @@ calculate_cutscene_dialogue_orientation = function()
 		temp_dialogue_box_inst.dialogue_tail_instance.dialogue_tail_end_y = temp_dialogue_box_inst.dialogue_tail_end_y;
 		
 		//
-		temp_dialogue_box_inst.dialogue_tail_instance.clear_all_points();
+		if (instance_exists(temp_dialogue_box_inst.dialogue_tail_instance))
+		{
+			bezier_curve_clear_all_points(temp_dialogue_box_inst.dialogue_tail_instance);
+		}
 		
 		// Establish Variables for Dialogue Box Chain and Dialogue Box Unit Comparison
 		var temp_dialogue_box_chain_inst = temp_dialogue_box_inst;
@@ -305,12 +309,20 @@ calculate_cutscene_dialogue_orientation = function()
 				}
 				
 				//
-				var temp_dialogue_tail_point_x = temp_dialogue_box_inst.x;
+				var temp_dialogue_tail_point_x = temp_dialogue_box_inst.x - (temp_dialogue_text_width * 0.15 * temp_dialogue_box_inst.image_xscale);
 				var temp_dialogue_tail_point_y = temp_dialogue_box_chain_inst.y;
 				
-				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.5), -50, 0, 1);
-				temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.15), -25 * temp_dialogue_box_chain_inst.image_xscale, 0, 1.4);
-				//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_tail_point_x, temp_dialogue_tail_point_y, 50, 0, 1);
+				if (temp_dialogue_box_inst != temp_dialogue_box_chain_inst)
+				{
+					temp_dialogue_box_chain_ends_with_unit_dialogue = true;
+					temp_dialogue_tail_point_x = temp_dialogue_box_inst.x;
+					bezier_curve_add_path_point(temp_dialogue_box_inst.dialogue_tail_instance, temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.15), -35 * temp_dialogue_box_chain_inst.image_xscale, 0, 0.1);
+					break;
+				}
+				else
+				{
+					bezier_curve_add_path_point(temp_dialogue_box_inst.dialogue_tail_instance, temp_dialogue_tail_point_x, temp_dialogue_tail_point_y - (temp_dialogue_text_height * 0.15), -35 * temp_dialogue_box_chain_inst.image_xscale, 0, 1.8);
+				}
 			}
 			
 			// Check if Dialogue Box Chain continues
@@ -335,10 +347,8 @@ calculate_cutscene_dialogue_orientation = function()
 		if (!temp_dialogue_box_chain_ends_with_unit_dialogue)
 		{
 			//temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y - 12, 0, 0, 0.5);
+			bezier_curve_add_path_point(temp_dialogue_box_inst.dialogue_tail_instance, temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y, 10 * temp_dialogue_box_inst.image_xscale, -25, 0.1);
 		}
-		
-		//
-		temp_dialogue_box_inst.dialogue_tail_instance.add_path_point(temp_dialogue_box_inst.dialogue_tail_end_x, temp_dialogue_box_inst.dialogue_tail_end_y, -25 * temp_dialogue_box_inst.image_xscale, -25, 0.15);
 	}
 	
 	//

@@ -1,5 +1,5 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Director Cleanup
+// Destroys any unnecessary Data Structures used by the Director previously
 
 // Destroy Squad DS Maps
 ds_map_destroy(squad_ids_map);

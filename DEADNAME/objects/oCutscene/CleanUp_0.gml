@@ -16,7 +16,7 @@ for (var i = 0; i < ds_list_size(cutscene_dialogue_boxes); i++)
 	}
 }
 
-//
+// Destroy Cutscene Data Structure DS Lists
 ds_list_destroy(cutscene_dialogue_boxes);
 cutscene_dialogue_boxes = -1;
 
