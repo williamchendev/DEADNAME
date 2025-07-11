@@ -1,7 +1,7 @@
 /// @description Bezier Curve Initialization Event
 // Creates the Bezier Curve Object's Data Structures to manage its Path
 
-// Debug Visibility
+// Disable Rendering & Visibility
 visible = false;
 sprite_index = -1;
 

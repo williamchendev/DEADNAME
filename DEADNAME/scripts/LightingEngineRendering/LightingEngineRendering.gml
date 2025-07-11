@@ -568,14 +568,14 @@ function lighting_engine_render_ui_layer()
 				// Dialogue Box UI Object Render Behaviour
 				with (temp_ui_object_instance)
 				{
-					//
+					// Reset Surface Target
 					surface_reset_target();
 					
-					//
+					// Set Dialogue Surface Target and Clear Dialogue Surface
 					surface_set_target(LightingEngine.dialogue_surface);
 					draw_clear_alpha(c_black, 0);
 					
-					//
+					// Draw Dialogue Box Tail Bezier Curve
 					bezier_curve_draw(dialogue_tail_instance);
 					
 					// Set Dialogue Font and Alignment
@@ -587,8 +587,8 @@ function lighting_engine_render_ui_layer()
 					var temp_dialogue_text = string_copy(dialogue_text, 0, round(dialogue_text_value));
 					
 					// Find Dialogue Box's Width and Height
-					var temp_dialogue_text_width = (string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_horizontal_padding) * 0.5;
-					var temp_dialogue_text_height = string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width) + dialogue_box_vertical_padding;
+					var temp_dialogue_text_width = (max(string_width_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width), string_width("ABCDE")) + dialogue_box_horizontal_padding) * 0.5;
+					var temp_dialogue_text_height = max(string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width), string_height("ABCDE")) + dialogue_box_vertical_padding;
 					
 					// Find Dialogue Box's Position
 					var temp_x = x - LightingEngine.render_x;
@@ -596,9 +596,6 @@ function lighting_engine_render_ui_layer()
 					
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
-					
-					//
-					shader_set_uniform_f(LightingEngine.vertical_fade_effect_shader_fade_position_index, dialogue_tail_end_y - LightingEngine.render_y);
 					
 					// Set Dialogue Box Color and Transparency
 					draw_set_color(dialogue_box_color);
@@ -638,13 +635,13 @@ function lighting_engine_render_ui_layer()
 						draw_triangle(temp_tri_x + tri_x_1, temp_tri_y + tri_y_1, temp_tri_x + tri_x_2, temp_tri_y + tri_y_2, temp_tri_x + tri_x_3, temp_tri_y + tri_y_3, false);
 					}
 					
-					//
+					// Reset Surface Target
 					surface_reset_target();
 					
-					//
+					// Set Surface Target to UI Surface
 					surface_set_target(LightingEngine.ui_surface);
 					
-					//
+					// Draw Completed Dialogue Box, Text, Tail, and (possibly) Continue Triangle to UI Surface with Dialogue Box Transparency
 					draw_surface_ext(LightingEngine.dialogue_surface, 0, 0, 1, 1, 0, c_white, image_alpha * image_alpha);
 				}
 				break;
