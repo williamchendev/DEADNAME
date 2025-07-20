@@ -464,4 +464,38 @@ class LimbArmClass extends LimbClass define
 				break;
 		}
 	}
+	
+	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0)
+	{
+		// Draw Arm
+		if (limb_held_item == UnitHeldItem.None)
+		{
+			draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+			return;
+		}
+		
+		// Draw Arm with Held Item
+		switch (limb_type)
+		{
+			case LimbType.LeftArm:
+				// Draw Held Item
+				draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x + x_offset, limb_held_item_y + y_offset, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				
+				// Draw Limb
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				break;
+			case LimbType.RightArm:
+				// Draw Limb
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
+			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				
+				// Draw Held Item
+				draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x + x_offset, limb_held_item_y + y_offset, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				break;
+			default:
+				break;
+		}
+	}
 }

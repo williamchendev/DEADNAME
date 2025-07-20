@@ -6,7 +6,10 @@ enum SceneType
     Platformer
 }
 
-//
+// Scene Functions
+/// @function scene_get_type();
+/// @description Returns the currently loaded room's Scene Type as a SceneType enum based on the room's Name and Function
+/// @returns {SceneType} The Scene Type enum of the current room
 function scene_get_type()
 {
     // Initialize Scene Type
@@ -28,4 +31,3 @@ function scene_get_type()
     // Return Scene Type
     return temp_scene_type;
 }
-

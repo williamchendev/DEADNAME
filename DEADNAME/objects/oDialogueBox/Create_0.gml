@@ -3,7 +3,7 @@
 
 // Dialogue Box's Lighting Engine UI Object Type & Depth
 object_type = LightingEngineUIObjectType.Dialogue;
-object_depth = 1;
+object_depth = LightingEngineUIObjectType.Dialogue;
 
 // Default Lighting Engine UI Object Initialization Behaviour
 event_inherited();
@@ -12,21 +12,31 @@ event_inherited();
 cutscene_dialogue = false;
 cutscene_instance = noone;
 
-// Tail Settings
-dialogue_tail_instance = instance_create_depth(0, 0, 0, oBezierCurve);
-
-dialogue_tail_end_x = 0;
-dialogue_tail_end_y = 0;
-
 // Dialogue Box Settings
 dialogue_unit = noone;
-dialogue_text = "I need ZYRTEC allergy tablets (TM)! >w<";
+dialogue_text = "";
 
 dialogue_box_instance_following = noone;
 dialogue_box_instance_following_chain_max = 20;
 dialogue_box_instance_following_separation = 6;
 
-// Triangle Settings
+// Dialogue Tail Settings
+dialogue_tail_instance = instance_create_depth(0, 0, 0, oBezierCurve);
+dialogue_tail_instance.image_blend = dialogue_box_color;
+
+dialogue_tail_start_horizontal_vector = 55;
+dialogue_tail_start_vertical_vector = 0;
+dialogue_tail_start_thickness = 1.8;
+
+dialogue_tail_mid_horizontal_vector = 15;
+dialogue_tail_mid_vertical_vector = 0;
+dialogue_tail_mid_thickness = 0.6;
+
+dialogue_tail_end_horizontal_vector = -10;
+dialogue_tail_end_vertical_vector = 0;
+dialogue_tail_end_thickness = 0.1;
+
+// Dialogue Triangle Settings
 dialogue_triangle_angle = -15;
 dialogue_triangle_radius = 4;
 dialogue_triangle_offset = -2;
@@ -35,16 +45,43 @@ dialogue_triangle_rotate_range = 30;
 dialogue_triangle_rotate_spd = 2;
 
 // Dialogue Box Variables
+dialogue_horizontal_offset = 0;
+
 dialogue_box_animation_value = 0;
 dialogue_box_breath_value = 0;
 
-dialogue_triangle_draw_angle = 0;
+// Dialogue Tail Variables
+dialogue_tail_end_x = 0;
+dialogue_tail_end_y = 0;
+
+dialogue_tail_start_position = 0;
+dialogue_tail_end_position = 0;
 
 // Dialogue Text Variables
 dialogue_raw_value = 0;
 dialogue_text_value = 0;
 
 dialogue_word_end_positions_array = array_create(0);
+
+// Dialogue Triangle Variables
+dialogue_triangle = false;
+
+dialogue_triangle_draw_angle = 0;
+
+tri_x_1 = 0;
+tri_y_1 = 0;
+tri_x_2 = 0;
+tri_y_2 = 0;
+tri_x_3 = 0;
+tri_y_3 = 0;
+
+// Fade Destroy Variables
+dialogue_fade = false;
+dialogue_fade_timer = dialogue_fade_duration;
+
+// Trigonometry Variables
+trig_sine = 0;
+trig_cosine = 1;
 
 // Dialogue Functions
 set_dialogue_text = function(text)
@@ -68,24 +105,3 @@ set_dialogue_text = function(text)
 	dialogue_raw_value = string_length(temp_dialogue_words_array[0]);
 	dialogue_text_value = string_length(temp_dialogue_words_array[0]);
 }
-
-// Fade Destroy Variables
-dialogue_fade = false;
-dialogue_fade_timer = dialogue_fade_duration;
-
-// Triangle Variables
-dialogue_triangle = false;
-
-tri_x_1 = 0;
-tri_y_1 = 0;
-tri_x_2 = 0;
-tri_y_2 = 0;
-tri_x_3 = 0;
-tri_y_3 = 0;
-
-// Trigonometry Variables
-trig_sine = 0;
-trig_cosine = 1;
-
-// @DEBUG
-dialogue_unit = find_unit_name("Mel");

@@ -33,6 +33,7 @@ enum LightingEngineUnlitObjectType
 enum LightingEngineUIObjectType
 {
 	Empty,
+	Interaction,
 	Dialogue
 }
 

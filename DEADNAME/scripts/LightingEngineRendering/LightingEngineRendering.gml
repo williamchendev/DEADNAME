@@ -564,6 +564,57 @@ function lighting_engine_render_ui_layer()
 		// UI Object Rendering Behaviour
 		switch (temp_ui_object_type)
 		{
+			case LightingEngineUIObjectType.Interaction:
+				// Interaction UI Object Render Behaviour
+				if (!temp_ui_object_instance.interaction_hover)
+				{
+					//
+					break;
+				}
+				
+				// Reset Surface Target
+				surface_reset_target();
+				
+				// Set Effect Surface Target and Clear Effect Surface
+				surface_set_target(LightingEngine.fx_surface);
+				draw_clear_alpha(c_black, 0);
+				
+				//
+				with (temp_ui_object_instance.interaction_object)
+				{
+					if (object_index == oUnit or object_is_ancestor(object_index, oUnit))
+					{
+						// Draw Secondary Arm rendered behind Unit Body
+						limb_secondary_arm.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
+						
+						// Draw Unit Body
+						draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x, y + ground_contact_vertical_offset - LightingEngine.render_y, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
+						
+						// Draw Unit's Weapon (if equipped)
+						if (weapon_active)
+						{
+							weapon_equipped.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
+						}
+						
+						// Draw Primary Arm rendered in front Unit Body
+						limb_primary_arm.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
+					}
+					else
+					{
+						//
+						draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x, y - LightingEngine.render_y, image_xscale, image_yscale, image_angle, c_white, 1);
+					}
+				}
+				
+				// Reset Surface Target
+				surface_reset_target();
+				
+				// Set Surface Target to UI Surface
+				surface_set_target(LightingEngine.ui_surface);
+				
+				//
+				draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_white, image_alpha);
+				break;
 			case LightingEngineUIObjectType.Dialogue:
 				// Dialogue Box UI Object Render Behaviour
 				with (temp_ui_object_instance)
@@ -571,8 +622,8 @@ function lighting_engine_render_ui_layer()
 					// Reset Surface Target
 					surface_reset_target();
 					
-					// Set Dialogue Surface Target and Clear Dialogue Surface
-					surface_set_target(LightingEngine.dialogue_surface);
+					// Set Effect Surface Target and Clear Effect Surface
+					surface_set_target(LightingEngine.fx_surface);
 					draw_clear_alpha(c_black, 0);
 					
 					// Draw Dialogue Box Tail Bezier Curve
@@ -642,7 +693,7 @@ function lighting_engine_render_ui_layer()
 					surface_set_target(LightingEngine.ui_surface);
 					
 					// Draw Completed Dialogue Box, Text, Tail, and (possibly) Continue Triangle to UI Surface with Dialogue Box Transparency
-					draw_surface_ext(LightingEngine.dialogue_surface, 0, 0, 1, 1, 0, c_white, image_alpha * image_alpha);
+					draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_white, image_alpha * image_alpha);
 				}
 				break;
 			case LightingEngineUIObjectType.Empty:
@@ -657,10 +708,6 @@ function lighting_engine_render_ui_layer()
 	
 	// Reset Surface
 	surface_reset_target();
-	
-	//
-	draw_set_alpha(1);
-	draw_set_color(c_white);
 }
 
 /// @function lighting_engine_render_clear_surfaces();
@@ -693,6 +740,7 @@ function lighting_engine_render_clear_surfaces()
 	surface_free(LightingEngine.post_processing_surface);
 	surface_free(LightingEngine.final_render_surface);
 	
+	surface_free(LightingEngine.fx_surface);
 	surface_free(LightingEngine.ui_surface);
 	
 	// Free Debug Surface

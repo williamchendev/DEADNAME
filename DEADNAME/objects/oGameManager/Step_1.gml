@@ -1,5 +1,8 @@
 /// @description Early Step Event
 
+// Reset Player Input Selection
+input_interaction_selection = false;
+
 // Calculate Cursor Position
 cursor_x = round(game_width * (window_mouse_get_x() / window_get_width()));
 cursor_y = round(game_height * (window_mouse_get_y() / window_get_height()));

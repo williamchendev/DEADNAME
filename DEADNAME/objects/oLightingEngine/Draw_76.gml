@@ -92,9 +92,9 @@ if (!surface_exists(final_render_surface))
     final_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
-if (!surface_exists(dialogue_surface))
+if (!surface_exists(fx_surface))
 {
-    dialogue_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    fx_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
 if (!surface_exists(ui_surface))

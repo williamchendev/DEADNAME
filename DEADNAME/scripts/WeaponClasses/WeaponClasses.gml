@@ -128,6 +128,12 @@ class WeaponClass define
 			1
 		);
 	}
+	
+	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0) 
+	{
+		// Draw Weapon
+		draw_sprite_ext(weapon_sprite, weapon_image_index, weapon_x + x_offset, weapon_y + y_offset, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
+	}
 }
 
 class FirearmClass extends WeaponClass define
@@ -510,5 +516,11 @@ class FirearmClass extends WeaponClass define
 			c_white, 
 			1
 		);
+	}
+	
+	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0) 
+	{
+		// Draw Weapon
+		draw_sprite_ext(weapon_sprite, weapon_image_index, weapon_x + x_offset, weapon_y + y_offset, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
 	}
 }

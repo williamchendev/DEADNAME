@@ -53,7 +53,7 @@ else if (dialogue_continue)
 		if (instance_exists(cutscene_instance))
 		{
 			// Continue Cutscene Behaviour
-			cutscene_instance.continue_cutscene_event();
+			cutscene_continue_event(cutscene_instance);
 		}
 		else
 		{
@@ -119,6 +119,3 @@ dialogue_box_animation_value = dialogue_box_animation_value mod 1;
 
 dialogue_box_breath_value = clamp(dialogue_breath_padding * ((sin(dialogue_box_animation_value * 2 * pi) * 0.5) + 0.5), dialogue_breath_edge_clamp, dialogue_breath_padding - dialogue_breath_edge_clamp);
 dialogue_triangle_draw_angle = dialogue_triangle_angle + (dialogue_triangle_rotate_range * ((sin(dialogue_box_animation_value * 2 * pi * dialogue_triangle_rotate_spd) * 0.5) + 0.5));
-
-// Update Dialogue Tail Behaviour
-dialogue_tail_instance.image_blend = dialogue_box_color;

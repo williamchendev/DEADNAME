@@ -48,6 +48,8 @@ global.debug = false;
 debug_overlay_enabled = false;
 
 // Player Input Management
+input_interaction_selection = false;
+
 up_check = ord("W");
 down_check = ord("S");
 left_check = ord("A");

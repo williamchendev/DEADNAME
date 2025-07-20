@@ -1,13 +1,15 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Cutscene Cleanup Event
+// Cleans up all of the Cutscene's Objects and DS Lists upon its removal from the active scene
 
-//
+// Perform timed destruction of Cutscene Dialogue Boxes in sequential top-to-bottom fade pattern
 var temp_dialogue_fade_delay = 1;
 
 for (var i = 0; i < ds_list_size(cutscene_dialogue_boxes); i++)
 {
+	// Find Dialogue Box instance
 	var temp_dialogue_box = ds_list_find_value(cutscene_dialogue_boxes, i);
 	
+	// Check if Dialogue Box Exists
 	if (instance_exists(temp_dialogue_box))
 	{
 		// Activate Dialogue Box's Fade Destroy Behaviour
