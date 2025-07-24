@@ -8,6 +8,7 @@ sprite_index = -1;
 // Cutscene Events
 cutscene_events = array_create(0);
 
+cutscene_add_delay(id, 180);
 cutscene_add_dialogue(id, "We found contraband materials in the depths of the temple.", "Mel", -20);
 cutscene_add_dialogue(id, "It seems our friend's little story is a bit...", "Mel", -20);
 cutscene_add_dialogue(id, "Fake?", "Charn", 20);
@@ -45,7 +46,12 @@ dialogue_fade_delay_offset = 4;
 dialogue_box_animation_offset = -0.25;
 
 // Cutscene Variables
+cutscene_waiting_behaviour = false;
+
+cutscene_waiting_for_delay_duration = false;
 cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue = false;
+
+cutscene_delay_timer = 0;
 
 // Trigonometry Variables
 trig_cosine = 1;

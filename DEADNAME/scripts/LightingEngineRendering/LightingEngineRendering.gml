@@ -580,8 +580,13 @@ function lighting_engine_render_ui_layer()
 				draw_clear_alpha(c_black, 0);
 				
 				//
+				draw_set_alpha(1);
+				draw_set_color(c_black);
+				
+				//
 				with (temp_ui_object_instance.interaction_object)
 				{
+					//
 					if (object_index == oUnit or object_is_ancestor(object_index, oUnit))
 					{
 						// Draw Secondary Arm rendered behind Unit Body
@@ -613,7 +618,54 @@ function lighting_engine_render_ui_layer()
 				surface_set_target(LightingEngine.ui_surface);
 				
 				//
-				draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_white, image_alpha);
+				shader_set(shd_pixel_outline);
+				
+				//
+				shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+				shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_outline_size_index, 1);
+				
+				//
+				draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_black, image_alpha);
+				
+				//
+				shader_reset();
+				
+				//
+				if (temp_ui_object_instance.interaction_selected)
+				{
+					//
+					var temp_interact_menu_x = temp_ui_object_instance.x - LightingEngine.render_x;
+					var temp_interact_menu_y = temp_ui_object_instance.y - LightingEngine.render_y;
+					
+					var temp_interact_menu_text_x = temp_interact_menu_x + temp_ui_object_instance.interaction_text_horizontal_offset;
+					var temp_interact_menu_text_y = temp_interact_menu_y + temp_ui_object_instance.interaction_text_vertical_offset;
+					
+					//
+					draw_rectangle(temp_interact_menu_x, temp_interact_menu_y, temp_interact_menu_x + temp_ui_object_instance.interact_menu_width, temp_interact_menu_y + temp_ui_object_instance.interact_menu_height, false);
+					
+					// Set Interaction Detail Text Font
+					draw_set_font(font_Default);
+					
+					// Set Interaction Detail Text Alignment
+					draw_set_halign(fa_left);
+					draw_set_valign(fa_top);
+					
+					//
+					draw_set_color(merge_color(temp_ui_object_instance.interaction_text_color, c_black, temp_ui_object_instance.interaction_text_contrast_amount));
+					
+					//
+					draw_line(temp_interact_menu_x + temp_ui_object_instance.interaction_text_horizontal_offset - 1, temp_interact_menu_text_y + 16, temp_interact_menu_x + temp_ui_object_instance.interact_menu_width, temp_interact_menu_text_y + 16);
+					
+					//
+					draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + 1, temp_ui_object_instance.interaction_object_name);
+					draw_text(temp_interact_menu_text_x + 1, temp_interact_menu_text_y + 1, temp_ui_object_instance.interaction_object_name);
+					
+					//
+					draw_set_color(temp_ui_object_instance.interaction_text_color);
+					
+					//
+					draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y, temp_ui_object_instance.interaction_object_name);
+				}
 				break;
 			case LightingEngineUIObjectType.Dialogue:
 				// Dialogue Box UI Object Render Behaviour
@@ -648,9 +700,9 @@ function lighting_engine_render_ui_layer()
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;
 					
-					// Set Dialogue Box Color and Transparency
-					draw_set_color(dialogue_box_color);
+					// Set Dialogue Box Transparency and Color
 					draw_set_alpha(1);
+					draw_set_color(dialogue_box_color);
 					
 					// Draw Dialogue Box's Tail
 					if (dialogue_tail)

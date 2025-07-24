@@ -91,6 +91,7 @@ function cutscene_continue_event(cutscene_instance)
 				break;
 			case CutsceneEventType.DialogueClear:
 				// Clear All Existing Dialogue Cutscene Event - Removes all Dialogue Boxes currently being used by this Cutscene
+				cutscene_waiting_behaviour = true;
 				cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue = true;
 				
 				// Perform timed destruction of Cutscene Dialogue Boxes in sequential top-to-bottom fade pattern
@@ -104,11 +105,31 @@ function cutscene_continue_event(cutscene_instance)
 					// Check if Dialogue Box Exists
 					if (instance_exists(temp_dialogue_box_remove))
 					{
-						// Activate Dialogue Box's Fade Destroy Behaviour
-						temp_dialogue_box_remove.alarm[1] = temp_dialogue_fade_delay;
-						temp_dialogue_fade_delay += dialogue_fade_delay_offset;
+						// Check if Dialogue Clear Behaviour is instantaneous
+						if (cutscene_events[cutscene_event_index].dialogue_clear_instant)
+						{
+							instance_destroy(temp_dialogue_box_remove);
+						}
+						else
+						{
+							// Activate Dialogue Box's Fade Destroy Behaviour
+							temp_dialogue_box_remove.alarm[1] = temp_dialogue_fade_delay;
+							temp_dialogue_fade_delay += dialogue_fade_delay_offset;
+						}
 					}
 				}
+				
+				// If the Dialogue Clear Event is instantaneous, immediately advance to the next Cutscene Event
+				if (cutscene_events[cutscene_event_index].dialogue_clear_instant)
+				{
+					cutscene_continue_event(cutscene_instance);
+				}
+				break;
+			case CutsceneEventType.Delay:
+				// Delay Cutscene Event - Delays the advancement to the next Cutscene Event for the given Delay Duration
+				cutscene_waiting_behaviour = true;
+				cutscene_waiting_for_delay_duration = true;
+				cutscene_delay_timer = cutscene_events[cutscene_event_index].delay_duration;
 				break;
 			case CutsceneEventType.End:
 			default:

@@ -361,6 +361,10 @@ distortion_effect_render_shader_distortion_aspect_index = shader_get_uniform(shd
 distortion_effect_render_shader_distortion_horizontal_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Horizontal_Channel_Texture");
 distortion_effect_render_shader_distortion_vertical_texture_index  = shader_get_sampler_index(shd_distortion_effect_render, "gm_Distortion_Vertical_Channel_Texture");
 
+// Pixel Outline Effect Surface Rendering Shader Indexes
+pixel_outline_render_shader_outline_size_index = shader_get_uniform(shd_pixel_outline, "in_OutlineSize");
+pixel_outline_render_shader_surface_size_index = shader_get_uniform(shd_pixel_outline, "in_SurfaceSize");
+
 // Lighting Engine Sub Layer Rendering Variables
 lighting_engine_sub_layer_depth = 0;
 

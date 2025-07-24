@@ -148,7 +148,7 @@ if (button_move_timer >= 1)
 }
 
 // Cursor Icon
-GameManager.cursor_inventory = true;
+GameManager.cursor_interact = true;
 
 // Debug
 if (keyboard_check_pressed(ord("L"))) 

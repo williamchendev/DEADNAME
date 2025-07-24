@@ -11,8 +11,8 @@
   "name":"oDialogueBox",
   "overriddenProperties":[],
   "parent":{
-    "name":"Dialogue",
-    "path":"folders/Objects/Entities/Dialogue.yy",
+    "name":"UI",
+    "path":"folders/Objects/UI.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_UI_Object",

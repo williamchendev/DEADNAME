@@ -3,6 +3,7 @@ enum CutsceneEventType
 {
 	Dialogue,
 	DialogueClear,
+	Delay,
 	End
 }
 
@@ -34,10 +35,27 @@ function cutscene_add_dialogue(cutscene_instance, text, unit, xoffset = 0, tail_
 /// @function cutscene_add_dialogue_clear(cutscene_instance);
 /// @description Adds a Dialogue Clear Event to a Cutscene Object Instance's list of Cutscene Events with the provided Dialogue Event's parameters, the Dialogue Clear removes all Dialogue Boxes being shown as a part of the Cutscene Event
 /// @param {oCutscene} cutscene_instance - The given Cutscene Object Instance to add a Dialogue Clear Event to their list of Cutscene Events
-function cutscene_add_dialogue_clear(cutscene_instance)
+/// @param {bool} instant - Whether or not the Dialogue Clear Event is instantaneous which destroys all Dialogue Boxes and advances the Cutscene to its next Cutscene Event instead of waiting for all Dialogue Boxes to sequentially fade
+function cutscene_add_dialogue_clear(cutscene_instance, instant = false)
 {
 	cutscene_instance.cutscene_events[array_length(cutscene_instance.cutscene_events)] = 
 	{
 		cutscene_type: CutsceneEventType.DialogueClear,
+		
+		dialogue_clear_instant: instant
+	};
+}
+
+/// @function cutscene_add_delay(cutscene_instance, duration);
+/// @description Adds a Delay Event to a Cutscene Object Instance's list of Cutscene Events that pauses the Cutscene for the given duration
+/// @param {oCutscene} cutscene_instance - The given Cutscene Object Instance to add a Delay Event to their list of Cutscene Events
+/// @param {real} duration - The duration of the Delay Event to add to the Cutscene Instance's list of Cutscene Events
+function cutscene_add_delay(cutscene_instance, duration)
+{
+	cutscene_instance.cutscene_events[array_length(cutscene_instance.cutscene_events)] = 
+	{
+		cutscene_type: CutsceneEventType.Delay,
+		
+		delay_duration: duration
 	};
 }

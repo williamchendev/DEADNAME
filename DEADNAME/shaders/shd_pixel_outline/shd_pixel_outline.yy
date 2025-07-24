@@ -1,0 +1,13 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_pixel_outline",
+  "name":"shd_pixel_outline",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "tags":[],
+  "type":1,
+}

@@ -1,12 +1,6 @@
 /// @description MRT Scene & Lighting Draw
 // Draws Scene MRT Objects and Light Sources to Deferred Lighting Surfaces
 
-// Set Default Blendmode
-gpu_set_blendmode(bm_normal);
-
-// (UI Layer) Iterate through all Objects assigned to the Lighting Engine's UI Layer to be draw sequentially (from back to front) in a Painter's Sorted List
-lighting_engine_render_ui_layer();
-
 // Reset Color and Transparency
 draw_set_alpha(1);
 draw_set_color(c_white);

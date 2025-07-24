@@ -9,8 +9,8 @@
   "name":"oInteraction",
   "overriddenProperties":[],
   "parent":{
-    "name":"Interactions",
-    "path":"folders/Objects/System/Interactions.yy",
+    "name":"UI",
+    "path":"folders/Objects/UI.yy",
   },
   "parentObjectId":{
     "name":"oLighting_Dynamic_UI_Object",
@@ -29,7 +29,16 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"interact_menu_width_minimum","filters":[],"listItems":[],"multiselect":false,"name":"interact_menu_width_minimum","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"80","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interact_menu_height_minimum","filters":[],"listItems":[],"multiselect":false,"name":"interact_menu_height_minimum","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_text_color","filters":[],"listItems":[],"multiselect":false,"name":"interaction_text_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_text_contrast_amount","filters":[],"listItems":[],"multiselect":false,"name":"interaction_text_contrast_amount","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.75","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_text_horizontal_offset","filters":[],"listItems":[],"multiselect":false,"name":"interaction_text_horizontal_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_text_vertical_offset","filters":[],"listItems":[],"multiselect":false,"name":"interaction_text_vertical_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"-1","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_collision_horizontal_padding","filters":[],"listItems":[],"multiselect":false,"name":"interaction_collision_horizontal_padding","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"12","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"interaction_collision_vertical_padding","filters":[],"listItems":[],"multiselect":false,"name":"interaction_collision_vertical_padding","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"6","varType":0,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

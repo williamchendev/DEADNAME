@@ -39,21 +39,29 @@ class WeaponClass define
 		weapon_emissive_multiplier = 1;
 		
 		// Init Weapon Image Index
-	    weapon_image_index = 0;
+		weapon_image_index = 0;
+		
+		// Init Weapon Crosshair Properties
+		weapon_crosshair_snap = 0.1;
+		weapon_crosshair_length_default = 60;
+		
+		weapon_crosshair_length = 0;
+		weapon_crosshair_position_x = 0;
+		weapon_crosshair_position_y = 0;
 	}
 	
 	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = 0)
 	{
 		// Init Weapon Position & Angle
-	    weapon_x = init_weapon_x;
-	    weapon_y = init_weapon_y;
-	    weapon_angle = init_weapon_angle;
-	    weapon_old_angle = init_weapon_angle;
-	    
-	    // Init Weapon Scale
-	    weapon_xscale = 1;
-	    weapon_yscale = 1;
-	    weapon_facing_sign = 1;
+		weapon_x = init_weapon_x;
+		weapon_y = init_weapon_y;
+		weapon_angle = init_weapon_angle;
+		weapon_old_angle = init_weapon_angle;
+		
+		// Init Weapon Scale
+		weapon_xscale = 1;
+		weapon_yscale = 1;
+		weapon_facing_sign = 1;
 	}
 	
 	// Equip Methods
@@ -134,6 +142,11 @@ class WeaponClass define
 		// Draw Weapon
 		draw_sprite_ext(weapon_sprite, weapon_image_index, weapon_x + x_offset, weapon_y + y_offset, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
 	}
+	
+	static render_cursor_behaviour = function()
+	{
+		// Draw Weapon's Cursor Crosshair
+	}
 }
 
 class FirearmClass extends WeaponClass define
@@ -159,26 +172,26 @@ class FirearmClass extends WeaponClass define
 		firearm_eject_cartridge_num = 0;
 		
 		// Init Weapon Timers
-	    firearm_recoil_recovery_delay = 0;
-	    firearm_attack_delay = 0;
-	    
-	    // Firearm Muzzle Flare
-	    firearm_muzzle_flare = noone;
+		firearm_recoil_recovery_delay = 0;
+		firearm_attack_delay = 0;
+		
+		// Firearm Muzzle Flare
+		firearm_muzzle_flare = noone;
 	}
 	
 	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = 0)
 	{
 		// Init Weapon Position & Angle
-	    super.init_weapon_physics(init_weapon_x, init_weapon_y, init_weapon_angle);
-	    
-	    // Init Weapon Recoil
-	    weapon_horizontal_recoil = 0;
-	    weapon_vertical_recoil = 0;
-	    weapon_angle_recoil = 0;
-	    
-	    weapon_horizontal_recoil_target = 0;
-	    weapon_vertical_recoil_target = 0;
-	    weapon_angle_recoil_target = 0;
+		super.init_weapon_physics(init_weapon_x, init_weapon_y, init_weapon_angle);
+		
+		// Init Weapon Recoil
+		weapon_horizontal_recoil = 0;
+		weapon_vertical_recoil = 0;
+		weapon_angle_recoil = 0;
+		
+		weapon_horizontal_recoil_target = 0;
+		weapon_vertical_recoil_target = 0;
+		weapon_angle_recoil_target = 0;
 	}
 	
 	// Equip Methods
@@ -254,6 +267,62 @@ class FirearmClass extends WeaponClass define
 			weapon_horizontal_recoil = lerp(weapon_horizontal_recoil, 0, unit_firearm_recoil_recovery_spd * frame_delta);
 			weapon_vertical_recoil = lerp(weapon_vertical_recoil, 0, unit_firearm_recoil_recovery_spd * frame_delta);
 			weapon_angle_recoil = lerp(weapon_angle_recoil, 0, unit_firearm_recoil_angle_recovery_spd * frame_delta);
+		}
+		
+		// Player Unit's Weapon Crosshair Cursor Position
+		if (instance_exists(weapon_unit) and weapon_unit.player_input)
+		{
+			// Calculate Weapon Rotation
+			var temp_firing_angle = (weapon_angle + (weapon_angle_recoil * weapon_facing_sign)) mod 360;
+			temp_firing_angle = temp_firing_angle < 0 ? temp_firing_angle + 360 : temp_firing_angle;
+			
+			// Weapon Rotation Behaviour
+			rot_prefetch(temp_firing_angle);
+			
+			var temp_firearm_muzzle_position_x = weapon_x + rot_point_x(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
+			var temp_firearm_muzzle_position_y = weapon_y + rot_point_y(global.weapon_packs[weapon_pack].firearm_muzzle_x, weapon_facing_sign * global.weapon_packs[weapon_pack].firearm_muzzle_y);
+			
+			// Unit Aiming Behaviour
+			var temp_weapon_unit_is_reloading = weapon_unit.unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload;
+			
+			if (!temp_weapon_unit_is_reloading)
+			{
+				// Set Default Crosshair Length from Firearm Muzzle Position
+				var temp_weapon_crosshair_length_target = weapon_crosshair_length_default;
+				
+				// Check if Unit is Aiming Firearm
+				if (weapon_unit.weapon_aim)
+				{
+					// Calculate Target Crosshair Length from Firearm Muzzle to Player Cursor
+					temp_weapon_crosshair_length_target = point_distance(temp_firearm_muzzle_position_x, temp_firearm_muzzle_position_y, GameManager.cursor_x + LightingEngine.render_x, GameManager.cursor_y + LightingEngine.render_y);
+					
+					// Check if Player Cursor is behind Firearm's Muzzle
+					if (point_distance(weapon_x, weapon_y, GameManager.cursor_x + LightingEngine.render_x, GameManager.cursor_y + LightingEngine.render_y) < point_distance(0, 0, global.weapon_packs[weapon_pack].firearm_muzzle_x, global.weapon_packs[weapon_pack].firearm_muzzle_y))
+					{
+						// Clamp Crosshair Length to 0
+						temp_weapon_crosshair_length_target = 0;
+					}
+				}
+				
+				// Lerp Crosshair Length from Muzzle to Target Crosshair Length based on Unit's Weapon Angle Aim Speed
+				weapon_crosshair_length = lerp(weapon_crosshair_length, temp_weapon_crosshair_length_target, weapon_unit.firearm_aiming_angle_transition_spd * frame_delta);
+			}
+			
+			// Firearm Crosshair Position
+			var temp_weapon_crosshair_snap = firearm_recoil_recovery_delay <= 0 and weapon_angle_recoil < 0.5 and !temp_weapon_unit_is_reloading and temp_weapon_crosshair_length_target > 0;
+			
+			if (temp_weapon_crosshair_snap and weapon_unit.weapon_aim and abs(temp_weapon_crosshair_length_target - weapon_crosshair_length) < weapon_crosshair_snap)
+			{
+				// Snap Weapon Crosshair Position to Player Cursor
+				weapon_crosshair_position_x = GameManager.cursor_x + LightingEngine.render_x;
+				weapon_crosshair_position_y = GameManager.cursor_y + LightingEngine.render_y;
+			}
+			else
+			{
+				// Calculate Weapon Crosshair Position based on Firearm's Rotation and Weapon Crosshair Length
+				weapon_crosshair_position_x = temp_firearm_muzzle_position_x + rot_point_x(weapon_crosshair_length, 0);
+				weapon_crosshair_position_y = temp_firearm_muzzle_position_y + rot_point_y(weapon_crosshair_length, 0);
+			}
 		}
 	}
 	
@@ -436,7 +505,7 @@ class FirearmClass extends WeaponClass define
 		{
 			// Create Random Amount of Muzzle Smoke Clouds
 			var temp_firearm_muzzle_smoke_count = irandom_range(global.weapon_packs[weapon_pack].firearm_muzzle_smoke_min, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_max);
-		
+			
 			// Create Smoke Clouds
 			for (var temp_firearm_muzzle_smoke_index = 0; temp_firearm_muzzle_smoke_index < temp_firearm_muzzle_smoke_count; temp_firearm_muzzle_smoke_index++)
 			{
@@ -522,5 +591,12 @@ class FirearmClass extends WeaponClass define
 	{
 		// Draw Weapon
 		draw_sprite_ext(weapon_sprite, weapon_image_index, weapon_x + x_offset, weapon_y + y_offset, weapon_xscale, weapon_yscale * weapon_facing_sign, weapon_angle + (weapon_angle_recoil * weapon_facing_sign), c_white, 1);
+	}
+	
+	static render_cursor_behaviour = function()
+	{
+		// Draw Weapon's Cursor Crosshair
+		var temp_player_attack_eligible = firearm_recoil_recovery_delay <= 0 and firearm_ammo > 0 and weapon_unit.unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload;
+		draw_sprite(sCursorCrosshairIcons, temp_player_attack_eligible ? 0 : 2, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y);
 	}
 }

@@ -8,7 +8,6 @@ window_center();
 // Sleep Margin
 display_set_timing_method(tm_sleep);
 display_set_sleep_margin(10);
-//display_set_sleep_margin(20);
 
 // Vsync
 display_reset(0, true);

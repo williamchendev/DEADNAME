@@ -92,9 +92,11 @@ pathfinding_edge_deleted_indexes_list = ds_list_create();
 cursor_x = 0;
 cursor_y = 0;
 
+cursor_interact = false;
+cursor_interaction_object = noone;
+
 cursor_icon = false;
-cursor_inventory = false;
-cursor_index = 0;
+cursor_icon_index = 0;
 
 // Resolution Variables
 game_resolution_mode = GameResolutionMode.Default640x360;
@@ -104,7 +106,7 @@ game_height = 360;
 game_scale = max(1, round(display_get_width() / game_width) - 1);
 
 // Player Unit Variables
-player_unit = undefined;
+player_unit = noone;
 
 // Resolution Methods
 set_game_resolution_mode = function(resolution_mode)
