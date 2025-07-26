@@ -489,7 +489,7 @@ class LimbArmClass extends LimbClass define
 			case LimbType.RightArm:
 				// Draw Limb
 				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 				
 				// Draw Held Item
 				draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x + x_offset, limb_held_item_y + y_offset, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);

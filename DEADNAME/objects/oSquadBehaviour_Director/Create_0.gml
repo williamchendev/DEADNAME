@@ -440,13 +440,13 @@ faction_set_realtionship = function(first_faction_id, second_faction_id, faction
     // Set Faction Relationship
     switch (faction_relationship_type)
     {
-    	case FactionRelationship.Allied:
-    		ds_list_add(temp_first_faction_allies_list, second_faction_id);
-    		ds_list_add(temp_second_faction_allies_list, first_faction_id);
-    		break;
+		case FactionRelationship.Allied:
+			ds_list_add(temp_first_faction_allies_list, second_faction_id);
+			ds_list_add(temp_second_faction_allies_list, first_faction_id);
+			break;
 		case FactionRelationship.Hostile:
 			ds_list_add(temp_first_faction_enemies_list, second_faction_id);
-    		ds_list_add(temp_second_faction_enemies_list, first_faction_id);
+			ds_list_add(temp_second_faction_enemies_list, first_faction_id);
 			break;
 		case FactionRelationship.Neutral:
 		default:

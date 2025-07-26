@@ -42,7 +42,7 @@ class WeaponClass define
 		weapon_image_index = 0;
 		
 		// Init Weapon Crosshair Properties
-		weapon_crosshair_snap = 0.1;
+		weapon_crosshair_snap = 2;
 		weapon_crosshair_length_default = 60;
 		
 		weapon_crosshair_length = 0;
@@ -308,10 +308,15 @@ class FirearmClass extends WeaponClass define
 				weapon_crosshair_length = lerp(weapon_crosshair_length, temp_weapon_crosshair_length_target, weapon_unit.firearm_aiming_angle_transition_spd * frame_delta);
 			}
 			
-			// Firearm Crosshair Position
-			var temp_weapon_crosshair_snap = firearm_recoil_recovery_delay <= 0 and weapon_angle_recoil < 0.5 and !temp_weapon_unit_is_reloading and temp_weapon_crosshair_length_target > 0;
+			// Calculate Firearm Crosshair Position
+			var temp_weapon_crosshair_position_x = temp_firearm_muzzle_position_x + rot_point_x(weapon_crosshair_length, 0);
+			var temp_weapon_crosshair_position_y = temp_firearm_muzzle_position_y + rot_point_y(weapon_crosshair_length, 0);
 			
-			if (temp_weapon_crosshair_snap and weapon_unit.weapon_aim and abs(temp_weapon_crosshair_length_target - weapon_crosshair_length) < weapon_crosshair_snap)
+			// Firearm Crosshair Position Snap
+			var temp_weapon_crosshair_snap = firearm_recoil_recovery_delay <= 0 and weapon_angle_recoil < 0.5 and !temp_weapon_unit_is_reloading and temp_weapon_crosshair_length_target > 0;
+			var temp_weapon_crosshair_distance = point_distance(GameManager.cursor_x + LightingEngine.render_x, GameManager.cursor_y + LightingEngine.render_y, temp_weapon_crosshair_position_x, temp_weapon_crosshair_position_y) < weapon_crosshair_snap;
+			
+			if (weapon_unit.weapon_aim and temp_weapon_crosshair_snap and temp_weapon_crosshair_distance)
 			{
 				// Snap Weapon Crosshair Position to Player Cursor
 				weapon_crosshair_position_x = GameManager.cursor_x + LightingEngine.render_x;
@@ -320,8 +325,8 @@ class FirearmClass extends WeaponClass define
 			else
 			{
 				// Calculate Weapon Crosshair Position based on Firearm's Rotation and Weapon Crosshair Length
-				weapon_crosshair_position_x = temp_firearm_muzzle_position_x + rot_point_x(weapon_crosshair_length, 0);
-				weapon_crosshair_position_y = temp_firearm_muzzle_position_y + rot_point_y(weapon_crosshair_length, 0);
+				weapon_crosshair_position_x = temp_weapon_crosshair_position_x;
+				weapon_crosshair_position_y = temp_weapon_crosshair_position_y;
 			}
 		}
 	}
