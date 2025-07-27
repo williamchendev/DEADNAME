@@ -6,6 +6,14 @@ enum PathfindingEdgeType
 	TeleportEdge
 }
 
+enum PathfindingEndDirection
+{
+	None,
+	Left,
+	Right,
+	Random
+}
+
 /// @function pathfinding_add_node(node_position_x, node_position_y, node_edges, node_id);
 /// @description Places a new Pathfinding Node in the active Scene
 /// @param {real} position_x The x Coordinate of the new Node's Position
@@ -531,7 +539,8 @@ function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type
 /// @param {real} start_y_position The Y position in the world to start pathfinding from
 /// @param {real} end_x_position The X position in the world to end the path at
 /// @param {real} end_y_position The Y position in the world to end the path at
-function pathfinding_create_path(start_x_position, start_y_position, end_x_position, end_y_position)
+/// @param {PathfindingEndDirection} end_direction - The direction to face towards after finishing the given path
+function pathfinding_create_path(start_x_position, start_y_position, end_x_position, end_y_position, end_direction = PathfindingEndDirection.None)
 {
 	// Find Edge Data for Start and End Coordinates
 	var temp_start_edge_data = pathfinding_get_closest_point_on_edge(start_x_position, start_y_position, undefined);
@@ -572,7 +581,7 @@ function pathfinding_create_path(start_x_position, start_y_position, end_x_posit
 		ds_list_add(temp_same_edge_path_edge_type_list, temp_same_edge_type);
 		
 		// Return Same Edge Path DS List
-		return { position_x: temp_same_edge_path_position_x_list, position_y: temp_same_edge_path_position_y_list, edge_id: temp_same_edge_path_edge_id_list, edge_type: temp_same_edge_path_edge_type_list, path_size: 2 };
+		return { position_x: temp_same_edge_path_position_x_list, position_y: temp_same_edge_path_position_y_list, edge_id: temp_same_edge_path_edge_id_list, edge_type: temp_same_edge_path_edge_type_list, path_size: 2, path_end_direction: end_direction };
 	}
 	
 	// Find Start and End Edge IDs
@@ -688,7 +697,7 @@ function pathfinding_create_path(start_x_position, start_y_position, end_x_posit
 	temp_path_nodes = -1;
 	
 	// Return Finalized Pathfinding Path
-	return { position_x: temp_path_position_x_list, position_y: temp_path_position_y_list, edge_id: temp_path_edge_id_list, edge_type: temp_path_edge_type_list, path_size: temp_path_size };
+	return { position_x: temp_path_position_x_list, position_y: temp_path_position_y_list, edge_id: temp_path_edge_id_list, edge_type: temp_path_edge_type_list, path_size: temp_path_size, path_end_direction: end_direction };
 }
 
 /// @function pathfinder_delete_path(pathfinding_path);

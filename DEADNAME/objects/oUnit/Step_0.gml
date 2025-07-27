@@ -44,39 +44,39 @@ if (!player_input)
 		
 		// Check if Squad Index Exists
 		if (!is_undefined(temp_squad_index) and ds_list_find_value(GameManager.squad_behaviour_director.squad_exists_list, temp_squad_index))
-	    {
-	        // Establish Squad Leader
-	        temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
-	        
-	        // Check if Squad Unit belongs to Player Squad Leader controlled Squad
-	        if (!temp_squad_leader_instance.player_input)
-	        {
-	        	// Squad Unit Behaviour tree
-		        if (id == temp_squad_leader_instance)
-		        {
-		        	// Establish Squad Behaviour Type
-		        	var temp_squad_behaviour = ds_list_find_value(GameManager.squad_behaviour_director.squad_behaviour_list, temp_squad_index);
-		        	
-		        	// Squad Leader Behaviour
-		        	switch (temp_squad_behaviour)
-		        	{
-		        		case SquadBehaviour.Hunting:
-				            break;
-				        case SquadBehaviour.Patrol:
-				            break;
-				        case SquadBehaviour.Sentry:
-				            break;
-				        case SquadBehaviour.Action:
-				            break;
-				        case SquadBehaviour.Idle:
-				        default:
-				            break;
-		        	}
-		        }
-	        	
-	        	// Recalculate Non-Player Squad Leader's Squad Unit Pathfinding Behaviour
-	        	if (pathfinding_recalculate)
-		    	{
+		{
+			// Establish Squad Leader
+			temp_squad_leader_instance = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
+			
+			// Check if Squad Unit belongs to Player Squad Leader controlled Squad
+			if (!temp_squad_leader_instance.player_input)
+			{
+				// Squad Unit Behaviour tree
+				if (id == temp_squad_leader_instance)
+				{
+					// Establish Squad Behaviour Type
+					var temp_squad_behaviour = ds_list_find_value(GameManager.squad_behaviour_director.squad_behaviour_list, temp_squad_index);
+					
+					// Squad Leader Behaviour
+					switch (temp_squad_behaviour)
+					{
+						case SquadBehaviour.Hunting:
+							break;
+						case SquadBehaviour.Patrol:
+							break;
+						case SquadBehaviour.Sentry:
+							break;
+						case SquadBehaviour.Action:
+							break;
+						case SquadBehaviour.Idle:
+						default:
+							break;
+					}
+				}
+				
+				// Recalculate Non-Player Squad Leader's Squad Unit Pathfinding Behaviour
+				if (pathfinding_recalculate)
+				{
 					// Check if Unit's Pathfinding Path Recalculation Condition is Valid
 					var temp_squad_movement_recalculate_command_valid = true;
 					
@@ -133,82 +133,82 @@ if (!player_input)
 						// Recalculation was invalid
 						pathfinding_recalculate = false;
 					}
-		    	}
-	        }
-	        else
-	        {
-	        	// Unit is matching Player Unit's Attack Behaviour - Remove Combat Assignment
-    			combat_target = undefined;
+				}
+			}
+			else
+			{
+				// Unit is matching Player Unit's Attack Behaviour - Remove Combat Assignment
+				combat_target = undefined;
 				combat_strategy = UnitCombatStrategy.NullStrategy;
 				combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
 				
-	        	// Establish Player Input Squad Unit Follow Conditions
-	        	var temp_player_input_squad_unit_follow_condition_within_range_horizontal = abs(x - temp_squad_leader_instance.x) <= temp_squad_properties.following_range_horizontal_distance;
-	        	var temp_player_input_squad_unit_follow_condition_within_range_vertical = abs(y - temp_squad_leader_instance.y) <= temp_squad_properties.following_range_vertical_distance;
-	        	var temp_player_input_squad_unit_follow_condition_leader_is_moving = temp_squad_leader_instance.x_velocity != 0 or temp_squad_leader_instance.y_velocity != 0;
-	        	
-	        	// Establish Player Input Squad Unit List
-	        	var temp_player_input_squad_unit_instances_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
-            
-	            // Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
-	            var temp_player_input_squad_leader_unit_within_squad_list_index = ds_list_find_index(temp_player_input_squad_unit_instances_list, temp_squad_leader_instance);
-    			var temp_player_input_squad_unit_within_squad_list_index = ds_list_find_index(temp_player_input_squad_unit_instances_list, id);
-    			
-	            var temp_player_input_squad_spacing_count = -((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) div 2);
-	            
-	            if ((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) mod 2 == 1)
-	            {
-	            	temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? temp_squad_properties.facing_direction : sign(temp_squad_leader_instance.draw_xscale)) == -1 ? -1 : 0;
-	            }
-	            
-	            temp_player_input_squad_spacing_count += temp_player_input_squad_unit_within_squad_list_index - (temp_player_input_squad_unit_within_squad_list_index < temp_player_input_squad_leader_unit_within_squad_list_index ? 0 : 1);
-    			temp_player_input_squad_spacing_count += temp_player_input_squad_spacing_count >= 0 ? 1 : 0;
-	            
-	            // Find movement position of Player Input Squad Unit from Squad Leader
-	            temp_follow_behaviour_squad_movement_position_x = temp_squad_leader_instance.x;
-    			temp_follow_behaviour_squad_movement_position_y = temp_squad_leader_instance.y;
-    			
-    			var temp_player_input_squad_unit_movement_closest_point = pathfinding_get_closest_point_on_edge(temp_squad_leader_instance.x + (temp_player_input_squad_spacing_count * temp_squad_properties.squad_unit_spacing), temp_squad_leader_instance.y, PathfindingEdgeType.DefaultEdge);
-            	temp_follow_behaviour_squad_movement_position_x = temp_player_input_squad_unit_movement_closest_point.return_x;
-                temp_follow_behaviour_squad_movement_position_y = temp_player_input_squad_unit_movement_closest_point.return_y;
-	        	
-	        	// Player Input Squad Unit Following Behaviour
-	        	if (temp_player_input_squad_unit_follow_condition_within_range_horizontal and temp_player_input_squad_unit_follow_condition_within_range_vertical and temp_player_input_squad_unit_follow_condition_leader_is_moving)
-	        	{
-	        		// Unit within follow range - Unit follows Squad Leader
-        			temp_follow_behaviour_unit_instance = temp_squad_leader_instance;
-        			
-        			// Unit matches Player Unit's Input Condition
-        			input_attack = temp_squad_leader_instance.input_attack;
+				// Establish Player Input Squad Unit Follow Conditions
+				var temp_player_input_squad_unit_follow_condition_within_range_horizontal = abs(x - temp_squad_leader_instance.x) <= temp_squad_properties.following_range_horizontal_distance;
+				var temp_player_input_squad_unit_follow_condition_within_range_vertical = abs(y - temp_squad_leader_instance.y) <= temp_squad_properties.following_range_vertical_distance;
+				var temp_player_input_squad_unit_follow_condition_leader_is_moving = temp_squad_leader_instance.x_velocity != 0 or temp_squad_leader_instance.y_velocity != 0;
+				
+				// Establish Player Input Squad Unit List
+				var temp_player_input_squad_unit_instances_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
+				
+				// Find direction of last movement position so Squad Units are always in front of the Squad Leader to shield from danger
+				var temp_player_input_squad_leader_unit_within_squad_list_index = ds_list_find_index(temp_player_input_squad_unit_instances_list, temp_squad_leader_instance);
+				var temp_player_input_squad_unit_within_squad_list_index = ds_list_find_index(temp_player_input_squad_unit_instances_list, id);
+				
+				var temp_player_input_squad_spacing_count = -((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) div 2);
+				
+				if ((ds_list_size(temp_player_input_squad_unit_instances_list) - 1) mod 2 == 1)
+				{
+					temp_player_input_squad_spacing_count += (temp_squad_leader_instance.draw_xscale == 0 ? temp_squad_properties.facing_direction : sign(temp_squad_leader_instance.draw_xscale)) == -1 ? -1 : 0;
+				}
+				
+				temp_player_input_squad_spacing_count += temp_player_input_squad_unit_within_squad_list_index - (temp_player_input_squad_unit_within_squad_list_index < temp_player_input_squad_leader_unit_within_squad_list_index ? 0 : 1);
+				temp_player_input_squad_spacing_count += temp_player_input_squad_spacing_count >= 0 ? 1 : 0;
+				
+				// Find movement position of Player Input Squad Unit from Squad Leader
+				temp_follow_behaviour_squad_movement_position_x = temp_squad_leader_instance.x;
+				temp_follow_behaviour_squad_movement_position_y = temp_squad_leader_instance.y;
+				
+				var temp_player_input_squad_unit_movement_closest_point = pathfinding_get_closest_point_on_edge(temp_squad_leader_instance.x + (temp_player_input_squad_spacing_count * temp_squad_properties.squad_unit_spacing), temp_squad_leader_instance.y, PathfindingEdgeType.DefaultEdge);
+				temp_follow_behaviour_squad_movement_position_x = temp_player_input_squad_unit_movement_closest_point.return_x;
+				temp_follow_behaviour_squad_movement_position_y = temp_player_input_squad_unit_movement_closest_point.return_y;
+				
+				// Player Input Squad Unit Following Behaviour
+				if (temp_player_input_squad_unit_follow_condition_within_range_horizontal and temp_player_input_squad_unit_follow_condition_within_range_vertical and temp_player_input_squad_unit_follow_condition_leader_is_moving)
+				{
+					// Unit within follow range - Unit follows Squad Leader
+					temp_follow_behaviour_unit_instance = temp_squad_leader_instance;
+					
+					// Unit matches Player Unit's Input Condition
+					input_attack = temp_squad_leader_instance.input_attack;
 					input_aim = temp_squad_leader_instance.input_aim;
 					
 					input_cursor_x = temp_squad_leader_instance.input_cursor_x;
 					input_cursor_y = temp_squad_leader_instance.input_cursor_y;
-	        	}
-	        	else
-	        	{
-	        		// Check if Pathfinding Target is within Valid Range of Squad Leader's Movement Position
-		        	if (!pathfinding_recalculate and !is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
-		        	{
-	        			var temp_player_input_squad_unit_path_end_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
-	        			var temp_player_input_squad_unit_path_end_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
-	        			
-	        			if (point_distance(temp_follow_behaviour_squad_movement_position_x, temp_follow_behaviour_squad_movement_position_y, temp_player_input_squad_unit_path_end_x, temp_player_input_squad_unit_path_end_y) > (temp_squad_properties.squad_random_spacing * 2) + 2)
-	        			{
-	        				pathfinding_recalculate = true;
-	        			}
-		        	}
-		        	
-		        	// Recalculate Pathfinding Target to Squad Leader's Movement Position
-		        	if (pathfinding_recalculate)
-		        	{
-		        		// Set Unit Pathfinding Path Start & End
-	    				pathfinding_path_start_x = x;
-	                    pathfinding_path_start_y = y;
-	                    
-	                    pathfinding_path_end_x = temp_follow_behaviour_squad_movement_position_x + random_range(-temp_squad_properties.squad_random_spacing, temp_squad_properties.squad_random_spacing);
-	                    pathfinding_path_end_y = temp_follow_behaviour_squad_movement_position_y;
-	    				
+				}
+				else
+				{
+					// Check if Pathfinding Target is within Valid Range of Squad Leader's Movement Position
+					if (!pathfinding_recalculate and !is_undefined(pathfinding_path) and pathfinding_path.path_size >= 1)
+					{
+						var temp_player_input_squad_unit_path_end_x = ds_list_find_value(pathfinding_path.position_x, pathfinding_path.path_size - 1);
+						var temp_player_input_squad_unit_path_end_y = ds_list_find_value(pathfinding_path.position_y, pathfinding_path.path_size - 1);
+						
+						if (point_distance(temp_follow_behaviour_squad_movement_position_x, temp_follow_behaviour_squad_movement_position_y, temp_player_input_squad_unit_path_end_x, temp_player_input_squad_unit_path_end_y) > (temp_squad_properties.squad_random_spacing * 2) + 2)
+						{
+							pathfinding_recalculate = true;
+						}
+					}
+					
+					// Recalculate Pathfinding Target to Squad Leader's Movement Position
+					if (pathfinding_recalculate)
+					{
+						// Set Unit Pathfinding Path Start & End
+						pathfinding_path_start_x = x;
+						pathfinding_path_start_y = y;
+						
+						pathfinding_path_end_x = temp_follow_behaviour_squad_movement_position_x + random_range(-temp_squad_properties.squad_random_spacing, temp_squad_properties.squad_random_spacing);
+						pathfinding_path_end_y = temp_follow_behaviour_squad_movement_position_y;
+						
 						// Reset and Calculate Path Data
 						if (!is_undefined(pathfinding_path))
 						{
@@ -240,28 +240,28 @@ if (!player_input)
 						pathfinding_jump = true;
 					}
 					
-		        	// Pathfinding Aim & Attack Input Behaviour
-		        	if (is_undefined(pathfinding_path) or pathfinding_path_ended)
-		        	{
-		        		input_attack = temp_squad_leader_instance.input_attack;
+					// Pathfinding Aim & Attack Input Behaviour
+					if (is_undefined(pathfinding_path) or pathfinding_path_ended)
+					{
+						input_attack = temp_squad_leader_instance.input_attack;
 						input_aim = temp_squad_leader_instance.input_aim;
 						
 						input_cursor_x = temp_squad_leader_instance.input_cursor_x;
 						input_cursor_y = temp_squad_leader_instance.input_cursor_y;
-		        	}
-		        	else
-		        	{
-		        		input_attack = false;
+					}
+					else
+					{
+						input_attack = false;
 						input_aim = false;
-		        	}
-	        	}
-	        }
-	    }
-	    else
-	    {
-	    	// Squad does not exist - Remove self from Squad
-	    	squad_id = SquadIDNull;
-	    }
+					}
+				}
+			}
+		}
+		else
+		{
+			// Squad does not exist - Remove self from Squad
+			squad_id = SquadIDNull;
+		}
 	}
 	else
 	{
@@ -271,7 +271,7 @@ if (!player_input)
     // Universal Pathfinding Movement Behaviour
     if (!is_undefined(temp_follow_behaviour_unit_instance))
     {
-    	// Horizontal Movement for Unit Follow Behaviour
+		// Horizontal Movement for Unit Follow Behaviour
 		input_left = temp_follow_behaviour_unit_instance.input_left;
 		input_right = temp_follow_behaviour_unit_instance.input_right;
 		
@@ -304,6 +304,23 @@ if (!player_input)
 			if (!is_undefined(pathfinding_path))
 			{
 				pathfinding_path_index = pathfinding_path.path_size;
+				
+				// Pathfinding Ended - Set Unit's Facing Direction to Path's End Direction
+				switch (pathfinding_path.path_end_direction)
+				{
+					case PathfindingEndDirection.Left:
+						draw_xscale = abs(draw_xscale) * -1;
+						break;
+					case PathfindingEndDirection.Right:
+						draw_xscale = abs(draw_xscale);
+						break;
+					case PathfindingEndDirection.Random:
+						draw_xscale = abs(draw_xscale) * (random(1.0) > 0.5 ? 1 : -1);
+						break;
+					case PathfindingEndDirection.None:
+					default:
+						break;
+				}
 			}
 			
 			pathfinding_path_ended = true;
@@ -316,7 +333,7 @@ if (!player_input)
     }
     else if (!pathfinding_path_ended and !is_undefined(pathfinding_path) and pathfinding_path_index < pathfinding_path.path_size)
     {
-    	// Unit Pathfinding Follow Behaviour
+		// Unit Pathfinding Follow Behaviour
 		while (pathfinding_path_index < pathfinding_path.path_size)
 		{
 			// Establish Path Target Details
@@ -462,6 +479,23 @@ if (!player_input)
 					{
 						
 					}
+					
+					// Pathfinding Ended - Set Unit's Facing Direction to Path's End Direction
+					switch (pathfinding_path.path_end_direction)
+					{
+						case PathfindingEndDirection.Left:
+							draw_xscale = abs(draw_xscale) * -1;
+							break;
+						case PathfindingEndDirection.Right:
+							draw_xscale = abs(draw_xscale);
+							break;
+						case PathfindingEndDirection.Random:
+							draw_xscale = abs(draw_xscale) * (random(1.0) > 0.5 ? 1 : -1);
+							break;
+						case PathfindingEndDirection.None:
+						default:
+							break;
+					}
 				}
 			}
 			else
@@ -472,8 +506,8 @@ if (!player_input)
     }
     else
     {
-    	// Reset Pathfinding Unit Movement Behaviour
-    	input_left = false;
+		// Reset Pathfinding Unit Movement Behaviour
+		input_left = false;
 		input_right = false;
 		
 		input_drop_down = false;

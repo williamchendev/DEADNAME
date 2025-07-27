@@ -7,8 +7,12 @@ sprite_index = -1;
 
 // Cutscene Events
 cutscene_events = array_create(0);
+cutscene_add_delay(id, 1);
 
-cutscene_add_delay(id, 180);
+// Create Cutscene
+cutscene_add_unit_movement(id, "Mel", 80, 0, true, PathfindingEndDirection.Right);
+cutscene_add_unit_movement(id, "Charn", 120, 0, true, PathfindingEndDirection.Left);
+cutscene_add_delay(id, 40);
 cutscene_add_dialogue(id, "We found contraband materials in the depths of the temple.", "Mel", -20);
 cutscene_add_dialogue(id, "It seems our friend's little story is a bit...", "Mel", -20);
 cutscene_add_dialogue(id, "Fake?", "Charn", 20);
@@ -52,6 +56,9 @@ cutscene_waiting_for_delay_duration = false;
 cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue = false;
 
 cutscene_delay_timer = 0;
+
+cutscene_waiting_for_units_to_finish_moving = false;
+cutscene_moving_units_list = ds_list_create();
 
 // Trigonometry Variables
 trig_cosine = 1;

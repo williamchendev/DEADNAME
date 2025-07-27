@@ -108,6 +108,7 @@ function cutscene_continue_event(cutscene_instance)
 						// Check if Dialogue Clear Behaviour is instantaneous
 						if (cutscene_events[cutscene_event_index].dialogue_clear_instant)
 						{
+							// Destroy Dialogue Box Instantly
 							instance_destroy(temp_dialogue_box_remove);
 						}
 						else
@@ -122,6 +123,7 @@ function cutscene_continue_event(cutscene_instance)
 				// If the Dialogue Clear Event is instantaneous, immediately advance to the next Cutscene Event
 				if (cutscene_events[cutscene_event_index].dialogue_clear_instant)
 				{
+					// Continue to next Cutscene Event
 					cutscene_continue_event(cutscene_instance);
 				}
 				break;
@@ -131,6 +133,72 @@ function cutscene_continue_event(cutscene_instance)
 				cutscene_waiting_for_delay_duration = true;
 				cutscene_delay_timer = cutscene_events[cutscene_event_index].delay_duration;
 				break;
+			case CutsceneEventType.UnitMovement:
+				// Unit Movement Cutscene Event - Finds the given Unit by name and moves them based on the given movement position and other movement parameters
+				var temp_movement_unit_instance = find_unit_name(cutscene_events[cutscene_event_index].unit_movement_name);
+				
+				// Check if Unit to be moved exists in the given Scene
+				if (!instance_exists(temp_movement_unit_instance))
+				{
+					// Movement Unit does not exist, skip Unit Movement to next cutscene event
+					cutscene_continue_event(cutscene_instance);
+					return;
+				}
+				
+				// Unit Movement Behaviour
+				with (temp_movement_unit_instance)
+				{
+					// Delete and Reset Previous Path
+					pathfinding_delete_path(pathfinding_path);
+					pathfinding_path = undefined;
+					
+					// Establish Unit Path Start and End Positions
+					pathfinding_path_start_x = x;
+					pathfinding_path_start_y = y;
+					
+					pathfinding_path_end_x = (cutscene_instance.cutscene_events[cutscene_instance.cutscene_event_index].unit_movement_position_local ? x : 0) + cutscene_instance.cutscene_events[cutscene_instance.cutscene_event_index].unit_movement_x;
+					pathfinding_path_end_y = (cutscene_instance.cutscene_events[cutscene_instance.cutscene_event_index].unit_movement_position_local ? y : 0) + cutscene_instance.cutscene_events[cutscene_instance.cutscene_event_index].unit_movement_y;
+					
+					// Establish Unit Path End Direction
+					var temp_pathfinding_end_direction = cutscene_instance.cutscene_events[cutscene_instance.cutscene_event_index].unit_movement_end_direction;
+					
+					// Calculate New Path and Reset Pathfinding Index
+					pathfinding_path = pathfinding_create_path(pathfinding_path_start_x, pathfinding_path_start_y, pathfinding_path_end_x, pathfinding_path_end_y, temp_pathfinding_end_direction);
+					pathfinding_path_index = is_undefined(pathfinding_path) ? 0 : (pathfinding_path.path_size >= 2 ? 1 : 0);
+					
+					// Reset Pathfinding Variables
+					pathfinding_recalculate = false;
+					pathfinding_path_ended = false;
+					pathfinding_jump = true;
+				}
+				
+				// Unit Movement Cutscene Wait and Advancement Behaviour
+				if (cutscene_events[cutscene_event_index].unit_movement_wait)
+				{
+					// Check for duplicate Unit Moving Instances
+					if (ds_list_find_index(cutscene_moving_units_list, temp_movement_unit_instance) == -1)
+					{
+						// Toggle Cutscene Wait for Unit Movement to Finish Behaviour
+						cutscene_waiting_behaviour = true;
+						cutscene_waiting_for_units_to_finish_moving = true;
+						
+						// Add Unit Movement
+						ds_list_add(cutscene_moving_units_list, temp_movement_unit_instance);
+					}
+					
+					// Check if next Cutscene Event is Unit Movement and allow chained Unit Movement Wait Behaviours
+					if (cutscene_event_index + 1 < array_length(cutscene_events) and cutscene_events[cutscene_event_index + 1].cutscene_type == CutsceneEventType.UnitMovement)
+					{
+						// Continue to next Cutscene Event
+						cutscene_continue_event(cutscene_instance);
+					}
+				}
+				else
+				{
+					// Continue to next Cutscene Event
+					cutscene_continue_event(cutscene_instance);
+				}
+				return;
 			case CutsceneEventType.End:
 			default:
 				// End Cutscene - Destroy Cutscene Object and End Cutscene Event

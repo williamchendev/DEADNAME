@@ -51,6 +51,38 @@ if (cutscene_active)
 				cutscene_continue_event(id);
 			}
 		}
+		else if (cutscene_waiting_for_units_to_finish_moving)
+		{
+			// Check all Moving Units to see if they have finished their pathfinding
+			for (var i = ds_list_size(cutscene_moving_units_list) - 1; i >= 0; i--)
+			{
+				// Remove all uninstantiated Dialogue Box instances from Cutscene Dialogue Boxes DS List
+				var temp_movement_unit = ds_list_find_value(cutscene_moving_units_list, i);
+				
+				// Check if Cutscene's Moving Unit exists or has finished their pathfinding movement behaviour
+				if (!instance_exists(temp_movement_unit))
+				{
+					// Unit does not exist - Remove Unit from Moving Units List
+					ds_list_delete(cutscene_moving_units_list, i);
+				}
+				else if (temp_movement_unit.pathfinding_path_ended)
+				{
+					// Unit has finished their pathfinding movement behaviour - Remove Unit from Moving Units List
+					ds_list_delete(cutscene_moving_units_list, i);
+				}
+			}
+			
+			// Check for Units have finished moving Cutscene Advancement Condition
+			if (ds_list_size(cutscene_moving_units_list) <= 0)
+			{
+				// Stop waiting for all Cutscene Moving Units to finish moving
+				cutscene_waiting_for_units_to_finish_moving = false;
+				
+				// Continue to next Cutscene Event
+				cutscene_waiting_behaviour = false;
+				cutscene_continue_event(id);
+			}
+		}
 	}
 	
 	// Orient Dialogue Boxes in Cutscene

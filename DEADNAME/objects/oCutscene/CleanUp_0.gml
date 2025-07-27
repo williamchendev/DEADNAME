@@ -24,3 +24,7 @@ cutscene_dialogue_boxes = -1;
 
 ds_list_destroy(cutscene_units);
 cutscene_units = -1;
+
+ds_list_destroy(cutscene_moving_units_list);
+cutscene_moving_units_list = -1;
+
