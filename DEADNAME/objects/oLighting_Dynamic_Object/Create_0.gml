@@ -1,5 +1,5 @@
 /// @description Default Dynamic Object Initialization
-// Initialized Dynamic Object for Lighting Engine Rendering
+// Initializes the Dynamic Object for Lighting Engine Rendering
 
 // Disable Visibility
 visible = false;

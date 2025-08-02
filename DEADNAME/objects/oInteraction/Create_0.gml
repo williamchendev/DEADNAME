@@ -23,7 +23,8 @@ interaction_horizontal_offset = 9;
 // Dialogue Triangle Settings
 interaction_option_triangle_angle = -15;
 interaction_option_triangle_radius = 4;
-interaction_option_triangle_offset = 2;
+interaction_option_triangle_horizontal_offset = 6;
+interaction_option_triangle_vertical_offset = 0;
 
 interaction_option_triangle_rotate_range = 30;
 interaction_option_triangle_rotate_spd = 2;
@@ -53,6 +54,7 @@ tri_x_3 = 0;
 tri_y_3 = 0;
 
 /// @DEBUG
+/*
 interact_options[0] = 
 {
 	option_name: "Talk"
@@ -67,5 +69,4 @@ interact_options[2] =
 {
 	option_name: "Bark"
 };
-
-interaction_object = find_unit_name("Charn");
+*/

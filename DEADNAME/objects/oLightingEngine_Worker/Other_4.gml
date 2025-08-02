@@ -214,7 +214,7 @@ for (var temp_dynamic_object_index = 0; temp_dynamic_object_index < ds_list_size
     // Debug Flag - Unsuccessfully added Dynamic Object to Lighting Engine Sub Layer
     if (!temp_successfully_added_dynamic_object)
     {
-        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (Basic) \"{object_get_name(temp_dynamic_object_instance.object_index)}\" to Lighting Engine Sub Layer with name \"{temp_dynamic_object_layer}\"");
+        show_debug_message($"Debug Warning! - Unsuccessfully added Dynamic Object (ANY) \"{object_get_name(temp_dynamic_object_instance.object_index)}\" to Lighting Engine Sub Layer with name \"{temp_dynamic_object_layer}\"");
     }
 }
 

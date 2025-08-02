@@ -1,5 +1,5 @@
 /// @description Default UI Object Initialization
-// Initialized UI Object for Lighting Engine Rendering
+// Initializes the UI Object for Lighting Engine Rendering
 
 // Disable Visibility
 visible = false;

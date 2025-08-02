@@ -582,7 +582,7 @@ if (!player_input)
 					    case WeaponType.DefaultFirearm:
 					    case WeaponType.BoltActionFirearm:
 					        // Check Firearm Weapon Reload Behaviour
-					        if (weapon_equipped.firearm_ammo <= 0)
+					        if (weapon_equipped.firearm_ammo <= 0 or !weapon_equipped.firearm_attack_reset)
 					        {
 					        	//
 					        	input_reload = true;
@@ -817,6 +817,22 @@ if (canmove)
 					}
 					break;
 				// Default Weapon Attack Behaviour
+				default:
+					break;
+			}
+		}
+		else 
+		{
+			// Perform Weapon Reset Behaviour
+			switch(global.weapon_packs[weapon_equipped.weapon_pack].weapon_type)
+			{
+				// Firearm Attack Reset Behaviours
+				case WeaponType.DefaultFirearm:
+				case WeaponType.BoltActionFirearm:
+					// Reset Firearm Attack Behaviour
+					weapon_equipped.reset_firearm();
+					break;
+				// Default Weapon Attack Reset Behaviour
 				default:
 					break;
 			}
@@ -1245,6 +1261,13 @@ if (unit_animation_state != temp_unit_animation_state)
 			break;
 	}
 }
+
+// Calculate Unit Bobbing Animation
+bobbing_animation_value = sin((((floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2)) + bobbing_animation_percent_offset) * 2 * pi);
+
+// Calculate Unit's Inventory Position
+backpack_position_x = rot_point_x(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_xscale;
+backpack_position_y = rot_point_y(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_yscale;
 #endregion
 
 // LIMBS //
@@ -1705,7 +1728,7 @@ switch (unit_equipment_animation_state)
 			case UnitAnimationState.Idle:
 			case UnitAnimationState.Walking:
 			case UnitAnimationState.AimWalking:
-				temp_firearm_vertical_offset += dsin((((floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2)) + weapon_bobbing_animation_percent_offset) * 360) * weapon_vertical_bobbing_height;
+				temp_firearm_vertical_offset += bobbing_animation_value * weapon_vertical_bobbing_height;
 				break;
 			default:
 				break;

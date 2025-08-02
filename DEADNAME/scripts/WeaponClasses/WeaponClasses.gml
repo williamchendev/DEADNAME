@@ -6,7 +6,7 @@ class WeaponClass define
 		
 	}
 	
-	static _destructor = function() 
+	static _destructor = function()
 	{
 		
 	}
@@ -41,11 +41,14 @@ class WeaponClass define
 		// Init Weapon Image Index
 		weapon_image_index = 0;
 		
+		// Init Weapon Layer Index
+		weapon_layer_index = -1;
+		
 		// Init Weapon Crosshair Properties
 		weapon_crosshair_snap = 2;
 		weapon_crosshair_length_default = 60;
 		
-		weapon_crosshair_length = 0;
+		weapon_crosshair_length = weapon_crosshair_length_default;
 		weapon_crosshair_position_x = 0;
 		weapon_crosshair_position_y = 0;
 	}
@@ -175,6 +178,9 @@ class FirearmClass extends WeaponClass define
 		firearm_recoil_recovery_delay = 0;
 		firearm_attack_delay = 0;
 		
+		// Init Weapon Conditions
+		firearm_attack_reset = false;
+		
 		// Firearm Muzzle Flare
 		firearm_muzzle_flare = noone;
 	}
@@ -202,6 +208,9 @@ class FirearmClass extends WeaponClass define
 		
 		// Set Unit Weapon Behaviour
 		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
+		
+		// Reset Firearm Attack Condition 
+		firearm_attack_reset = false;
 	}
 	
 	static unequip_weapon = function()
@@ -240,7 +249,7 @@ class FirearmClass extends WeaponClass define
 		}
 	}
 	
-	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd, unit_firearm_recoil_angle_recovery_spd)
+	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
 	{
 		// Cycle Weapon
 		firearm_attack_delay = firearm_attack_delay > 0 ? firearm_attack_delay - frame_delta : firearm_attack_delay;
@@ -334,7 +343,12 @@ class FirearmClass extends WeaponClass define
 	static update_weapon_attack = function(weapon_target = undefined)
 	{
 		// Invalid Weapon Attack Behaviour
-		if (firearm_attack_delay > 0)
+		if (!firearm_attack_reset)
+		{
+			// Firearm Input Reset Incomplete
+			return false;
+		}
+		else if (firearm_attack_delay > 0)
 		{
 			// Firing Cycle Incomplete
 			return false;
@@ -488,6 +502,20 @@ class FirearmClass extends WeaponClass define
 		firearm_attack_delay = global.weapon_packs[weapon_pack].firearm_attack_delay;
 		firearm_recoil_recovery_delay = global.weapon_packs[weapon_pack].firearm_recoil_recovery_delay;
 		
+		// Reset Firearm Attack Condition
+		switch (global.weapon_packs[weapon_pack].weapon_type)
+		{
+			case WeaponType.DefaultFirearm:
+				firearm_attack_reset = firearm_ammo <= 0 ? false : firearm_attack_reset;
+				break;
+			case WeaponType.BoltActionFirearm:
+				firearm_attack_reset = false;
+				break;
+			default:
+				firearm_attack_reset = false;
+			    break;
+		}
+		
 		// Firing Success
 		return true;
 	}
@@ -496,25 +524,39 @@ class FirearmClass extends WeaponClass define
 	static fire_firearm = function(muzzle_x, muzzle_y, attack_direction, attack_distance)
 	{
 		// Firearm Sub Layer Index
-		var temp_firearm_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : -1;
+		var temp_firearm_sub_layer_index = instance_exists(weapon_unit) ? lighting_engine_find_object_index(weapon_unit) + 1 : weapon_layer_index;
 		
 		// Firearm Smoke Trail
 		if (global.weapon_packs[weapon_pack].firearm_smoke_trail_object != noone)
 		{
 			// Create Firearm Smoke Trail Instance
-			instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_smoke_trail_object, { image_angle: attack_direction, sub_layer_index: temp_firearm_sub_layer_index, trail_length: attack_distance });
+			var temp_firearm_smoke_trail_object_var_struct = 
+			{ 
+				image_angle: attack_direction, 
+				sub_layer_index: temp_firearm_sub_layer_index, 
+				trail_length: attack_distance 
+			};
+			
+			instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_smoke_trail_object, temp_firearm_smoke_trail_object_var_struct);
 		}
 		
 		// Firearm Muzzle Smoke
 		if (global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object != noone)
 		{
+			// Create Firearm Muzzle Smoke Var Struct
+			var temp_firearm_muzzle_smoke_object_var_struct = 
+			{
+				image_angle: attack_direction, 
+				sub_layer_index: temp_firearm_sub_layer_index 
+			};
+			
 			// Create Random Amount of Muzzle Smoke Clouds
 			var temp_firearm_muzzle_smoke_count = irandom_range(global.weapon_packs[weapon_pack].firearm_muzzle_smoke_min, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_max);
 			
 			// Create Smoke Clouds
 			for (var temp_firearm_muzzle_smoke_index = 0; temp_firearm_muzzle_smoke_index < temp_firearm_muzzle_smoke_count; temp_firearm_muzzle_smoke_index++)
 			{
-				instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object, { image_angle: attack_direction, sub_layer_index: temp_firearm_sub_layer_index });
+				instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_smoke_object, temp_firearm_muzzle_smoke_object_var_struct);
 			}
 		}
 		
@@ -530,6 +572,12 @@ class FirearmClass extends WeaponClass define
 			// Create Muzzle Flare Instance
 			firearm_muzzle_flare = instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_flare_object);
 		}
+	}
+	
+	static reset_firearm = function()
+	{
+		// Reset Firearm
+		firearm_attack_reset = true;
 	}
 	
 	static reload_firearm = function(reload_rounds_count = undefined)

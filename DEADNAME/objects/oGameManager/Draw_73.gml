@@ -25,7 +25,7 @@ if (cursor_interact)
 		draw_set_valign(fa_top);
 		
 		// Draw Interaction Detail Text Outlined
-		draw_text_outline(cursor_x + 15, cursor_y - 3, $"( {GameManager.cursor_interaction_object.interaction_object_name} )");
+		draw_text_outline(cursor_x + 17, cursor_y - 3, $"{GameManager.cursor_interaction_object.interaction_object_name}");
 	}
 	
 	// Reset Interaction Cursor

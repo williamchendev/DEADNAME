@@ -1,5 +1,5 @@
 /// @description Default Dynamic Particle Initialization
-// Initializes Dynamic Particle for Lighting Engine Rendering
+// Initializes the Dynamic Particle for Lighting Engine Rendering
 
 // Disable Visibility
 visible = false;

@@ -255,6 +255,73 @@ function lighting_engine_render_layer(render_layer_type)
 						);
 					}
 					break;
+				case LightingEngineObjectType.Dynamic_Item:
+					// Draw Dynamic Object (Item) on Dynamic Layer
+					with (temp_sub_layer_object)
+					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
+						// Region Culling Check
+						if (region_culled)
+						{
+							// Find Region Culling Instance
+							var temp_region = ds_map_find_value(LightingEngine.lighting_engine_culling_regions_map, region_culling_id);
+							
+							// Check if Region Culling Instance is Indexed
+							if (!is_undefined(temp_region))
+							{
+								// Check if Region is being Culled
+								if (!temp_region.region_render_enabled)
+								{
+									// Region Render Disabled - Skip Drawing Object
+									break;
+								}
+							}
+						}
+						
+						// Draw Dynamic Object (Item)
+						switch (global.inventory_item_pack[item_pack].item_type)
+						{
+							case InventoryItemType.Default:
+								// Draw Default Item
+								lighting_engine_render_sprite_ext
+								(
+									sprite_index,
+									image_index,
+									normalmap_spritepack != undefined ? normalmap_spritepack[image_index].texture : undefined,
+									metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].texture : undefined,
+									emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].texture : undefined,
+									normalmap_spritepack != undefined ? normalmap_spritepack[image_index].uvs : undefined,
+									metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].uvs : undefined,
+									emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].uvs : undefined,
+									normal_strength,
+									metallic,
+									roughness,
+									emissive,
+									emissive_multiplier,
+									x,
+									y,
+									image_xscale,
+									image_yscale,
+									image_angle,
+									image_blend,
+									image_alpha
+								);
+								break;
+							case InventoryItemType.Weapon:
+								// Draw Weapon Item
+								weapon_instance.render_behaviour();
+								break;
+							case InventoryItemType.None:
+							default:
+								break;
+						}
+					}
+					break;
 				case LightingEngineObjectType.Dynamic_Particle:
 					// Draw Dynamic Particle System
 					with (temp_sub_layer_object)
@@ -633,78 +700,104 @@ function lighting_engine_render_ui_layer()
 				//
 				if (temp_ui_object_instance.interaction_selected)
 				{
-					//
-					var temp_interact_menu_x = temp_ui_object_instance.x - LightingEngine.render_x;
-					var temp_interact_menu_y = temp_ui_object_instance.y - LightingEngine.render_y;
-					
-					var temp_interact_menu_text_x = temp_interact_menu_x + temp_ui_object_instance.interaction_text_horizontal_offset;
-					var temp_interact_menu_text_y = temp_interact_menu_y + temp_ui_object_instance.interaction_text_vertical_offset;
-					
-					//
-					draw_rectangle(temp_interact_menu_x, temp_interact_menu_y, temp_interact_menu_x + temp_ui_object_instance.interact_menu_width, temp_interact_menu_y + temp_ui_object_instance.interact_menu_height, false);
-					
-					// Set Interaction Detail Text Font
-					draw_set_font(font_Default);
-					
-					// Set Interaction Detail Text Alignment
-					draw_set_halign(fa_left);
-					draw_set_valign(fa_top);
-					
-					//
-					draw_set_color(merge_color(temp_ui_object_instance.interaction_text_color, c_black, temp_ui_object_instance.interaction_text_contrast_amount));
-					
-					//
-					draw_line(temp_interact_menu_x + temp_ui_object_instance.interaction_text_horizontal_offset - 1, temp_interact_menu_text_y + 12, temp_interact_menu_x + temp_ui_object_instance.interact_menu_width - temp_ui_object_instance.interaction_text_horizontal_offset, temp_interact_menu_text_y + 12);
-					
-					//
-					draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + 1, temp_ui_object_instance.interaction_object_name);
-					draw_text(temp_interact_menu_text_x + 1, temp_interact_menu_text_y + 1, temp_ui_object_instance.interaction_object_name);
-					
-					var temp_interact_menu_text_vertical_spacing = temp_ui_object_instance.interaction_text_height + temp_ui_object_instance.interaction_text_vertical_padding;
-					
-					//
-					for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(temp_ui_object_instance.interact_options); temp_interact_menu_option_index++)
+					with (temp_ui_object_instance)
 					{
-						draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_interact_menu_option_index].option_name);
-						draw_text(temp_interact_menu_text_x + 1, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_interact_menu_option_index].option_name);
-					}
-					
-					//
-					draw_set_color(temp_ui_object_instance.interaction_text_color);
-					
-					//
-					draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y, temp_ui_object_instance.interaction_object_name);
-					
-					//
-					for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(temp_ui_object_instance.interact_options); temp_interact_menu_option_index++)
-					{
-						draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + ((temp_interact_menu_option_index + 1)* temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_interact_menu_option_index].option_name);
-					}
-					
-					//
-					if (temp_ui_object_instance.interaction_option_index != -1)
-					{
-						var temp_interact_option_vertical_offset = (temp_ui_object_instance.interaction_option_index + 1) * (temp_ui_object_instance.interaction_text_vertical_padding + temp_ui_object_instance.interaction_text_height);
-						draw_rectangle(temp_interact_menu_x, temp_interact_menu_y + temp_interact_option_vertical_offset, temp_interact_menu_x + temp_ui_object_instance.interact_menu_width, temp_interact_menu_y + temp_interact_option_vertical_offset + (temp_ui_object_instance.interaction_text_vertical_padding + temp_ui_object_instance.interaction_text_height), false);
+						//
+						var temp_interact_menu_x = x - LightingEngine.render_x;
+						var temp_interact_menu_y = y - LightingEngine.render_y;
 						
-						// Triangle Variables
-						var temp_tri_x = temp_interact_menu_text_x;
-						var temp_tri_y = temp_interact_menu_text_y + ((temp_ui_object_instance.interaction_text_height + temp_ui_object_instance.interaction_text_vertical_padding) * 0.5);
+						var temp_interact_menu_text_x = temp_interact_menu_x + interaction_text_horizontal_offset;
+						var temp_interact_menu_text_y = temp_interact_menu_y + interaction_text_vertical_offset;
 						
-						// Draw Triangle's Contrast Drop Shadow
-						draw_set_color(merge_color(temp_ui_object_instance.interaction_text_color, c_black, 1 - temp_ui_object_instance.interaction_text_contrast_amount));
+						//
+						var temp_interaction_text_contrast_color = merge_color(interaction_text_color, c_black, interaction_text_contrast_amount);
+						var temp_interaction_inverse_text_contrast_color = merge_color(interaction_text_color, c_black, 1 - interaction_text_contrast_amount);
 						
-						draw_text(temp_interact_menu_text_x + 9, temp_interact_menu_text_y + 1 + ((temp_ui_object_instance.interaction_option_index + 1) * temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_ui_object_instance.interaction_option_index].option_name);
-						draw_text(temp_interact_menu_text_x + 10, temp_interact_menu_text_y + 1 + ((temp_ui_object_instance.interaction_option_index + 1) * temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_ui_object_instance.interaction_option_index].option_name);
+						//
+						draw_rectangle(temp_interact_menu_x, temp_interact_menu_y + interaction_option_height + 1, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + interact_menu_height, false);
 						
-						draw_triangle(temp_tri_x + temp_ui_object_instance.tri_x_1 + 1, temp_tri_y + temp_ui_object_instance.tri_y_1 + 1, temp_tri_x + temp_ui_object_instance.tri_x_2 + 1, temp_tri_y + temp_ui_object_instance.tri_y_2 + 1, temp_tri_x + temp_ui_object_instance.tri_x_3 + 1, temp_tri_y + temp_ui_object_instance.tri_y_3 + 1, false);
+						// Set Interaction Detail Text Font
+						draw_set_font(font_Default);
 						
-						// Draw Triangle
+						// Set Interaction Detail Text Alignment
+						draw_set_halign(fa_left);
+						draw_set_valign(fa_top);
+						
+						//
+						draw_set_alpha(0.55);
+						draw_set_color(interaction_text_color);
+						
+						//
+						draw_rectangle(temp_interact_menu_x, temp_interact_menu_y, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + interaction_option_height, false);
+						
+						//
+						draw_set_alpha(1);
 						draw_set_color(c_black);
 						
-						draw_text(temp_interact_menu_text_x + 9, temp_interact_menu_text_y + ((temp_ui_object_instance.interaction_option_index + 1) * temp_interact_menu_text_vertical_spacing), temp_ui_object_instance.interact_options[temp_ui_object_instance.interaction_option_index].option_name);
+						//
+						draw_line(temp_interact_menu_x + interaction_text_horizontal_offset - 2, temp_interact_menu_text_y + 12, temp_interact_menu_x + interact_menu_width - interaction_text_horizontal_offset, temp_interact_menu_text_y + 12);
+						draw_line(temp_interact_menu_x + interaction_text_horizontal_offset - 1, temp_interact_menu_text_y + 13, temp_interact_menu_x + interact_menu_width - interaction_text_horizontal_offset, temp_interact_menu_text_y + 13);
 						
-						draw_triangle(temp_tri_x + temp_ui_object_instance.tri_x_1, temp_tri_y + temp_ui_object_instance.tri_y_1, temp_tri_x + temp_ui_object_instance.tri_x_2, temp_tri_y + temp_ui_object_instance.tri_y_2, temp_tri_x + temp_ui_object_instance.tri_x_3, temp_tri_y + temp_ui_object_instance.tri_y_3, false);
+						//
+						//draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + 1, interaction_object_name);
+						//draw_text(temp_interact_menu_text_x + 1, temp_interact_menu_text_y + 1, interaction_object_name);
+						
+						//
+						draw_set_color(temp_interaction_text_contrast_color);
+						
+						//
+						var temp_interact_menu_text_vertical_spacing = interaction_option_height;
+						
+						for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(interact_options); temp_interact_menu_option_index++)
+						{
+							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
+							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset + 1, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
+						}
+						
+						//
+						draw_set_color(c_black);
+						
+						//
+						draw_text_outline(temp_interact_menu_text_x, temp_interact_menu_text_y, interaction_object_name);
+						
+						//
+						draw_set_color(interaction_text_color);
+						
+						//
+						for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(interact_options); temp_interact_menu_option_index++)
+						{
+							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset, temp_interact_menu_text_y + ((temp_interact_menu_option_index + 1)* temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
+						}
+						
+						//
+						if (interaction_option_index != -1)
+						{
+							var temp_interact_option_vertical_offset = (interaction_option_index + 1) * interaction_option_height;
+							draw_rectangle(temp_interact_menu_x, temp_interact_menu_y + temp_interact_option_vertical_offset + 1, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + temp_interact_option_vertical_offset + interaction_option_height, false);
+							
+							// Triangle Variables
+							var temp_tri_x = temp_interact_menu_x + interaction_option_triangle_horizontal_offset;
+							var temp_tri_y = temp_interact_menu_y + interaction_option_triangle_vertical_offset + (interaction_option_height * 0.5);
+							
+							//
+							var temp_interact_option_selected_text_x = temp_interact_menu_text_x + interaction_option_text_horizontal_offset + interaction_option_triangle_horizontal_offset;
+							var temp_interact_option_selected_text_y = temp_interact_menu_text_y + ((interaction_option_index + 1) * temp_interact_menu_text_vertical_spacing);
+							
+							// Draw Triangle's Contrast Drop Shadow
+							draw_set_color(temp_interaction_inverse_text_contrast_color);
+							
+							draw_text(temp_interact_option_selected_text_x, temp_interact_option_selected_text_y + 1, interact_options[interaction_option_index].option_name);
+							draw_text(temp_interact_option_selected_text_x + 1, temp_interact_option_selected_text_y + 1, interact_options[interaction_option_index].option_name);
+							
+							draw_triangle(temp_tri_x + tri_x_1 + 1, temp_tri_y + tri_y_1 + 1, temp_tri_x + tri_x_2 + 1, temp_tri_y + tri_y_2 + 1, temp_tri_x + tri_x_3 + 1, temp_tri_y + tri_y_3 + 1, false);
+							
+							// Draw Triangle
+							draw_set_color(c_black);
+							
+							draw_text(temp_interact_option_selected_text_x, temp_interact_option_selected_text_y, interact_options[interaction_option_index].option_name);
+							
+							draw_triangle(temp_tri_x + tri_x_1, temp_tri_y + tri_y_1, temp_tri_x + tri_x_2, temp_tri_y + tri_y_2, temp_tri_x + tri_x_3, temp_tri_y + tri_y_3, false);
+						}
 					}
 				}
 				break;

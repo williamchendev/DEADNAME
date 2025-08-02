@@ -1,5 +1,5 @@
 /// @description Default Dynamic Smoke Trail Initialization
-// Initializes Dynamic Smoke Trail for Lighting Engine Rendering
+// Initializes the Dynamic Smoke Trail for Lighting Engine Rendering
 
 // Disable Visibility
 visible = false;

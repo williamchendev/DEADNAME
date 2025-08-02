@@ -162,6 +162,9 @@ global.unit_packs[UnitPack.Default] =
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
 	
@@ -173,7 +176,7 @@ global.unit_packs[UnitPack.Default] =
 	limb_idle_animation_ambient_move_width: 2,
 	limb_left_arm_idle_animation_angle: -10,
 	limb_right_arm_idle_animation_angle: 13,
-		
+	
 	limb_left_arm_walk_animation_extension_percent: 0.5,
 	limb_left_arm_walk_animation_ambient_move_width: 4,
 	limb_left_arm_walk_animation_ambient_move_height: 1,
@@ -275,6 +278,9 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
+	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -390,6 +396,9 @@ global.unit_packs[UnitPack.Wolf] =
 	equipment_inventory_x: -2,
 	equipment_inventory_y: -22,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -6,
 	equipment_firearm_hip_y: -22,
 	
@@ -484,6 +493,9 @@ global.unit_packs[UnitPack.Director] =
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
 	
@@ -495,7 +507,7 @@ global.unit_packs[UnitPack.Director] =
 	limb_idle_animation_ambient_move_width: 2,
 	limb_left_arm_idle_animation_angle: -10,
 	limb_right_arm_idle_animation_angle: 13,
-		
+	
 	limb_left_arm_walk_animation_extension_percent: 0.5,
 	limb_left_arm_walk_animation_ambient_move_width: 4,
 	limb_left_arm_walk_animation_ambient_move_height: 1,
@@ -598,6 +610,9 @@ global.unit_packs[UnitPack.Knives] =
 	equipment_inventory_x: -5,
 	equipment_inventory_y: -21,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -4,
 	equipment_firearm_hip_y: -28,
 	
@@ -691,6 +706,9 @@ global.unit_packs[UnitPack.Martyr] =
 	
 	equipment_inventory_x: -6,
 	equipment_inventory_y: -27,
+	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
 	
 	equipment_firearm_hip_x: -1,
 	equipment_firearm_hip_y: -30,
@@ -786,6 +804,9 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	equipment_inventory_x: -6,
 	equipment_inventory_y: -24,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,
 	
@@ -797,7 +818,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	limb_idle_animation_ambient_move_width: 2,
 	limb_left_arm_idle_animation_angle: -5,
 	limb_right_arm_idle_animation_angle: 13,
-		
+	
 	limb_left_arm_walk_animation_extension_percent: 0.9,
 	limb_left_arm_walk_animation_ambient_move_width: 2,
 	limb_left_arm_walk_animation_ambient_move_height: 1,
@@ -900,6 +921,9 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	equipment_inventory_x: -7,
 	equipment_inventory_y: -23,
 	
+	equipment_backpack_x: 0,
+	equipment_backpack_y: -35,
+	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,
 	
@@ -911,7 +935,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	limb_idle_animation_ambient_move_width: 2,
 	limb_left_arm_idle_animation_angle: -5,
 	limb_right_arm_idle_animation_angle: 13,
-		
+	
 	limb_left_arm_walk_animation_extension_percent: 0.9,
 	limb_left_arm_walk_animation_ambient_move_width: 2,
 	limb_left_arm_walk_animation_ambient_move_height: 1,

@@ -26,13 +26,13 @@ function create_weapon_from_weapon_pack(weapon_pack)
     
 	switch (global.weapon_packs[weapon_pack].weapon_type)
 	{
-	    case WeaponType.DefaultFirearm:
-	    case WeaponType.BoltActionFirearm:
-	        temp_weapon_class = NEW(FirearmClass);
-	        break;
-	    default:
-	        temp_weapon_class = NEW(WeaponClass);
-	        break;
+		case WeaponType.DefaultFirearm:
+		case WeaponType.BoltActionFirearm:
+			temp_weapon_class = NEW(FirearmClass);
+			break;
+		default:
+			temp_weapon_class = NEW(WeaponClass);
+			break;
 	}
 	
 	temp_weapon_class.init_weapon_pack(weapon_pack);

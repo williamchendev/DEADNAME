@@ -42,6 +42,7 @@ jump_pathfinding_behaviour_target_padding = -3;
 squash_stretch_jump_intensity = 0.5;
 
 squash_stretch_reset_spd = 0.15;
+bobbing_animation_percent_offset = 0.18;
 
 hand_default_movement_spd = 0.1;
 hand_fast_movement_spd = 0.33;
@@ -51,8 +52,9 @@ hand_fumble_animation_travel_spd = 0.5;
 hand_fumble_animation_delay_min = 2;
 hand_fumble_animation_delay_max = 12;
 
+backpack_vertical_bobbing_height = 1;
+
 weapon_vertical_bobbing_height = 1;
-weapon_bobbing_animation_percent_offset = 0.18;
 
 firearm_aiming_aim_transition_spd = 0.2;
 firearm_aiming_hip_transition_spd = 0.1;
@@ -120,6 +122,8 @@ hand_fumble_animation_offset_by = 0;
 hand_fumble_animation_offset_x = 0;
 hand_fumble_animation_offset_y = 0;
 
+bobbing_animation_value = 0;
+
 unit_equipment_inventory_position_x = 0;
 unit_equipment_inventory_position_y = 0;
 
@@ -150,7 +154,7 @@ combat_attack_impulse_position_y = 0;
 combat_attack_impulse_horizontal_vector = 0;
 combat_attack_impulse_vertical_vector = 0;
 
-// Weapons
+// Weapon Variables
 weapon_active = false;
 weapon_reload = false;
 weapon_aim = false;
@@ -160,11 +164,23 @@ weapon_aim_y = 0;
 
 weapon_equipped = noone;
 
+// Inventory Variables
+inventory_slots = array_create(0);
+
+unit_inventory_init(id, 0, 1, 1, 1);
+
+backpack_position_x = 0;
+backpack_position_y = 0;
+
 // Weapons DEBUG
 if (true)
 {
-	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
+	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.SMG);
 	temp_weapon_instance.equip_weapon(id);
+}
+else
+{
+	create_inventory_item_object(InventoryItemPack.CorsoRifle, x, y - 48);
 }
 
 // Unit Limb Arms

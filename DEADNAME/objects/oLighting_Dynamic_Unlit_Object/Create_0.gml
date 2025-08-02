@@ -1,5 +1,5 @@
 /// @description Default Unlit Object Initialization
-// Initialized Unlit Object for Lighting Engine Rendering
+// Initializes the Unlit Object for Lighting Engine Rendering
 
 // Disable Visibility
 visible = false;

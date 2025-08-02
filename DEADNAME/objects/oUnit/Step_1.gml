@@ -1,6 +1,7 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Unit Player Input Event
+// Performs the Unit Instance's Player Input Behaviour
 
+// Check if Unit has Player Input Enabled
 if (player_input) 
 {
 	// Preset Player Controls

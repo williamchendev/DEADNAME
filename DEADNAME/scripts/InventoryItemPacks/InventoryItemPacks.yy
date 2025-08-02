@@ -1,13 +1,14 @@
 {
   "$GMScript":"v1",
-  "%Name":"UnitHeldItems",
+  "%Name":"InventoryItemPacks",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"UnitHeldItems",
+  "name":"InventoryItemPacks",
   "parent":{
     "name":"Items",
     "path":"folders/Scripts/Items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
+  "tags":[],
 }

@@ -20,6 +20,7 @@ enum LightingEngineObjectType
 	Dynamic_Particle,
 	Dynamic_SmokeTrail,
 	Dynamic_Unit,
+	Dynamic_Item,
 	BulkStatic_Region,
 	BulkStatic_Layer
 }
