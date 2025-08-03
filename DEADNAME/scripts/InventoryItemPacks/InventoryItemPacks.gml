@@ -71,13 +71,13 @@ global.inventory_item_pack[InventoryItemPack.CorsoRifle] =
 {
 	item_name: "Corso Rifle",
 	item_description: "",
-	item_dialogue: "It'll be poetic that this Tyrant's Rifle will end the cruelty that rules our world.",
-    item_type: InventoryItemType.Weapon,
-    item_slot_tier: UnitInventorySlotTier.Hefty,
-    item_object: oItem_Weapon_CorsoRifle,
-    item_count_limit: 1,
+	item_dialogue: [ "It'll be poetic that this Tyrant's Rifle", "will end the cruelty that rules our world." ],
+	item_type: InventoryItemType.Weapon,
+	item_slot_tier: UnitInventorySlotTier.Hefty,
+	item_object: oItem_Weapon_CorsoRifle,
+	item_count_limit: 1,
 	
-    weapon_pack: WeaponPack.Corso
+	weapon_pack: WeaponPack.Corso
 };
 
 // 
@@ -86,10 +86,10 @@ global.inventory_item_pack[InventoryItemPack.OilerSMG] =
 	item_name: "Oiler Sub-Machine Gun",
 	item_description: "",
 	item_dialogue: "",
-    item_type: InventoryItemType.Weapon,
-    item_slot_tier: UnitInventorySlotTier.Hefty,
-    item_object: noone,
-    item_count_limit: 1,
-    
-    weapon_pack: WeaponPack.SMG
+	item_type: InventoryItemType.Weapon,
+	item_slot_tier: UnitInventorySlotTier.Hefty,
+	item_object: noone,
+	item_count_limit: 1,
+	
+	weapon_pack: WeaponPack.SMG
 };

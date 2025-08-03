@@ -15,6 +15,7 @@ cutscene_instance = noone;
 // Dialogue Box Settings
 dialogue_unit = noone;
 dialogue_text = "";
+dialogue_text_array = undefined;
 
 dialogue_box_instance_following = noone;
 dialogue_box_instance_following_chain_max = 20;
@@ -87,7 +88,22 @@ trig_cosine = 1;
 set_dialogue_text = function(text)
 {
 	// Set Dialogue Text
-	dialogue_text = text;
+	if (is_array(text))
+	{
+		// Pass Dialogue Box Text Array
+		var temp_dialogue_array_length = array_length(text);
+		dialogue_text_array = array_create(temp_dialogue_array_length - 1);
+		array_copy(dialogue_text_array, 0, text, 1, temp_dialogue_array_length - 1);
+		dialogue_text = text[0];
+	}
+	else
+	{
+		// Pass Default Dialogue Text
+		dialogue_text = text;
+	}
+	
+	// Reset Dialogue World End Positions Array
+	dialogue_word_end_positions_array = array_create(0);
 	
 	// Split Dialogue Text by Vowels and Punctuations to create the naturalistic text-speech typewriter effect
 	var temp_dialogue_words_array = string_split_ext(string_lower(dialogue_text), [ "a", "e", "i", "o", "u", " ", ",", ".", "!", "?", "-" ], false);

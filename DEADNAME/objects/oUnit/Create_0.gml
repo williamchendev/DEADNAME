@@ -173,9 +173,9 @@ backpack_position_x = 0;
 backpack_position_y = 0;
 
 // Weapons DEBUG
-if (true)
+if (false)
 {
-	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.SMG);
+	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
 	temp_weapon_instance.equip_weapon(id);
 }
 else

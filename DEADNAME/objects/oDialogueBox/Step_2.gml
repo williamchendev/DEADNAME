@@ -95,9 +95,30 @@ if (dialogue_fade)
 	// Transparency Fade Behaviour
 	image_alpha = clamp(dialogue_fade_timer / dialogue_fade_duration, 0, 1);
 
-	// Destroy Dialogue Box
+	// Transparency Fade Destroy Condition
 	if (image_alpha == 0)
 	{
+		// Check if Dialogue Box contains an Array of Dialogue Text to increment through
+		if (!is_undefined(dialogue_text_array))
+		{
+			// Check if Dialogue Box Text Array contains any more entries
+			if (array_length(dialogue_text_array) > 0)
+			{
+				// Reset Transparency Alpha
+				image_alpha = 1;
+				
+				// Reset Transparency Fade
+				dialogue_fade = false;
+				dialogue_fade_timer = dialogue_fade_duration;
+				
+				// Increment Dialogue Text and Reset Dialogue Continue
+				set_dialogue_text(dialogue_text_array);
+				dialogue_continue = true;
+				return;
+			}
+		}
+		
+		// Destroy Dialogue Box Instance
 		instance_destroy();
 		return;
 	}
