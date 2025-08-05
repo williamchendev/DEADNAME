@@ -238,9 +238,9 @@
     {"$GMFolder":"","%Name":"VerticalDoors","folderPath":"folders/Sprites/Interactions/VerticalDoors.yy","name":"VerticalDoors","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Items","folderPath":"folders/Sprites/Items.yy","name":"Items","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Containers","folderPath":"folders/Sprites/Items/Containers.yy","name":"Containers","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Inventory","folderPath":"folders/Sprites/Items/Inventory.yy","name":"Inventory","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Held","folderPath":"folders/Sprites/Items/Held.yy","name":"Held","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Icons","folderPath":"folders/Sprites/Items/Icons.yy","name":"Icons","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Inventory","folderPath":"folders/Sprites/Items/Inventory.yy","name":"Inventory","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Weapons","folderPath":"folders/Sprites/Weapons.yy","name":"Weapons","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Arkov","folderPath":"folders/Sprites/Weapons/Arkov.yy","name":"Arkov","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firearm","folderPath":"folders/Sprites/Weapons/Arkov/Firearm.yy","name":"Firearm","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -1065,5 +1065,6 @@
     {"$GMTextureGroup":"","%Name":"Faction_Moralist","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Faction_Moralist","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"DEBUG","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"DEBUG","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"DistortionMaps","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"DistortionMaps","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"UI","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"name":"UI","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

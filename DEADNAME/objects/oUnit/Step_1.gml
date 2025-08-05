@@ -23,5 +23,9 @@ if (player_input)
 	
 	// DEBUG
 	GameManager.player_unit = id;
-	LightingEngine.render_position(x - (GameManager.game_width * 0.5), y - (GameManager.game_height * 0.7));
+	
+	var temp_render_position_x = lerp(LightingEngine.render_x, x - (GameManager.game_width * 0.5) + (x_velocity * 32), frame_delta * 0.05);
+	var temp_render_position_y = lerp(LightingEngine.render_y, y - (GameManager.game_height * 0.7) + (y_velocity * 32), frame_delta * 0.05);
+	
+	LightingEngine.render_position(temp_render_position_x, temp_render_position_y);
 }
