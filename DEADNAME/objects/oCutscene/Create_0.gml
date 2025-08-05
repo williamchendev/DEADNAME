@@ -10,6 +10,11 @@ cutscene_events = array_create(0);
 cutscene_add_delay(id, 1);
 
 // Create Cutscene
+cutscene_add_dialogue(id, "DID YOU JUST RIGHT CLICK ON ME?", "Charn", -20);
+cutscene_add_dialogue(id, "Umm...", "Player", -20);
+cutscene_add_dialogue(id, "I WILL NOT BE UNDERMINED BECAUSE YOU WANT TO PLAY GOD AND IMPLEMENT \"GAMEPLAY\"", "Charn", -20);
+cutscene_add_dialogue(id, "YOU WILL BE LEARNING HOW TO FRENCH KISS A BAYONET FOR YOUR HUBRIS", "Charn", -20);
+/*
 cutscene_add_unit_movement(id, "Mel", 80, 0, true, PathfindingEndDirection.Right);
 cutscene_add_unit_movement(id, "Charn", 120, 0, true, PathfindingEndDirection.Left);
 cutscene_add_delay(id, 40);
@@ -35,6 +40,7 @@ cutscene_add_dialogue_clear(id);
 cutscene_add_dialogue(id, ". . .", "Mel", -20);
 cutscene_add_dialogue_clear(id);
 cutscene_add_dialogue(id, "Divine?", "Mel", -20);
+*/
 
 // Cutscene Settings
 cutscene_active = false;

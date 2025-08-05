@@ -1266,8 +1266,8 @@ if (unit_animation_state != temp_unit_animation_state)
 bobbing_animation_value = sin((((floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2)) + bobbing_animation_percent_offset) * 2 * pi);
 
 // Calculate Unit's Inventory Position
-backpack_position_x = rot_point_x(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_xscale;
-backpack_position_y = rot_point_y(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_yscale;
+backpack_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_xscale);
+backpack_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_yscale);
 #endregion
 
 // LIMBS //

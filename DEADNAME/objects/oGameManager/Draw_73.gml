@@ -42,7 +42,16 @@ else if (cursor_icon)
 else if (!global.debug)
 {
 	// Draw Cursor Crosshair
-	draw_sprite(sCursorCrosshairIcons, 1, cursor_x, cursor_y);
+	if (instance_exists(player_unit) and player_unit.weapon_equipped)
+	{
+		// Draw Crosshair Cursor
+		draw_sprite(sCursorCrosshairIcons, 1, cursor_x, cursor_y);
+	}
+	else
+	{
+		// Draw Interaction Cursor
+		draw_sprite(sCursorMenu, 0, cursor_x, cursor_y);
+	}
 }
 
 // Reset Surface

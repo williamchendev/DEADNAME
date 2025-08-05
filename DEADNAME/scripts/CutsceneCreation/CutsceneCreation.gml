@@ -11,12 +11,12 @@ enum CutsceneEventType
 /// @function cutscene_add_dialogue(cutscene_instance, text, unit, xoffset, tail_start, tail_end);
 /// @description Adds a Dialogue Event to a Cutscene Object Instance's list of Cutscene Events with the provided Dialogue Event's parameters
 /// @param {oCutscene} cutscene_instance - The given Cutscene Object Instance to add a Dialogue Event to their list of Cutscene Events
-/// @param {string} text - The Dialogue Text that will show in the Dialogue Box created in the added Cutscene Event's Dialogue Event
-/// @param {string} unit - The Unit Instance that the Dialogue Box created in the added Cutscene Event's Dialogue Event will belong to
-/// @param {real} xoffset - The Horizontal Offset of the created Dialogue Box relative to the Dialogue Box's Unit Instance's Dialogue Pivot
-/// @param {real} tail_start - The position of the Dialogue Box's Tail's starting point within the Dialogue Box within a range from -1.0 to 1.0
+/// @param {String,Array<String>} text - The Dialogue Text that will show in the Dialogue Box created in the added Cutscene Event's Dialogue Event
+/// @param {String} unit - The Unit Instance that the Dialogue Box created in the added Cutscene Event's Dialogue Event will belong to
+/// @param {Real} xoffset - The Horizontal Offset of the created Dialogue Box relative to the Dialogue Box's Unit Instance's Dialogue Pivot
+/// @param {Real} tail_start - The position of the Dialogue Box's Tail's starting point within the Dialogue Box within a range from -1.0 to 1.0
 ///	-1.0 positions the tail at the end of the dialogue box behind where the player is facing, 0.0 positions the tail in the center of the dialogue box, and 1.0 positions the tail at the end of the dialogue box forward where the player is facing.
-/// @param {real} tail_end - The position of the Dialogue Box's Tail's ending point within the Dialogue Box's next Dialogue Box entry in its Unit's Dialogue Box Chain within a range from -1.0 to 1.0
+/// @param {Real} tail_end - The position of the Dialogue Box's Tail's ending point within the Dialogue Box's next Dialogue Box entry in its Unit's Dialogue Box Chain within a range from -1.0 to 1.0
 ///	-1.0 positions the tail at the end of the dialogue box behind where the player is facing, 0.0 positions the tail in the center of the dialogue box, and 1.0 positions the tail at the end of the dialogue box forward where the player is facing.
 function cutscene_add_dialogue(cutscene_instance, text, unit, xoffset = 0, tail_start = -0.1, tail_end = -0.2)
 {
@@ -64,12 +64,12 @@ function cutscene_add_delay(cutscene_instance, duration)
 /// @function cutscene_add_unit_movement(cutscene_instance, unit, move_x, move_y, move_position_local, move_end_direction, wait_for_movement_to_finish);
 /// @description Adds a Unit Movement Event to a Cutscene Object Instance's list of Cutscene Events with the provided Unit Movement Event's parameters, the Unit Movement Event causes a Unit to pathfind and move to the given destination
 /// @param {oCutscene} cutscene_instance - The given Cutscene Object Instance to add a Unit Movement Event to their list of Cutscene Events
-/// @param {string} unit - The Unit Instance that the Unit Movement Event will move
-/// @param {real} move_x - The horizontal position the Unit will move to
-/// @param {real} move_y - The vertical position the Unit will move to
-/// @param {bool} move_position_local - Whether or not the move_x and move_y positions are relative to the given Unit's position (true), or if they are the raw world position (false)
-/// @param {PathfindingEndDirection} move_end_direction - The behaviour the Unit Instance will take to face the given direction once they have finished their pathfinding movement behaviour
-/// @param {bool} wait_for_movement_to_finish - Whether or not the Cutscene Instance will keep track of the Unit's movement and wait for it to finish moving before advancing the cutscene (consecutive Unit Movement Cutscene Events will always be performed together)
+/// @param {String} unit - The Unit Instance that the Unit Movement Event will move
+/// @param {Real} move_x - The horizontal position the Unit will move to
+/// @param {Real} move_y - The vertical position the Unit will move to
+/// @param {Bool} move_position_local - Whether or not the move_x and move_y positions are relative to the given Unit's position (true), or if they are the raw world position (false)
+/// @param {Int,PathfindingEndDirection} move_end_direction - The behaviour the Unit Instance will take to face the given direction once they have finished their pathfinding movement behaviour
+/// @param {Bool} wait_for_movement_to_finish - Whether or not the Cutscene Instance will keep track of the Unit's movement and wait for it to finish moving before advancing the cutscene (consecutive Unit Movement Cutscene Events will always be performed together)
 function cutscene_add_unit_movement(cutscene_instance, unit, move_x, move_y, move_position_local = false, move_end_direction = PathfindingEndDirection.None, wait_for_movement_to_finish = true)
 {
 	cutscene_instance.cutscene_events[array_length(cutscene_instance.cutscene_events)] = 

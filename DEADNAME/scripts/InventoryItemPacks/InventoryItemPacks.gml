@@ -19,6 +19,7 @@ function create_inventory_item_object(item_pack, item_x, item_y)
 	//
 	if (item_pack == -1 or item_pack == InventoryItemPack.None)
 	{
+		//
 		return noone;
 	}
 	

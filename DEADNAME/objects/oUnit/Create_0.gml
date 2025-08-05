@@ -54,6 +54,8 @@ hand_fumble_animation_delay_max = 12;
 
 backpack_vertical_bobbing_height = 1;
 
+item_take_lerp_movement_spd = 0.1;
+
 weapon_vertical_bobbing_height = 1;
 
 firearm_aiming_aim_transition_spd = 0.2;
@@ -165,9 +167,10 @@ weapon_aim_y = 0;
 weapon_equipped = noone;
 
 // Inventory Variables
+inventory_index = -1;
 inventory_slots = array_create(0);
 
-unit_inventory_init(id, 0, 1, 1, 1);
+unit_inventory_init(id, 0, 2, 1, 1);
 
 backpack_position_x = 0;
 backpack_position_y = 0;

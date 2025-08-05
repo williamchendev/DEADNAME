@@ -110,7 +110,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	if (!instance_exists(item_instance) or !instance_exists(unit))
 	{
 		//
-		return;
+		return false;
 	}
 	
 	//
@@ -118,7 +118,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	{
 		//
 		instance_destroy(item_instance);
-		return;
+		return false;
 	}
 	
 	//
@@ -149,7 +149,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	if (temp_slot_index == -1)
 	{
 		//
-		return;
+		return false;
 	}
 	
 	//
@@ -165,7 +165,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		case InventoryItemType.None:
 		default:
 			//
-			return;
+			return false;
 	}
 	
 	//
@@ -174,6 +174,9 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	
 	//
 	instance_destroy(item_instance);
+	
+	//
+	return true;
 }
 
 function unit_inventory_drop_item_instance(unit, slot_index)

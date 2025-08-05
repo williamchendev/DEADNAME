@@ -28,10 +28,25 @@ interact_options[1] =
 	option_function: function(interaction_instance) 
 	{
 		//
+		var temp_item_x = interaction_instance.interaction_object.x;
+		var temp_item_y = interaction_instance.interaction_object.y;
+		
+		//
 		unit_inventory_take_item_instance(GameManager.player_unit, interaction_instance.interaction_object);
 		
 		//
+		if (GameManager.player_unit.weapon_active)
+		{
+			//
+			GameManager.player_unit.weapon_equipped.unequip_weapon();
+			
+			//
+			//create_inventory_item_object(item_pack, item_x, item_y)
+		}
+		
+		//
 		interaction_instance.interaction_object.weapon_instance.equip_weapon(GameManager.player_unit);
+		interaction_instance.interaction_object.weapon_instance.item_take_set_displacement(temp_item_x, temp_item_y, 1, GameManager.player_unit.item_take_lerp_movement_spd);
 	}
 };
 

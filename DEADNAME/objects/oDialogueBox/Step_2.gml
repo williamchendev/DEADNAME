@@ -50,7 +50,7 @@ else if (dialogue_continue)
 		dialogue_triangle = false;
 		
 		// Check if Cutscene Exists
-		if (instance_exists(cutscene_instance))
+		if (instance_exists(cutscene_instance) and is_undefined(dialogue_text_array))
 		{
 			// Continue Cutscene Behaviour
 			cutscene_continue_event(cutscene_instance);
@@ -115,6 +115,11 @@ if (dialogue_fade)
 				set_dialogue_text(dialogue_text_array);
 				dialogue_continue = true;
 				return;
+			}
+			else if (instance_exists(cutscene_instance))
+			{
+				// Continue Cutscene Behaviour
+				cutscene_continue_event(cutscene_instance);
 			}
 		}
 		

@@ -61,6 +61,12 @@ class WeaponClass define
 		weapon_angle = init_weapon_angle;
 		weapon_old_angle = init_weapon_angle;
 		
+		// Init Weapon Item Displacement Position & Lerp Speed
+		weapon_item_displacement_x = 0;
+		weapon_item_displacement_y = 0;
+		weapon_item_displacement_spd = 0;
+		weapon_item_displacement_value = 0;
+		
 		// Init Weapon Scale
 		weapon_xscale = 1;
 		weapon_yscale = 1;
@@ -77,19 +83,31 @@ class WeaponClass define
 		weapon_unit = unit_instance;
 		
 		// Set Unit Weapon Behaviour
-		unit_instance.weapon_active = true;
-		unit_instance.weapon_equipped = self;
-		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Melee;
-		unit_instance.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+		weapon_unit.weapon_active = true;
+		weapon_unit.weapon_equipped = self;
+		weapon_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Melee;
+		weapon_unit.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 	}
 	
 	static unequip_weapon = function()
 	{
 		// Set Unit Weapon Behaviour
-		unit_instance.weapon_active = false;
-		unit_instance.weapon_equipped = noone;
-		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
-		unit_instance.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+		weapon_unit.weapon_active = false;
+		weapon_unit.weapon_equipped = noone;
+		weapon_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+		weapon_unit.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+		
+		// Reset Weapon Unit
+		weapon_unit = noone;
+	}
+	
+	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
+	{
+		// Set Item Take Displacement
+		weapon_item_displacement_x = item_x;
+		weapon_item_displacement_y = item_y;
+		weapon_item_displacement_spd = item_lerp_spd;
+		weapon_item_displacement_value = item_lerp;
 	}
 	
 	// Update Methods
@@ -99,6 +117,18 @@ class WeaponClass define
 		weapon_x = update_weapon_x;
 		weapon_y = update_weapon_y;
 		weapon_angle = update_weapon_angle;
+		
+		// Update Weapon Item Displacement Lerp Behaviour
+		if (weapon_item_displacement_value > 0)
+		{
+			// Decrement Weapon Item Displacement by Delta Time and Item Displacement Speed
+			weapon_item_displacement_value -= frame_delta * weapon_item_displacement_spd;
+			weapon_item_displacement_value = clamp(weapon_item_displacement_value, 0, 1);
+			
+			// Calculate Weapon Lerp Position based on Weapon Item Displacement Position
+			weapon_x = lerp(weapon_x, weapon_item_displacement_x, weapon_item_displacement_value);
+			weapon_y = lerp(weapon_y, weapon_item_displacement_y, weapon_item_displacement_value);
+		}
 	}
 	
 	static update_weapon_behaviour = function()
@@ -219,6 +249,12 @@ class FirearmClass extends WeaponClass define
 		super.unequip_weapon();
 	}
 	
+	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
+	{
+		// Default Item Set Displacement
+		super.item_take_set_displacement(item_x, item_y, item_lerp, item_lerp_spd);
+	}
+	
 	// Update Methods
 	static update_weapon_physics = function(update_weapon_x, update_weapon_y, update_weapon_angle, update_weapon_facing_sign = 1)
 	{
@@ -226,6 +262,21 @@ class FirearmClass extends WeaponClass define
 		weapon_x = update_weapon_x;
 		weapon_y = update_weapon_y;
 		weapon_angle = update_weapon_angle;
+		
+		// Update Weapon Item Displacement Lerp Behaviour
+		if (weapon_item_displacement_value > 0)
+		{
+			// Decrement Weapon Item Displacement by Delta Time and Item Displacement Speed
+			weapon_item_displacement_value -= frame_delta * weapon_item_displacement_spd;
+			weapon_item_displacement_value = clamp(weapon_item_displacement_value, 0, 1);
+			
+			// 
+			var temp_weapon_item_displacement_value_exp = power(weapon_item_displacement_value, 3);
+			
+			// Calculate Weapon Lerp Position based on Weapon Item Displacement Position
+			weapon_x = lerp(weapon_x, weapon_item_displacement_x, temp_weapon_item_displacement_value_exp);
+			weapon_y = lerp(weapon_y, weapon_item_displacement_y, temp_weapon_item_displacement_value_exp);
+		}
 		
 		// Weapon Facing Sign Direction
 		weapon_facing_sign = update_weapon_facing_sign;
@@ -346,6 +397,11 @@ class FirearmClass extends WeaponClass define
 		if (!firearm_attack_reset)
 		{
 			// Firearm Input Reset Incomplete
+			return false;
+		}
+		else if (weapon_item_displacement_value > 0)
+		{
+			// Firearm is Displaced
 			return false;
 		}
 		else if (firearm_attack_delay > 0)

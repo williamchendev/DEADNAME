@@ -268,7 +268,7 @@ function cutscene_calculate_dialogue_orientation(cutscene_instance)
 			temp_dialogue_unit_index = temp_dialogue_unit_index == -1 ? 0 : temp_dialogue_unit_index;
 			
 			// Find Dialogue Box's position oriented above Dialogue Unit
-			temp_dialogue_box_inst.x = ds_list_find_value(temp_cutscene_unit_h_positions, temp_dialogue_unit_index) + (temp_dialogue_box_inst.dialogue_tail ? 0 : temp_dialogue_box_inst.dialogue_horizontal_offset);
+			temp_dialogue_box_inst.x = ds_list_find_value(temp_cutscene_unit_h_positions, temp_dialogue_unit_index) + (temp_dialogue_box_inst.dialogue_tail ? 0 : temp_dialogue_box_inst.dialogue_horizontal_offset * temp_dialogue_box_inst.image_xscale);
 			temp_dialogue_box_inst.y = ds_list_find_value(temp_cutscene_unit_v_positions, temp_dialogue_unit_index) - temp_dialogue_box_inst.dialogue_tail_height - temp_dialogue_box_inst.dialogue_unit_padding;
 			
 			temp_dialogue_box_inst.dialogue_tail_end_x = ds_list_find_value(temp_cutscene_unit_h_positions, temp_dialogue_unit_index);
@@ -379,8 +379,8 @@ function cutscene_calculate_dialogue_orientation(cutscene_instance)
 				if (temp_dialogue_box_inst == temp_dialogue_box_chain_inst)
 				{
 					// Path Point is added from inside the starting Dialogue Box
-					var temp_dialogue_tail_start_horizontal_offset = temp_dialogue_text_width * temp_dialogue_box_inst.dialogue_tail_start_position * sign(temp_dialogue_box_inst.image_xscale);
-					var temp_dialogue_tail_start_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_start_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_start_position) * sign(temp_dialogue_box_inst.image_xscale);
+					var temp_dialogue_tail_start_horizontal_offset = temp_dialogue_text_width * temp_dialogue_box_inst.dialogue_tail_start_position * temp_dialogue_box_inst.image_xscale;
+					var temp_dialogue_tail_start_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_start_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_start_position) * temp_dialogue_box_inst.image_xscale;
 					
 					var temp_dialogue_tail_start_point_x = temp_dialogue_box_chain_inst.x + temp_dialogue_tail_start_horizontal_offset;
 					var temp_dialogue_tail_start_point_y = temp_dialogue_box_chain_inst.y - (temp_dialogue_text_height * 0.5);
@@ -400,8 +400,8 @@ function cutscene_calculate_dialogue_orientation(cutscene_instance)
 					// Path Point is added from inside the next Dialogue Box that shares the Chain's Starting Dialogue Box's Unit
 					temp_dialogue_box_chain_ends_with_unit_dialogue = true;
 					
-					var temp_dialogue_tail_mid_horizontal_offset = temp_dialogue_text_width * temp_dialogue_box_inst.dialogue_tail_end_position * sign(temp_dialogue_box_inst.image_xscale);
-					var temp_dialogue_tail_mid_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_mid_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_end_position) * sign(temp_dialogue_box_inst.image_xscale);
+					var temp_dialogue_tail_mid_horizontal_offset = temp_dialogue_text_width * temp_dialogue_box_inst.dialogue_tail_end_position * temp_dialogue_box_inst.image_xscale;
+					var temp_dialogue_tail_mid_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_mid_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_end_position) * temp_dialogue_box_inst.image_xscale;
 					
 					var temp_dialogue_tail_mid_point_x = temp_dialogue_box_chain_inst.x + temp_dialogue_tail_mid_horizontal_offset;
 					var temp_dialogue_tail_mid_point_y = temp_dialogue_box_chain_inst.y - (temp_dialogue_text_height * 0.5);
@@ -441,7 +441,7 @@ function cutscene_calculate_dialogue_orientation(cutscene_instance)
 		if (!temp_dialogue_box_chain_ends_with_unit_dialogue)
 		{
 			// Path Point is added right above the Dialogue Box's Unit
-			var temp_dialogue_tail_end_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_end_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_end_position) * sign(temp_dialogue_box_inst.image_xscale);
+			var temp_dialogue_tail_end_horizontal_vector = temp_dialogue_box_inst.dialogue_tail_end_horizontal_vector * sign(temp_dialogue_box_inst.dialogue_tail_end_position) * temp_dialogue_box_inst.image_xscale;
 			
 			bezier_curve_add_path_point
 			(
