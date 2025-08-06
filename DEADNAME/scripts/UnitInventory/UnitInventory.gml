@@ -9,39 +9,97 @@ enum UnitInventorySlotTier
 }
 
 //
+function unit_inventory_slot_tier_color(slot_tier)
+{
+	//
+	var temp_tier_color = c_white;
+	
+	//
+	switch (slot_tier)
+	{
+		case UnitInventorySlotTier.Light:
+			temp_tier_color = make_color_rgb(252, 171, 85);
+			break;
+		case UnitInventorySlotTier.Moderate:
+			temp_tier_color = make_color_rgb(85, 174, 252);
+			break;
+		case UnitInventorySlotTier.Hefty:
+			temp_tier_color = make_color_rgb(166, 85, 252);
+			break;
+		case UnitInventorySlotTier.Cumbersome:
+			temp_tier_color = make_color_rgb(252, 85, 127);
+			break;
+		default:
+			break;
+	}
+	
+	//
+	return temp_tier_color;
+}
+
+function unit_inventory_slot_tier_name(slot_tier)
+{
+	//
+	var temp_tier_name = "none";
+	
+	//
+	switch (slot_tier)
+	{
+		case UnitInventorySlotTier.Light:
+			temp_tier_name = "Pocket";
+			break;
+		case UnitInventorySlotTier.Moderate:
+			temp_tier_name = "none";
+			break;
+		case UnitInventorySlotTier.Hefty:
+			temp_tier_name = "none";
+			break;
+		default:
+			break;
+	}
+	
+	//
+	return temp_tier_name;
+}
+
+//
 function unit_inventory_init(unit, cumbersome_slots_count, hefty_slots_count, moderate_slots_count, light_slots_count)
 {
 	// Create Unit's Light Item Slots
 	for (var temp_light_slots_index = 0; temp_light_slots_index < light_slots_count; temp_light_slots_index++)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Light);
+		unit_inventory_add_slot(unit, UnitInventorySlotTier.Light, "Moralist Infantry's Chest Pocket");
 	}
 	
 	// Create Unit's Moderate Item Slots
 	for (var temp_moderate_slots_index = 0; temp_moderate_slots_index < moderate_slots_count; temp_moderate_slots_index++)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Moderate);
+		unit_inventory_add_slot(unit, UnitInventorySlotTier.Moderate, "Moralist Infantry's Belt Box");
 	}
 	
 	// Create Unit's Hefty Item Slots
 	for (var temp_hefty_slots_index = 0; temp_hefty_slots_index < hefty_slots_count; temp_hefty_slots_index++)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Hefty);
+		unit_inventory_add_slot(unit, UnitInventorySlotTier.Hefty, "Moralist Infantry's Backpack");
 	}
 	
 	// Create Unit's Cumbersome Item Slots
 	for (var temp_cumbersome_slots_index = 0; temp_cumbersome_slots_index < cumbersome_slots_count; temp_cumbersome_slots_index++)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Cumbersome);
+		unit_inventory_add_slot(unit, UnitInventorySlotTier.Cumbersome, "Willpower and Mental Fortitude");
 	}
 }
 
-function unit_inventory_add_slot(unit, slot_tier)
+function unit_inventory_add_slot(unit, slot_tier, slot_name)
 {
 	// Create the new Unit Inventory Slot
 	var temp_new_slot =
 	{
 		tier: slot_tier,
+		tier_color: unit_inventory_slot_tier_color(slot_tier),
+		tier_contrast_color: merge_color(unit_inventory_slot_tier_color(slot_tier), c_black, 0.7),
+		
+		name: slot_name,
 		
 		item_pack: InventoryItemType.None,
 		item_count: -1,
@@ -134,7 +192,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		}
 		
 		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (unit.inventory_slots[i].tier >= global.inventory_item_pack[item_instance.item_pack].item_slot_tier)
+		if (unit.inventory_slots[i].tier >= global.inventory_item_packs[item_instance.item_pack].item_slot_tier)
 		{
 			//
 			if (temp_slot_index == -1 or (unit.inventory_slots[i].tier <= unit.inventory_slots[temp_slot_index].tier and i < temp_slot_index))
@@ -153,7 +211,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	}
 	
 	//
-	switch (global.inventory_item_pack[item_instance.item_pack].item_type)
+	switch (global.inventory_item_packs[item_instance.item_pack].item_type)
 	{
 		case InventoryItemType.Default:
 			//
@@ -235,7 +293,7 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			else
 			{
 				//
-				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_pack[unit.inventory_slots[slot_index].item_pack].weapon_pack);
+				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].weapon_pack);
 				temp_dropped_item_weapon_instance.init_weapon_physics(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0);
 			}
 			
@@ -249,7 +307,7 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			};
 			
 			//
-			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.inventory_item_pack[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
+			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
 			
 			//
 			with (temp_dropped_item_instance)

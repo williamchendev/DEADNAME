@@ -62,7 +62,7 @@ shift_check = vk_shift;
 interact_check = ord("E");
 inventory_check = ord("I");
 
-command_check = ord("Q");
+drop_check = ord("Q");
 
 // Debug Variables
 debug_menu = undefined;

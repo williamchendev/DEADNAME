@@ -25,10 +25,10 @@ function create_inventory_item_object(item_pack, item_x, item_y)
 	
 	//
 	var temp_inventory_item_var_struct = { item_pack: item_pack };
-	var temp_inventory_item_object = instance_create_depth(item_x, item_y, 0, global.inventory_item_pack[item_pack].item_object, temp_inventory_item_var_struct);
+	var temp_inventory_item_object = instance_create_depth(item_x, item_y, 0, global.inventory_item_packs[item_pack].item_object, temp_inventory_item_var_struct);
 	
 	//
-	switch (global.inventory_item_pack[item_pack].item_type)
+	switch (global.inventory_item_packs[item_pack].item_type)
 	{
 		case InventoryItemType.Default:
 			//
@@ -41,7 +41,7 @@ function create_inventory_item_object(item_pack, item_x, item_y)
 			temp_inventory_item_object.image_yscale = random(1.0) > 0.5 ? 1 : -1;
 			
 			//
-			temp_inventory_item_object.weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_pack[item_pack].weapon_pack);
+			temp_inventory_item_object.weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[item_pack].weapon_pack);
 			temp_inventory_item_object.weapon_instance.init_weapon_physics(item_x, item_y, temp_item_weapon_rotation_angle);
 			temp_inventory_item_object.weapon_instance.weapon_facing_sign = temp_inventory_item_object.image_yscale;
 			break;
@@ -56,23 +56,27 @@ function create_inventory_item_object(item_pack, item_x, item_y)
 }
 
 // 
-global.inventory_item_pack[InventoryItemPack.None] = 
+global.inventory_item_packs[InventoryItemPack.None] = 
 {
 	item_name: "Empty",
 	item_description: "",
 	item_dialogue: "",
+	item_sprite: sItem_CorsoRifle,
 	item_type: InventoryItemType.None,
 	item_slot_tier: UnitInventorySlotTier.None,
 	item_object: noone,
-	item_count_limit: -1
+	item_count_limit: -1,
+	
+	weapon_pack: WeaponPack.Default
 };
 
 // 
-global.inventory_item_pack[InventoryItemPack.CorsoRifle] =
+global.inventory_item_packs[InventoryItemPack.CorsoRifle] =
 {
 	item_name: "Corso Rifle",
 	item_description: "",
 	item_dialogue: [ "It'll be poetic that this Tyrant's Rifle", "will end the cruelty that rules our world." ],
+	item_sprite: sItem_CorsoRifle,
 	item_type: InventoryItemType.Weapon,
 	item_slot_tier: UnitInventorySlotTier.Hefty,
 	item_object: oItem_Weapon_CorsoRifle,
@@ -82,11 +86,12 @@ global.inventory_item_pack[InventoryItemPack.CorsoRifle] =
 };
 
 // 
-global.inventory_item_pack[InventoryItemPack.OilerSMG] =
+global.inventory_item_packs[InventoryItemPack.OilerSMG] =
 {
 	item_name: "Oiler Sub-Machine Gun",
 	item_description: "",
 	item_dialogue: "",
+	item_sprite: sItem_CorsoRifle,
 	item_type: InventoryItemType.Weapon,
 	item_slot_tier: UnitInventorySlotTier.Hefty,
 	item_object: noone,

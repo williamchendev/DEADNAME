@@ -17,9 +17,22 @@ if (player_input)
 	input_aim = mouse_check_button(mb_right);
 	
 	input_reload = keyboard_check_pressed(GameManager.reload_check);
+	input_drop = keyboard_check_pressed(GameManager.drop_check);
 	
 	input_cursor_x = GameManager.cursor_x + LightingEngine.render_x;
 	input_cursor_y = GameManager.cursor_y + LightingEngine.render_y;
+	
+	// Player Unit Inventory Controls
+	if (mouse_wheel_up())
+	{
+		inventory_index++;
+		inventory_index = clamp(inventory_index, -1, array_length(inventory_slots) - 1);
+	}
+	else if (mouse_wheel_down())
+	{
+		inventory_index--;
+		inventory_index = clamp(inventory_index, -1, array_length(inventory_slots) - 1);
+	}
 	
 	// DEBUG
 	GameManager.player_unit = id;

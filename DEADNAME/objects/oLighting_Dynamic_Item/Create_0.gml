@@ -39,5 +39,5 @@ if (item_interaction)
 {
 	var temp_interaction_instance = instance_create_depth(x, y, 0, oItem_Interaction);
 	temp_interaction_instance.interaction_object = self;
-	temp_interaction_instance.interaction_object_name = global.inventory_item_pack[item_pack].item_name;
+	temp_interaction_instance.interaction_object_name = global.inventory_item_packs[item_pack].item_name;
 }

@@ -14,7 +14,7 @@ interact_options[0] =
 		var temp_dialogue_box = instance_create_depth(0, 0, 0, oDialogueBox);
 		
 		// Set Dialogue Text and Unit
-		temp_dialogue_box.set_dialogue_text(global.inventory_item_pack[interaction_instance.interaction_object.item_pack].item_dialogue);
+		temp_dialogue_box.set_dialogue_text(global.inventory_item_packs[interaction_instance.interaction_object.item_pack].item_dialogue);
 		temp_dialogue_box.dialogue_unit = GameManager.player_unit;
 		
 		// Set Dialogue Cutscene Behaviour Properties

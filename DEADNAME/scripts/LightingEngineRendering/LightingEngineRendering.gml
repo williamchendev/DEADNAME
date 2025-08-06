@@ -284,7 +284,7 @@ function lighting_engine_render_layer(render_layer_type)
 						}
 						
 						// Draw Dynamic Object (Item)
-						switch (global.inventory_item_pack[item_pack].item_type)
+						switch (global.inventory_item_packs[item_pack].item_type)
 						{
 							case InventoryItemType.Default:
 								// Draw Default Item

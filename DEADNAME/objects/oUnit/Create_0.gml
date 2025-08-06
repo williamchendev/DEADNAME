@@ -169,8 +169,9 @@ weapon_equipped = noone;
 // Inventory Variables
 inventory_index = -1;
 inventory_slots = array_create(0);
+unit_lift_strength = 0;
 
-unit_inventory_init(id, 0, 2, 1, 1);
+unit_inventory_init(id, 1, 1, 1, 2);
 
 backpack_position_x = 0;
 backpack_position_y = 0;
@@ -208,6 +209,7 @@ input_attack = false;
 input_aim = false;
 
 input_reload = false;
+input_drop = false;
 
 input_cursor_x = 0;
 input_cursor_y = 0;
