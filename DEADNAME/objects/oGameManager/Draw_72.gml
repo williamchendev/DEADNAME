@@ -16,7 +16,7 @@ if (instance_exists(player_unit))
 	{
 		//
 		var temp_player_inventory_slot_x = round(player_unit.x - LightingEngine.render_x);
-		var temp_player_inventory_slot_y = round(player_unit.bbox_top - 48 - LightingEngine.render_y);
+		var temp_player_inventory_slot_y = round(player_unit.bbox_top - 42 - LightingEngine.render_y);
 		
 		//
 		var temp_slot_contrast_color = merge_color(c_white, c_black, 0.7);
@@ -46,25 +46,53 @@ if (instance_exists(player_unit))
 			
 			if (player_unit.inventory_index == temp_player_inventory_slot_index)
 			{
-				draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_white, 1);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 1);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x + 1, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 1);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_color, 1);
+				if (player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack != InventoryItemPack.None)
+				{
+					draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5), temp_player_inventory_slot_y - (temp_slot_size * 0.5) + 1, 1, 1, 0, temp_slot_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5) + 1, temp_player_inventory_slot_y - (temp_slot_size * 0.5) + 1, 1, 1, 0, temp_slot_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5), temp_player_inventory_slot_y - (temp_slot_size * 0.5), 1, 1, 0, c_white, 1);
+				}
+				else
+				{
+					draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x + 1, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_color, 1);
+				}
 			}
 			else
 			{
-				draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_black, 1);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 0.5);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x + 1, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 0.5);
-				draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_color, 0.5);
+				if (player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack != InventoryItemPack.None)
+				{
+					draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_black, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5), temp_player_inventory_slot_y - (temp_slot_size * 0.5) + 1, 1, 1, 0, temp_slot_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5) + 1, temp_player_inventory_slot_y - (temp_slot_size * 0.5) + 1, 1, 1, 0, temp_slot_contrast_color, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x - (temp_slot_size * 0.5), temp_player_inventory_slot_y - (temp_slot_size * 0.5), 1, 1, 0, c_white, 1);
+				}
+				else
+				{
+					draw_sprite_ext(sInventoryTier, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_black, 1);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 0.5);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x + 1, temp_player_inventory_slot_y + 1, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_contrast_color, 0.5);
+					draw_sprite_ext(sInventoryTier, player_unit.inventory_slots[temp_player_inventory_slot_index].tier, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, player_unit.inventory_slots[temp_player_inventory_slot_index].tier_color, 0.5);
+				}
 			}
-			
-			//
-			draw_text_outline(temp_player_slot_x + (temp_slot_size * 0.5) - 2, temp_player_inventory_slot_y + 4, $"{temp_player_inventory_slot_index}");
 			
 			//
 			if (player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack != InventoryItemPack.None)
 			{
+				//
+				if (global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_count_limit != -1)
+				{
+					draw_text_outline(temp_player_slot_x + (temp_slot_size * 0.5) - 2, temp_player_inventory_slot_y + 4, $"{temp_player_inventory_slot_index}");
+				}
+				
+				//
+				draw_sprite_ext(global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_sprite, 0, temp_player_slot_x - 1, temp_player_inventory_slot_y, 1, 1, 0, c_black, 1);
+				draw_sprite_ext(global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_sprite, 0, temp_player_slot_x, temp_player_inventory_slot_y - 1, 1, 1, 0, c_black, 1);
+				draw_sprite_ext(global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_sprite, 0, temp_player_slot_x + 1, temp_player_inventory_slot_y, 1, 1, 0, c_black, 1);
+				draw_sprite_ext(global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_sprite, 0, temp_player_slot_x, temp_player_inventory_slot_y + 1, 1, 1, 0, c_black, 1);
 				draw_sprite_ext(global.inventory_item_packs[player_unit.inventory_slots[temp_player_inventory_slot_index].item_pack].item_sprite, 0, temp_player_slot_x, temp_player_inventory_slot_y, 1, 1, 0, c_white, 1);
 			}
 		}
@@ -80,7 +108,17 @@ if (instance_exists(player_unit))
 			draw_set_valign(fa_middle);
 			
 			//
-			draw_text_outline(temp_player_inventory_slot_x, temp_player_inventory_slot_y + 24, $"{player_unit.inventory_slots[player_unit.inventory_index].name} [EMPTY]", player_unit.inventory_slots[player_unit.inventory_index].tier_color, c_black);
+			var temp_player_inventory_slot_selected_tier_color = player_unit.inventory_slots[player_unit.inventory_index].tier_color;
+			
+			//
+			if (player_unit.inventory_slots[player_unit.inventory_index].item_pack != InventoryItemPack.None)
+			{
+				draw_text_outline(temp_player_inventory_slot_x, temp_player_inventory_slot_y + 24, $"{global.inventory_item_packs[player_unit.inventory_slots[player_unit.inventory_index].item_pack].item_name}", temp_player_inventory_slot_selected_tier_color, c_black);
+			}
+			else
+			{
+				draw_text_outline(temp_player_inventory_slot_x, temp_player_inventory_slot_y + 24, $"{player_unit.inventory_slots[player_unit.inventory_index].name} [EMPTY]", temp_player_inventory_slot_selected_tier_color, c_black);
+			}
 		}
 	}
 	

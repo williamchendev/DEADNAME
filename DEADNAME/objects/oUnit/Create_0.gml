@@ -185,6 +185,7 @@ if (false)
 else
 {
 	create_inventory_item_object(InventoryItemPack.CorsoRifle, x, y - 48);
+	unit_inventory_add_item(id, InventoryItemPack.Ammo);
 }
 
 // Unit Limb Arms

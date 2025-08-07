@@ -784,6 +784,7 @@
     {"id":{"name":"sInventoryHandSlot","path":"sprites/sInventoryHandSlot/sInventoryHandSlot.yy",},},
     {"id":{"name":"sInventorySelect","path":"sprites/sInventorySelect/sInventorySelect.yy",},},
     {"id":{"name":"sInventoryTier","path":"sprites/sInventoryTier/sInventoryTier.yy",},},
+    {"id":{"name":"sItem_Ammo","path":"sprites/sItem_Ammo/sItem_Ammo.yy",},},
     {"id":{"name":"sItem_CorsoRifle","path":"sprites/sItem_CorsoRifle/sItem_CorsoRifle.yy",},},
     {"id":{"name":"sItems_Drop_1x1","path":"sprites/sItems_Drop_1x1/sItems_Drop_1x1.yy",},},
     {"id":{"name":"sItems_Drop","path":"sprites/sItems_Drop/sItems_Drop.yy",},},

@@ -3,7 +3,8 @@ enum InventoryItemPack
 {
 	None,
 	CorsoRifle,
-	OilerSMG
+	OilerSMG,
+	Ammo
 }
 
 enum InventoryItemType
@@ -66,8 +67,6 @@ global.inventory_item_packs[InventoryItemPack.None] =
 	item_slot_tier: UnitInventorySlotTier.None,
 	item_object: noone,
 	item_count_limit: -1,
-	
-	weapon_pack: WeaponPack.Default
 };
 
 // 
@@ -80,7 +79,7 @@ global.inventory_item_packs[InventoryItemPack.CorsoRifle] =
 	item_type: InventoryItemType.Weapon,
 	item_slot_tier: UnitInventorySlotTier.Hefty,
 	item_object: oItem_Weapon_CorsoRifle,
-	item_count_limit: 1,
+	item_count_limit: -1,
 	
 	weapon_pack: WeaponPack.Corso
 };
@@ -95,7 +94,20 @@ global.inventory_item_packs[InventoryItemPack.OilerSMG] =
 	item_type: InventoryItemType.Weapon,
 	item_slot_tier: UnitInventorySlotTier.Hefty,
 	item_object: noone,
-	item_count_limit: 1,
+	item_count_limit: -1,
 	
 	weapon_pack: WeaponPack.SMG
+};
+
+//
+global.inventory_item_packs[InventoryItemPack.Ammo] =
+{
+	item_name: "7.62 ARKOVIAN",
+	item_description: "",
+	item_dialogue: "",
+	item_sprite: sItem_Ammo,
+	item_type: InventoryItemType.Default,
+	item_slot_tier: UnitInventorySlotTier.Light,
+	item_object: noone,
+	item_count_limit: 3
 };

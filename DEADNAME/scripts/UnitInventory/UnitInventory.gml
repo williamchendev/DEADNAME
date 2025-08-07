@@ -157,9 +157,61 @@ function unit_inventory_remove_all_slots(unit)
 	array_clear(unit.inventory_slots);
 }
 
-function unit_inventory_add_item()
+function unit_inventory_add_item(unit, item_pack)
 {
+	//
+	var temp_slot_index = -1;
 	
+	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
+	{
+		//
+		if (unit.inventory_slots[i].item_pack != InventoryItemType.None)
+		{
+			//
+			continue;
+		}
+		
+		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
+		if (unit.inventory_slots[i].tier >= global.inventory_item_packs[item_pack].item_slot_tier)
+		{
+			//
+			if (temp_slot_index == -1 or (unit.inventory_slots[i].tier <= unit.inventory_slots[temp_slot_index].tier and i < temp_slot_index))
+			{
+				//
+				temp_slot_index = i;
+			}
+		}
+	}
+	
+	//
+	if (temp_slot_index == -1)
+	{
+		//
+		return false;
+	}
+	
+	//
+	switch (global.inventory_item_packs[item_pack].item_type)
+	{
+		case InventoryItemType.Default:
+			//
+			break;
+		case InventoryItemType.Weapon:
+			//
+			unit.inventory_slots[temp_slot_index].item_instance = weapon_instance;
+			break;
+		case InventoryItemType.None:
+		default:
+			//
+			return false;
+	}
+	
+	//
+	unit.inventory_slots[temp_slot_index].item_pack = item_pack;
+	unit.inventory_slots[temp_slot_index].item_count = 1;
+	
+	//
+	return true;
 }
 
 function unit_inventory_take_item_instance(unit, item_instance)
