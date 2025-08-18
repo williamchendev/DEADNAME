@@ -6,3 +6,10 @@ event_inherited();
 
 // Item's Weapon Instance
 weapon_instance = noone;
+
+// Ground Contact Check Variable
+ground_contact = false;
+
+// Reduce Weapon Angular Movement when dropped mid-air
+item_angular_dampening = phy_angular_damping;
+phy_angular_damping = 50;

@@ -33,7 +33,7 @@
   "origin":0,
   "parent":{
     "name":"Editor",
-    "path":"folders/Sprites/Editor.yy",
+    "path":"folders/Sprites/_OLD/Editor.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

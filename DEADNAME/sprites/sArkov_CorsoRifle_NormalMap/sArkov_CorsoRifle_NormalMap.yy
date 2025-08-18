@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Corso",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/Corso.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/Corso.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

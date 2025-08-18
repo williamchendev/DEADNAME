@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"DernosNeedle",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/DernosNeedle.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/DernosNeedle.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

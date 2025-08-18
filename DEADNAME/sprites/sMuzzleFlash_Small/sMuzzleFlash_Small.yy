@@ -31,7 +31,7 @@
   "origin":9,
   "parent":{
     "name":"MuzzleFlash",
-    "path":"folders/Sprites/Weapons/Base/MuzzleFlash.yy",
+    "path":"folders/Sprites/Items/Weapons/Base/MuzzleFlash.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

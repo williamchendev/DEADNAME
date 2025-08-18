@@ -43,6 +43,9 @@ data_directory = $"{program_directory}\Data\\";
 // AI Calculation Settings
 sight_collision_calculation_frame_delay = 5;
 
+// UI Visual Settings
+ui_inspection_text_font = font_Default;
+
 // Debug Settings
 global.debug = false;
 debug_overlay_enabled = false;

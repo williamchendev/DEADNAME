@@ -44,6 +44,10 @@ class WeaponClass define
 		// Init Weapon Layer Index
 		weapon_layer_index = -1;
 		
+		// Init Weapon Conditions
+		weapon_attack_reset = false;
+		weapon_physics_exist = false;
+		
 		// Init Weapon Crosshair Properties
 		weapon_crosshair_snap = 2;
 		weapon_crosshair_length_default = 60;
@@ -53,13 +57,22 @@ class WeaponClass define
 		weapon_crosshair_position_y = 0;
 	}
 	
-	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = 0)
+	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = undefined)
 	{
+		// Init Weapon Physics
+		weapon_physics_exist = true;
+		
 		// Init Weapon Position & Angle
 		weapon_x = init_weapon_x;
 		weapon_y = init_weapon_y;
-		weapon_angle = init_weapon_angle;
-		weapon_old_angle = init_weapon_angle;
+		
+		weapon_angle = 0;
+		weapon_old_angle = 0;
+		
+		if (is_undefined(init_weapon_angle) and instance_exists(weapon_unit))
+		{
+			weapon_angle = weapon_unit.draw_xscale < 0 ? 180 : 0;
+		}
 		
 		// Init Weapon Item Displacement Position & Lerp Speed
 		weapon_item_displacement_x = 0;
@@ -76,11 +89,11 @@ class WeaponClass define
 	// Equip Methods
 	static equip_weapon = function(unit_instance)
 	{
-		// Reset Weapon Physics
-		init_weapon_physics();
-		
 		// Set Weapon Unit
 		weapon_unit = unit_instance;
+		
+		// Reset Weapon Physics
+		init_weapon_physics();
 		
 		// Set Unit Weapon Behaviour
 		weapon_unit.weapon_active = true;
@@ -139,6 +152,13 @@ class WeaponClass define
 	static update_weapon_attack = function(weapon_target = undefined)
 	{
 		
+	}
+	
+	// Weapon Behaviours
+	static reset_weapon = function()
+	{
+		// Reset Firearm
+		weapon_attack_reset = true;
 	}
 	
 	// Render Methods
@@ -208,14 +228,11 @@ class FirearmClass extends WeaponClass define
 		firearm_recoil_recovery_delay = 0;
 		firearm_attack_delay = 0;
 		
-		// Init Weapon Conditions
-		firearm_attack_reset = false;
-		
 		// Firearm Muzzle Flare
 		firearm_muzzle_flare = noone;
 	}
 	
-	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = 0)
+	static init_weapon_physics = function(init_weapon_x = 0, init_weapon_y = 0, init_weapon_angle = undefined)
 	{
 		// Init Weapon Position & Angle
 		super.init_weapon_physics(init_weapon_x, init_weapon_y, init_weapon_angle);
@@ -240,7 +257,7 @@ class FirearmClass extends WeaponClass define
 		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
 		
 		// Reset Firearm Attack Condition 
-		firearm_attack_reset = false;
+		weapon_attack_reset = false;
 	}
 	
 	static unequip_weapon = function()
@@ -270,7 +287,7 @@ class FirearmClass extends WeaponClass define
 			weapon_item_displacement_value -= frame_delta * weapon_item_displacement_spd;
 			weapon_item_displacement_value = clamp(weapon_item_displacement_value, 0, 1);
 			
-			// 
+			// Calculate Weapon Item Displacement Exponent Value
 			var temp_weapon_item_displacement_value_exp = power(weapon_item_displacement_value, 3);
 			
 			// Calculate Weapon Lerp Position based on Weapon Item Displacement Position
@@ -394,9 +411,9 @@ class FirearmClass extends WeaponClass define
 	static update_weapon_attack = function(weapon_target = undefined)
 	{
 		// Invalid Weapon Attack Behaviour
-		if (!firearm_attack_reset)
+		if (!weapon_attack_reset)
 		{
-			// Firearm Input Reset Incomplete
+			// Weapon Input Reset Incomplete
 			return false;
 		}
 		else if (weapon_item_displacement_value > 0)
@@ -489,6 +506,12 @@ class FirearmClass extends WeaponClass define
 			}
 		}
 		
+		if (instance_exists(weapon_unit) and weapon_unit.player_input)
+		{
+			// Player Asymmetry - All Player Attacks always hit their Combat Target
+			temp_firearm_attack_hit = !is_undefined(weapon_target) and instance_exists(weapon_target);
+		}
+		
 		if (temp_firearm_attack_hit)
 		{
 			// Calculate Firearm Attack as Hit Shot
@@ -562,13 +585,13 @@ class FirearmClass extends WeaponClass define
 		switch (global.weapon_packs[weapon_pack].weapon_type)
 		{
 			case WeaponType.DefaultFirearm:
-				firearm_attack_reset = firearm_ammo <= 0 ? false : firearm_attack_reset;
+				weapon_attack_reset = firearm_ammo <= 0 ? false : weapon_attack_reset;
 				break;
 			case WeaponType.BoltActionFirearm:
-				firearm_attack_reset = false;
+				weapon_attack_reset = false;
 				break;
 			default:
-				firearm_attack_reset = false;
+				weapon_attack_reset = false;
 			    break;
 		}
 		
@@ -628,12 +651,6 @@ class FirearmClass extends WeaponClass define
 			// Create Muzzle Flare Instance
 			firearm_muzzle_flare = instance_create_depth(muzzle_x, muzzle_y, 0, global.weapon_packs[weapon_pack].firearm_muzzle_flare_object);
 		}
-	}
-	
-	static reset_firearm = function()
-	{
-		// Reset Firearm
-		firearm_attack_reset = true;
 	}
 	
 	static reload_firearm = function(reload_rounds_count = undefined)
@@ -706,6 +723,6 @@ class FirearmClass extends WeaponClass define
 	{
 		// Draw Weapon's Cursor Crosshair
 		var temp_player_attack_eligible = firearm_recoil_recovery_delay <= 0 and firearm_ammo > 0 and weapon_unit.unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload;
-		draw_sprite(sCursorCrosshairIcons, temp_player_attack_eligible ? 0 : 2, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y);
+		draw_sprite(sUI_CursorCrosshairIcons, temp_player_attack_eligible ? 0 : 2, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y);
 	}
 }

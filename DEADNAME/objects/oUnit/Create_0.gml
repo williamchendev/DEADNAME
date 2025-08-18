@@ -52,7 +52,8 @@ hand_fumble_animation_travel_spd = 0.5;
 hand_fumble_animation_delay_min = 2;
 hand_fumble_animation_delay_max = 12;
 
-backpack_vertical_bobbing_height = 1;
+inventory_item_rotate_spd = 0.1;
+inventory_vertical_bobbing_height = 1;
 
 item_take_lerp_movement_spd = 0.1;
 
@@ -75,6 +76,18 @@ combat_target_vertical_interpolation_max = 0.85;
 
 combat_attack_delay_min = 2;
 combat_attack_delay_max = 22;
+
+// Inventory Settings
+item_drop_base_horizontal_power = 8;
+item_drop_random_horizontal_power = 3;
+item_drop_movement_horizontal_power = 14;
+
+item_drop_base_vertical_power = -16;
+item_drop_random_vertical_power = 4;
+item_drop_movement_vertical_power = 8;
+
+player_inventory_ui_fade_delay = 160;
+player_inventory_ui_alpha_decay = 0.95;
 
 // Physics Variables
 platform_list = ds_list_create();
@@ -171,22 +184,8 @@ inventory_index = -1;
 inventory_slots = array_create(0);
 unit_lift_strength = 0;
 
-unit_inventory_init(id, 1, 1, 1, 2);
-
-backpack_position_x = 0;
-backpack_position_y = 0;
-
-// Weapons DEBUG
-if (false)
-{
-	var temp_weapon_instance = create_weapon_from_weapon_pack(WeaponPack.Corso);
-	temp_weapon_instance.equip_weapon(id);
-}
-else
-{
-	create_inventory_item_object(InventoryItemPack.CorsoRifle, x, y - 48);
-	unit_inventory_add_item(id, InventoryItemPack.Ammo);
-}
+player_inventory_ui_fade_timer = 0;
+player_inventory_ui_alpha = 0;
 
 // Unit Limb Arms
 limb_primary_arm = NEW(LimbArmClass);
@@ -258,3 +257,23 @@ unit_spritepack_walk_emissivemap = global.unit_packs[unit_pack].walk_emissivemap
 unit_spritepack_jump_emissivemap = global.unit_packs[unit_pack].jump_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].jump_sprite, global.unit_packs[unit_pack].jump_emissivemap);
 unit_spritepack_aim_emissivemap = global.unit_packs[unit_pack].aim_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_emissivemap);
 unit_spritepack_aim_walk_emissivemap = global.unit_packs[unit_pack].aim_walk_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_emissivemap);
+
+// Instantiate Unit Inventory Slots
+global.unit_packs[unit_pack].inventory_slot_init(id);
+
+// Weapons DEBUG
+if (true)
+{
+	unit_inventory_add_item(id, InventoryItemPack.Ammo, 5);
+	instance_create_item(InventoryItemPack.Ammo, x, y - 48, 5);
+	
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, InventoryItemPack.CorsoRifle);
+	unit_inventory_add_item(id, InventoryItemPack.CorsoRifle);
+	show_debug_message(temp_weapon_equip_slot_index);
+	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
+}
+else
+{
+	instance_create_item(InventoryItemPack.CorsoRifle, x, y - 48);
+	unit_inventory_add_item(id, InventoryItemPack.Ammo);
+}

@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"FAL",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/FAL.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/FAL.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

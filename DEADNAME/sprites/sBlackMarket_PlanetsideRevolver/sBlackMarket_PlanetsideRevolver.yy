@@ -27,7 +27,7 @@
   "origin":3,
   "parent":{
     "name":"PlanetsideRevolver",
-    "path":"folders/Sprites/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",
+    "path":"folders/Sprites/Items/Weapons/BlackMarket/Firearms/PlanetsideRevolver.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

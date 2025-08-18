@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"Materials",
-    "path":"folders/Sprites/Effects/Materials.yy",
+    "path":"folders/Sprites/_OLD/Materials.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

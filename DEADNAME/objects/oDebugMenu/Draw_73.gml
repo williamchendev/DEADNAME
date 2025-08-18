@@ -571,7 +571,7 @@ if (fps_counter)
 }
 
 // Draw Cursor to Debug Menu
-draw_sprite(sCursorMenu, 0, GameManager.cursor_x, GameManager.cursor_y);
+draw_sprite(sUI_CursorMenu, 0, GameManager.cursor_x, GameManager.cursor_y);
 
 // Reset Surface Target
 surface_reset_target();

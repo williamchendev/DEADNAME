@@ -648,6 +648,33 @@ if (!player_input)
 // Movement Behaviour
 if (canmove)
 {
+	// Unit Drop Behaviour
+	if (input_drop)
+	{
+		// Create Dropped Item Instance
+		var temp_unit_dropped_item_instance = unit_inventory_drop_item_instance(id, inventory_index);
+		
+		// Check if Dropped Item was created Successfully
+		if (instance_exists(temp_unit_dropped_item_instance))
+		{
+			// Apply Physics Force to "Tossed" Dropped Item Instance
+			with (temp_unit_dropped_item_instance)
+			{
+				var temp_item_horizontal_drop_power = random_range(-other.item_drop_random_horizontal_power, other.item_drop_random_horizontal_power) + (other.draw_xscale * other.item_drop_base_horizontal_power) + (other.x_velocity * other.item_drop_movement_horizontal_power);
+				var temp_item_vertical_drop_power = random_range(-other.item_drop_random_vertical_power, other.item_drop_random_vertical_power) + other.item_drop_base_vertical_power + (other.y_velocity * other.item_drop_movement_vertical_power);
+				physics_apply_impulse(x, y, temp_item_horizontal_drop_power, temp_item_vertical_drop_power);
+			}
+			
+			// Check if Unit has Player Input
+			if (player_input)
+			{
+				// Reset Player Inventory UI Transparency and Fade Timer
+				player_inventory_ui_alpha = 1;
+				player_inventory_ui_fade_timer = player_inventory_ui_fade_delay * 0.5;
+			}
+		}
+	}
+	
 	// Unit Weapon Behaviour
 	if (weapon_active)
 	{
@@ -830,7 +857,7 @@ if (canmove)
 				case WeaponType.DefaultFirearm:
 				case WeaponType.BoltActionFirearm:
 					// Reset Firearm Attack Behaviour
-					weapon_equipped.reset_firearm();
+					weapon_equipped.reset_weapon();
 					break;
 				// Default Weapon Attack Reset Behaviour
 				default:
@@ -840,7 +867,7 @@ if (canmove)
 	}
 	
 	// Horizontal Movement Behaviour
-	var move_spd = weapon_aim || unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload ? walk_spd : run_spd;
+	var move_spd = unit_equipment_animation_state != UnitEquipmentAnimationState.None and (weapon_aim or unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload) ? walk_spd : run_spd;
 	
 	if (input_left) 
 	{
@@ -897,10 +924,33 @@ if (canmove)
 	}
 	
 	// Jumping Down (Platforms)
-	if (input_drop_down and grounded)
+	if (input_drop_down)
 	{
-		if (place_free(x, y + 1))
+		// Check if Unit is standing above a Platform Collider
+		if (grounded and place_free(x, y + 1))
 		{
+			// Establish Platform Iteration Variables
+			var temp_platform_index = ds_list_size(platform_list) - 1;
+			
+			// Iterate through Unit's Platform List to remove all Platform Instances that share Unit's Vertical Position
+			repeat (ds_list_size(platform_list))
+			{
+				// Find Platform Instance
+				var temp_platform_instance = ds_list_find_value(platform_list, temp_platform_index);
+				
+				// Compare Vertical Position
+				if (temp_platform_instance.y == y)
+				{
+					// Remove Platform Instance the Unit is standing on from Unit's Platform Collisions List
+					ds_list_delete(temp_platform_instance.units, ds_list_find_index(temp_platform_instance.units, id));
+					ds_list_delete(platform_list, temp_platform_index);
+				}
+				
+				// Decrement Platform Index
+				temp_platform_index--;
+			}
+			
+			// Set Unit's Platform Drop Down Physics Movement Behaviour
 			y += 2;
 			y_velocity += 0.05;
 			grounded = false;
@@ -1090,18 +1140,26 @@ else
 	}
 	else
 	{
-		var temp_vspd_sign = sign(vspd);
+		// Establish Airborne Unit Physics Variables
+		var temp_unit_old_y = y;
+		var temp_vspd_sign = sign(vspd) == 0 ? 1 : sign(vspd);
+		
+		// Iterate through Length of Unit's Vertical Speed Physics Raycast
 		var v = 1;
 		
-		repeat(abs(vspd) - v)
+		repeat(max(abs(vspd) - v, 1))
 		{
-			var temp_vspd = (temp_vspd_sign * v);
-			
-			if (!platform_free(x, y + temp_vspd, platform_list))
+			// Check for Physics Collision in the Direction of Unit's Vertical Speed
+			if (platform_free(x, y + temp_vspd_sign, platform_list))
+			{
+				// AIRBORNE MOVEMENT
+				y += temp_vspd_sign;
+			}
+			else
 			{
 				// GROUND CONTACT
-				y_velocity = temp_vspd - temp_vspd_sign;
-				y += y_velocity;
+				y_velocity = temp_vspd_sign * (v - 1);
+				y = temp_unit_old_y + y_velocity;
 				y = round(y);
 				
 				if (!platform_free(x, y + 1, platform_list))
@@ -1128,6 +1186,7 @@ else
 				break;
 			}
 			
+			// Increment Vertical Physics Check
 			v++;
 		}
 	}
@@ -1265,9 +1324,38 @@ if (unit_animation_state != temp_unit_animation_state)
 // Calculate Unit Bobbing Animation
 bobbing_animation_value = sin((((floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2)) + bobbing_animation_percent_offset) * 2 * pi);
 
-// Calculate Unit's Inventory Position
-backpack_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_xscale);
-backpack_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_backpack_x, global.unit_packs[unit_pack].equipment_backpack_y + (bobbing_animation_value * backpack_vertical_bobbing_height)) * draw_yscale);
+// Calculate Unit's Inventory Slot Positions
+var temp_inventory_slot_index = 0;
+
+repeat (array_length(inventory_slots))
+{
+	// Calculate Inventory Slot Unit Offset
+	var temp_inventory_slot_unit_offset_x = rot_point_x(inventory_slots[temp_inventory_slot_index].slot_unit_offset_x, inventory_slots[temp_inventory_slot_index].slot_unit_offset_y + (bobbing_animation_value * inventory_vertical_bobbing_height)) * draw_xscale;
+	var temp_inventory_slot_unit_offset_y = rot_point_y(inventory_slots[temp_inventory_slot_index].slot_unit_offset_x, inventory_slots[temp_inventory_slot_index].slot_unit_offset_y + (bobbing_animation_value * inventory_vertical_bobbing_height)) * draw_yscale;
+	
+	// Set Inventory Slot Positions relative to Unit
+	inventory_slots[temp_inventory_slot_index].slot_position_x = x + temp_inventory_slot_unit_offset_x;
+	inventory_slots[temp_inventory_slot_index].slot_position_y = y + ground_contact_vertical_offset + temp_inventory_slot_unit_offset_y;
+	
+	// Update Inventory Slot Item Instance's Position & Angle
+	if (inventory_index != temp_inventory_slot_index)
+	{
+		// Compare Inventory Slot Item's Type
+		switch (global.inventory_item_packs[inventory_slots[temp_inventory_slot_index].item_pack].item_type)
+		{
+			case InventoryItemType.Weapon:
+				var temp_inventory_slot_angle_movement_difference = angle_difference(90 + (inventory_slots[temp_inventory_slot_index].slot_angle * sign(draw_xscale)), inventory_slots[temp_inventory_slot_index].item_instance.weapon_angle);
+				var temp_inventory_slot_item_angle = inventory_slots[temp_inventory_slot_index].item_instance.weapon_angle + (temp_inventory_slot_angle_movement_difference * inventory_item_rotate_spd * frame_delta);
+				inventory_slots[temp_inventory_slot_index].item_instance.update_weapon_physics(inventory_slots[temp_inventory_slot_index].slot_position_x, inventory_slots[temp_inventory_slot_index].slot_position_y, temp_inventory_slot_item_angle, sign(draw_xscale));
+				break;
+			default:
+				break;
+		}
+	}
+	
+	// Increment Inventory Slot Index
+	temp_inventory_slot_index++;
+}
 #endregion
 
 // LIMBS //

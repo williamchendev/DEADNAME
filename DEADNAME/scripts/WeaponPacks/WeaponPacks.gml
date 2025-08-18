@@ -116,7 +116,7 @@ global.weapon_packs[WeaponPack.Corso] =
     // Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
     weapon_sprite: sArkov_CorsoRifle,
     weapon_normalmap: sArkov_CorsoRifle_NormalMap,
-    weapon_metallicroughnessmap: noone,
+    weapon_metallicroughnessmap: sArkov_CorsoRifle_MetallicRoughnessMap,
     weapon_emissivemap: noone,
     
     // Weapon PBR Settings

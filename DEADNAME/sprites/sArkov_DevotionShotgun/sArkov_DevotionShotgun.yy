@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Devotion",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/Devotion.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/Devotion.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

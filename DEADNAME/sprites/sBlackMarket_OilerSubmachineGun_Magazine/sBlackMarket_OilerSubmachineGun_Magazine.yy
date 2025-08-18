@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"OilerSubmachineGun",
-    "path":"folders/Sprites/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy",
+    "path":"folders/Sprites/Items/Weapons/BlackMarket/Firearms/OilerSubmachineGun.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

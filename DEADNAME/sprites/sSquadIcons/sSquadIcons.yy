@@ -30,7 +30,7 @@
   "origin":9,
   "parent":{
     "name":"Squads",
-    "path":"folders/Sprites/Effects/Squads.yy",
+    "path":"folders/Sprites/_OLD/Squads.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

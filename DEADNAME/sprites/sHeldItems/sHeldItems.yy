@@ -46,7 +46,7 @@
   "origin":4,
   "parent":{
     "name":"Held",
-    "path":"folders/Sprites/Items/Held.yy",
+    "path":"folders/Sprites/_OLD/Held.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -24,8 +24,7 @@ function cutscene_continue_event(cutscene_instance)
 		if (cutscene_event_index >= array_length(cutscene_events))
 		{
 			// Destroy Cutscene Object and End Cutscene Event
-			instance_destroy();
-			return;
+			cutscene_events[cutscene_event_index] = { cutscene_type: CutsceneEventType.End };
 		}
 		
 		// Perform Cutscene Behaviour based on Cutscene Index's Cutscene Event Type
@@ -202,7 +201,26 @@ function cutscene_continue_event(cutscene_instance)
 			case CutsceneEventType.End:
 			default:
 				// End Cutscene - Destroy Cutscene Object and End Cutscene Event
-				instance_destroy();
+				cutscene_ended = true;
+				cutscene_waiting_behaviour = true;
+				cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue = true;
+				
+				// Perform timed destruction of Cutscene Dialogue Boxes in sequential top-to-bottom fade pattern
+				var temp_dialogue_fade_delay = 1;
+				
+				for (var i = 0; i < ds_list_size(cutscene_dialogue_boxes); i++)
+				{
+					// Find Dialogue Box instance
+					var temp_dialogue_box = ds_list_find_value(cutscene_dialogue_boxes, i);
+					
+					// Check if Dialogue Box Exists
+					if (instance_exists(temp_dialogue_box))
+					{
+						// Activate Dialogue Box's Fade Destroy Behaviour
+						temp_dialogue_box.alarm[1] = temp_dialogue_fade_delay;
+						temp_dialogue_fade_delay += dialogue_fade_delay_offset;
+					}
+				}
 				break;
 		}
 		
@@ -462,3 +480,4 @@ function cutscene_calculate_dialogue_orientation(cutscene_instance)
 	ds_list_destroy(temp_cutscene_unit_v_positions);
 	temp_cutscene_unit_v_positions = -1;
 }
+

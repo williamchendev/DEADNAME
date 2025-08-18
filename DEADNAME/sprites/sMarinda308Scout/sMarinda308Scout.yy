@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"MarindaScout",
-    "path":"folders/Sprites/Weapons/Arkov/Melee/MarindaScout.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Melee/MarindaScout.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -29,7 +29,7 @@
   "origin":4,
   "parent":{
     "name":"Hits",
-    "path":"folders/Sprites/Weapons/Base/Hits.yy",
+    "path":"folders/Sprites/Items/Weapons/Base/Hits.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

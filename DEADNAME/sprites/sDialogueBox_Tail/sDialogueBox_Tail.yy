@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"Dialogue",
-    "path":"folders/Sprites/Effects/Dialogue.yy",
+    "path":"folders/Sprites/UI/Dialogue.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

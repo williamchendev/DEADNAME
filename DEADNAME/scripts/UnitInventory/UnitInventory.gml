@@ -1,4 +1,4 @@
-//
+// Unit Inventory Enums
 enum UnitInventorySlotTier
 {
 	None,
@@ -8,103 +8,246 @@ enum UnitInventorySlotTier
 	Cumbersome
 }
 
-//
+enum UnitInventorySlotRenderOrder
+{
+	None,
+	Front,
+	Back
+}
+
+// Unit Inventory UI Settings
+global.unit_inventory_ui_vertical_offset = -54;
+global.unit_inventory_ui_inspect_text_vertical_offset = 36;
+
+global.unit_inventory_ui_inspect_text_font = font_Default;
+global.unit_inventory_ui_item_counter_font = font_Inno;
+
+global.unit_inventory_ui_contrast_color = merge_color(c_white, c_black, 0.7);
+global.unit_inventory_ui_empty_alpha = 0.8;
+
+global.unit_inventory_ui_slot_size = 36;
+global.unit_inventory_ui_slot_padding = 10;
+global.unit_inventory_ui_slot_tier_offset = 17;
+
+// Unit Inventory 
 function unit_inventory_slot_tier_color(slot_tier)
 {
-	//
+	// Establish Slot Tier Return Color - Default White
 	var temp_tier_color = c_white;
 	
-	//
+	// Compare given Slot Tier argument
 	switch (slot_tier)
 	{
 		case UnitInventorySlotTier.Light:
+			// Light Slot Tier - Pastel Orange 
 			temp_tier_color = make_color_rgb(252, 171, 85);
+			temp_tier_color = make_color_rgb(255, 150, 79);
 			break;
 		case UnitInventorySlotTier.Moderate:
+			// Moderate Slot Tier - Pastel Cerulean Blue
 			temp_tier_color = make_color_rgb(85, 174, 252);
 			break;
 		case UnitInventorySlotTier.Hefty:
+			// Hefty Slot Tier - Violet 
 			temp_tier_color = make_color_rgb(166, 85, 252);
+			temp_tier_color = make_color_rgb(107, 40, 179);
+			temp_tier_color = make_color_rgb(181, 126, 220);
 			break;
 		case UnitInventorySlotTier.Cumbersome:
+			// Cumbersome Slot Tier - Labor Red
 			temp_tier_color = make_color_rgb(252, 85, 127);
+			temp_tier_color = make_color_rgb(128, 14, 20);
+			temp_tier_color = make_color_rgb(178, 17, 25);
 			break;
 		default:
 			break;
 	}
 	
-	//
+	// Return Slot Tier Color
 	return temp_tier_color;
 }
 
-function unit_inventory_slot_tier_name(slot_tier)
-{
-	//
-	var temp_tier_name = "none";
-	
-	//
-	switch (slot_tier)
-	{
-		case UnitInventorySlotTier.Light:
-			temp_tier_name = "Pocket";
-			break;
-		case UnitInventorySlotTier.Moderate:
-			temp_tier_name = "none";
-			break;
-		case UnitInventorySlotTier.Hefty:
-			temp_tier_name = "none";
-			break;
-		default:
-			break;
-	}
-	
-	//
-	return temp_tier_name;
-}
-
 //
-function unit_inventory_init(unit, cumbersome_slots_count, hefty_slots_count, moderate_slots_count, light_slots_count)
+function unit_inventory_render_ui(unit, alpha)
 {
-	// Create Unit's Light Item Slots
-	for (var temp_light_slots_index = 0; temp_light_slots_index < light_slots_count; temp_light_slots_index++)
+	// Check if Unit Inventory Alpha Transparency is greater than 0
+	if (alpha <= 0)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Light, "Moralist Infantry's Chest Pocket");
+		// Unit Inventory is fully Transparent - Redundant Render can be Skipped
+		return;	
 	}
 	
-	// Create Unit's Moderate Item Slots
-	for (var temp_moderate_slots_index = 0; temp_moderate_slots_index < moderate_slots_count; temp_moderate_slots_index++)
+	// Set Effect Surface Target and Clear Effect Surface
+	surface_set_target(LightingEngine.fx_surface);
+	draw_clear_alpha(c_white, 0);
+	
+	// Find Unit Inventory UI Render Position
+	var temp_unit_inventory_ui_x = round(unit.x - LightingEngine.render_x);
+	var temp_unit_inventory_ui_y = round(unit.y - ((unit.bbox_bottom - unit.bbox_top) * unit.draw_yscale) + global.unit_inventory_ui_vertical_offset - LightingEngine.render_y);
+	
+	// Set Text Font for Inventory Slot Item Counter
+	draw_set_font(global.unit_inventory_ui_item_counter_font);
+	
+	// Set Text Alignment for Inventory Slot Item Counter
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	
+	// Find Half Width of Cumulative Unit Inventory UI Slots
+	var temp_unit_inventory_ui_width = ((global.unit_inventory_ui_slot_size * array_length(unit.inventory_slots)) + (global.unit_inventory_ui_slot_padding * (array_length(unit.inventory_slots) - 1))) * 0.5;
+	
+	// Iterate through Unit Inventory Slots
+	for (var temp_unit_inventory_slot_index = 0; temp_unit_inventory_slot_index < array_length(unit.inventory_slots); temp_unit_inventory_slot_index++)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Moderate, "Moralist Infantry's Belt Box");
+		// Find Unit Inventory Slot Horizontal Position
+		var temp_unit_slot_x = temp_unit_inventory_ui_x + (global.unit_inventory_ui_slot_size * 0.5) + (temp_unit_inventory_slot_index * (global.unit_inventory_ui_slot_size + global.unit_inventory_ui_slot_padding)) - temp_unit_inventory_ui_width;
+		
+		// Find Unit Inventory Slot Tier Image Index
+		var temp_unit_slot_tier = unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier - 1;
+		
+		// Draw Unit Inventory Slot Behaviour
+		if (unit.inventory_index == temp_unit_inventory_slot_index)
+		{
+			// Unit Inventory Slot Selected Behaviour
+			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+			{
+				// Draw Unit Inventory Slot Selected with Item
+				draw_sprite_ext(sUI_Inventory_Slot_Background, 0, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_color, 1);
+				
+				// Draw Unit Inventory Slot Tier Icon (Top Left Corner)
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon_Shadow, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset, 1, 1, 0, c_black, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset + 1, 1, 1, 0, global.unit_inventory_ui_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset + 1, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset + 1, 1, 1, 0, global.unit_inventory_ui_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset, 1, 1, 0, c_white, 1);
+			}
+			else
+			{
+				// Draw Unit Inventory Slot Selected without Item
+				draw_sprite_ext(sUI_Inventory_Slot_Background, 0, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_white, 1);
+				
+				// Draw Unit Inventory Slot Tier Icon (Centered and Transparent)
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x, temp_unit_inventory_ui_y + 1, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x + 1, temp_unit_inventory_ui_y + 1, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_color, 1);
+			}
+		}
+		else
+		{
+			// Draw Unit Inventory Slot Background
+			draw_sprite_ext(sUI_Inventory_Slot_Background, 0, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
+			
+			// Unit Inventory Slot Unselected Behaviour
+			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+			{
+				// Draw Unit Inventory Slot Tier Icon (Top Left Corner)
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon_Shadow, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset, 1, 1, 0, c_black, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset + 1, 1, 1, 0, global.unit_inventory_ui_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset + 1, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset + 1, 1, 1, 0, global.unit_inventory_ui_contrast_color, 1);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset, 1, 1, 0, c_white, 1);
+			}
+			else
+			{
+				// Draw Unit Inventory Slot Tier Icon (Centered and Transparent)
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x, temp_unit_inventory_ui_y + 1, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_contrast_color, global.unit_inventory_ui_empty_alpha);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x + 1, temp_unit_inventory_ui_y + 1, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_contrast_color, global.unit_inventory_ui_empty_alpha);
+				draw_sprite_ext(sUI_Inventory_Slot_TierIcon, temp_unit_slot_tier, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_color, global.unit_inventory_ui_empty_alpha);
+			}
+		}
+		
+		// Unit Inventory Slot Item Portrait & Item Count
+		if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+		{
+			// Unit Inventory Slot Item Count
+			if (global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_count_limit != -1)
+			{
+				draw_text_outline(temp_unit_slot_x + global.unit_inventory_ui_slot_tier_offset - 2, temp_unit_inventory_ui_y + global.unit_inventory_ui_slot_tier_offset - 8, $"{unit.inventory_slots[temp_unit_inventory_slot_index].item_count}");
+			}
+			
+			// Establish Inventory Slot Portrait Image Index based on Inventory Slot's Item Count
+			var temp_inventory_slot_portrait_image_index = unit.inventory_slots[temp_unit_inventory_slot_index].item_count - 1;
+			
+			// Draw Unit Inventory Slot Item Portrait Outline
+			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x - 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y - 1, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x + 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y + 1, 1, 1, 0, c_black, 1);
+			
+			// Draw Unit Inventory Slot Item Portrait Sprite
+			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_white, 1);
+		}
 	}
 	
-	// Create Unit's Hefty Item Slots
-	for (var temp_hefty_slots_index = 0; temp_hefty_slots_index < hefty_slots_count; temp_hefty_slots_index++)
+	// Draw Inventory Slot Inspection Text
+	if (unit.inventory_index != -1)
 	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Hefty, "Moralist Infantry's Backpack");
+		// Set Text Font for Inventory Slot Item Inspect Text
+		draw_set_font(global.unit_inventory_ui_inspect_text_font);
+		
+		// Set Text Alignment for Inventory Slot Item Inspect Text
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_middle);
+		
+		// Establish Inventory Slot Item Inspect Text
+		var temp_unit_inventory_slot_inspect_text = "";
+		
+		if (unit.inventory_slots[unit.inventory_index].item_pack != InventoryItemPack.None)
+		{
+			// Use Item Name Title as Inspect Text
+			temp_unit_inventory_slot_inspect_text = $"{global.inventory_item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_name}";
+		}
+		else
+		{
+			// Use Item Slot Title as Inspect Text
+			temp_unit_inventory_slot_inspect_text = $"{unit.inventory_slots[unit.inventory_index].slot_name} [EMPTY]";
+		}
+		
+		// Establish Inventory Slot Item Inspect Text's Width
+		var temp_slot_inspect_text_width = (string_width(temp_unit_inventory_slot_inspect_text) * 0.5) + 4;
+		
+		// Draw Black Rectangle for contrast with Inventory Slot Item Inspect Text
+		draw_set_color(c_black);
+		
+		draw_rectangle
+		(
+			temp_unit_inventory_ui_x - temp_slot_inspect_text_width, 
+			temp_unit_inventory_ui_y + global.unit_inventory_ui_inspect_text_vertical_offset - 7, 
+			temp_unit_inventory_ui_x + temp_slot_inspect_text_width,
+			temp_unit_inventory_ui_y + global.unit_inventory_ui_inspect_text_vertical_offset + 9,
+			false
+		);
+		
+		// Draw Inventory Slot Item Inspect Text
+		draw_set_color(unit.inventory_slots[unit.inventory_index].slot_tier_color);
+		draw_text(temp_unit_inventory_ui_x, temp_unit_inventory_ui_y + global.unit_inventory_ui_inspect_text_vertical_offset, temp_unit_inventory_slot_inspect_text);
 	}
 	
-	// Create Unit's Cumbersome Item Slots
-	for (var temp_cumbersome_slots_index = 0; temp_cumbersome_slots_index < cumbersome_slots_count; temp_cumbersome_slots_index++)
-	{
-		unit_inventory_add_slot(unit, UnitInventorySlotTier.Cumbersome, "Willpower and Mental Fortitude");
-	}
+	// Reset Surface Target
+	surface_reset_target();
+	
+	// Set Surface Target to UI Surface
+	surface_set_target(LightingEngine.ui_surface);
+	
+	// Draw Completed Unit Inventory UI from FX Surface to UI Surface with Transparency
+	draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_white, alpha);
+	
+	// Reset Surface Target
+	surface_reset_target();
 }
 
-function unit_inventory_add_slot(unit, slot_tier, slot_name)
+function unit_inventory_add_slot(unit, name, tier, horizontal_offset, vertical_offset, rotation, render_order)
 {
-	// Create the new Unit Inventory Slot
-	var temp_new_slot =
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
 	{
-		tier: slot_tier,
-		tier_color: unit_inventory_slot_tier_color(slot_tier),
-		tier_contrast_color: merge_color(unit_inventory_slot_tier_color(slot_tier), c_black, 0.7),
-		
-		name: slot_name,
-		
-		item_pack: InventoryItemType.None,
-		item_count: -1,
-		item_instance: noone
-	};
+		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Check if Slot Tier is Valid
+	if (tier == UnitInventorySlotTier.None)
+	{
+		// Slot Tier is not Valid - Early Return
+		return;
+	}
 	
 	// Find the Index to insert or add the new Unit Inventory Slot into the Unit's Inventory Slot Array
 	var temp_new_slot_index = -1;
@@ -112,12 +255,36 @@ function unit_inventory_add_slot(unit, slot_tier, slot_name)
 	for (var i = 0; i < array_length(unit.inventory_slots); i++)
 	{
 		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (slot_tier > unit.inventory_slots[i].tier)
+		if (tier > unit.inventory_slots[i].slot_tier)
 		{
 			temp_new_slot_index = i;
 			break;
 		}
 	}
+	
+	// Create the new Unit Inventory Slot
+	var temp_new_slot =
+	{
+		slot_name: name,
+		
+		slot_tier: tier,
+		slot_tier_color: unit_inventory_slot_tier_color(tier),
+		slot_tier_contrast_color: merge_color(unit_inventory_slot_tier_color(tier), c_black, 0.7),
+		
+		slot_render_order: tier != UnitInventorySlotTier.Light ? render_order : UnitInventorySlotRenderOrder.None,
+		
+		slot_unit_offset_x: horizontal_offset,
+		slot_unit_offset_y: vertical_offset,
+		
+		slot_angle: rotation,
+		
+		slot_position_x: 0,
+		slot_position_y: 0,
+		
+		item_pack: InventoryItemType.None,
+		item_count: -1,
+		item_instance: noone
+	};
 	
 	// Check to insert or add the new Slot to the Unit's Inventory Slot Array
 	if (temp_new_slot_index == -1)
@@ -137,7 +304,7 @@ function unit_inventory_remove_slot(unit, slot_tier)
 	
 	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 	{
-		if (slot_tier == unit.inventory_slots[i].tier)
+		if (slot_tier == unit.inventory_slots[i].slot_tier)
 		{
 			temp_remove_slot_index = i;
 			break;
@@ -153,11 +320,11 @@ function unit_inventory_remove_slot(unit, slot_tier)
 
 function unit_inventory_remove_all_slots(unit)
 {
-	//
+	// Clear and Destroy all Unit's Inventory Slots
 	array_clear(unit.inventory_slots);
 }
 
-function unit_inventory_add_item(unit, item_pack)
+function unit_inventory_add_item(unit, item_pack, item_count = 1)
 {
 	//
 	var temp_slot_index = -1;
@@ -168,14 +335,25 @@ function unit_inventory_add_item(unit, item_pack)
 		if (unit.inventory_slots[i].item_pack != InventoryItemType.None)
 		{
 			//
+			if (global.inventory_item_packs[item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_pack == item_pack)
+			{
+				if (unit.inventory_slots[i].item_count < global.inventory_item_packs[item_pack].item_count_limit)
+				{
+					//
+					temp_slot_index = i;
+					break;
+				}
+			}
+			
+			//
 			continue;
 		}
 		
 		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (unit.inventory_slots[i].tier >= global.inventory_item_packs[item_pack].item_slot_tier)
+		if (unit.inventory_slots[i].slot_tier >= global.inventory_item_packs[item_pack].item_slot_tier)
 		{
 			//
-			if (temp_slot_index == -1 or (unit.inventory_slots[i].tier <= unit.inventory_slots[temp_slot_index].tier and i < temp_slot_index))
+			if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
 			{
 				//
 				temp_slot_index = i;
@@ -187,7 +365,7 @@ function unit_inventory_add_item(unit, item_pack)
 	if (temp_slot_index == -1)
 	{
 		//
-		return false;
+		return temp_slot_index;
 	}
 	
 	//
@@ -198,142 +376,198 @@ function unit_inventory_add_item(unit, item_pack)
 			break;
 		case InventoryItemType.Weapon:
 			//
-			unit.inventory_slots[temp_slot_index].item_instance = weapon_instance;
+			unit.inventory_slots[temp_slot_index].item_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[item_pack].weapon_pack);
 			break;
 		case InventoryItemType.None:
 		default:
 			//
-			return false;
+			return -1;
 	}
 	
 	//
 	unit.inventory_slots[temp_slot_index].item_pack = item_pack;
-	unit.inventory_slots[temp_slot_index].item_count = 1;
+	unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? item_count : unit.inventory_slots[temp_slot_index].item_count + item_count;
+	unit.inventory_slots[temp_slot_index].item_count = clamp(unit.inventory_slots[temp_slot_index].item_count, 1, global.inventory_item_packs[item_pack].item_count_limit);
 	
 	//
-	return true;
+	return temp_slot_index;
 }
 
 function unit_inventory_take_item_instance(unit, item_instance)
 {
-	//
+	// Check if Unit Instance and Item Instance Exist
 	if (!instance_exists(item_instance) or !instance_exists(unit))
 	{
-		//
-		return false;
+		// Unit Instance or Item Instance is Invalid - Early Return
+		return -1;
 	}
 	
-	//
+	// Check if Item Instance's Item Pack is a valid Item Pack Index
 	if (item_instance.item_pack == -1 or item_instance.item_pack == InventoryItemPack.None)
 	{
-		//
+		// Item Instance's Item Pack is an invalid Item Pack Index - Destroy Invalid Item Instance and Early Return
 		instance_destroy(item_instance);
-		return false;
+		return -1;
 	}
 	
-	//
-	var temp_slot_index = -1;
+	// Place Item in Unit Inventory Behaviour
+	var temp_inventory_index = -1;
+	var temp_item_placed_count = 0;
 	
-	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
+	while (temp_item_placed_count < item_instance.item_count)
 	{
-		//
-		if (unit.inventory_slots[i].item_pack != InventoryItemType.None)
-		{
-			//
-			continue;
-		}
+		// Establish Slot Index to check for Valid Inventory Slot Placement
+		var temp_slot_index = -1;
 		
-		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (unit.inventory_slots[i].tier >= global.inventory_item_packs[item_instance.item_pack].item_slot_tier)
+		// Iterate through Unit Inventory Slots for Valid Inventory Slot to place Item
+		for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 		{
-			//
-			if (temp_slot_index == -1 or (unit.inventory_slots[i].tier <= unit.inventory_slots[temp_slot_index].tier and i < temp_slot_index))
+			// Check if Inventory Slot contains an Item already
+			if (unit.inventory_slots[i].item_pack >= 0 and unit.inventory_slots[i].item_pack != InventoryItemType.None)
 			{
-				//
-				temp_slot_index = i;
+				// Check if Inventory Slot can stack multiple instances of the given Item to place in the Unit Inventory
+				if (unit.inventory_slots[i].item_pack == item_instance.item_pack)
+				{
+					// Check if given Item is Stackable
+					if (global.inventory_item_packs[item_instance.item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_count < global.inventory_item_packs[item_instance.item_pack].item_count_limit)
+					{
+						// Inventory Slot can contain multiples of the given Stackable Item - Item can be placed in Inventory Slot 
+						temp_slot_index = i;
+						break;
+					}
+				}
+				
+				// Inventory Slot is already filled - Skip adding Item to this Inventory Slot
+				continue;
+			}
+			
+			// Check if empty Inventory Slot has the correct tier to house Inventory Item
+			if (unit.inventory_slots[i].slot_tier >= global.inventory_item_packs[item_instance.item_pack].item_slot_tier)
+			{
+				// Compare stored Inventory Slot tier to prioritize placing the given Item into the lowest possible tier to save Inventory Space
+				if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
+				{
+					// Item can be placed in Inventory Slot
+					temp_slot_index = i;
+				}
 			}
 		}
-	}
-	
-	//
-	if (temp_slot_index == -1)
-	{
-		//
-		return false;
-	}
-	
-	//
-	switch (global.inventory_item_packs[item_instance.item_pack].item_type)
-	{
-		case InventoryItemType.Default:
-			//
+		
+		// Check if Valid Inventory Slot found
+		if (temp_slot_index == -1)
+		{
+			// No valid inventory slot - break from Inventory Item Placement Loop
 			break;
-		case InventoryItemType.Weapon:
-			//
-			unit.inventory_slots[temp_slot_index].item_instance = item_instance.weapon_instance;
-			break;
-		case InventoryItemType.None:
-		default:
-			//
-			return false;
+		}
+		else
+		{
+			// Store Inventory Slot Placement to return placed item's Inventory Slot Index
+			temp_inventory_index = temp_slot_index;
+		}
+		
+		// Place a single instance of the given Item
+		unit.inventory_slots[temp_slot_index].item_pack = item_instance.item_pack;
+		unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? 1 : unit.inventory_slots[temp_slot_index].item_count + 1;
+		
+		// Perform Item's Inventory Placement Instantiation Behaviour based on Item's Type
+		switch (global.inventory_item_packs[item_instance.item_pack].item_type)
+		{
+			case InventoryItemType.Default:
+				// Default Item's Placement Behaviour
+				break;
+			case InventoryItemType.Weapon:
+				// Weapon Item's Placement Behaviour
+				unit.inventory_slots[temp_slot_index].item_instance = item_instance.weapon_instance;
+				item_instance.weapon_instance.weapon_angle = sign(item_instance.weapon_instance.weapon_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
+				break;
+			case InventoryItemType.None:
+			default:
+				// Invalid Item's Placement Behaviour
+				unit.inventory_slots[temp_slot_index].item_instance = noone;
+				break;
+		}
+		
+		// Increment Count of Items Placed in Unit Inventory
+		temp_item_placed_count++;
 	}
 	
-	//
-	unit.inventory_slots[temp_slot_index].item_pack = item_instance.item_pack;
-	unit.inventory_slots[temp_slot_index].item_count = 1;
+	// Check if enough Items have been placed to delete Item Instance
+	if (temp_item_placed_count == item_instance.item_count)
+	{
+		// Successfully placed all of the Item Instance's Item Count in the Unit Inventory - Destroy Item Instance
+		instance_destroy(item_instance);
+	}
+	else
+	{
+		// Item Instance still has a remaining Item Count - Subtract Item Instance's Item Count by the number of Items placed in Unit Inventory
+		item_instance.item_count -= temp_item_placed_count;
+	}
 	
-	//
-	instance_destroy(item_instance);
+	// Show Unit Inventory UI if the Unit Inventory belongs to the Player's Unit
+	if (unit.player_input)
+	{
+		unit.player_inventory_ui_alpha = 1;
+		unit.player_inventory_ui_fade_timer = unit.player_inventory_ui_fade_delay;
+	}
 	
-	//
-	return true;
+	// Return the Inventory Slot Index in the Player's Inventory the Item was placed in
+	return temp_inventory_index;
 }
 
 function unit_inventory_drop_item_instance(unit, slot_index)
 {
-	//
+	// Check if Unit Exists
 	if (!instance_exists(unit))
 	{
-		return;
+		// Unit does not exist - Cannot drop an item from an invalid Unit
+		return noone;
 	}
 	
-	//
+	// Check if Inventory Slot Index is Valid
 	if (slot_index <= -1 or slot_index >= array_length(unit.inventory_slots))
 	{
-		return;
+		// Inventory Slot Index does not exist
+		return noone;
 	}
 	
-	//
+	// Establish Blank Dropped Item Object Instance
 	var temp_dropped_item_instance = noone;
 	
-	//
-	switch (unit.inventory_slots[slot_index].item_pack)
+	// Dropped Item Object Instance Instantiation Behaviour
+	switch (global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
 	{
 		case InventoryItemType.Default:
-			//
+			// Establish Dropped Default Item Instance's Struct
 			var temp_dropped_item_var_struct = 
 			{ 
-				sub_layer_index: lighting_engine_find_object_index(weapon_unit),
-				item_pack: unit.inventory_slots[slot_index].item_pack
+				sub_layer_index: lighting_engine_find_object_index(unit) + 1,
+				item_pack: unit.inventory_slots[slot_index].item_pack,
+				item_count: 1,
 			};
 			
-			//
-			temp_dropped_item_instance = instance_create_depth(unit.x + unit.backpack_position_x, unit.y + unit.backpack_position_y, 0, oItem_Default, temp_dropped_item_var_struct);
+			// Create Dropped Default Item Instance
+			temp_dropped_item_instance = instance_create_depth(unit.inventory_slots[slot_index].slot_position_x, unit.inventory_slots[slot_index].slot_position_y, 0, global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
 			break;
 		case InventoryItemType.Weapon:
-			//
+			// Create Dropped Weapon Item Object
 			var temp_dropped_item_weapon_instance = noone;
 			
 			var temp_dropped_item_weapon_angle = 0;
-			var temp_dropped_item_weapon_position_x = unit.x + unit.backpack_position_x;
-			var temp_dropped_item_weapon_position_y = unit.y + unit.backpack_position_y;
+			var temp_dropped_item_weapon_position_x = unit.inventory_slots[slot_index].slot_position_x;
+			var temp_dropped_item_weapon_position_y = unit.inventory_slots[slot_index].slot_position_y;
 			
 			var temp_dropped_item_weapon_yscale = sign(unit.draw_xscale) != 0 ? sign(unit.draw_xscale) : 1;
 			
-			//
-			if (instance_exists(unit.inventory_slots[slot_index].item_instance))
+			// Unequip Weapon if Item's Weapon Instance is Equipped
+			if (unit.weapon_active and unit.inventory_index == slot_index)
 			{
-				//
+				unit.inventory_slots[unit.inventory_index].item_instance.unequip_weapon();
+			}
+			
+			// Check if Inventory Slot contains Weapon Instance
+			if (unit.inventory_slots[slot_index].item_instance != noone)
+			{
+				// Establish Weapon Instance's Physical Transform Properties
 				temp_dropped_item_weapon_instance = unit.inventory_slots[slot_index].item_instance;
 				
 				temp_dropped_item_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle + (unit.inventory_slots[slot_index].item_instance.weapon_angle_recoil * unit.inventory_slots[slot_index].item_instance.weapon_facing_sign);
@@ -344,34 +578,38 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			}
 			else
 			{
-				//
+				// Instantiate New Weapon Instance
 				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].weapon_pack);
 				temp_dropped_item_weapon_instance.init_weapon_physics(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0);
 			}
 			
-			//
+			// Establish Dropped Weapon Item Instance's Struct
 			var temp_dropped_item_weapon_var_struct = 
 			{ 
-				image_angle: temp_dropped_item_weapon_angle,
-				image_yscale: temp_dropped_item_weapon_yscale,
-				sub_layer_index: lighting_engine_find_object_index(weapon_unit) + 1,
+				sub_layer_index: lighting_engine_find_object_index(unit) + 1,
 				item_pack: unit.inventory_slots[slot_index].item_pack,
+				item_count: 1,
+				image_angle: temp_dropped_item_weapon_angle,
+				image_yscale: temp_dropped_item_weapon_yscale
 			};
 			
-			//
+			// Create Dropped Weapon Item Instance
 			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
 			
-			//
+			// Set Dropped Weapon Item Instance's Settings
 			with (temp_dropped_item_instance)
 			{
-				//
+				// Set Dropped Weapon Item's Instance
 				weapon_instance = temp_dropped_item_weapon_instance;
 				
-				//
+				// Set Dropped Weapon Item's Sprite & Image Index
 				sprite_index = weapon_instance.weapon_sprite;
 				image_index = weapon_instance.weapon_image_index;
 				
-				//
+				// Set Dropped Weapon Item's Physics Object Rotation
+				phy_rotation = -temp_dropped_item_weapon_angle;
+				
+				// Set Dropped Weapon Item's Lighting Engine Render Settings
 				normalmap_spritepack = weapon_instance.weapon_normalmap_spritepack != undefined ? weapon_instance.weapon_normalmap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
 				metallicroughnessmap_spritepack = weapon_instance.weapon_metallicroughnessmap_spritepack != undefined ? weapon_instance.weapon_metallicroughnessmap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
 				emissivemap_spritepack = weapon_instance.weapon_emissivemap_spritepack != undefined ? weapon_instance.weapon_emissivemap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
@@ -384,11 +622,14 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 				emissive = weapon_instance.weapon_emissive;
 				emissive_multiplier = weapon_instance.weapon_emissive_multiplier;
 				
-				//
+				// Set Dropped Weapon Item's Color and Transparency
 				image_blend = c_white;
 				image_alpha = 1;
 				
-				//
+				// Set Dropped Weapon Item Not-Visible
+				visible = false;
+				
+				// Update Dropped Weapon's Behaviour & Physics
 				weapon_instance.update_weapon_behaviour();
 				weapon_instance.update_weapon_physics(x, y, image_angle, weapon_instance.weapon_facing_sign);
 			}
@@ -399,12 +640,21 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			break;
 	}
 	
-	//
-	unit.inventory_slots[slot_index].item_pack = InventoryItemType.None;
-	unit.inventory_slots[slot_index].item_count = -1;
-	unit.inventory_slots[slot_index].item_instance = noone;
+	// Check Inventory Slot's Item Count
+	if (unit.inventory_slots[slot_index].item_count <= 1)
+	{
+		// Inventory Slot is storing single Item - Remove Item from Inventory Slot
+		unit.inventory_slots[slot_index].item_pack = InventoryItemPack.None;
+		unit.inventory_slots[slot_index].item_count = -1;
+		unit.inventory_slots[slot_index].item_instance = noone;
+	}
+	else
+	{
+		// Inventory Slot is storing multiple Items - Decrement Inventory Slot's Item Count
+		unit.inventory_slots[slot_index].item_count -= 1;
+	}
 	
-	//
+	// Return Dropped Item Instance
 	return temp_dropped_item_instance;
 }
 
@@ -413,7 +663,69 @@ function unit_inventory_swap_item_instance()
 	
 }
 
-function unit_inventory_change_slot()
+function unit_inventory_change_slot(unit, slot_index)
 {
+	//
+	if (unit.inventory_index == slot_index)
+	{
+		
+	}
+	else if (unit.inventory_index != -1 and unit.inventory_slots[unit.inventory_index].item_pack != InventoryItemPack.None)
+	{
+		switch (global.inventory_item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_type)
+		{
+			case InventoryItemType.Default:
+				// Default Item Unequip Behaviour
+				break;
+			case InventoryItemType.Weapon:
+				// Unit Weapon Unequip Behaviour
+				unit.inventory_slots[unit.inventory_index].item_instance.unequip_weapon();
+				break;
+			case InventoryItemType.None:
+			default:
+				// Item is Empty or Invalid
+				break;
+		}
+	}
 	
+	//
+	if (slot_index != -1 and unit.inventory_slots[slot_index].item_pack != InventoryItemPack.None)
+	{
+		switch (global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
+		{
+			case InventoryItemType.Default:
+				// Default Item Equip Behaviour
+				break;
+			case InventoryItemType.Weapon:
+				// Unit Weapon Equip Behaviour
+				if (unit.inventory_slots[slot_index].item_instance.weapon_physics_exist)
+				{
+					// Establish Weapon Item Instance's Position and Rotation Variables
+					var temp_weapon_x = unit.inventory_slots[slot_index].item_instance.weapon_x;
+					var temp_weapon_y = unit.inventory_slots[slot_index].item_instance.weapon_y;
+					var temp_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle;
+					
+					// Perform Weapon Instance's Unit Equip Behaviour
+					unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+					
+					// Set Weapon Instance's Position and Rotation to match Item Instance
+					unit.inventory_slots[slot_index].item_instance.weapon_x = temp_weapon_x;
+					unit.inventory_slots[slot_index].item_instance.weapon_y = temp_weapon_y;
+					unit.inventory_slots[slot_index].item_instance.weapon_angle = temp_weapon_angle;
+				}
+				else
+				{
+					// Perform Weapon Instance's Unit Equip Behaviour
+					unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+				}
+				break;
+			case InventoryItemType.None:
+			default:
+				// Item is Empty or Invalid
+				break;
+		}
+	}
+	
+	//
+	unit.inventory_index = slot_index;
 }

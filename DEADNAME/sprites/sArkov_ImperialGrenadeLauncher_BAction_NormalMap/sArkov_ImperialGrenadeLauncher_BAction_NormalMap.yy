@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"GrenadeLauncher",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/GrenadeLauncher.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/GrenadeLauncher.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

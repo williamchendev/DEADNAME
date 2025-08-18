@@ -1,112 +1,70 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description Interaction Menu Behaviour
+// Performs the Interaction's Menu UI Collisions and Option Selection Behaviours
 
-//
+// Interaction Menu Hover Behaviour
 if (!instance_exists(interaction_object))
 {
 	// Iteraction's Target Object no longer exists - Destroy Interaction Instance
 	instance_destroy();
 }
-else
+else if (interaction_hover)
 {
-	// Reset Interaction Selection Variables
-	interaction_hover = interaction_selected;
-	interaction_option_index = -1;
-	
-	// Check for Earlier Interaction Selection
-	if (GameManager.input_interaction_selection)
+	// Interaction Menu Option Selection Behaviour
+	if (interaction_selected)
 	{
-		// Interaction already being selected - Early Return
-		return;
-	}
-	
-	// Match Interaction Target Object's Object Mask
-	sprite_index = interaction_object.sprite_index;
-	image_index = interaction_object.image_index;
-	
-	// Calculate Collision Bounds of Interaction
-	var temp_collision_top = interaction_object.bbox_top - interaction_collision_vertical_padding;
-	var temp_collision_bottom = interaction_object.bbox_bottom + interaction_collision_vertical_padding;
-	var temp_collision_left = interaction_object.bbox_left - interaction_collision_horizontal_padding;
-	var temp_collision_right = interaction_object.bbox_right + interaction_collision_horizontal_padding;
-	
-	// Calculate Interaction Menu Dimensions
-	interact_menu_width = 0;
-	interact_menu_height = 0;
-	
-	for (var i = -1; i < array_length(interact_options); i++)
-	{
-		interact_menu_width = max(interact_menu_width, string_width(i == -1 ? interaction_object_name : interact_options[i].option_name));
-		interact_menu_height += interaction_option_height;
-	}
-	
-	//
-	interact_menu_width = max(interact_menu_width, interact_menu_width_minimum);
-	interact_menu_height = max(interact_menu_height, interact_menu_height_minimum);
-	
-	//
-	x = round(interaction_object.bbox_right + interaction_horizontal_offset);
-	y = round(interaction_object.bbox_top);
-	
-	// Find Cursor Position 
-	var temp_interaction_cursor_x = GameManager.cursor_x + LightingEngine.render_x;
-	var temp_interaction_cursor_y = GameManager.cursor_y + LightingEngine.render_y;
-	
-	//
-	var temp_interact_object_collision = point_in_rectangle(temp_interaction_cursor_x, temp_interaction_cursor_y, temp_collision_left, temp_collision_top, temp_collision_right, temp_collision_bottom);
-	var temp_interact_menu_collision = interaction_selected ? point_in_rectangle(temp_interaction_cursor_x, temp_interaction_cursor_y, x, y, x + interact_menu_width, y + interact_menu_height) : false;
-	
-	if (temp_interact_object_collision or temp_interact_menu_collision)
-	{
-		//
-		interaction_hover = true;
-		GameManager.cursor_interact = true;
-		GameManager.cursor_interaction_object = id;
-		GameManager.input_interaction_selection = true;
+		// Find Cursor Position 
+		var temp_interaction_cursor_x = GameManager.cursor_x + LightingEngine.render_x;
+		var temp_interaction_cursor_y = GameManager.cursor_y + LightingEngine.render_y;
 		
-		//
+		// Establish Interaction Option's Vertical Offset by the Height of the Interaction Menu's Title
 		var temp_interaction_option_vertical_position = interaction_option_height;
 		
+		// Iterate through Interaction Menu's Options
 		for (var q = 0; q < array_length(interact_options); q++)
 		{
-			//
+			// Interaction Option Collision Detection
 			var temp_interact_option_collision = point_in_rectangle(temp_interaction_cursor_x, temp_interaction_cursor_y, x, y + temp_interaction_option_vertical_position, x + interact_menu_width, y + temp_interaction_option_vertical_position + interaction_option_height);
 			
-			//
+			// Interaction Option Behaviour
 			if (temp_interact_option_collision)
 			{
-				//
-				if (interaction_selected)
+				// Check if Interaction Option was Clicked
+				if (mouse_check_button_pressed(mb_left))
 				{
-					//
-					if (mouse_check_button_pressed(mb_left))
+					// Interaction has not been Selected - Reset all Interaction Object Instances
+					with (oInteraction)
 					{
-						// Interaction has not been Selected - Reset all Interaction Object Instances
-						with (oInteraction)
-						{
-							// Reset Interaction Selection Behaviours
-							interaction_hover = false;
-							interaction_selected = false;
-						}
-						
-						// Reset Interaction Object
-						GameManager.cursor_interaction_object = noone;
-						
-						//
-						if (!is_undefined(interact_options[q].option_function))
-						{
-							interact_options[q].option_function(id);
-						}
-						
-						//
-						return;
+						// Reset Interaction Selection Behaviours
+						interaction_hover = false;
+						interaction_selected = false;
 					}
+					
+					// Force Player Unit to switch to their unarmed Inventory Slot
+					unit_inventory_change_slot(GameManager.player_unit, -1);
+					
+					// Reset Player Unit's Weapon to prevent attack on Click after Selecting Interaction Menu Option
+					if (instance_exists(GameManager.player_unit) and GameManager.player_unit.weapon_active)
+					{
+						GameManager.player_unit.weapon_equipped.weapon_attack_reset = false;
+					}
+					
+					// Set Ignore Click to prevent Player Input
+					GameManager.input_unit_ignore_click = true;
+					
+					// Perform Interaction Option's Function Behaviour
+					if (!is_undefined(interact_options[q].option_function))
+					{
+						interact_options[q].option_function(id);
+					}
+					
+					// Interaction Option's Behaviour Performed and Interaction Menu Reset - Early Return
+					return;
 				}
 				
-				//
+				// Set Interaction Option Index
 				interaction_option_index = q;
 				
-				//
+				// Interaction Option Triangle Animation Behaviour
 				interaction_option_animation_value += interaction_option_animation_speed * frame_delta;
 				interaction_option_animation_value = interaction_option_animation_value mod 1;
 				
@@ -123,22 +81,8 @@ else
 				break;
 			}
 			
+			// Increment Interaction Option's Vertical Offset by the Height of the Option Button
 			temp_interaction_option_vertical_position += interaction_option_height;
 		}
-		
-		//
-		if (!mouse_check_button_pressed(mb_right))
-		{
-			return;
-		}
-		
-		//
-		with (oInteraction)
-		{
-			interaction_selected = false;
-		}
-		
-		//
-		interaction_selected = true;
 	}
 }

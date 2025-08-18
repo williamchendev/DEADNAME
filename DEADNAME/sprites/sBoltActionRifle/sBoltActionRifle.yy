@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"BoltActionRifle",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/BoltActionRifle.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/BoltActionRifle.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

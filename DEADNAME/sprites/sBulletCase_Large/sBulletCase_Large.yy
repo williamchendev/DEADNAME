@@ -26,7 +26,7 @@
   "origin":1,
   "parent":{
     "name":"BulletCases",
-    "path":"folders/Sprites/Weapons/Base/BulletCases.yy",
+    "path":"folders/Sprites/Items/Weapons/Base/BulletCases.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

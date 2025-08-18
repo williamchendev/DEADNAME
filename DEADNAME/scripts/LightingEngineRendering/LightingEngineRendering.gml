@@ -470,51 +470,7 @@ function lighting_engine_render_layer(render_layer_type)
 					break;
 				case LightingEngineObjectType.Dynamic_Unit:
 					// Draw Unit on Dynamic Layer
-					with (temp_sub_layer_object)
-					{
-						// Rendering Enabled Check
-						if (!render_enabled)
-						{
-							break;
-						}
-						
-						// Draw Secondary Arm rendered behind Unit Body
-						limb_secondary_arm.render_behaviour();
-						
-						// Draw Unit Body
-						lighting_engine_render_sprite_ext
-						(
-							sprite_index,
-							image_index,
-							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].texture : undefined,
-							metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].texture : undefined,
-							emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].texture : undefined,
-							normalmap_spritepack != undefined ? normalmap_spritepack[image_index].uvs : undefined,
-							metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[image_index].uvs : undefined,
-							emissivemap_spritepack != undefined ? emissivemap_spritepack[image_index].uvs : undefined,
-							normal_strength,
-							metallic,
-							roughness,
-							emissive,
-							emissive_multiplier,
-							x,
-							y + ground_contact_vertical_offset,
-							draw_xscale,
-							draw_yscale,
-							image_angle + draw_angle_value,
-							image_blend,
-							image_alpha
-						);
-						
-						// Draw Unit's Weapon (if equipped)
-						if (weapon_active)
-						{
-							weapon_equipped.render_behaviour();
-						}
-						
-						// Draw Primary Arm rendered in front Unit Body
-						limb_primary_arm.render_behaviour();
-					}
+					unit_render_behaviour(temp_sub_layer_object);
 					break;
 				default:
 					break;
@@ -646,34 +602,22 @@ function lighting_engine_render_ui_layer()
 				surface_set_target(LightingEngine.fx_surface);
 				draw_clear_alpha(c_black, 0);
 				
-				//
+				// Reset Color and Transparency
 				draw_set_alpha(1);
 				draw_set_color(c_black);
 				
-				//
+				// Draw Interaction's Object Unlit with Outline
 				with (temp_ui_object_instance.interaction_object)
 				{
-					//
+					// Compare Interaction Object's Type for correct Unlit Rendering Behaviour
 					if (object_index == oUnit or object_is_ancestor(object_index, oUnit))
 					{
-						// Draw Secondary Arm rendered behind Unit Body
-						limb_secondary_arm.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
-						
-						// Draw Unit Body
-						draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x, y + ground_contact_vertical_offset - LightingEngine.render_y, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
-						
-						// Draw Unit's Weapon (if equipped)
-						if (weapon_active)
-						{
-							weapon_equipped.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
-						}
-						
-						// Draw Primary Arm rendered in front Unit Body
-						limb_primary_arm.render_unlit_behaviour(-LightingEngine.render_x, -LightingEngine.render_y);
+						// Render Unit Instance Unlit
+						unit_unlit_render_behaviour(id, -LightingEngine.render_x, -LightingEngine.render_y);
 					}
 					else
 					{
-						//
+						// Render Default Interaction Object Instance Unlit
 						draw_sprite_ext(sprite_index, image_index, x - LightingEngine.render_x, y - LightingEngine.render_y, image_xscale, image_yscale, image_angle, c_white, 1);
 					}
 				}
@@ -684,118 +628,126 @@ function lighting_engine_render_ui_layer()
 				// Set Surface Target to UI Surface
 				surface_set_target(LightingEngine.ui_surface);
 				
-				//
+				// Set Pixel Outline Effect Shader
 				shader_set(shd_pixel_outline);
 				
-				//
+				// Set Pixel Outline Effect Shader's Properties 
 				shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
 				shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_outline_size_index, 1);
 				
-				//
+				// Draw Effect Surface to UI Surface with the Pixel Outline Effect Enabled
 				draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_black, image_alpha);
 				
-				//
+				// Reset Shader
 				shader_reset();
 				
-				//
+				// Interaction Menu Render Behaviour
 				if (temp_ui_object_instance.interaction_selected)
 				{
 					with (temp_ui_object_instance)
 					{
-						//
-						var temp_interact_menu_x = x - LightingEngine.render_x;
-						var temp_interact_menu_y = y - LightingEngine.render_y;
+						// Establish Interaction Menu's Position & Text Position
+						var temp_interact_menu_x = round(x - LightingEngine.render_x);
+						var temp_interact_menu_y = round(y - LightingEngine.render_y);
 						
 						var temp_interact_menu_text_x = temp_interact_menu_x + interaction_text_horizontal_offset;
 						var temp_interact_menu_text_y = temp_interact_menu_y + interaction_text_vertical_offset;
 						
-						//
+						// Establish Interaction Menu's Colors
 						var temp_interaction_text_contrast_color = merge_color(interaction_text_color, c_black, interaction_text_contrast_amount);
 						var temp_interaction_inverse_text_contrast_color = merge_color(interaction_text_color, c_black, 1 - interaction_text_contrast_amount);
 						
-						//
+						// Draw Interaction Menu's Black Background for the List of Options
 						draw_rectangle(temp_interact_menu_x, temp_interact_menu_y + interaction_option_height + 1, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + interact_menu_height, false);
 						
-						// Set Interaction Detail Text Font
-						draw_set_font(font_Default);
-						
-						// Set Interaction Detail Text Alignment
-						draw_set_halign(fa_left);
-						draw_set_valign(fa_top);
-						
-						//
+						// Set Interaction Menu's Transparent Title Background Color and Transparency
 						draw_set_alpha(0.55);
 						draw_set_color(interaction_text_color);
 						
-						//
+						// Draw Interaction Menu's Transparent Title Background
 						draw_rectangle(temp_interact_menu_x, temp_interact_menu_y, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + interaction_option_height, false);
 						
-						//
+						// Set Interaction Menu's Title Underline Color and Transparency
 						draw_set_alpha(1);
 						draw_set_color(c_black);
 						
-						//
+						// Draw Interaction Menu's Title Underline
 						draw_line(temp_interact_menu_x + interaction_text_horizontal_offset - 2, temp_interact_menu_text_y + 12, temp_interact_menu_x + interact_menu_width - interaction_text_horizontal_offset, temp_interact_menu_text_y + 12);
-						draw_line(temp_interact_menu_x + interaction_text_horizontal_offset - 1, temp_interact_menu_text_y + 13, temp_interact_menu_x + interact_menu_width - interaction_text_horizontal_offset, temp_interact_menu_text_y + 13);
 						
-						//
-						//draw_text(temp_interact_menu_text_x, temp_interact_menu_text_y + 1, interaction_object_name);
-						//draw_text(temp_interact_menu_text_x + 1, temp_interact_menu_text_y + 1, interaction_object_name);
+						// Set Interaction Menu's Title Text Font
+						draw_set_font(GameManager.ui_inspection_text_font);
 						
-						//
-						draw_set_color(temp_interaction_text_contrast_color);
+						// Set Interaction Menu's Title Text Alignment
+						draw_set_halign(fa_left);
+						draw_set_valign(fa_top);
 						
-						//
-						var temp_interact_menu_text_vertical_spacing = interaction_option_height;
-						
-						for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(interact_options); temp_interact_menu_option_index++)
-						{
-							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
-							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset + 1, temp_interact_menu_text_y + 1 + ((temp_interact_menu_option_index + 1) * temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
-						}
-						
-						//
-						draw_set_color(c_black);
-						
-						//
+						// Draw Interaction Menu's Title
 						draw_text_outline(temp_interact_menu_text_x, temp_interact_menu_text_y, interaction_object_name);
 						
-						//
-						draw_set_color(interaction_text_color);
+						// Set Interaction Option Text Font
+						draw_set_font(interact_menu_option_font);
 						
-						//
+						// Set Interaction Options List Text Drop Shadow Color
+						draw_set_color(temp_interaction_text_contrast_color);
+						
+						// Draw Interaction Options List Text Drop Shadow
 						for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(interact_options); temp_interact_menu_option_index++)
 						{
-							draw_text(temp_interact_menu_text_x + interaction_option_text_horizontal_offset, temp_interact_menu_text_y + ((temp_interact_menu_option_index + 1)* temp_interact_menu_text_vertical_spacing), interact_options[temp_interact_menu_option_index].option_name);
+							// Establish Interaction Option's Text Drop Shadow Position Variables
+							var temp_interact_menu_option_shadow_x = temp_interact_menu_text_x + interaction_option_text_horizontal_offset;
+							var temp_interact_menu_option_shadow_y = temp_interact_menu_text_y + interaction_option_text_vertical_offset + ((temp_interact_menu_option_index + 1) * interaction_option_height);
+							
+							// Draw Interaction Option's Text Drop Shadow
+							draw_text(temp_interact_menu_option_shadow_x, temp_interact_menu_option_shadow_y + 1, interact_options[temp_interact_menu_option_index].option_name);
+							draw_text(temp_interact_menu_option_shadow_x + 1, temp_interact_menu_option_shadow_y + 1, interact_options[temp_interact_menu_option_index].option_name);
 						}
 						
-						//
+						// Set Interaction Options List Text Color
+						draw_set_color(interaction_text_color);
+						
+						// Draw Interaction Options List Text
+						for (var temp_interact_menu_option_index = 0; temp_interact_menu_option_index < array_length(interact_options); temp_interact_menu_option_index++)
+						{
+							// Establish Interaction Option's Text Position Variables
+							var temp_interact_menu_option_x = temp_interact_menu_text_x + interaction_option_text_horizontal_offset;
+							var temp_interact_menu_option_y = temp_interact_menu_text_y + interaction_option_text_vertical_offset + ((temp_interact_menu_option_index + 1) * interaction_option_height);
+							
+							// Draw Interaction Option's Text
+							draw_text(temp_interact_menu_option_x, temp_interact_menu_option_y, interact_options[temp_interact_menu_option_index].option_name);
+						}
+						
+						// Interaction Option Selection Highlighted Render Behaviour
 						if (interaction_option_index != -1)
 						{
+							// Draw Interaction Menu Option Selected
 							var temp_interact_option_vertical_offset = (interaction_option_index + 1) * interaction_option_height;
 							draw_rectangle(temp_interact_menu_x, temp_interact_menu_y + temp_interact_option_vertical_offset + 1, temp_interact_menu_x + interact_menu_width, temp_interact_menu_y + temp_interact_option_vertical_offset + interaction_option_height, false);
 							
-							// Triangle Variables
+							// Establish Triangle Position Variables
 							var temp_tri_x = temp_interact_menu_x + interaction_option_triangle_horizontal_offset;
 							var temp_tri_y = temp_interact_menu_y + interaction_option_triangle_vertical_offset + (interaction_option_height * 0.5);
 							
-							//
+							// Establish Interaction Option's Text Position Variables
 							var temp_interact_option_selected_text_x = temp_interact_menu_text_x + interaction_option_text_horizontal_offset + interaction_option_triangle_horizontal_offset;
-							var temp_interact_option_selected_text_y = temp_interact_menu_text_y + ((interaction_option_index + 1) * temp_interact_menu_text_vertical_spacing);
+							var temp_interact_option_selected_text_y = temp_interact_menu_text_y + interaction_option_text_vertical_offset + ((interaction_option_index + 1) * interaction_option_height);
 							
-							// Draw Triangle's Contrast Drop Shadow
+							// Set Select Triangle & Select Interaction Option's Text Contrast Drop Shadow Color
 							draw_set_color(temp_interaction_inverse_text_contrast_color);
 							
+							// Draw Interaction Option's Text Contrast Drop Shadow
 							draw_text(temp_interact_option_selected_text_x, temp_interact_option_selected_text_y + 1, interact_options[interaction_option_index].option_name);
 							draw_text(temp_interact_option_selected_text_x + 1, temp_interact_option_selected_text_y + 1, interact_options[interaction_option_index].option_name);
 							
+							// Draw Triangle's Contrast Drop Shadow
 							draw_triangle(temp_tri_x + tri_x_1 + 1, temp_tri_y + tri_y_1 + 1, temp_tri_x + tri_x_2 + 1, temp_tri_y + tri_y_2 + 1, temp_tri_x + tri_x_3 + 1, temp_tri_y + tri_y_3 + 1, false);
 							
-							// Draw Triangle
+							// Set Select Triangle & Select Interaction Option's Text Color
 							draw_set_color(c_black);
 							
+							// Draw Interaction Option's Text
 							draw_text(temp_interact_option_selected_text_x, temp_interact_option_selected_text_y, interact_options[interaction_option_index].option_name);
 							
+							// Draw Triangle
 							draw_triangle(temp_tri_x + tri_x_1, temp_tri_y + tri_y_1, temp_tri_x + tri_x_2, temp_tri_y + tri_y_2, temp_tri_x + tri_x_3, temp_tri_y + tri_y_3, false);
 						}
 					}
@@ -828,8 +780,8 @@ function lighting_engine_render_ui_layer()
 					var temp_dialogue_text_height = max(string_height_ext(temp_dialogue_text, dialogue_font_separation + dialogue_font_height, dialogue_font_wrap_width), string_height("ABCDE")) + dialogue_box_vertical_padding;
 					
 					// Find Dialogue Box's Position
-					var temp_x = x - LightingEngine.render_x;
-					var temp_y = y - LightingEngine.render_y;
+					var temp_x = round(x - LightingEngine.render_x);
+					var temp_y = round(y - LightingEngine.render_y);
 					
 					var temp_text_x = temp_x + dialogue_font_horizontal_offset;
 					var temp_text_y = temp_y + dialogue_font_vertical_offset - (temp_dialogue_text_height * 0.5) - dialogue_breath_padding;

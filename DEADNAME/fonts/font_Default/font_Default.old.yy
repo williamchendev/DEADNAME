@@ -10,7 +10,7 @@
   "charset":0,
   "first":0,
   "fontName":"m5x7",
-  "glyphOperations":1,
+  "glyphOperations":3,
   "glyphs":{
     "32":{"character":32,"h":14,"offset":0,"shift":5,"w":5,"x":2,"y":2,},
     "33":{"character":33,"h":14,"offset":0,"shift":2,"w":1,"x":65,"y":50,},

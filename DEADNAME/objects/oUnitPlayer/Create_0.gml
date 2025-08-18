@@ -23,5 +23,12 @@ temp_unit.draw_yscale = image_yscale;
 
 temp_unit.player_input = true;
 
+// Debug - Set Render Position Centered on Unit
+LightingEngine.render_x = temp_unit.x - (GameManager.game_width * 0.5);
+LightingEngine.render_y = temp_unit.y - (GameManager.game_height * 0.5);
+
+// Debug - Set Player Faction to Moralists
+GameManager.squad_behaviour_director.create_squad("LoneWolfPlayer", SquadType.Infantry, "Moralists", [ temp_unit ]);
+
 // Destroy Temporary Instance
 instance_destroy();

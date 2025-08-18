@@ -190,6 +190,15 @@ global.unit_packs[UnitPack.Default] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Moralist William
@@ -307,6 +316,15 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Wolf
@@ -404,6 +422,15 @@ global.unit_packs[UnitPack.Wolf] =
 	
 	equipment_firearm_aim_x: 3,
 	equipment_firearm_aim_y: -29,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Director
@@ -521,6 +548,15 @@ global.unit_packs[UnitPack.Director] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -15,
 	limb_right_arm_jump_animation_angle: 18,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Knives
@@ -618,6 +654,15 @@ global.unit_packs[UnitPack.Knives] =
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -38,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Martyr
@@ -715,6 +760,15 @@ global.unit_packs[UnitPack.Martyr] =
 	
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -38,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Northern Brigade Soldier
@@ -832,6 +886,15 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -13,
 	limb_right_arm_jump_animation_angle: 18,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 // Northern Brigade Officer
@@ -949,6 +1012,15 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	limb_jump_animation_extension_percent: 0.95,
 	limb_left_arm_jump_animation_angle: -13,
 	limb_right_arm_jump_animation_angle: 18,
+	
+	// Inventory Slots
+	inventory_slot_init: function(unit)
+	{
+		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
+	}
 };
 
 

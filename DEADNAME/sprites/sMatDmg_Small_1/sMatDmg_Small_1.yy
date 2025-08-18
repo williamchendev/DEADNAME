@@ -29,7 +29,7 @@
   "origin":4,
   "parent":{
     "name":"Damage",
-    "path":"folders/Sprites/Effects/Materials/Damage.yy",
+    "path":"folders/Sprites/_OLD/Materials/Damage.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

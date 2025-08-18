@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Paragon",
-    "path":"folders/Sprites/Weapons/Arkov/Firearm/Paragon.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Firearm/Paragon.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

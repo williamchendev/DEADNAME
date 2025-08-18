@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Projectiles",
-    "path":"folders/Sprites/Weapons/Base/Projectiles.yy",
+    "path":"folders/Sprites/Items/Weapons/Base/Projectiles.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

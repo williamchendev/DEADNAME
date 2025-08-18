@@ -12,13 +12,13 @@ draw_set_color(c_white);
 if (cursor_interact) 
 {
 	// Draw Interaction Cursor
-	draw_sprite(sCursorMenu, 0, cursor_x, cursor_y);
+	draw_sprite(sUI_CursorMenu, 0, cursor_x, cursor_y);
 	
 	// Draw Interaction Instance Details
 	if (instance_exists(GameManager.cursor_interaction_object) and !GameManager.cursor_interaction_object.interaction_selected)
 	{
 		// Set Interaction Detail Text Font
-		draw_set_font(font_Default);
+		draw_set_font(ui_inspection_text_font);
 		
 		// Set Interaction Detail Text Alignment
 		draw_set_halign(fa_left);
@@ -45,12 +45,12 @@ else if (!global.debug)
 	if (instance_exists(player_unit) and player_unit.weapon_equipped)
 	{
 		// Draw Crosshair Cursor
-		draw_sprite(sCursorCrosshairIcons, 1, cursor_x, cursor_y);
+		draw_sprite(sUI_CursorCrosshairIcons, 1, cursor_x, cursor_y);
 	}
 	else
 	{
 		// Draw Interaction Cursor
-		draw_sprite(sCursorMenu, 0, cursor_x, cursor_y);
+		draw_sprite(sUI_CursorMenu, 0, cursor_x, cursor_y);
 	}
 }
 

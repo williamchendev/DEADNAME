@@ -1,11 +1,11 @@
-/// @description Dialogue Box Init Event
-// Initializes the Dialogue Box's Settings and Variables
+/// @description Interaction Init Event
+// Initializes the Interaction Instance's Settings and Variables
 
-//
+// Disable Object Rendering
 sprite_index = -1;
 visible = false;
 
-// Dialogue Box's Lighting Engine UI Object Type & Depth
+// Interaction Lighting Engine UI Object Type & Depth
 object_type = LightingEngineUIObjectType.Interaction;
 object_depth = LightingEngineUIObjectType.Interaction;
 
@@ -14,13 +14,13 @@ event_inherited();
 
 // Interaction Settings
 interaction_object = noone;
-interaction_object_name = "Scrimblorp";
+interaction_object_name = "ERROR - INTERACTION OBJECT NAME NULL";
 
 interact_options = noone;
 
 interaction_horizontal_offset = 9;
 
-// Dialogue Triangle Settings
+// Interaction Triangle Settings
 interaction_option_triangle_angle = -15;
 interaction_option_triangle_radius = 4;
 interaction_option_triangle_horizontal_offset = 6;
@@ -52,21 +52,3 @@ tri_x_2 = 0;
 tri_y_2 = 0;
 tri_x_3 = 0;
 tri_y_3 = 0;
-
-/// @DEBUG
-/*
-interact_options[0] = 
-{
-	option_name: "Talk"
-};
-
-interact_options[1] = 
-{
-	option_name: "Sniff"
-};
-
-interact_options[2] = 
-{
-	option_name: "Bark"
-};
-*/

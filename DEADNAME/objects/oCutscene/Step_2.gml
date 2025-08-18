@@ -8,24 +8,7 @@ if (cutscene_active)
 	if (cutscene_waiting_behaviour)
 	{
 		// Check for Cutscene Waiting Condition
-		if (cutscene_waiting_for_delay_duration)
-		{
-			// Waiting for Delay Duration to end
-			cutscene_delay_timer -= frame_delta;
-			
-			// Check if Delay Timer has ended
-			if (cutscene_delay_timer <= 0)
-			{
-				// Reset Cutscene's Delay Duration Waiting Behaviour
-				cutscene_delay_timer = 0;
-				cutscene_waiting_for_delay_duration = false;
-				
-				// Continue to next Cutscene Event
-				cutscene_waiting_behaviour = false;
-				cutscene_continue_event(id);
-			}
-		}
-		else if (cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue)
+		if (cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue)
 		{
 			// Waiting for all Dialogue Boxes to be removed before continuing
 			for (var i = ds_list_size(cutscene_dialogue_boxes) - 1; i >= 0; i--)
@@ -45,6 +28,33 @@ if (cutscene_active)
 			{
 				// Stop waiting for all Cutscene Dialogue Boxes to be removed
 				cutscene_waiting_for_dialogue_boxes_to_deinstantiate_to_continue = false;
+				
+				// End Cutscene Behaviour
+				if (cutscene_ended)
+				{
+					// Destroy Cutscene
+					instance_destroy();
+					return;
+				}
+				else
+				{
+					// Continue to next Cutscene Event
+					cutscene_waiting_behaviour = false;
+					cutscene_continue_event(id);
+				}
+			}
+		}
+		else if (cutscene_waiting_for_delay_duration)
+		{
+			// Waiting for Delay Duration to end
+			cutscene_delay_timer -= frame_delta;
+			
+			// Check if Delay Timer has ended
+			if (cutscene_delay_timer <= 0)
+			{
+				// Reset Cutscene's Delay Duration Waiting Behaviour
+				cutscene_delay_timer = 0;
+				cutscene_waiting_for_delay_duration = false;
 				
 				// Continue to next Cutscene Event
 				cutscene_waiting_behaviour = false;

@@ -32,7 +32,7 @@
   "origin":9,
   "parent":{
     "name":"BaseballBat",
-    "path":"folders/Sprites/Weapons/Arkov/Melee/BaseballBat.yy",
+    "path":"folders/Sprites/Items/Weapons/Arkov/Melee/BaseballBat.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
