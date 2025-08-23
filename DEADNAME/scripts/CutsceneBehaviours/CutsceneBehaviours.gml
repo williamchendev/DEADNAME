@@ -47,10 +47,6 @@ function cutscene_continue_event(cutscene_instance)
 				// Set Dialogue Cutscene Instance
 				temp_dialogue_box.cutscene_instance = id;
 				
-				// Set Dialogue Text and Unit
-				temp_dialogue_box.set_dialogue_text(cutscene_events[cutscene_event_index].dialogue_text);
-				temp_dialogue_box.dialogue_unit = temp_dialogue_box_unit_instance;
-				
 				// Set Dialogue Cutscene Behaviour Properties
 				temp_dialogue_box.dialogue_continue = true;
 				temp_dialogue_box.cutscene_dialogue = true;
@@ -63,6 +59,10 @@ function cutscene_continue_event(cutscene_instance)
 				temp_dialogue_box.dialogue_tail_start_position = cutscene_events[cutscene_event_index].dialogue_tail_start_position;
 				temp_dialogue_box.dialogue_tail_end_position = cutscene_events[cutscene_event_index].dialogue_tail_end_position;
 				temp_dialogue_box.dialogue_horizontal_offset = cutscene_events[cutscene_event_index].dialogue_horizontal_offset;
+				
+				// Set Dialogue Unit and Dialogue Text
+				temp_dialogue_box.dialogue_unit = temp_dialogue_box_unit_instance;
+				temp_dialogue_box.set_dialogue_text(cutscene_events[cutscene_event_index].dialogue_text);
 				
 				// Add Previous Dialogue Box to Dialogue Box Chain
 				if (instance_exists(cutscene_dialogue_box))

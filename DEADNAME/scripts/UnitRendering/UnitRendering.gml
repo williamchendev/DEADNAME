@@ -18,15 +18,15 @@ function unit_render_behaviour(unit)
 		repeat (array_length(inventory_slots))
 		{
 			// Check if Inventory Item can be Drawn
-			if (inventory_slots[temp_back_inventory_slot_index].item_pack != InventoryItemPack.None and temp_back_inventory_slot_index != inventory_index and inventory_slots[temp_back_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Back)
+			if (inventory_slots[temp_back_inventory_slot_index].item_pack != ItemPack.None and temp_back_inventory_slot_index != inventory_index and inventory_slots[temp_back_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Back)
 			{
-				switch (global.inventory_item_packs[inventory_slots[temp_back_inventory_slot_index].item_pack].item_type)
+				switch (global.item_packs[inventory_slots[temp_back_inventory_slot_index].item_pack].item_type)
 				{
-					case InventoryItemType.Weapon:
+					case ItemType.Weapon:
 						// Render Weapon
 						inventory_slots[temp_back_inventory_slot_index].item_instance.render_behaviour();
 						break;
-					case InventoryItemType.None:
+					case ItemType.None:
 					default:
 						break;
 				}

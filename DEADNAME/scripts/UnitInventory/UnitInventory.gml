@@ -108,7 +108,7 @@ function unit_inventory_render_ui(unit, alpha)
 		if (unit.inventory_index == temp_unit_inventory_slot_index)
 		{
 			// Unit Inventory Slot Selected Behaviour
-			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != ItemPack.None)
 			{
 				// Draw Unit Inventory Slot Selected with Item
 				draw_sprite_ext(sUI_Inventory_Slot_Background, 0, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, unit.inventory_slots[temp_unit_inventory_slot_index].slot_tier_color, 1);
@@ -136,7 +136,7 @@ function unit_inventory_render_ui(unit, alpha)
 			draw_sprite_ext(sUI_Inventory_Slot_Background, 0, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
 			
 			// Unit Inventory Slot Unselected Behaviour
-			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+			if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != ItemPack.None)
 			{
 				// Draw Unit Inventory Slot Tier Icon (Top Left Corner)
 				draw_sprite_ext(sUI_Inventory_Slot_TierIcon_Shadow, temp_unit_slot_tier, temp_unit_slot_x - global.unit_inventory_ui_slot_tier_offset, temp_unit_inventory_ui_y - global.unit_inventory_ui_slot_tier_offset, 1, 1, 0, c_black, 1);
@@ -154,10 +154,10 @@ function unit_inventory_render_ui(unit, alpha)
 		}
 		
 		// Unit Inventory Slot Item Portrait & Item Count
-		if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != InventoryItemPack.None)
+		if (unit.inventory_slots[temp_unit_inventory_slot_index].item_pack != ItemPack.None)
 		{
 			// Unit Inventory Slot Item Count
-			if (global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_count_limit != -1)
+			if (global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_count_limit != -1)
 			{
 				draw_text_outline(temp_unit_slot_x + global.unit_inventory_ui_slot_tier_offset - 2, temp_unit_inventory_ui_y + global.unit_inventory_ui_slot_tier_offset - 8, $"{unit.inventory_slots[temp_unit_inventory_slot_index].item_count}");
 			}
@@ -166,13 +166,13 @@ function unit_inventory_render_ui(unit, alpha)
 			var temp_inventory_slot_portrait_image_index = unit.inventory_slots[temp_unit_inventory_slot_index].item_count - 1;
 			
 			// Draw Unit Inventory Slot Item Portrait Outline
-			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x - 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
-			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y - 1, 1, 1, 0, c_black, 1);
-			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x + 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
-			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y + 1, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x - 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y - 1, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x + 1, temp_unit_inventory_ui_y, 1, 1, 0, c_black, 1);
+			draw_sprite_ext(global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y + 1, 1, 1, 0, c_black, 1);
 			
 			// Draw Unit Inventory Slot Item Portrait Sprite
-			draw_sprite_ext(global.inventory_item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_white, 1);
+			draw_sprite_ext(global.item_packs[unit.inventory_slots[temp_unit_inventory_slot_index].item_pack].item_sprite, temp_inventory_slot_portrait_image_index, temp_unit_slot_x, temp_unit_inventory_ui_y, 1, 1, 0, c_white, 1);
 		}
 	}
 	
@@ -189,10 +189,10 @@ function unit_inventory_render_ui(unit, alpha)
 		// Establish Inventory Slot Item Inspect Text
 		var temp_unit_inventory_slot_inspect_text = "";
 		
-		if (unit.inventory_slots[unit.inventory_index].item_pack != InventoryItemPack.None)
+		if (unit.inventory_slots[unit.inventory_index].item_pack != ItemPack.None)
 		{
 			// Use Item Name Title as Inspect Text
-			temp_unit_inventory_slot_inspect_text = $"{global.inventory_item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_name}";
+			temp_unit_inventory_slot_inspect_text = $"{global.item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_name}";
 		}
 		else
 		{
@@ -281,7 +281,7 @@ function unit_inventory_add_slot(unit, name, tier, horizontal_offset, vertical_o
 		slot_position_x: 0,
 		slot_position_y: 0,
 		
-		item_pack: InventoryItemType.None,
+		item_pack: ItemType.None,
 		item_count: -1,
 		item_instance: noone
 	};
@@ -332,12 +332,12 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 	{
 		//
-		if (unit.inventory_slots[i].item_pack != InventoryItemType.None)
+		if (unit.inventory_slots[i].item_pack != ItemType.None)
 		{
 			//
-			if (global.inventory_item_packs[item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_pack == item_pack)
+			if (global.item_packs[item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_pack == item_pack)
 			{
-				if (unit.inventory_slots[i].item_count < global.inventory_item_packs[item_pack].item_count_limit)
+				if (unit.inventory_slots[i].item_count < global.item_packs[item_pack].item_count_limit)
 				{
 					//
 					temp_slot_index = i;
@@ -350,7 +350,7 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 		}
 		
 		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (unit.inventory_slots[i].slot_tier >= global.inventory_item_packs[item_pack].item_slot_tier)
+		if (unit.inventory_slots[i].slot_tier >= global.item_packs[item_pack].item_slot_tier)
 		{
 			//
 			if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
@@ -369,16 +369,16 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	}
 	
 	//
-	switch (global.inventory_item_packs[item_pack].item_type)
+	switch (global.item_packs[item_pack].item_type)
 	{
-		case InventoryItemType.Default:
+		case ItemType.Default:
 			//
 			break;
-		case InventoryItemType.Weapon:
+		case ItemType.Weapon:
 			//
-			unit.inventory_slots[temp_slot_index].item_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[item_pack].weapon_pack);
+			unit.inventory_slots[temp_slot_index].item_instance = create_weapon_from_weapon_pack(global.item_packs[item_pack].weapon_pack);
 			break;
-		case InventoryItemType.None:
+		case ItemType.None:
 		default:
 			//
 			return -1;
@@ -387,7 +387,7 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	//
 	unit.inventory_slots[temp_slot_index].item_pack = item_pack;
 	unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? item_count : unit.inventory_slots[temp_slot_index].item_count + item_count;
-	unit.inventory_slots[temp_slot_index].item_count = clamp(unit.inventory_slots[temp_slot_index].item_count, 1, global.inventory_item_packs[item_pack].item_count_limit);
+	unit.inventory_slots[temp_slot_index].item_count = clamp(unit.inventory_slots[temp_slot_index].item_count, 1, global.item_packs[item_pack].item_count_limit);
 	
 	//
 	return temp_slot_index;
@@ -403,7 +403,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	}
 	
 	// Check if Item Instance's Item Pack is a valid Item Pack Index
-	if (item_instance.item_pack == -1 or item_instance.item_pack == InventoryItemPack.None)
+	if (item_instance.item_pack == -1 or item_instance.item_pack == ItemPack.None)
 	{
 		// Item Instance's Item Pack is an invalid Item Pack Index - Destroy Invalid Item Instance and Early Return
 		instance_destroy(item_instance);
@@ -423,13 +423,13 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 		{
 			// Check if Inventory Slot contains an Item already
-			if (unit.inventory_slots[i].item_pack >= 0 and unit.inventory_slots[i].item_pack != InventoryItemType.None)
+			if (unit.inventory_slots[i].item_pack >= 0 and unit.inventory_slots[i].item_pack != ItemType.None)
 			{
 				// Check if Inventory Slot can stack multiple instances of the given Item to place in the Unit Inventory
 				if (unit.inventory_slots[i].item_pack == item_instance.item_pack)
 				{
 					// Check if given Item is Stackable
-					if (global.inventory_item_packs[item_instance.item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_count < global.inventory_item_packs[item_instance.item_pack].item_count_limit)
+					if (global.item_packs[item_instance.item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_count < global.item_packs[item_instance.item_pack].item_count_limit)
 					{
 						// Inventory Slot can contain multiples of the given Stackable Item - Item can be placed in Inventory Slot 
 						temp_slot_index = i;
@@ -442,7 +442,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 			}
 			
 			// Check if empty Inventory Slot has the correct tier to house Inventory Item
-			if (unit.inventory_slots[i].slot_tier >= global.inventory_item_packs[item_instance.item_pack].item_slot_tier)
+			if (unit.inventory_slots[i].slot_tier >= global.item_packs[item_instance.item_pack].item_slot_tier)
 			{
 				// Compare stored Inventory Slot tier to prioritize placing the given Item into the lowest possible tier to save Inventory Space
 				if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
@@ -470,17 +470,17 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? 1 : unit.inventory_slots[temp_slot_index].item_count + 1;
 		
 		// Perform Item's Inventory Placement Instantiation Behaviour based on Item's Type
-		switch (global.inventory_item_packs[item_instance.item_pack].item_type)
+		switch (global.item_packs[item_instance.item_pack].item_type)
 		{
-			case InventoryItemType.Default:
+			case ItemType.Default:
 				// Default Item's Placement Behaviour
 				break;
-			case InventoryItemType.Weapon:
+			case ItemType.Weapon:
 				// Weapon Item's Placement Behaviour
 				unit.inventory_slots[temp_slot_index].item_instance = item_instance.weapon_instance;
 				item_instance.weapon_instance.weapon_angle = sign(item_instance.weapon_instance.weapon_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
 				break;
-			case InventoryItemType.None:
+			case ItemType.None:
 			default:
 				// Invalid Item's Placement Behaviour
 				unit.inventory_slots[temp_slot_index].item_instance = noone;
@@ -534,9 +534,9 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 	var temp_dropped_item_instance = noone;
 	
 	// Dropped Item Object Instance Instantiation Behaviour
-	switch (global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
+	switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
 	{
-		case InventoryItemType.Default:
+		case ItemType.Default:
 			// Establish Dropped Default Item Instance's Struct
 			var temp_dropped_item_var_struct = 
 			{ 
@@ -546,9 +546,9 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			};
 			
 			// Create Dropped Default Item Instance
-			temp_dropped_item_instance = instance_create_depth(unit.inventory_slots[slot_index].slot_position_x, unit.inventory_slots[slot_index].slot_position_y, 0, global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
+			temp_dropped_item_instance = instance_create_depth(unit.unit_equipment_position_x, unit.unit_equipment_position_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
 			break;
-		case InventoryItemType.Weapon:
+		case ItemType.Weapon:
 			// Create Dropped Weapon Item Object
 			var temp_dropped_item_weapon_instance = noone;
 			
@@ -579,7 +579,7 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			else
 			{
 				// Instantiate New Weapon Instance
-				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].weapon_pack);
+				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_pack);
 				temp_dropped_item_weapon_instance.init_weapon_physics(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0);
 			}
 			
@@ -594,7 +594,7 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			};
 			
 			// Create Dropped Weapon Item Instance
-			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
+			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
 			
 			// Set Dropped Weapon Item Instance's Settings
 			with (temp_dropped_item_instance)
@@ -634,24 +634,34 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 				weapon_instance.update_weapon_physics(x, y, image_angle, weapon_instance.weapon_facing_sign);
 			}
 			break;
-		case InventoryItemType.None:
+		case ItemType.None:
 		default:
 			// Item is Invalid - Impossible to create Dropped Item Instance
-			break;
+			return noone;
 	}
 	
 	// Check Inventory Slot's Item Count
 	if (unit.inventory_slots[slot_index].item_count <= 1)
 	{
 		// Inventory Slot is storing single Item - Remove Item from Inventory Slot
-		unit.inventory_slots[slot_index].item_pack = InventoryItemPack.None;
+		unit.inventory_slots[slot_index].item_pack = ItemPack.None;
 		unit.inventory_slots[slot_index].item_count = -1;
 		unit.inventory_slots[slot_index].item_instance = noone;
+		
+		// Reset Unit's Equipment State
+		unit_inventory_change_slot(unit, slot_index);
 	}
 	else
 	{
 		// Inventory Slot is storing multiple Items - Decrement Inventory Slot's Item Count
 		unit.inventory_slots[slot_index].item_count -= 1;
+	}
+	
+	// Apply Unit Physics Forces to Dropped Object
+	if (instance_exists(temp_dropped_item_instance))
+	{
+		temp_dropped_item_instance.phy_position_x += unit.x_velocity;
+		temp_dropped_item_instance.phy_position_y += unit.y_velocity;
 	}
 	
 	// Return Dropped Item Instance
@@ -670,18 +680,18 @@ function unit_inventory_change_slot(unit, slot_index)
 	{
 		
 	}
-	else if (unit.inventory_index != -1 and unit.inventory_slots[unit.inventory_index].item_pack != InventoryItemPack.None)
+	else if (unit.inventory_index != -1 and unit.inventory_slots[unit.inventory_index].item_pack != ItemPack.None)
 	{
-		switch (global.inventory_item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_type)
+		switch (global.item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_type)
 		{
-			case InventoryItemType.Default:
+			case ItemType.Default:
 				// Default Item Unequip Behaviour
 				break;
-			case InventoryItemType.Weapon:
+			case ItemType.Weapon:
 				// Unit Weapon Unequip Behaviour
 				unit.inventory_slots[unit.inventory_index].item_instance.unequip_weapon();
 				break;
-			case InventoryItemType.None:
+			case ItemType.None:
 			default:
 				// Item is Empty or Invalid
 				break;
@@ -689,41 +699,43 @@ function unit_inventory_change_slot(unit, slot_index)
 	}
 	
 	//
-	if (slot_index != -1 and unit.inventory_slots[slot_index].item_pack != InventoryItemPack.None)
+	switch (slot_index == -1 ? ItemPack.None : global.item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
 	{
-		switch (global.inventory_item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
-		{
-			case InventoryItemType.Default:
-				// Default Item Equip Behaviour
-				break;
-			case InventoryItemType.Weapon:
-				// Unit Weapon Equip Behaviour
-				if (unit.inventory_slots[slot_index].item_instance.weapon_physics_exist)
-				{
-					// Establish Weapon Item Instance's Position and Rotation Variables
-					var temp_weapon_x = unit.inventory_slots[slot_index].item_instance.weapon_x;
-					var temp_weapon_y = unit.inventory_slots[slot_index].item_instance.weapon_y;
-					var temp_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle;
-					
-					// Perform Weapon Instance's Unit Equip Behaviour
-					unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
-					
-					// Set Weapon Instance's Position and Rotation to match Item Instance
-					unit.inventory_slots[slot_index].item_instance.weapon_x = temp_weapon_x;
-					unit.inventory_slots[slot_index].item_instance.weapon_y = temp_weapon_y;
-					unit.inventory_slots[slot_index].item_instance.weapon_angle = temp_weapon_angle;
-				}
-				else
-				{
-					// Perform Weapon Instance's Unit Equip Behaviour
-					unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
-				}
-				break;
-			case InventoryItemType.None:
-			default:
-				// Item is Empty or Invalid
-				break;
-		}
+		case ItemType.Default:
+			// Default Item Equip Behaviour
+			unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Item;
+			
+			unit.item_drop_offset_transition_value = 0;
+			unit.item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
+			break;
+		case ItemType.Weapon:
+			// Unit Weapon Equip Behaviour
+			if (unit.inventory_slots[slot_index].item_instance.weapon_physics_exist)
+			{
+				// Establish Weapon Item Instance's Position and Rotation Variables
+				var temp_weapon_x = unit.inventory_slots[slot_index].item_instance.weapon_x;
+				var temp_weapon_y = unit.inventory_slots[slot_index].item_instance.weapon_y;
+				var temp_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle;
+				
+				// Perform Weapon Instance's Unit Equip Behaviour
+				unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+				
+				// Set Weapon Instance's Position and Rotation to match Item Instance
+				unit.inventory_slots[slot_index].item_instance.weapon_x = temp_weapon_x;
+				unit.inventory_slots[slot_index].item_instance.weapon_y = temp_weapon_y;
+				unit.inventory_slots[slot_index].item_instance.weapon_angle = temp_weapon_angle;
+			}
+			else
+			{
+				// Perform Weapon Instance's Unit Equip Behaviour
+				unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+			}
+			break;
+		case ItemType.None:
+		default:
+			// Item is Empty or Invalid
+			unit.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+			break;
 	}
 	
 	//

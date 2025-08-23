@@ -284,9 +284,9 @@ function lighting_engine_render_layer(render_layer_type)
 						}
 						
 						// Draw Dynamic Object (Item)
-						switch (global.inventory_item_packs[item_pack].item_type)
+						switch (global.item_packs[item_pack].item_type)
 						{
-							case InventoryItemType.Default:
+							case ItemType.Default:
 								// Draw Default Item
 								lighting_engine_render_sprite_ext
 								(
@@ -312,11 +312,11 @@ function lighting_engine_render_layer(render_layer_type)
 									image_alpha
 								);
 								break;
-							case InventoryItemType.Weapon:
+							case ItemType.Weapon:
 								// Draw Weapon Item
 								weapon_instance.render_behaviour();
 								break;
-							case InventoryItemType.None:
+							case ItemType.None:
 							default:
 								break;
 						}

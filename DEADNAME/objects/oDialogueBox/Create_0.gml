@@ -120,4 +120,11 @@ set_dialogue_text = function(text)
 	// Set the first Dialogue Text Split Array Value to appear in Dialogue Box
 	dialogue_raw_value = string_length(temp_dialogue_words_array[0]);
 	dialogue_text_value = string_length(temp_dialogue_words_array[0]);
+	
+	// Dialogue Continue Behaviour
+	if (dialogue_continue and dialogue_text_value == string_length(dialogue_text))
+	{
+		// Dialogue is Finished State - Show Continue Triangle
+		dialogue_triangle = true;
+	}
 }

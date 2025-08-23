@@ -648,33 +648,6 @@ if (!player_input)
 // Movement Behaviour
 if (canmove)
 {
-	// Unit Drop Behaviour
-	if (input_drop)
-	{
-		// Create Dropped Item Instance
-		var temp_unit_dropped_item_instance = unit_inventory_drop_item_instance(id, inventory_index);
-		
-		// Check if Dropped Item was created Successfully
-		if (instance_exists(temp_unit_dropped_item_instance))
-		{
-			// Apply Physics Force to "Tossed" Dropped Item Instance
-			with (temp_unit_dropped_item_instance)
-			{
-				var temp_item_horizontal_drop_power = random_range(-other.item_drop_random_horizontal_power, other.item_drop_random_horizontal_power) + (other.draw_xscale * other.item_drop_base_horizontal_power) + (other.x_velocity * other.item_drop_movement_horizontal_power);
-				var temp_item_vertical_drop_power = random_range(-other.item_drop_random_vertical_power, other.item_drop_random_vertical_power) + other.item_drop_base_vertical_power + (other.y_velocity * other.item_drop_movement_vertical_power);
-				physics_apply_impulse(x, y, temp_item_horizontal_drop_power, temp_item_vertical_drop_power);
-			}
-			
-			// Check if Unit has Player Input
-			if (player_input)
-			{
-				// Reset Player Inventory UI Transparency and Fade Timer
-				player_inventory_ui_alpha = 1;
-				player_inventory_ui_fade_timer = player_inventory_ui_fade_delay * 0.5;
-			}
-		}
-	}
-	
 	// Unit Weapon Behaviour
 	if (weapon_active)
 	{
@@ -954,6 +927,36 @@ if (canmove)
 			y += 2;
 			y_velocity += 0.05;
 			grounded = false;
+		}
+	}
+	
+	// Unit Drop Behaviour
+	if (input_drop)
+	{
+		// Create Dropped Item Instance
+		var temp_unit_dropped_item_instance = unit_inventory_drop_item_instance(id, inventory_index);
+		
+		// Check if Dropped Item was created Successfully
+		if (instance_exists(temp_unit_dropped_item_instance))
+		{
+			// Apply Physics Force to "Tossed" Dropped Item Instance
+			with (temp_unit_dropped_item_instance)
+			{
+				var temp_item_horizontal_drop_power = random_range(-other.item_drop_random_horizontal_power, other.item_drop_random_horizontal_power) + (other.draw_xscale * other.item_drop_base_horizontal_power) + (other.x_velocity * other.item_drop_movement_horizontal_power);
+				var temp_item_vertical_drop_power = random_range(-other.item_drop_random_vertical_power, other.item_drop_random_vertical_power) + other.item_drop_base_vertical_power + (other.y_velocity * other.item_drop_movement_vertical_power);
+				physics_apply_impulse(x, y, temp_item_horizontal_drop_power, temp_item_vertical_drop_power);
+			}
+			
+			// Check if Unit has Player Input
+			if (player_input)
+			{
+				// Reset Player Inventory UI Transparency and Fade Timer
+				player_inventory_ui_alpha = 1;
+				player_inventory_ui_fade_timer = player_inventory_ui_fade_delay * 0.5;
+			}
+			
+			// Set Unit's Hand Position Item Drop Animation
+			item_drop_offset_transition_value = 1;
 		}
 	}
 }
@@ -1341,9 +1344,9 @@ repeat (array_length(inventory_slots))
 	if (inventory_index != temp_inventory_slot_index)
 	{
 		// Compare Inventory Slot Item's Type
-		switch (global.inventory_item_packs[inventory_slots[temp_inventory_slot_index].item_pack].item_type)
+		switch (global.item_packs[inventory_slots[temp_inventory_slot_index].item_pack].item_type)
 		{
-			case InventoryItemType.Weapon:
+			case ItemType.Weapon:
 				var temp_inventory_slot_angle_movement_difference = angle_difference(90 + (inventory_slots[temp_inventory_slot_index].slot_angle * sign(draw_xscale)), inventory_slots[temp_inventory_slot_index].item_instance.weapon_angle);
 				var temp_inventory_slot_item_angle = inventory_slots[temp_inventory_slot_index].item_instance.weapon_angle + (temp_inventory_slot_angle_movement_difference * inventory_item_rotate_spd * frame_delta);
 				inventory_slots[temp_inventory_slot_index].item_instance.update_weapon_physics(inventory_slots[temp_inventory_slot_index].slot_position_x, inventory_slots[temp_inventory_slot_index].slot_position_y, temp_inventory_slot_item_angle, sign(draw_xscale));
@@ -1360,6 +1363,11 @@ repeat (array_length(inventory_slots))
 
 // LIMBS //
 #region Limb Animation Behaviour
+// Establish Limb Animation Toggle Variables
+var temp_primary_limb_default_animation_active = true;
+var temp_secondary_limb_default_animation_active = true;
+
+// Perform Unit's Limb Equipment Animation Behaviour
 switch (unit_equipment_animation_state)
 {
 	case UnitEquipmentAnimationState.FirearmReload:
@@ -1771,8 +1779,8 @@ switch (unit_equipment_animation_state)
 			}
 			
 			// Update Unit Equipment Inventory Position
-			unit_equipment_inventory_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y));
-			unit_equipment_inventory_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y) * draw_yscale);
+			unit_equipment_position_x = x + (rot_point_x(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y));
+			unit_equipment_position_y = y + ground_contact_vertical_offset + (rot_point_y(global.unit_packs[unit_pack].equipment_inventory_x * draw_xscale, global.unit_packs[unit_pack].equipment_inventory_y) * draw_yscale);
 			
 			// Update Primary Hand Position
 			temp_firearm_primary_hand_horizontal_offset = lerp(firearm_weapon_primary_hand_pivot_offset_ax, firearm_weapon_primary_hand_pivot_offset_bx, firearm_weapon_primary_hand_pivot_transition_value);
@@ -1865,54 +1873,164 @@ switch (unit_equipment_animation_state)
 		
 		if (temp_firearm_reload)
 		{
-			temp_firearm_primary_hand_target_x = lerp(temp_firearm_primary_hand_target_x, unit_equipment_inventory_position_x, firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value) + hand_fumble_animation_offset_x;
-			temp_firearm_primary_hand_target_y = lerp(temp_firearm_primary_hand_target_y, unit_equipment_inventory_position_y, firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value) + hand_fumble_animation_offset_y;
+			temp_firearm_primary_hand_target_x = lerp(temp_firearm_primary_hand_target_x, unit_equipment_position_x, firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value) + hand_fumble_animation_offset_x;
+			temp_firearm_primary_hand_target_y = lerp(temp_firearm_primary_hand_target_y, unit_equipment_position_y, firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value) + hand_fumble_animation_offset_y;
 		}
 		
 		limb_primary_arm.update_target(temp_firearm_primary_hand_target_x, temp_firearm_primary_hand_target_y);
+		temp_primary_limb_default_animation_active = false;
 		
 		var temp_firearm_offhand_hand_target_x = weapon_equipped.weapon_x + rot_point_x(temp_firearm_offhand_hand_horizontal_offset, temp_firearm_offhand_hand_vertical_offset);
 		var temp_firearm_offhand_hand_target_y = weapon_equipped.weapon_y + rot_point_y(temp_firearm_offhand_hand_horizontal_offset, temp_firearm_offhand_hand_vertical_offset);
 		
 		limb_secondary_arm.update_target(temp_firearm_offhand_hand_target_x, temp_firearm_offhand_hand_target_y);
+		temp_secondary_limb_default_animation_active = false;
 		break;
+	case UnitEquipmentAnimationState.Item:
+		// Calculate Item Transition Lerp Values
+		item_drop_offset_transition_value = lerp(item_drop_offset_transition_value, 0, item_drop_offset_transition_spd * frame_delta);
+		item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = lerp(item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value, 1, item_slot_to_holding_position_transition_spd * frame_delta);
+		
+		// Calculate Item Offset and Target Position
+		var temp_item_equipment_horizontal_offset = global.unit_packs[unit_pack].equipment_item_x + global.item_packs[inventory_slots[inventory_index].item_pack].item_horizontal_offset;
+		var temp_item_equipment_vertical_offset = global.unit_packs[unit_pack].equipment_item_y + global.item_packs[inventory_slots[inventory_index].item_pack].item_vertical_offset;
+		
+		var temp_unit_scaled_item_horizontal_offset = temp_item_equipment_horizontal_offset * draw_xscale;
+		var temp_unit_scaled_item_vertical_offset = (temp_item_equipment_vertical_offset + (item_drop_offset_length * item_drop_offset_transition_value) + (bobbing_animation_value * inventory_vertical_bobbing_height)) * draw_yscale;
+		
+		var temp_item_target_position_x = x + rot_point_x(temp_unit_scaled_item_horizontal_offset, temp_unit_scaled_item_vertical_offset);
+		var temp_item_target_position_y = y + ground_contact_vertical_offset + rot_point_y(temp_unit_scaled_item_horizontal_offset, temp_unit_scaled_item_vertical_offset);
+		
+		// Update Unit's Held Equipment Position
+		unit_equipment_position_x = lerp(inventory_slots[inventory_index].slot_position_x, temp_item_target_position_x, item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value);
+		unit_equipment_position_y = lerp(inventory_slots[inventory_index].slot_position_y, temp_item_target_position_y, item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value);
+		
+		// Compare Held Item's Hand Configuration
+		switch (global.item_packs[inventory_slots[inventory_index].item_pack].item_hand)
+		{
+			case ItemHand.Primary:
+				temp_primary_limb_default_animation_active = false;
+				break;
+			case ItemHand.Secondary:
+				temp_secondary_limb_default_animation_active = false;
+				break;
+			case ItemHand.Both:
+				temp_primary_limb_default_animation_active = false;
+				temp_secondary_limb_default_animation_active = false;
+				break;
+		}
+		
+		// Perform Primary Limb's Item Held Animation
+		if (!temp_primary_limb_default_animation_active)
+		{
+			// Match Limb's Direction with Unit's Direction
+			limb_primary_arm.limb_xscale = sign(draw_xscale);
+			
+			// Update Limb's Holding Item Arm Pivots
+			var temp_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
+			var temp_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
+			
+			limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+			limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+			
+			// Update Limb's Holding Item Hand Positions
+			var temp_item_primary_hand_horizontal_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_primary_hand_horizontal_offset * draw_xscale;
+			var temp_item_primary_hand_vertical_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_primary_hand_vertical_offset * draw_yscale;
+			
+			limb_primary_arm.update_target(unit_equipment_position_x + temp_item_primary_hand_horizontal_offset, unit_equipment_position_y + temp_item_primary_hand_vertical_offset);
+		}
+		
+		// Perform Secondary Limb's Item Held Animation
+		if (!temp_secondary_limb_default_animation_active)
+		{
+			// Match Limb's Direction with Unit's Direction
+			limb_secondary_arm.limb_xscale = sign(draw_xscale);
+			
+			// Update Limb's Holding Item Arm Pivots
+			var temp_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
+			var temp_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
+			
+			limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+			limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+			
+			// Update Limb's Holding Item Hand Positions
+			var temp_item_secondary_hand_horizontal_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_secondary_hand_horizontal_offset * draw_xscale;
+			var temp_item_secondary_hand_vertical_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_secondary_hand_vertical_offset * draw_yscale;
+			
+			limb_secondary_arm.update_target(unit_equipment_position_x + temp_item_secondary_hand_horizontal_offset, unit_equipment_position_y + temp_item_secondary_hand_vertical_offset);
+		}
 	default:
 		// Reset Animation Speed Direction
 		animation_speed_direction = 1;
-		
-		// Pull Unit's Slope Rotation
-		trig_sine = draw_angle_trig_sine;
-		trig_cosine = draw_angle_trig_cosine;
-		
-		// Update Limb Anchor Trig Values
-		limb_primary_arm.anchor_trig_sine = trig_sine;
-		limb_primary_arm.anchor_trig_cosine = trig_cosine;
-		limb_secondary_arm.anchor_trig_sine = trig_sine;
-		limb_secondary_arm.anchor_trig_cosine = trig_cosine;
-		
-		// Update Non-Weapon Unit Animations
-		var temp_animation_percentage;
-		
-		switch (unit_animation_state)
-		{
-			case UnitAnimationState.Idle:
-				temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
-				limb_primary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
-				limb_secondary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
-				break;
-			case UnitAnimationState.Walking:
-			case UnitAnimationState.AimWalking:
-				temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
-				var temp_walk_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
-				limb_primary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
-				limb_secondary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
-				break;
-			case UnitAnimationState.Jumping:
-				limb_primary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
-				limb_secondary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
-				break;
-		}
 		break;
+}
+
+// Perform Default Limb Animations
+if (temp_primary_limb_default_animation_active or temp_secondary_limb_default_animation_active)
+{
+	// Pull Unit's Slope Rotation
+	trig_sine = draw_angle_trig_sine;
+	trig_cosine = draw_angle_trig_cosine;
+	
+	// Update Limb Anchor Trig Values
+	limb_primary_arm.anchor_trig_sine = trig_sine;
+	limb_primary_arm.anchor_trig_cosine = trig_cosine;
+	limb_secondary_arm.anchor_trig_sine = trig_sine;
+	limb_secondary_arm.anchor_trig_cosine = trig_cosine;
+	
+	// Update Non-Weapon Unit Animations
+	var temp_animation_percentage = 0;
+	
+	switch (unit_animation_state)
+	{
+		case UnitAnimationState.Idle:
+			// Calculate Unit Limb Animation Value
+			temp_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
+			
+			// Perfrom Unequipped Idle Primary Hand Animation
+			if (temp_primary_limb_default_animation_active)
+			{
+				limb_primary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
+			}
+			
+			// Perfrom Unequipped Idle Secondary Hand Animation
+			if (temp_secondary_limb_default_animation_active)
+			{
+				limb_secondary_arm.update_idle_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage);
+			}
+			break;
+		case UnitAnimationState.Walking:
+		case UnitAnimationState.AimWalking:
+			// Calculate Unit Limb Animation Value
+			temp_animation_percentage = floor(draw_image_index) / draw_image_index_length;
+			var temp_walk_animation_percentage = (floor(draw_image_index + (limb_animation_double_cycle * draw_image_index_length))) / (draw_image_index_length * 2);
+			
+			// Perfrom Unequipped Walking Primary Hand Animation
+			if (temp_primary_limb_default_animation_active)
+			{
+				limb_primary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
+			}
+			
+			// Perfrom Unequipped Walking Secondary Hand Animation
+			if (temp_secondary_limb_default_animation_active)
+			{
+				limb_secondary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, temp_animation_percentage, temp_walk_animation_percentage);
+			}
+			break;
+		case UnitAnimationState.Jumping:
+			// Perfrom Unequipped Jumping Primary Hand Animation
+			if (temp_primary_limb_default_animation_active)
+			{
+				limb_primary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
+			}
+			
+			// Perfrom Unequipped Jumping Secondary Hand Animation
+			if (temp_secondary_limb_default_animation_active)
+			{
+				limb_secondary_arm.update_jump_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale);
+			}
+			break;
+	}
 }
 #endregion
 

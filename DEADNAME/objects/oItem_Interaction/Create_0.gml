@@ -13,12 +13,12 @@ interact_options[0] =
 		// Dialogue Cutscene Event - Create new Dialogue Box for Cutscene
 		var temp_dialogue_box = instance_create_depth(0, 0, 0, oDialogueBox);
 		
-		// Set Dialogue Text and Unit
-		temp_dialogue_box.set_dialogue_text(global.inventory_item_packs[interaction_instance.interaction_object.item_pack].item_dialogue);
-		temp_dialogue_box.dialogue_unit = GameManager.player_unit;
-		
 		// Set Dialogue Cutscene Behaviour Properties
 		temp_dialogue_box.dialogue_continue = true;
+		
+		// Set Dialogue Unit and Dialogue Text
+		temp_dialogue_box.dialogue_unit = GameManager.player_unit;
+		temp_dialogue_box.set_dialogue_text(global.item_packs[interaction_instance.interaction_object.item_pack].item_dialogue);
 	}
 };
 
@@ -61,7 +61,7 @@ interact_options[1] =
 			unit_inventory_change_slot(GameManager.player_unit, temp_take_item_slot_index);
 			
 			// Perform Take Item Specific Behaviours based on Inventory Item's Type 
-			if (global.inventory_item_packs[interaction_instance.interaction_object.item_pack].item_type == InventoryItemType.Weapon)
+			if (global.item_packs[interaction_instance.interaction_object.item_pack].item_type == ItemType.Weapon)
 			{
 				// Weapon Item Type Behaviour
 				interaction_instance.interaction_object.weapon_instance.item_take_set_displacement(temp_item_x, temp_item_y, 1, GameManager.player_unit.item_take_lerp_movement_spd);

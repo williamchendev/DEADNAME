@@ -11,6 +11,7 @@ enum UnitAnimationState
 enum UnitEquipmentAnimationState
 {
     None,
+    Item,
     Melee,
     Firearm,
     FirearmReload
@@ -162,8 +163,8 @@ global.unit_packs[UnitPack.Default] =
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -288,8 +289,8 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 4,
+	equipment_item_y: -16,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -414,8 +415,8 @@ global.unit_packs[UnitPack.Wolf] =
 	equipment_inventory_x: -2,
 	equipment_inventory_y: -22,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -6,
 	equipment_firearm_hip_y: -22,
@@ -520,8 +521,8 @@ global.unit_packs[UnitPack.Director] =
 	equipment_inventory_x: -3,
 	equipment_inventory_y: -28,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -646,8 +647,8 @@ global.unit_packs[UnitPack.Knives] =
 	equipment_inventory_x: -5,
 	equipment_inventory_y: -21,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -4,
 	equipment_firearm_hip_y: -28,
@@ -752,8 +753,8 @@ global.unit_packs[UnitPack.Martyr] =
 	equipment_inventory_x: -6,
 	equipment_inventory_y: -27,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -1,
 	equipment_firearm_hip_y: -30,
@@ -858,8 +859,8 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	equipment_inventory_x: -6,
 	equipment_inventory_y: -24,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,
@@ -984,8 +985,8 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	equipment_inventory_x: -7,
 	equipment_inventory_y: -23,
 	
-	equipment_backpack_x: 0,
-	equipment_backpack_y: -35,
+	equipment_item_x: 0,
+	equipment_item_y: -35,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,
