@@ -14,11 +14,16 @@ if (limb_secondary_arm != noone)
 	DELETE(limb_secondary_arm);
 }
 
-// Destroy Unit's Weapons
-if (weapon_equipped != noone)
+// Destroy Unit's Inventory
+for (var i = array_length(inventory_slots) - 1; i >= 0; i--)
 {
-	DELETE(weapon_equipped);
+	if (inventory_slots[i].item_instance != noone)
+	{
+		DELETE(inventory_slots[i].item_instance);
+	}
 }
+
+array_clear(inventory_slots);
 
 // Clean Up Unit's Platform DS List
 ds_list_destroy(platform_list);

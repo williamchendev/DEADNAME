@@ -20,16 +20,8 @@ function unit_render_behaviour(unit)
 			// Check if Inventory Item can be Drawn
 			if (inventory_slots[temp_back_inventory_slot_index].item_pack != ItemPack.None and temp_back_inventory_slot_index != inventory_index and inventory_slots[temp_back_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Back)
 			{
-				switch (global.item_packs[inventory_slots[temp_back_inventory_slot_index].item_pack].item_type)
-				{
-					case ItemType.Weapon:
-						// Render Weapon
-						inventory_slots[temp_back_inventory_slot_index].item_instance.render_behaviour();
-						break;
-					case ItemType.None:
-					default:
-						break;
-				}
+				// Render Slot's Inventory Item
+				inventory_slots[temp_back_inventory_slot_index].item_instance.render_behaviour();
 			}
 			
 			// Increment Inventory Slot Index
@@ -61,10 +53,26 @@ function unit_render_behaviour(unit)
 			image_alpha
 		);
 		
-		// Draw Unit's Weapon (if equipped)
-		if (weapon_active)
+		// Draw Unit's Front-Layer Inventory Items
+		var temp_front_inventory_slot_index = 0;
+		
+		repeat (array_length(inventory_slots))
 		{
-			weapon_equipped.render_behaviour();
+			// Check if Inventory Item can be Drawn
+			if (inventory_slots[temp_front_inventory_slot_index].item_pack != ItemPack.None and temp_front_inventory_slot_index != inventory_index and inventory_slots[temp_front_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Front)
+			{
+				// Render Slot's Inventory Item
+				inventory_slots[temp_front_inventory_slot_index].item_instance.render_behaviour();
+			}
+			
+			// Increment Inventory Slot Index
+			temp_front_inventory_slot_index++;
+		}
+		
+		// Draw Unit's Equipped Item
+		if (equipment_active)
+		{
+			item_equipped.render_behaviour();
 		}
 		
 		// Draw Primary Arm rendered in front Unit Body
@@ -80,13 +88,45 @@ function unit_unlit_render_behaviour(unit, x_offset = 0, y_offset = 0)
 		// Draw Secondary Arm rendered behind Unit Body
 		limb_secondary_arm.render_unlit_behaviour(x_offset, y_offset);
 		
+		// Draw Unit's Back-Layer Inventory Items
+		var temp_back_inventory_slot_index = 0;
+		
+		repeat (array_length(inventory_slots))
+		{
+			// Check if Inventory Item can be Drawn
+			if (inventory_slots[temp_back_inventory_slot_index].item_pack != ItemPack.None and temp_back_inventory_slot_index != inventory_index and inventory_slots[temp_back_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Back)
+			{
+				// Render Slot's Inventory Item
+				inventory_slots[temp_back_inventory_slot_index].item_instance.render_unlit_behaviour(x_offset, y_offset);
+			}
+			
+			// Increment Inventory Slot Index
+			temp_back_inventory_slot_index++;
+		}
+		
 		// Draw Unit Body
 		draw_sprite_ext(sprite_index, image_index, x + x_offset, y + ground_contact_vertical_offset + y_offset, draw_xscale, draw_yscale, image_angle + draw_angle_value, image_blend, image_alpha);
 		
-		// Draw Unit's Weapon (if equipped)
-		if (weapon_active)
+		// Draw Unit's Front-Layer Inventory Items
+		var temp_front_inventory_slot_index = 0;
+		
+		repeat (array_length(inventory_slots))
 		{
-			weapon_equipped.render_unlit_behaviour(x_offset, y_offset);
+			// Check if Inventory Item can be Drawn
+			if (inventory_slots[temp_front_inventory_slot_index].item_pack != ItemPack.None and temp_front_inventory_slot_index != inventory_index and inventory_slots[temp_front_inventory_slot_index].slot_render_order == UnitInventorySlotRenderOrder.Front)
+			{
+				// Render Slot's Inventory Item
+				inventory_slots[temp_front_inventory_slot_index].item_instance.render_unlit_behaviour(x_offset, y_offset);
+			}
+			
+			// Increment Inventory Slot Index
+			temp_front_inventory_slot_index++;
+		}
+		
+		// Draw Unit's Weapon (if equipped)
+		if (equipment_active)
+		{
+			item_equipped.render_unlit_behaviour(x_offset, y_offset);
 		}
 		
 		// Draw Primary Arm rendered in front Unit Body

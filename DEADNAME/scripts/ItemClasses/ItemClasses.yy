@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"WeaponClasses",
+  "%Name":"ItemClasses",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"WeaponClasses",
+  "name":"ItemClasses",
   "parent":{
-    "name":"Unit Behaviours",
-    "path":"folders/Scripts/Unit Behaviours.yy",
+    "name":"Items",
+    "path":"folders/Scripts/Items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

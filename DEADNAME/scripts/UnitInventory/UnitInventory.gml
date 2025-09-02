@@ -29,6 +29,12 @@ global.unit_inventory_ui_slot_size = 36;
 global.unit_inventory_ui_slot_padding = 10;
 global.unit_inventory_ui_slot_tier_offset = 17;
 
+//
+global.unit_destroy_inventory_item_drop_combat_impulse_mult = 0.7;
+
+global.unit_destroy_inventory_item_drop_random_horizontal_power = 8;
+global.unit_destroy_inventory_item_drop_random_vertical_power = 8;
+
 // Unit Inventory 
 function unit_inventory_slot_tier_color(slot_tier)
 {
@@ -314,83 +320,160 @@ function unit_inventory_remove_slot(unit, slot_tier)
 	// Delete the Inventory Slot from the Unit's Inventory Slot Array at the given Remove Slot Index
 	if (temp_remove_slot_index != -1)
 	{
+		//
+		if (global.item_packs[unit.inventory_slots[temp_remove_slot_index].item_pack].item_type != ItemType.None)
+		{
+			//
+			var temp_dropped_item = unit_inventory_drop_item_instance(unit, temp_remove_slot_index);
+			
+			//
+			with (temp_dropped_item)
+			{
+				var temp_combat_impulse_horizontal_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_horizontal_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
+				var temp_combat_impulse_vertical_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_vertical_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
+				
+				var temp_item_horizontal_drop_power = random_range(-global.unit_destroy_inventory_item_drop_random_horizontal_power, global.unit_destroy_inventory_item_drop_random_horizontal_power);
+				var temp_item_vertical_drop_power = random_range(-global.unit_destroy_inventory_item_drop_random_vertical_power, global.unit_destroy_inventory_item_drop_random_vertical_power);
+				physics_apply_impulse(x, y, temp_item_horizontal_drop_power + temp_combat_impulse_horizontal_vector, temp_item_vertical_drop_power + temp_combat_impulse_vertical_vector);
+			}
+		}
+		
+		//
 		array_delete(unit.inventory_slots, temp_remove_slot_index, 1);
 	}
 }
 
 function unit_inventory_remove_all_slots(unit)
 {
+	//
+	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
+	{
+		//
+		if (global.item_packs[unit.inventory_slots[i].item_pack].item_type != ItemType.None)
+		{
+			//
+			var temp_dropped_item = unit_inventory_drop_item_instance(unit, i);
+			
+			//
+			with (temp_dropped_item)
+			{
+				var temp_combat_impulse_horizontal_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_horizontal_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
+				var temp_combat_impulse_vertical_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_vertical_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
+				
+				var temp_item_horizontal_drop_power = random_range(-global.unit_destroy_inventory_item_drop_random_horizontal_power, global.unit_destroy_inventory_item_drop_random_horizontal_power);
+				var temp_item_vertical_drop_power = random_range(-global.unit_destroy_inventory_item_drop_random_vertical_power, global.unit_destroy_inventory_item_drop_random_vertical_power);
+				physics_apply_impulse(x, y, temp_item_horizontal_drop_power + temp_combat_impulse_horizontal_vector, temp_item_vertical_drop_power + temp_combat_impulse_vertical_vector);
+			}
+		}
+	}
+	
 	// Clear and Destroy all Unit's Inventory Slots
 	array_clear(unit.inventory_slots);
 }
 
 function unit_inventory_add_item(unit, item_pack, item_count = 1)
 {
-	//
-	var temp_slot_index = -1;
-	
-	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
 	{
-		//
-		if (unit.inventory_slots[i].item_pack != ItemType.None)
+		// Unit Instance is Invalid - Early Return
+		return -1;
+	}
+	
+	// Check if Item Instance's Item Pack is a valid Item Pack Index
+	if (item_pack < 0 or item_pack == ItemPack.None)
+	{
+		// Item Pack is an invalid Item Pack Index - Early Return
+		return -1;
+	}
+	
+	// Place Item in Unit Inventory Behaviour
+	var temp_inventory_index = -1;
+	var temp_item_placed_count = 0;
+	
+	while (temp_item_placed_count < item_count)
+	{
+		// Establish Slot Index to check for Valid Inventory Slot Placement
+		var temp_slot_index = -1;
+		
+		// Iterate through Unit Inventory Slots for Valid Inventory Slot to place Item
+		for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 		{
-			//
-			if (global.item_packs[item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_pack == item_pack)
+			// Check if Inventory Slot contains an Item already
+			if (unit.inventory_slots[i].item_pack >= 0 and unit.inventory_slots[i].item_pack != ItemType.None)
 			{
-				if (unit.inventory_slots[i].item_count < global.item_packs[item_pack].item_count_limit)
+				// Check if Inventory Slot can stack multiple instances of the given Item to place in the Unit Inventory
+				if (unit.inventory_slots[i].item_pack == item_pack)
 				{
-					//
-					temp_slot_index = i;
-					break;
+					// Check if given Item is Stackable
+					if (global.item_packs[item_pack].item_count_limit > 1 and unit.inventory_slots[i].item_count < global.item_packs[item_pack].item_count_limit)
+					{
+						// Inventory Slot can contain multiples of the given Stackable Item - Item can be placed in Inventory Slot 
+						temp_slot_index = i;
+						break;
+					}
 				}
+				
+				// Inventory Slot is already filled - Skip adding Item to this Inventory Slot
+				continue;
 			}
 			
-			//
-			continue;
-		}
-		
-		// Compare Inventory Slot tiers to organize Unit Inventory Slots by Tier
-		if (unit.inventory_slots[i].slot_tier >= global.item_packs[item_pack].item_slot_tier)
-		{
-			//
-			if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
+			// Check if empty Inventory Slot has the correct tier to house Inventory Item
+			if (unit.inventory_slots[i].slot_tier >= global.item_packs[item_pack].item_slot_tier)
 			{
-				//
-				temp_slot_index = i;
+				// Compare stored Inventory Slot tier to prioritize placing the given Item into the lowest possible tier to save Inventory Space
+				if (temp_slot_index == -1 or (unit.inventory_slots[i].slot_tier <= unit.inventory_slots[temp_slot_index].slot_tier and i < temp_slot_index))
+				{
+					// Item can be placed in Inventory Slot
+					temp_slot_index = i;
+				}
 			}
 		}
-	}
-	
-	//
-	if (temp_slot_index == -1)
-	{
-		//
-		return temp_slot_index;
-	}
-	
-	//
-	switch (global.item_packs[item_pack].item_type)
-	{
-		case ItemType.Default:
-			//
+		
+		// Check if Valid Inventory Slot found
+		if (temp_slot_index == -1)
+		{
+			// No valid inventory slot - break from Inventory Item Placement Loop
 			break;
-		case ItemType.Weapon:
+		}
+		else
+		{
+			// Store Inventory Slot Placement to return placed item's Inventory Slot Index
+			temp_inventory_index = temp_slot_index;
+		}
+		
+		// Place a single instance of the given Item
+		unit.inventory_slots[temp_slot_index].item_pack = item_pack;
+		unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? 1 : unit.inventory_slots[temp_slot_index].item_count + 1;
+		
+		// Item's Placement Behaviour
+		if (unit.inventory_slots[temp_slot_index].item_instance == noone)
+		{
 			//
-			unit.inventory_slots[temp_slot_index].item_instance = create_weapon_from_weapon_pack(global.item_packs[item_pack].weapon_pack);
-			break;
-		case ItemType.None:
-		default:
+			unit.inventory_slots[temp_slot_index].item_instance = create_item_class_instance_from_item_pack(item_pack);
+			unit.inventory_slots[temp_slot_index].item_instance.init_item_physics(unit.inventory_slots[temp_slot_index].slot_position_x, unit.inventory_slots[temp_slot_index].slot_position_y);
+			
 			//
-			return -1;
+			if (unit.inventory_index == temp_slot_index)
+			{
+				// Reset Unit's Equipment State
+				unit_inventory_change_slot(unit, unit.inventory_index);
+			}
+		}
+		
+		// Increment Count of Items Placed in Unit Inventory
+		temp_item_placed_count++;
 	}
 	
-	//
-	unit.inventory_slots[temp_slot_index].item_pack = item_pack;
-	unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? item_count : unit.inventory_slots[temp_slot_index].item_count + item_count;
-	unit.inventory_slots[temp_slot_index].item_count = clamp(unit.inventory_slots[temp_slot_index].item_count, 1, global.item_packs[item_pack].item_count_limit);
+	// Show Unit Inventory UI if the Unit Inventory belongs to the Player's Unit
+	if (unit.player_input and temp_slot_index != -1)
+	{
+		unit.player_inventory_ui_alpha = 1;
+		unit.player_inventory_ui_fade_timer = unit.player_inventory_ui_fade_delay;
+	}
 	
-	//
-	return temp_slot_index;
+	// Return the Inventory Slot Index in the Player's Inventory the Item was placed in
+	return temp_inventory_index;
 }
 
 function unit_inventory_take_item_instance(unit, item_instance)
@@ -469,22 +552,31 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		unit.inventory_slots[temp_slot_index].item_pack = item_instance.item_pack;
 		unit.inventory_slots[temp_slot_index].item_count = unit.inventory_slots[temp_slot_index].item_count < 1 ? 1 : unit.inventory_slots[temp_slot_index].item_count + 1;
 		
-		// Perform Item's Inventory Placement Instantiation Behaviour based on Item's Type
-		switch (global.item_packs[item_instance.item_pack].item_type)
+		// Item's Placement Behaviour
+		if (unit.inventory_slots[temp_slot_index].item_instance == noone)
 		{
-			case ItemType.Default:
-				// Default Item's Placement Behaviour
-				break;
-			case ItemType.Weapon:
-				// Weapon Item's Placement Behaviour
-				unit.inventory_slots[temp_slot_index].item_instance = item_instance.weapon_instance;
-				item_instance.weapon_instance.weapon_angle = sign(item_instance.weapon_instance.weapon_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
-				break;
-			case ItemType.None:
-			default:
-				// Invalid Item's Placement Behaviour
-				unit.inventory_slots[temp_slot_index].item_instance = noone;
-				break;
+			if (item_instance.item_instance == noone)
+			{
+				//
+				unit.inventory_slots[temp_slot_index].item_instance = create_item_class_instance_from_item_pack(item_instance.item_pack);
+				unit.inventory_slots[temp_slot_index].item_instance.init_item_physics(unit.inventory_slots[temp_slot_index].slot_position_x, unit.inventory_slots[temp_slot_index].slot_position_y);
+			}
+			else
+			{
+				//
+				unit.inventory_slots[temp_slot_index].item_instance = item_instance.item_instance;
+				item_instance.item_instance.item_angle = sign(item_instance.item_instance.item_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
+				
+				//
+				item_instance.item_instance = noone;
+			}
+			
+			//
+			if (unit.inventory_index == temp_slot_index)
+			{
+				// Reset Unit's Equipment State
+				unit_inventory_change_slot(unit, unit.inventory_index);
+			}
 		}
 		
 		// Increment Count of Items Placed in Unit Inventory
@@ -504,7 +596,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	}
 	
 	// Show Unit Inventory UI if the Unit Inventory belongs to the Player's Unit
-	if (unit.player_input)
+	if (unit.player_input and temp_slot_index != -1)
 	{
 		unit.player_inventory_ui_alpha = 1;
 		unit.player_inventory_ui_fade_timer = unit.player_inventory_ui_fade_delay;
@@ -514,7 +606,7 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	return temp_inventory_index;
 }
 
-function unit_inventory_drop_item_instance(unit, slot_index)
+function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -1)
 {
 	// Check if Unit Exists
 	if (!instance_exists(unit))
@@ -530,8 +622,18 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 		return noone;
 	}
 	
+	//
+	if (drop_item_count == 0)
+	{
+		//
+		return noone;
+	}
+	
 	// Establish Blank Dropped Item Object Instance
 	var temp_dropped_item_instance = noone;
+	
+	// Calculate Dropped Item Count
+	drop_item_count = drop_item_count <= -1 ? unit.inventory_slots[slot_index].item_count : clamp(drop_item_count, 0, unit.inventory_slots[slot_index].item_count);
 	
 	// Dropped Item Object Instance Instantiation Behaviour
 	switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
@@ -543,13 +645,46 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 				sub_layer_index: lighting_engine_find_object_index(unit) + 1,
 				item_pack: unit.inventory_slots[slot_index].item_pack,
 				item_count: 1,
+				image_angle: unit.inventory_slots[slot_index].item_instance.item_angle,
+				image_yscale: unit.inventory_slots[slot_index].item_instance.item_facing_sign
 			};
 			
 			// Create Dropped Default Item Instance
-			temp_dropped_item_instance = instance_create_depth(unit.unit_equipment_position_x, unit.unit_equipment_position_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
+			temp_dropped_item_instance = instance_create_depth(unit.inventory_slots[slot_index].item_instance.item_x, unit.inventory_slots[slot_index].item_instance.item_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
+			
+			//
+			with (temp_dropped_item_instance)
+			{
+				if (unit.inventory_slots[slot_index].item_count - drop_item_count > 0)
+				{
+					// Instantiate New Weapon Instance
+					item_instance = create_item_class_instance_from_item_pack(unit.inventory_slots[slot_index].item_pack);
+					item_instance.init_item_physics(x, y, image_angle);
+				}
+				else
+				{
+					// Unequip Weapon if Item's Weapon Instance is Equipped
+					if (unit.equipment_active and unit.inventory_index == slot_index)
+					{
+						unit.inventory_slots[unit.inventory_index].item_instance.unequip_item();
+					}
+					
+					// Establish Weapon Instance's Physical Transform Properties
+					item_instance = unit.inventory_slots[slot_index].item_instance;
+					
+					// Update Dropped Item's Physics
+					item_instance.update_item_physics(x, y, image_angle, item_instance.item_facing_sign);
+					
+					//
+					unit.inventory_slots[slot_index].item_instance = noone;
+				}
+				
+				// Set Dropped Item's Physics Object Rotation
+				phy_rotation = -image_angle;
+			}
 			break;
 		case ItemType.Weapon:
-			// Create Dropped Weapon Item Object
+			// Create Dropped Item Object
 			var temp_dropped_item_weapon_instance = noone;
 			
 			var temp_dropped_item_weapon_angle = 0;
@@ -558,29 +693,31 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			
 			var temp_dropped_item_weapon_yscale = sign(unit.draw_xscale) != 0 ? sign(unit.draw_xscale) : 1;
 			
-			// Unequip Weapon if Item's Weapon Instance is Equipped
-			if (unit.weapon_active and unit.inventory_index == slot_index)
-			{
-				unit.inventory_slots[unit.inventory_index].item_instance.unequip_weapon();
-			}
-			
 			// Check if Inventory Slot contains Weapon Instance
-			if (unit.inventory_slots[slot_index].item_instance != noone)
+			if (unit.inventory_slots[slot_index].item_count - drop_item_count > 0)
 			{
-				// Establish Weapon Instance's Physical Transform Properties
-				temp_dropped_item_weapon_instance = unit.inventory_slots[slot_index].item_instance;
-				
-				temp_dropped_item_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle + (unit.inventory_slots[slot_index].item_instance.weapon_angle_recoil * unit.inventory_slots[slot_index].item_instance.weapon_facing_sign);
-				temp_dropped_item_weapon_position_x = unit.inventory_slots[slot_index].item_instance.weapon_x;
-				temp_dropped_item_weapon_position_y = unit.inventory_slots[slot_index].item_instance.weapon_y;
-				
-				temp_dropped_item_weapon_yscale = unit.inventory_slots[slot_index].item_instance.weapon_yscale * unit.inventory_slots[slot_index].item_instance.weapon_facing_sign;
+				// Instantiate New Weapon Instance
+				temp_dropped_item_weapon_instance = create_item_class_instance_from_item_pack(unit.inventory_slots[slot_index].item_pack);
+				temp_dropped_item_weapon_instance.init_item_physics(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0);
 			}
 			else
 			{
-				// Instantiate New Weapon Instance
-				temp_dropped_item_weapon_instance = create_weapon_from_weapon_pack(global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_pack);
-				temp_dropped_item_weapon_instance.init_weapon_physics(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0);
+				// Unequip Weapon if Item's Weapon Instance is Equipped
+				if (unit.equipment_active and unit.inventory_index == slot_index)
+				{
+					unit.inventory_slots[unit.inventory_index].item_instance.unequip_item();
+				}
+				
+				//
+				temp_dropped_item_weapon_instance = unit.inventory_slots[slot_index].item_instance;
+				unit.inventory_slots[slot_index].item_instance = noone;
+				
+				// Establish Weapon Instance's Physical Transform Properties
+				temp_dropped_item_weapon_angle = temp_dropped_item_weapon_instance.item_angle + (temp_dropped_item_weapon_instance.weapon_angle_recoil * temp_dropped_item_weapon_instance.item_facing_sign);
+				temp_dropped_item_weapon_position_x = temp_dropped_item_weapon_instance.item_x;
+				temp_dropped_item_weapon_position_y = temp_dropped_item_weapon_instance.item_y;
+				
+				temp_dropped_item_weapon_yscale = temp_dropped_item_weapon_instance.item_yscale * temp_dropped_item_weapon_instance.item_facing_sign;
 			}
 			
 			// Establish Dropped Weapon Item Instance's Struct
@@ -593,45 +730,44 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 				image_yscale: temp_dropped_item_weapon_yscale
 			};
 			
-			// Create Dropped Weapon Item Instance
+			// Create Dropped Item Instance
 			temp_dropped_item_instance = instance_create_depth(temp_dropped_item_weapon_position_x, temp_dropped_item_weapon_position_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_weapon_var_struct);
 			
-			// Set Dropped Weapon Item Instance's Settings
+			// Set Dropped Item Instance's Settings
 			with (temp_dropped_item_instance)
 			{
-				// Set Dropped Weapon Item's Instance
-				weapon_instance = temp_dropped_item_weapon_instance;
+				// Set Dropped Item's Instance
+				item_instance = temp_dropped_item_weapon_instance;
 				
-				// Set Dropped Weapon Item's Sprite & Image Index
-				sprite_index = weapon_instance.weapon_sprite;
-				image_index = weapon_instance.weapon_image_index;
+				// Set Dropped Item's Sprite & Image Index
+				sprite_index = item_instance.item_sprite;
+				image_index = item_instance.item_image_index;
 				
-				// Set Dropped Weapon Item's Physics Object Rotation
+				// Set Dropped Item's Physics Object Rotation
 				phy_rotation = -temp_dropped_item_weapon_angle;
 				
-				// Set Dropped Weapon Item's Lighting Engine Render Settings
-				normalmap_spritepack = weapon_instance.weapon_normalmap_spritepack != undefined ? weapon_instance.weapon_normalmap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
-				metallicroughnessmap_spritepack = weapon_instance.weapon_metallicroughnessmap_spritepack != undefined ? weapon_instance.weapon_metallicroughnessmap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
-				emissivemap_spritepack = weapon_instance.weapon_emissivemap_spritepack != undefined ? weapon_instance.weapon_emissivemap_spritepack[weapon_instance.weapon_image_index].texture : undefined;
-				normalmap_spritepack = weapon_instance.weapon_normalmap_spritepack != undefined ? weapon_instance.weapon_normalmap_spritepack[weapon_instance.weapon_image_index].uvs : undefined;
-				metallicroughnessmap_spritepack = weapon_instance.weapon_metallicroughnessmap_spritepack != undefined ? weapon_instance.weapon_metallicroughnessmap_spritepack[weapon_instance.weapon_image_index].uvs : undefined;
-				emissivemap_spritepack = weapon_instance.weapon_emissivemap_spritepack != undefined ? weapon_instance.weapon_emissivemap_spritepack[weapon_instance.weapon_image_index].uvs : undefined;
-				normal_strength = weapon_instance.weapon_normal_strength;
-				metallic = weapon_instance.weapon_metallic;
-				roughness = weapon_instance.weapon_roughness;
-				emissive = weapon_instance.weapon_emissive;
-				emissive_multiplier = weapon_instance.weapon_emissive_multiplier;
+				// Set Dropped Item's Lighting Engine Render Settings
+				normalmap_spritepack = item_instance.item_normalmap_spritepack != undefined ? item_instance.item_normalmap_spritepack[item_instance.item_image_index].texture : undefined;
+				metallicroughnessmap_spritepack = item_instance.item_metallicroughnessmap_spritepack != undefined ? item_instance.item_metallicroughnessmap_spritepack[item_instance.item_image_index].texture : undefined;
+				emissivemap_spritepack = item_instance.item_emissivemap_spritepack != undefined ? item_instance.item_emissivemap_spritepack[item_instance.item_image_index].texture : undefined;
+				normalmap_spritepack = item_instance.item_normalmap_spritepack != undefined ? item_instance.item_normalmap_spritepack[item_instance.item_image_index].uvs : undefined;
+				metallicroughnessmap_spritepack = item_instance.item_metallicroughnessmap_spritepack != undefined ? item_instance.item_metallicroughnessmap_spritepack[item_instance.item_image_index].uvs : undefined;
+				emissivemap_spritepack = item_instance.item_emissivemap_spritepack != undefined ? item_instance.item_emissivemap_spritepack[item_instance.item_image_index].uvs : undefined;
+				normal_strength = item_instance.item_normal_strength;
+				metallic = item_instance.item_metallic;
+				roughness = item_instance.item_roughness;
+				emissive = item_instance.item_emissive;
+				emissive_multiplier = item_instance.item_emissive_multiplier;
 				
-				// Set Dropped Weapon Item's Color and Transparency
+				// Set Dropped Item's Color and Transparency
 				image_blend = c_white;
 				image_alpha = 1;
 				
-				// Set Dropped Weapon Item Not-Visible
+				// Set Dropped Item Not-Visible
 				visible = false;
 				
-				// Update Dropped Weapon's Behaviour & Physics
-				weapon_instance.update_weapon_behaviour();
-				weapon_instance.update_weapon_physics(x, y, image_angle, weapon_instance.weapon_facing_sign);
+				// Update Dropped Item's Physics
+				item_instance.update_item_physics(x, y, image_angle, item_instance.item_facing_sign);
 			}
 			break;
 		case ItemType.None:
@@ -640,28 +776,39 @@ function unit_inventory_drop_item_instance(unit, slot_index)
 			return noone;
 	}
 	
+	// Decrement Inventory Slot's Item Count
+	unit.inventory_slots[slot_index].item_count -= drop_item_count;
+	
 	// Check Inventory Slot's Item Count
-	if (unit.inventory_slots[slot_index].item_count <= 1)
+	if (unit.inventory_slots[slot_index].item_count <= 0)
 	{
 		// Inventory Slot is storing single Item - Remove Item from Inventory Slot
 		unit.inventory_slots[slot_index].item_pack = ItemPack.None;
 		unit.inventory_slots[slot_index].item_count = -1;
-		unit.inventory_slots[slot_index].item_instance = noone;
+		
+		//
+		if (unit.inventory_slots[slot_index].item_instance != noone)
+		{
+			//
+			DELETE(unit.inventory_slots[slot_index].item_instance);
+			
+			//
+			unit.inventory_slots[slot_index].item_instance = noone;
+		}
 		
 		// Reset Unit's Equipment State
 		unit_inventory_change_slot(unit, slot_index);
 	}
-	else
-	{
-		// Inventory Slot is storing multiple Items - Decrement Inventory Slot's Item Count
-		unit.inventory_slots[slot_index].item_count -= 1;
-	}
 	
-	// Apply Unit Physics Forces to Dropped Object
+	// 
 	if (instance_exists(temp_dropped_item_instance))
 	{
+		// Apply Unit Physics Forces to Dropped Object
 		temp_dropped_item_instance.phy_position_x += unit.x_velocity;
 		temp_dropped_item_instance.phy_position_y += unit.y_velocity;
+		
+		//
+		temp_dropped_item_instance.item_count = drop_item_count;
 	}
 	
 	// Return Dropped Item Instance
@@ -675,6 +822,13 @@ function unit_inventory_swap_item_instance()
 
 function unit_inventory_change_slot(unit, slot_index)
 {
+	// Check if Unit Exists
+	if (!instance_exists(unit))
+	{
+		// Unit does not exist - Early Return
+		return;
+	}
+	
 	//
 	if (unit.inventory_index == slot_index)
 	{
@@ -684,15 +838,11 @@ function unit_inventory_change_slot(unit, slot_index)
 	{
 		switch (global.item_packs[unit.inventory_slots[unit.inventory_index].item_pack].item_type)
 		{
-			case ItemType.Default:
+			default:
 				// Default Item Unequip Behaviour
-				break;
-			case ItemType.Weapon:
-				// Unit Weapon Unequip Behaviour
-				unit.inventory_slots[unit.inventory_index].item_instance.unequip_weapon();
+				unit.inventory_slots[unit.inventory_index].item_instance.unequip_item();
 				break;
 			case ItemType.None:
-			default:
 				// Item is Empty or Invalid
 				break;
 		}
@@ -701,40 +851,32 @@ function unit_inventory_change_slot(unit, slot_index)
 	//
 	switch (slot_index == -1 ? ItemPack.None : global.item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
 	{
-		case ItemType.Default:
-			// Default Item Equip Behaviour
-			unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Item;
-			
-			unit.item_drop_offset_transition_value = 0;
-			unit.item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
+		case ItemType.None:
+			// Item is Empty or Invalid
+			unit.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 			break;
-		case ItemType.Weapon:
-			// Unit Weapon Equip Behaviour
-			if (unit.inventory_slots[slot_index].item_instance.weapon_physics_exist)
+		default:
+			// Default Unit Item Equip Behaviour
+			if (unit.inventory_slots[slot_index].item_instance.item_physics_exist)
 			{
-				// Establish Weapon Item Instance's Position and Rotation Variables
-				var temp_weapon_x = unit.inventory_slots[slot_index].item_instance.weapon_x;
-				var temp_weapon_y = unit.inventory_slots[slot_index].item_instance.weapon_y;
-				var temp_weapon_angle = unit.inventory_slots[slot_index].item_instance.weapon_angle;
+				// Establish Item Instance's Position and Rotation Variables
+				var temp_item_x = unit.inventory_slots[slot_index].item_instance.item_x;
+				var temp_item_y = unit.inventory_slots[slot_index].item_instance.item_y;
+				var temp_item_angle = unit.inventory_slots[slot_index].item_instance.item_angle;
 				
-				// Perform Weapon Instance's Unit Equip Behaviour
-				unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+				// Perform Item Instance's Unit Equip Behaviour
+				unit.inventory_slots[slot_index].item_instance.equip_item(unit);
 				
-				// Set Weapon Instance's Position and Rotation to match Item Instance
-				unit.inventory_slots[slot_index].item_instance.weapon_x = temp_weapon_x;
-				unit.inventory_slots[slot_index].item_instance.weapon_y = temp_weapon_y;
-				unit.inventory_slots[slot_index].item_instance.weapon_angle = temp_weapon_angle;
+				// Set Item Instance's Position and Rotation to match Item Instance
+				unit.inventory_slots[slot_index].item_instance.item_x = temp_item_x;
+				unit.inventory_slots[slot_index].item_instance.item_y = temp_item_y;
+				unit.inventory_slots[slot_index].item_instance.item_angle = temp_item_angle;
 			}
 			else
 			{
-				// Perform Weapon Instance's Unit Equip Behaviour
-				unit.inventory_slots[slot_index].item_instance.equip_weapon(unit);
+				// Perform Item Instance's Unit Equip Behaviour
+				unit.inventory_slots[slot_index].item_instance.equip_item(unit);
 			}
-			break;
-		case ItemType.None:
-		default:
-			// Item is Empty or Invalid
-			unit.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 			break;
 	}
 	

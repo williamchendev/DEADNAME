@@ -176,15 +176,15 @@ combat_attack_impulse_position_y = 0;
 combat_attack_impulse_horizontal_vector = 0;
 combat_attack_impulse_vertical_vector = 0;
 
-// Weapon Variables
-weapon_active = false;
+// Equipment Variables
+item_equipped = noone;
+equipment_active = false;
+
 weapon_reload = false;
 weapon_aim = false;
 
 weapon_aim_x = 0;
 weapon_aim_y = 0;
-
-weapon_equipped = noone;
 
 // Inventory Variables
 inventory_index = -1;
@@ -276,7 +276,6 @@ if (true)
 	
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
 	unit_inventory_add_item(id, ItemPack.CorsoRifle);
-	show_debug_message(temp_weapon_equip_slot_index);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }
 else

@@ -18,9 +18,9 @@ if (instance_exists(player_unit))
 	if (!cursor_interact and !cursor_icon and !global.debug)
 	{
 		// Player Weapon Crosshair
-		if (player_unit.weapon_active)
+		if (player_unit.equipment_active and global.item_packs[player_unit.item_equipped.item_pack].item_type == ItemType.Weapon)
 		{
-			player_unit.weapon_equipped.render_cursor_behaviour();
+			player_unit.item_equipped.render_cursor_behaviour();
 		}
 	}
 	

@@ -43,9 +43,9 @@ else if (interaction_hover)
 					unit_inventory_change_slot(GameManager.player_unit, -1);
 					
 					// Reset Player Unit's Weapon to prevent attack on Click after Selecting Interaction Menu Option
-					if (instance_exists(GameManager.player_unit) and GameManager.player_unit.weapon_active)
+					if (instance_exists(GameManager.player_unit) and GameManager.player_unit.equipment_active)
 					{
-						GameManager.player_unit.weapon_equipped.weapon_attack_reset = false;
+						GameManager.player_unit.item_equipped.weapon_attack_reset = false;
 					}
 					
 					// Set Ignore Click to prevent Player Input
@@ -58,6 +58,7 @@ else if (interaction_hover)
 					}
 					
 					// Interaction Option's Behaviour Performed and Interaction Menu Reset - Early Return
+					GameManager.cursor_interaction_object = noone;
 					return;
 				}
 				

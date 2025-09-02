@@ -314,7 +314,7 @@ function lighting_engine_render_layer(render_layer_type)
 								break;
 							case ItemType.Weapon:
 								// Draw Weapon Item
-								weapon_instance.render_behaviour();
+								item_instance.render_behaviour();
 								break;
 							case ItemType.None:
 							default:

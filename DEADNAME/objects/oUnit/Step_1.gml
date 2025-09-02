@@ -81,16 +81,16 @@ if (player_input)
 	// Player Unit Combat Targeting
 	combat_target = undefined;
 	
-	if (weapon_active and (input_attack or input_aim))
+	if (equipment_active and (input_attack or input_aim))
 	{
 		// Calculate Direction Player is Aiming their Weapon
-		rot_prefetch(point_direction(weapon_equipped.weapon_x, weapon_equipped.weapon_y, input_cursor_x, input_cursor_y));
-		var temp_player_input_combat_target_x = weapon_equipped.weapon_x + rot_dist_x(sight_ignore_radius);
-		var temp_player_input_combat_target_y = weapon_equipped.weapon_y + rot_dist_y(sight_ignore_radius);
+		rot_prefetch(point_direction(item_equipped.item_x, item_equipped.item_y, input_cursor_x, input_cursor_y));
+		var temp_player_input_combat_target_x = item_equipped.item_x + rot_dist_x(sight_ignore_radius);
+		var temp_player_input_combat_target_y = item_equipped.item_y + rot_dist_y(sight_ignore_radius);
 		
 		// Create List of Possible Unit Combat Targets for Faction Hostility Comparison
 		var temp_player_input_combat_target_list = ds_list_create();
-		var temp_player_input_combat_targets_exist = collision_line_list(weapon_equipped.weapon_x, weapon_equipped.weapon_y, temp_player_input_combat_target_x, temp_player_input_combat_target_y, oUnit, false, true, temp_player_input_combat_target_list, true);
+		var temp_player_input_combat_targets_exist = collision_line_list(item_equipped.item_x, item_equipped.item_y, temp_player_input_combat_target_x, temp_player_input_combat_target_y, oUnit, false, true, temp_player_input_combat_target_list, true);
 		
 		if (temp_player_input_combat_targets_exist)
 		{
@@ -120,19 +120,13 @@ if (player_input)
 	var temp_camera_target_x = x - (GameManager.game_width * 0.5) + (x_velocity * 32);
 	var temp_camera_target_y = y - (GameManager.game_height * 0.7) + (y_velocity * 32);
 	
-	if (weapon_active and input_aim)
+	if (equipment_active and input_aim)
 	{
-		switch (global.weapon_packs[weapon_equipped.weapon_pack].weapon_type)
+		if (global.item_packs[item_equipped.item_pack].item_type == ItemType.Weapon)
 		{
-			case WeaponType.DefaultFirearm:
-			case WeaponType.BoltActionFirearm:
-				temp_camera_lerp_spd = 0.08;
-				temp_camera_target_x += (clamp(GameManager.cursor_x, 0, GameManager.game_width) - (GameManager.game_width * 0.5)) * 0.5;
-				temp_camera_target_y += (clamp(GameManager.cursor_y, 0, GameManager.game_height) - (GameManager.game_height * 0.5)) * 0.6;
-				break;
-			case WeaponType.DefaultMelee:
-			default:
-				break;
+			temp_camera_lerp_spd = 0.08;
+			temp_camera_target_x += (clamp(GameManager.cursor_x, 0, GameManager.game_width) - (GameManager.game_width * 0.5)) * 0.5;
+			temp_camera_target_y += (clamp(GameManager.cursor_y, 0, GameManager.game_height) - (GameManager.game_height * 0.5)) * 0.6;
 		}
 	}
 	

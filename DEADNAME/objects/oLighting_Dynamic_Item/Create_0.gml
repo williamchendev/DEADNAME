@@ -29,6 +29,9 @@ else
     }
 }
 
+// Item Instance
+item_instance = noone;
+
 // Initialize Dynamic Object Textures & UVs
 normalmap_spritepack = normal_map == noone ? undefined : spritepack_get_uvs_transformed(sprite_index, normal_map);
 metallicroughnessmap_spritepack = metallicroughness_map == noone ? undefined : spritepack_get_uvs_transformed(sprite_index, metallicroughness_map);

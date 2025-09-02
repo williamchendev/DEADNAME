@@ -4,9 +4,6 @@
 // Lighting Engine Dynamic Object Initialization
 event_inherited();
 
-// Item's Weapon Instance
-weapon_instance = noone;
-
 // Ground Contact Check Variable
 ground_contact = false;
 

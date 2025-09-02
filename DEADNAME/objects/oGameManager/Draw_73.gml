@@ -15,7 +15,7 @@ if (cursor_interact)
 	draw_sprite(sUI_CursorMenu, 0, cursor_x, cursor_y);
 	
 	// Draw Interaction Instance Details
-	if (instance_exists(GameManager.cursor_interaction_object) and !GameManager.cursor_interaction_object.interaction_selected)
+	if (instance_exists(cursor_interaction_object) and !cursor_interaction_object.interaction_selected)
 	{
 		// Set Interaction Detail Text Font
 		draw_set_font(ui_inspection_text_font);
@@ -25,7 +25,7 @@ if (cursor_interact)
 		draw_set_valign(fa_top);
 		
 		// Draw Interaction Detail Text Outlined
-		draw_text_outline(cursor_x + 17, cursor_y - 3, $"{GameManager.cursor_interaction_object.interaction_object_name}");
+		draw_text_outline(cursor_x + 17, cursor_y - 3, $"{cursor_interaction_object.interaction_object_name}");
 	}
 	
 	// Reset Interaction Cursor
@@ -42,7 +42,7 @@ else if (cursor_icon)
 else if (!global.debug)
 {
 	// Draw Cursor Crosshair
-	if (instance_exists(player_unit) and player_unit.weapon_equipped)
+	if (instance_exists(player_unit) and player_unit.equipment_active)
 	{
 		// Draw Crosshair Cursor
 		draw_sprite(sUI_CursorCrosshairIcons, 1, cursor_x, cursor_y);
