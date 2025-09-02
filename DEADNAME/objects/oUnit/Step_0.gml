@@ -732,113 +732,113 @@ if (canmove)
 		}
 
 		// Unit Weapon Operation Behaviour
-		if (input_reload)
+		if (equipment_active and global.item_packs[item_equipped.item_pack].item_type == ItemType.Weapon)
 		{
-			// Weapon Type Reload Behaviours
-			if (unit_equipment_animation_state == UnitEquipmentAnimationState.Firearm)
+			// Unit Weapon Operation Input Action Behaviour Tree
+			if (input_reload)
 			{
-				// Check if Firearm Ammo Item Pack Exists
-				var temp_firearm_reload_ammo_item_pack_exists = unit_inventory_remove_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
-				
-				// Remove Firearm Ammo Pack from Unit Inventory
-				if (temp_firearm_reload_ammo_item_pack_exists)
+				// Weapon Type Reload Behaviours
+				if (unit_equipment_animation_state == UnitEquipmentAnimationState.Firearm)
 				{
-					// Perform Firearm Reload
-					unit_equipment_animation_state = UnitEquipmentAnimationState.FirearmReload;
+					// Check if Firearm Ammo Item Pack Exists
+					var temp_firearm_reload_ammo_item_pack_exists = unit_inventory_remove_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
 					
-					// Reload Animation
-					switch (global.item_packs[item_equipped.item_pack].weapon_data.weapon_type)
+					// Remove Firearm Ammo Pack from Unit Inventory
+					if (temp_firearm_reload_ammo_item_pack_exists)
 					{
-						case WeaponType.BoltActionFirearm:
-							// Initiate Bolt Action Reload
-							unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedChamberPosition;
-							
-							// Weapon Primary Hand Animation: Hand reaches from Firearm's Trigger Group Position to Firearm's Closed Bolt Handle Position
-							unit_set_firearm_primary_hand_animation
-							(
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
-								global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_x, 
-								global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_y
-							);
-							break;
-						default:
-							// Initiate Default Firearm Reload
-							unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToUnitInventory;
-							
-							// Open Firearm Chamber
-							item_equipped.open_firearm_chamber();
-							
-							// Weapon Primary Hand Animation Reset
-							unit_set_firearm_primary_hand_animation
-							(
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
-								global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y
-							);
-							break;
+						// Perform Firearm Reload
+						unit_equipment_animation_state = UnitEquipmentAnimationState.FirearmReload;
+						
+						// Reload Animation
+						switch (global.item_packs[item_equipped.item_pack].weapon_data.weapon_type)
+						{
+							case WeaponType.BoltActionFirearm:
+								// Initiate Bolt Action Reload
+								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedChamberPosition;
+								
+								// Weapon Primary Hand Animation: Hand reaches from Firearm's Trigger Group Position to Firearm's Closed Bolt Handle Position
+								unit_set_firearm_primary_hand_animation
+								(
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
+									global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_x, 
+									global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_y
+								);
+								break;
+							default:
+								// Initiate Default Firearm Reload
+								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToUnitInventory;
+								
+								// Open Firearm Chamber
+								item_equipped.open_firearm_chamber();
+								
+								// Weapon Primary Hand Animation Reset
+								unit_set_firearm_primary_hand_animation
+								(
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
+									global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y
+								);
+								break;
+						}
+						
+						// Reset Primary Hand Weapon Relative Pivot Values
+						firearm_weapon_primary_hand_pivot_transition_value = 0;
+						
+						// Reset Primary Hand Unit Inventory Pivot Values
+						firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
 					}
-					
-					// Reset Primary Hand Weapon Relative Pivot Values
-					firearm_weapon_primary_hand_pivot_transition_value = 0;
-					
-					// Reset Primary Hand Unit Inventory Pivot Values
-					firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
 				}
 			}
-		}
-		else if (input_attack and global.item_packs[item_equipped.item_pack].item_type == ItemType.Weapon)
-		{
-			// Perform Weapon Attack Behaviour
-			switch(global.item_packs[item_equipped.item_pack].weapon_data.weapon_type)
+			else if (input_attack)
 			{
-				// Firearm Attack Behaviours
-				case WeaponType.DefaultFirearm:
-				case WeaponType.BoltActionFirearm:
-					// Unit cannot attack with their Firearm if they are performing their Firearm's reload animation
-					if (unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload)
-					{
-						// Unit must finish their Firearm's recoil animation cycle to attack again with their Firearm
-						if (firearm_weapon_primary_hand_pivot_transition_value <= animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value <= animation_asymptotic_tolerance)
+				// Perform Weapon Attack Behaviour
+				switch(global.item_packs[item_equipped.item_pack].weapon_data.weapon_type)
+				{
+					// Firearm Attack Behaviours
+					case WeaponType.DefaultFirearm:
+					case WeaponType.BoltActionFirearm:
+						// Unit cannot attack with their Firearm if they are performing their Firearm's reload animation
+						if (unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload)
 						{
-							// Weapon Attack Behaviour - Attack with Firearm
-							var temp_weapon_attack = item_equipped.update_weapon_attack(combat_target);
-							
-							// Weapon Attack Unit Behaviour
-							if (temp_weapon_attack)
+							// Unit must finish their Firearm's recoil animation cycle to attack again with their Firearm
+							if (firearm_weapon_primary_hand_pivot_transition_value <= animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value <= animation_asymptotic_tolerance)
 							{
-								if (global.item_packs[item_equipped.item_pack].weapon_data.weapon_type == WeaponType.BoltActionFirearm and item_equipped.firearm_ammo > 0)
+								// Weapon Attack Behaviour - Attack with Firearm
+								var temp_weapon_attack = item_equipped.update_weapon_attack(combat_target);
+								
+								// Weapon Attack Unit Behaviour
+								if (temp_weapon_attack)
 								{
-									// Bolt Action Recharge Animation
-									unit_equipment_animation_state = UnitEquipmentAnimationState.FirearmReload;
-									
-									// Bolt Action Reload
-									unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedChamberPosition;
-									
-									// Weapon Primary Hand Animation: Hand reaches from current position to firearm bolt handle
-									unit_set_firearm_primary_hand_animation
-									(
-										global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
-										global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
-										global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_x, 
-										global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_y, 
-										0
-									);
+									if (global.item_packs[item_equipped.item_pack].weapon_data.weapon_type == WeaponType.BoltActionFirearm and item_equipped.firearm_ammo > 0)
+									{
+										// Bolt Action Recharge Animation
+										unit_equipment_animation_state = UnitEquipmentAnimationState.FirearmReload;
+										
+										// Bolt Action Reload
+										unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ChargeBoltHandle_MovePrimaryHandToFirearmBoltHandleClosedChamberPosition;
+										
+										// Weapon Primary Hand Animation: Hand reaches from current position to firearm bolt handle
+										unit_set_firearm_primary_hand_animation
+										(
+											global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_x, 
+											global.item_packs[item_equipped.item_pack].weapon_data.weapon_hand_position_primary_y, 
+											global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_x, 
+											global.item_packs[item_equipped.item_pack].weapon_data.firearm_bolt_handle_position_y, 
+											0
+										);
+									}
 								}
 							}
 						}
-					}
-					break;
-				// Default Weapon Attack Behaviour
-				default:
-					break;
+						break;
+					// Default Weapon Attack Behaviour
+					default:
+						break;
+				}
 			}
-		}
-		else 
-		{
-			// Perform Weapon Reset Behaviour
-			if (global.item_packs[item_equipped.item_pack].item_type == ItemType.Weapon)
+			else 
 			{
 				// Reset Weapon Attack Behaviour
 				item_equipped.reset_weapon();
