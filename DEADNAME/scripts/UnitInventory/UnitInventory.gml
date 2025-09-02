@@ -476,6 +476,70 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	return temp_inventory_index;
 }
 
+function unit_inventory_remove_item(unit, item_pack)
+{
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
+	{
+		// Unit Instance is Invalid - Early Return
+		return false;
+	}
+	
+	// Check if Item Instance's Item Pack is a valid Item Pack Index
+	if (item_pack < 0 or item_pack == ItemPack.None)
+	{
+		// Item Pack is an invalid Item Pack Index - Early Return
+		return false;
+	}
+	
+	// Iterate through Unit Inventory Slots to search for the Valid Inventory Item to remove
+	for (var i = 0; i < array_length(unit.inventory_slots); i++)
+	{
+		// Check if Inventory Slot contains an Item already
+		if (unit.inventory_slots[i].item_pack == item_pack)
+		{
+			// Decrement Inventory Slot's Item Count
+			unit.inventory_slots[i].item_count -= 1;
+			
+			// Check Inventory Slot's Item Count
+			if (unit.inventory_slots[i].item_count <= 0)
+			{
+				// Inventory Slot is storing single Item - Remove Item from Inventory Slot
+				unit.inventory_slots[i].item_pack = ItemPack.None;
+				unit.inventory_slots[i].item_count = -1;
+				
+				// Unequip Item Behaviour
+				if (unit.equipment_active and unit.inventory_index == i)
+				{
+					unit.inventory_slots[i].item_instance.unequip_item();
+				}
+				
+				//
+				if (unit.inventory_slots[i].item_instance != noone)
+				{
+					//
+					DELETE(unit.inventory_slots[i].item_instance);
+					
+					//
+					unit.inventory_slots[i].item_instance = noone;
+				}
+				
+				// Reset Unit's Equipment State
+				if (unit.inventory_index == i)
+				{
+					unit_inventory_change_slot(unit, i);
+				}
+			}
+			
+			//
+			return true;
+		}
+	}
+	
+	//
+	return false;
+}
+
 function unit_inventory_take_item_instance(unit, item_instance)
 {
 	// Check if Unit Instance and Item Instance Exist
@@ -622,10 +686,10 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 		return noone;
 	}
 	
-	//
+	// Check if Drop Item Count is a valid number of items to drop
 	if (drop_item_count == 0)
 	{
-		//
+		// Drop Item Count cannot be zero, you cannot drop "0" items - Early Return
 		return noone;
 	}
 	

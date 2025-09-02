@@ -157,6 +157,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		weapon_type: WeaponType.BoltActionFirearm,
 		
 		// Weapon Ammo
+		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_max_ammo_capacity: 5,
 		firearm_reload_individual_rounds: true,
 		
@@ -262,6 +263,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		weapon_type: WeaponType.DefaultFirearm,
 		
 		// Weapon Ammo
+		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_max_ammo_capacity: 16,
 		firearm_reload_individual_rounds: false,
 		

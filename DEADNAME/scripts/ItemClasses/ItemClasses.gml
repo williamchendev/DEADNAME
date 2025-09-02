@@ -12,7 +12,7 @@ class ItemClass define
 	
 	static _destructor = function()
 	{
-		show_debug_message("destroyed object");
+		
 	}
 	
 	// Init Methods
