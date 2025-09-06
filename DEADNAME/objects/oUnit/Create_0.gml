@@ -149,11 +149,11 @@ unit_equipment_position_y = 0;
 item_drop_offset_transition_value = 0;
 item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
 
-firearm_weapon_primary_hand_pivot_offset_ax = 0;
-firearm_weapon_primary_hand_pivot_offset_ay = 0;
-firearm_weapon_primary_hand_pivot_offset_bx = 0;
-firearm_weapon_primary_hand_pivot_offset_by = 0;
-firearm_weapon_primary_hand_pivot_transition_value = 0;
+firearm_weapon_hand_pivot_offset_ax = 0;
+firearm_weapon_hand_pivot_offset_ay = 0;
+firearm_weapon_hand_pivot_offset_bx = 0;
+firearm_weapon_hand_pivot_offset_by = 0;
+firearm_weapon_hand_pivot_transition_value = 0;
 
 firearm_weapon_hip_pivot_to_aim_pivot_transition_value = 0;
 firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value = 0;
@@ -269,17 +269,19 @@ unit_spritepack_aim_walk_emissivemap = global.unit_packs[unit_pack].aim_walk_emi
 global.unit_packs[unit_pack].inventory_slot_init(id);
 
 // Weapons DEBUG
-if (true)
+if (player_input)
 {
-	unit_inventory_add_item(id, ItemPack.Ammo, 5);
-	instance_create_item(ItemPack.Ammo, x, y - 48, 5);
+	unit_inventory_add_item(id, ItemPack.Pistol);
+	unit_inventory_add_item(id, ItemPack.Ammo, 6);
+	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
-	unit_inventory_add_item(id, ItemPack.CorsoRifle);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }
 else
 {
-	instance_create_item(ItemPack.CorsoRifle, x, y - 48);
-	unit_inventory_add_item(id, ItemPack.Ammo);
+	unit_inventory_add_item(id, ItemPack.Ammo, 6);
+
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
+	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }

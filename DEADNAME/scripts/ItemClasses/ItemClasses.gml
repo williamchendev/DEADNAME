@@ -375,6 +375,11 @@ class FirearmClass extends WeaponClass define
 		firearm_ammo = init_firearm_loaded_ammo < 0 ? global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity : init_firearm_loaded_ammo;
 		firearm_eject_cartridge_num = 0;
 		
+		// Reload Settings
+		firearm_spin_reload = false;
+		firearm_spin_reload_spd = global.item_packs[item_pack].weapon_data.firearm_reload_spin_spd;
+		firearm_spin_reload_angle = 0;
+		
 		// Init Weapon Timers
 		firearm_recoil_recovery_delay = 0;
 		firearm_attack_delay = 0;
@@ -400,12 +405,24 @@ class FirearmClass extends WeaponClass define
 		
 		// Reset Firearm Attack Condition 
 		weapon_attack_reset = false;
+		
+		// Reset Firearm Reload Conditions
+		firearm_spin_reload = false;
+		firearm_spin_reload_angle = 0;
+		
+		// Reset Unit Animation Values
+		unit_instance.firearm_weapon_primary_hand_pivot_transition_value = 0;
+		unit_instance.firearm_weapon_secondary_hand_pivot_transition_value = 0;
 	}
 	
 	static unequip_item = function()
 	{
 		// Default Unequip Weapon Behaviour
 		super.unequip_item();
+		
+		// Reset Firearm Reload Conditions
+		firearm_spin_reload = false;
+		firearm_spin_reload_angle = 0;
 	}
 	
 	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
@@ -849,7 +866,7 @@ class FirearmClass extends WeaponClass define
 			item_y, 
 			item_xscale, 
 			item_yscale * item_facing_sign, 
-			item_angle + (weapon_angle_recoil * item_facing_sign), 
+			item_angle + ((weapon_angle_recoil + firearm_spin_reload_angle) * item_facing_sign), 
 			c_white, 
 			1
 		);
@@ -858,7 +875,7 @@ class FirearmClass extends WeaponClass define
 	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0) 
 	{
 		// Draw Weapon
-		draw_sprite_ext(item_sprite, item_image_index, item_x + x_offset, item_y + y_offset, item_xscale, item_yscale * item_facing_sign, item_angle + (weapon_angle_recoil * item_facing_sign), c_white, 1);
+		draw_sprite_ext(item_sprite, item_image_index, item_x + x_offset, item_y + y_offset, item_xscale, item_yscale * item_facing_sign, item_angle + ((weapon_angle_recoil + firearm_spin_reload_angle) * item_facing_sign), c_white, 1);
 	}
 	
 	static render_cursor_behaviour = function()

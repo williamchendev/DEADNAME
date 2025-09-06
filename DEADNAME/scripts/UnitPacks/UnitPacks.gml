@@ -196,7 +196,7 @@ global.unit_packs[UnitPack.Default] =
 	inventory_slot_init: function(unit)
 	{
 		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
-		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 0, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -4, -24, 180, UnitInventorySlotRenderOrder.Front);
 		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
 		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
 	}

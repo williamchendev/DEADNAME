@@ -4,6 +4,7 @@ enum ItemPack
 	None,
 	CorsoRifle,
 	OilerSMG,
+	Pistol,
 	Ammo
 }
 
@@ -159,7 +160,6 @@ global.item_packs[ItemPack.CorsoRifle] =
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_max_ammo_capacity: 5,
-		firearm_reload_individual_rounds: true,
 		
 		// Weapon Properties
 		firearm_attack_delay: 14,
@@ -170,6 +170,14 @@ global.item_packs[ItemPack.CorsoRifle] =
 		firearm_attack_luck_damage: 0.7,
 		
 		firearm_attack_impulse_power: 50,
+		
+		// Weapon Reload
+		firearm_reload_hand: ItemHand.Primary,
+		
+		firearm_reload_spin: false,
+		firearm_reload_spin_spd: -5,
+		
+		firearm_reload_individual_rounds: true,
 		
 		// Weapon FX
 		firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Medium,
@@ -199,6 +207,10 @@ global.item_packs[ItemPack.CorsoRifle] =
 		firearm_random_recoil_angle_min: 2,
 		firearm_random_recoil_angle_max: 3,
 		firearm_total_recoil_angle: 13,
+		
+		// Weapon Position Offset
+		weapon_position_horizontal_offset: 0,
+		weapon_position_vertical_offset: 0,
 		
 		// Weapon Bolt Operation
 		firearm_bolt_handle_position_x: 3,
@@ -265,7 +277,6 @@ global.item_packs[ItemPack.OilerSMG] =
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_max_ammo_capacity: 16,
-		firearm_reload_individual_rounds: false,
 		
 		// Weapon Properties
 		firearm_attack_delay: 5,
@@ -276,6 +287,14 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_attack_luck_damage: 0.2,
 		
 		firearm_attack_impulse_power: 35,
+		
+		// Weapon Reload
+		firearm_reload_hand: ItemHand.Primary,
+		
+		firearm_reload_spin: false,
+		firearm_reload_spin_spd: -5,
+		
+		firearm_reload_individual_rounds: false,
 		
 		// Weapon FX
 		firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Small,
@@ -306,6 +325,10 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_random_recoil_angle_max: 6,
 		firearm_total_recoil_angle: 8,
 		
+		// Weapon Position Offset
+		weapon_position_horizontal_offset: 0,
+		weapon_position_vertical_offset: 0,
+		
 		// Weapon Bolt Operation
 		firearm_bolt_handle_position_x: 0,
 		firearm_bolt_handle_position_y: 0,
@@ -330,6 +353,123 @@ global.item_packs[ItemPack.OilerSMG] =
 		// Weapon Muzzle Positions
 		firearm_muzzle_x: 18,
 		firearm_muzzle_y: 0,
+    },
+};
+
+// 
+global.item_packs[ItemPack.Pistol] =
+{
+	// Item Data
+	item_name: "Planetsider Pistol",
+	item_description: "",
+	item_dialogue: "",
+	item_sprite: sItem_PlanetsiderRevolver,
+	item_type: ItemType.Weapon,
+	item_hand: ItemHand.Primary,
+	item_slot_tier: UnitInventorySlotTier.Moderate,
+	item_object: oItem_Weapon_CorsoRifle,
+	item_count_limit: -1,
+	
+	// Render Data
+	render_data:
+	{
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sBlackMarket_PlanetsideRevolver,
+		render_normalmap: sBlackMarket_PlanetsideRevolver_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
+	
+	// Weapon Data
+    weapon_data:
+    {
+		// Weapon Type
+		weapon_type: WeaponType.DefaultFirearm,
+		
+		// Weapon Ammo
+		firearm_ammo_item_pack: ItemPack.Ammo,
+		firearm_max_ammo_capacity: 3,
+		
+		// Weapon Properties
+		firearm_attack_delay: 14,
+		firearm_attack_distance: 400,
+		firearm_attack_hit_percentage: 0.25,
+		
+		firearm_attack_damage: 3,
+		firearm_attack_luck_damage: 0.7,
+		
+		firearm_attack_impulse_power: 50,
+		
+		// Weapon Reload
+		firearm_reload_hand: ItemHand.Secondary,
+		
+		firearm_reload_spin: true,
+		firearm_reload_spin_spd: -18,
+		
+		firearm_reload_individual_rounds: true,
+		
+		// Weapon FX
+		firearm_muzzle_smoke_object: oFirearm_MuzzleSmoke_Medium,
+		firearm_muzzle_smoke_min: 2,
+		firearm_muzzle_smoke_max: 3,
+		
+		firearm_muzzle_flare_object: oFirearm_MuzzleFlare_Medium,
+		
+		firearm_smoke_trail_object: oFirearm_SmokeTrail_Medium,
+		
+		// Weapon Safety Angles
+		firearm_idle_safety_angle: -18,
+		firearm_moving_safety_angle: -28,
+		firearm_reload_safety_angle: 25,
+		
+		// Weapon Recoil
+		firearm_recoil_recovery_delay: 9,
+		
+		firearm_random_recoil_horizontal_min: -4.5,
+		firearm_random_recoil_horizontal_max: -3,
+		firearm_total_recoil_horizontal: 4.5,
+		
+		firearm_random_recoil_vertical_min: -0.2,
+		firearm_random_recoil_vertical_max: -0.05,
+		firearm_total_recoil_vertical: 3,
+		
+		firearm_random_recoil_angle_min: 11,
+		firearm_random_recoil_angle_max: 15,
+		firearm_total_recoil_angle: 12,
+		
+		// Weapon Position Offset
+		weapon_position_horizontal_offset: 8.5,
+		weapon_position_vertical_offset: 0,
+		
+		// Weapon Bolt Operation
+		firearm_bolt_handle_position_x: 0,
+		firearm_bolt_handle_position_y: 0,
+		
+		firearm_bolt_handle_charge_offset_x: 0,
+		firearm_bolt_handle_charge_offset_y: 0,
+		
+		// Weapon Hand Positions
+		weapon_hand_position_primary_x: 0,
+		weapon_hand_position_primary_y: 2,
+		
+		weapon_hand_position_offhand_x: 0,
+		weapon_hand_position_offhand_y: 2,
+		
+		// Weapon Reload Positions
+		firearm_reload_x: 3,
+		firearm_reload_y: 0,
+		
+		firearm_reload_offset_x: -2,
+		firearm_reload_offset_y: -4,
+		
+		// Weapon Muzzle Positions
+		firearm_muzzle_x: 12,
+		firearm_muzzle_y: -2,
     },
 };
 

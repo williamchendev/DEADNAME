@@ -16,12 +16,11 @@ repeat (array_length(global.unit_packs))
 }
 
 // Create Unit Object
-var temp_unit = instance_create_unit(x, y, temp_unit_pack);
+var temp_unit_struct = { unit_pack: temp_unit_pack, player_input: true };
+var temp_unit = instance_create_depth(x, y, 0, oUnit,  temp_unit_struct);
 temp_unit.draw_angle = image_angle;
 temp_unit.draw_xscale = image_xscale;
 temp_unit.draw_yscale = image_yscale;
-
-temp_unit.player_input = true;
 
 // Debug - Set Render Position Centered on Unit
 LightingEngine.render_x = temp_unit.x - (GameManager.game_width * 0.5);

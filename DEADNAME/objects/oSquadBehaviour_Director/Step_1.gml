@@ -281,7 +281,7 @@ repeat (squad_count)
 		}
 		
 		/// @DEBUG IF YOU COULD NOT GUESS
-        if (mouse_check_button_pressed(mb_left) and temp_squad_faction == "Moralists")
+        if (global.debug and keyboard_check_pressed(ord("O")) and temp_squad_faction == "Moralists")
         {
             temp_calculate_squad_pathfinding_targets = true;
             
@@ -289,7 +289,7 @@ repeat (squad_count)
             temp_squad_movement_target_x = GameManager.cursor_x + LightingEngine.render_x;
             temp_squad_movement_target_y = GameManager.cursor_y + LightingEngine.render_y;
         }
-        else if (mouse_check_button_pressed(mb_right) and temp_squad_faction == "Evil")
+        else if (global.debug and keyboard_check_pressed(ord("P")) and temp_squad_faction == "Evil")
         {
 			temp_calculate_squad_pathfinding_targets = true;
             

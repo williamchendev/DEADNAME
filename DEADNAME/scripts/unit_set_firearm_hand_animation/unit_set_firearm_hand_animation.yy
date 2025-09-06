@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"unit_set_firearm_primary_hand_animation",
+  "%Name":"unit_set_firearm_hand_animation",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"unit_set_firearm_primary_hand_animation",
+  "name":"unit_set_firearm_hand_animation",
   "parent":{
     "name":"Functions",
     "path":"folders/Scripts/Unit Behaviours/Functions.yy",
