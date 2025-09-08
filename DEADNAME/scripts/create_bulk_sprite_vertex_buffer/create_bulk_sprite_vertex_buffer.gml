@@ -28,12 +28,9 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		var temp_sprite_bottom = (temp_sprite_height - temp_pivot_offset_y) * temp_bulk_static_object.image_yscale;
 		
 		// Establish Shader Effect Toggles for Bulk Static Object
-		var temp_shader_map_toggles =
-		{
-			normal_enabled: temp_bulk_static_object.normal_map != noone,
-			metallicroughness_enabled: temp_bulk_static_object.metallicroughness_map != noone,
-			emissive_enabled: temp_bulk_static_object.emissive_map != noone
-		};
+		var temp_shader_map_toggles_normal_enabled = temp_bulk_static_object.normal_map != noone;
+		var temp_shader_map_toggles_metallicroughness_enabled = temp_bulk_static_object.metallicroughness_map != noone;
+		var temp_shader_map_toggles_emissive_enabled = temp_bulk_static_object.emissive_map != noone;
 		
 		// Establish Base Strength & Shader Effect Toggles
 		var temp_metallic = temp_bulk_static_object.metallic ? 1 : 0;
@@ -42,9 +39,9 @@ function create_bulk_sprite_vertex_buffer(bulk_sprite_object_ds_list)
 		var temp_emissive_multiplier = temp_bulk_static_object.emissive_multiplier;
 		
 		// Establish UV Data for Bulk Static Object
-		var temp_normalmap_uvs = temp_shader_map_toggles.normal_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.normal_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
-		var temp_metallicroughnessmap_uvs = temp_shader_map_toggles.metallicroughness_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.metallicroughness_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
-		var temp_emissivemap_uvs = temp_shader_map_toggles.emissive_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.emissive_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
+		var temp_normalmap_uvs = temp_shader_map_toggles_normal_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.normal_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
+		var temp_metallicroughnessmap_uvs = temp_shader_map_toggles_metallicroughness_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.metallicroughness_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
+		var temp_emissivemap_uvs = temp_shader_map_toggles_emissive_enabled ? sprite_get_uvs_transformed(temp_bulk_static_object.sprite_index, temp_bulk_static_object.image_index, temp_bulk_static_object.emissive_map, temp_bulk_static_object.image_index) : [ -1, -1, -1, -1 ];
 		
 		// Set Bulk Static Object Rotation
 		rot_prefetch(temp_bulk_static_object.image_angle);

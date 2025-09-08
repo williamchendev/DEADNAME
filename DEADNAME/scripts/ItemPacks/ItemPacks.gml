@@ -396,8 +396,8 @@ global.item_packs[ItemPack.BoxRevolver] =
 		firearm_max_ammo_capacity: 3,
 		
 		// Weapon Properties
-		firearm_attack_delay: 14,
-		firearm_attack_distance: 400,
+		firearm_attack_delay: 28,
+		firearm_attack_distance: 800,
 		firearm_attack_hit_percentage: 0.25,
 		
 		firearm_attack_damage: 3,
@@ -443,7 +443,7 @@ global.item_packs[ItemPack.BoxRevolver] =
 		firearm_total_recoil_angle: 12,
 		
 		// Weapon Position Offset
-		weapon_position_horizontal_offset: 8,
+		weapon_position_horizontal_offset: 7,
 		weapon_position_vertical_offset: 0,
 		
 		// Weapon Bolt Operation

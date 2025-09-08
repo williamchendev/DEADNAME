@@ -814,7 +814,7 @@ class FirearmClass extends WeaponClass define
 	
 	static reload_firearm = function(reload_rounds_count = undefined)
 	{
-		// DEBUG
+		// Reload Firearm
 		firearm_ammo = is_undefined(reload_rounds_count) ? global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity : clamp(firearm_ammo + reload_rounds_count, 0, global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity);
 	}
 	

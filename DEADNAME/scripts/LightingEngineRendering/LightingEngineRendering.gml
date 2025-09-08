@@ -153,6 +153,7 @@ function lighting_engine_render_layer(render_layer_type)
 		switch (temp_sub_layer_type)
 		{
 			case LightingEngineSubLayerType.BulkStatic:
+			case LightingEngineSubLayerType.BulkDynamic:
 				// MRT Bulk Static Sprite Layer
 				shader_set(shd_mrt_deferred_lighting_bulk_static_sprite);
 				
@@ -200,6 +201,10 @@ function lighting_engine_render_layer(render_layer_type)
 				case LightingEngineObjectType.BulkStatic_Layer:
 					// Draw Bulk Static Layer Vertex Buffer with Texture from Sub-Layer Vertex Buffer and Texture Struct
 					vertex_submit(temp_sub_layer_object.bulk_static_vertex_buffer, pr_trianglelist, temp_sub_layer_object.bulk_static_texture);
+					break;
+				case LightingEngineObjectType.BulkDynamic_Layer:
+					// Draw Bulk Dynamic Layer Vertex Buffer with Texture from Sub-Layer Vertex Buffer and Texture Struct
+					//vertex_submit(temp_sub_layer_object.bulk_static_vertex_buffer, pr_trianglelist, temp_sub_layer_object.bulk_static_texture);
 					break;
 				case LightingEngineObjectType.Dynamic_Basic:
 					// Draw Dynamic Object (Basic) on Dynamic Layer

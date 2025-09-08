@@ -10,7 +10,8 @@ enum LightingEngineRenderLayerType
 enum LightingEngineSubLayerType
 {
 	Dynamic,
-	BulkStatic
+	BulkStatic,
+	BulkDynamic
 }
 
 // Lighting Engine Object Types
@@ -22,7 +23,8 @@ enum LightingEngineObjectType
 	Dynamic_Unit,
 	Dynamic_Item,
 	BulkStatic_Region,
-	BulkStatic_Layer
+	BulkStatic_Layer,
+	BulkDynamic_Layer
 }
 
 enum LightingEngineUnlitObjectType
@@ -70,10 +72,10 @@ function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_l
 				var temp_check_sub_layer_depth = ds_list_find_value(LightingEngine.lighting_engine_back_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
-		        {
-		        	temp_back_sub_layer_index = i;
-		            break;
-		        }
+				{
+					temp_back_sub_layer_index = i;
+					break;
+				}
 			}
 			
 			// Add Sub Layer's Name, Depth, and Type
@@ -97,10 +99,10 @@ function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_l
 				var temp_check_sub_layer_depth = ds_list_find_value(LightingEngine.lighting_engine_front_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
-		        {
-		        	temp_front_sub_layer_index = i;
-		            break;
-		        }
+				{
+					temp_front_sub_layer_index = i;
+					break;
+				}
 			}
 			
 			// Add Sub Layer's Name, Depth, and Type
@@ -125,10 +127,10 @@ function lighting_engine_create_sub_layer(sub_layer_name, sub_layer_depth, sub_l
 				var temp_check_sub_layer_depth = ds_list_find_value(LightingEngine.lighting_engine_mid_layer_sub_layer_depth_list, i);
 				
 				if (temp_sub_layer_depth < temp_check_sub_layer_depth)
-		        {
-		        	temp_mid_sub_layer_index = i;
-		            break;
-		        }
+				{
+					temp_mid_sub_layer_index = i;
+					break;
+				}
 			}
 			
 			// Add Sub Layer's Name, Depth, and Type
