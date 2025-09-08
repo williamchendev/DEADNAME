@@ -656,6 +656,26 @@ global.unit_packs[UnitPack.Knives] =
 	equipment_firearm_aim_x: 5,
 	equipment_firearm_aim_y: -38,
 	
+	// Limb Animation Settings
+	limb_idle_animation_extension_percent: 0.95,
+	limb_idle_animation_ambient_move_width: 2,
+	limb_left_arm_idle_animation_angle: -10,
+	limb_right_arm_idle_animation_angle: 13,
+		
+	limb_left_arm_walk_animation_extension_percent: 0.5,
+	limb_left_arm_walk_animation_ambient_move_width: 4,
+	limb_left_arm_walk_animation_ambient_move_height: 1,
+	limb_left_arm_walk_animation_angle: 0,
+	
+	limb_right_arm_walk_animation_extension_percent: 0.6,
+	limb_right_arm_walk_animation_ambient_move_width: 2,
+	limb_right_arm_walk_animation_ambient_move_height: 1,
+	limb_right_arm_walk_animation_angle: 30,
+	
+	limb_jump_animation_extension_percent: 0.95,
+	limb_left_arm_jump_animation_angle: -15,
+	limb_right_arm_jump_animation_angle: 18,
+	
 	// Inventory Slots
 	inventory_slot_init: function(unit)
 	{

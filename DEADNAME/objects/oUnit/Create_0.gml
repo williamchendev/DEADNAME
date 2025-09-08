@@ -271,7 +271,7 @@ global.unit_packs[unit_pack].inventory_slot_init(id);
 // Weapons DEBUG
 if (player_input)
 {
-	unit_inventory_add_item(id, ItemPack.Pistol);
+	unit_inventory_add_item(id, ItemPack.BoxRevolver);
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	

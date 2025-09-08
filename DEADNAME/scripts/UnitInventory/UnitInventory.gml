@@ -466,7 +466,7 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	}
 	
 	// Show Unit Inventory UI if the Unit Inventory belongs to the Player's Unit
-	if (unit.player_input and temp_slot_index != -1)
+	if (unit.player_input and temp_slot_index != -1 and !instance_exists(LightingEngine.lighting_engine_worker))
 	{
 		unit.player_inventory_ui_alpha = 1;
 		unit.player_inventory_ui_fade_timer = unit.player_inventory_ui_fade_delay;

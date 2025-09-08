@@ -4,7 +4,7 @@ enum ItemPack
 	None,
 	CorsoRifle,
 	OilerSMG,
-	Pistol,
+	BoxRevolver,
 	Ammo
 }
 
@@ -172,7 +172,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		firearm_attack_impulse_power: 50,
 		
 		// Weapon Reload
-		firearm_reload_hand: ItemHand.Primary,
+		firearm_reload_with_secondary_hand: false,
 		
 		firearm_reload_spin: false,
 		firearm_reload_spin_spd: -5,
@@ -289,7 +289,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_attack_impulse_power: 35,
 		
 		// Weapon Reload
-		firearm_reload_hand: ItemHand.Primary,
+		firearm_reload_with_secondary_hand: false,
 		
 		firearm_reload_spin: false,
 		firearm_reload_spin_spd: -5,
@@ -357,10 +357,10 @@ global.item_packs[ItemPack.OilerSMG] =
 };
 
 // 
-global.item_packs[ItemPack.Pistol] =
+global.item_packs[ItemPack.BoxRevolver] =
 {
 	// Item Data
-	item_name: "Planetsider Pistol",
+	item_name: "Arkovian \"Box\" Revolver",
 	item_description: "",
 	item_dialogue: "",
 	item_sprite: sItem_PlanetsiderRevolver,
@@ -406,10 +406,10 @@ global.item_packs[ItemPack.Pistol] =
 		firearm_attack_impulse_power: 50,
 		
 		// Weapon Reload
-		firearm_reload_hand: ItemHand.Secondary,
+		firearm_reload_with_secondary_hand: true,
 		
 		firearm_reload_spin: true,
-		firearm_reload_spin_spd: -18,
+		firearm_reload_spin_spd: 23,
 		
 		firearm_reload_individual_rounds: true,
 		
@@ -443,7 +443,7 @@ global.item_packs[ItemPack.Pistol] =
 		firearm_total_recoil_angle: 12,
 		
 		// Weapon Position Offset
-		weapon_position_horizontal_offset: 8.5,
+		weapon_position_horizontal_offset: 8,
 		weapon_position_vertical_offset: 0,
 		
 		// Weapon Bolt Operation
@@ -465,7 +465,7 @@ global.item_packs[ItemPack.Pistol] =
 		firearm_reload_y: 0,
 		
 		firearm_reload_offset_x: -2,
-		firearm_reload_offset_y: -4,
+		firearm_reload_offset_y: -1,
 		
 		// Weapon Muzzle Positions
 		firearm_muzzle_x: 12,
