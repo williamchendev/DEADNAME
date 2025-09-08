@@ -118,4 +118,7 @@ function add_dynamic_object_to_bulk_sprite_vertex_buffer(dynamic_object, sub_lay
 	
 	// Increase count of Bulk Dynamic Layer's Vertex Entries
 	temp_bulk_dynamic_layer_object.bulk_dynamic_layer_vertex_entries += 1;
+	
+	// Enable Bulk Dynamic Layer Vertex Buffer Recompile Toggle
+	temp_bulk_dynamic_layer_object.bulk_dynamic_layer_vertex_buffer_recompile = true;
 }

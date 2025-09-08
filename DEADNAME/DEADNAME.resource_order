@@ -8,6 +8,7 @@
     {"name":"Explosion","order":7,"path":"folders/Objects/Entities/Explosion.yy",},
     {"name":"Fire","order":2,"path":"folders/Objects/Entities/Fire.yy",},
     {"name":"Firearms","order":5,"path":"folders/Objects/Entities/Firearms.yy",},
+    {"name":"ShellCasings","order":8,"path":"folders/Objects/Entities/Firearms/ShellCasings.yy",},
     {"name":"MuzzleFlare","order":6,"path":"folders/Objects/Entities/Firearms/MuzzleFlare.yy",},
     {"name":"MuzzleSmoke","order":5,"path":"folders/Objects/Entities/Firearms/MuzzleSmoke.yy",},
     {"name":"SmokeTrail","order":7,"path":"folders/Objects/Entities/Firearms/SmokeTrail.yy",},

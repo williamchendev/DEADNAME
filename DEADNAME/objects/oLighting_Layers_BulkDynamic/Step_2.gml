@@ -1,11 +1,80 @@
 /// @description Bulk Dynamic Layer Late Update Event
 // Compiles the Bulk Dynamic Layer's Vertex Buffer from its Render Data DS Lists
 
+// Check if Bulk Dynamic Layer needs to recompile its Vertex Buffer
+if (!bulk_dynamic_layer_vertex_buffer_recompile)
+{
+	return;
+}
+
+// Disable Bulk Dynamic Layer Vertex Buffer Recompile Toggle
+bulk_dynamic_layer_vertex_buffer_recompile = false;
+
+// Destroy and Recreate Vertex Buffer if it already Exists
+if (bulk_dynamic_layer_vertex_buffer_exists)
+{
+	// Delete Previous Vertex Buffer
+	vertex_delete_buffer(bulk_dynamic_layer_vertex_buffer);
+	bulk_dynamic_layer_vertex_buffer = -1;
+	
+	// Create New Vertex Buffer
+	bulk_dynamic_layer_vertex_buffer = vertex_create_buffer();
+}
+
 // Begin Initialize Vertex Buffer
 vertex_begin(bulk_dynamic_layer_vertex_buffer, oLightingEngine.lighting_engine_static_sprite_bulk_mrt_rendering_vertex_format);
 
+// Cull old Vertex Buffer Entries if Vertex Buffer is at Maximum Size
+if (bulk_dynamic_layer_vertex_entries > bulk_dynamic_layer_vertex_entries_max)
+{
+	//
+	var temp_entries_difference = bulk_dynamic_layer_vertex_entries - bulk_dynamic_layer_vertex_entries_max;
+	
+	//
+	repeat (temp_entries_difference)
+	{
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_ax_list, 0);
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_ay_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_bx_list, 0);
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_by_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_cx_list, 0);
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_cy_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_dx_list, 0);
+		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_dy_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_image_angle_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_image_xscale_list, 0);
+		ds_list_delete(bulk_dynamic_layer_image_yscale_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_normal_strength_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_image_blend_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_image_alpha_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_diffusemap_uvs_list, 0);
+		ds_list_delete(bulk_dynamic_layer_normalmap_uvs_list, 0);
+		ds_list_delete(bulk_dynamic_layer_metallicroughnessmap_uvs_list, 0);
+		ds_list_delete(bulk_dynamic_layer_emissivemap_uvs_list, 0);
+		
+		ds_list_delete(bulk_dynamic_layer_metallic_list, 0);
+		ds_list_delete(bulk_dynamic_layer_roughness_list, 0);
+		ds_list_delete(bulk_dynamic_layer_emissive_list, 0);
+		ds_list_delete(bulk_dynamic_layer_emissive_multiplier_list, 0);
+	}
+	
+	//
+	bulk_dynamic_layer_vertex_entries -= temp_entries_difference;
+}
+
 // Iterate through all Vertex Entries and Compile Render Data into completed Bulk Dynamic Layer's Vertex Buffer
-for (var i = 0; i < bulk_dynamic_layer_vertex_entries; i++)
+var i = 0;
+
+repeat (bulk_dynamic_layer_vertex_entries)
 {
 	// Establish Render Data for Bulk Dynamic Layer's Vertex Entry at the given Index
 	var temp_vertex_coordinate_ax = ds_list_find_value(bulk_dynamic_layer_vertex_coordinate_ax_list, i);
@@ -95,7 +164,16 @@ for (var i = 0; i < bulk_dynamic_layer_vertex_entries; i++)
 	vertex_float4(bulk_dynamic_layer_vertex_buffer, temp_metallicroughnessmap_uvs[0], temp_metallicroughnessmap_uvs[1], temp_metallicroughnessmap_uvs[2], temp_metallicroughnessmap_uvs[3]);
 	vertex_float4(bulk_dynamic_layer_vertex_buffer, temp_emissivemap_uvs[0], temp_emissivemap_uvs[1], temp_emissivemap_uvs[2], temp_emissivemap_uvs[3]);
 	vertex_float4(bulk_dynamic_layer_vertex_buffer, temp_metallic, temp_roughness, temp_emissive, temp_emissive_multiplier);
+	
+	// Increment Index
+	i++;
 }
+
+show_debug_message(bulk_dynamic_layer_vertex_entries);
 
 // Finish Initializing Vertex Buffer
 vertex_end(bulk_dynamic_layer_vertex_buffer);
+vertex_freeze(bulk_dynamic_layer_vertex_buffer);
+
+// Toggle Vertex Buffer Exists
+bulk_dynamic_layer_vertex_buffer_exists = true;
