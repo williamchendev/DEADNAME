@@ -36,7 +36,7 @@ function add_dynamic_object_to_bulk_sprite_vertex_buffer(dynamic_object, sub_lay
 		return;
 	}
 	
-	// Get Bulk Dynamic Layer Object Sprite Variables
+	// Get Bulk Dynamic Layer's Vertex Entry Sprite Variables
 	var temp_diffusemap_uvs = sprite_get_uvs(dynamic_object.sprite_index, dynamic_object.image_index);
 	
 	var temp_sprite_width = sprite_get_width(dynamic_object.sprite_index) * temp_diffusemap_uvs[6];
@@ -50,7 +50,7 @@ function add_dynamic_object_to_bulk_sprite_vertex_buffer(dynamic_object, sub_lay
 	var temp_sprite_right = (temp_sprite_width - temp_pivot_offset_x) * dynamic_object.image_xscale;
 	var temp_sprite_bottom = (temp_sprite_height - temp_pivot_offset_y) * dynamic_object.image_yscale;
 	
-	// Establish Shader Effect Toggles for Bulk Dynamic Layer Object
+	// Establish Shader Effect Toggles for Bulk Dynamic Layer's Vertex Entry
 	var temp_shader_map_toggles_normal_enabled = dynamic_object.normal_map != noone;
 	var temp_shader_map_toggles_metallicroughness_enabled = dynamic_object.metallicroughness_map != noone;
 	var temp_shader_map_toggles_emissive_enabled = dynamic_object.emissive_map != noone;
@@ -61,15 +61,15 @@ function add_dynamic_object_to_bulk_sprite_vertex_buffer(dynamic_object, sub_lay
 	var temp_emissive = dynamic_object.emissive;
 	var temp_emissive_multiplier = dynamic_object.emissive_multiplier;
 	
-	// Establish UV Data for Bulk Dynamic Layer Object
+	// Establish UV Data for Bulk Dynamic Layer's Vertex Entry
 	var temp_normalmap_uvs = temp_shader_map_toggles_normal_enabled ? sprite_get_uvs_transformed(dynamic_object.sprite_index, dynamic_object.image_index, dynamic_object.normal_map, dynamic_object.image_index) : [ -1, -1, -1, -1 ];
 	var temp_metallicroughnessmap_uvs = temp_shader_map_toggles_metallicroughness_enabled ? sprite_get_uvs_transformed(dynamic_object.sprite_index, dynamic_object.image_index, dynamic_object.metallicroughness_map, dynamic_object.image_index) : [ -1, -1, -1, -1 ];
 	var temp_emissivemap_uvs = temp_shader_map_toggles_emissive_enabled ? sprite_get_uvs_transformed(dynamic_object.sprite_index, dynamic_object.image_index, dynamic_object.emissive_map, dynamic_object.image_index) : [ -1, -1, -1, -1 ];
 	
-	// Set Bulk Dynamic Layer Object Rotation
+	// Set Bulk Dynamic Layer's Vertex Entry Rotation
 	rot_prefetch(dynamic_object.image_angle);
 	
-	// Establish Vertex Coordinate Data for Bulk Dynamic Layer Object
+	// Establish Vertex Coordinate Data for Bulk Dynamic Layer's Vertex Entry
 	var temp_vertex_coordinate_ax = dynamic_object.x + rot_point_x(temp_sprite_left, temp_sprite_top);
 	var temp_vertex_coordinate_ay = dynamic_object.y + rot_point_y(temp_sprite_left, temp_sprite_top);
 	
@@ -115,4 +115,7 @@ function add_dynamic_object_to_bulk_sprite_vertex_buffer(dynamic_object, sub_lay
 	ds_list_add(temp_bulk_dynamic_layer_object.bulk_dynamic_layer_roughness_list, temp_roughness);
 	ds_list_add(temp_bulk_dynamic_layer_object.bulk_dynamic_layer_emissive_list, temp_emissive);
 	ds_list_add(temp_bulk_dynamic_layer_object.bulk_dynamic_layer_emissive_multiplier_list, temp_emissive_multiplier);
+	
+	// Increase count of Bulk Dynamic Layer's Vertex Entries
+	temp_bulk_dynamic_layer_object.bulk_dynamic_layer_vertex_entries += 1;
 }

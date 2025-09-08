@@ -81,8 +81,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"DEBUG",
-    "path":"texturegroups/DEBUG",
+    "name":"BulkDynamic",
+    "path":"texturegroups/BulkDynamic",
   },
   "type":0,
   "VTile":false,

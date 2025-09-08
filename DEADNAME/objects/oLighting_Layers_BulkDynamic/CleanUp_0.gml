@@ -1,5 +1,5 @@
 /// @description Bulk Dynamic Layer Cleanup Event
-// Cleans up Bulk Dynamic Layer's Lighting Engine Render Behaviour, Vertex Buffer, and DS Lists
+// Cleans up Bulk Dynamic Layer's Lighting Engine Vertex Buffer and DS Lists
 
 // Delete Bulk Dynamic Layer's Vertex Buffer
 vertex_delete_buffer(bulk_dynamic_layer_vertex_buffer);
@@ -60,7 +60,3 @@ ds_list_destroy(bulk_dynamic_layer_emissive_list);
 bulk_dynamic_layer_emissive_list = -1;
 ds_list_destroy(bulk_dynamic_layer_emissive_multiplier_list);
 bulk_dynamic_layer_emissive_multiplier_list = -1;
-
-// Removes the Bulk Dynamic Layer Object & its Sub-Layer from the Lighting Engine
-lighting_engine_remove_object(id);
-lighting_engine_delete_sub_layer(sub_layer_name);

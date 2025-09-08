@@ -10,6 +10,9 @@ sub_layer_use_default_layer = false;
 // Create Bulk Dynamic Layer Vertex Buffer
 bulk_dynamic_layer_vertex_buffer = vertex_create_buffer();
 
+// Establish Bulk Dynamic Layer Vertex Entries Count
+bulk_dynamic_layer_vertex_entries = 0;
+
 // Create Bulk Dynamic Layer Render DS Lists
 bulk_dynamic_layer_vertex_coordinate_ax_list = ds_list_create();
 bulk_dynamic_layer_vertex_coordinate_ay_list = ds_list_create();
@@ -43,6 +46,9 @@ bulk_dynamic_layer_metallic_list = ds_list_create();
 bulk_dynamic_layer_roughness_list = ds_list_create();
 bulk_dynamic_layer_emissive_list = ds_list_create();
 bulk_dynamic_layer_emissive_multiplier_list = ds_list_create();
+
+// Establish Bulk Dynamic Texture
+bulk_dynamic_layer_texture = sprite_get_texture(sDebug_Lighting_Layers_BulkDynamic, 0);
 
 // Establish Render Layer
 var temp_render_layer_type = LightingEngineRenderLayerType.Mid;
