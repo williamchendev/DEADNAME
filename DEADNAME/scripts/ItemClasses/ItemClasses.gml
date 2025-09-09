@@ -372,7 +372,7 @@ class FirearmClass extends WeaponClass define
 		super.init_item_pack(init_item_pack);
 		
 		// Weapon
-		firearm_ammo = init_firearm_loaded_ammo < 0 ? global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity : init_firearm_loaded_ammo;
+		firearm_ammo = init_firearm_loaded_ammo < 0 ? global.item_packs[item_pack].weapon_data.firearm_ammo_max_capacity : init_firearm_loaded_ammo;
 		firearm_eject_cartridge_num = 0;
 		
 		// Reload Settings
@@ -594,7 +594,7 @@ class FirearmClass extends WeaponClass define
 		// Deplete Ammo
 		var temp_firearm_shots_fired = 1;
 		firearm_ammo -= temp_firearm_shots_fired;
-		firearm_eject_cartridge_num = temp_firearm_shots_fired;
+		firearm_eject_cartridge_num += temp_firearm_shots_fired;
 		
 		// Firing Angle
 		var temp_firing_angle = (item_angle + (weapon_angle_recoil * item_facing_sign)) mod 360;
@@ -815,7 +815,7 @@ class FirearmClass extends WeaponClass define
 	static reload_firearm = function(reload_rounds_count = undefined)
 	{
 		// Reload Firearm
-		firearm_ammo = is_undefined(reload_rounds_count) ? global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity : clamp(firearm_ammo + reload_rounds_count, 0, global.item_packs[item_pack].weapon_data.firearm_max_ammo_capacity);
+		firearm_ammo = is_undefined(reload_rounds_count) ? global.item_packs[item_pack].weapon_data.firearm_ammo_max_capacity : clamp(firearm_ammo + reload_rounds_count, 0, global.item_packs[item_pack].weapon_data.firearm_ammo_max_capacity);
 	}
 	
 	static close_firearm_chamber = function()
@@ -832,9 +832,37 @@ class FirearmClass extends WeaponClass define
 		// Firearm Eject Spent Ammunition Cartridge Behaviour
 		if (firearm_eject_cartridge_num > 0)
 		{
+			// Calculate Weapon Rotation
+			var temp_firing_angle = (item_angle + (weapon_angle_recoil * item_facing_sign)) mod 360;
+			temp_firing_angle = temp_firing_angle < 0 ? temp_firing_angle + 360 : temp_firing_angle;
+			
+			// Weapon Rotation Behaviour
+			rot_prefetch(temp_firing_angle);
+			
+			var temp_firearm_ammo_eject_position_x = item_x + rot_point_x(global.item_packs[item_pack].weapon_data.firearm_reload_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_reload_y);
+			var temp_firearm_ammo_eject_position_y = item_y + rot_point_y(global.item_packs[item_pack].weapon_data.firearm_reload_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_reload_y);
+			
 			// Eject Spent Ammunition Cartridges
 			for (var i = 0; i < firearm_eject_cartridge_num; i++)
 			{
+				// Instantiate Ejected Spent Ammunition Cartridge
+				var temp_ejected_cartridge_instance = instance_create_depth(temp_firearm_ammo_eject_position_x, temp_firearm_ammo_eject_position_y, 0, global.item_packs[item_pack].weapon_data.firearm_ammo_object);
+				
+				// Calculate Physics Forces of Ejected Spent Ammunition Cartridge
+				var temp_firearm_ejected_cartridge_random_horizontal_force = random_range(global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_horizontal_force_min, global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_horizontal_force_max);
+				var temp_firearm_ejected_cartridge_random_vertical_force = random_range(global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_vertical_force_min, global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_vertical_force_max);
+				
+				var temp_firearm_ejected_cartridge_relative_horizontal_force = rot_point_x(temp_firearm_ejected_cartridge_random_horizontal_force, item_facing_sign * temp_firearm_ejected_cartridge_random_vertical_force);
+				var temp_firearm_ejected_cartridge_relative_vertical_force = rot_point_y(temp_firearm_ejected_cartridge_random_horizontal_force, item_facing_sign * temp_firearm_ejected_cartridge_random_vertical_force);
+				
+				var temp_firearm_ejected_cartridge_rotation_force = item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_ammo_eject_rotation_force;
+				
+				// Apply Physics Forces to Ejected Spent Ammunition Cartridge
+				with (temp_ejected_cartridge_instance)
+				{
+					physics_apply_impulse(x, y, temp_firearm_ejected_cartridge_relative_horizontal_force, temp_firearm_ejected_cartridge_relative_vertical_force);
+					physics_apply_angular_impulse(temp_firearm_ejected_cartridge_rotation_force);
+				}
 				
 			}
 			

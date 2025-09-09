@@ -50,18 +50,3 @@ if (keyboard_check_pressed(vk_f11))
 		set_game_resolution_mode(GameResolutionMode.FullScreen640x360);
 	}
 }
-
-// Debug Create Shell Casing
-if (keyboard_check(ord("K")))
-{
-	for (var i = 0; i < 5; i++)
-	{
-		var temp_shell_casing = instance_create_depth(cursor_x + LightingEngine.render_x, cursor_y + LightingEngine.render_y, 0, oFirearm_ShellCasing);
-		
-		with (temp_shell_casing)
-		{
-			physics_apply_impulse(x, y, random_range(-5, 5), random_range(-5, 5));
-			physics_apply_angular_impulse(random_range(-5, 5));
-		}
-	}
-}

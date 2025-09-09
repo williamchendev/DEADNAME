@@ -159,7 +159,16 @@ global.item_packs[ItemPack.CorsoRifle] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_max_ammo_capacity: 5,
+		firearm_ammo_object: oFirearm_ShellCasing,
+		firearm_ammo_max_capacity: 5,
+		
+		firearm_ammo_random_eject_horizontal_force_min: -2,
+		firearm_ammo_random_eject_horizontal_force_max: -1,
+		
+		firearm_ammo_random_eject_vertical_force_min: -2,
+		firearm_ammo_random_eject_vertical_force_max: -1,
+		
+		firearm_ammo_eject_rotation_force: 2,
 		
 		// Weapon Properties
 		firearm_attack_delay: 14,
@@ -276,7 +285,16 @@ global.item_packs[ItemPack.OilerSMG] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_max_ammo_capacity: 16,
+		firearm_ammo_object: oFirearm_ShellCasing,
+		firearm_ammo_max_capacity: 16,
+		
+		firearm_ammo_random_eject_horizontal_force_min: -2,
+		firearm_ammo_random_eject_horizontal_force_max: -1,
+		
+		firearm_ammo_random_eject_vertical_force_min: -2,
+		firearm_ammo_random_eject_vertical_force_max: -1,
+		
+		firearm_ammo_eject_rotation_force: 2,
 		
 		// Weapon Properties
 		firearm_attack_delay: 5,
@@ -393,7 +411,16 @@ global.item_packs[ItemPack.BoxRevolver] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_max_ammo_capacity: 3,
+		firearm_ammo_object: oFirearm_ShellCasing,
+		firearm_ammo_max_capacity: 3,
+		
+		firearm_ammo_random_eject_horizontal_force_min: -0.75,
+		firearm_ammo_random_eject_horizontal_force_max: 0.2,
+		
+		firearm_ammo_random_eject_vertical_force_min: -2,
+		firearm_ammo_random_eject_vertical_force_max: -0.5,
+		
+		firearm_ammo_eject_rotation_force: 2,
 		
 		// Weapon Properties
 		firearm_attack_delay: 28,

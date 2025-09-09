@@ -702,6 +702,10 @@ if (canmove)
 					// Default Firearm Weapon Interrupt Animation - End Reload Animation
 					unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 					
+					// End Firearm Spin Reload Behaviour
+					item_equipped.firearm_spin_reload = false;
+					item_equipped.firearm_spin_reload_angle = 0;
+					
 					// Set Primary Hand's Firearm Animation Path - From "any arbitrary position the primary hand was positioned during the reload animation" to Firearm's Trigger Group Position (Inversed Path Interpolation Value)
 					unit_set_firearm_hand_animation
 					(
@@ -737,7 +741,7 @@ if (canmove)
 			if (input_reload)
 			{
 				// Weapon Reload Action Behaviour
-				if (unit_equipment_animation_state == UnitEquipmentAnimationState.Firearm and item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_max_ammo_capacity)
+				if (unit_equipment_animation_state == UnitEquipmentAnimationState.Firearm and item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_max_capacity)
 				{
 					// Check if Firearm Ammo Item Pack Exists
 					var temp_firearm_reload_ammo_item_pack_exists = unit_inventory_remove_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
@@ -768,7 +772,10 @@ if (canmove)
 								unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToUnitInventory;
 								
 								// Open Firearm Chamber
-								item_equipped.open_firearm_chamber();
+								if (!global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_spin)
+								{
+									item_equipped.open_firearm_chamber();
+								}
 								
 								// Weapon Hand Animation Reset
 								if (!global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_with_secondary_hand)
@@ -1749,7 +1756,7 @@ switch (unit_equipment_animation_state)
 						item_equipped.reload_firearm(1);
 						
 						// Check if Firearm is finished being reloaded
-						if (item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_max_ammo_capacity)
+						if (item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_max_capacity)
 						{
 							// Firearm is not finished being reloaded - Begin reloading another round
 							unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.ReloadIndividualRounds_MovePrimaryHandToFirearmReloadOffsetPosition;
@@ -1870,6 +1877,17 @@ switch (unit_equipment_animation_state)
 			{
 				// Perform Firearm Spin Reload Rotation
 				item_equipped.firearm_spin_reload_angle += item_equipped.firearm_spin_reload_spd * frame_delta;
+				
+				// Perform Firearm Spent Cartridge Eject Animation after one successful Revolution
+				if (item_equipped.firearm_eject_cartridge_num > 0 and abs(item_equipped.firearm_spin_reload_angle) >= 360)
+				{
+					// Remove All Ammo from Firearm
+					item_equipped.firearm_eject_cartridge_num += item_equipped.firearm_ammo;
+					item_equipped.firearm_ammo = 0;
+					
+					// Open Firearm Chamber Cartridge Eject Behaviour
+					item_equipped.open_firearm_chamber();
+				}
 				
 				// Check if Firearm Spin Reload Animation is Finished
 				if (abs(item_equipped.firearm_spin_reload_angle) >= 1080)

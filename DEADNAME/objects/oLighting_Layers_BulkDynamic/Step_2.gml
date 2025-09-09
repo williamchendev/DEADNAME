@@ -27,10 +27,10 @@ vertex_begin(bulk_dynamic_layer_vertex_buffer, oLightingEngine.lighting_engine_s
 // Cull old Vertex Buffer Entries if Vertex Buffer is at Maximum Size
 if (bulk_dynamic_layer_vertex_entries > bulk_dynamic_layer_vertex_entries_max)
 {
-	//
+	// Calculate difference between Maximum amount of Vertex Buffer Entries allowed and the number of Bulk Dynamic Layer Vertex Buffer Entries that exist
 	var temp_entries_difference = bulk_dynamic_layer_vertex_entries - bulk_dynamic_layer_vertex_entries_max;
 	
-	//
+	// Delete the difference from the Vertex Buffer's Oldest Entries
 	repeat (temp_entries_difference)
 	{
 		ds_list_delete(bulk_dynamic_layer_vertex_coordinate_ax_list, 0);
@@ -67,7 +67,7 @@ if (bulk_dynamic_layer_vertex_entries > bulk_dynamic_layer_vertex_entries_max)
 		ds_list_delete(bulk_dynamic_layer_emissive_multiplier_list, 0);
 	}
 	
-	//
+	// Calculate the new number of Vertex Buffer Entries
 	bulk_dynamic_layer_vertex_entries -= temp_entries_difference;
 }
 
@@ -168,8 +168,6 @@ repeat (bulk_dynamic_layer_vertex_entries)
 	// Increment Index
 	i++;
 }
-
-show_debug_message(bulk_dynamic_layer_vertex_entries);
 
 // Finish Initializing Vertex Buffer
 vertex_end(bulk_dynamic_layer_vertex_buffer);
