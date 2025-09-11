@@ -476,7 +476,7 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	return temp_inventory_index;
 }
 
-function unit_inventory_remove_item(unit, item_pack)
+function unit_inventory_check_item(unit, item_pack, item_count = 1)
 {
 	// Check if Unit Instance Exists
 	if (!instance_exists(unit))
@@ -492,14 +492,62 @@ function unit_inventory_remove_item(unit, item_pack)
 		return false;
 	}
 	
+	// Establish Item Count
+	var temp_item_count = 0;
+	
+	// Iterate through Unit Inventory Slots to search for the given Inventory Item
+	for (var i = 0; i < array_length(unit.inventory_slots); i++)
+	{
+		// Check if Inventory Slot contains the given Item
+		if (unit.inventory_slots[i].item_pack == item_pack)
+		{
+			// Add Inventory Slot's number of the given item
+			temp_item_count += unit.inventory_slots[i].item_count;
+		}
+	}
+	
+	// Return true if the item exists in the Inventory (and if there is a quantity more or equal than the given item count)
+	return temp_item_count >= item_count;
+}
+
+function unit_inventory_remove_item(unit, item_pack, item_count = 1)
+{
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
+	{
+		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Check if Item Instance's Item Pack is a valid Item Pack Index
+	if (item_pack < 0 or item_pack == ItemPack.None)
+	{
+		// Item Pack is an invalid Item Pack Index - Early Return
+		return;
+	}
+	
+	// Establish Item Remove Count
+	var temp_item_remove_count = max(item_count, 0);
+	
+	// Check if Item Remove Count is Valid
+	if (temp_item_remove_count == 0)
+	{
+		// Remove zero items from your inventory? You are crazy lmao - Early Return
+		return;
+	}
+	
 	// Iterate through Unit Inventory Slots to search for the Valid Inventory Item to remove
 	for (var i = 0; i < array_length(unit.inventory_slots); i++)
 	{
 		// Check if Inventory Slot contains an Item already
 		if (unit.inventory_slots[i].item_pack == item_pack)
 		{
-			// Decrement Inventory Slot's Item Count
-			unit.inventory_slots[i].item_count -= 1;
+			// Check the quantity to remove from the item slot
+			var temp_remove_quantity = min(unit.inventory_slots[i].item_count, temp_item_remove_count);
+			
+			// Decrement Inventory Slot's Item Count & Item's Remove Count
+			unit.inventory_slots[i].item_count -= temp_remove_quantity;
+			temp_item_remove_count -= temp_remove_quantity;
 			
 			// Check Inventory Slot's Item Count
 			if (unit.inventory_slots[i].item_count <= 0)
@@ -530,14 +578,15 @@ function unit_inventory_remove_item(unit, item_pack)
 					unit_inventory_change_slot(unit, i);
 				}
 			}
-			
-			//
-			return true;
+		}
+		
+		// Check if Finished Removing Items from Inventory
+		if (temp_item_remove_count == 0)
+		{
+			// The sufficent quantity of the given item to remove from the Inventory has been removed - Early Return
+			return;
 		}
 	}
-	
-	//
-	return false;
 }
 
 function unit_inventory_take_item_instance(unit, item_instance)

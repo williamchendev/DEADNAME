@@ -36,7 +36,7 @@ class ItemClass define
 		item_emissivemap_spritepack = item_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(item_sprite, item_emissivemap);
 		
 		// Init Item PBR Settings
-		item_normal_strength = 1;
+		item_normal_strength = global.item_packs[init_item_pack].render_data.normal_strength;
 		item_metallic = global.item_packs[init_item_pack].render_data.metallic;
 		item_roughness = global.item_packs[init_item_pack].render_data.roughness;
 		item_emissive = global.item_packs[init_item_pack].render_data.emissive;
@@ -832,9 +832,30 @@ class FirearmClass extends WeaponClass define
 		// Firearm Eject Spent Ammunition Cartridge Behaviour
 		if (firearm_eject_cartridge_num > 0)
 		{
+			// Establish Spent Ammunition Cartridge Object
+			var temp_firearm_cartridge_object = global.item_packs[global.item_packs[item_pack].weapon_data.firearm_ammo_item_pack].ammo_data.ammo_object;
+			
+			// Check if Ammunition Cartridge Object Exists
+			if (temp_firearm_cartridge_object == noone)
+			{
+				// Reset Spent Ammunition Cartridge Counter & Early Return
+				firearm_eject_cartridge_num = 0;
+				return;
+			}
+			
+			// Firearm Sub Layer Index
+			var temp_firearm_sub_layer_index = instance_exists(item_unit) ? lighting_engine_find_object_index(item_unit) + 1 : item_layer_index;
+			
 			// Calculate Weapon Rotation
 			var temp_firing_angle = (item_angle + (weapon_angle_recoil * item_facing_sign)) mod 360;
 			temp_firing_angle = temp_firing_angle < 0 ? temp_firing_angle + 360 : temp_firing_angle;
+			
+			// Create Spent Ammunition Cartridges Instance Struct
+			var temp_firearm_eject_cartridge_object_var_struct = 
+			{ 
+				image_angle: temp_firing_angle, 
+				sub_layer_index: temp_firearm_sub_layer_index
+			};
 			
 			// Weapon Rotation Behaviour
 			rot_prefetch(temp_firing_angle);
@@ -846,7 +867,7 @@ class FirearmClass extends WeaponClass define
 			for (var i = 0; i < firearm_eject_cartridge_num; i++)
 			{
 				// Instantiate Ejected Spent Ammunition Cartridge
-				var temp_ejected_cartridge_instance = instance_create_depth(temp_firearm_ammo_eject_position_x, temp_firearm_ammo_eject_position_y, 0, global.item_packs[item_pack].weapon_data.firearm_ammo_object);
+				var temp_ejected_cartridge_instance = instance_create_depth(temp_firearm_ammo_eject_position_x, temp_firearm_ammo_eject_position_y, 0, temp_firearm_cartridge_object, temp_firearm_eject_cartridge_object_var_struct);
 				
 				// Calculate Physics Forces of Ejected Spent Ammunition Cartridge
 				var temp_firearm_ejected_cartridge_random_horizontal_force = random_range(global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_horizontal_force_min, global.item_packs[item_pack].weapon_data.firearm_ammo_random_eject_horizontal_force_max);

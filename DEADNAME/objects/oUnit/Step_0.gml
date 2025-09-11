@@ -744,7 +744,7 @@ if (canmove)
 				if (unit_equipment_animation_state == UnitEquipmentAnimationState.Firearm and item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_max_capacity)
 				{
 					// Check if Firearm Ammo Item Pack Exists
-					var temp_firearm_reload_ammo_item_pack_exists = unit_inventory_remove_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
+					var temp_firearm_reload_ammo_item_pack_exists = unit_inventory_check_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
 					
 					if (temp_firearm_reload_ammo_item_pack_exists)
 					{
@@ -1683,6 +1683,9 @@ switch (unit_equipment_animation_state)
 					// Hand Fumble Animation End Conditions
 					if (unit_firearm_reload_animation_state == UnitFirearmReloadAnimationState.Reload_InventoryHandFumbleAnimation)
 					{
+						// Remove Item from Inventory
+						unit_inventory_remove_item(id, global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_item_pack);
+						
 						// Hand Grabs Item from Inventory
 						unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_MovePrimaryHandToFirearmReloadPosition;
 						

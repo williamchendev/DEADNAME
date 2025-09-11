@@ -126,9 +126,9 @@ global.item_packs[ItemPack.None] =
 global.item_packs[ItemPack.CorsoRifle] =
 {
 	// Item Data
-	item_name: "\"Corso\" Bolt-Action Rifle",
+	item_name: "\"Cane Knife\" Bolt-Action Rifle",
 	item_description: "",
-	item_dialogue: [ "It'll be poetic that this Tyrant's Rifle", "will end the cruelty that rules our world." ],
+	item_dialogue: [ "The Gun has gold print that says:", "\"Liberté ou la Mort\"" ],
 	item_sprite: sItem_CorsoRifle,
 	item_type: ItemType.Weapon,
 	item_hand: ItemHand.Both,
@@ -146,6 +146,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		render_emissivemap: noone,
 		
 		// PBR Settings
+		normal_strength: 1,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -159,7 +160,6 @@ global.item_packs[ItemPack.CorsoRifle] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_ammo_object: oFirearm_ShellCasing,
 		firearm_ammo_max_capacity: 5,
 		
 		firearm_ammo_random_eject_horizontal_force_min: -2,
@@ -272,6 +272,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		render_emissivemap: noone,
 		
 		// Weapon PBR Settings
+		normal_strength: 1,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -285,7 +286,6 @@ global.item_packs[ItemPack.OilerSMG] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_ammo_object: oFirearm_ShellCasing,
 		firearm_ammo_max_capacity: 16,
 		
 		firearm_ammo_random_eject_horizontal_force_min: -2,
@@ -398,6 +398,7 @@ global.item_packs[ItemPack.BoxRevolver] =
 		render_emissivemap: noone,
 		
 		// Weapon PBR Settings
+		normal_strength: 1,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -411,7 +412,6 @@ global.item_packs[ItemPack.BoxRevolver] =
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
-		firearm_ammo_object: oFirearm_ShellCasing,
 		firearm_ammo_max_capacity: 3,
 		
 		firearm_ammo_random_eject_horizontal_force_min: -0.75,
@@ -524,6 +524,7 @@ global.item_packs[ItemPack.Ammo] =
 		render_emissivemap: noone,
 		
 		// Weapon PBR Settings
+		normal_strength: 1,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -540,6 +541,31 @@ global.item_packs[ItemPack.Ammo] =
 		
 		item_secondary_hand_horizontal_offset: 0,
 		item_secondary_hand_vertical_offset: 0,
+	},
+	
+	// Ammo Data
+	ammo_data:
+	{
+		ammo_object: oFirearm_ShellCasing
+	},
+	
+	// Held Item Data
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: oFirearm_ShellCasing,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sBulletCase_Medium,
+		render_normalmap: noone,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.15,
+		emissive: 0.1,
 	},
 };
 
