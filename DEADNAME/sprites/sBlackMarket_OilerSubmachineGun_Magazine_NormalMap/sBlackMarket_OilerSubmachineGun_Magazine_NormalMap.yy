@@ -1,6 +1,6 @@
 {
   "$GMSprite":"",
-  "%Name":"sBlackMarket_OilerSubmachineGun_Magazine",
+  "%Name":"sBlackMarket_OilerSubmachineGun_Magazine_NormalMap",
   "bboxMode":0,
   "bbox_bottom":5,
   "bbox_left":0,
@@ -21,7 +21,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"3bb38535-41f9-4ed3-af66-4833d3d02078","blendMode":0,"displayName":"default","isLocked":false,"name":"3bb38535-41f9-4ed3-af66-4833d3d02078","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sBlackMarket_OilerSubmachineGun_Magazine",
+  "name":"sBlackMarket_OilerSubmachineGun_Magazine_NormalMap",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"",
+    "%Name":"sBlackMarket_OilerSubmachineGun_Magazine_NormalMap",
     "autoRecord":true,
     "backdropHeight":1080,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"",
+    "name":"sBlackMarket_OilerSubmachineGun_Magazine_NormalMap",
     "playback":1,
     "playbackSpeed":15.0,
     "playbackSpeedType":0,
@@ -69,7 +69,7 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8ac23d41-3d26-4bb1-8167-3c2dac68b8b1","path":"sprites/sBlackMarket_OilerSubmachineGun_Magazine/sBlackMarket_OilerSubmachineGun_Magazine.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8ac23d41-3d26-4bb1-8167-3c2dac68b8b1","path":"sprites/sBlackMarket_OilerSubmachineGun_Magazine_NormalMap/sBlackMarket_OilerSubmachineGun_Magazine_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"957a011b-8256-421d-99be-8b4b9013612c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],

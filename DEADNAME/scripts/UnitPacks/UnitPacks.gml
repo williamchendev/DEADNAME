@@ -149,6 +149,7 @@ global.unit_packs[UnitPack.Default] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -275,6 +276,7 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -401,6 +403,7 @@ global.unit_packs[UnitPack.Wolf] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -507,6 +510,7 @@ global.unit_packs[UnitPack.Director] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -633,6 +637,7 @@ global.unit_packs[UnitPack.Knives] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -759,6 +764,7 @@ global.unit_packs[UnitPack.Martyr] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -865,6 +871,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,
@@ -991,6 +998,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	ragdoll_legs_offset: 4,
 	
 	// PBR Settings
+	normal_strength: 1,
 	metallic: false,
 	roughness: 0.1,
 	emissive: 0.0,

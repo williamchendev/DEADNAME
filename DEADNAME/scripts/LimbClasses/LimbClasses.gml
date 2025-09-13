@@ -34,6 +34,9 @@ class LimbArmClass extends LimbClass define
 	// Init & Destroy Methods
 	static _constructor = function() 
 	{
+		// Limb Unit
+		limb_unit = noone;
+		
 		// Limb Variables
 		limb_xscale = 1;  // Facing Direction of Limb's Actor
 		
@@ -48,7 +51,22 @@ class LimbArmClass extends LimbClass define
 		limb_pivot_b_angle = 0;  // Angle of Elbow Pivot
 		
 		// Held Item Variables
-		limb_held_item = UnitHeldItem.None;  // Held Item of Arm
+		limb_held_item_exists = false;
+		
+		limb_held_item_pack_list = ds_list_create();
+		
+		limb_held_item_sprite_index_list = ds_list_create();
+		limb_held_item_image_index_list = ds_list_create();
+		limb_held_item_image_angle_list = ds_list_create();
+		
+		limb_held_item_normal_strength_list = ds_list_create();
+		limb_held_item_metallic_list = ds_list_create();
+		limb_held_item_roughness_list = ds_list_create();
+		limb_held_item_emissive_list = ds_list_create();
+		
+		limb_held_item_normalmap_spritepack_list = ds_list_create();
+		limb_held_item_metallicroughnessmap_spritepack_list = ds_list_create();
+		limb_held_item_emissivemap_spritepack_list = ds_list_create();
 		
 		limb_held_item_x = 0;  // X coordinate of Temporary Hand Pivot
 		limb_held_item_y = 0;  // Y coordinate of Temporary Hand Pivot
@@ -66,13 +84,43 @@ class LimbArmClass extends LimbClass define
 	
 	static _destructor = function() 
 	{
+		// Cleanup All Limb DS Lists
+		ds_list_destroy(limb_held_item_pack_list);
+		limb_held_item_pack_list = -1;
+		
+		ds_list_destroy(limb_held_item_sprite_index_list);
+		limb_held_item_sprite_index_list = -1;
+		ds_list_destroy(limb_held_item_image_index_list);
+		limb_held_item_image_index_list = -1;
+		ds_list_destroy(limb_held_item_image_angle_list);
+		limb_held_item_image_angle_list = -1;
+		
+		ds_list_destroy(limb_held_item_normal_strength_list);
+		limb_held_item_normal_strength_list = -1;
+		ds_list_destroy(limb_held_item_metallic_list);
+		limb_held_item_metallic_list = -1;
+		ds_list_destroy(limb_held_item_roughness_list);
+		limb_held_item_roughness_list = -1;
+		ds_list_destroy(limb_held_item_emissive_list);
+		limb_held_item_emissive_list = -1;
+		
+		ds_list_destroy(limb_held_item_normalmap_spritepack_list);
+		limb_held_item_normalmap_spritepack_list = -1;
+		ds_list_destroy(limb_held_item_metallicroughnessmap_spritepack_list);
+		limb_held_item_metallicroughnessmap_spritepack_list = -1;
+		ds_list_destroy(limb_held_item_emissivemap_spritepack_list);
+		limb_held_item_emissivemap_spritepack_list = -1;
+		
 		// Destructor
 		super._destructor();
 	}
 	
 	// Limb Properties Methods
-	static init_arm = function(init_limb_type, init_unit_pack) 
+	static init_arm = function(init_unit, init_limb_type, init_unit_pack) 
 	{
+		// Set Limb Unit
+		limb_unit = init_unit;
+		
 		// Set Limb Type
 		limb_type = init_limb_type;
 		
@@ -137,7 +185,7 @@ class LimbArmClass extends LimbClass define
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 		
 		// Set Limb PBR Settings
-		limb_normal_strength = 1;
+		limb_normal_strength = global.unit_packs[init_unit_pack].normal_strength;
 		limb_metallic = global.unit_packs[init_unit_pack].metallic;
 		limb_roughness = global.unit_packs[init_unit_pack].roughness;
 		limb_emissive = global.unit_packs[init_unit_pack].emissive;
@@ -281,7 +329,7 @@ class LimbArmClass extends LimbClass define
 		limb_pivot_b_angle = temp_limb_direction + (90 * temp_limb_extension_percent * limb_xscale);
 		
 		// Held Item Position
-		if (limb_held_item != UnitHeldItem.None)
+		if (limb_held_item_exists)
 		{
 			rot_prefetch(limb_pivot_b_angle);
 			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - 2);
@@ -290,16 +338,223 @@ class LimbArmClass extends LimbClass define
 	}
 	
 	// Item Methods
-	static set_held_item = function(held_item = UnitHeldItem.None)
+	static add_held_item = function(item_pack, item_image_index = 0)
 	{
-		limb_held_item = held_item;
+		// Check if Item Pack exists and is Valid
+		if (item_pack == ItemPack.None or item_pack < 0)
+		{
+			return;
+		}
+		
+		// Establish Held Item Data Render Textures
+		var temp_held_item_diffusemap = global.item_packs[item_pack].held_item_data.render_sprite;
+		var temp_held_item_normalmap = global.item_packs[item_pack].held_item_data.render_normalmap;
+		var temp_held_item_metallicroughnessmap = global.item_packs[item_pack].held_item_data.render_metallicroughnessmap;
+		var temp_held_item_emissivemap = global.item_packs[item_pack].held_item_data.render_emissivemap;
+		
+		// Add Held Item
+		ds_list_add(limb_held_item_pack_list, item_pack);
+		
+		ds_list_add(limb_held_item_sprite_index_list, temp_held_item_diffusemap);
+		ds_list_add(limb_held_item_image_index_list, item_image_index);
+		ds_list_add(limb_held_item_image_angle_list, 0);
+		
+		ds_list_add(limb_held_item_normal_strength_list, global.item_packs[item_pack].held_item_data.normal_strength);
+		ds_list_add(limb_held_item_metallic_list, global.item_packs[item_pack].held_item_data.metallic);
+		ds_list_add(limb_held_item_roughness_list, global.item_packs[item_pack].held_item_data.roughness);
+		ds_list_add(limb_held_item_emissive_list, global.item_packs[item_pack].held_item_data.emissive);
+		
+		ds_list_add(limb_held_item_normalmap_spritepack_list, temp_held_item_normalmap == noone ? undefined : spritepack_get_uvs_transformed(temp_held_item_diffusemap, temp_held_item_normalmap));
+		ds_list_add(limb_held_item_metallicroughnessmap_spritepack_list, temp_held_item_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(temp_held_item_diffusemap, temp_held_item_metallicroughnessmap));
+		ds_list_add(limb_held_item_emissivemap_spritepack_list, temp_held_item_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(temp_held_item_diffusemap, temp_held_item_emissivemap));
+		
+		// 
+		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
+		{
+			//
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? -45 + (i * (90 / ds_list_size(limb_held_item_pack_list))) : 0);
+		}
+		
+		// Toggle Held Item Exists
+		limb_held_item_exists = true;
+	}
+	
+	static drop_held_item = function(item_pack = -1)
+	{
+		// Check if Item Pack is Valid
+		if (item_pack == ItemPack.None)
+		{
+			return;
+		}
+		
+		//
+		var temp_drop_held_item_index = irandom(ds_list_size(limb_held_item_pack_list) - 1);
+		
+		if (item_pack != -1)
+		{
+			//
+			var temp_found_matching_item_pack = false;
+			
+			//
+			for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
+			{
+				//
+				if (ds_list_find_value(limb_held_item_pack_list, i) == item_pack)
+				{
+					//
+					temp_drop_held_item_index = i;
+					temp_found_matching_item_pack = true;
+					
+					//
+					break;
+				}
+			}
+			
+			//
+			if (!temp_found_matching_item_pack)
+			{
+				return;
+			}
+		}
+		
+		//
+		var temp_drop_item_pack = ds_list_find_value(limb_held_item_pack_list, temp_drop_held_item_index);
+		
+		// Create Dropped Item Instance
+		if (global.item_packs[temp_drop_item_pack].held_item_data.held_item_object != noone)
+		{
+			// Find Dropped Item Sub-Layer Index
+			var temp_drop_item_sub_layer_index = instance_exists(limb_unit) ? lighting_engine_find_object_index(limb_unit) + 1 : -1;
+			
+			// Create Dropped Item Instance Struct
+			var temp_drop_item_object_var_struct = 
+			{ 
+				image_angle: 0, 
+				sub_layer_index: temp_drop_item_sub_layer_index
+			};
+			
+			// Instantiate Dropped Item Instance
+			var temp_drop_item_instance = instance_create_depth(limb_held_item_x, limb_held_item_y, 0, global.item_packs[temp_drop_item_pack].held_item_data.held_item_object, temp_drop_item_object_var_struct);
+			
+			// Establish Physics Forces
+			var temp_drop_item_horizontal_force = random_range(-1, 3) * (instance_exists(limb_unit) ? limb_unit.draw_xscale : limb_xscale);
+			var temp_drop_item_vertical_force = random_range(-2, -3);
+			
+			// Apply Physics Forces to Dropped Item Instance
+			with (temp_drop_item_instance)
+			{
+				physics_apply_impulse(x, y, temp_drop_item_horizontal_force, temp_drop_item_vertical_force);
+				physics_apply_angular_impulse(random_range(-1, 1));
+			}
+		}
+		
+		// Remove Dropped Item from Held Item DS Lists
+		remove_held_item(temp_drop_held_item_index);
+	}
+	
+	static drop_all_held_items = function()
+	{
+		// Find Dropped Item Sub-Layer Index
+		var temp_drop_item_sub_layer_index = instance_exists(limb_unit) ? lighting_engine_find_object_index(limb_unit) + 1 : -1;
+		
+		//
+		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
+		{
+			// 
+			var temp_drop_item_pack = ds_list_find_value(limb_held_item_pack_list, i);
+			
+			// Create Dropped Item Instance
+			if (global.item_packs[temp_drop_item_pack].held_item_data.held_item_object != noone)
+			{
+				// Create Dropped Item Instance Struct
+				var temp_drop_item_object_var_struct = 
+				{ 
+					image_angle: 0, 
+					sub_layer_index: temp_drop_item_sub_layer_index
+				};
+				
+				// Instantiate Dropped Item Instance
+				var temp_drop_item_instance = instance_create_depth(limb_held_item_x, limb_held_item_y, 0, global.item_packs[temp_drop_item_pack].held_item_data.held_item_object, temp_drop_item_object_var_struct);
+				
+				// Establish Physics Forces
+				var temp_drop_item_horizontal_force = random_range(-1, 3) * (instance_exists(limb_unit) ? limb_unit.draw_xscale : limb_xscale);
+				var temp_drop_item_vertical_force = random_range(-2, -1);
+				
+				// Apply Physics Forces to Dropped Item Instance
+				with (temp_drop_item_instance)
+				{
+					physics_apply_impulse(x, y, temp_drop_item_horizontal_force, temp_drop_item_vertical_force);
+					physics_apply_angular_impulse(random_range(-1, 1));
+				}
+			}
+		}
+		
+		// Clear all Held Item DS Lists
+		remove_all_held_items();
+	}
+	
+	static remove_held_item = function(held_item_index)
+	{
+		// Check if Held Item Index exists in the valid Held Item DS List Index Range
+		if (held_item_index < 0 or held_item_index >= ds_list_size(limb_held_item_pack_list))
+		{
+			return;
+		}
+		
+		// Remove Held Item from Held Item DS List
+		ds_list_delete(limb_held_item_pack_list, held_item_index);
+		
+		ds_list_delete(limb_held_item_sprite_index_list, held_item_index);
+		ds_list_delete(limb_held_item_image_index_list, held_item_index);
+		ds_list_delete(limb_held_item_image_angle_list, held_item_index);
+		
+		ds_list_delete(limb_held_item_normal_strength_list, held_item_index);
+		ds_list_delete(limb_held_item_metallic_list, held_item_index);
+		ds_list_delete(limb_held_item_roughness_list, held_item_index);
+		ds_list_delete(limb_held_item_emissive_list, held_item_index);
+		
+		ds_list_delete(limb_held_item_normalmap_spritepack_list, held_item_index);
+		ds_list_delete(limb_held_item_metallicroughnessmap_spritepack_list, held_item_index);
+		ds_list_delete(limb_held_item_emissivemap_spritepack_list, held_item_index);
+		
+		// 
+		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
+		{
+			//
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? -45 + (i * (90 / ds_list_size(limb_held_item_pack_list))) : 0);
+		}
+		
+		// Toggle Held Item Exists
+		limb_held_item_exists = ds_list_size(limb_held_item_pack_list) > 0;
+	}
+	
+	static remove_all_held_items = function()
+	{
+		// Clear all Held Item DS Lists
+		ds_list_clear(limb_held_item_pack_list);
+		
+		ds_list_clear(limb_held_item_sprite_index_list);
+		ds_list_clear(limb_held_item_image_index_list);
+		ds_list_clear(limb_held_item_image_angle_list);
+		
+		ds_list_clear(limb_held_item_normal_strength_list);
+		ds_list_clear(limb_held_item_metallic_list);
+		ds_list_clear(limb_held_item_roughness_list);
+		ds_list_clear(limb_held_item_emissive_list);
+		
+		ds_list_clear(limb_held_item_normalmap_spritepack_list);
+		ds_list_clear(limb_held_item_metallicroughnessmap_spritepack_list);
+		ds_list_clear(limb_held_item_emissivemap_spritepack_list);
+		
+		// Toggle Held Item does not exist
+		limb_held_item_exists = false;
 	}
 	
 	// Render Methods
 	static render_behaviour = function()
 	{
 		// Draw Arm
-		if (limb_held_item == UnitHeldItem.None)
+		if (!limb_held_item_exists)
 		{
 			lighting_engine_render_sprite_ext
 			(
@@ -351,12 +606,59 @@ class LimbArmClass extends LimbClass define
 			return;
 		}
 		
+		// Establish Held Item Index
+		var temp_held_item_index = 0;
+		
 		// Draw Arm with Held Item
 		switch (limb_type)
 		{
 			case LimbType.LeftArm:
-				// Draw Held Item
-				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				// Draw Held Item(s)
+				repeat (ds_list_size(limb_held_item_pack_list))
+				{
+					// Establish Held Item Render Data
+					var temp_held_item_sprite_index = ds_list_find_value(limb_held_item_sprite_index_list, temp_held_item_index);
+					var temp_held_item_image_index = ds_list_find_value(limb_held_item_image_index_list, temp_held_item_index);
+					
+					var temp_held_item_normal_strength = ds_list_find_value(limb_held_item_normal_strength_list, temp_held_item_index);
+					var temp_held_item_metallic = ds_list_find_value(limb_held_item_metallic_list, temp_held_item_index);
+					var temp_held_item_roughness = ds_list_find_value(limb_held_item_roughness_list, temp_held_item_index);
+					var temp_held_item_emissive = ds_list_find_value(limb_held_item_emissive_list, temp_held_item_index);
+					
+					var temp_held_item_normalmap_spritepack = ds_list_find_value(limb_held_item_normalmap_spritepack_list, temp_held_item_index);
+					var temp_held_item_metallicroughnessmap_spritepack = ds_list_find_value(limb_held_item_metallicroughnessmap_spritepack_list, temp_held_item_index);
+					var temp_held_item_emissivemap_spritepack = ds_list_find_value(limb_held_item_emissivemap_spritepack_list, temp_held_item_index);
+					
+					var temp_held_item_image_angle = ds_list_find_value(limb_held_item_image_angle_list, temp_held_item_index);
+					
+					// Draw Held Item Sprite
+					lighting_engine_render_sprite_ext
+					(
+						temp_held_item_sprite_index,
+						temp_held_item_image_index,
+						temp_held_item_normalmap_spritepack != undefined ? temp_held_item_normalmap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_metallicroughnessmap_spritepack != undefined ? temp_held_item_metallicroughnessmap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_emissivemap_spritepack != undefined ? temp_held_item_emissivemap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_normalmap_spritepack != undefined ? temp_held_item_normalmap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_metallicroughnessmap_spritepack != undefined ? temp_held_item_metallicroughnessmap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_emissivemap_spritepack != undefined ? temp_held_item_emissivemap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_normal_strength,
+						temp_held_item_metallic,
+						temp_held_item_roughness,
+						temp_held_item_emissive,
+						limb_emissive_multiplier,
+						limb_held_item_x, 
+						limb_held_item_y,
+						limb_xscale, 
+						1,
+						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
+						c_white, 
+						1
+					);
+					
+					// Increment Held Item Index
+					temp_held_item_index++;
+				}
 				
 				// Draw Limb
 				lighting_engine_render_sprite_ext
@@ -457,8 +759,52 @@ class LimbArmClass extends LimbClass define
 					1
 				);
 				
-				// Draw Held Item
-				//draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x, limb_held_item_y, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				// Draw Held Item(s)
+				repeat (ds_list_size(limb_held_item_pack_list))
+				{
+					// Establish Held Item Render Data
+					var temp_held_item_sprite_index = ds_list_find_value(limb_held_item_sprite_index_list, temp_held_item_index);
+					var temp_held_item_image_index = ds_list_find_value(limb_held_item_image_index_list, temp_held_item_index);
+					
+					var temp_held_item_normal_strength = ds_list_find_value(limb_held_item_normal_strength_list, temp_held_item_index);
+					var temp_held_item_metallic = ds_list_find_value(limb_held_item_metallic_list, temp_held_item_index);
+					var temp_held_item_roughness = ds_list_find_value(limb_held_item_roughness_list, temp_held_item_index);
+					var temp_held_item_emissive = ds_list_find_value(limb_held_item_emissive_list, temp_held_item_index);
+					
+					var temp_held_item_normalmap_spritepack = ds_list_find_value(limb_held_item_normalmap_spritepack_list, temp_held_item_index);
+					var temp_held_item_metallicroughnessmap_spritepack = ds_list_find_value(limb_held_item_metallicroughnessmap_spritepack_list, temp_held_item_index);
+					var temp_held_item_emissivemap_spritepack = ds_list_find_value(limb_held_item_emissivemap_spritepack_list, temp_held_item_index);
+					
+					var temp_held_item_image_angle = ds_list_find_value(limb_held_item_image_angle_list, temp_held_item_index);
+					
+					// Draw Held Item Sprite
+					lighting_engine_render_sprite_ext
+					(
+						temp_held_item_sprite_index,
+						temp_held_item_image_index,
+						temp_held_item_normalmap_spritepack != undefined ? temp_held_item_normalmap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_metallicroughnessmap_spritepack != undefined ? temp_held_item_metallicroughnessmap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_emissivemap_spritepack != undefined ? temp_held_item_emissivemap_spritepack[temp_held_item_image_index].texture : undefined,
+						temp_held_item_normalmap_spritepack != undefined ? temp_held_item_normalmap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_metallicroughnessmap_spritepack != undefined ? temp_held_item_metallicroughnessmap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_emissivemap_spritepack != undefined ? temp_held_item_emissivemap_spritepack[temp_held_item_image_index].uvs : undefined,
+						temp_held_item_normal_strength,
+						temp_held_item_metallic,
+						temp_held_item_roughness,
+						temp_held_item_emissive,
+						limb_emissive_multiplier,
+						limb_held_item_x, 
+						limb_held_item_y,
+						limb_xscale, 
+						1,
+						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
+						c_white, 
+						1
+					);
+					
+					// Increment Held Item Index
+					temp_held_item_index++;
+				}
 				break;
 			default:
 				break;
@@ -468,19 +814,46 @@ class LimbArmClass extends LimbClass define
 	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0)
 	{
 		// Draw Arm
-		if (limb_held_item == UnitHeldItem.None)
+		if (!limb_held_item_exists)
 		{
 			draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
 			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 			return;
 		}
 		
+		// Establish Held Item Index
+		var temp_held_item_index = 0;
+		
 		// Draw Arm with Held Item
 		switch (limb_type)
 		{
 			case LimbType.LeftArm:
-				// Draw Held Item
-				draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x + x_offset, limb_held_item_y + y_offset, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				// Draw Held Item(s)
+				repeat (ds_list_size(limb_held_item_pack_list))
+				{
+					// Establish Held Item Render Data
+					var temp_held_item_sprite_index = ds_list_find_value(limb_held_item_sprite_index_list, temp_held_item_index);
+					var temp_held_item_image_index = ds_list_find_value(limb_held_item_image_index_list, temp_held_item_index);
+					
+					var temp_held_item_image_angle = ds_list_find_value(limb_held_item_image_angle_list, temp_held_item_index);
+					
+					// Draw Held Item Sprite
+					draw_sprite_ext
+					(
+						temp_held_item_sprite_index,
+						temp_held_item_image_index,
+						limb_held_item_x + x_offset, 
+						limb_held_item_y + y_offset,
+						limb_xscale, 
+						1,
+						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
+						c_white, 
+						1
+					);
+					
+					// Increment Held Item Index
+					temp_held_item_index++;
+				}
 				
 				// Draw Limb
 				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
@@ -491,8 +864,32 @@ class LimbArmClass extends LimbClass define
 				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
 				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
 				
-				// Draw Held Item
-				draw_sprite_ext(global.unit_held_items[limb_held_item].item_sprite_index, global.unit_held_items[limb_held_item].item_image_index, limb_held_item_x + x_offset, limb_held_item_y + y_offset, limb_xscale, 1, limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0), c_white, 1);
+				// Draw Held Item(s)
+				repeat (ds_list_size(limb_held_item_pack_list))
+				{
+					// Establish Held Item Render Data
+					var temp_held_item_sprite_index = ds_list_find_value(limb_held_item_sprite_index_list, temp_held_item_index);
+					var temp_held_item_image_index = ds_list_find_value(limb_held_item_image_index_list, temp_held_item_index);
+					
+					var temp_held_item_image_angle = ds_list_find_value(limb_held_item_image_angle_list, temp_held_item_index);
+					
+					// Draw Held Item Sprite
+					draw_sprite_ext
+					(
+						temp_held_item_sprite_index,
+						temp_held_item_image_index,
+						limb_held_item_x + x_offset, 
+						limb_held_item_y + y_offset,
+						limb_xscale, 
+						1,
+						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
+						c_white, 
+						1
+					);
+					
+					// Increment Held Item Index
+					temp_held_item_index++;
+				}
 				break;
 			default:
 				break;

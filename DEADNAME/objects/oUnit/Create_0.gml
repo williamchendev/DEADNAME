@@ -196,10 +196,10 @@ player_inventory_ui_alpha = 0;
 
 // Unit Limb Arms
 limb_primary_arm = NEW(LimbArmClass);
-limb_primary_arm.init_arm(LimbType.LeftArm, unit_pack);
+limb_primary_arm.init_arm(id, LimbType.LeftArm, unit_pack);
 
 limb_secondary_arm = NEW(LimbArmClass);
-limb_secondary_arm.init_arm(LimbType.RightArm, unit_pack);
+limb_secondary_arm.init_arm(id, LimbType.RightArm, unit_pack);
 
 limb_animation_double_cycle = false;
 
@@ -240,7 +240,7 @@ trig_sine = 0;
 trig_cosine = 1;
 
 // PBR Variables
-normal_strength = 1;
+normal_strength = global.unit_packs[unit_pack].normal_strength;
 metallic = global.unit_packs[unit_pack].metallic;
 roughness = global.unit_packs[unit_pack].roughness;
 emissive = global.unit_packs[unit_pack].emissive;
@@ -275,7 +275,7 @@ if (player_input)
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
-	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.OilerSMG);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }
 else

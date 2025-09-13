@@ -117,6 +117,10 @@ class ItemClass define
 		item_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 		item_unit.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 		
+		// Drop all Held Items
+		item_unit.limb_primary_arm.drop_all_held_items();
+		item_unit.limb_secondary_arm.drop_all_held_items();
+		
 		// Reset Item Unit
 		item_unit = noone;
 	}
@@ -728,7 +732,7 @@ class FirearmClass extends WeaponClass define
 		var temp_hitmarker_x = item_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0);
 		var temp_hitmarker_y = item_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0);
 		
-		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height))
+		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height) or true)
 		{
 			instance_create_depth(temp_hitmarker_x, temp_hitmarker_y, 0, oImpact_Hitmarker, { hitmarker_contact: temp_firearm_attack_contact, trail_angle: (temp_firing_angle + 540) mod 360, trail_distance: temp_firearm_attack_distance });
 		}
@@ -763,6 +767,13 @@ class FirearmClass extends WeaponClass define
 	{
 		// Firearm Sub Layer Index
 		var temp_firearm_sub_layer_index = instance_exists(item_unit) ? lighting_engine_find_object_index(item_unit) + 1 : item_layer_index;
+		
+		// Firearm Case Eject
+		if (global.item_packs[item_pack].weapon_data.firearm_ammo_eject_case_after_firing)
+		{
+			open_firearm_chamber();
+			close_firearm_chamber();
+		}
 		
 		// Firearm Smoke Trail
 		if (global.item_packs[item_pack].weapon_data.firearm_smoke_trail_object != noone)
@@ -889,6 +900,38 @@ class FirearmClass extends WeaponClass define
 			
 			// Reset Spent Ammunition Cartridge Counter
 			firearm_eject_cartridge_num = 0;
+		}
+	}
+	
+	static eject_magazine = function()
+	{
+		// Firearm Sub Layer Index
+		var temp_firearm_magazine_sub_layer_index = instance_exists(item_unit) ? lighting_engine_find_object_index(item_unit) + 1 : item_layer_index;
+		
+		// Calculate Weapon Rotation
+		var temp_firearm_reload_magazine_angle = (item_angle + (weapon_angle_recoil * item_facing_sign)) mod 360;
+		temp_firearm_reload_magazine_angle = temp_firearm_reload_magazine_angle < 0 ? temp_firearm_reload_magazine_angle + 360 : temp_firearm_reload_magazine_angle;
+		
+		// Calculate Firearm Reload Position
+		rot_prefetch(temp_firearm_reload_magazine_angle);
+		
+		var temp_firearm_reload_magazine_position_x = item_x + rot_point_x(global.item_packs[item_pack].weapon_data.firearm_reload_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_reload_y);
+		var temp_firearm_reload_magazine_position_y = item_y + rot_point_y(global.item_packs[item_pack].weapon_data.firearm_reload_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_reload_y);
+		
+		// Create Firearm Magazine Instance Var Struct
+		var temp_firearm_reload_magazine_object_var_struct = 
+		{ 
+			image_angle: temp_firearm_reload_magazine_angle, 
+			sub_layer_index: temp_firearm_magazine_sub_layer_index
+		};
+		
+		// Instantiate Firearm Magazine
+		var temp_reload_magazine_instance = instance_create_depth(temp_firearm_reload_magazine_position_x, temp_firearm_reload_magazine_position_y, 0, global.item_packs[item_pack].held_item_data.held_item_object, temp_firearm_reload_magazine_object_var_struct);
+		
+		// Apply Physics Forces to Ejected Spent Ammunition Cartridge
+		with (temp_reload_magazine_instance)
+		{
+			physics_apply_angular_impulse(random_range(-0.5, 0.5));
 		}
 	}
 	

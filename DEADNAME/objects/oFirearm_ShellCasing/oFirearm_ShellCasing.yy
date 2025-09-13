@@ -1,10 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"oFirearm_ShellCasing",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"oSolidRotation","path":"objects/oSolidRotation/oSolidRotation.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"oFirearm_ShellCasing",
   "overriddenProperties":[
@@ -14,12 +11,12 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.1",},
   ],
   "parent":{
-    "name":"ShellCasings",
-    "path":"folders/Objects/Entities/Firearms/ShellCasings.yy",
+    "name":"Dropped",
+    "path":"folders/Objects/Entities/Firearms/Dropped.yy",
   },
   "parentObjectId":{
-    "name":"oLighting_Dynamic_Object",
-    "path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",
+    "name":"oBulkDynamic_DroppedItem",
+    "path":"objects/oBulkDynamic_DroppedItem/oBulkDynamic_DroppedItem.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

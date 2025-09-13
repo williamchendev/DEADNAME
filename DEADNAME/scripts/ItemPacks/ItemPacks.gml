@@ -34,7 +34,7 @@ enum WeaponType
 // Create Item Function
 /// create_item_class_instance_from_item_pack(item_pack);
 /// @description Creates a WeaponClass from the given Weapon Pack
-/// @param {number} weapon_pack 
+/// @param {number} item_pack 
 /// @returns {WeaponClass} returns true if location is empty of solids and the list of platform instances
 function create_item_class_instance_from_item_pack(item_pack) 
 {
@@ -162,6 +162,8 @@ global.item_packs[ItemPack.CorsoRifle] =
 		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_ammo_max_capacity: 5,
 		
+		firearm_ammo_eject_case_after_firing: false,
+		
 		firearm_ammo_random_eject_horizontal_force_min: -2,
 		firearm_ammo_random_eject_horizontal_force_max: -1,
 		
@@ -185,6 +187,8 @@ global.item_packs[ItemPack.CorsoRifle] =
 		
 		firearm_reload_spin: false,
 		firearm_reload_spin_spd: -5,
+		
+		firearm_reload_magazine: false,
 		
 		firearm_reload_individual_rounds: true,
 		
@@ -245,7 +249,26 @@ global.item_packs[ItemPack.CorsoRifle] =
 		// Weapon Muzzle Positions
 		firearm_muzzle_x: 29,
 		firearm_muzzle_y: -1,
-    }
+    },
+    
+    // Held Item Data
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: oFirearm_ShellCasing,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sBulletCase_Medium,
+		render_normalmap: noone,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.15,
+		emissive: 0.1,
+	},
 };
 
 // 
@@ -259,7 +282,7 @@ global.item_packs[ItemPack.OilerSMG] =
 	item_type: ItemType.Weapon,
 	item_hand: ItemHand.Both,
 	item_slot_tier: UnitInventorySlotTier.Hefty,
-	item_object: noone,
+	item_object: oItem_Weapon_OilerSubmachineGun,
 	item_count_limit: -1,
 	
 	// Render Data
@@ -288,6 +311,8 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_ammo_max_capacity: 16,
 		
+		firearm_ammo_eject_case_after_firing: true,
+		
 		firearm_ammo_random_eject_horizontal_force_min: -2,
 		firearm_ammo_random_eject_horizontal_force_max: -1,
 		
@@ -311,6 +336,8 @@ global.item_packs[ItemPack.OilerSMG] =
 		
 		firearm_reload_spin: false,
 		firearm_reload_spin_spd: -5,
+		
+		firearm_reload_magazine: true,
 		
 		firearm_reload_individual_rounds: false,
 		
@@ -372,6 +399,25 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_muzzle_x: 18,
 		firearm_muzzle_y: 0,
     },
+    
+    // Held Item Data
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: oFirearm_Magazine,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sBlackMarket_OilerSubmachineGun_Magazine,
+		render_normalmap: sBlackMarket_OilerSubmachineGun_Magazine_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
 };
 
 // 
@@ -414,6 +460,8 @@ global.item_packs[ItemPack.BoxRevolver] =
 		firearm_ammo_item_pack: ItemPack.Ammo,
 		firearm_ammo_max_capacity: 3,
 		
+		firearm_ammo_eject_case_after_firing: false,
+		
 		firearm_ammo_random_eject_horizontal_force_min: -0.75,
 		firearm_ammo_random_eject_horizontal_force_max: 0.2,
 		
@@ -437,6 +485,8 @@ global.item_packs[ItemPack.BoxRevolver] =
 		
 		firearm_reload_spin: true,
 		firearm_reload_spin_spd: 23,
+		
+		firearm_reload_magazine: false,
 		
 		firearm_reload_individual_rounds: true,
 		
@@ -498,6 +548,25 @@ global.item_packs[ItemPack.BoxRevolver] =
 		firearm_muzzle_x: 12,
 		firearm_muzzle_y: -2,
     },
+    
+    // Held Item Data
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: oFirearm_ShellCasing,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sBulletCase_Medium,
+		render_normalmap: noone,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.15,
+		emissive: 0.1,
+	},
 };
 
 //
@@ -547,25 +616,6 @@ global.item_packs[ItemPack.Ammo] =
 	ammo_data:
 	{
 		ammo_object: oFirearm_ShellCasing
-	},
-	
-	// Held Item Data
-	held_item_data:
-	{
-		// Held Item Object
-		held_item_object: oFirearm_ShellCasing,
-		
-		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
-		render_sprite: sBulletCase_Medium,
-		render_normalmap: noone,
-		render_metallicroughnessmap: noone,
-		render_emissivemap: noone,
-		
-		// Weapon PBR Settings
-		normal_strength: 1,
-		metallic: false,
-		roughness: 0.15,
-		emissive: 0.1,
 	},
 };
 
