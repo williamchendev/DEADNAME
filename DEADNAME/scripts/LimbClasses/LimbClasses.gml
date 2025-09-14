@@ -375,7 +375,7 @@ class LimbArmClass extends LimbClass define
 		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 		{
 			// Set each Limb Held Item to spread their angles across the range of the Limb's Hand
-			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (-global.limb_held_item_angle_spread * 0.5) + (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
 		}
 		
 		// Toggle Held Item Exists
@@ -532,7 +532,7 @@ class LimbArmClass extends LimbClass define
 		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 		{
 			// Set each Limb Held Item to spread their angles across the range of the Limb's Hand
-			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (-global.limb_held_item_angle_spread * 0.5) + (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
 		}
 		
 		// Toggle Held Item Exists

@@ -13,6 +13,7 @@ enum UnitEquipmentAnimationState
     None,
     Item,
     Melee,
+    Thrown,
     Firearm,
     FirearmReload
 }

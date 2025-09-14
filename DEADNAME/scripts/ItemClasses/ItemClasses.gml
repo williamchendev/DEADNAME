@@ -356,6 +356,159 @@ class WeaponClass extends ItemClass define
 	}
 }
 
+class ThrownClass extends WeaponClass define
+{
+	// Init & Destroy Methods
+	static _constructor = function()
+	{
+		super._constructor();
+	}
+	
+	static _destructor = function() 
+	{
+		super._destructor();
+	}
+	
+	// Init Methods
+	static init_item_pack = function(init_item_pack, init_firearm_loaded_ammo = -1)
+	{
+		// Inherited Item Pack Init Behaviour
+		super.init_item_pack(init_item_pack);
+	}
+	
+	static init_item_physics = function(init_item_x = 0, init_item_y = 0, init_item_angle = undefined)
+	{
+		// Init Weapon Position & Angle
+		super.init_item_physics(init_item_x, init_item_y, init_item_angle);
+	}
+	
+	// Equip Methods
+	static equip_item = function(unit_instance)
+	{
+		// Default Equip Weapon Behaviour
+		super.equip_item(unit_instance);
+		
+		// Set Unit Weapon Behaviour
+		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
+		
+		// Reset Thrown Attack Condition 
+		weapon_attack_reset = false;
+	}
+	
+	static unequip_item = function()
+	{
+		// Default Unequip Weapon Behaviour
+		super.unequip_item();
+	}
+	
+	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
+	{
+		// Default Item Set Displacement
+		super.item_take_set_displacement(item_x, item_y, item_lerp, item_lerp_spd);
+	}
+	
+	// Update Methods
+	static update_item_physics = function(update_item_x, update_item_y, update_item_angle, update_item_facing_sign = 1)
+	{
+		// Update Item Position & Angle
+		item_x = update_item_x;
+		item_y = update_item_y;
+		item_angle = update_item_angle;
+		
+		// Update Item Displacement Lerp Behaviour
+		if (item_displacement_value > 0)
+		{
+			// Decrement Item Displacement by Delta Time and Item Displacement Speed
+			item_displacement_value -= frame_delta * item_displacement_spd;
+			item_displacement_value = clamp(item_displacement_value, 0, 1);
+			
+			// Calculate Item Displacement Exponent Value
+			var temp_item_displacement_value_exp = power(item_displacement_value, global.item_displacement_lerp_exponent);
+			
+			// Calculate Item Lerp Position based on Item Displacement Position
+			item_x = lerp(item_x, item_displacement_x, temp_item_displacement_value_exp);
+			item_y = lerp(item_y, item_displacement_y, temp_item_displacement_value_exp);
+		}
+		
+		// Weapon Facing Sign Direction
+		item_facing_sign = update_item_facing_sign;
+	}
+	
+	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
+	{
+		
+	}
+	
+	static update_weapon_attack = function(weapon_target = undefined)
+	{
+		// Invalid Weapon Attack Behaviour
+		if (!weapon_attack_reset)
+		{
+			// Weapon Input Reset Incomplete
+			return false;
+		}
+		else if (item_displacement_value > 0)
+		{
+			// Thrown Weapon is Displaced
+			return false;
+		}
+		
+		// Thrown Weapon Behaviour
+		
+		// Reset Thrown Weapon Attack Condition
+		switch (global.item_packs[item_pack].weapon_data.weapon_type)
+		{
+			case WeaponType.DefaultThrown:
+			default:
+				weapon_attack_reset = false;
+			    break;
+		}
+		
+		// Thrown Attack Success
+		return true;
+	}
+	
+	// Render Methods
+	static render_behaviour = function() 
+	{
+		// Draw Weapon
+		lighting_engine_render_sprite_ext
+		(
+			item_sprite, 
+			item_image_index, 
+			item_normalmap_spritepack != undefined ? item_normalmap_spritepack[item_image_index].texture : undefined,
+			item_metallicroughnessmap_spritepack != undefined ? item_metallicroughnessmap_spritepack[item_image_index].texture : undefined, 
+			item_emissivemap_spritepack != undefined ? item_emissivemap_spritepack[item_image_index].texture : undefined, 
+			item_normalmap_spritepack != undefined ? item_normalmap_spritepack[item_image_index].uvs : undefined,
+			item_metallicroughnessmap_spritepack != undefined ? item_metallicroughnessmap_spritepack[item_image_index].uvs : undefined,
+			item_emissivemap_spritepack != undefined ? item_emissivemap_spritepack[item_image_index].uvs : undefined,
+			item_normal_strength,
+			item_metallic,
+			item_roughness,
+			item_emissive,
+			item_emissive_multiplier,
+			item_x, 
+			item_y, 
+			item_xscale, 
+			item_yscale * item_facing_sign, 
+			item_angle, 
+			c_white, 
+			1
+		);
+	}
+	
+	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0) 
+	{
+		// Draw Weapon
+		draw_sprite_ext(item_sprite, item_image_index, item_x + x_offset, item_y + y_offset, item_xscale, item_yscale * item_facing_sign, item_angle, c_white, 1);
+	}
+	
+	static render_cursor_behaviour = function()
+	{
+		// Draw Weapon's Cursor Crosshair
+	}
+}
+
 class FirearmClass extends WeaponClass define
 {
 	// Init & Destroy Methods
@@ -380,6 +533,9 @@ class FirearmClass extends WeaponClass define
 		firearm_eject_cartridge_num = 0;
 		
 		// Reload Settings
+		item_image_index = firearm_ammo > 0 ? 0 : 1;
+		firearm_magazine_inserted = firearm_ammo > 0;
+		
 		firearm_spin_reload = false;
 		firearm_spin_reload_spd = global.item_packs[item_pack].weapon_data.firearm_reload_spin_spd;
 		firearm_spin_reload_angle = 0;
@@ -832,13 +988,19 @@ class FirearmClass extends WeaponClass define
 	static close_firearm_chamber = function()
 	{
 		// Close Firearm Chamber
-		item_image_index = 0;
+		if (!global.item_packs[item_pack].weapon_data.firearm_reload_magazine)
+		{
+			item_image_index = 0;
+		}
 	}
 	
 	static open_firearm_chamber = function()
 	{
 		// Open Firearm Chamber
-		item_image_index = 1;
+		if (!global.item_packs[item_pack].weapon_data.firearm_reload_magazine)
+		{
+			item_image_index = 1;
+		}
 		
 		// Firearm Eject Spent Ammunition Cartridge Behaviour
 		if (firearm_eject_cartridge_num > 0)
@@ -903,8 +1065,28 @@ class FirearmClass extends WeaponClass define
 		}
 	}
 	
+	static insert_magazine = function()
+	{
+		// Eject previous Magazine if exists
+		if (firearm_magazine_inserted)
+		{
+			eject_magazine();
+		}
+		
+		// Insert Magazine
+		item_image_index = 0;
+		firearm_magazine_inserted = true;
+	}
+	
 	static eject_magazine = function()
 	{
+		// Eject Magazine
+		item_image_index = 1;
+		firearm_magazine_inserted = false;
+		
+		// Deplete Firearm's Ammo
+		firearm_ammo = 0;
+		
 		// Firearm Sub Layer Index
 		var temp_firearm_magazine_sub_layer_index = instance_exists(item_unit) ? lighting_engine_find_object_index(item_unit) + 1 : item_layer_index;
 		

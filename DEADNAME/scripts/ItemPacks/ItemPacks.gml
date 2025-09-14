@@ -28,6 +28,7 @@ enum WeaponType
 {
     Default,
     DefaultMelee,
+    DefaultThrown,
     DefaultFirearm,
     BoltActionFirearm
 }
@@ -48,6 +49,10 @@ function create_item_class_instance_from_item_pack(item_pack)
     	// Weapon Item Class Creation
     	switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
+			case WeaponType.DefaultThrown:
+				// Thrown Weapon Item Class
+				temp_item_class = NEW(ThrownClass);
+				break;
 			case WeaponType.DefaultFirearm:
 			case WeaponType.BoltActionFirearm:
 				// Firearm Item Class

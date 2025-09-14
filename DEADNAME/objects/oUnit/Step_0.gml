@@ -760,10 +760,9 @@ if (canmove)
 						unit_equipment_animation_state = UnitEquipmentAnimationState.FirearmReload;
 						
 						// Firearm Drop Magazine Animation
-						if (global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_magazine and item_equipped.item_image_index == 0)
+						if (global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_magazine and item_equipped.firearm_magazine_inserted)
 						{
 							item_equipped.eject_magazine();
-							item_equipped.item_image_index = 1;
 						}
 						
 						// Reload Animation
@@ -1433,6 +1432,9 @@ var temp_secondary_limb_default_animation_active = true;
 // Perform Unit's Limb Equipment Animation Behaviour
 switch (unit_equipment_animation_state)
 {
+	case UnitEquipmentAnimationState.Thrown:
+		
+		break;
 	case UnitEquipmentAnimationState.FirearmReload:
 		// Firearm Reload Behaviour
 		switch (unit_firearm_reload_animation_state)
@@ -1737,6 +1739,12 @@ switch (unit_equipment_animation_state)
 					{
 						// End Reload Animation
 						unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+						
+						// Insert Magazine
+						if (global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_magazine and !item_equipped.firearm_magazine_inserted)
+						{
+							item_equipped.insert_magazine();
+						}
 						
 						// Magazine is loaded into Firearm 
 						item_equipped.reload_firearm();
