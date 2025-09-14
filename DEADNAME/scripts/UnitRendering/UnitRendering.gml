@@ -1,4 +1,6 @@
-//
+/// unit_render_behaviour(unit);
+/// @description Draws the given Unit Instance using the Deferred Lighting Engine's Multi-Render-Target System using a Diffuse/Normal/Metallic/Roughness/Emissive workflow
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to render
 function unit_render_behaviour(unit)
 {
 	with (unit)
@@ -80,7 +82,11 @@ function unit_render_behaviour(unit)
 	}
 }
 
-//
+/// unit_render_behaviour(unit);
+/// @description Draws the given Unit Instance unlit
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to render
+/// @param {real} x_offset The horizontal offset to draw the given Unit Instance with
+/// @param {real} y_offset The vertical offset to draw the given Unit Instance with
 function unit_unlit_render_behaviour(unit, x_offset = 0, y_offset = 0)
 {
 	with (unit)
@@ -133,7 +139,4 @@ function unit_unlit_render_behaviour(unit, x_offset = 0, y_offset = 0)
 		limb_primary_arm.render_unlit_behaviour(x_offset, y_offset);
 	}
 }
-
-
-
 

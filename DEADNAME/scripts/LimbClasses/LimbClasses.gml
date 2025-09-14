@@ -1,14 +1,17 @@
-//
+// Limb Animation Settings
 global.limb_walk_animation_percent_offset = 0.18;
 
-//
+// Limb Held Item Settings
+global.limb_held_item_angle_spread = 90;
+
+// Limb Type Enums
 enum LimbType
 {
 	LeftArm,
 	RightArm
 }
 
-//
+// Limb Classes
 class LimbClass define
 {
 	// Init & Destroy Methods
@@ -352,7 +355,7 @@ class LimbArmClass extends LimbClass define
 		var temp_held_item_metallicroughnessmap = global.item_packs[item_pack].held_item_data.render_metallicroughnessmap;
 		var temp_held_item_emissivemap = global.item_packs[item_pack].held_item_data.render_emissivemap;
 		
-		// Add Held Item
+		// Add Held Item to Held Item DS Lists
 		ds_list_add(limb_held_item_pack_list, item_pack);
 		
 		ds_list_add(limb_held_item_sprite_index_list, temp_held_item_diffusemap);
@@ -368,11 +371,11 @@ class LimbArmClass extends LimbClass define
 		ds_list_add(limb_held_item_metallicroughnessmap_spritepack_list, temp_held_item_metallicroughnessmap == noone ? undefined : spritepack_get_uvs_transformed(temp_held_item_diffusemap, temp_held_item_metallicroughnessmap));
 		ds_list_add(limb_held_item_emissivemap_spritepack_list, temp_held_item_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(temp_held_item_diffusemap, temp_held_item_emissivemap));
 		
-		// 
+		// Realign Limb's Held Items Angles
 		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 		{
-			//
-			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? -45 + (i * (90 / ds_list_size(limb_held_item_pack_list))) : 0);
+			// Set each Limb Held Item to spread their angles across the range of the Limb's Hand
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (-global.limb_held_item_angle_spread * 0.5) + (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
 		}
 		
 		// Toggle Held Item Exists
@@ -387,37 +390,38 @@ class LimbArmClass extends LimbClass define
 			return;
 		}
 		
-		//
+		// Establish Random Drop Held Item Index
 		var temp_drop_held_item_index = irandom(ds_list_size(limb_held_item_pack_list) - 1);
 		
+		// Find the Drop Held Item's Index if given a valid Item Pack to remove
 		if (item_pack != -1)
 		{
-			//
+			// Establish Found Matching Item Pack Boolean
 			var temp_found_matching_item_pack = false;
 			
-			//
+			// Iterate through Limb's Held Items
 			for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 			{
-				//
+				// Compare if Limb's Held Item's Item Pack matches the given Item Pack to remove
 				if (ds_list_find_value(limb_held_item_pack_list, i) == item_pack)
 				{
-					//
+					// Item Pack matches - Set to remove Held Item at this Held Item Index
 					temp_drop_held_item_index = i;
 					temp_found_matching_item_pack = true;
 					
-					//
+					// Break from Held Item Search Loop
 					break;
 				}
 			}
 			
-			//
+			// Check if Limb contains a Held Item with the given Item Pack
 			if (!temp_found_matching_item_pack)
 			{
 				return;
 			}
 		}
 		
-		//
+		// Find the Limb Held Item's Item Pack
 		var temp_drop_item_pack = ds_list_find_value(limb_held_item_pack_list, temp_drop_held_item_index);
 		
 		// Create Dropped Item Instance
@@ -457,10 +461,10 @@ class LimbArmClass extends LimbClass define
 		// Find Dropped Item Sub-Layer Index
 		var temp_drop_item_sub_layer_index = instance_exists(limb_unit) ? lighting_engine_find_object_index(limb_unit) + 1 : -1;
 		
-		//
+		// Iterate through all of the Limb's Held Items to drop each Held Item
 		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 		{
-			// 
+			// Find the Limb Held Item's Item Pack
 			var temp_drop_item_pack = ds_list_find_value(limb_held_item_pack_list, i);
 			
 			// Create Dropped Item Instance
@@ -493,35 +497,42 @@ class LimbArmClass extends LimbClass define
 		remove_all_held_items();
 	}
 	
-	static remove_held_item = function(held_item_index)
+	static remove_held_item = function(held_item_index = -1)
 	{
+		// Establish Remove Held Item Index
+		var temp_remove_held_item_index = held_item_index;
+		
 		// Check if Held Item Index exists in the valid Held Item DS List Index Range
-		if (held_item_index < 0 or held_item_index >= ds_list_size(limb_held_item_pack_list))
+		if (held_item_index == -1)
+		{
+			temp_remove_held_item_index = irandom(ds_list_size(limb_held_item_pack_list) - 1);
+		}
+		else if (held_item_index < 0 or held_item_index >= ds_list_size(limb_held_item_pack_list))
 		{
 			return;
 		}
 		
 		// Remove Held Item from Held Item DS List
-		ds_list_delete(limb_held_item_pack_list, held_item_index);
+		ds_list_delete(limb_held_item_pack_list, temp_remove_held_item_index);
 		
-		ds_list_delete(limb_held_item_sprite_index_list, held_item_index);
-		ds_list_delete(limb_held_item_image_index_list, held_item_index);
-		ds_list_delete(limb_held_item_image_angle_list, held_item_index);
+		ds_list_delete(limb_held_item_sprite_index_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_image_index_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_image_angle_list, temp_remove_held_item_index);
 		
-		ds_list_delete(limb_held_item_normal_strength_list, held_item_index);
-		ds_list_delete(limb_held_item_metallic_list, held_item_index);
-		ds_list_delete(limb_held_item_roughness_list, held_item_index);
-		ds_list_delete(limb_held_item_emissive_list, held_item_index);
+		ds_list_delete(limb_held_item_normal_strength_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_metallic_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_roughness_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_emissive_list, temp_remove_held_item_index);
 		
-		ds_list_delete(limb_held_item_normalmap_spritepack_list, held_item_index);
-		ds_list_delete(limb_held_item_metallicroughnessmap_spritepack_list, held_item_index);
-		ds_list_delete(limb_held_item_emissivemap_spritepack_list, held_item_index);
+		ds_list_delete(limb_held_item_normalmap_spritepack_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_metallicroughnessmap_spritepack_list, temp_remove_held_item_index);
+		ds_list_delete(limb_held_item_emissivemap_spritepack_list, temp_remove_held_item_index);
 		
-		// 
+		// Realign Limb's Held Items Angles
 		for (var i = 0; i < ds_list_size(limb_held_item_pack_list); i++)
 		{
-			//
-			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? -45 + (i * (90 / ds_list_size(limb_held_item_pack_list))) : 0);
+			// Set each Limb Held Item to spread their angles across the range of the Limb's Hand
+			ds_list_set(limb_held_item_image_angle_list, i, ds_list_size(limb_held_item_pack_list) > 1 ? (-global.limb_held_item_angle_spread * 0.5) + (i * (global.limb_held_item_angle_spread / ds_list_size(limb_held_item_pack_list))) : 0);
 		}
 		
 		// Toggle Held Item Exists

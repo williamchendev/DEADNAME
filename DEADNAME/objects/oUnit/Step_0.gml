@@ -1782,8 +1782,8 @@ switch (unit_equipment_animation_state)
 						item_equipped.reload_firearm(1);
 						
 						// Remove Ammo from Primary Hand's Held Item
-						limb_primary_arm.remove_held_item(0);
-						limb_secondary_arm.remove_held_item(0);
+						limb_primary_arm.remove_held_item();
+						limb_secondary_arm.remove_held_item();
 						
 						// Check if Firearm is finished being reloaded
 						if (item_equipped.firearm_ammo < global.item_packs[item_equipped.item_pack].weapon_data.firearm_ammo_max_capacity)

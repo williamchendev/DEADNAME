@@ -1,4 +1,4 @@
-//
+// Item Pack Enums
 enum ItemPack
 {
 	None,
@@ -8,6 +8,7 @@ enum ItemPack
 	Ammo
 }
 
+// Item Trait Enums
 enum ItemType
 {
 	None,
@@ -22,7 +23,7 @@ enum ItemHand
 	Both
 }
 
-// Weapon Enums
+// Weapon Trait Enums
 enum WeaponType
 {
     Default,
@@ -31,42 +32,58 @@ enum WeaponType
     BoltActionFirearm
 }
 
-// Create Item Function
+// Create Item Functions
 /// create_item_class_instance_from_item_pack(item_pack);
-/// @description Creates a WeaponClass from the given Weapon Pack
-/// @param {number} item_pack 
-/// @returns {WeaponClass} returns true if location is empty of solids and the list of platform instances
+/// @description Creates the corresponding ItemClass from the given Item Pack enum
+/// @param {number, ItemPack} item_pack The Item Pack enum to create an ItemClass from 
+/// @returns {?ItemClass, ?Struct} returns an ItemClass Instance with the given Item Pack's Settings, and noone if the Item Pack is invalid or empty
 function create_item_class_instance_from_item_pack(item_pack) 
 {
+	// Establish Return Item Class
     var temp_item_class = noone;
     
+    // Compare the Item Pack's Item Type
     if (global.item_packs[item_pack].item_type == ItemType.Weapon)
     {
+    	// Weapon Item Class Creation
     	switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
 			case WeaponType.DefaultFirearm:
 			case WeaponType.BoltActionFirearm:
+				// Firearm Item Class
 				temp_item_class = NEW(FirearmClass);
 				break;
 			default:
+				// Default Weapon Item Class
 				temp_item_class = NEW(WeaponClass);
 				break;
 		}
     }
     else if (global.item_packs[item_pack].item_type == ItemType.Default)
     {
+    	// Default Item Class Creation
     	temp_item_class = NEW(ItemClass);
     }
     else
     {
+    	// Item Type is Invalid - Early Return
     	return noone;
     }
 	
+	// Initialize Item Class with Item Pack settings
 	temp_item_class.init_item_pack(item_pack);
+	
+	// Return Item Class
 	return temp_item_class;
 }
 
-//
+/// instance_create_item(item_pack, item_x, item_y, item_count);
+/// @description Instantiates an Item Object within the active Scene at the given coordinates with the given Item Pack and number of Items
+/// @param {number, ItemPack} item_pack The Item Pack enum to create an Item Object Instance from
+/// @param {real} item_x The horizontal position to instantiate the new Item Object Instance at
+/// @param {real} item_y The vertical position to instantiate the new Item Object Instance at
+/// @param {int} item_count The number of the given Item's stack to create within the new Item Object Instance
+/// @returns {?Id.Instance, oLighting_Dynamic_Item} returns an Item Object Instance with the given Item Pack's Settings, and noone if the Item Pack is invalid or empty
 function instance_create_item(item_pack, item_x, item_y, item_count = -1)
 {
 	// Check if Item Pack is valid
@@ -108,7 +125,7 @@ function instance_create_item(item_pack, item_x, item_y, item_count = -1)
 	return temp_inventory_item_object;
 }
 
-// 
+// Empty Item Pack
 global.item_packs[ItemPack.None] = 
 {
 	item_name: "Empty",
@@ -251,7 +268,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		firearm_muzzle_y: -1,
     },
     
-    // Held Item Data
+    // Held Item Data (Weapon Reload Held Item)
 	held_item_data:
 	{
 		// Held Item Object
@@ -400,7 +417,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		firearm_muzzle_y: 0,
     },
     
-    // Held Item Data
+    // Held Item Data (Weapon Reload Held Item)
 	held_item_data:
 	{
 		// Held Item Object
@@ -549,7 +566,7 @@ global.item_packs[ItemPack.BoxRevolver] =
 		firearm_muzzle_y: -2,
     },
     
-    // Held Item Data
+    // Held Item Data (Weapon Reload Held Item)
 	held_item_data:
 	{
 		// Held Item Object

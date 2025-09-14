@@ -29,13 +29,17 @@ global.unit_inventory_ui_slot_size = 36;
 global.unit_inventory_ui_slot_padding = 10;
 global.unit_inventory_ui_slot_tier_offset = 17;
 
-//
+// Unit Death & Inventory Destruction Event Item Drop Physics Settings
 global.unit_destroy_inventory_item_drop_combat_impulse_mult = 0.7;
 
 global.unit_destroy_inventory_item_drop_random_horizontal_power = 8;
 global.unit_destroy_inventory_item_drop_random_vertical_power = 8;
 
-// Unit Inventory 
+// Unit Inventory Functions
+/// unit_inventory_slot_tier_color(slot_tier);
+/// @description This function returns the color corresponding to the given Inventory Item Slot's Tier
+/// @param {number, UnitInventorySlotTier} slot_tier The given Inventory Item Slot's Tier to find the corresponding color of
+/// @returns {Constant.Colour} Returns the color corresponding to the given Inventory Item Slot's Tier
 function unit_inventory_slot_tier_color(slot_tier)
 {
 	// Establish Slot Tier Return Color - Default White
@@ -73,7 +77,10 @@ function unit_inventory_slot_tier_color(slot_tier)
 	return temp_tier_color;
 }
 
-//
+/// unit_inventory_render_ui(unit, alpha);
+/// @description This function renders the Inventory UI of the given Unit Instance on to the LightingEngine's UI Surface with the given alpha transparency
+/// @param {Id.Instance, oUnit} unit The given Unit Instance to render their Inventory UI
+/// @param {real} alpha The transparency to draw the Inventory UI with
 function unit_inventory_render_ui(unit, alpha)
 {
 	// Check if Unit Inventory Alpha Transparency is greater than 0
@@ -239,6 +246,15 @@ function unit_inventory_render_ui(unit, alpha)
 	surface_reset_target();
 }
 
+/// unit_inventory_add_slot(unit, name, tier, horizontal_offset, vertical_offset, rotation, render_order);
+/// @description Adds an Inventory Slot to the given Unit Instance with the given Inventory Slot Settings
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to add an Item Slot to their Unit Item Inventory
+/// @param {string} name The name of the new Inventory Item Slot being added to the Unit Instance
+/// @param {number, UnitInventorySlotTier} tier The Inventory Slot Tier of the new Inventory Item Slot being added to the Unit Instance
+/// @param {real} horizontal_offset The horizontal offset of the new Inventory Item Slot's relative position located on their Unit Instance
+/// @param {real} vertical_offset The vertical offset of the new Inventory Item Slot's relative position located on their Unit Instance
+/// @param {real} rotation The angle of the new Inventory Item Slot relative to the rotation of their Unit Instance
+/// @param {number, UnitInventorySlotRenderOrder} render_order The Render Order of the new Inventory Item Slot: Front draws the Item in front of the Unit, Back draws the Item behind the Unit, None does not draw the Item when placed in the Inventory Item Slot
 function unit_inventory_add_slot(unit, name, tier, horizontal_offset, vertical_offset, rotation, render_order)
 {
 	// Check if Unit Instance Exists
@@ -303,8 +319,19 @@ function unit_inventory_add_slot(unit, name, tier, horizontal_offset, vertical_o
 	}
 }
 
+/// unit_inventory_remove_slot(unit, slot_tier);
+/// @description Removes an Inventory Slot from the given Unit Instance that shares the same given Inventory Slot Tier (and additionally drops an item physics object instance of the given item if it existed in the Unit's Inventory Slot that was removed)
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to remove an Item Slot from their Unit Inventory
+/// @param {number, UnitInventorySlotTier} slot_tier The Inventory Slot Tier of the Inventory Item Slot to remove from the Unit's Inventory
 function unit_inventory_remove_slot(unit, slot_tier)
 {
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
+	{
+		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
 	// Find the appropriate Unit Inventory Slot to remove based on the given Inventory Slot Tier
 	var temp_remove_slot_index = -1;
 	
@@ -320,13 +347,13 @@ function unit_inventory_remove_slot(unit, slot_tier)
 	// Delete the Inventory Slot from the Unit's Inventory Slot Array at the given Remove Slot Index
 	if (temp_remove_slot_index != -1)
 	{
-		//
+		// Check if Item exists in Inventory Slot being deleted and drop Item if it exists
 		if (global.item_packs[unit.inventory_slots[temp_remove_slot_index].item_pack].item_type != ItemType.None)
 		{
-			//
+			// Drop Inventory Item in Inventory Slot being deleted
 			var temp_dropped_item = unit_inventory_drop_item_instance(unit, temp_remove_slot_index);
 			
-			//
+			// Apply Physics Forces to Dropped Inventory Item
 			with (temp_dropped_item)
 			{
 				var temp_combat_impulse_horizontal_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_horizontal_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
@@ -338,23 +365,33 @@ function unit_inventory_remove_slot(unit, slot_tier)
 			}
 		}
 		
-		//
+		// Delete Inventory Slot
 		array_delete(unit.inventory_slots, temp_remove_slot_index, 1);
 	}
 }
 
+/// unit_inventory_remove_all_slots(unit);
+/// @description Removes all the Inventory Slots from the given Unit Instance's Inventory (and additionally drops the item physics object instances of the given items that exist in the Unit's Inventory Slots when they are removed)
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to remove all Inventory Item Slots from their Unit Inventory
 function unit_inventory_remove_all_slots(unit)
 {
-	//
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
+	{
+		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Iterate through all the Unit's Inventory Slots
 	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 	{
-		//
+		// Check if the Unit's Inventory Item Slot contains an Item
 		if (global.item_packs[unit.inventory_slots[i].item_pack].item_type != ItemType.None)
 		{
-			//
+			// Drop Inventory Item in Inventory Slot being deleted
 			var temp_dropped_item = unit_inventory_drop_item_instance(unit, i);
 			
-			//
+			// Apply Physics Forces to Dropped Inventory Item
 			with (temp_dropped_item)
 			{
 				var temp_combat_impulse_horizontal_vector = unit.combat_attack_impulse_power * unit.combat_attack_impulse_horizontal_vector * global.unit_destroy_inventory_item_drop_combat_impulse_mult;
@@ -371,6 +408,12 @@ function unit_inventory_remove_all_slots(unit)
 	array_clear(unit.inventory_slots);
 }
 
+/// unit_inventory_add_item(unit, item_pack, item_count);
+/// @description Adds an Item to the given Unit Instance's Inventory with the given Item Pack and the number of the item to add
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to add the Item to their Unit Inventory
+/// @param {number, ItemPack} item_pack The Item Pack of the Item to add to the Unit's Inventory
+/// @param {number} item_count The number of the given Item to be added to the Unit's Inventory
+/// @returns {number} Returns the Inventory Slot Index of the Item added to the Unit's Inventory
 function unit_inventory_add_item(unit, item_pack, item_count = 1)
 {
 	// Check if Unit Instance Exists
@@ -449,11 +492,13 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 		// Item's Placement Behaviour
 		if (unit.inventory_slots[temp_slot_index].item_instance == noone)
 		{
-			//
+			// Instantiate the placed item's Item Class Instance
 			unit.inventory_slots[temp_slot_index].item_instance = create_item_class_instance_from_item_pack(item_pack);
+			
+			// Initialize the placed item's physics properties with its given Item Class Instance
 			unit.inventory_slots[temp_slot_index].item_instance.init_item_physics(unit.inventory_slots[temp_slot_index].slot_position_x, unit.inventory_slots[temp_slot_index].slot_position_y);
 			
-			//
+			// Check if Unit should perform unequip/equip behaviour if the placed item's item slot is the same as the Unit Instance's currently selected item slot
 			if (unit.inventory_index == temp_slot_index)
 			{
 				// Reset Unit's Equipment State
@@ -476,6 +521,12 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	return temp_inventory_index;
 }
 
+/// unit_inventory_check_item(unit, item_pack, item_count);
+/// @description Checks if an Item exists within the given Unit Instance's Inventory (and optionally checks if the Unit Instance's Inventory contains a quantity of the given Item to search for)
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to search for the Item within their Unit Inventory
+/// @param {number, ItemPack} item_pack The Item Pack of the Item to search for in the Unit's Inventory
+/// @param {number} item_count The number of the given Item to check if the Unit's Inventory contains (by default this is 1)
+/// @returns {Bool} Returns true or false if the given Item (and optionally also the given quantity) exists inside the Unit's Inventory
 function unit_inventory_check_item(unit, item_pack, item_count = 1)
 {
 	// Check if Unit Instance Exists
@@ -510,6 +561,11 @@ function unit_inventory_check_item(unit, item_pack, item_count = 1)
 	return temp_item_count >= item_count;
 }
 
+/// unit_inventory_remove_item(unit, item_pack, item_count);
+/// @description Removes the given Item within the given Unit Instance's Inventory (and optionally removes a quantity of the given Item)
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to remove the Item within their Unit Inventory
+/// @param {number, ItemPack} item_pack The Item Pack of the Item to remove from the Unit's Inventory
+/// @param {number} item_count The number of the given Item to remove from the Unit's Inventory (by default this is 1)
 function unit_inventory_remove_item(unit, item_pack, item_count = 1)
 {
 	// Check if Unit Instance Exists
@@ -562,13 +618,13 @@ function unit_inventory_remove_item(unit, item_pack, item_count = 1)
 					unit.inventory_slots[i].item_instance.unequip_item();
 				}
 				
-				//
+				// Check if Item has an Item Class Instance to delete
 				if (unit.inventory_slots[i].item_instance != noone)
 				{
-					//
+					// Delete Item Class Instance
 					DELETE(unit.inventory_slots[i].item_instance);
 					
-					//
+					// Set Item Instance to empty "noone" null reference
 					unit.inventory_slots[i].item_instance = noone;
 				}
 				
@@ -589,6 +645,11 @@ function unit_inventory_remove_item(unit, item_pack, item_count = 1)
 	}
 }
 
+/// unit_inventory_take_item_instance(unit, item_instance);
+/// @description Adds an Item to a Unit's Inventory, intended to be used for Item Objects that exist in the active Scene
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to add the Item to their Unit Inventory
+/// @param {?Id.Instance, oLighting_Dynamic_Item} item_instance The given Item Instance to add to the Unit's Inventory
+/// @returns {number} Returns the inventory slot index of the Item placed within the Unit's Inventory (and returns -1 if the Item was unable to be placed within the Unit's Inventory)
 function unit_inventory_take_item_instance(unit, item_instance)
 {
 	// Check if Unit Instance and Item Instance Exist
@@ -668,23 +729,24 @@ function unit_inventory_take_item_instance(unit, item_instance)
 		// Item's Placement Behaviour
 		if (unit.inventory_slots[temp_slot_index].item_instance == noone)
 		{
+			// Check if the Item's Class Instance already exists
 			if (item_instance.item_instance == noone)
 			{
-				//
+				// Creates a new Item Class Instance for the placed Item and initializes its Item Physics
 				unit.inventory_slots[temp_slot_index].item_instance = create_item_class_instance_from_item_pack(item_instance.item_pack);
 				unit.inventory_slots[temp_slot_index].item_instance.init_item_physics(unit.inventory_slots[temp_slot_index].slot_position_x, unit.inventory_slots[temp_slot_index].slot_position_y);
 			}
 			else
 			{
-				//
+				// Places the Item Class Instance that belonged to the picked up Item in the Unit's Inventory
 				unit.inventory_slots[temp_slot_index].item_instance = item_instance.item_instance;
 				item_instance.item_instance.item_angle = sign(item_instance.item_instance.item_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
 				
-				//
+				// Remove the Item Class Instance reference from the picked up Item so it does not get deleted when the Item Object is destroyed
 				item_instance.item_instance = noone;
 			}
 			
-			//
+			// Check if Unit should perform unequip/equip behaviour if the placed item's item slot is the same as the Unit Instance's currently selected item slot
 			if (unit.inventory_index == temp_slot_index)
 			{
 				// Reset Unit's Equipment State
@@ -719,6 +781,12 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	return temp_inventory_index;
 }
 
+/// unit_inventory_drop_item_instance(unit, slot_index, drop_item_count);
+/// @description Drops a physical Item Instance from the given Inventory Slot within the given Unit Instance's Inventory (and optionally removes a quantity of the given Item to drop)
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to drop an Item from their Unit Inventory
+/// @param {number} slot_index The Inventory slot index of the Item to drop from the Unit's Inventory
+/// @param {number} drop_item_count The number of the given Item to drop from the Unit's Inventory (by default this is 1)
+/// @returns {?Id.Instance, oLighting_Dynamic_Item} Returns the Item Instance created of the dropped item (and returns noone if dropping an item for the given Unit and its Inventory Slot Index was an invalid action)
 function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -1)
 {
 	// Check if Unit Exists
@@ -765,7 +833,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 			// Create Dropped Default Item Instance
 			temp_dropped_item_instance = instance_create_depth(unit.inventory_slots[slot_index].item_instance.item_x, unit.inventory_slots[slot_index].item_instance.item_y, 0, global.item_packs[unit.inventory_slots[slot_index].item_pack].item_object, temp_dropped_item_var_struct);
 			
-			//
+			// Set Dropped Item Instance's Settings
 			with (temp_dropped_item_instance)
 			{
 				if (unit.inventory_slots[slot_index].item_count - drop_item_count > 0)
@@ -788,7 +856,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 					// Update Dropped Item's Physics
 					item_instance.update_item_physics(x, y, image_angle, item_instance.item_facing_sign);
 					
-					//
+					// Remove reference to the Item's Class Instance from the Unit's Inventory
 					unit.inventory_slots[slot_index].item_instance = noone;
 				}
 				
@@ -821,8 +889,10 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 					unit.inventory_slots[unit.inventory_index].item_instance.unequip_item();
 				}
 				
-				//
+				// Set Dropped Weapon's Item Class Instance from the Unit's Inventory
 				temp_dropped_item_weapon_instance = unit.inventory_slots[slot_index].item_instance;
+				
+				// Remove reference to the Item's Class Instance from the Unit's Inventory
 				unit.inventory_slots[slot_index].item_instance = noone;
 				
 				// Establish Weapon Instance's Physical Transform Properties
@@ -899,13 +969,13 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 		unit.inventory_slots[slot_index].item_pack = ItemPack.None;
 		unit.inventory_slots[slot_index].item_count = -1;
 		
-		//
+		// Check if Item has an Item Class Instance to delete
 		if (unit.inventory_slots[slot_index].item_instance != noone)
 		{
-			//
+			// Delete Item Class Instance
 			DELETE(unit.inventory_slots[slot_index].item_instance);
 			
-			//
+			// Set Item Instance to empty "noone" null reference
 			unit.inventory_slots[slot_index].item_instance = noone;
 		}
 		
@@ -913,14 +983,14 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 		unit_inventory_change_slot(unit, slot_index);
 	}
 	
-	// 
+	// Apply Dropped Item Instance's Settings & Behaviours
 	if (instance_exists(temp_dropped_item_instance))
 	{
 		// Apply Unit Physics Forces to Dropped Object
 		temp_dropped_item_instance.phy_position_x += unit.x_velocity;
 		temp_dropped_item_instance.phy_position_y += unit.y_velocity;
 		
-		//
+		// Set Dropped Item Instance's Item Count
 		temp_dropped_item_instance.item_count = drop_item_count;
 	}
 	
@@ -928,11 +998,10 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 	return temp_dropped_item_instance;
 }
 
-function unit_inventory_swap_item_instance()
-{
-	
-}
-
+/// unit_inventory_change_slot(unit, slot_index);
+/// @description Performs the unequip and equip behaviour of the given Unit switching their selected Inventory Slot Index to the one given
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to change their selected Inventory Slot Index
+/// @param {number} slot_index The Inventory Slot Index to switch the Unit's Inventory Slot Index to
 function unit_inventory_change_slot(unit, slot_index)
 {
 	// Check if Unit Exists
@@ -942,7 +1011,7 @@ function unit_inventory_change_slot(unit, slot_index)
 		return;
 	}
 	
-	//
+	// Unit Inventory Slot Unequip Behaviour
 	if (unit.inventory_index == slot_index)
 	{
 		
@@ -961,7 +1030,7 @@ function unit_inventory_change_slot(unit, slot_index)
 		}
 	}
 	
-	//
+	// Unit Inventory Slot Equip Behaviour
 	switch (slot_index == -1 ? ItemPack.None : global.item_packs[unit.inventory_slots[slot_index].item_pack].item_type)
 	{
 		case ItemType.None:
@@ -993,6 +1062,6 @@ function unit_inventory_change_slot(unit, slot_index)
 			break;
 	}
 	
-	//
+	// Set the Unit's new Inventory Slot Index
 	unit.inventory_index = slot_index;
 }

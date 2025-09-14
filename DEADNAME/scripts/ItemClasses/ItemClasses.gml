@@ -1,7 +1,7 @@
-//
+// Item Pickup Settings
 global.item_displacement_lerp_exponent = 3;
 
-//
+// Item Classes
 class ItemClass define
 {
 	// Init & Destroy Methods
