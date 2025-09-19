@@ -61,11 +61,22 @@ item_drop_offset_length = 12;
 item_drop_offset_transition_spd = 0.15;
 item_slot_to_holding_position_transition_spd = 0.1;
 
-weapon_vertical_bobbing_height = 1;
+thrown_item_slot_to_holding_position_transition_spd = 0.1;
+thrown_aiming_aim_transition_spd = 0.07;
+thrown_aiming_aim_transition_multiplier = 0.98;
+thrown_aiming_hip_transition_spd = 0.12;
+thrown_aiming_hip_transition_multiplier = 0.90;
+thrown_aiming_angle_transition_spd = 0.08;
+
+thrown_weapon_idle_primary_bobbing_angle = 4;
+thrown_weapon_idle_secondary_bobbing_angle = -4;
+thrown_weapon_moving_bobbing_angle = 4;
 
 firearm_aiming_aim_transition_spd = 0.2;
 firearm_aiming_hip_transition_spd = 0.1;
 firearm_aiming_angle_transition_spd = 0.17;
+
+firearm_weapon_moving_vertical_bobbing_height = 1;
 
 firearm_recoil_recovery_spd = 0.2;
 firearm_recoil_angle_recovery_spd = 0.1;
@@ -78,8 +89,8 @@ combat_target_aim_recovery_spd = 0.1;
 combat_target_vertical_interpolation_min = 0.4;
 combat_target_vertical_interpolation_max = 0.85;
 
-combat_attack_delay_min = 2;
-combat_attack_delay_max = 22;
+combat_attack_delay_min = 26;
+combat_attack_delay_max = 48;
 
 // Inventory Settings
 item_drop_base_horizontal_power = 8;
@@ -149,6 +160,9 @@ unit_equipment_position_y = 0;
 item_drop_offset_transition_value = 0;
 item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
 
+thrown_weapon_aim_transition_value = 0;
+thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
+
 firearm_weapon_hand_pivot_offset_ax = 0;
 firearm_weapon_hand_pivot_offset_ay = 0;
 firearm_weapon_hand_pivot_offset_bx = 0;
@@ -164,7 +178,7 @@ combat_strategy = UnitCombatStrategy.NullStrategy;
 combat_priority_rank = UnitCombatPriorityRank.NullPriorityCombat;
 
 combat_target_aim_value = 0;
-combat_target_vertical_interpolation = 0.5;
+combat_target_vertical_interpolation = 0.7;
 
 combat_attack_delay = random_range(combat_attack_delay_min, combat_attack_delay_max);
 
@@ -193,15 +207,6 @@ unit_lift_strength = 0;
 
 player_inventory_ui_fade_timer = 0;
 player_inventory_ui_alpha = 0;
-
-// Unit Limb Arms
-limb_primary_arm = NEW(LimbArmClass);
-limb_primary_arm.init_arm(id, LimbType.LeftArm, unit_pack);
-
-limb_secondary_arm = NEW(LimbArmClass);
-limb_secondary_arm.init_arm(id, LimbType.RightArm, unit_pack);
-
-limb_animation_double_cycle = false;
 
 // Input Action Variables
 input_left = false;
@@ -265,23 +270,33 @@ unit_spritepack_jump_emissivemap = global.unit_packs[unit_pack].jump_emissivemap
 unit_spritepack_aim_emissivemap = global.unit_packs[unit_pack].aim_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_sprite, global.unit_packs[unit_pack].aim_emissivemap);
 unit_spritepack_aim_walk_emissivemap = global.unit_packs[unit_pack].aim_walk_emissivemap == noone ? undefined : spritepack_get_uvs_transformed(global.unit_packs[unit_pack].aim_walk_sprite, global.unit_packs[unit_pack].aim_walk_emissivemap);
 
+// Unit Limb Arms
+limb_primary_arm = NEW(LimbArmClass);
+limb_primary_arm.init_arm(id, LimbType.LeftArm, unit_pack);
+
+limb_secondary_arm = NEW(LimbArmClass);
+limb_secondary_arm.init_arm(id, LimbType.RightArm, unit_pack);
+
+limb_animation_double_cycle = false;
+
 // Instantiate Unit Inventory Slots
 global.unit_packs[unit_pack].inventory_slot_init(id);
 
 // Weapons DEBUG
 if (player_input)
 {
-	unit_inventory_add_item(id, ItemPack.BoxRevolver);
+	//unit_inventory_add_item(id, ItemPack.BoxRevolver);
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
+	unit_inventory_add_item(id, ItemPack.StickGrenade, 3);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
-	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.OilerSMG);
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }
 else
 {
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
 
-	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, random(1.0) >= 0 ? ItemPack.OilerSMG : ItemPack.CorsoRifle);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }

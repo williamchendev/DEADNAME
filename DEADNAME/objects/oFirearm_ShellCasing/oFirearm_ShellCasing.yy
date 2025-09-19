@@ -11,8 +11,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.1",},
   ],
   "parent":{
-    "name":"Dropped",
-    "path":"folders/Objects/Entities/Firearms/Dropped.yy",
+    "name":"Firearms",
+    "path":"folders/Objects/Entities/BulkDynamic/Firearms.yy",
   },
   "parentObjectId":{
     "name":"oBulkDynamic_DroppedItem",

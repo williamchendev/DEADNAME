@@ -872,6 +872,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 			var temp_dropped_item_weapon_position_x = unit.inventory_slots[slot_index].slot_position_x;
 			var temp_dropped_item_weapon_position_y = unit.inventory_slots[slot_index].slot_position_y;
 			
+			var temp_dropped_item_weapon_xscale = 1;
 			var temp_dropped_item_weapon_yscale = sign(unit.draw_xscale) != 0 ? sign(unit.draw_xscale) : 1;
 			
 			// Check if Inventory Slot contains Weapon Instance
@@ -903,6 +904,30 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 				temp_dropped_item_weapon_yscale = temp_dropped_item_weapon_instance.item_yscale * temp_dropped_item_weapon_instance.item_facing_sign;
 			}
 			
+			//
+			switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.weapon_type)
+			{
+				case WeaponType.DefaultThrown:
+					//
+					temp_dropped_item_weapon_angle = unit.limb_primary_arm.limb_pivot_b_angle + (unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
+					temp_dropped_item_weapon_position_x = unit.limb_primary_arm.limb_held_item_x;
+					temp_dropped_item_weapon_position_y = unit.limb_primary_arm.limb_held_item_y;
+					
+					temp_dropped_item_weapon_xscale = unit.limb_primary_arm.limb_xscale;
+					temp_dropped_item_weapon_yscale = 1;
+					
+					temp_dropped_item_weapon_instance.item_xscale = temp_dropped_item_weapon_xscale;
+					temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
+					temp_dropped_item_weapon_instance.item_facing_sign = 1;
+					
+					// Reset Unit Thrown Weapon Animation Behaviour
+					unit.thrown_weapon_aim_transition_value = 0;
+					unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
+					break;
+				default:
+					break;
+			}
+			
 			// Establish Dropped Weapon Item Instance's Struct
 			var temp_dropped_item_weapon_var_struct = 
 			{ 
@@ -910,6 +935,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 				item_pack: unit.inventory_slots[slot_index].item_pack,
 				item_count: 1,
 				image_angle: temp_dropped_item_weapon_angle,
+				image_xscale: temp_dropped_item_weapon_xscale,
 				image_yscale: temp_dropped_item_weapon_yscale
 			};
 			

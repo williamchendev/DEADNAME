@@ -7,6 +7,7 @@
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Item","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"propertyId":{"name":"normal_map","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"resource":{"name":"sArkov_RifleAmmo_NormalMap","path":"sprites/sArkov_RifleAmmo_NormalMap/sArkov_RifleAmmo_NormalMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sArkov_RifleAmmo_NormalMap",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Item","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"propertyId":{"name":"metallicroughness_map","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"resource":{"name":"sArkov_RifleAmmo_MetallicRoughnessMap","path":"sprites/sArkov_RifleAmmo_MetallicRoughnessMap/sArkov_RifleAmmo_MetallicRoughnessMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sArkov_RifleAmmo_MetallicRoughnessMap",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Item","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
   ],
   "parent":{
     "name":"Default",

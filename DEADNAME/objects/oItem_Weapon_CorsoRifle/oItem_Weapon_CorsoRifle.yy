@@ -4,7 +4,9 @@
   "eventList":[],
   "managed":true,
   "name":"oItem_Weapon_CorsoRifle",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Item","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"propertyId":{"name":"normal_strength","path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.9",},
+  ],
   "parent":{
     "name":"Weapons",
     "path":"folders/Objects/Entities/Items/Weapons.yy",

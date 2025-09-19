@@ -257,6 +257,9 @@ class WeaponClass extends ItemClass define
 		item_unit.item_equipped = self;
 		item_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Melee;
 		item_unit.unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
+		
+		// Reset Weapon Attack Condition 
+		weapon_attack_reset = false;
 	}
 	
 	static unequip_item = function()
@@ -374,6 +377,16 @@ class ThrownClass extends WeaponClass define
 	{
 		// Inherited Item Pack Init Behaviour
 		super.init_item_pack(init_item_pack);
+		
+		// Thrown Weapon Render Settings
+		thrown_weapon_render = true;
+		
+		// Thrown Weapon Aiming Variables
+		thrown_weapon_direction = 1;
+		
+		// Thrown Weapon Limb Animation Variables
+		primary_limb_pivot_a_angle = 0;
+		primary_limb_pivot_b_angle = 0;
 	}
 	
 	static init_item_physics = function(init_item_x = 0, init_item_y = 0, init_item_angle = undefined)
@@ -389,16 +402,31 @@ class ThrownClass extends WeaponClass define
 		super.equip_item(unit_instance);
 		
 		// Set Unit Weapon Behaviour
-		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
+		item_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
 		
-		// Reset Thrown Attack Condition 
-		weapon_attack_reset = false;
+		// Set Thrown Weapon Aiming Behaviours
+		thrown_weapon_direction = sign(item_unit.draw_xscale);
+		thrown_weapon_angle = thrown_weapon_direction >= 0 ? 1 : 179;
+		
+		// Set Unit Held Item Animation Behaviour
+		item_unit.limb_primary_arm.add_held_item(item_pack);
+		
+		// Reset Unit Thrown Weapon Animation Behaviour
+		item_unit.thrown_weapon_aim_transition_value = 0;
+		item_unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
 	}
 	
 	static unequip_item = function()
 	{
+		// Reset Unit Held Item Animation Behaviour
+		item_unit.limb_primary_arm.remove_all_held_items();
+		item_unit.limb_secondary_arm.remove_all_held_items();
+		
 		// Default Unequip Weapon Behaviour
 		super.unequip_item();
+		
+		// Reet Thrown Weapon Render Toggle
+		thrown_weapon_render = true;
 	}
 	
 	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
@@ -461,7 +489,7 @@ class ThrownClass extends WeaponClass define
 			case WeaponType.DefaultThrown:
 			default:
 				weapon_attack_reset = false;
-			    break;
+				break;
 		}
 		
 		// Thrown Attack Success
@@ -471,6 +499,12 @@ class ThrownClass extends WeaponClass define
 	// Render Methods
 	static render_behaviour = function() 
 	{
+		// Check Render Enabled
+		if (!thrown_weapon_render)
+		{
+			return;
+		}
+		
 		// Draw Weapon
 		lighting_engine_render_sprite_ext
 		(
@@ -499,6 +533,12 @@ class ThrownClass extends WeaponClass define
 	
 	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0) 
 	{
+		// Check Render Enabled
+		if (!thrown_weapon_render)
+		{
+			return;
+		}
+		
 		// Draw Weapon
 		draw_sprite_ext(item_sprite, item_image_index, item_x + x_offset, item_y + y_offset, item_xscale, item_yscale * item_facing_sign, item_angle, c_white, 1);
 	}
@@ -561,18 +601,15 @@ class FirearmClass extends WeaponClass define
 		super.equip_item(unit_instance);
 		
 		// Set Unit Weapon Behaviour
-		unit_instance.unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
-		
-		// Reset Firearm Attack Condition 
-		weapon_attack_reset = false;
+		item_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Firearm;
 		
 		// Reset Firearm Reload Conditions
 		firearm_spin_reload = false;
 		firearm_spin_reload_angle = 0;
 		
 		// Reset Unit Animation Values
-		unit_instance.firearm_weapon_primary_hand_pivot_transition_value = 0;
-		unit_instance.firearm_weapon_secondary_hand_pivot_transition_value = 0;
+		item_unit.firearm_weapon_primary_hand_pivot_transition_value = 0;
+		item_unit.firearm_weapon_secondary_hand_pivot_transition_value = 0;
 	}
 	
 	static unequip_item = function()
@@ -878,7 +915,7 @@ class FirearmClass extends WeaponClass define
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid))
 				{
 					// Firearm Projectile Contact has been made
-					temp_firearm_attack_contact = true;
+					temp_firearm_attack_contact = random(1.0) <= (instance_exists(item_unit) and item_unit.player_input) ? 0.5 : 0.25;
 					break;
 				}
 			}
@@ -888,7 +925,7 @@ class FirearmClass extends WeaponClass define
 		var temp_hitmarker_x = item_x + temp_firearm_muzzle_horizontal_offset + rot_point_x(temp_firearm_attack_distance, 0);
 		var temp_hitmarker_y = item_y + temp_firearm_muzzle_vertical_offset + rot_point_y(temp_firearm_attack_distance, 0);
 		
-		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height) or true)
+		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height))
 		{
 			instance_create_depth(temp_hitmarker_x, temp_hitmarker_y, 0, oImpact_Hitmarker, { hitmarker_contact: temp_firearm_attack_contact, trail_angle: (temp_firing_angle + 540) mod 360, trail_distance: temp_firearm_attack_distance });
 		}
@@ -911,7 +948,15 @@ class FirearmClass extends WeaponClass define
 				break;
 			default:
 				weapon_attack_reset = false;
-			    break;
+			break;
+		}
+		
+		// Reset Unit's AI Driven Firearm Attack Condition
+		if (instance_exists(item_unit) and !weapon_attack_reset)
+		{
+			// Reset Combat Target Timers & Attack Delay
+			item_unit.combat_target_aim_value = 0;
+			item_unit.combat_attack_delay = random_range(item_unit.combat_attack_delay_min, item_unit.combat_attack_delay_max);
 		}
 		
 		// Firing Success

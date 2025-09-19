@@ -5,7 +5,8 @@ enum ItemPack
 	CorsoRifle,
 	OilerSMG,
 	BoxRevolver,
-	Ammo
+	Ammo,
+	StickGrenade
 }
 
 // Item Trait Enums
@@ -168,7 +169,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		render_emissivemap: noone,
 		
 		// PBR Settings
-		normal_strength: 1,
+		normal_strength: 0.9,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -196,7 +197,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		
 		// Weapon Properties
 		firearm_attack_delay: 14,
-		firearm_attack_distance: 600,
+		firearm_attack_distance: 1200,
 		firearm_attack_hit_percentage: 0.5,
 		
 		firearm_attack_damage: 3,
@@ -345,7 +346,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		
 		// Weapon Properties
 		firearm_attack_delay: 5,
-		firearm_attack_distance: 400,
+		firearm_attack_distance: 1200,
 		firearm_attack_hit_percentage: 0.25,
 		
 		firearm_attack_damage: 2,
@@ -494,7 +495,7 @@ global.item_packs[ItemPack.BoxRevolver] =
 		
 		// Weapon Properties
 		firearm_attack_delay: 28,
-		firearm_attack_distance: 800,
+		firearm_attack_distance: 1200,
 		firearm_attack_hit_percentage: 0.25,
 		
 		firearm_attack_damage: 3,
@@ -615,7 +616,7 @@ global.item_packs[ItemPack.Ammo] =
 		render_emissivemap: noone,
 		
 		// Weapon PBR Settings
-		normal_strength: 1,
+		normal_strength: 0.8,
 		metallic: false,
 		roughness: 0.2,
 		emissive: 0,
@@ -640,4 +641,89 @@ global.item_packs[ItemPack.Ammo] =
 		ammo_object: oFirearm_ShellCasing
 	},
 };
+
+//
+global.item_packs[ItemPack.StickGrenade] =
+{
+	// Item Data
+	item_name: "Potato Masher Stick Grenade",
+	item_description: "Fml",
+	item_dialogue: "Fml",
+	item_sprite: sItem_PotatoMasherGrenade,
+	item_type: ItemType.Weapon,
+	item_hand: ItemHand.Primary,
+	item_slot_tier: UnitInventorySlotTier.Light,
+	item_object: oItem_Weapon_StickGrenade,
+	item_count_limit: 3,
+	
+	// Render Data
+	render_data:
+	{
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sArkov_PotatoMasher_Grenade,
+		render_normalmap:sArkov_PotatoMasher_Grenade_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
+	
+	// Weapon Data
+    weapon_data:
+    {
+		// Weapon Type
+		weapon_type: WeaponType.DefaultThrown,
+		
+		// Weapon Properties
+		firearm_attack_delay: 28,
+		firearm_attack_distance: 1200,
+		firearm_attack_hit_percentage: 0.25,
+		
+		firearm_attack_damage: 3,
+		firearm_attack_luck_damage: 0.7,
+		
+		firearm_attack_impulse_power: 50,
+		
+		// Weapon Safety Angles
+		firearm_idle_safety_angle: -18,
+		firearm_moving_safety_angle: -28,
+		firearm_reload_safety_angle: 25,
+		
+		// Weapon Position Offset
+		weapon_position_horizontal_offset: 7,
+		weapon_position_vertical_offset: 0,
+		
+		// Weapon Hand Positions
+		weapon_hand_position_primary_x: 0,
+		weapon_hand_position_primary_y: 2,
+		
+		weapon_hand_position_offhand_x: 0,
+		weapon_hand_position_offhand_y: 2,
+    },
+    
+    // Held Item Data (Weapon Thrown Held Item)
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: noone,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sArkov_PotatoMasher_Grenade,
+		render_normalmap:sArkov_PotatoMasher_Grenade_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
+};
+
+
 

@@ -40,6 +40,9 @@ class LimbArmClass extends LimbClass define
 		// Limb Unit
 		limb_unit = noone;
 		
+		// Limb Settings
+		limb_held_item_depth = 2;
+		
 		// Limb Variables
 		limb_xscale = 1;  // Facing Direction of Limb's Actor
 		
@@ -187,12 +190,16 @@ class LimbArmClass extends LimbClass define
 		limb_jump_animation_offset_x = rot_dist_x(limb_length * limb_jump_animation_extension_percent, limb_anchor_jump_animation_angle + 270);
 		limb_jump_animation_offset_y = rot_dist_y(limb_length * limb_jump_animation_extension_percent);
 		
+		// Set Limb Draw Settings
+		limb_alpha = init_unit.image_alpha;
+		limb_color = init_unit.image_blend;
+		
 		// Set Limb PBR Settings
 		limb_normal_strength = global.unit_packs[init_unit_pack].normal_strength;
 		limb_metallic = global.unit_packs[init_unit_pack].metallic;
 		limb_roughness = global.unit_packs[init_unit_pack].roughness;
 		limb_emissive = global.unit_packs[init_unit_pack].emissive;
-		limb_emissive_multiplier = 1;
+		limb_emissive_multiplier = init_unit.emissive_multiplier;
 		
 		// Set Limb Sprite Packs
 		limb_normalmap_spritepack = limb_normalmap == noone ? undefined : spritepack_get_uvs_transformed(limb_sprite, limb_normalmap);
@@ -335,8 +342,8 @@ class LimbArmClass extends LimbClass define
 		if (limb_held_item_exists)
 		{
 			rot_prefetch(limb_pivot_b_angle);
-			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - 2);
-			limb_held_item_y = limb_pivot_by + rot_dist_y((limb_length / 2) - 2);
+			limb_held_item_x = limb_pivot_bx + rot_dist_x((limb_length / 2) - limb_held_item_depth);
+			limb_held_item_y = limb_pivot_by + rot_dist_y((limb_length / 2) - limb_held_item_depth);
 		}
 	}
 	
@@ -564,6 +571,21 @@ class LimbArmClass extends LimbClass define
 	// Render Methods
 	static render_behaviour = function()
 	{
+		// Update Limb Render Settings from Limb's Unit
+		if (limb_unit != noone)
+		{
+			// Update Limb Draw Settings
+			limb_color = limb_unit.image_blend;
+			limb_alpha = limb_unit.image_alpha;
+			
+			// Update Limb PBR Settings
+			limb_normal_strength = limb_unit.normal_strength;
+			limb_metallic = limb_unit.metallic;
+			limb_roughness = limb_unit.roughness;
+			limb_emissive = limb_unit.emissive;
+			limb_emissive_multiplier = limb_unit.emissive_multiplier;
+		}
+		
 		// Draw Arm
 		if (!limb_held_item_exists)
 		{
@@ -587,8 +609,8 @@ class LimbArmClass extends LimbClass define
 				limb_xscale, 
 				1, 
 				limb_pivot_a_angle + 90, 
-				c_white, 
-				1
+				limb_color, 
+				limb_alpha
 			);
 			
 			lighting_engine_render_sprite_ext
@@ -611,8 +633,8 @@ class LimbArmClass extends LimbClass define
 				limb_xscale, 
 				1, 
 				limb_pivot_b_angle + 90, 
-				c_white, 
-				1
+				limb_color, 
+				limb_alpha
 			);
 			return;
 		}
@@ -624,6 +646,31 @@ class LimbArmClass extends LimbClass define
 		switch (limb_type)
 		{
 			case LimbType.LeftArm:
+				// Draw Limb Upper Arm
+				lighting_engine_render_sprite_ext
+				(
+					limb_sprite, 
+					0, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].texture : undefined, 
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].texture : undefined, 
+					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
+					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].uvs : undefined,
+					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].uvs : undefined,
+					limb_normal_strength,
+					limb_metallic,
+					limb_roughness,
+					limb_emissive,
+					limb_emissive_multiplier,
+					limb_pivot_ax, 
+					limb_pivot_ay, 
+					limb_xscale, 
+					1, 
+					limb_pivot_a_angle + 90, 
+					limb_color, 
+					limb_alpha
+				);
+				
 				// Draw Held Item(s)
 				repeat (ds_list_size(limb_held_item_pack_list))
 				{
@@ -663,39 +710,15 @@ class LimbArmClass extends LimbClass define
 						limb_xscale, 
 						1,
 						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
-						c_white, 
-						1
+						limb_color, 
+						limb_alpha
 					);
 					
 					// Increment Held Item Index
 					temp_held_item_index++;
 				}
 				
-				// Draw Limb
-				lighting_engine_render_sprite_ext
-				(
-					limb_sprite, 
-					0, 
-					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].texture : undefined,
-					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].texture : undefined, 
-					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].texture : undefined, 
-					limb_normalmap_spritepack != undefined ? limb_normalmap_spritepack[0].uvs : undefined,
-					limb_metallicroughnessmap_spritepack != undefined ? limb_metallicroughnessmap_spritepack[0].uvs : undefined,
-					limb_emissivemap_spritepack != undefined ? limb_emissivemap_spritepack[0].uvs : undefined,
-					limb_normal_strength,
-					limb_metallic,
-					limb_roughness,
-					limb_emissive,
-					limb_emissive_multiplier,
-					limb_pivot_ax, 
-					limb_pivot_ay, 
-					limb_xscale, 
-					1, 
-					limb_pivot_a_angle + 90, 
-					c_white, 
-					1
-				);
-				
+				// Draw Limb Forearm
 				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
@@ -716,12 +739,12 @@ class LimbArmClass extends LimbClass define
 					limb_xscale, 
 					1, 
 					limb_pivot_b_angle + 90, 
-					c_white, 
-					1
+					limb_color, 
+					limb_alpha
 				);
 				break;
 			case LimbType.RightArm:
-				// Draw Limb
+				// Draw Limb Upper Arm
 				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
@@ -742,10 +765,11 @@ class LimbArmClass extends LimbClass define
 					limb_xscale, 
 					1, 
 					limb_pivot_a_angle + 90, 
-					c_white, 
-					1
+					limb_color, 
+					limb_alpha
 				);
 				
+				// Draw Limb Forearm
 				lighting_engine_render_sprite_ext
 				(
 					limb_sprite, 
@@ -766,8 +790,8 @@ class LimbArmClass extends LimbClass define
 					limb_xscale, 
 					1, 
 					limb_pivot_b_angle + 90, 
-					c_white, 
-					1
+					limb_color, 
+					limb_alpha
 				);
 				
 				// Draw Held Item(s)
@@ -809,8 +833,8 @@ class LimbArmClass extends LimbClass define
 						limb_xscale, 
 						1,
 						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
-						c_white, 
-						1
+						limb_color, 
+						limb_alpha
 					);
 					
 					// Increment Held Item Index
@@ -824,11 +848,19 @@ class LimbArmClass extends LimbClass define
 	
 	static render_unlit_behaviour = function(x_offset = 0, y_offset = 0)
 	{
+		// Update Limb Render Settings from Limb's Unit
+		if (limb_unit != noone)
+		{
+			// Update Limb Draw Settings
+			limb_color = limb_unit.image_blend;
+			limb_alpha = limb_unit.image_alpha;
+		}
+		
 		// Draw Arm
 		if (!limb_held_item_exists)
 		{
-			draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+			draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, limb_color, limb_alpha);
+			draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, limb_color, limb_alpha);
 			return;
 		}
 		
@@ -839,6 +871,9 @@ class LimbArmClass extends LimbClass define
 		switch (limb_type)
 		{
 			case LimbType.LeftArm:
+				// Draw Limb Upper Arm
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, limb_color, limb_alpha);
+				
 				// Draw Held Item(s)
 				repeat (ds_list_size(limb_held_item_pack_list))
 				{
@@ -858,22 +893,23 @@ class LimbArmClass extends LimbClass define
 						limb_xscale, 
 						1,
 						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
-						c_white, 
-						1
+						limb_color, 
+						limb_alpha
 					);
 					
 					// Increment Held Item Index
 					temp_held_item_index++;
 				}
 				
-				// Draw Limb
-				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				// Draw Limb Forearm
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, limb_color, limb_alpha);
 				break;
 			case LimbType.RightArm:
-				// Draw Limb
-				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, c_white, 1);
-				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, c_white, 1);
+				// Draw Limb Upper Arm
+				draw_sprite_ext(limb_sprite, 0, limb_pivot_ax + x_offset, limb_pivot_ay + y_offset, limb_xscale, 1, limb_pivot_a_angle + 90, limb_color, limb_alpha);
+				
+				// Draw Limb Forearm
+				draw_sprite_ext(limb_sprite, 1, limb_pivot_bx + x_offset, limb_pivot_by + y_offset, limb_xscale, 1, limb_pivot_b_angle + 90, limb_color, limb_alpha);
 				
 				// Draw Held Item(s)
 				repeat (ds_list_size(limb_held_item_pack_list))
@@ -894,8 +930,8 @@ class LimbArmClass extends LimbClass define
 						limb_xscale, 
 						1,
 						limb_pivot_b_angle + (limb_xscale < 0 ? 180 : 0) + (temp_held_item_image_angle * limb_xscale),
-						c_white, 
-						1
+						limb_color, 
+						limb_alpha
 					);
 					
 					// Increment Held Item Index

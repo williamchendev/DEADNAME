@@ -49,38 +49,48 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Right Arm
 	var ragdoll_arm2top_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_arms_offset * temp_unit_direction), 
-	    unit_instance.y - temp_chest_top_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Arm,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap,
-	        image_index: 0,
-	        image_xscale: -temp_unit_direction
-	    }
+		unit_instance.x + (temp_arms_offset * temp_unit_direction), 
+		unit_instance.y - temp_chest_top_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Arm,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 0,
+			image_xscale: -temp_unit_direction
+		}
 	);
 	
 	var ragdoll_arm2bot_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_arms_offset * temp_unit_direction), 
-	    unit_instance.y - temp_chest_top_height + temp_arm_bbox_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Arm,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap,
-	        image_index: 1,
-	        image_xscale: -temp_unit_direction
-	    }
+		unit_instance.x + (temp_arms_offset * temp_unit_direction), 
+		unit_instance.y - temp_chest_top_height + temp_arm_bbox_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Arm,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 1,
+			image_xscale: -temp_unit_direction
+		}
     );
 	
 	temp_ragdoll_struct.right_forearm = ragdoll_arm2bot_obj;
@@ -89,38 +99,48 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Right Leg
 	var ragdoll_rightleg2_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_unit_direction >= 0 ? temp_legs_offset : -temp_legs_offset + 1), 
-	    unit_instance.y - temp_leg_bbox_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Leg,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap,
-	        image_index: 1,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x + (temp_unit_direction >= 0 ? temp_legs_offset : -temp_legs_offset + 1), 
+		unit_instance.y - temp_leg_bbox_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Leg,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 1,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	var ragdoll_rightleg1_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_unit_direction >= 0 ? temp_legs_offset : -temp_legs_offset + 1), 
-	    unit_instance.y - (temp_leg_bbox_height * 2), 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Leg,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap,
-	        image_index: 0,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x + (temp_unit_direction >= 0 ? temp_legs_offset : -temp_legs_offset + 1), 
+		unit_instance.y - (temp_leg_bbox_height * 2), 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Leg,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 0,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	temp_ragdoll_struct.right_upper_leg = ragdoll_rightleg1_obj;
@@ -129,38 +149,48 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Left Leg
 	var ragdoll_leftleg2_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_unit_direction >= 0 ? -temp_legs_offset : temp_legs_offset - 1), 
-	    unit_instance.y - temp_leg_bbox_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Leg,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap,
-	        image_index: 1,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x + (temp_unit_direction >= 0 ? -temp_legs_offset : temp_legs_offset - 1), 
+		unit_instance.y - temp_leg_bbox_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Leg,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 1,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	var ragdoll_leftleg1_obj = instance_create_depth
 	(
-	    unit_instance.x + (temp_unit_direction >= 0 ? -temp_legs_offset : temp_legs_offset - 1), 
-	    unit_instance.y - (temp_leg_bbox_height * 2), 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Leg,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap,
-	        image_index: 0,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x + (temp_unit_direction >= 0 ? -temp_legs_offset : temp_legs_offset - 1), 
+		unit_instance.y - (temp_leg_bbox_height * 2), 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Leg,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_leg_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_leg_right_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 0,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	temp_ragdoll_struct.left_upper_leg = ragdoll_leftleg1_obj;
@@ -169,19 +199,24 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Torso
 	var ragdoll_chest_bot_obj = instance_create_depth
 	(
-	    unit_instance.x, 
-	    unit_instance.y - temp_chest_top_height + temp_chest_bbox_top_height + temp_chest_bbox_center_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Chest,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_sprite,
-	        normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_normalmap,
-	        metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_metallicroughnessmap,
-	        emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_emissivemap,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x, 
+		unit_instance.y - temp_chest_top_height + temp_chest_bbox_top_height + temp_chest_bbox_center_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Chest,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_sprite,
+			normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_normalmap,
+			metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_metallicroughnessmap,
+			emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_bot_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	temp_ragdoll_struct.torso = ragdoll_chest_bot_obj;
@@ -189,19 +224,24 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Chest
 	var ragdoll_chest_top_obj = instance_create_depth
 	(
-	    unit_instance.x, 
-	    unit_instance.y - temp_chest_top_height + temp_chest_bbox_top_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Chest,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_sprite,
-	        normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_normalmap,
-	        metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_metallicroughnessmap,
-	        emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_emissivemap,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x, 
+		unit_instance.y - temp_chest_top_height + temp_chest_bbox_top_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Chest,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_sprite,
+			normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_normalmap,
+			metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_metallicroughnessmap,
+			emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_chest_top_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_xscale: temp_unit_direction
+		}
 	);
 	
 	temp_ragdoll_struct.chest = ragdoll_chest_top_obj;
@@ -209,38 +249,48 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Left Arm
 	var temp_ragdoll_left_upperarm_obj = instance_create_depth
 	(
-	    unit_instance.x - (temp_arms_offset * temp_unit_direction), 
-	    unit_instance.y - temp_chest_top_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Arm,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap,
-	        image_index: 0,
-	        image_xscale: -temp_unit_direction,
-	    }
+		unit_instance.x - (temp_arms_offset * temp_unit_direction), 
+		unit_instance.y - temp_chest_top_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Arm,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 0,
+			image_xscale: -temp_unit_direction,
+		}
 	);
 	
 	var temp_ragdoll_left_forearm_obj = instance_create_depth
 	(
-	    unit_instance.x - (temp_arms_offset * temp_unit_direction), 
-	    unit_instance.y - temp_chest_top_height + temp_arm_bbox_height, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Arm,
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite,
-	        normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap,
-	        metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap,
-	        emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap,
-	        image_index: 1,
-	        image_xscale: -temp_unit_direction
-	    }
+		unit_instance.x - (temp_arms_offset * temp_unit_direction), 
+		unit_instance.y - temp_chest_top_height + temp_arm_bbox_height, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Arm,
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_sprite : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_sprite,
+			normal_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_normalmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_normalmap,
+			metallicroughness_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_metallicroughnessmap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_metallicroughnessmap,
+			emissive_map: temp_unit_direction >= 0 ? global.unit_packs[unit_instance.unit_pack].ragdoll_arm_left_emissivemap : global.unit_packs[unit_instance.unit_pack].ragdoll_arm_right_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_index: 1,
+			image_xscale: -temp_unit_direction
+		}
 	);
 	
 	temp_ragdoll_struct.left_forearm = temp_ragdoll_left_forearm_obj;
@@ -249,19 +299,24 @@ function unit_create_ragdoll(unit_instance)
 	// Create Ragdoll UnitBody Head 
 	var temp_ragdoll_head_obj = instance_create_depth
 	(
-	    unit_instance.x, 
-	    unit_instance.y - temp_chest_top_height + temp_head_offset, 
-	    unit_instance.depth, 
-	    oRagdollEntity_UnitBody_Head, 
-	    {
-	        layer: unit_instance.layer,
-	        sub_layer_name: LightingEngineDefaultLayer,
-	        sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_head_sprite,
-	        normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_normalmap,
-	        metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_metallicroughnessmap,
-	        emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_emissivemap,
-	        image_xscale: temp_unit_direction
-	    }
+		unit_instance.x, 
+		unit_instance.y - temp_chest_top_height + temp_head_offset, 
+		unit_instance.depth, 
+		oRagdollEntity_UnitBody_Head, 
+		{
+			layer: unit_instance.layer,
+			sub_layer_name: LightingEngineDefaultLayer,
+			sprite_index: global.unit_packs[unit_instance.unit_pack].ragdoll_head_sprite,
+			normal_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_normalmap,
+			metallicroughness_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_metallicroughnessmap,
+			emissive_map: global.unit_packs[unit_instance.unit_pack].ragdoll_head_emissivemap,
+			normal_strength: unit_instance.normal_strength,
+			metallic: unit_instance.metallic,
+			roughness: unit_instance.roughness,
+			emissive: unit_instance.emissive,
+			emissive_multiplier: unit_instance.emissive_multiplier,
+			image_xscale: temp_unit_direction
+		}
     );
     
 	temp_ragdoll_struct.head = temp_ragdoll_head_obj;

@@ -152,7 +152,7 @@ global.unit_packs[UnitPack.Default] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -167,6 +167,15 @@ global.unit_packs[UnitPack.Default] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -32,
+	
+	equipment_thrown_pivot_x: 0,
+	equipment_thrown_pivot_y: -35,
+	
+	equipment_thrown_primary_aim_x: -8,
+	equipment_thrown_primary_aim_y: 4,
+	
+	equipment_thrown_offhand_aim_x: 24,
+	equipment_thrown_offhand_aim_y: 0,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -198,7 +207,7 @@ global.unit_packs[UnitPack.Default] =
 	inventory_slot_init: function(unit)
 	{
 		unit_inventory_add_slot(unit, "Backpack", UnitInventorySlotTier.Hefty, 0, -28, 35, UnitInventorySlotRenderOrder.Back);
-		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -4, -24, 180, UnitInventorySlotRenderOrder.Front);
+		unit_inventory_add_slot(unit, "Belt Box", UnitInventorySlotTier.Moderate, -8, -24, 180, UnitInventorySlotRenderOrder.Front);
 		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
 		unit_inventory_add_slot(unit, "Pocket", UnitInventorySlotTier.Light, 4, -26, 0, UnitInventorySlotRenderOrder.None);
 	}
@@ -279,7 +288,7 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -294,6 +303,9 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	
 	equipment_item_x: 4,
 	equipment_item_y: -16,
+	
+	equipment_thrown_pivot_x: 0,
+	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -406,7 +418,7 @@ global.unit_packs[UnitPack.Wolf] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -513,7 +525,7 @@ global.unit_packs[UnitPack.Director] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -528,6 +540,9 @@ global.unit_packs[UnitPack.Director] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -35,
+	
+	equipment_thrown_pivot_x: 0,
+	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -640,7 +655,7 @@ global.unit_packs[UnitPack.Knives] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -767,7 +782,7 @@ global.unit_packs[UnitPack.Martyr] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -782,6 +797,9 @@ global.unit_packs[UnitPack.Martyr] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -35,
+	
+	equipment_thrown_pivot_x: 0,
+	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -1,
 	equipment_firearm_hip_y: -30,
@@ -874,7 +892,7 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
@@ -889,6 +907,9 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -35,
+	
+	equipment_thrown_pivot_x: 0,
+	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,
@@ -1001,7 +1022,7 @@ global.unit_packs[UnitPack.NorthernBrigadeOfficer] =
 	// PBR Settings
 	normal_strength: 1,
 	metallic: false,
-	roughness: 0.1,
+	roughness: 0.25,
 	emissive: 0.0,
 	
 	// Limb & Equipment Positions
