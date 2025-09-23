@@ -907,7 +907,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 			//
 			switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.weapon_type)
 			{
-				case WeaponType.DefaultThrown:
+				case WeaponType.Thrown:
 					//
 					temp_dropped_item_weapon_angle = unit.limb_primary_arm.limb_pivot_b_angle + (unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
 					temp_dropped_item_weapon_position_x = unit.limb_primary_arm.limb_held_item_x;
@@ -920,9 +920,16 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 					temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
 					temp_dropped_item_weapon_instance.item_facing_sign = 1;
 					
-					// Reset Unit Thrown Weapon Animation Behaviour
-					unit.thrown_weapon_aim_transition_value = 0;
-					unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
+					//
+					if (unit.equipment_active and unit.inventory_index == slot_index)
+					{
+						// Reset Unit Held Item Animation Behaviour
+						unit.limb_primary_arm.remove_all_held_items();
+						unit.limb_secondary_arm.remove_all_held_items();
+						
+						// Reset Unit Thrown Weapon Animation Behaviour
+						unit.unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+					}
 					break;
 				default:
 					break;
@@ -1040,7 +1047,11 @@ function unit_inventory_change_slot(unit, slot_index)
 	// Unit Inventory Slot Unequip Behaviour
 	if (unit.inventory_index == slot_index)
 	{
-		
+		if (unit.inventory_index != -1 and unit.inventory_slots[unit.inventory_index].item_instance == unit.item_equipped)
+		{
+			// Item is already Equipped
+			return;
+		}
 	}
 	else if (unit.inventory_index != -1 and unit.inventory_slots[unit.inventory_index].item_pack != ItemPack.None)
 	{

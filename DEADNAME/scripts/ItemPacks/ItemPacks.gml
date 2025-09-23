@@ -6,7 +6,8 @@ enum ItemPack
 	OilerSMG,
 	BoxRevolver,
 	Ammo,
-	StickGrenade
+	StickGrenade,
+	Molotov
 }
 
 // Item Trait Enums
@@ -28,9 +29,11 @@ enum ItemHand
 enum WeaponType
 {
     Default,
-    DefaultMelee,
-    DefaultThrown,
-    DefaultFirearm,
+    Melee,
+    Thrown,
+    Grenade,
+    Molotov,
+    Firearm,
     BoltActionFirearm
 }
 
@@ -50,11 +53,13 @@ function create_item_class_instance_from_item_pack(item_pack)
     	// Weapon Item Class Creation
     	switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
-			case WeaponType.DefaultThrown:
+			case WeaponType.Thrown:
+			case WeaponType.Grenade:
+			case WeaponType.Molotov:
 				// Thrown Weapon Item Class
 				temp_item_class = NEW(ThrownClass);
 				break;
-			case WeaponType.DefaultFirearm:
+			case WeaponType.Firearm:
 			case WeaponType.BoltActionFirearm:
 				// Firearm Item Class
 				temp_item_class = NEW(FirearmClass);
@@ -328,7 +333,7 @@ global.item_packs[ItemPack.OilerSMG] =
     weapon_data:
     {
 		// Weapon Type
-		weapon_type: WeaponType.DefaultFirearm,
+		weapon_type: WeaponType.Firearm,
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
@@ -477,7 +482,7 @@ global.item_packs[ItemPack.BoxRevolver] =
     weapon_data:
     {
 		// Weapon Type
-		weapon_type: WeaponType.DefaultFirearm,
+		weapon_type: WeaponType.Firearm,
 		
 		// Weapon Ammo
 		firearm_ammo_item_pack: ItemPack.Ammo,
@@ -676,33 +681,21 @@ global.item_packs[ItemPack.StickGrenade] =
     weapon_data:
     {
 		// Weapon Type
-		weapon_type: WeaponType.DefaultThrown,
+		weapon_type: WeaponType.Grenade,
 		
 		// Weapon Properties
-		firearm_attack_delay: 28,
-		firearm_attack_distance: 1200,
-		firearm_attack_hit_percentage: 0.25,
 		
-		firearm_attack_damage: 3,
-		firearm_attack_luck_damage: 0.7,
+		// Throw Animation Settings
+		thrown_swing_underhand: false,
 		
-		firearm_attack_impulse_power: 50,
+		// Operate Animation
+		thrown_weapon_operate_angle: -20,
 		
-		// Weapon Safety Angles
-		firearm_idle_safety_angle: -18,
-		firearm_moving_safety_angle: -28,
-		firearm_reload_safety_angle: 25,
+		thrown_weapon_operate_position_x: 0,
+		thrown_weapon_operate_position_y: 2,
 		
-		// Weapon Position Offset
-		weapon_position_horizontal_offset: 7,
-		weapon_position_vertical_offset: 0,
-		
-		// Weapon Hand Positions
-		weapon_hand_position_primary_x: 0,
-		weapon_hand_position_primary_y: 2,
-		
-		weapon_hand_position_offhand_x: 0,
-		weapon_hand_position_offhand_y: 2,
+		thrown_weapon_operate_action_horizontal_offset: 6,
+		thrown_weapon_operate_action_vertical_offset: 2,
     },
     
     // Held Item Data (Weapon Thrown Held Item)
@@ -716,6 +709,77 @@ global.item_packs[ItemPack.StickGrenade] =
 		render_normalmap:sArkov_PotatoMasher_Grenade_NormalMap,
 		render_metallicroughnessmap: noone,
 		render_emissivemap: noone,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
+};
+
+//
+global.item_packs[ItemPack.Molotov] =
+{
+	// Item Data
+	item_name: "Molotov Cocktail",
+	item_description: "Fml",
+	item_dialogue: "Fml",
+	item_sprite: sItem_PotatoMasherGrenade,
+	item_type: ItemType.Weapon,
+	item_hand: ItemHand.Primary,
+	item_slot_tier: UnitInventorySlotTier.Light,
+	item_object: oItem_Weapon_StickGrenade,
+	item_count_limit: 3,
+	
+	// Render Data
+	render_data:
+	{
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sArkov_Molotov,
+		render_normalmap:sArkov_Molotov_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: sArkov_Molotov_EmissiveMap,
+		
+		// Weapon PBR Settings
+		normal_strength: 1,
+		metallic: false,
+		roughness: 0.2,
+		emissive: 0,
+	},
+	
+	// Weapon Data
+    weapon_data:
+    {
+		// Weapon Type
+		weapon_type: WeaponType.Molotov,
+		
+		// Weapon Properties
+		
+		// Throw Animation Settings
+		thrown_swing_underhand: true,
+		
+		// Operate Animation
+		thrown_weapon_operate_angle: -20,
+		
+		thrown_weapon_operate_position_x: 2,
+		thrown_weapon_operate_position_y: -6,
+		
+		thrown_weapon_operate_action_horizontal_offset: 0,
+		thrown_weapon_operate_action_vertical_offset: 0,
+    },
+    
+    // Held Item Data (Weapon Thrown Held Item)
+	held_item_data:
+	{
+		// Held Item Object
+		held_item_object: noone,
+		
+		// Diffuse Map, Normal Map, MetallicRoughness Map, and Emissive Map
+		render_sprite: sArkov_Molotov,
+		render_normalmap:sArkov_Molotov_NormalMap,
+		render_metallicroughnessmap: noone,
+		render_emissivemap: sArkov_Molotov_EmissiveMap,
 		
 		// Weapon PBR Settings
 		normal_strength: 1,

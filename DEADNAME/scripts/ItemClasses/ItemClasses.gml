@@ -384,9 +384,15 @@ class ThrownClass extends WeaponClass define
 		// Thrown Weapon Aiming Variables
 		thrown_weapon_direction = 1;
 		
+		// Thrown Weapon Safety
+		thrown_weapon_safety_active = true;
+		
 		// Thrown Weapon Limb Animation Variables
 		primary_limb_pivot_a_angle = 0;
 		primary_limb_pivot_b_angle = 0;
+		
+		secondary_limb_pivot_a_angle = 0;
+		secondary_limb_pivot_b_angle = 0;
 	}
 	
 	static init_item_physics = function(init_item_x = 0, init_item_y = 0, init_item_angle = undefined)
@@ -403,17 +409,31 @@ class ThrownClass extends WeaponClass define
 		
 		// Set Unit Weapon Behaviour
 		item_unit.unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
+		item_unit.unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+		
+		// Reset Unit Held Item Animation Behaviour
+		item_unit.limb_primary_arm.remove_all_held_items();
+		item_unit.limb_secondary_arm.remove_all_held_items();
 		
 		// Set Thrown Weapon Aiming Behaviours
 		thrown_weapon_direction = sign(item_unit.draw_xscale);
 		thrown_weapon_angle = thrown_weapon_direction >= 0 ? 1 : 179;
 		
-		// Set Unit Held Item Animation Behaviour
-		item_unit.limb_primary_arm.add_held_item(item_pack);
+		// Reset Thrown Weapon Render Toggle
+		thrown_weapon_render = true;
+		
+		// Reset Weapon Safety
+		thrown_weapon_safety_active = true;
 		
 		// Reset Unit Thrown Weapon Animation Behaviour
 		item_unit.thrown_weapon_aim_transition_value = 0;
+		item_unit.thrown_weapon_operate_transition_value = 0;
+		item_unit.thrown_weapon_operate_action_transition_value = 0;
+		item_unit.thrown_weapon_swing_transition_value = 0;
+		
 		item_unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
+		
+		item_unit.thrown_weapon_swing_climax_angle = 0;
 	}
 	
 	static unequip_item = function()
@@ -425,8 +445,11 @@ class ThrownClass extends WeaponClass define
 		// Default Unequip Weapon Behaviour
 		super.unequip_item();
 		
-		// Reet Thrown Weapon Render Toggle
+		// Reset Thrown Weapon Render Toggle
 		thrown_weapon_render = true;
+		
+		// Reset Weapon Safety
+		thrown_weapon_safety_active = true;
 	}
 	
 	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
@@ -486,7 +509,7 @@ class ThrownClass extends WeaponClass define
 		// Reset Thrown Weapon Attack Condition
 		switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
-			case WeaponType.DefaultThrown:
+			case WeaponType.Thrown:
 			default:
 				weapon_attack_reset = false;
 				break;
@@ -494,6 +517,23 @@ class ThrownClass extends WeaponClass define
 		
 		// Thrown Attack Success
 		return true;
+	}
+	
+	// Thrown Weapon Methods
+	static disable_safety = function()
+	{
+		// Disable Weapon Safety
+		thrown_weapon_safety_active = true;
+		
+		//
+		if (global.item_packs[item_pack].weapon_data.weapon_type == WeaponType.Molotov)
+		{
+			
+		}
+		else if (global.item_packs[item_pack].weapon_data.weapon_type == WeaponType.Grenade)
+		{
+			
+		}
 	}
 	
 	// Render Methods
@@ -940,7 +980,7 @@ class FirearmClass extends WeaponClass define
 		// Reset Firearm Attack Condition
 		switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
-			case WeaponType.DefaultFirearm:
+			case WeaponType.Firearm:
 				weapon_attack_reset = firearm_ammo <= 0 ? false : weapon_attack_reset;
 				break;
 			case WeaponType.BoltActionFirearm:

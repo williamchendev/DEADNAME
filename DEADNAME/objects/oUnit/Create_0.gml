@@ -33,6 +33,7 @@ max_velocity = 10; // Unit's Maximum Horizontal or Vertical Velocity
 // Animation Settings
 unit_animation_state = UnitAnimationState.Idle;
 unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
 unit_firearm_reload_animation_state = UnitFirearmReloadAnimationState.Reload_End;
 
 animation_asymptotic_tolerance = 0.1;
@@ -61,12 +62,54 @@ item_drop_offset_length = 12;
 item_drop_offset_transition_spd = 0.15;
 item_slot_to_holding_position_transition_spd = 0.1;
 
+thrown_weapon_lerp_threshold = 0.05;
 thrown_item_slot_to_holding_position_transition_spd = 0.1;
-thrown_aiming_aim_transition_spd = 0.07;
-thrown_aiming_aim_transition_multiplier = 0.98;
-thrown_aiming_hip_transition_spd = 0.12;
-thrown_aiming_hip_transition_multiplier = 0.90;
+
+thrown_aiming_aim_transition_spd = 0.1;
+thrown_aiming_aim_transition_multiplier = 1;
+thrown_aiming_hip_transition_spd = 0.04;
+thrown_aiming_hip_transition_multiplier = 0.94;
 thrown_aiming_angle_transition_spd = 0.08;
+thrown_aiming_animation_curve_exponent = 3;
+
+thrown_weapon_swing_overhand_transition_spd = 0.2;
+thrown_weapon_swing_overhand_transition_multiplier = 1.5;
+thrown_weapon_swing_overhand_animation_curve_exponent = 5;
+thrown_weapon_swing_overhand_climax_angle_spd = 80;
+thrown_weapon_swing_overhand_climax_duration = 12;
+
+thrown_weapon_swing_underhand_transition_spd = 0.1;
+thrown_weapon_swing_underhand_transition_multiplier = 1.15;
+thrown_weapon_swing_underhand_animation_curve_exponent = 2;
+thrown_weapon_swing_underhand_climax_angle_spd = -30;
+thrown_weapon_swing_underhand_climax_duration = 8;
+
+thrown_weapon_operate_action_spd = 0.2;
+thrown_weapon_operate_animation_curve_exponent = 2;
+thrown_weapon_operate_action_animation_curve_exponent = 3;
+
+thrown_idle_primary_limb_pivot_a_angle = 245;
+thrown_idle_primary_limb_pivot_b_angle = -30;
+thrown_idle_secondary_limb_pivot_a_angle = -75;
+thrown_idle_secondary_limb_pivot_b_angle = -80;
+
+thrown_aiming_primary_limb_pivot_a_angle = 190;
+thrown_aiming_primary_limb_pivot_b_angle = 40;
+thrown_aiming_secondary_limb_pivot_a_angle = -10;
+thrown_aiming_secondary_limb_pivot_b_angle = 20;
+
+thrown_swing_overhand_start_primary_limb_pivot_a_angle = 190;
+thrown_swing_overhand_start_primary_limb_pivot_b_angle = 190;
+thrown_swing_overhand_end_primary_limb_pivot_a_angle = 0;
+thrown_swing_overhand_end_primary_limb_pivot_b_angle = -10;
+
+thrown_swing_underhand_start_primary_limb_pivot_a_angle = -170;
+thrown_swing_underhand_start_primary_limb_pivot_b_angle = -170;
+thrown_swing_underhand_end_primary_limb_pivot_a_angle = 0;
+thrown_swing_underhand_end_primary_limb_pivot_b_angle = 10;
+
+thrown_swing_secondary_limb_pivot_a_angle = -100;
+thrown_swing_secondary_limb_pivot_b_angle = 30;
 
 thrown_weapon_idle_primary_bobbing_angle = 4;
 thrown_weapon_idle_secondary_bobbing_angle = -4;
@@ -161,7 +204,13 @@ item_drop_offset_transition_value = 0;
 item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
 
 thrown_weapon_aim_transition_value = 0;
+thrown_weapon_swing_transition_value = 0;
+thrown_weapon_operate_transition_value = 0;
+thrown_weapon_operate_action_transition_value = 0;
 thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
+
+thrown_weapon_swing_climax_timer = 0;
+thrown_weapon_swing_climax_angle = 0;
 
 firearm_weapon_hand_pivot_offset_ax = 0;
 firearm_weapon_hand_pivot_offset_ay = 0;
@@ -287,7 +336,7 @@ if (player_input)
 {
 	//unit_inventory_add_item(id, ItemPack.BoxRevolver);
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
-	unit_inventory_add_item(id, ItemPack.StickGrenade, 3);
+	unit_inventory_add_item(id, ItemPack.Molotov, 3);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);

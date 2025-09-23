@@ -18,6 +18,18 @@ enum UnitEquipmentAnimationState
     FirearmReload
 }
 
+enum UnitThrownWeaponAnimationState
+{
+	GrabWeapon,
+	GrabWeapon_HandFumble,
+	OperateAction_MoveHandsToReadyWeapon,
+	OperateAction_PerformAction,
+	OperateAction_HandFumble,
+	ThrowWindup,
+	ThrowSwing,
+	ThrowSwingClimax
+}
+
 enum UnitFirearmReloadAnimationState
 {
 	Reload_End,
@@ -168,14 +180,8 @@ global.unit_packs[UnitPack.Default] =
 	equipment_item_x: 0,
 	equipment_item_y: -32,
 	
-	equipment_thrown_pivot_x: 0,
-	equipment_thrown_pivot_y: -35,
-	
-	equipment_thrown_primary_aim_x: -8,
-	equipment_thrown_primary_aim_y: 4,
-	
-	equipment_thrown_offhand_aim_x: 24,
-	equipment_thrown_offhand_aim_y: 0,
+	equipment_thrown_weapon_operate_pivot_x: 9,
+	equipment_thrown_weapon_operate_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -303,9 +309,6 @@ global.unit_packs[UnitPack.MoralistWilliam] =
 	
 	equipment_item_x: 4,
 	equipment_item_y: -16,
-	
-	equipment_thrown_pivot_x: 0,
-	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -540,9 +543,6 @@ global.unit_packs[UnitPack.Director] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -35,
-	
-	equipment_thrown_pivot_x: 0,
-	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -30,
@@ -798,9 +798,6 @@ global.unit_packs[UnitPack.Martyr] =
 	equipment_item_x: 0,
 	equipment_item_y: -35,
 	
-	equipment_thrown_pivot_x: 0,
-	equipment_thrown_pivot_y: -32,
-	
 	equipment_firearm_hip_x: -1,
 	equipment_firearm_hip_y: -30,
 	
@@ -907,9 +904,6 @@ global.unit_packs[UnitPack.NorthernBrigadeSoldier] =
 	
 	equipment_item_x: 0,
 	equipment_item_y: -35,
-	
-	equipment_thrown_pivot_x: 0,
-	equipment_thrown_pivot_y: -32,
 	
 	equipment_firearm_hip_x: -2,
 	equipment_firearm_hip_y: -27,

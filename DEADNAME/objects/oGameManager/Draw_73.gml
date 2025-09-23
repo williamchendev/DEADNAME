@@ -42,10 +42,21 @@ else if (cursor_icon)
 else if (!global.debug)
 {
 	// Draw Cursor Crosshair
-	if (instance_exists(player_unit) and player_unit.equipment_active)
+	if (instance_exists(player_unit) and player_unit.equipment_active and global.item_packs[player_unit.item_equipped.item_pack].item_type == ItemType.Weapon)
 	{
-		// Draw Crosshair Cursor
-		draw_sprite(sUI_CursorCrosshairIcons, 1, cursor_x, cursor_y);
+		// Draw Weapon Crosshair Cursor
+		switch (global.item_packs[player_unit.item_equipped.item_pack].weapon_data.weapon_type)
+		{
+			case WeaponType.Thrown:
+			case WeaponType.Grenade:
+			case WeaponType.Molotov:
+				draw_sprite(sUI_CursorCrosshairIcons, 3, cursor_x, cursor_y);
+				break;
+			case WeaponType.Firearm:
+			case WeaponType.BoltActionFirearm:
+				draw_sprite(sUI_CursorCrosshairIcons, 1, cursor_x, cursor_y);
+				break;
+		}
 	}
 	else
 	{

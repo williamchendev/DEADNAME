@@ -4,7 +4,7 @@
 function unit_set_hand_fumble_animation(hand_fumble_animation_duration)
 {
     hand_fumble_animation_timer = hand_fumble_animation_duration;
-					
+	
 	hand_fumble_animation_transition_value = 0;
 	hand_fumble_animation_cycle_timer = 0;
 	hand_fumble_animation_offset_ax = 0;
