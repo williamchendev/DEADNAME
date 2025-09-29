@@ -23,8 +23,8 @@ enum UnitThrownWeaponAnimationState
 	GrabWeapon,
 	GrabWeapon_HandFumble,
 	OperateAction_MoveHandsToReadyWeapon,
-	OperateAction_PerformAction,
-	OperateAction_HandFumble,
+	Grenade_PinPull,
+	Molotov_IgniteHandFumble,
 	ThrowWindup,
 	ThrowSwing,
 	ThrowSwingClimax

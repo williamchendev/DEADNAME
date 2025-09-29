@@ -67,7 +67,7 @@ thrown_item_slot_to_holding_position_transition_spd = 0.1;
 
 thrown_aiming_aim_transition_spd = 0.1;
 thrown_aiming_aim_transition_multiplier = 1;
-thrown_aiming_hip_transition_spd = 0.04;
+thrown_aiming_hip_transition_spd = 0.06;
 thrown_aiming_hip_transition_multiplier = 0.94;
 thrown_aiming_angle_transition_spd = 0.08;
 thrown_aiming_animation_curve_exponent = 3;
@@ -336,7 +336,7 @@ if (player_input)
 {
 	//unit_inventory_add_item(id, ItemPack.BoxRevolver);
 	unit_inventory_add_item(id, ItemPack.Ammo, 6);
-	unit_inventory_add_item(id, ItemPack.Molotov, 3);
+	unit_inventory_add_item(id, ItemPack.StickGrenade, 3);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);

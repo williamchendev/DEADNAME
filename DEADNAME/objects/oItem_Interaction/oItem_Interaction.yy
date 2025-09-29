@@ -8,8 +8,8 @@
   "name":"oItem_Interaction",
   "overriddenProperties":[],
   "parent":{
-    "name":"Templates",
-    "path":"folders/Objects/Entities/Items/Templates.yy",
+    "name":"Items",
+    "path":"folders/Objects/Entities/Items.yy",
   },
   "parentObjectId":{
     "name":"oInteraction",

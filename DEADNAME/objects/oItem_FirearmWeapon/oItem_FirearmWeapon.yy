@@ -1,22 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"oItem_Weapon",
+  "%Name":"oItem_FirearmWeapon",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"oSolid","path":"objects/oSolid/oSolid.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"oSolidRotation","path":"objects/oSolidRotation/oSolidRotation.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oItem_Weapon",
+  "name":"oItem_FirearmWeapon",
   "overriddenProperties":[],
   "parent":{
     "name":"Templates",
     "path":"folders/Objects/Entities/Items/Templates.yy",
   },
   "parentObjectId":{
-    "name":"oLighting_Dynamic_Item",
-    "path":"objects/oLighting_Dynamic_Item/oLighting_Dynamic_Item.yy",
+    "name":"oItem_DefaultWeapon",
+    "path":"objects/oItem_DefaultWeapon/oItem_DefaultWeapon.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

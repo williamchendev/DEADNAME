@@ -686,7 +686,7 @@ global.item_packs[ItemPack.StickGrenade] =
 		// Weapon Properties
 		
 		// Throw Animation Settings
-		thrown_swing_underhand: false,
+		thrown_weapon_swing_underhand: false,
 		
 		// Operate Animation
 		thrown_weapon_operate_angle: -20,
@@ -757,13 +757,13 @@ global.item_packs[ItemPack.Molotov] =
 		// Weapon Properties
 		
 		// Throw Animation Settings
-		thrown_swing_underhand: true,
+		thrown_weapon_swing_underhand: true,
 		
 		// Operate Animation
 		thrown_weapon_operate_angle: -20,
 		
 		thrown_weapon_operate_position_x: 2,
-		thrown_weapon_operate_position_y: -6,
+		thrown_weapon_operate_position_y: -8,
 		
 		thrown_weapon_operate_action_horizontal_offset: 0,
 		thrown_weapon_operate_action_vertical_offset: 0,

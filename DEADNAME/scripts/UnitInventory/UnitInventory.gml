@@ -868,9 +868,11 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 			// Create Dropped Item Object
 			var temp_dropped_item_weapon_instance = noone;
 			
-			var temp_dropped_item_weapon_angle = 0;
+			// Establish Dropped Weapon Position, Rotation, and Scale
 			var temp_dropped_item_weapon_position_x = unit.inventory_slots[slot_index].slot_position_x;
 			var temp_dropped_item_weapon_position_y = unit.inventory_slots[slot_index].slot_position_y;
+			
+			var temp_dropped_item_weapon_angle = 0;
 			
 			var temp_dropped_item_weapon_xscale = 1;
 			var temp_dropped_item_weapon_yscale = sign(unit.draw_xscale) != 0 ? sign(unit.draw_xscale) : 1;
@@ -904,31 +906,45 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 				temp_dropped_item_weapon_yscale = temp_dropped_item_weapon_instance.item_yscale * temp_dropped_item_weapon_instance.item_facing_sign;
 			}
 			
-			//
+			// Update Dropped Weapon Physical Properties based on Weapon Type Behaviour
 			switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.weapon_type)
 			{
 				case WeaponType.Thrown:
-					//
-					temp_dropped_item_weapon_angle = unit.limb_primary_arm.limb_pivot_b_angle + (unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
-					temp_dropped_item_weapon_position_x = unit.limb_primary_arm.limb_held_item_x;
-					temp_dropped_item_weapon_position_y = unit.limb_primary_arm.limb_held_item_y;
-					
-					temp_dropped_item_weapon_xscale = unit.limb_primary_arm.limb_xscale;
-					temp_dropped_item_weapon_yscale = 1;
-					
-					temp_dropped_item_weapon_instance.item_xscale = temp_dropped_item_weapon_xscale;
-					temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
-					temp_dropped_item_weapon_instance.item_facing_sign = 1;
-					
-					//
+				case WeaponType.Grenade:
+				case WeaponType.Molotov:
+					// Dropped Thrown Weapon Behaviour
 					if (unit.equipment_active and unit.inventory_index == slot_index)
 					{
-						// Reset Unit Held Item Animation Behaviour
-						unit.limb_primary_arm.remove_all_held_items();
-						unit.limb_secondary_arm.remove_all_held_items();
-						
-						// Reset Unit Thrown Weapon Animation Behaviour
-						unit.unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+						// Check if Unit's Primary Hand is Holding Thrown Weapon
+						if (ds_list_size(unit.limb_primary_arm.limb_held_item_pack_list) > 0)
+						{
+							// Set Thrown Weapon Dropped Item Position from Primary Hand Position
+							temp_dropped_item_weapon_position_x = unit.limb_primary_arm.limb_held_item_x;
+							temp_dropped_item_weapon_position_y = unit.limb_primary_arm.limb_held_item_y;
+							
+							// Set Thrown Weapon Dropped Item Angle from Primary Hand Angle
+							temp_dropped_item_weapon_angle = unit.limb_primary_arm.limb_pivot_b_angle + (unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
+							
+							// Set Thrown Weapon Dropped Item Scale from Primary Hand Direction
+							temp_dropped_item_weapon_xscale = unit.limb_primary_arm.limb_xscale;
+							temp_dropped_item_weapon_yscale = 1;
+							
+							// Reset Unit Held Item Animation Behaviour
+							unit.limb_primary_arm.remove_all_held_items();
+							unit.limb_secondary_arm.remove_all_held_items();
+							
+							// Reset Unit Thrown Weapon Animation Behaviour
+							unit.unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+							
+							// Update Dropped Thrown Weapon Instance's Properties with Unit's Held Item Properties
+							temp_dropped_item_weapon_instance.item_x = temp_dropped_item_weapon_position_x;
+							temp_dropped_item_weapon_instance.item_y = temp_dropped_item_weapon_position_y;
+							
+							temp_dropped_item_weapon_instance.item_angle = temp_dropped_item_weapon_angle;
+							
+							temp_dropped_item_weapon_instance.item_xscale = temp_dropped_item_weapon_xscale;
+							temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
+						}
 					}
 					break;
 				default:

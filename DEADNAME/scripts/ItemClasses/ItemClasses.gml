@@ -510,6 +510,8 @@ class ThrownClass extends WeaponClass define
 		switch (global.item_packs[item_pack].weapon_data.weapon_type)
 		{
 			case WeaponType.Thrown:
+			case WeaponType.Grenade:
+			case WeaponType.Molotov:
 			default:
 				weapon_attack_reset = false;
 				break;
@@ -523,7 +525,7 @@ class ThrownClass extends WeaponClass define
 	static disable_safety = function()
 	{
 		// Disable Weapon Safety
-		thrown_weapon_safety_active = true;
+		thrown_weapon_safety_active = false;
 		
 		//
 		if (global.item_packs[item_pack].weapon_data.weapon_type == WeaponType.Molotov)

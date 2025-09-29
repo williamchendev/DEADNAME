@@ -1,17 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"oItem_ThrownWeapon",
-  "eventList":[],
+  "%Name":"oItem_DefaultWeapon",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"oItem_ThrownWeapon",
+  "name":"oItem_DefaultWeapon",
   "overriddenProperties":[],
   "parent":{
     "name":"Templates",
     "path":"folders/Objects/Entities/Items/Templates.yy",
   },
   "parentObjectId":{
-    "name":"oItem_DefaultWeapon",
-    "path":"objects/oItem_DefaultWeapon/oItem_DefaultWeapon.yy",
+    "name":"oItem_Default",
+    "path":"objects/oItem_Default/oItem_Default.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

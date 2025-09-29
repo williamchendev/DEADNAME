@@ -10,8 +10,8 @@
     "path":"folders/Objects/Entities/Items/Weapons.yy",
   },
   "parentObjectId":{
-    "name":"oItem_Weapon",
-    "path":"objects/oItem_Weapon/oItem_Weapon.yy",
+    "name":"oItem_FirearmWeapon",
+    "path":"objects/oItem_FirearmWeapon/oItem_FirearmWeapon.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
