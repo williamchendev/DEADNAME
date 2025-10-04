@@ -623,7 +623,7 @@ global.item_packs[ItemPack.Ammo] =
 		// Weapon PBR Settings
 		normal_strength: 0.8,
 		metallic: false,
-		roughness: 0.2,
+		roughness: 0.15,
 		emissive: 0,
 	},
 	

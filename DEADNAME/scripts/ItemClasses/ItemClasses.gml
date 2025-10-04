@@ -504,7 +504,53 @@ class ThrownClass extends WeaponClass define
 			return false;
 		}
 		
+		//
+		var temp_thrown_weapon_projectile_x = item_unit.limb_primary_arm.limb_held_item_x;
+		var temp_thrown_weapon_projectile_y = item_unit.limb_primary_arm.limb_held_item_y;
+		var temp_thrown_weapon_projectile_angle = item_unit.limb_primary_arm.limb_pivot_b_angle + (item_unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
+		
 		// Thrown Weapon Behaviour
+		var temp_thrown_weapon_projectile_var_struct =
+		{
+			sub_layer_index: lighting_engine_find_object_index(item_unit) + 1,
+			item_pack: item_pack,
+			item_count: 1,
+			item_instance: noone,
+			image_angle: temp_thrown_weapon_projectile_angle,
+			image_xscale: item_unit.limb_primary_arm.limb_xscale,
+			image_yscale: 1,
+			projectile_physics_enabled: true,
+			projectile_initial_velocity: 5,
+			projectile_initial_direction: thrown_weapon_angle,
+			projectile_rotate_speed: 10 * item_unit.limb_primary_arm.limb_xscale
+		};
+		
+		//
+		item_unit.limb_primary_arm.remove_all_held_items();
+		
+		//
+		var temp_thrown_weapon_instance = noone;
+		
+		// Check if Inventory Slot contains Weapon Instance
+		if (item_unit.inventory_slots[item_unit.inventory_index].item_count - 1 > 0)
+		{
+			// Instantiate New Thrown Weapon Instance
+			temp_thrown_weapon_instance = create_item_class_instance_from_item_pack(item_pack);
+			temp_thrown_weapon_instance.init_item_physics(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, temp_thrown_weapon_projectile_angle);
+		}
+		else
+		{
+			// Set Thrown Weapon's Item Class Instance from the Unit's Inventory
+			temp_thrown_weapon_instance = item_unit.item_equipped;
+			
+			// Unequip Weapon if Item's Weapon Instance is Equipped
+			unequip_item();
+		}
+		
+		// Create Thrown Weapon Projectile Instance
+		var temp_thrown_weapon_projectile_instance = instance_create_depth(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, 0, global.item_packs[item_pack].item_object, temp_thrown_weapon_projectile_var_struct);
+		temp_thrown_weapon_projectile_instance.item_instance = temp_thrown_weapon_instance;
+		temp_thrown_weapon_projectile_instance.phy_rotation = -temp_thrown_weapon_projectile_angle;
 		
 		// Reset Thrown Weapon Attack Condition
 		switch (global.item_packs[item_pack].weapon_data.weapon_type)
@@ -522,6 +568,41 @@ class ThrownClass extends WeaponClass define
 	}
 	
 	// Thrown Weapon Methods
+	static predict_angle = function(initial_velocity, start_x, start_y, target_x, target_y)
+	{
+		//
+		var temp_gravity = 0.12;
+		var temp_air_resistance = 1.5; // The higher it is technically the less air resisteance there is (Yeah I know this is fucked, but it's too late to club all the fish that learned to walk out of the ocean)
+		
+		//
+		var temp_delta_x = target_x - start_x;
+		var temp_delta_y = -(target_y - start_y);
+		
+		//
+		var temp_descriminator = (power(initial_velocity, 4) * power(temp_air_resistance, 2)) - (temp_gravity * ((temp_gravity * power(temp_delta_x, 2)) + (2 * temp_delta_y * power(initial_velocity, 2) * temp_air_resistance)));
+		
+		//
+		show_debug_message(temp_descriminator);
+		
+		//
+		if (temp_descriminator < 0)
+		{
+			// 
+			return undefined;
+		}
+		
+		//
+		var temp_low_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		var temp_high_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) + sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		
+		// This code is because my aiming code is umm... mirrored in a way that's fucked
+		temp_low_angle = target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
+		temp_high_angle = target_x < start_x ? (temp_high_angle + 180) mod 360 : temp_high_angle;
+		
+		// Just use the low angle it looks better
+		return temp_low_angle;
+	}
+	
 	static disable_safety = function()
 	{
 		// Disable Weapon Safety
