@@ -67,8 +67,8 @@ thrown_item_slot_to_holding_position_transition_spd = 0.1;
 
 thrown_aiming_aim_transition_spd = 0.1;
 thrown_aiming_aim_transition_multiplier = 1;
-thrown_aiming_hip_transition_spd = 0.06;
-thrown_aiming_hip_transition_multiplier = 0.94;
+thrown_aiming_hip_transition_spd = 0.02;
+thrown_aiming_hip_transition_multiplier = 0.98;
 thrown_aiming_angle_transition_spd = 0.08;
 thrown_aiming_animation_curve_exponent = 3;
 

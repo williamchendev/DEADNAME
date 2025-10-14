@@ -41,3 +41,10 @@ pathfinding_edge_name_list = -1;
 
 ds_list_destroy(pathfinding_edge_deleted_indexes_list);
 pathfinding_edge_deleted_indexes_list = -1;
+
+// Cleanup Projectile Trajectory Aim Reticule DS Lists
+ds_list_destroy(projectile_trajectory_aim_reticule_horizontal_positions_list);
+projectile_trajectory_aim_reticule_horizontal_positions_list = -1;
+
+ds_list_destroy(projectile_trajectory_aim_reticule_vertical_positions_list);
+projectile_trajectory_aim_reticule_vertical_positions_list = -1;

@@ -870,6 +870,9 @@ if (canmove)
 							// Set Throw Swing Thrown Weapon Animation State
 							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwing;
 							
+							// Update Thrown Weapon's Facing Direction
+							item_equipped.thrown_weapon_direction = sign(draw_xscale);
+							
 							// Reset Throw Swing Animation Values
 							thrown_weapon_swing_climax_angle = 0;
 							thrown_weapon_swing_transition_value = 0;
@@ -1659,6 +1662,9 @@ switch (unit_equipment_animation_state)
 				
 				temp_thrown_secondary_limb_pivot_a_angle = lerp(thrown_idle_secondary_limb_pivot_a_angle, thrown_aiming_secondary_limb_pivot_a_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
 				temp_thrown_secondary_limb_pivot_b_angle = lerp(thrown_idle_secondary_limb_pivot_b_angle, thrown_aiming_secondary_limb_pivot_b_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
+				
+				// Thrown Weapon Facing Direction Behaviour
+				item_equipped.thrown_weapon_angle = weapon_aim ? item_equipped.thrown_weapon_angle : (temp_unit_direction >= 0 ? 0 : 180);
 				break;
 			case UnitThrownWeaponAnimationState.GrabWeapon:
 			case UnitThrownWeaponAnimationState.OperateAction_MoveHandsToReadyWeapon:
@@ -1888,19 +1894,17 @@ switch (unit_equipment_animation_state)
 			draw_xscale = temp_thrown_weapon_aim ? (abs(draw_xscale) * ((weapon_aim_x - x >= 0) ? 1 : -1)) : draw_xscale;
 			temp_unit_direction = sign(draw_xscale);
 		}
+		else if (item_equipped.thrown_weapon_direction != temp_unit_direction)
+		{
+			// Thrown Weapon Facing Direction Behaviour
+			item_equipped.thrown_weapon_direction = temp_unit_direction;
+			
+			// Mirror Thrown Weapon's Angle across the X Axis
+			item_equipped.thrown_weapon_angle = ((angle_difference(item_equipped.thrown_weapon_angle, 270) <= 180 ? 180 : 360) - item_equipped.thrown_weapon_angle) mod 180;
+		}
 		
 		// Walk Backwards while Aiming
 		animation_speed_direction = ((x_velocity != 0) and (sign(x_velocity) != temp_unit_direction)) ? -1 : 1;
-		
-		// Thrown Weapon Facing Direction Behaviour
-		if (item_equipped.thrown_weapon_direction != temp_unit_direction)
-		{
-			// Mirror Thrown Weapon's Angle across the X Axis
-			item_equipped.thrown_weapon_angle = ((angle_difference(item_equipped.thrown_weapon_angle, 270) <= 180 ? 180 : 360) - item_equipped.thrown_weapon_angle) mod 180;
-			
-			// Update Thrown Weapon's Facing Direction
-			item_equipped.thrown_weapon_direction = temp_unit_direction;
-		}
 		
 		// Update Unit's Thrown Weapon Holstered Angle
 		var temp_thrown_weapon_holstered_angle_movement_difference = angle_difference(90 + (inventory_slots[inventory_index].slot_angle * temp_unit_direction), item_equipped.item_angle);

@@ -1,6 +1,19 @@
 // Item Pickup Settings
 global.item_displacement_lerp_exponent = 3;
 
+// Weapon Thrown Settings
+global.weapon_thrown_aim_zenith_difference_percent = 0.4;
+
+// Weapon Projectile Trajectory Aim Reticule Settings
+global.projectile_trajectory_aim_reticule_animation_spd = 0.8;
+
+global.projectile_trajectory_aim_reticule_line_size = 2.5;
+global.projectile_trajectory_aim_reticule_line_length = 6;
+global.projectile_trajectory_aim_reticule_space_length = 5;
+
+global.projectile_trajectory_aim_reticule_distance_limit = 600;
+global.projectile_trajectory_aim_reticule_collision_hitmarker_offset = 4;
+
 // Item Classes
 class ItemClass define
 {
@@ -393,6 +406,10 @@ class ThrownClass extends WeaponClass define
 		
 		secondary_limb_pivot_a_angle = 0;
 		secondary_limb_pivot_b_angle = 0;
+		
+		// Init Weapon Projectile Trajectory Aim Variables
+		weapon_projectile_trajectory_aim_reticle_active = false;
+		weapon_projectile_trajectory_aim_reticle_animation_value = 0;
 	}
 	
 	static init_item_physics = function(init_item_x = 0, init_item_y = 0, init_item_angle = undefined)
@@ -434,6 +451,9 @@ class ThrownClass extends WeaponClass define
 		item_unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 0;
 		
 		item_unit.thrown_weapon_swing_climax_angle = 0;
+		
+		// Reset Weapon Projectile Trajectory Aim Variables
+		weapon_projectile_trajectory_aim_reticle_active = false;
 	}
 	
 	static unequip_item = function()
@@ -450,6 +470,9 @@ class ThrownClass extends WeaponClass define
 		
 		// Reset Weapon Safety
 		thrown_weapon_safety_active = true;
+		
+		// Reset Weapon Projectile Trajectory Aim Variables
+		weapon_projectile_trajectory_aim_reticle_active = false;
 	}
 	
 	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
@@ -487,7 +510,118 @@ class ThrownClass extends WeaponClass define
 	
 	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
 	{
-		
+		// Player Unit's Weapon Projectile Trajectory Aim Reticule
+		if (instance_exists(item_unit) and item_unit.player_input)
+		{
+			// Clear Game Manager's Projectile Trajectory Aim Reticule Positions DS Lists
+			ds_list_clear(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list);
+			ds_list_clear(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list);
+			
+			//
+			if (item_unit.weapon_aim and item_unit.unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowWindup and item_unit.thrown_weapon_aim_transition_value >= 0.5)
+			{
+				weapon_projectile_trajectory_aim_reticle_active = true;
+			}
+			else
+			{
+				weapon_projectile_trajectory_aim_reticle_active = false;
+				return;
+			}
+			
+			// Update Projectile Trajectory Aim Reticule Animation Value
+			weapon_projectile_trajectory_aim_reticle_animation_value += global.projectile_trajectory_aim_reticule_animation_spd * frame_delta;
+			weapon_projectile_trajectory_aim_reticle_animation_value = weapon_projectile_trajectory_aim_reticle_animation_value mod (global.projectile_trajectory_aim_reticule_line_length + global.projectile_trajectory_aim_reticule_space_length);
+			
+			//
+			trig_sine = item_unit.draw_angle_trig_sine;
+			trig_cosine = item_unit.draw_angle_trig_cosine;
+			
+			//
+			var temp_unit_direction = item_unit.weapon_aim_x - item_unit.x >= 0 ? 1 : -1;
+			
+			//
+			var temp_projectile_trajectory_primary_arm_anchor_offset_x = item_unit.limb_primary_arm.anchor_offset_x * abs(item_unit.draw_xscale) * temp_unit_direction;
+			var temp_projectile_trajectory_primary_arm_anchor_offset_y = item_unit.limb_primary_arm.anchor_offset_y * item_unit.draw_yscale;
+			
+			var temp_projectile_trajectory_position_x = item_unit.x + rot_point_x(temp_projectile_trajectory_primary_arm_anchor_offset_x, temp_projectile_trajectory_primary_arm_anchor_offset_y);
+			var temp_projectile_trajectory_position_y = item_unit.y + item_unit.ground_contact_vertical_offset + rot_point_y(temp_projectile_trajectory_primary_arm_anchor_offset_x, temp_projectile_trajectory_primary_arm_anchor_offset_y);
+			
+			//
+			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_a_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_a_angle) * temp_unit_direction);
+			
+			temp_projectile_trajectory_position_x += rot_dist_x(item_unit.limb_primary_arm.limb_length / 2);
+			temp_projectile_trajectory_position_y += rot_dist_y(item_unit.limb_primary_arm.limb_length / 2);
+			
+			//
+			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_b_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_b_angle) * temp_unit_direction);
+			
+			temp_projectile_trajectory_position_x += rot_dist_x((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
+			temp_projectile_trajectory_position_y += rot_dist_y((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
+			
+			//
+			ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
+			ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
+			
+			//
+			var temp_projectile_trajectory_gravity = 0.12;
+			var temp_projectile_trajectory_inverse_air_resistance = 1.5;
+			
+			//
+			rot_prefetch(thrown_weapon_angle);
+			
+			var temp_projectile_trajectory_horizontal_velocity = rot_dist_x(5);
+			var temp_projectile_trajectory_vertical_velocity = rot_dist_y(5);
+			
+			//
+			var temp_projectile_trajectory_distance_traveled = 0;
+			
+			//
+			while (temp_projectile_trajectory_distance_traveled < global.projectile_trajectory_aim_reticule_distance_limit)
+			{
+				//
+				temp_projectile_trajectory_vertical_velocity += temp_projectile_trajectory_gravity;
+				
+				//
+				var temp_projectile_trajectory_position_x_old = temp_projectile_trajectory_position_x;
+				var temp_projectile_trajectory_position_y_old = temp_projectile_trajectory_position_y;
+				
+				//
+				var temp_projectile_trajectory_position_x_new = temp_projectile_trajectory_position_x + (temp_projectile_trajectory_horizontal_velocity * temp_projectile_trajectory_inverse_air_resistance);
+				var temp_projectile_trajectory_position_y_new = temp_projectile_trajectory_position_y + (temp_projectile_trajectory_vertical_velocity * temp_projectile_trajectory_inverse_air_resistance);
+				
+				//
+				var temp_projectile_trajectory_velocity_path_distance = round(point_distance(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_position_y_new));
+				
+				//
+				for (var q = 1; q <= temp_projectile_trajectory_velocity_path_distance; q++)
+				{
+					//
+					var temp_projectile_trajectory_velocity_path_lerp_percent = q / temp_projectile_trajectory_velocity_path_distance;
+					
+					//
+					temp_projectile_trajectory_position_x = lerp(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+					temp_projectile_trajectory_position_y = lerp(temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_y_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+					
+					//
+					if (collision_point(temp_projectile_trajectory_position_x, temp_projectile_trajectory_position_y, oSolid, false, true))
+					{
+						//
+						return;
+					}
+					
+					//
+					ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
+					ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
+					
+					//
+					weapon_crosshair_position_x = temp_projectile_trajectory_position_x;
+					weapon_crosshair_position_y = temp_projectile_trajectory_position_y;
+				}
+				
+				//
+				temp_projectile_trajectory_distance_traveled += temp_projectile_trajectory_velocity_path_distance;
+			}
+		}
 	}
 	
 	static update_weapon_attack = function(weapon_target = undefined)
@@ -570,34 +704,34 @@ class ThrownClass extends WeaponClass define
 	// Thrown Weapon Methods
 	static predict_angle = function(initial_velocity, start_x, start_y, target_x, target_y)
 	{
-		//
+		// Bleh
 		var temp_gravity = 0.12;
-		var temp_air_resistance = 1.5; // The higher it is technically the less air resisteance there is (Yeah I know this is fucked, but it's too late to club all the fish that learned to walk out of the ocean)
+		var temp_inv_air_resistance = 1.5; // The higher it is technically the less air resistance there is
 		
 		//
 		var temp_delta_x = target_x - start_x;
 		var temp_delta_y = -(target_y - start_y);
 		
 		//
-		var temp_descriminator = (power(initial_velocity, 4) * power(temp_air_resistance, 2)) - (temp_gravity * ((temp_gravity * power(temp_delta_x, 2)) + (2 * temp_delta_y * power(initial_velocity, 2) * temp_air_resistance)));
-		
-		//
-		show_debug_message(temp_descriminator);
+		var temp_descriminator = power(initial_velocity, 4) * temp_inv_air_resistance * temp_inv_air_resistance - temp_gravity * ((temp_gravity * temp_delta_x * temp_delta_x) + (2 * temp_delta_y * initial_velocity * initial_velocity * temp_inv_air_resistance));
 		
 		//
 		if (temp_descriminator < 0)
 		{
-			// 
-			return undefined;
+			//
+			var temp_direction = point_direction(start_x, start_y, target_x, target_y);
+			temp_direction = temp_direction + (angle_difference(90, temp_direction) * global.weapon_thrown_aim_zenith_difference_percent);
+			
+			return temp_direction;
 		}
 		
-		//
-		var temp_low_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
-		var temp_high_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) + sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		// Calculate Angle of Throwing Direction
+		var temp_low_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_inv_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		//var temp_high_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) + sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
 		
-		// This code is because my aiming code is umm... mirrored in a way that's fucked
+		// Mirror Angle
 		temp_low_angle = target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
-		temp_high_angle = target_x < start_x ? (temp_high_angle + 180) mod 360 : temp_high_angle;
+		//temp_high_angle = target_x < start_x ? (temp_high_angle + 180) mod 360 : temp_high_angle;
 		
 		// Just use the low angle it looks better
 		return temp_low_angle;
@@ -668,7 +802,80 @@ class ThrownClass extends WeaponClass define
 	
 	static render_cursor_behaviour = function()
 	{
+		//
+		if (!weapon_projectile_trajectory_aim_reticle_active)
+		{
+			return;
+		}
+		
+		// Reset Surface Target
+		surface_reset_target();
+		
+		// Set Effect Surface Target and Clear Effect Surface
+		surface_set_target(LightingEngine.fx_surface);
+		draw_clear_alpha(c_black, 0);
+		
+		//
+		draw_set_color(c_white);
+		
+		// Draw Weapon's Projectile Trajectory Aim Reticule
+		var i = round(weapon_projectile_trajectory_aim_reticle_animation_value);
+		var temp_projectile_trajectory_aim_reticule_length = max(ds_list_size(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list) - global.projectile_trajectory_aim_reticule_collision_hitmarker_offset, 0);
+		
+		//
+		var temp_projectile_trajectory_lerp_val_a = 0;
+		var temp_projectile_trajectory_lerp_val_b = min(max(i - global.projectile_trajectory_aim_reticule_space_length, 0), temp_projectile_trajectory_aim_reticule_length);
+		
+		var temp_projectile_trajectory_ha_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_x;
+		var temp_projectile_trajectory_va_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_y;
+		
+		var temp_projectile_trajectory_hb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_x;
+		var temp_projectile_trajectory_vb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_y;
+		
+		draw_line_width(temp_projectile_trajectory_ha_pos, temp_projectile_trajectory_va_pos, temp_projectile_trajectory_hb_pos, temp_projectile_trajectory_vb_pos, global.projectile_trajectory_aim_reticule_line_size);
+		
+		//
+		while (i < temp_projectile_trajectory_aim_reticule_length)
+		{
+			//
+			temp_projectile_trajectory_lerp_val_a = i;
+			temp_projectile_trajectory_lerp_val_b = min(i + global.projectile_trajectory_aim_reticule_line_length, temp_projectile_trajectory_aim_reticule_length);
+			
+			//
+			temp_projectile_trajectory_ha_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_x;
+			temp_projectile_trajectory_va_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_y;
+			
+			temp_projectile_trajectory_hb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_x;
+			temp_projectile_trajectory_vb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_y;
+			
+			//
+			draw_line_width(temp_projectile_trajectory_ha_pos, temp_projectile_trajectory_va_pos, temp_projectile_trajectory_hb_pos, temp_projectile_trajectory_vb_pos, global.projectile_trajectory_aim_reticule_line_size);
+			
+			//
+			i += global.projectile_trajectory_aim_reticule_line_length + global.projectile_trajectory_aim_reticule_space_length;
+		}
+		
+		// Reset Surface Target
+		surface_reset_target();
+		
+		// Set Surface Target to UI Surface
+		surface_set_target(LightingEngine.ui_surface);
+		
+		// Set Pixel Outline Effect Shader
+		shader_set(shd_pixel_outline);
+		
+		// Set Pixel Outline Effect Shader's Properties 
+		shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_surface_size_index, GameManager.game_width, GameManager.game_height);
+		shader_set_uniform_f(LightingEngine.pixel_outline_render_shader_outline_size_index, 1);
+		
+		// Draw Effect Surface to UI Surface with the Pixel Outline Effect Enabled
+		draw_surface_ext(LightingEngine.fx_surface, 0, 0, 1, 1, 0, c_black, 1);
+		
+		// Reset Shader
+		shader_reset();
+		
 		// Draw Weapon's Cursor Crosshair
+		draw_sprite(sUI_CursorCrosshairIcons, 0, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y);
 	}
 }
 

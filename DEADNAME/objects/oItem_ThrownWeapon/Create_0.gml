@@ -13,12 +13,6 @@ if (projectile_physics_enabled)
 // Projectile Gravity Settings
 projectile_gravity_speed = 0.12;
 
-//projectile_gravity_multiplier = 0.93;
-//projectile_gravity_maximum = 2.5;
-
-// Projectile Velocity Settings
-//projectile_velocity_maximum = 10;
-
 // Projectile Physics Variables
 projectile_gravity_velocity = 0;
 

@@ -101,6 +101,10 @@ cursor_interaction_object = noone;
 cursor_icon = false;
 cursor_icon_index = 0;
 
+// Projectile Trajectory Aim Reticule Variables
+projectile_trajectory_aim_reticule_horizontal_positions_list = ds_list_create();
+projectile_trajectory_aim_reticule_vertical_positions_list = ds_list_create();
+
 // Resolution Variables
 game_resolution_mode = GameResolutionMode.Default640x360;
 

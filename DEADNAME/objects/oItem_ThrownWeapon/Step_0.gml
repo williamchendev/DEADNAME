@@ -8,10 +8,6 @@ if (!projectile_physics_enabled)
 }
 
 // Gravity
-//projectile_gravity_velocity += projectile_gravity_speed * 0.5 * frame_delta;
-//projectile_gravity_velocity *= power(projectile_gravity_multiplier, frame_delta);
-//projectile_gravity_velocity = min(projectile_gravity_velocity, projectile_gravity_maximum);
-
 projectile_vertical_velocity += projectile_gravity_speed * frame_delta;
 
 //
@@ -33,7 +29,6 @@ rot_prefetch(temp_direction);
 
 //
 var i = 1;
-//var temp_travel_distance = min(round(temp_distance), projectile_velocity_maximum);
 var temp_travel_distance = round(temp_distance);
 
 //
