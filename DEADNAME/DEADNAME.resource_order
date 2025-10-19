@@ -332,7 +332,7 @@
     {"name":"oRagdollEntity_UnitBody_Hair","order":4,"path":"objects/oRagdollEntity_UnitBody_Hair/oRagdollEntity_UnitBody_Hair.yy",},
     {"name":"oRagdollEntity_UnitBody_Head","order":1,"path":"objects/oRagdollEntity_UnitBody_Head/oRagdollEntity_UnitBody_Head.yy",},
     {"name":"oRagdollEntity_UnitBody_Leg","order":5,"path":"objects/oRagdollEntity_UnitBody_Leg/oRagdollEntity_UnitBody_Leg.yy",},
-    {"name":"oRagdollFade","order":2,"path":"objects/oRagdollFade/oRagdollFade.yy",},
+    {"name":"oRagdollEntity","order":2,"path":"objects/oRagdollEntity/oRagdollEntity.yy",},
     {"name":"oShockwave_DefaultExplosion","order":1,"path":"objects/oShockwave_DefaultExplosion/oShockwave_DefaultExplosion.yy",},
     {"name":"oSolidRotation","order":1,"path":"objects/oSolidRotation/oSolidRotation.yy",},
     {"name":"oTempAddBackground_Night","order":8,"path":"objects/oTempAddBackground_Night/oTempAddBackground_Night.yy",},

@@ -685,8 +685,24 @@ global.item_packs[ItemPack.StickGrenade] =
 		
 		// Weapon Properties
 		
-		// Throw Animation Settings
+		// Projectile Physics Settings
+		projectile_initial_velocity_min: 2,
+		projectile_initial_velocity_max: 5.2,
+		
+		projectile_gravity_speed: 0.12,
+		projectile_air_resistance: -0.5,
+		
+		projectile_rotate_speed: 7,
+		projectile_rotate_friction: 0.05,
+		
+		projectile_restitution: 0.6,
+		
+		// Thrown Weapon Animation Settings
 		thrown_weapon_swing_underhand: false,
+		
+		// Thrown Weapon Fuze Settings
+		thrown_weapon_fuze_timer: 6,
+		thrown_weapon_fuze_effect_instance: oExplosion_Entity,
 		
 		// Operate Animation
 		thrown_weapon_operate_angle: -20,
@@ -756,8 +772,24 @@ global.item_packs[ItemPack.Molotov] =
 		
 		// Weapon Properties
 		
-		// Throw Animation Settings
+		// Projectile Physics Settings
+		projectile_initial_velocity_min: 2,
+		projectile_initial_velocity_max: 5,
+		
+		projectile_gravity_speed: 0.12,
+		projectile_air_resistance: -0.5,
+		
+		projectile_rotate_speed: 7,
+		projectile_rotate_friction: 0.05,
+		
+		projectile_restitution: 0.6,
+		
+		// Thrown Weapon Animation Settings
 		thrown_weapon_swing_underhand: true,
+		
+		// Thrown Weapon Fuze Settings
+		thrown_weapon_fuze_timer: undefined,
+		thrown_weapon_fuze_effect_instance: noone,
 		
 		// Operate Animation
 		thrown_weapon_operate_angle: -20,

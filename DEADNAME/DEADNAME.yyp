@@ -29,6 +29,7 @@
     {"$GMFolder":"","%Name":"Templates","folderPath":"folders/Objects/Entities/Items/Templates.yy","name":"Templates","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Weapons","folderPath":"folders/Objects/Entities/Items/Weapons.yy","name":"Weapons","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Ragdoll","folderPath":"folders/Objects/Entities/Ragdoll.yy","name":"Ragdoll","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Effects","folderPath":"folders/Objects/Entities/Ragdoll/Effects.yy","name":"Effects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Humanoid","folderPath":"folders/Objects/Entities/Ragdoll/Humanoid.yy","name":"Humanoid","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rain","folderPath":"folders/Objects/Entities/Rain.yy","name":"Rain","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Shockwaves","folderPath":"folders/Objects/Entities/Shockwaves.yy","name":"Shockwaves","resourceType":"GMFolder","resourceVersion":"2.0",},

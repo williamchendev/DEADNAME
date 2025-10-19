@@ -412,7 +412,7 @@ function unit_inventory_remove_all_slots(unit)
 /// @description Adds an Item to the given Unit Instance's Inventory with the given Item Pack and the number of the item to add
 /// @param {?Id.Instance, oUnit} unit The given Unit Instance to add the Item to their Unit Inventory
 /// @param {number, ItemPack} item_pack The Item Pack of the Item to add to the Unit's Inventory
-/// @param {number} item_count The number of the given Item to be added to the Unit's Inventory
+/// @param {number} item_count The number of the given Item to be added to the Unit's Inventory (if this number is negative, it adds the Item Pack's Full Stack Count multiplied by the absolute value of the given Item Count to add to the Inventory)
 /// @returns {number} Returns the Inventory Slot Index of the Item added to the Unit's Inventory
 function unit_inventory_add_item(unit, item_pack, item_count = 1)
 {
@@ -429,6 +429,16 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 		// Item Pack is an invalid Item Pack Index - Early Return
 		return -1;
 	}
+	
+	// Check if the Item Count is Zero
+	if (item_count == 0)
+	{
+		// Cannot add Zero Count of an Item to the Unit's Inventory
+		return -1;
+	}
+	
+	// Check if Item Count is Negative - A Negative Item Count is the Count of Full Item Stacks to add to the Inventory
+	item_count = item_count < 0 ? abs(item_count) * global.item_packs[item_pack].item_count_limit : item_count;
 	
 	// Place Item in Unit Inventory Behaviour
 	var temp_inventory_index = -1;
@@ -936,6 +946,13 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 							// Reset Unit Thrown Weapon Animation Behaviour
 							unit.unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
 							
+							unit.thrown_weapon_aim_transition_value = 0;
+							unit.thrown_weapon_operate_action_transition_value = 0
+							unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
+							
+							unit.item_equipped.thrown_weapon_direction = sign(unit.draw_xscale);
+							unit.item_equipped.thrown_weapon_angle = unit.item_equipped.thrown_weapon_direction >= 0 ? 1 : 179;
+							
 							// Update Dropped Thrown Weapon Instance's Properties with Unit's Held Item Properties
 							temp_dropped_item_weapon_instance.item_x = temp_dropped_item_weapon_position_x;
 							temp_dropped_item_weapon_instance.item_y = temp_dropped_item_weapon_position_y;
@@ -944,6 +961,20 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 							
 							temp_dropped_item_weapon_instance.item_xscale = temp_dropped_item_weapon_xscale;
 							temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
+						}
+					}
+					
+					//
+					if (!is_undefined(global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.thrown_weapon_fuze_timer))
+					{
+						//
+						if (unit.inventory_slots[slot_index].item_instance != noone and !is_undefined(unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer))
+						{
+							// 
+							temp_dropped_item_weapon_instance.thrown_weapon_fuze_timer = unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer;
+							
+							//
+							unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer = undefined;
 						}
 					}
 					break;
@@ -1000,6 +1031,23 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 				
 				// Update Dropped Item's Physics
 				item_instance.update_item_physics(x, y, image_angle, item_instance.item_facing_sign);
+				
+				//
+				switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.weapon_type)
+				{
+					case WeaponType.Thrown:
+					case WeaponType.Grenade:
+					case WeaponType.Molotov:
+						// 
+						if (instance_exists(unit) and unit.player_input and !is_undefined(item_instance.thrown_weapon_fuze_timer))
+						{
+							visible = true;
+							show_ui_fuze_timer = true;
+						}
+						break;
+					default:
+						break;
+				}
 			}
 			break;
 		case ItemType.None:

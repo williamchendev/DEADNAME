@@ -9,8 +9,8 @@
   "name":"oRagdollFade",
   "overriddenProperties":[],
   "parent":{
-    "name":"Ragdoll",
-    "path":"folders/Objects/Entities/Ragdoll.yy",
+    "name":"Effects",
+    "path":"folders/Objects/Entities/Ragdoll/Effects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

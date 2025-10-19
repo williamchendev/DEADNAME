@@ -69,6 +69,7 @@ thrown_aiming_aim_transition_spd = 0.1;
 thrown_aiming_aim_transition_multiplier = 1;
 thrown_aiming_hip_transition_spd = 0.02;
 thrown_aiming_hip_transition_multiplier = 0.98;
+thrown_aiming_velocity_transition_spd = 0.15;
 thrown_aiming_angle_transition_spd = 0.08;
 thrown_aiming_animation_curve_exponent = 3;
 
@@ -252,7 +253,6 @@ weapon_aim_y = 0;
 // Inventory Variables
 inventory_index = -1;
 inventory_slots = array_create(0);
-unit_lift_strength = 0;
 
 player_inventory_ui_fade_timer = 0;
 player_inventory_ui_alpha = 0;
@@ -335,8 +335,8 @@ global.unit_packs[unit_pack].inventory_slot_init(id);
 if (player_input)
 {
 	//unit_inventory_add_item(id, ItemPack.BoxRevolver);
-	unit_inventory_add_item(id, ItemPack.Ammo, 6);
-	unit_inventory_add_item(id, ItemPack.StickGrenade, 3);
+	unit_inventory_add_item(id, ItemPack.Ammo, -2);
+	unit_inventory_add_item(id, ItemPack.StickGrenade, -1);
 	//instance_create_item(ItemPack.Ammo, x, y - 48, 5);
 	
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, ItemPack.CorsoRifle);
@@ -344,7 +344,7 @@ if (player_input)
 }
 else
 {
-	unit_inventory_add_item(id, ItemPack.Ammo, 6);
+	unit_inventory_add_item(id, ItemPack.Ammo, -2);
 
 	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, random(1.0) >= 0 ? ItemPack.OilerSMG : ItemPack.CorsoRifle);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);

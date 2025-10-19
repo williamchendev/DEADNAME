@@ -4,14 +4,14 @@
 // Inherited Dynamic Item Rendering Initialization Event Behaviour
 event_inherited();
 
-//
+// Thrown Weapon Settings
+show_ui_fuze_timer = false;
+
+// Disable Box2D Physics for Custom Thrown Projectile Physics Sim
 if (projectile_physics_enabled)
 {
 	phy_active = false;
 }
-
-// Projectile Gravity Settings
-projectile_gravity_speed = 0.12;
 
 // Projectile Physics Variables
 projectile_gravity_velocity = 0;

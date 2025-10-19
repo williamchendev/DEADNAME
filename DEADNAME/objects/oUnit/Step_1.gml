@@ -68,6 +68,11 @@ if (player_input)
 			// Initiate Unit Inventory UI Fade Decay when Player Unit uses Item
 			player_inventory_ui_fade_timer = 0;
 		}
+		else if (input_reload and unit_equipment_animation_state == UnitEquipmentAnimationState.Thrown)
+		{
+			// Initiate Unit Inventory UI Fade Decay when Player Unit Activates a Grenade Fuze
+			player_inventory_ui_fade_timer = 0;
+		}
 		
 		// Player Unit Inventory UI Fade Decay Behaviour
 		if (player_inventory_ui_fade_timer <= 0)

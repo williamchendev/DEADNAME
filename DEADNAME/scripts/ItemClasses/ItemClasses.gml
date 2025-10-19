@@ -5,14 +5,15 @@ global.item_displacement_lerp_exponent = 3;
 global.weapon_thrown_aim_zenith_difference_percent = 0.4;
 
 // Weapon Projectile Trajectory Aim Reticule Settings
-global.projectile_trajectory_aim_reticule_animation_spd = 0.8;
+global.projectile_trajectory_aim_reticule_animation_spd = 1;
+global.projectile_trajectory_aim_reticule_rotate_spd = -5;
 
 global.projectile_trajectory_aim_reticule_line_size = 2.5;
 global.projectile_trajectory_aim_reticule_line_length = 6;
 global.projectile_trajectory_aim_reticule_space_length = 5;
 
 global.projectile_trajectory_aim_reticule_distance_limit = 600;
-global.projectile_trajectory_aim_reticule_collision_hitmarker_offset = 4;
+global.projectile_trajectory_aim_reticule_collision_hitmarker_offset = 6;
 
 // Item Classes
 class ItemClass define
@@ -395,9 +396,12 @@ class ThrownClass extends WeaponClass define
 		thrown_weapon_render = true;
 		
 		// Thrown Weapon Aiming Variables
+		thrown_weapon_angle = 0;
 		thrown_weapon_direction = 1;
+		thrown_weapon_init_velocity = global.item_packs[item_pack].weapon_data.projectile_initial_velocity_min;
 		
 		// Thrown Weapon Safety
+		thrown_weapon_fuze_timer = undefined;
 		thrown_weapon_safety_active = true;
 		
 		// Thrown Weapon Limb Animation Variables
@@ -408,8 +412,9 @@ class ThrownClass extends WeaponClass define
 		secondary_limb_pivot_b_angle = 0;
 		
 		// Init Weapon Projectile Trajectory Aim Variables
-		weapon_projectile_trajectory_aim_reticle_active = false;
+		weapon_projectile_trajectory_aim_reticule_active = false;
 		weapon_projectile_trajectory_aim_reticle_animation_value = 0;
+		weapon_projectile_trajectory_aim_reticle_animation_angle = 0;
 	}
 	
 	static init_item_physics = function(init_item_x = 0, init_item_y = 0, init_item_angle = undefined)
@@ -435,6 +440,7 @@ class ThrownClass extends WeaponClass define
 		// Set Thrown Weapon Aiming Behaviours
 		thrown_weapon_direction = sign(item_unit.draw_xscale);
 		thrown_weapon_angle = thrown_weapon_direction >= 0 ? 1 : 179;
+		thrown_weapon_init_velocity = global.item_packs[item_pack].weapon_data.projectile_initial_velocity_min;
 		
 		// Reset Thrown Weapon Render Toggle
 		thrown_weapon_render = true;
@@ -453,7 +459,7 @@ class ThrownClass extends WeaponClass define
 		item_unit.thrown_weapon_swing_climax_angle = 0;
 		
 		// Reset Weapon Projectile Trajectory Aim Variables
-		weapon_projectile_trajectory_aim_reticle_active = false;
+		weapon_projectile_trajectory_aim_reticule_active = false;
 	}
 	
 	static unequip_item = function()
@@ -472,7 +478,7 @@ class ThrownClass extends WeaponClass define
 		thrown_weapon_safety_active = true;
 		
 		// Reset Weapon Projectile Trajectory Aim Variables
-		weapon_projectile_trajectory_aim_reticle_active = false;
+		weapon_projectile_trajectory_aim_reticule_active = false;
 	}
 	
 	static item_take_set_displacement = function(item_x, item_y, item_lerp = 0, item_lerp_spd = 0.2)
@@ -510,6 +516,23 @@ class ThrownClass extends WeaponClass define
 	
 	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
 	{
+		// Update Thrown Weapon Fuze Timer
+		if (!is_undefined(thrown_weapon_fuze_timer))
+		{
+			//
+			thrown_weapon_fuze_timer -= frame_delta / 60;
+			
+			//
+			if (thrown_weapon_fuze_timer < 0)
+			{
+				//
+				instance_create_depth(item_x, item_y, 0, global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance);
+				
+				//
+				thrown_weapon_fuze_timer = undefined;
+			}
+		}
+		
 		// Player Unit's Weapon Projectile Trajectory Aim Reticule
 		if (instance_exists(item_unit) and item_unit.player_input)
 		{
@@ -517,108 +540,129 @@ class ThrownClass extends WeaponClass define
 			ds_list_clear(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list);
 			ds_list_clear(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list);
 			
-			//
+			// Check if Thrown Weapon is capable of being Aimed and is actively being Aimed
 			if (item_unit.weapon_aim and item_unit.unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowWindup and item_unit.thrown_weapon_aim_transition_value >= 0.5)
 			{
-				weapon_projectile_trajectory_aim_reticle_active = true;
+				// Enable Projectile Trajectory Aim Reticule
+				weapon_projectile_trajectory_aim_reticule_active = true;
 			}
 			else
 			{
-				weapon_projectile_trajectory_aim_reticle_active = false;
+				// Disable Projectile Trajectory Aim Reticule and Early Return
+				weapon_projectile_trajectory_aim_reticule_active = false;
 				return;
 			}
+			
+			// Retreive Unit's Facing Direction
+			var temp_unit_direction = sign(item_unit.draw_xscale);
 			
 			// Update Projectile Trajectory Aim Reticule Animation Value
 			weapon_projectile_trajectory_aim_reticle_animation_value += global.projectile_trajectory_aim_reticule_animation_spd * frame_delta;
 			weapon_projectile_trajectory_aim_reticle_animation_value = weapon_projectile_trajectory_aim_reticle_animation_value mod (global.projectile_trajectory_aim_reticule_line_length + global.projectile_trajectory_aim_reticule_space_length);
 			
-			//
-			trig_sine = item_unit.draw_angle_trig_sine;
-			trig_cosine = item_unit.draw_angle_trig_cosine;
+			// Update Projectile Trajectory Aim Reticule Animation Angle
+			weapon_projectile_trajectory_aim_reticle_animation_angle += global.projectile_trajectory_aim_reticule_rotate_spd * temp_unit_direction * frame_delta;
+			weapon_projectile_trajectory_aim_reticle_animation_angle = weapon_projectile_trajectory_aim_reticle_animation_angle mod 360;
 			
-			//
-			var temp_unit_direction = item_unit.weapon_aim_x - item_unit.x >= 0 ? 1 : -1;
+			// Calculate Starting Position of Thrown Weapon's Projectile Trajectory using the Unit's Primary Arm Throw Swing Animation's Ending Angle Targets
+			var temp_projectile_trajectory_position_x = item_unit.limb_primary_arm.limb_pivot_ax;
+			var temp_projectile_trajectory_position_y = item_unit.limb_primary_arm.limb_pivot_ay;
 			
-			//
-			var temp_projectile_trajectory_primary_arm_anchor_offset_x = item_unit.limb_primary_arm.anchor_offset_x * abs(item_unit.draw_xscale) * temp_unit_direction;
-			var temp_projectile_trajectory_primary_arm_anchor_offset_y = item_unit.limb_primary_arm.anchor_offset_y * item_unit.draw_yscale;
-			
-			var temp_projectile_trajectory_position_x = item_unit.x + rot_point_x(temp_projectile_trajectory_primary_arm_anchor_offset_x, temp_projectile_trajectory_primary_arm_anchor_offset_y);
-			var temp_projectile_trajectory_position_y = item_unit.y + item_unit.ground_contact_vertical_offset + rot_point_y(temp_projectile_trajectory_primary_arm_anchor_offset_x, temp_projectile_trajectory_primary_arm_anchor_offset_y);
-			
-			//
 			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_a_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_a_angle) * temp_unit_direction);
 			
 			temp_projectile_trajectory_position_x += rot_dist_x(item_unit.limb_primary_arm.limb_length / 2);
 			temp_projectile_trajectory_position_y += rot_dist_y(item_unit.limb_primary_arm.limb_length / 2);
 			
-			//
 			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_b_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_b_angle) * temp_unit_direction);
 			
 			temp_projectile_trajectory_position_x += rot_dist_x((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
 			temp_projectile_trajectory_position_y += rot_dist_y((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
 			
-			//
+			// Index Thrown Weapon's Projectile Trajectory Starting Position
 			ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
 			ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
 			
-			//
-			var temp_projectile_trajectory_gravity = 0.12;
-			var temp_projectile_trajectory_inverse_air_resistance = 1.5;
+			// Establish Projectile Trajectory Physics Variables
+			var temp_projectile_trajectory_gravity = global.item_packs[item_pack].weapon_data.projectile_gravity_speed;
+			var temp_projectile_trajectory_inverse_air_resistance = 1 - global.item_packs[item_pack].weapon_data.projectile_air_resistance;
 			
-			//
+			// Establish Projectile Trajectory Initial Directional Velocity
 			rot_prefetch(thrown_weapon_angle);
 			
-			var temp_projectile_trajectory_horizontal_velocity = rot_dist_x(5);
-			var temp_projectile_trajectory_vertical_velocity = rot_dist_y(5);
+			var temp_projectile_trajectory_horizontal_velocity = rot_dist_x(thrown_weapon_init_velocity);
+			var temp_projectile_trajectory_vertical_velocity = rot_dist_y(thrown_weapon_init_velocity);
 			
-			//
+			// Iterate through Predicted Projectile Trajectory to check for Collisions and Update the Projectile's Position Path DS Lists
 			var temp_projectile_trajectory_distance_traveled = 0;
 			
-			//
 			while (temp_projectile_trajectory_distance_traveled < global.projectile_trajectory_aim_reticule_distance_limit)
 			{
-				//
+				// Add Gravity to Simulated Projectile Vertical Velocity
 				temp_projectile_trajectory_vertical_velocity += temp_projectile_trajectory_gravity;
 				
-				//
+				// Establish Previous Position of Simulated Moving Projectile
 				var temp_projectile_trajectory_position_x_old = temp_projectile_trajectory_position_x;
 				var temp_projectile_trajectory_position_y_old = temp_projectile_trajectory_position_y;
 				
-				//
+				// Establish Next Position of Simulated Moving Projectile
 				var temp_projectile_trajectory_position_x_new = temp_projectile_trajectory_position_x + (temp_projectile_trajectory_horizontal_velocity * temp_projectile_trajectory_inverse_air_resistance);
 				var temp_projectile_trajectory_position_y_new = temp_projectile_trajectory_position_y + (temp_projectile_trajectory_vertical_velocity * temp_projectile_trajectory_inverse_air_resistance);
 				
-				//
+				// Calculate Distance Traveled of Simulated Moving Projectile
 				var temp_projectile_trajectory_velocity_path_distance = round(point_distance(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_position_y_new));
 				
-				//
-				for (var q = 1; q <= temp_projectile_trajectory_velocity_path_distance; q++)
+				// Check for Solid Collision along Simulated Moving Projectile's Path of Motion
+				if (collision_line(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_position_y_new, oSolid, false, false))
 				{
-					//
-					var temp_projectile_trajectory_velocity_path_lerp_percent = q / temp_projectile_trajectory_velocity_path_distance;
-					
-					//
-					temp_projectile_trajectory_position_x = lerp(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_velocity_path_lerp_percent);
-					temp_projectile_trajectory_position_y = lerp(temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_y_new, temp_projectile_trajectory_velocity_path_lerp_percent);
-					
-					//
-					if (collision_point(temp_projectile_trajectory_position_x, temp_projectile_trajectory_position_y, oSolid, false, true))
+					// Solid Collision Detected - Iterate through Simulated Moving Projectile's Path of Motion for the exact position of Collision with Solid Instance
+					for (var q = 1; q <= temp_projectile_trajectory_velocity_path_distance; q++)
 					{
-						//
-						return;
+						// Calculate Lerp Percent at distance traveled on Simulated Moving Projectile's Path of Motion
+						var temp_projectile_trajectory_velocity_path_lerp_percent = q / temp_projectile_trajectory_velocity_path_distance;
+						
+						// Find Projectile Trajectory Position at distance traveled on Simulated Moving Projectile's Path of Motion
+						temp_projectile_trajectory_position_x = lerp(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+						temp_projectile_trajectory_position_y = lerp(temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_y_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+						
+						// Check for Solid Collision at Projectile Trajectory Position
+						if (collision_point(temp_projectile_trajectory_position_x, temp_projectile_trajectory_position_y, oSolid, false, false))
+						{
+							// Collision Detected - Finished Establishing Projectile's Position Path DS Lists for Early Return
+							return;
+						}
+						
+						// Index Thrown Weapon's Projectile Trajectory Position
+						ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
+						ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
+						
+						// Update Thrown Weapon's Projectile Trajectory End Position
+						weapon_crosshair_position_x = temp_projectile_trajectory_position_x;
+						weapon_crosshair_position_y = temp_projectile_trajectory_position_y;
+					}
+				}
+				else
+				{
+					// No Collision - Iterate through Simulated Moving Projectile's Path of Motion to Update the Projectile's Position Path DS Lists
+					for (var q = 1; q <= temp_projectile_trajectory_velocity_path_distance; q++)
+					{
+						// Calculate Lerp Percent at distance traveled on Simulated Moving Projectile's Path of Motion
+						var temp_projectile_trajectory_velocity_path_lerp_percent = q / temp_projectile_trajectory_velocity_path_distance;
+						
+						// Find Projectile Trajectory Position at distance traveled on Simulated Moving Projectile's Path of Motion
+						temp_projectile_trajectory_position_x = lerp(temp_projectile_trajectory_position_x_old, temp_projectile_trajectory_position_x_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+						temp_projectile_trajectory_position_y = lerp(temp_projectile_trajectory_position_y_old, temp_projectile_trajectory_position_y_new, temp_projectile_trajectory_velocity_path_lerp_percent);
+						
+						// Index Thrown Weapon's Projectile Trajectory Position
+						ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
+						ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
 					}
 					
-					//
-					ds_list_add(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_position_x);
-					ds_list_add(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_position_y);
-					
-					//
+					// Update Thrown Weapon's Projectile Trajectory End Position
 					weapon_crosshair_position_x = temp_projectile_trajectory_position_x;
 					weapon_crosshair_position_y = temp_projectile_trajectory_position_y;
 				}
 				
-				//
+				// Increment Projectile Trajectory Distance Traveled by the Distance of the Simulated Moving Projectile's Path of Motion
 				temp_projectile_trajectory_distance_traveled += temp_projectile_trajectory_velocity_path_distance;
 			}
 		}
@@ -638,12 +682,12 @@ class ThrownClass extends WeaponClass define
 			return false;
 		}
 		
-		//
+		// Establish Thrown Weapon Projectile's Position and Angle from Unit's Primary Arm Held Item's Properties
 		var temp_thrown_weapon_projectile_x = item_unit.limb_primary_arm.limb_held_item_x;
 		var temp_thrown_weapon_projectile_y = item_unit.limb_primary_arm.limb_held_item_y;
 		var temp_thrown_weapon_projectile_angle = item_unit.limb_primary_arm.limb_pivot_b_angle + (item_unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
 		
-		// Thrown Weapon Behaviour
+		// Establish Thrown Weapon Projectile's Properties Var Struct
 		var temp_thrown_weapon_projectile_var_struct =
 		{
 			sub_layer_index: lighting_engine_find_object_index(item_unit) + 1,
@@ -654,15 +698,19 @@ class ThrownClass extends WeaponClass define
 			image_xscale: item_unit.limb_primary_arm.limb_xscale,
 			image_yscale: 1,
 			projectile_physics_enabled: true,
-			projectile_initial_velocity: 5,
+			projectile_initial_velocity: thrown_weapon_init_velocity,
 			projectile_initial_direction: thrown_weapon_angle,
-			projectile_rotate_speed: 10 * item_unit.limb_primary_arm.limb_xscale
+			projectile_rotate_speed: global.item_packs[item_pack].weapon_data.projectile_rotate_speed * item_unit.limb_primary_arm.limb_xscale,
+			projectile_rotate_friction: global.item_packs[item_pack].weapon_data.projectile_rotate_friction,
+			projectile_restitution: global.item_packs[item_pack].weapon_data.projectile_restitution,
+			projectile_air_resistance: global.item_packs[item_pack].weapon_data.projectile_air_resistance,
+			projectile_gravity_speed: global.item_packs[item_pack].weapon_data.projectile_gravity_speed
 		};
 		
-		//
+		// Remove Thrown Weapon from Primary Arm's Held Item Slot
 		item_unit.limb_primary_arm.remove_all_held_items();
 		
-		//
+		// Establish Thrown Weapon Instance Variable
 		var temp_thrown_weapon_instance = noone;
 		
 		// Check if Inventory Slot contains Weapon Instance
@@ -671,6 +719,16 @@ class ThrownClass extends WeaponClass define
 			// Instantiate New Thrown Weapon Instance
 			temp_thrown_weapon_instance = create_item_class_instance_from_item_pack(item_pack);
 			temp_thrown_weapon_instance.init_item_physics(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, temp_thrown_weapon_projectile_angle);
+			
+			// Update Thrown Weapon Fuze Properties
+			if (!is_undefined(thrown_weapon_fuze_timer))
+			{
+				// Set New Thrown Weapon Instance's Fuze Timer to the Current Thrown Weapon Instance's Fuze Timer
+				temp_thrown_weapon_instance.thrown_weapon_fuze_timer = thrown_weapon_fuze_timer;
+				
+				// Reset Current Thrown Weapon Instance's Fuze Timer
+				thrown_weapon_fuze_timer = undefined;
+			}
 		}
 		else
 		{
@@ -685,6 +743,13 @@ class ThrownClass extends WeaponClass define
 		var temp_thrown_weapon_projectile_instance = instance_create_depth(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, 0, global.item_packs[item_pack].item_object, temp_thrown_weapon_projectile_var_struct);
 		temp_thrown_weapon_projectile_instance.item_instance = temp_thrown_weapon_instance;
 		temp_thrown_weapon_projectile_instance.phy_rotation = -temp_thrown_weapon_projectile_angle;
+		
+		//
+		if (instance_exists(item_unit) and item_unit.player_input and !is_undefined(temp_thrown_weapon_instance.thrown_weapon_fuze_timer))
+		{
+			temp_thrown_weapon_projectile_instance.visible = true;
+			temp_thrown_weapon_projectile_instance.show_ui_fuze_timer = true;
+		}
 		
 		// Reset Thrown Weapon Attack Condition
 		switch (global.item_packs[item_pack].weapon_data.weapon_type)
@@ -702,45 +767,48 @@ class ThrownClass extends WeaponClass define
 	}
 	
 	// Thrown Weapon Methods
-	static predict_angle = function(initial_velocity, start_x, start_y, target_x, target_y)
+	static predict_angle = function(start_x, start_y, target_x, target_y, initial_velocity = undefined)
 	{
-		// Bleh
-		var temp_gravity = 0.12;
-		var temp_inv_air_resistance = 1.5; // The higher it is technically the less air resistance there is
+		// Establish Projectile Trajectory Physics Variables
+		var temp_gravity = global.item_packs[item_pack].weapon_data.projectile_gravity_speed;
+		var temp_inv_air_resistance = 1 - global.item_packs[item_pack].weapon_data.projectile_air_resistance;
+		var temp_init_velocity = is_undefined(initial_velocity) ? thrown_weapon_init_velocity : initial_velocity;
 		
-		//
+		// Establish Projectile Position Displacement Variables
 		var temp_delta_x = target_x - start_x;
 		var temp_delta_y = -(target_y - start_y);
 		
-		//
-		var temp_descriminator = power(initial_velocity, 4) * temp_inv_air_resistance * temp_inv_air_resistance - temp_gravity * ((temp_gravity * temp_delta_x * temp_delta_x) + (2 * temp_delta_y * initial_velocity * initial_velocity * temp_inv_air_resistance));
+		// Establish Projectile Angle Prediction Math Variables
+		var temp_initial_velocity_sqr = temp_init_velocity * temp_init_velocity;
 		
-		//
+		// Calculate Projectile Angle Prediction Equation Descriminator
+		var temp_descriminator = temp_initial_velocity_sqr * temp_initial_velocity_sqr * temp_inv_air_resistance * temp_inv_air_resistance - temp_gravity * ((temp_gravity * temp_delta_x * temp_delta_x) + (2 * temp_delta_y * temp_initial_velocity_sqr * temp_inv_air_resistance));
+		
+		// Check if Projectile Angle Prediction Equation Descriminator is Greater than Zero (if it is, the Target Position is within Reach of Projectile Trajectory's Path of Motion)
 		if (temp_descriminator < 0)
 		{
-			//
+			// Target Position is NOT within Reach of Projectile Trajectory's Path of Motion - Return the Projectile Angle that matches the Trajectory of the Direction between the Projectile's Starting Position and the Projectile's Target Position
 			var temp_direction = point_direction(start_x, start_y, target_x, target_y);
-			temp_direction = temp_direction + (angle_difference(90, temp_direction) * global.weapon_thrown_aim_zenith_difference_percent);
-			
-			return temp_direction;
+			return temp_direction + (angle_difference(90, temp_direction) * global.weapon_thrown_aim_zenith_difference_percent);
 		}
 		
 		// Calculate Angle of Throwing Direction
-		var temp_low_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_inv_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
-		//var temp_high_angle = radtodeg(arctan(((initial_velocity * initial_velocity * temp_air_resistance) + sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		var temp_low_angle = radtodeg(arctan(((temp_initial_velocity_sqr * temp_inv_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
 		
-		// Mirror Angle
-		temp_low_angle = target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
-		//temp_high_angle = target_x < start_x ? (temp_high_angle + 180) mod 360 : temp_high_angle;
-		
-		// Just use the low angle it looks better
-		return temp_low_angle;
+		// Return the Mirrored Angle
+		return target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
 	}
 	
 	static disable_safety = function()
 	{
 		// Disable Weapon Safety
 		thrown_weapon_safety_active = false;
+		
+		//
+		if (!is_undefined(global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_timer))
+		{
+			thrown_weapon_fuze_timer = global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_timer;
+		}
 		
 		//
 		if (global.item_packs[item_pack].weapon_data.weapon_type == WeaponType.Molotov)
@@ -802,27 +870,28 @@ class ThrownClass extends WeaponClass define
 	
 	static render_cursor_behaviour = function()
 	{
-		//
-		if (!weapon_projectile_trajectory_aim_reticle_active)
+		// Check if Projectile Trajectory Aim Reticule is Enabled
+		if (!weapon_projectile_trajectory_aim_reticule_active)
 		{
+			// Projectile Trajectory Aim Reticule is Disabled - Early Return
 			return;
 		}
 		
-		// Reset Surface Target
+		// (Render Cursor Event is called from Game Manager while UI Surface Target is Set) Reset Surface Target
 		surface_reset_target();
 		
 		// Set Effect Surface Target and Clear Effect Surface
 		surface_set_target(LightingEngine.fx_surface);
 		draw_clear_alpha(c_black, 0);
 		
-		//
+		// Set Draw Color
 		draw_set_color(c_white);
 		
-		// Draw Weapon's Projectile Trajectory Aim Reticule
+		// Find the Start and End Indexes of the Aim Reticule's Path to Draw
 		var i = round(weapon_projectile_trajectory_aim_reticle_animation_value);
 		var temp_projectile_trajectory_aim_reticule_length = max(ds_list_size(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list) - global.projectile_trajectory_aim_reticule_collision_hitmarker_offset, 0);
 		
-		//
+		// Draw Initial Projectile Trajectory Aim Reticule Line Segment
 		var temp_projectile_trajectory_lerp_val_a = 0;
 		var temp_projectile_trajectory_lerp_val_b = min(max(i - global.projectile_trajectory_aim_reticule_space_length, 0), temp_projectile_trajectory_aim_reticule_length);
 		
@@ -834,24 +903,24 @@ class ThrownClass extends WeaponClass define
 		
 		draw_line_width(temp_projectile_trajectory_ha_pos, temp_projectile_trajectory_va_pos, temp_projectile_trajectory_hb_pos, temp_projectile_trajectory_vb_pos, global.projectile_trajectory_aim_reticule_line_size);
 		
-		//
+		// Interate through Weapon's Projectile Trajectory Aim Reticule Path
 		while (i < temp_projectile_trajectory_aim_reticule_length)
 		{
-			//
+			// Find Indexes for the Start and End of the Aim Reticule's Line Segment on Projectile Trajectory's Position DS Lists
 			temp_projectile_trajectory_lerp_val_a = i;
 			temp_projectile_trajectory_lerp_val_b = min(i + global.projectile_trajectory_aim_reticule_line_length, temp_projectile_trajectory_aim_reticule_length);
 			
-			//
+			// Find Start and End Positions of the Aim Reticule's Line Segment to Draw
 			temp_projectile_trajectory_ha_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_x;
 			temp_projectile_trajectory_va_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_a) - LightingEngine.render_y;
 			
 			temp_projectile_trajectory_hb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_horizontal_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_x;
 			temp_projectile_trajectory_vb_pos = ds_list_find_value(GameManager.projectile_trajectory_aim_reticule_vertical_positions_list, temp_projectile_trajectory_lerp_val_b) - LightingEngine.render_y;
 			
-			//
+			// Draw Projectile Trajectory Aim Reticule Line Segment along Projectile's Predicted Path of Motion
 			draw_line_width(temp_projectile_trajectory_ha_pos, temp_projectile_trajectory_va_pos, temp_projectile_trajectory_hb_pos, temp_projectile_trajectory_vb_pos, global.projectile_trajectory_aim_reticule_line_size);
 			
-			//
+			// Increment Draw Position by Combined Length of Aim Reticule's Line Segment and Space
 			i += global.projectile_trajectory_aim_reticule_line_length + global.projectile_trajectory_aim_reticule_space_length;
 		}
 		
@@ -874,8 +943,8 @@ class ThrownClass extends WeaponClass define
 		// Reset Shader
 		shader_reset();
 		
-		// Draw Weapon's Cursor Crosshair
-		draw_sprite(sUI_CursorCrosshairIcons, 0, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y);
+		// Draw Projectile Impact Cursor Target at the End of the Projectile Trajectory's Path
+		draw_sprite_ext(sUI_CursorCrosshairIcons, 4, weapon_crosshair_position_x - LightingEngine.render_x, weapon_crosshair_position_y - LightingEngine.render_y, 1, 1, weapon_projectile_trajectory_aim_reticle_animation_angle, c_white, 1);
 	}
 }
 
