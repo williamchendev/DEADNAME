@@ -396,20 +396,11 @@ class ThrownClass extends WeaponClass define
 		thrown_weapon_render = true;
 		
 		// Thrown Weapon Aiming Variables
-		thrown_weapon_angle = 0;
-		thrown_weapon_direction = 1;
 		thrown_weapon_init_velocity = global.item_packs[item_pack].weapon_data.projectile_initial_velocity_min;
 		
 		// Thrown Weapon Safety
 		thrown_weapon_fuze_timer = undefined;
 		thrown_weapon_safety_active = true;
-		
-		// Thrown Weapon Limb Animation Variables
-		primary_limb_pivot_a_angle = 0;
-		primary_limb_pivot_b_angle = 0;
-		
-		secondary_limb_pivot_a_angle = 0;
-		secondary_limb_pivot_b_angle = 0;
 		
 		// Init Weapon Projectile Trajectory Aim Variables
 		weapon_projectile_trajectory_aim_reticule_active = false;
@@ -438,8 +429,9 @@ class ThrownClass extends WeaponClass define
 		item_unit.limb_secondary_arm.remove_all_held_items();
 		
 		// Set Thrown Weapon Aiming Behaviours
-		thrown_weapon_direction = sign(item_unit.draw_xscale);
-		thrown_weapon_angle = thrown_weapon_direction >= 0 ? 1 : 179;
+		item_unit.thrown_weapon_direction = sign(item_unit.draw_xscale);
+		item_unit.thrown_weapon_angle = item_unit.thrown_weapon_direction >= 0 ? 1 : 179;
+		item_unit.thrown_weapon_swing_underhand = global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand;
 		thrown_weapon_init_velocity = global.item_packs[item_pack].weapon_data.projectile_initial_velocity_min;
 		
 		// Reset Thrown Weapon Render Toggle
@@ -517,21 +509,7 @@ class ThrownClass extends WeaponClass define
 	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
 	{
 		// Update Thrown Weapon Fuze Timer
-		if (!is_undefined(thrown_weapon_fuze_timer))
-		{
-			//
-			thrown_weapon_fuze_timer -= frame_delta / 60;
-			
-			//
-			if (thrown_weapon_fuze_timer < 0)
-			{
-				//
-				instance_create_depth(item_x, item_y, 0, global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance);
-				
-				//
-				thrown_weapon_fuze_timer = undefined;
-			}
-		}
+		update_fuze();
 		
 		// Player Unit's Weapon Projectile Trajectory Aim Reticule
 		if (instance_exists(item_unit) and item_unit.player_input)
@@ -568,12 +546,12 @@ class ThrownClass extends WeaponClass define
 			var temp_projectile_trajectory_position_x = item_unit.limb_primary_arm.limb_pivot_ax;
 			var temp_projectile_trajectory_position_y = item_unit.limb_primary_arm.limb_pivot_ay;
 			
-			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_a_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_a_angle) * temp_unit_direction);
+			rot_prefetch(item_unit.thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_a_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_a_angle) * temp_unit_direction);
 			
 			temp_projectile_trajectory_position_x += rot_dist_x(item_unit.limb_primary_arm.limb_length / 2);
 			temp_projectile_trajectory_position_y += rot_dist_y(item_unit.limb_primary_arm.limb_length / 2);
 			
-			rot_prefetch(thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_b_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_b_angle) * temp_unit_direction);
+			rot_prefetch(item_unit.thrown_weapon_angle + (global.item_packs[item_pack].weapon_data.thrown_weapon_swing_underhand ? item_unit.thrown_swing_underhand_end_primary_limb_pivot_b_angle : item_unit.thrown_swing_overhand_end_primary_limb_pivot_b_angle) * temp_unit_direction);
 			
 			temp_projectile_trajectory_position_x += rot_dist_x((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
 			temp_projectile_trajectory_position_y += rot_dist_y((item_unit.limb_primary_arm.limb_length / 2) - item_unit.limb_primary_arm.limb_held_item_depth);
@@ -587,7 +565,7 @@ class ThrownClass extends WeaponClass define
 			var temp_projectile_trajectory_inverse_air_resistance = 1 - global.item_packs[item_pack].weapon_data.projectile_air_resistance;
 			
 			// Establish Projectile Trajectory Initial Directional Velocity
-			rot_prefetch(thrown_weapon_angle);
+			rot_prefetch(item_unit.thrown_weapon_angle);
 			
 			var temp_projectile_trajectory_horizontal_velocity = rot_dist_x(thrown_weapon_init_velocity);
 			var temp_projectile_trajectory_vertical_velocity = rot_dist_y(thrown_weapon_init_velocity);
@@ -668,7 +646,7 @@ class ThrownClass extends WeaponClass define
 		}
 	}
 	
-	static update_weapon_attack = function(weapon_target = undefined)
+	static update_weapon_attack = function(throw_direction)
 	{
 		// Invalid Weapon Attack Behaviour
 		if (!weapon_attack_reset)
@@ -682,25 +660,30 @@ class ThrownClass extends WeaponClass define
 			return false;
 		}
 		
+		// Establish Thrown Weapon's Unit Variables
+		var temp_thrown_weapon_item_unit = item_unit;
+		var temp_thrown_weapon_item_unit_direction = sign(item_unit.draw_xscale);
+		var temp_thrown_weapon_item_unit_inventory_index = item_unit.inventory_index;
+		
 		// Establish Thrown Weapon Projectile's Position and Angle from Unit's Primary Arm Held Item's Properties
-		var temp_thrown_weapon_projectile_x = item_unit.limb_primary_arm.limb_held_item_x;
-		var temp_thrown_weapon_projectile_y = item_unit.limb_primary_arm.limb_held_item_y;
-		var temp_thrown_weapon_projectile_angle = item_unit.limb_primary_arm.limb_pivot_b_angle + (item_unit.limb_primary_arm.limb_xscale < 0 ? 180 : 0);
+		var temp_thrown_weapon_projectile_x = temp_thrown_weapon_item_unit.limb_primary_arm.limb_held_item_x;
+		var temp_thrown_weapon_projectile_y = temp_thrown_weapon_item_unit.limb_primary_arm.limb_held_item_y;
+		var temp_thrown_weapon_projectile_angle = temp_thrown_weapon_item_unit.limb_primary_arm.limb_pivot_b_angle + (temp_thrown_weapon_item_unit_direction < 0 ? 180 : 0);
 		
 		// Establish Thrown Weapon Projectile's Properties Var Struct
 		var temp_thrown_weapon_projectile_var_struct =
 		{
-			sub_layer_index: lighting_engine_find_object_index(item_unit) + 1,
+			sub_layer_index: lighting_engine_find_object_index(temp_thrown_weapon_item_unit) + 1,
 			item_pack: item_pack,
 			item_count: 1,
 			item_instance: noone,
 			image_angle: temp_thrown_weapon_projectile_angle,
-			image_xscale: item_unit.limb_primary_arm.limb_xscale,
+			image_xscale: temp_thrown_weapon_item_unit_direction,
 			image_yscale: 1,
 			projectile_physics_enabled: true,
 			projectile_initial_velocity: thrown_weapon_init_velocity,
-			projectile_initial_direction: thrown_weapon_angle,
-			projectile_rotate_speed: global.item_packs[item_pack].weapon_data.projectile_rotate_speed * item_unit.limb_primary_arm.limb_xscale,
+			projectile_initial_direction: throw_direction,
+			projectile_rotate_speed: global.item_packs[item_pack].weapon_data.projectile_rotate_speed * temp_thrown_weapon_item_unit_direction,
 			projectile_rotate_friction: global.item_packs[item_pack].weapon_data.projectile_rotate_friction,
 			projectile_restitution: global.item_packs[item_pack].weapon_data.projectile_restitution,
 			projectile_air_resistance: global.item_packs[item_pack].weapon_data.projectile_air_resistance,
@@ -708,17 +691,21 @@ class ThrownClass extends WeaponClass define
 		};
 		
 		// Remove Thrown Weapon from Primary Arm's Held Item Slot
-		item_unit.limb_primary_arm.remove_all_held_items();
+		temp_thrown_weapon_item_unit.limb_primary_arm.remove_all_held_items();
 		
 		// Establish Thrown Weapon Instance Variable
 		var temp_thrown_weapon_instance = noone;
 		
 		// Check if Inventory Slot contains Weapon Instance
-		if (item_unit.inventory_slots[item_unit.inventory_index].item_count - 1 > 0)
+		if (temp_thrown_weapon_item_unit.inventory_slots[temp_thrown_weapon_item_unit_inventory_index].item_count - 1 > 0)
 		{
 			// Instantiate New Thrown Weapon Instance
 			temp_thrown_weapon_instance = create_item_class_instance_from_item_pack(item_pack);
 			temp_thrown_weapon_instance.init_item_physics(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, temp_thrown_weapon_projectile_angle);
+			
+			// Update Thrown Weapon Safety Properties
+			temp_thrown_weapon_instance.thrown_weapon_safety_active = thrown_weapon_safety_active;
+			thrown_weapon_safety_active = true;
 			
 			// Update Thrown Weapon Fuze Properties
 			if (!is_undefined(thrown_weapon_fuze_timer))
@@ -729,23 +716,34 @@ class ThrownClass extends WeaponClass define
 				// Reset Current Thrown Weapon Instance's Fuze Timer
 				thrown_weapon_fuze_timer = undefined;
 			}
+			
+			// Decrement Inventory Item Slot's Item Count
+			temp_thrown_weapon_item_unit.inventory_slots[temp_thrown_weapon_item_unit_inventory_index].item_count -= 1;
 		}
 		else
 		{
 			// Set Thrown Weapon's Item Class Instance from the Unit's Inventory
-			temp_thrown_weapon_instance = item_unit.item_equipped;
+			temp_thrown_weapon_instance = temp_thrown_weapon_item_unit.item_equipped;
 			
 			// Unequip Weapon if Item's Weapon Instance is Equipped
 			unequip_item();
+			
+			// Remove Thrown Weapon Item from Unit's Inventory Slot
+			temp_thrown_weapon_item_unit.inventory_slots[temp_thrown_weapon_item_unit_inventory_index].item_pack = ItemPack.None;
+			temp_thrown_weapon_item_unit.inventory_slots[temp_thrown_weapon_item_unit_inventory_index].item_count = -1;
+			temp_thrown_weapon_item_unit.inventory_slots[temp_thrown_weapon_item_unit_inventory_index].item_instance = noone;
 		}
 		
 		// Create Thrown Weapon Projectile Instance
 		var temp_thrown_weapon_projectile_instance = instance_create_depth(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, 0, global.item_packs[item_pack].item_object, temp_thrown_weapon_projectile_var_struct);
-		temp_thrown_weapon_projectile_instance.item_instance = temp_thrown_weapon_instance;
 		temp_thrown_weapon_projectile_instance.phy_rotation = -temp_thrown_weapon_projectile_angle;
+		temp_thrown_weapon_projectile_instance.item_instance = temp_thrown_weapon_instance;
+		temp_thrown_weapon_projectile_instance.item_instance.item_facing_sign = 1;
+		temp_thrown_weapon_projectile_instance.item_instance.item_xscale = temp_thrown_weapon_projectile_instance.image_xscale;
+		temp_thrown_weapon_projectile_instance.item_instance.item_yscale = temp_thrown_weapon_projectile_instance.image_yscale;
 		
-		//
-		if (instance_exists(item_unit) and item_unit.player_input and !is_undefined(temp_thrown_weapon_instance.thrown_weapon_fuze_timer))
+		// Update Thrown Weapon Projectile's UI Fuze Timer if thrown by Player Controlled Unit Instance
+		if (instance_exists(temp_thrown_weapon_item_unit) and temp_thrown_weapon_item_unit.player_input and !is_undefined(temp_thrown_weapon_instance.thrown_weapon_fuze_timer))
 		{
 			temp_thrown_weapon_projectile_instance.visible = true;
 			temp_thrown_weapon_projectile_instance.show_ui_fuze_timer = true;
@@ -797,6 +795,26 @@ class ThrownClass extends WeaponClass define
 		
 		// Return the Mirrored Angle
 		return target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
+	}
+	
+	static update_fuze = function()
+	{
+		// Check if Thrown Weapon's Fuze Timer Exists
+		if (!is_undefined(thrown_weapon_fuze_timer))
+		{
+			// Decrement Thrown Weapon's Fuze Timer
+			thrown_weapon_fuze_timer -= frame_delta / 60;
+			
+			// Check if Thrown Weapon's Fuze Timer has Ended
+			if (thrown_weapon_fuze_timer < 0)
+			{
+				// Create Thrown Weapon's Fuze Effect Instance
+				instance_create_depth(item_x, item_y, 0, global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance);
+				
+				// Reset Thrown Weapon's Fuze Timer
+				thrown_weapon_fuze_timer = undefined;
+			}
+		}
 	}
 	
 	static disable_safety = function()

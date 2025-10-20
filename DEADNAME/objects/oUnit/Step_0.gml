@@ -935,38 +935,32 @@ if (canmove)
 	// Horizontal Movement Behaviour
 	var move_spd = run_spd;
 	
-	if (equipment_active)
+	switch (unit_equipment_animation_state)
 	{
-		// Calculate Unit's Horizontal Movement Speed based on their Item Equipment Condition
-		if (global.item_packs[inventory_slots[inventory_index].item_pack].item_type == ItemType.Weapon)
-		{
-			switch (unit_equipment_animation_state)
+		case UnitEquipmentAnimationState.Thrown:
+			switch (unit_thrown_weapon_animation_state)
 			{
-				case UnitEquipmentAnimationState.Thrown:
-					switch (unit_thrown_weapon_animation_state)
-					{
-						case UnitThrownWeaponAnimationState.ThrowWindup:
-							move_spd = weapon_aim ? walk_spd : run_spd;
-							break;
-						case UnitThrownWeaponAnimationState.ThrowSwing:
-						case UnitThrownWeaponAnimationState.ThrowSwingClimax:
-							move_spd = 0;
-							break;
-						default:
-							move_spd = walk_spd;
-							break;
-					}
-					break;
-				case UnitEquipmentAnimationState.Firearm:
+				case UnitThrownWeaponAnimationState.ThrowWindup:
 					move_spd = weapon_aim ? walk_spd : run_spd;
 					break;
-				case UnitEquipmentAnimationState.FirearmReload:
-					move_spd = walk_spd;
+				case UnitThrownWeaponAnimationState.ThrowSwing:
+				case UnitThrownWeaponAnimationState.ThrowSwingClimax:
+				case UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft:
+					move_spd = 0;
 					break;
 				default:
+					move_spd = walk_spd;
 					break;
 			}
-		}
+			break;
+		case UnitEquipmentAnimationState.Firearm:
+			move_spd = weapon_aim ? walk_spd : run_spd;
+			break;
+		case UnitEquipmentAnimationState.FirearmReload:
+			move_spd = walk_spd;
+			break;
+		default:
+			break;
 	}
 	
 	if (input_left) 
@@ -1070,21 +1064,22 @@ if (canmove)
 		var temp_item_drop_random_horizontal_power = item_drop_random_horizontal_power;
 		var temp_item_drop_random_vertical_power = item_drop_random_vertical_power;
 		
-		// Create Dropped Item Instance
+		// Establish Dropped Item Object Instance
 		var temp_unit_dropped_item_instance = noone;
 		
+		// Create Dropped Item Object Instance based on Equipped Item Behaviour and Properties
 		switch (unit_equipment_animation_state)
 		{
 			case UnitEquipmentAnimationState.Thrown:
-				//
+				// Create Dropped Item if Thrown Weapon is currently Equipped in Hand (Otherwise you should just Throw the Thrown Weapon lol)
 				temp_unit_dropped_item_instance = limb_primary_arm.limb_held_item_exists ? unit_inventory_drop_item_instance(id, inventory_index, 1) : noone;
 				
-				//
+				// Disable Item Drop Unit Velocity being applied to Drop Physics Forces
 				temp_item_drop_movement_horizontal_power = 0;
 				temp_item_drop_movement_vertical_power = 0;
 				break;
 			default:
-				//
+				// Create Dropped Item from Equipped Item Default Behaviour
 				temp_unit_dropped_item_instance = unit_inventory_drop_item_instance(id, inventory_index, 1);
 				break;
 		}
@@ -1383,6 +1378,8 @@ if (grounded)
 			switch (unit_thrown_weapon_animation_state)
 			{
 				case UnitThrownWeaponAnimationState.ThrowSwing:
+				case UnitThrownWeaponAnimationState.ThrowSwingClimax:
+				case UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft:
 					temp_unit_animation_state = UnitAnimationState.Aiming;
 					break;
 				case UnitThrownWeaponAnimationState.ThrowWindup:
@@ -1529,19 +1526,20 @@ if (equipment_active)
 						var temp_thrown_weapon_aim_pivot_x = lerp(limb_primary_arm.limb_pivot_ax, limb_secondary_arm.limb_pivot_ax, 0.5);
 						var temp_thrown_weapon_aim_pivot_y = lerp(limb_primary_arm.limb_pivot_ay, limb_secondary_arm.limb_pivot_ay, 0.5);
 						
-						//
+						// Calculate Thrown Weapon Cursor Aim Distance's Horizontal and Vertical Displacement
 						var temp_throw_distance_horizontal = clamp(abs(temp_thrown_weapon_aim_pivot_x - weapon_aim_x), 0, (GameManager.game_width * 0.5)) / (GameManager.game_width * 0.5);
 						var temp_throw_distance_vertical = clamp(abs(temp_thrown_weapon_aim_pivot_y - weapon_aim_y), 0, (GameManager.game_height * 0.5)) / (GameManager.game_height * 0.5);
 						
-						//
+						// Calculate Thrown Weapon's Initial Throw Velocity Strength based on Elliptical Radial Distance based on the Dimensions of the Game's Width and Height
 						var temp_throw_velocity_percent = clamp(point_distance(0, 0, temp_throw_distance_horizontal, temp_throw_distance_vertical), 0, 1);
 						
-						//
+						// Update Thrown Weapon's Intial Throw Velocity Strength with Smooth Lerp Transition Effect
 						var temp_throw_init_velocity_target = lerp(global.item_packs[item_equipped.item_pack].weapon_data.projectile_initial_velocity_min, global.item_packs[item_equipped.item_pack].weapon_data.projectile_initial_velocity_max, temp_throw_velocity_percent);
 						item_equipped.thrown_weapon_init_velocity = lerp(item_equipped.thrown_weapon_init_velocity, temp_throw_init_velocity_target, thrown_aiming_velocity_transition_spd * frame_delta);
 					}
 					else
 					{
+						// Thrown Weapon is no longer being actively Aimed - Return Thrown Weapon's Inital Throw Velocity to its Minimum Default Value
 						item_equipped.thrown_weapon_init_velocity = global.item_packs[item_equipped.item_pack].weapon_data.projectile_initial_velocity_min;
 					}
 				}
@@ -1591,9 +1589,27 @@ repeat (array_length(inventory_slots))
 		// Compare Inventory Slot Item's Type
 		if (global.item_packs[inventory_slots[temp_inventory_slot_index].item_pack].item_type != ItemType.None)
 		{
+			// Update Inventory Slot's Item Instance based on Inventory Slot's Orientation
 			var temp_inventory_slot_angle_movement_difference = angle_difference(90 + (inventory_slots[temp_inventory_slot_index].slot_angle * temp_unit_direction), inventory_slots[temp_inventory_slot_index].item_instance.item_angle);
 			var temp_inventory_slot_item_angle = inventory_slots[temp_inventory_slot_index].item_instance.item_angle + (temp_inventory_slot_angle_movement_difference * inventory_item_rotate_spd * frame_delta);
 			inventory_slots[temp_inventory_slot_index].item_instance.update_item_physics(inventory_slots[temp_inventory_slot_index].slot_position_x, inventory_slots[temp_inventory_slot_index].slot_position_y, temp_inventory_slot_item_angle, temp_unit_direction);
+			
+			// Check if Inventory Slot's Item Instance is a Weapon
+			if (global.item_packs[inventory_slots[temp_inventory_slot_index].item_pack].item_type == ItemType.Weapon)
+			{
+				// Unequipped Weapon Item Behaviour
+				switch (global.item_packs[inventory_slots[temp_inventory_slot_index].item_pack].weapon_data.weapon_type)
+				{
+					case WeaponType.Thrown:
+					case WeaponType.Grenade:
+					case WeaponType.Molotov:
+						// Update Thrown Weapon's Fuze
+						inventory_slots[temp_inventory_slot_index].item_instance.update_fuze();
+						break;
+					default:
+						break;
+				}
+			}
 		}
 	}
 	
@@ -1635,16 +1651,17 @@ switch (unit_equipment_animation_state)
 		{
 			case UnitThrownWeaponAnimationState.ThrowSwing:
 			case UnitThrownWeaponAnimationState.ThrowSwingClimax:
+			case UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft:
 				// Calculate Thrown Weapon Swing Animation Lerp Behaviour
-				thrown_weapon_swing_transition_value = lerp(thrown_weapon_swing_transition_value, 1, global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_transition_spd : thrown_weapon_swing_overhand_transition_spd * frame_delta);
-				thrown_weapon_swing_transition_value *= power(global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_transition_multiplier : thrown_weapon_swing_overhand_transition_multiplier, frame_delta);
+				thrown_weapon_swing_transition_value = lerp(thrown_weapon_swing_transition_value, 1, thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_transition_spd : thrown_weapon_swing_overhand_transition_spd * frame_delta);
+				thrown_weapon_swing_transition_value *= power(thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_transition_multiplier : thrown_weapon_swing_overhand_transition_multiplier, frame_delta);
 				thrown_weapon_swing_transition_value = clamp(thrown_weapon_swing_transition_value, 0, 1);
 				
 				// Calculate Thrown Weapon Swing Animation with Inversed Exponent Curve
-				var temp_weapon_swing_transition_value = 1.0 - power(1.0 - thrown_weapon_swing_transition_value, global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_animation_curve_exponent : thrown_weapon_swing_overhand_animation_curve_exponent);
+				var temp_weapon_swing_transition_value = 1.0 - power(1.0 - thrown_weapon_swing_transition_value, thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_animation_curve_exponent : thrown_weapon_swing_overhand_animation_curve_exponent);
 				
 				// Update Thrown Weapon Limb Target Angles
-				if (global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand)
+				if (thrown_weapon_swing_underhand)
 				{
 					// Use the Primary Hand's Underhand Throw Limb Pivot Positions
 					temp_thrown_primary_limb_pivot_a_angle = (lerp(thrown_swing_underhand_start_primary_limb_pivot_a_angle, thrown_swing_underhand_end_primary_limb_pivot_a_angle, temp_weapon_swing_transition_value) - thrown_weapon_swing_climax_angle) * temp_unit_direction;
@@ -1669,11 +1686,25 @@ switch (unit_equipment_animation_state)
 						// Advance Animation State from Throwing Thrown Weapon Swing to Post-Throw Swing Climax
 						unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwingClimax;
 						
+						//
+						thrown_weapon_direction = temp_unit_direction;
+						
 						// Set Thrown Weapon Swing Climax Timer
-						thrown_weapon_swing_climax_timer = global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_duration : thrown_weapon_swing_overhand_climax_duration;
+						thrown_weapon_swing_climax_timer = thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_duration : thrown_weapon_swing_overhand_climax_duration;
 						
 						// Launch Thrown Weapon from Hand Behaviour
-						item_equipped.update_weapon_attack();
+						item_equipped.update_weapon_attack(thrown_weapon_angle);
+						
+						//
+						if (item_equipped == noone)
+						{
+							//
+							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
+							
+							//
+							unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
+							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft;
+						}
 					}
 				}
 				else
@@ -1682,19 +1713,35 @@ switch (unit_equipment_animation_state)
 					thrown_weapon_swing_climax_timer -= frame_delta;
 					
 					// Post-Throw Swing Climax Overshot Arm Animation Behaviour
-					var temp_thrown_weapon_swing_climax_spd = global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_angle_spd : thrown_weapon_swing_overhand_climax_angle_spd;
-					var temp_thrown_weapon_swing_climax_duration = global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_duration : thrown_weapon_swing_overhand_climax_duration;
+					var temp_thrown_weapon_swing_climax_spd = thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_angle_spd : thrown_weapon_swing_overhand_climax_angle_spd;
+					var temp_thrown_weapon_swing_climax_duration = thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_duration : thrown_weapon_swing_overhand_climax_duration;
 					thrown_weapon_swing_climax_angle += temp_thrown_weapon_swing_climax_spd * power(clamp((thrown_weapon_swing_climax_timer - temp_thrown_weapon_swing_climax_duration * 0.5) / (temp_thrown_weapon_swing_climax_duration * 0.5), 0, 1), 4) * frame_delta;
 					
 					// Swing Climax Animation Finish Behaviour
 					if (thrown_weapon_swing_climax_timer <= 0)
 					{
-						// Advance Animation State from Post-Throw Swing Climax to Grabbing another Thrown Weapon from Unit's Inventory
-						unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
-						
-						// Reset Thrown Weapon Aim & Thrown Weapon Idle Pivot to Inventory Slot Item Position Pivot Transition Animation Values
-						thrown_weapon_aim_transition_value = 0;
-						thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
+						//
+						if (unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowSwingClimax)
+						{
+							// Advance Animation State from Post-Throw Swing Climax to Grabbing another Thrown Weapon from Unit's Inventory
+							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+							
+							// Reset Thrown Weapon Aim & Thrown Weapon Idle Pivot to Inventory Slot Item Position Pivot Transition Animation Values
+							thrown_weapon_aim_transition_value = 0;
+							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
+						}
+						else
+						{
+							// Calculate Primary Hand Transition from Thrown Weapon Idle Pivot to 
+							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = lerp(thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value, 0, thrown_item_slot_to_holding_position_transition_spd * frame_delta);
+							
+							//
+							if (thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value < 0.25)
+							{
+								//
+								unit_equipment_animation_state = UnitEquipmentAnimationState.None;
+							}
+						}
 					}
 				}
 				break;
@@ -1746,7 +1793,7 @@ switch (unit_equipment_animation_state)
 				temp_thrown_secondary_limb_pivot_b_angle = lerp(thrown_idle_secondary_limb_pivot_b_angle, thrown_aiming_secondary_limb_pivot_b_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
 				
 				// Thrown Weapon Facing Direction Behaviour
-				item_equipped.thrown_weapon_angle = weapon_aim ? item_equipped.thrown_weapon_angle : (temp_unit_direction >= 0 ? 0 : 180);
+				thrown_weapon_angle = weapon_aim ? thrown_weapon_angle : (temp_unit_direction >= 0 ? 0 : 180);
 				break;
 			case UnitThrownWeaponAnimationState.GrabWeapon:
 			case UnitThrownWeaponAnimationState.OperateAction_MoveHandsToReadyWeapon:
@@ -1763,7 +1810,7 @@ switch (unit_equipment_animation_state)
 				temp_thrown_primary_limb_pivot_a_angle = lerp(thrown_idle_primary_limb_pivot_a_angle, thrown_aiming_primary_limb_pivot_a_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
 				temp_thrown_primary_limb_pivot_b_angle = lerp(thrown_idle_primary_limb_pivot_b_angle, thrown_aiming_primary_limb_pivot_b_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
 				
-				if (global.item_packs[item_equipped.item_pack].weapon_data.thrown_weapon_swing_underhand)
+				if (thrown_weapon_swing_underhand)
 				{
 					// Add Primary Hand's Underhand Throw Overshot Swing Angle
 					temp_thrown_primary_limb_pivot_a_angle -= angle_difference(temp_thrown_primary_limb_pivot_a_angle, (thrown_swing_underhand_end_primary_limb_pivot_a_angle - thrown_weapon_swing_climax_angle) * temp_unit_direction) * thrown_weapon_swing_transition_value;
@@ -1970,25 +2017,29 @@ switch (unit_equipment_animation_state)
 				break;
 		}
 		
-		// Update Unit's Weapon and Angle based on Facing Direction during Every Animation except the Weapon Throw Windup
-		if (unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowWindup and item_equipped.thrown_weapon_direction != temp_unit_direction)
-		{
-			// Thrown Weapon Facing Direction Behaviour
-			item_equipped.thrown_weapon_direction = temp_unit_direction;
-			
-			// Mirror Thrown Weapon's Angle across the X Axis
-			item_equipped.thrown_weapon_angle = ((angle_difference(item_equipped.thrown_weapon_angle, 270) <= 180 ? 180 : 360) - item_equipped.thrown_weapon_angle) mod 180;
-		}
-		
 		// Walk Backwards while Aiming
 		animation_speed_direction = ((x_velocity != 0) and (sign(x_velocity) != temp_unit_direction)) ? -1 : 1;
 		
-		// Update Unit's Thrown Weapon Holstered Angle
-		var temp_thrown_weapon_holstered_angle_movement_difference = angle_difference(90 + (inventory_slots[inventory_index].slot_angle * temp_unit_direction), item_equipped.item_angle);
-		var temp_thrown_weapon_holstered_item_angle = item_equipped.item_angle + (temp_thrown_weapon_holstered_angle_movement_difference * inventory_item_rotate_spd * frame_delta);
+		// Check if Thrown Weapon Item still Exists and is Equipped
+		if (item_equipped != noone)
+		{
+			// Update Unit's Thrown Weapon Holstered Angle
+			var temp_thrown_weapon_holstered_angle_movement_difference = angle_difference(90 + (inventory_slots[inventory_index].slot_angle * temp_unit_direction), item_equipped.item_angle);
+			var temp_thrown_weapon_holstered_item_angle = item_equipped.item_angle + (temp_thrown_weapon_holstered_angle_movement_difference * inventory_item_rotate_spd * frame_delta);
+			
+			// Update Thrown Weapon Instance's Physics - Holstered in Inventory Item Slot
+			item_equipped.update_item_physics(inventory_slots[inventory_index].slot_position_x, inventory_slots[inventory_index].slot_position_y, temp_thrown_weapon_holstered_item_angle, temp_unit_direction);
+		}
 		
-		// Update Thrown Weapon Instance's Physics - Holstered in Inventory Item Slot
-		item_equipped.update_item_physics(inventory_slots[inventory_index].slot_position_x, inventory_slots[inventory_index].slot_position_y, temp_thrown_weapon_holstered_item_angle, temp_unit_direction);
+		// Update Unit's Weapon and Angle based on Facing Direction during Every Animation except the Weapon Throw Windup
+		if (unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwing and unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowWindup and thrown_weapon_direction != temp_unit_direction)
+		{
+			// Thrown Weapon Facing Direction Behaviour
+			thrown_weapon_direction = temp_unit_direction;
+			
+			// Mirror Thrown Weapon's Angle across the X Axis
+			thrown_weapon_angle = ((angle_difference(thrown_weapon_angle, 270) <= 180 ? 180 : 360) - thrown_weapon_angle) mod 180;
+		}
 		
 		// Calculate Thrown Weapon Animation Behaviour - Limb Inverse Kinematics
 		if (thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value != 1)
@@ -2028,10 +2079,32 @@ switch (unit_equipment_animation_state)
 						// Perform Primary Limb's Inverse Kinematics Calculation
 						limb_primary_arm.update_target(temp_thrown_weapon_primary_arm_target_x, temp_thrown_weapon_primary_arm_target_y);
 						
-						// Store Primary Limb's Upper Arm & Forearm Rotation Values in Thrown Weapon Instance
-						item_equipped.primary_limb_pivot_a_angle = limb_primary_arm.limb_pivot_a_angle;
-						item_equipped.primary_limb_pivot_b_angle = limb_primary_arm.limb_pivot_b_angle;
+						// Store Primary Limb's Upper Arm & Forearm Rotation Values
+						thrown_weapon_primary_limb_pivot_a_angle = limb_primary_arm.limb_pivot_a_angle;
+						thrown_weapon_primary_limb_pivot_b_angle = limb_primary_arm.limb_pivot_b_angle;
 					}
+					break;
+				case UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft:
+					//
+					if (thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value != 1)
+					{
+						// Perform Primary Limb's Inverse Kinematics Calculation
+						limb_primary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, 1, 0);
+						
+						// Store Primary Limb's Upper Arm & Forearm Rotation Values
+						thrown_weapon_primary_limb_pivot_a_angle = limb_primary_arm.limb_pivot_a_angle;
+						thrown_weapon_primary_limb_pivot_b_angle = limb_primary_arm.limb_pivot_b_angle;
+						
+						// Perform Secondary Limb's Inverse Kinematics Calculation
+						limb_secondary_arm.update_walk_animation(x, y + ground_contact_vertical_offset, draw_xscale, draw_yscale, 1, 0);
+						
+						// Store Secondary Limb's Upper Arm & Forearm Rotation Values
+						thrown_weapon_secondary_limb_pivot_a_angle = limb_secondary_arm.limb_pivot_a_angle;
+						thrown_weapon_secondary_limb_pivot_b_angle = limb_secondary_arm.limb_pivot_b_angle;
+					}
+					
+					//
+					temp_thrown_weapon_operate_transition_value = 1 - thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value;
 					break;
 				default:
 					break;
@@ -2060,19 +2133,20 @@ switch (unit_equipment_animation_state)
 				// Perform Secondary Limb's Inverse Kinematics Calculation
 				limb_secondary_arm.update_target(temp_thrown_weapon_secondary_arm_target_x + hand_fumble_animation_offset_x, temp_thrown_weapon_secondary_arm_target_y + hand_fumble_animation_offset_y);
 				
-				// Store Secondary Limb's Upper Arm & Forearm Rotation Values in Thrown Weapon Instance
-				item_equipped.secondary_limb_pivot_a_angle = limb_secondary_arm.limb_pivot_a_angle;
-				item_equipped.secondary_limb_pivot_b_angle = limb_secondary_arm.limb_pivot_b_angle;
+				// Store Secondary Limb's Upper Arm & Forearm Rotation Values
+				thrown_weapon_secondary_limb_pivot_a_angle = limb_secondary_arm.limb_pivot_a_angle;
+				thrown_weapon_secondary_limb_pivot_b_angle = limb_secondary_arm.limb_pivot_b_angle;
 			}
 		}
 		
 		// Update Thrown Weapon's Aim Direction
-		if (unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwing and unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwingClimax)
+		if (unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwing and unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwingClimax and unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft)
 		{
 			// Calculate Thrown Weapon Aim Angle
-			var temp_throw_aim_angle_difference = angle_difference(item_equipped.thrown_weapon_angle, temp_thrown_weapon_aim ? item_equipped.predict_angle(limb_primary_arm.limb_pivot_ax, limb_primary_arm.limb_pivot_ay, weapon_aim_x, weapon_aim_y) : (temp_unit_direction >= 0 ? 0 : 180));
-			item_equipped.thrown_weapon_angle = (item_equipped.thrown_weapon_angle - (temp_throw_aim_angle_difference * thrown_aiming_angle_transition_spd * frame_delta)) mod 360;
-			item_equipped.thrown_weapon_angle = item_equipped.thrown_weapon_angle < 0 ? item_equipped.thrown_weapon_angle + 360 : item_equipped.thrown_weapon_angle;
+			var temp_throw_aim_predict_angle = item_equipped != noone ? item_equipped.predict_angle(limb_primary_arm.limb_pivot_ax, limb_primary_arm.limb_pivot_ay, weapon_aim_x, weapon_aim_y) : (temp_unit_direction >= 0 ? 0 : 180);
+			var temp_throw_aim_angle_difference = angle_difference(thrown_weapon_angle, temp_thrown_weapon_aim ? temp_throw_aim_predict_angle : (temp_unit_direction >= 0 ? 0 : 180));
+			thrown_weapon_angle = (thrown_weapon_angle - (temp_throw_aim_angle_difference * thrown_aiming_angle_transition_spd * frame_delta)) mod 360;
+			thrown_weapon_angle = thrown_weapon_angle < 0 ? thrown_weapon_angle + 360 : thrown_weapon_angle;
 		}
 		
 		// Update Moving Unit's Thrown Weapon Bobbing Animation
@@ -2088,8 +2162,8 @@ switch (unit_equipment_animation_state)
 		}
 		
 		// Update Primary Arm's Upper Arm's Limb Angle
-		limb_primary_arm.limb_pivot_a_angle = item_equipped.thrown_weapon_angle + temp_thrown_primary_limb_pivot_a_angle + temp_thrown_weapon_primary_ambient_bob_angle + temp_thrown_weapon_moving_bob_angle;
-		limb_primary_arm.limb_pivot_a_angle = item_equipped.primary_limb_pivot_a_angle - (angle_difference(item_equipped.primary_limb_pivot_a_angle, limb_primary_arm.limb_pivot_a_angle) * thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value);
+		limb_primary_arm.limb_pivot_a_angle = thrown_weapon_angle + temp_thrown_primary_limb_pivot_a_angle + temp_thrown_weapon_primary_ambient_bob_angle + temp_thrown_weapon_moving_bob_angle;
+		limb_primary_arm.limb_pivot_a_angle = thrown_weapon_primary_limb_pivot_a_angle - (angle_difference(thrown_weapon_primary_limb_pivot_a_angle, limb_primary_arm.limb_pivot_a_angle) * thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value);
 		limb_primary_arm.limb_pivot_a_angle = limb_primary_arm.limb_pivot_a_angle < 0 ? limb_primary_arm.limb_pivot_a_angle + 360 : limb_primary_arm.limb_pivot_a_angle;
 		
 		rot_prefetch(limb_primary_arm.limb_pivot_a_angle);
@@ -2099,8 +2173,8 @@ switch (unit_equipment_animation_state)
 		limb_primary_arm.limb_pivot_by = limb_primary_arm.limb_pivot_ay + rot_point_y(limb_primary_arm.limb_length * 0.5, 0);
 		
 		// Update Primary Arm's Forearm's Limb Angle
-		limb_primary_arm.limb_pivot_b_angle = item_equipped.thrown_weapon_angle + temp_thrown_primary_limb_pivot_b_angle - temp_thrown_weapon_primary_ambient_bob_angle;
-		limb_primary_arm.limb_pivot_b_angle = item_equipped.primary_limb_pivot_b_angle - (angle_difference(item_equipped.primary_limb_pivot_b_angle, limb_primary_arm.limb_pivot_b_angle) * thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value);
+		limb_primary_arm.limb_pivot_b_angle = thrown_weapon_angle + temp_thrown_primary_limb_pivot_b_angle - temp_thrown_weapon_primary_ambient_bob_angle;
+		limb_primary_arm.limb_pivot_b_angle = thrown_weapon_primary_limb_pivot_b_angle - (angle_difference(thrown_weapon_primary_limb_pivot_b_angle, limb_primary_arm.limb_pivot_b_angle) * thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value);
 		limb_primary_arm.limb_pivot_b_angle = limb_primary_arm.limb_pivot_b_angle < 0 ? limb_primary_arm.limb_pivot_b_angle + 360 : limb_primary_arm.limb_pivot_b_angle;
 		
 		rot_prefetch(limb_primary_arm.limb_pivot_b_angle);
@@ -2110,8 +2184,8 @@ switch (unit_equipment_animation_state)
 		limb_primary_arm.limb_held_item_y = limb_primary_arm.limb_pivot_by + rot_point_y((limb_primary_arm.limb_length * 0.5) - limb_primary_arm.limb_held_item_depth, 0);
 		
 		// Update Secondary Arm's Upper Arm's Limb Angle
-		limb_secondary_arm.limb_pivot_a_angle = item_equipped.thrown_weapon_angle + temp_thrown_secondary_limb_pivot_a_angle + temp_thrown_weapon_secondary_ambient_bob_angle - temp_thrown_weapon_moving_bob_angle;
-		limb_secondary_arm.limb_pivot_a_angle = item_equipped.secondary_limb_pivot_a_angle - (angle_difference(item_equipped.secondary_limb_pivot_a_angle, limb_secondary_arm.limb_pivot_a_angle) * (1 - temp_thrown_weapon_operate_transition_value));
+		limb_secondary_arm.limb_pivot_a_angle = thrown_weapon_angle + temp_thrown_secondary_limb_pivot_a_angle + temp_thrown_weapon_secondary_ambient_bob_angle - temp_thrown_weapon_moving_bob_angle;
+		limb_secondary_arm.limb_pivot_a_angle = thrown_weapon_secondary_limb_pivot_a_angle - (angle_difference(thrown_weapon_secondary_limb_pivot_a_angle, limb_secondary_arm.limb_pivot_a_angle) * (1 - temp_thrown_weapon_operate_transition_value));
 		limb_secondary_arm.limb_pivot_a_angle = limb_secondary_arm.limb_pivot_a_angle < 0 ? limb_secondary_arm.limb_pivot_a_angle + 360 : limb_secondary_arm.limb_pivot_a_angle;
 		
 		rot_prefetch(limb_secondary_arm.limb_pivot_a_angle);
@@ -2121,8 +2195,8 @@ switch (unit_equipment_animation_state)
 		limb_secondary_arm.limb_pivot_by = limb_secondary_arm.limb_pivot_ay + rot_point_y(limb_secondary_arm.limb_length * 0.5, 0);
 		
 		// Update Secondary Arm's Forearm's Limb Angle
-		limb_secondary_arm.limb_pivot_b_angle = item_equipped.thrown_weapon_angle + temp_thrown_secondary_limb_pivot_b_angle - temp_thrown_weapon_secondary_ambient_bob_angle;
-		limb_secondary_arm.limb_pivot_b_angle = item_equipped.secondary_limb_pivot_b_angle - (angle_difference(item_equipped.secondary_limb_pivot_b_angle, limb_secondary_arm.limb_pivot_b_angle) * (1 - temp_thrown_weapon_operate_transition_value));
+		limb_secondary_arm.limb_pivot_b_angle = thrown_weapon_angle + temp_thrown_secondary_limb_pivot_b_angle - temp_thrown_weapon_secondary_ambient_bob_angle;
+		limb_secondary_arm.limb_pivot_b_angle = thrown_weapon_secondary_limb_pivot_b_angle - (angle_difference(thrown_weapon_secondary_limb_pivot_b_angle, limb_secondary_arm.limb_pivot_b_angle) * (1 - temp_thrown_weapon_operate_transition_value));
 		limb_secondary_arm.limb_pivot_b_angle = limb_secondary_arm.limb_pivot_b_angle < 0 ? limb_secondary_arm.limb_pivot_b_angle + 360 : limb_secondary_arm.limb_pivot_b_angle;
 		
 		// Disable Primary & Secondary Arm Default Animations

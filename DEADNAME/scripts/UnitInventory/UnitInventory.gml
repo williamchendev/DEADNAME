@@ -763,6 +763,47 @@ function unit_inventory_take_item_instance(unit, item_instance)
 				unit_inventory_change_slot(unit, unit.inventory_index);
 			}
 		}
+		else
+		{
+			// Restore Item Properties to Unit Inventory's Item Slot's Item Instance
+			switch (global.item_packs[item_instance.item_pack].weapon_data.weapon_type)
+			{
+				case WeaponType.Thrown:
+				case WeaponType.Grenade:
+				case WeaponType.Molotov:
+					// Thrown Weapon Safety Properties Update Behaviour
+					unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_safety_active = unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_safety_active and item_instance.item_instance.thrown_weapon_safety_active;
+					
+					// Thrown Weapon Fuze Properties Update Behaviour
+					if (!is_undefined(global.item_packs[item_instance.item_pack].weapon_data.thrown_weapon_fuze_timer))
+					{
+						// Establish Thrown Weapon Fuze Timer Values for both the Unit's Inventory Item Slot Item Instance and Item Pickup Instance
+						var temp_unit_inventory_thrown_weapon_fuze_timer = unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_fuze_timer;
+						var temp_item_pickup_thrown_weapon_fuze_timer = item_instance.item_instance.thrown_weapon_fuze_timer;
+						
+						// Compare Thrown Weapon Fuze Timer Values and Select the Lowest and Viable Fuze Timer
+						if (!is_undefined(temp_unit_inventory_thrown_weapon_fuze_timer) and !is_undefined(temp_item_pickup_thrown_weapon_fuze_timer))
+						{
+							unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_fuze_timer = temp_unit_inventory_thrown_weapon_fuze_timer < temp_item_pickup_thrown_weapon_fuze_timer ? temp_unit_inventory_thrown_weapon_fuze_timer : temp_item_pickup_thrown_weapon_fuze_timer;
+						}
+						else if (!is_undefined(temp_unit_inventory_thrown_weapon_fuze_timer))
+						{
+							unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_fuze_timer = temp_unit_inventory_thrown_weapon_fuze_timer;
+						}
+						else if (!is_undefined(temp_item_pickup_thrown_weapon_fuze_timer))
+						{
+							unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_fuze_timer = temp_item_pickup_thrown_weapon_fuze_timer;
+						}
+						else
+						{
+							unit.inventory_slots[temp_slot_index].item_instance.thrown_weapon_fuze_timer = undefined;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
 		
 		// Increment Count of Items Placed in Unit Inventory
 		temp_item_placed_count++;
@@ -950,8 +991,8 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 							unit.thrown_weapon_operate_action_transition_value = 0
 							unit.thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
 							
-							unit.item_equipped.thrown_weapon_direction = sign(unit.draw_xscale);
-							unit.item_equipped.thrown_weapon_angle = unit.item_equipped.thrown_weapon_direction >= 0 ? 1 : 179;
+							unit.thrown_weapon_direction = sign(unit.draw_xscale);
+							unit.thrown_weapon_angle = unit.thrown_weapon_direction >= 0 ? 1 : 179;
 							
 							// Update Dropped Thrown Weapon Instance's Properties with Unit's Held Item Properties
 							temp_dropped_item_weapon_instance.item_x = temp_dropped_item_weapon_position_x;
@@ -959,21 +1000,30 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 							
 							temp_dropped_item_weapon_instance.item_angle = temp_dropped_item_weapon_angle;
 							
+							temp_dropped_item_weapon_instance.item_facing_sign = 1;
+							
 							temp_dropped_item_weapon_instance.item_xscale = temp_dropped_item_weapon_xscale;
 							temp_dropped_item_weapon_instance.item_yscale = temp_dropped_item_weapon_yscale;
 						}
 					}
 					
-					//
+					// Update Dropped Thrown Weapon Safety Properties
+					if (unit.inventory_slots[slot_index].item_instance != noone)
+					{
+						temp_dropped_item_weapon_instance.thrown_weapon_safety_active = unit.inventory_slots[slot_index].item_instance.thrown_weapon_safety_active;
+						unit.inventory_slots[slot_index].item_instance.thrown_weapon_safety_active = true;
+					}
+					
+					// Update Dropped Thrown Weapon Instance's Fuze Timer
 					if (!is_undefined(global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.thrown_weapon_fuze_timer))
 					{
-						//
+						// Check if Instantiated New Weapon Instance
 						if (unit.inventory_slots[slot_index].item_instance != noone and !is_undefined(unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer))
 						{
-							// 
+							// Set Dropped Thrown Weapon Item's Fuze Timer
 							temp_dropped_item_weapon_instance.thrown_weapon_fuze_timer = unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer;
 							
-							//
+							// Reset Unit Instance's Thrown Weapon Fuze Timer
 							unit.inventory_slots[slot_index].item_instance.thrown_weapon_fuze_timer = undefined;
 						}
 					}
@@ -1032,13 +1082,13 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 				// Update Dropped Item's Physics
 				item_instance.update_item_physics(x, y, image_angle, item_instance.item_facing_sign);
 				
-				//
+				// Update Weapon Behaviour after Dropped Weapon Item Instance has been Created
 				switch (global.item_packs[unit.inventory_slots[slot_index].item_pack].weapon_data.weapon_type)
 				{
 					case WeaponType.Thrown:
 					case WeaponType.Grenade:
 					case WeaponType.Molotov:
-						// 
+						// Set Dropped Thrown Weapon Item's Thrown Weapon Fuze Timer if dropped by a Player Controlled Unit Instance
 						if (instance_exists(unit) and unit.player_input and !is_undefined(item_instance.thrown_weapon_fuze_timer))
 						{
 							visible = true;

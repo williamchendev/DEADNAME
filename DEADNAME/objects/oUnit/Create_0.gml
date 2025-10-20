@@ -204,6 +204,15 @@ unit_equipment_position_y = 0;
 item_drop_offset_transition_value = 0;
 item_inventory_slot_pivot_to_unit_item_position_pivot_transition_value = 0;
 
+thrown_weapon_angle = 0;
+thrown_weapon_direction = draw_xscale;
+thrown_weapon_swing_underhand = false;
+
+thrown_weapon_primary_limb_pivot_a_angle = 0;
+thrown_weapon_primary_limb_pivot_b_angle = 0;
+thrown_weapon_secondary_limb_pivot_a_angle = 0;
+thrown_weapon_secondary_limb_pivot_b_angle = 0;
+
 thrown_weapon_aim_transition_value = 0;
 thrown_weapon_swing_transition_value = 0;
 thrown_weapon_operate_transition_value = 0;

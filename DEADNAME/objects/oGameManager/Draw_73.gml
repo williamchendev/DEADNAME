@@ -8,6 +8,40 @@ surface_set_target(LightingEngine.ui_surface);
 draw_set_alpha(1);
 draw_set_color(c_white);
 
+// Player UI Behaviour Variables
+var temp_player_unit_weapon_equipped = instance_exists(player_unit) and player_unit.equipment_active and global.item_packs[player_unit.item_equipped.item_pack].item_type == ItemType.Weapon;
+
+// Draw Player Unit Weapon UI Behaviour
+if (temp_player_unit_weapon_equipped)
+{
+	// Draw Player Unit's Weapon UI based on Weapon Type Equipped
+	switch (global.item_packs[player_unit.item_equipped.item_pack].weapon_data.weapon_type)
+	{
+		case WeaponType.Thrown:
+		case WeaponType.Grenade:
+		case WeaponType.Molotov:
+			// Draw Throwable Weapon Fuze Timer
+			if (!is_undefined(player_unit.item_equipped.thrown_weapon_fuze_timer))
+			{
+				// Create Throwable Weapon Fuze Timer's Text
+				var temp_thrown_weapon_fuze_timer_display_text = string_delete(string(player_unit.item_equipped.thrown_weapon_fuze_timer), -1, -1);
+				
+				// Set Throwable Weapon Fuze Timer Text Font
+				draw_set_font(font_Default);
+				
+				// Set Throwable Weapon Fuze Timer Text Alignment
+				draw_set_halign(fa_center);
+				draw_set_valign(fa_bottom);
+				
+				// Draw Throwable Weapon Fuze Timer's Text
+				draw_text_outline(player_unit.x - LightingEngine.render_x + 2, player_unit.y - LightingEngine.render_y - player_unit.sprite_height, $"{temp_thrown_weapon_fuze_timer_display_text}s");
+			}
+			break;
+		default:
+			break;
+	}
+}
+
 // Player Cursor Behaviour
 if (cursor_interact) 
 {
@@ -42,7 +76,7 @@ else if (cursor_icon)
 else if (!global.debug)
 {
 	// Draw Cursor Crosshair
-	if (instance_exists(player_unit) and player_unit.equipment_active and global.item_packs[player_unit.item_equipped.item_pack].item_type == ItemType.Weapon)
+	if (temp_player_unit_weapon_equipped)
 	{
 		// Draw Weapon Crosshair Cursor
 		switch (global.item_packs[player_unit.item_equipped.item_pack].weapon_data.weapon_type)
@@ -50,23 +84,6 @@ else if (!global.debug)
 			case WeaponType.Thrown:
 			case WeaponType.Grenade:
 			case WeaponType.Molotov:
-				// Draw Throwable Weapon Fuze Timer
-				if (!is_undefined(player_unit.item_equipped.thrown_weapon_fuze_timer))
-				{
-					// Create Throwable Weapon Fuze Timer's Text
-					var temp_thrown_weapon_fuze_timer_display_text = string_delete(string(player_unit.item_equipped.thrown_weapon_fuze_timer), -1, -1);
-					
-					// Set Throwable Weapon Fuze Timer Text Font
-					draw_set_font(font_Default);
-					
-					// Set Throwable Weapon Fuze Timer Text Alignment
-					draw_set_halign(fa_center);
-					draw_set_valign(fa_bottom);
-					
-					// Draw Throwable Weapon Fuze Timer's Text
-					draw_text_outline(player_unit.x - LightingEngine.render_x + 2, player_unit.y - LightingEngine.render_y - player_unit.sprite_height, $"{temp_thrown_weapon_fuze_timer_display_text}s");
-				}
-				
 				// Draw Throwable Weapon Cursor Crosshair
 				if (player_unit.unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowWindup)
 				{

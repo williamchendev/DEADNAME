@@ -63,7 +63,7 @@ if (player_input)
 		player_inventory_ui_fade_timer = player_inventory_ui_fade_timer < 0 ? 0 : player_inventory_ui_fade_timer;
 		
 		// Check Player Inventory Item Usage
-		if (input_aim)
+		if (input_aim or input_attack)
 		{
 			// Initiate Unit Inventory UI Fade Decay when Player Unit uses Item
 			player_inventory_ui_fade_timer = 0;

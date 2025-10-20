@@ -27,7 +27,8 @@ enum UnitThrownWeaponAnimationState
 	Molotov_IgniteHandFumble,
 	ThrowWindup,
 	ThrowSwing,
-	ThrowSwingClimax
+	ThrowSwingClimax,
+	ThrowSwingClimaxNoItemLeft
 }
 
 enum UnitFirearmReloadAnimationState
