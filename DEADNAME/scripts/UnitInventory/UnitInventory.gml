@@ -408,6 +408,47 @@ function unit_inventory_remove_all_slots(unit)
 	array_clear(unit.inventory_slots);
 }
 
+/// unit_inventory_empty_slot(unit, slot_index);
+/// @description Empties an Inventory Item Slot in a Unit Instance's Inventory
+/// @param {?Id.Instance, oUnit} unit The given Unit Instance to empty the given slot from their Unit Inventory
+/// @param {number} slot_index The index of the Item Slot to empty within the Unit's Inventory
+function unit_inventory_empty_slot(unit, slot_index)
+{
+	// Check if Unit Instance Exists
+	if (!instance_exists(unit))
+	{
+		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Remove Item from Inventory Slot
+	unit.inventory_slots[slot_index].item_pack = ItemPack.None;
+	unit.inventory_slots[slot_index].item_count = -1;
+	
+	// Unequip Item Behaviour
+	if (unit.equipment_active and unit.inventory_index == slot_index)
+	{
+		unit.inventory_slots[slot_index].item_instance.unequip_item();
+	}
+	
+	// Check if Item has an Item Class Instance to delete
+	if (unit.inventory_slots[slot_index].item_instance != noone)
+	{
+		// Delete Item Class Instance
+		DELETE(unit.inventory_slots[slot_index].item_instance);
+	}
+	
+	// Set Item Instance to empty "noone" null reference
+	unit.inventory_slots[slot_index].item_instance = noone;
+	
+	// Check if Unit's Inventory Index matches the Empties Slot Index
+	if (unit.inventory_index == slot_index)
+	{
+		// Reset Unit's Equipment State
+		unit_inventory_change_slot(unit, slot_index);
+	}
+}
+
 /// unit_inventory_add_item(unit, item_pack, item_count);
 /// @description Adds an Item to the given Unit Instance's Inventory with the given Item Pack and the number of the item to add
 /// @param {?Id.Instance, oUnit} unit The given Unit Instance to add the Item to their Unit Inventory
@@ -619,30 +660,7 @@ function unit_inventory_remove_item(unit, item_pack, item_count = 1)
 			if (unit.inventory_slots[i].item_count <= 0)
 			{
 				// Inventory Slot is storing single Item - Remove Item from Inventory Slot
-				unit.inventory_slots[i].item_pack = ItemPack.None;
-				unit.inventory_slots[i].item_count = -1;
-				
-				// Unequip Item Behaviour
-				if (unit.equipment_active and unit.inventory_index == i)
-				{
-					unit.inventory_slots[i].item_instance.unequip_item();
-				}
-				
-				// Check if Item has an Item Class Instance to delete
-				if (unit.inventory_slots[i].item_instance != noone)
-				{
-					// Delete Item Class Instance
-					DELETE(unit.inventory_slots[i].item_instance);
-					
-					// Set Item Instance to empty "noone" null reference
-					unit.inventory_slots[i].item_instance = noone;
-				}
-				
-				// Reset Unit's Equipment State
-				if (unit.inventory_index == i)
-				{
-					unit_inventory_change_slot(unit, i);
-				}
+				unit_inventory_empty_slot(unit, i);
 			}
 		}
 		
@@ -751,6 +769,9 @@ function unit_inventory_take_item_instance(unit, item_instance)
 				// Places the Item Class Instance that belonged to the picked up Item in the Unit's Inventory
 				unit.inventory_slots[temp_slot_index].item_instance = item_instance.item_instance;
 				item_instance.item_instance.item_angle = sign(item_instance.item_instance.item_facing_sign) != sign(unit.draw_xscale) ? item_instance.image_angle + 180 : item_instance.image_angle;
+				
+				// Remove Reference to Item Object Instance from Inventory Item's Class Instance
+				unit.inventory_slots[temp_slot_index].item_instance.item_object_instance = noone;
 				
 				// Remove the Item Class Instance reference from the picked up Item so it does not get deleted when the Item Object is destroyed
 				item_instance.item_instance = noone;
@@ -1051,6 +1072,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 			{
 				// Set Dropped Item's Instance
 				item_instance = temp_dropped_item_weapon_instance;
+				item_instance.item_object_instance = id;
 				
 				// Set Dropped Item's Sprite & Image Index
 				sprite_index = item_instance.item_sprite;
@@ -1113,21 +1135,7 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 	if (unit.inventory_slots[slot_index].item_count <= 0)
 	{
 		// Inventory Slot is storing single Item - Remove Item from Inventory Slot
-		unit.inventory_slots[slot_index].item_pack = ItemPack.None;
-		unit.inventory_slots[slot_index].item_count = -1;
-		
-		// Check if Item has an Item Class Instance to delete
-		if (unit.inventory_slots[slot_index].item_instance != noone)
-		{
-			// Delete Item Class Instance
-			DELETE(unit.inventory_slots[slot_index].item_instance);
-			
-			// Set Item Instance to empty "noone" null reference
-			unit.inventory_slots[slot_index].item_instance = noone;
-		}
-		
-		// Reset Unit's Equipment State
-		unit_inventory_change_slot(unit, slot_index);
+		unit_inventory_empty_slot(unit, slot_index);
 	}
 	
 	// Apply Dropped Item Instance's Settings & Behaviours

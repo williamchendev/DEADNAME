@@ -19,6 +19,7 @@ enum LightingEngineObjectType
 {
 	Dynamic_Basic,
 	Dynamic_Particle,
+	Dynamic_Cloud,
 	Dynamic_SmokeTrail,
 	Dynamic_Unit,
 	Dynamic_Item,

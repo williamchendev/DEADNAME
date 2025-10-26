@@ -70,5 +70,5 @@ void main()
     gl_FragData[1] = vec4(Normal.rgb, v_vColour.a * Normal.a * Diffuse.a);
     
     // MRT[2] BRDF Workflow Layer: Draw PBR Metallic-Roughness, Emissive, and Depth Data
-    gl_FragData[2] = vec4((Roughness * Metallic * 0.5) + 0.5, Emissive, (in_Layer_Depth * 0.5) + 0.5, v_vColour.a);
+    gl_FragData[2] = vec4((Roughness * Metallic * 0.5) + 0.5, Emissive, (in_Layer_Depth * 0.5) + 0.5, v_vColour.a * Diffuse.a);
 }

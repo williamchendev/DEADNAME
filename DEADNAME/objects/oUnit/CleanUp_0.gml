@@ -4,13 +4,13 @@
 // Destroy Unit's Limbs
 if (limb_primary_arm != noone)
 {
-	// Left Hand
+	// Left Arm Deletion
 	DELETE(limb_primary_arm);
 }
 
 if (limb_secondary_arm != noone)
 {
-	// Right Hand
+	// Right Arm Deletion
 	DELETE(limb_secondary_arm);
 }
 

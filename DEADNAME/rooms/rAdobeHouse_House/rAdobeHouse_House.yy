@@ -917,6 +917,7 @@
     {"name":"inst_FDDF2C8","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_52E45FBA","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
     {"name":"inst_33333A95","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
+    {"name":"inst_372884B1","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -1482,6 +1483,7 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oInteraction","path":"objects/oInteraction/oInteraction.yy",},"propertyId":{"name":"interact_menu_width_minimum","path":"objects/oInteraction/oInteraction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"80",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":224.0,"y":224.0,},
         {"$GMRInstance":"v1","%Name":"inst_52E45FBA","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_52E45FBA","objectId":{"name":"oUnitPlayer","path":"objects/oUnitPlayer/oUnitPlayer.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":-288.0,"y":288.0,},
+        {"$GMRInstance":"v1","%Name":"inst_372884B1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_372884B1","objectId":{"name":"oDEBUG_CreateExplosion","path":"objects/oDEBUG_CreateExplosion/oDEBUG_CreateExplosion.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":160.0,"y":-64.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"BulkDynamic_Layer","depth":900,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_33333A95","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_33333A95","objectId":{"name":"oLighting_Layers_BulkDynamic","path":"objects/oLighting_Layers_BulkDynamic/oLighting_Layers_BulkDynamic.yy",},"properties":[

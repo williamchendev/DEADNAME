@@ -22,7 +22,7 @@ const float HalfPi = 1.57079632679;
 // Fragment Shader
 void main()
 {
-	//
+	// Calculate Smoke Trail's Normal Map's Z-Depth
 	float SmokeTrail_Depth = ((1.0 - (v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y * v_vTexcoord.y)) * v_vColour.a) + (1.0 - v_vColour.a);
 	
 	// MRT[0] Diffuse Color Layer: Draw Smoke Trail Diffuse Color

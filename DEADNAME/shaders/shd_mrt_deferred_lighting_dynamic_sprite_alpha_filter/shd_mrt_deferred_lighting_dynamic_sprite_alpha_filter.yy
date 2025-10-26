@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_mrt_deferred_lighting_dynamic_sprite_alpha_filter",
+  "name":"shd_mrt_deferred_lighting_dynamic_sprite_alpha_filter",
+  "parent":{
+    "name":"Sprites",
+    "path":"folders/Shaders/Sprites.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

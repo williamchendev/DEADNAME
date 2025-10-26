@@ -1,5 +1,5 @@
 /// @description Thrown Weapon Item Physics Event
-// Perform Thrown Weapon Item Physics Behaviour
+// Perform Thrown Weapon Item Physics Movement Behaviour
 
 // Check if Custom Thrown Projectile Physics Sim is Enabled
 if (!projectile_physics_enabled)

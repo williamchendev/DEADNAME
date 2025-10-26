@@ -139,6 +139,7 @@ function instance_create_item(item_pack, item_x, item_y, item_count = -1)
 // Empty Item Pack
 global.item_packs[ItemPack.None] = 
 {
+	// Item Data
 	item_name: "Empty",
 	item_description: "",
 	item_dialogue: "",
@@ -687,7 +688,7 @@ global.item_packs[ItemPack.StickGrenade] =
 		
 		// Projectile Physics Settings
 		projectile_initial_velocity_min: 2,
-		projectile_initial_velocity_max: 5.2,
+		projectile_initial_velocity_max: 5.4,
 		
 		projectile_gravity_speed: 0.12,
 		projectile_air_resistance: -0.5,
@@ -695,7 +696,7 @@ global.item_packs[ItemPack.StickGrenade] =
 		projectile_rotate_speed: 7,
 		projectile_rotate_friction: 0.05,
 		
-		projectile_restitution: 0.6,
+		projectile_restitution: 0.5,
 		
 		// Thrown Weapon Animation Settings
 		thrown_weapon_swing_underhand: false,

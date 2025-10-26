@@ -21,7 +21,7 @@ class ItemClass define
 	// Init & Destroy Methods
 	static _constructor = function()
 	{
-		
+		item_object_instance = noone;
 	}
 	
 	static _destructor = function()
@@ -508,9 +508,6 @@ class ThrownClass extends WeaponClass define
 	
 	static update_weapon_behaviour = function(unit_firearm_recoil_recovery_spd = 0.2, unit_firearm_recoil_angle_recovery_spd = 0.1)
 	{
-		// Update Thrown Weapon Fuze Timer
-		update_fuze();
-		
 		// Player Unit's Weapon Projectile Trajectory Aim Reticule
 		if (instance_exists(item_unit) and item_unit.player_input)
 		{
@@ -738,6 +735,7 @@ class ThrownClass extends WeaponClass define
 		var temp_thrown_weapon_projectile_instance = instance_create_depth(temp_thrown_weapon_projectile_x, temp_thrown_weapon_projectile_y, 0, global.item_packs[item_pack].item_object, temp_thrown_weapon_projectile_var_struct);
 		temp_thrown_weapon_projectile_instance.phy_rotation = -temp_thrown_weapon_projectile_angle;
 		temp_thrown_weapon_projectile_instance.item_instance = temp_thrown_weapon_instance;
+		temp_thrown_weapon_projectile_instance.item_instance.item_object_instance = temp_thrown_weapon_projectile_instance;
 		temp_thrown_weapon_projectile_instance.item_instance.item_facing_sign = 1;
 		temp_thrown_weapon_projectile_instance.item_instance.item_xscale = temp_thrown_weapon_projectile_instance.image_xscale;
 		temp_thrown_weapon_projectile_instance.item_instance.item_yscale = temp_thrown_weapon_projectile_instance.image_yscale;
@@ -797,26 +795,6 @@ class ThrownClass extends WeaponClass define
 		return target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
 	}
 	
-	static update_fuze = function()
-	{
-		// Check if Thrown Weapon's Fuze Timer Exists
-		if (!is_undefined(thrown_weapon_fuze_timer))
-		{
-			// Decrement Thrown Weapon's Fuze Timer
-			thrown_weapon_fuze_timer -= frame_delta / 60;
-			
-			// Check if Thrown Weapon's Fuze Timer has Ended
-			if (thrown_weapon_fuze_timer < 0)
-			{
-				// Create Thrown Weapon's Fuze Effect Instance
-				instance_create_depth(item_x, item_y, 0, global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance);
-				
-				// Reset Thrown Weapon's Fuze Timer
-				thrown_weapon_fuze_timer = undefined;
-			}
-		}
-	}
-	
 	static disable_safety = function()
 	{
 		// Disable Weapon Safety
@@ -836,6 +814,44 @@ class ThrownClass extends WeaponClass define
 		else if (global.item_packs[item_pack].weapon_data.weapon_type == WeaponType.Grenade)
 		{
 			
+		}
+	}
+	
+	static update_fuze = function()
+	{
+		// Check if Thrown Weapon's Fuze Timer Exists
+		if (!is_undefined(thrown_weapon_fuze_timer))
+		{
+			// Decrement Thrown Weapon's Fuze Timer
+			thrown_weapon_fuze_timer -= frame_delta / 60;
+			
+			// Check if Thrown Weapon's Fuze Timer has Ended
+			if (thrown_weapon_fuze_timer < 0)
+			{
+				// Reset Thrown Weapon's Fuze Timer
+				thrown_weapon_fuze_timer = undefined;
+				
+				// Fuze has successfully gone off
+				return true;
+			}
+		}
+		
+		// Fuze has not successfully gone off
+		return false;
+	}
+	
+	static trigger_fuze = function(fuze_position_x = undefined, fuze_position_y = undefined)
+	{
+		// Create Thrown Weapon's Fuze Effect Instance
+		if (global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance != noone)
+		{
+			instance_create_depth(is_undefined(fuze_position_x) ? item_x : fuze_position_x, is_undefined(fuze_position_y) ? item_y : fuze_position_y, 0, global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_effect_instance);
+		}
+		
+		// Check if Item Object Instance exists and Destroy Item's Object Instance after Thrown Weapon Fuze is triggered
+		if (item_object_instance != noone and instance_exists(item_object_instance))
+		{
+			instance_destroy(item_object_instance);
 		}
 	}
 	

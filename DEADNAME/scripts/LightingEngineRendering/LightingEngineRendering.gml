@@ -40,15 +40,11 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	if (temp_mrt_shader_normal_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_texture_index, normalmap_texture);
-		
-		if (temp_mrt_shader_normal_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, -1, -1, -1, -1);
-		}
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
+	}
+	else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_normalmap_uv_index, -1, -1, -1, -1);
 	}
 	
     // Set Shader Metallic-Roughness Map Toggle and Texture Settings
@@ -56,17 +52,13 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
     
     if (temp_mrt_shader_metallicroughness_enabled)
     {
-    	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
-		
-		if (temp_mrt_shader_metallicroughness_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
-		}
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
     }
+    else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
+	}
     
     // Set Shader Bloom Map Toggle and Texture Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_enabled_index, temp_mrt_shader_emissive_enabled ? 1 : 0);
@@ -74,20 +66,109 @@ function lighting_engine_render_sprite_ext(diffusemap_index, diffusemap_subimage
 	if (temp_mrt_shader_emissive_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_texture_index, emissivemap_texture);
-		
-		if (temp_mrt_shader_emissive_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, -1, -1, -1, -1);
-		}
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
+	}
+	else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_emissivemap_uv_index, -1, -1, -1, -1);
 	}
     
     // Set Shader Sprite Scale & Rotation Settings
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_scale_index, x_scale, y_scale, 1);
     shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_vector_angle_index, rotation);
+    
+    // Draw Sprite
+    draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
+}
+
+/// @function lighting_engine_render_sprite_alpha_filtered(diffusemap_index, diffusemap_subimage, normalmap_texture, metallicroughnessmap_texture, emissivemap_texture, alphafiltermap_texture, normalmap_uvs, metallicroughnessmap_uvs, emissivemap_uvs, alphafiltermap_uvs, alpha_filter, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
+/// @description Draws an Alpha Filtered Sprite through the Deferred Lighting Engine's Multi-Render-Target System using a Diffuse/Normal/Metallic/Roughness/Emissive workflow with the given arguments
+/// @param {sprite} diffusemap_index - The Rendered Sprite's Diffuse Map as a Sprite Index Asset
+/// @param {real} diffusemap_subimage - The Rendered Sprite's Subimage Index
+/// @param {?texture} normalmap_texture - The Rendered Sprite's Normal Map as a texture index, can be optionally assigned as undefined to disable rendering a Normal Map (Normal Map by default is tangent with View Vector)
+/// @param {?texture} metallicroughnessmap_texture - The Rendered Sprite's MetallicRoughness Map as a texture index, can be optionally assigned as undefined to disable rendering a MetallicRoughness Map (defaults to the metallic and roughness values in the given arguments)
+/// @param {?texture} emissivemap_texture - The Rendered Sprite's Emissive Map as a texture index, can be optionally assigned as undefined to disable rendering a Emissive Map (defaults to the emissive values in the given arguments)
+/// @param {?texture} alphafiltermap_texture - The Rendered Sprite's Alpha Filtering Map as a texture index, determines the Alpha Filtering Effect as the texture to sample from (Uses the Red Channel on a spectrum from 0 to 1, 0 = Filtered, and 1 = Not-Filtered)
+/// @param {?array<real>} normalmap_uvs - The Rendered Sprite's Normal Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {?array<real>} metallicroughnessmap_uvs - The Rendered Sprite's Metallic Roughness Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {?array<real>} emissivemap_uvs - The Rendered Sprite's Emissive Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {?array<real>} alphafiltermap_uvs - The Rendered Sprite's Alpha Filtering Map's transformed texture coordinate UVs, usually are created by utilizing the spritepack_get_uvs_transformed() method
+/// @param {real} alpha_filter - The Rendered Sprite's Alpha Filter value between a 0 to 1 range, this value is used to multiply the Alpha Filter effect's strength or even toggle it on or off
+/// @param {real} x_pos - The X coordinate within a scene to draw the Rendered Sprite
+/// @param {real} y_pos - The Y coordinate within a scene to draw the Rendered Sprite
+/// @param {real} x_scale - The horizontal scale to draw the Rendered Sprite
+/// @param {real} y_scale - The vertical scale to draw the Rendered Sprite
+/// @param {real} rotation - The angle to draw the Rendered Sprite rotated
+/// @param {int} color - The color to draw the Rendered Sprite
+/// @param {real} alpha - The transparency to draw the Rendered Sprite
+function lighting_engine_render_sprite_alpha_filtered(diffusemap_index, diffusemap_subimage, normalmap_texture, metallicroughnessmap_texture, emissivemap_texture, alphafiltermap_texture, normalmap_uvs, metallicroughnessmap_uvs, emissivemap_uvs, alphafiltermap_uvs, alpha_filter, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha) 
+{
+    // Toggle Shader Effects: Normal Channel, Specular Channel, & Bloom Channel
+	var temp_mrt_shader_normal_enabled = normalmap_texture != undefined;
+	var temp_mrt_shader_metallicroughness_enabled = metallicroughnessmap_texture != undefined;
+	var temp_mrt_shader_emissive_enabled = emissivemap_texture != undefined;
+	
+	// Set Shader Normal Map Toggle and Texture Settings
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_enabled_index, temp_mrt_shader_normal_enabled ? 1 : 0);
+	
+	if (temp_mrt_shader_normal_enabled)
+	{
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_texture_index, normalmap_texture);
+		
+		if (temp_mrt_shader_normal_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, -1, -1, -1, -1);
+		}
+	}
+	
+    // Set Shader Metallic-Roughness Map Toggle and Texture Settings
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_enabled_index, temp_mrt_shader_metallicroughness_enabled ? 1 : 0);
+    
+    if (temp_mrt_shader_metallicroughness_enabled)
+    {
+    	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
+		
+		if (temp_mrt_shader_metallicroughness_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
+		}
+    }
+    
+    // Set Shader Bloom Map Toggle and Texture Settings
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_enabled_index, temp_mrt_shader_emissive_enabled ? 1 : 0);
+	
+	if (temp_mrt_shader_emissive_enabled)
+	{
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_texture_index, emissivemap_texture);
+		
+		if (temp_mrt_shader_emissive_enabled)
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
+		}
+		else
+		{
+			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, -1, -1, -1, -1);
+		}
+	}
+	
+	// Set Shader Alpha Filter Texture Settings
+	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_texture_index, alphafiltermap_texture);
+	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, alphafiltermap_uvs[0], alphafiltermap_uvs[1], alphafiltermap_uvs[2], alphafiltermap_uvs[3]);
+    
+    // Set Shader Sprite Scale & Rotation Settings
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_vector_scale_index, x_scale, y_scale, 1);
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_vector_angle_index, rotation);
+    
+    // Set Shader Sprite Alpha Filter Value
+    shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_alpha_filter_index, alpha_filter);
     
     // Draw Sprite
     draw_sprite_ext(diffusemap_index, diffusemap_subimage, x_pos, y_pos, x_scale, y_scale, rotation, color, alpha);
@@ -374,6 +455,99 @@ function lighting_engine_render_layer(render_layer_type)
 						
 						// Draw Particle System
 						part_system_drawit(temp_sub_layer_object.dynamic_particle_system);
+						
+						// Reset Dynamic Particle Shader
+						shader_reset();
+						
+						// Retore Default Dynamic Sprite Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_sprite);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+					}
+					break;
+				case LightingEngineObjectType.Dynamic_Cloud:
+					// Draw Dynamic Cloud on Dynamic Layer
+					with (temp_sub_layer_object)
+					{
+						// Rendering Enabled Check
+						if (!render_enabled)
+						{
+							break;
+						}
+						
+						// Region Culling Check
+						if (region_culled)
+						{
+							// Find Region Culling Instance
+							var temp_region = ds_map_find_value(LightingEngine.lighting_engine_culling_regions_map, region_culling_id);
+							
+							// Check if Region Culling Instance is Indexed
+							if (!is_undefined(temp_region))
+							{
+								// Check if Region is being Culled
+								if (!temp_region.region_render_enabled)
+								{
+									// Region Render Disabled - Skip Drawing Object
+									break;
+								}
+							}
+						}
+						
+						// Set & Prepare Dynamic Sprite Alpha Filter Shader
+						shader_set(shd_mrt_deferred_lighting_dynamic_sprite_alpha_filter);
+						
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_layer_depth_index, temp_sub_layer_depth);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_camera_offset_index, LightingEngine.render_x - LightingEngine.render_border, LightingEngine.render_y - LightingEngine.render_border);
+						
+						// Set Dynamic Sprite Alpha Filter Shader PBR Settings
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normal_strength_index, normal_strength);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallic_index, metallic ? 1 : -1);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_roughness_index, max(roughness, 0.01));
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissive_index, emissive);
+						shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissive_multiplier_index, emissive_multiplier);
+						
+						// Iterate through Dynamic Cloud DS Lists to Draw Dynamic Cloud
+						var temp_cloud_index = 0;
+						
+						repeat (ds_list_size(clouds_image_index_list))
+						{
+							// Establish Cloud Draw Variables
+							var temp_cloud_image_index = ds_list_find_value(clouds_image_index_list, temp_cloud_index);
+							var temp_cloud_rotation = ds_list_find_value(clouds_rotation_list, temp_cloud_index);
+							var temp_cloud_horizontal_offset = ds_list_find_value(clouds_horizontal_offset_list, temp_cloud_index);
+							var temp_cloud_vertical_offset = ds_list_find_value(clouds_vertical_offset_list, temp_cloud_index);
+							var temp_cloud_horizontal_scale = ds_list_find_value(clouds_horizontal_scale_list, temp_cloud_index);
+							var temp_cloud_vertical_scale = ds_list_find_value(clouds_vertical_scale_list, temp_cloud_index);
+							var temp_cloud_alpha = ds_list_find_value(clouds_alpha_list, temp_cloud_index);
+							var temp_cloud_alpha_filter = ds_list_find_value(clouds_alpha_filter_list, temp_cloud_index);
+							var temp_cloud_color = ds_list_find_value(clouds_color_list, temp_cloud_index);
+							
+							// Draw Cloud Sprite Alpha Filtered
+							lighting_engine_render_sprite_alpha_filtered
+							(
+								sprite_index,
+								temp_cloud_image_index,
+								normalmap_spritepack != undefined ? normalmap_spritepack[temp_cloud_image_index].texture : undefined,
+								metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[temp_cloud_image_index].texture : undefined,
+								emissivemap_spritepack != undefined ? emissivemap_spritepack[temp_cloud_image_index].texture : undefined,
+								alphafiltermap_spritepack[temp_cloud_image_index].texture,
+								normalmap_spritepack != undefined ? normalmap_spritepack[temp_cloud_image_index].uvs : undefined,
+								metallicroughnessmap_spritepack != undefined ? metallicroughnessmap_spritepack[temp_cloud_image_index].uvs : undefined,
+								emissivemap_spritepack != undefined ? emissivemap_spritepack[temp_cloud_image_index].uvs : undefined,
+								alphafiltermap_spritepack[temp_cloud_image_index].uvs,
+								temp_cloud_alpha_filter * alpha_filter,
+								x + temp_cloud_horizontal_offset,
+								y + temp_cloud_vertical_offset,
+								temp_cloud_horizontal_scale,
+								temp_cloud_vertical_scale,
+								temp_cloud_rotation,
+								temp_cloud_color,
+								temp_cloud_alpha
+							);
+							
+							// Increment Cloud Index
+							temp_cloud_index++;
+						}
 						
 						// Reset Dynamic Particle Shader
 						shader_reset();

@@ -870,8 +870,8 @@ if (canmove)
 							// Set Throw Swing Thrown Weapon Animation State
 							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwing;
 							
-							// Update Thrown Weapon's Facing Direction
-							item_equipped.thrown_weapon_direction = sign(draw_xscale);
+							// Update Thrown Weapon Unit Facing Direction
+							thrown_weapon_direction = sign(draw_xscale);
 							
 							// Reset Throw Swing Animation Values
 							thrown_weapon_swing_climax_angle = 0;
@@ -1493,7 +1493,7 @@ if (equipment_active)
 			case WeaponType.Thrown:
 			case WeaponType.Grenade:
 			case WeaponType.Molotov:
-				// Weapon Throw Windup Behaviour
+				// Throw Windup Animation Unit Facing Direction Behaviour
 				if (unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowWindup)
 				{
 					// Weapon Unit Facing Direction Calculation
@@ -1517,9 +1517,10 @@ if (equipment_active)
 				limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_thrown_weapon_secondary_arm_anchor_offset_x, temp_thrown_weapon_secondary_arm_anchor_offset_y);
 				limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_thrown_weapon_secondary_arm_anchor_offset_x, temp_thrown_weapon_secondary_arm_anchor_offset_y);
 				
+				// Thrown Weapon Initial Velocity Behaviour
 				if (unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowWindup)
 				{
-					// Update Thrown Weapon's Initial Velocity
+					// Update Thrown Weapon's Initial Velocity if Aiming Weapon
 					if (weapon_aim)
 					{
 						// Calculate Thrown Weapon Aim Pivot
@@ -1546,6 +1547,50 @@ if (equipment_active)
 				
 				// Update Thrown Weapon Equipment Behaviour
 				item_equipped.update_weapon_behaviour();
+				
+				// Update Thrown Weapon's Fuze Behaviour
+				var temp_inventory_slot_thrown_weapon_fuze_condition = item_equipped.update_fuze();
+				
+				// Check if Thrown Weapon's Fuze has gone off
+				if (temp_inventory_slot_thrown_weapon_fuze_condition)
+				{
+					// Check if Unit is holding Thrown Weapon when Fuze has been triggered
+					if (limb_primary_arm.limb_held_item_exists)
+					{
+						// Trigger Fuze Behaviour at the position of the Held Item in Unit's Primary Hand
+						item_equipped.trigger_fuze(limb_primary_arm.limb_held_item_x, limb_primary_arm.limb_held_item_y);
+						
+						// Decrement Thrown Weapon Item Count
+						inventory_slots[inventory_index].item_count--;
+						
+						// Check if Unit has anymore instances of the Thrown Weapon Post-Fuze Behaviour
+						if (inventory_slots[inventory_index].item_count < 1)
+						{
+							// Remove Thrown Weapon Item from Inventory Slot
+							unit_inventory_empty_slot(id, inventory_index);
+						}
+						else
+						{
+							// Empty the Unit Primary Hand's Held Item
+							limb_primary_arm.remove_all_held_items();
+							
+							// Advance Animation State to Grabbing another Thrown Weapon from Unit's Inventory (if they somehow survived the explosion lmao)
+							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.GrabWeapon;
+							
+							// Reset Thrown Weapon Aim & Thrown Weapon Idle Pivot to Inventory Slot Item Position Pivot Transition Animation Values
+							thrown_weapon_aim_transition_value = 0;
+							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
+						}
+					}
+					else
+					{
+						// Thrown Weapon Trigger Fuze Behaviour
+						item_equipped.trigger_fuze();
+						
+						// Sympathetic Detonation - Post-Fuze Behaviour Empty Thrown Weapon Items from Inventory Slot
+						unit_inventory_empty_slot(id, inventory_index);
+					}
+				}
 				break;
 			// Update Firearm Recoil Behaviour & Attack Delay Timers
 			case WeaponType.Firearm:
@@ -1603,8 +1648,18 @@ repeat (array_length(inventory_slots))
 					case WeaponType.Thrown:
 					case WeaponType.Grenade:
 					case WeaponType.Molotov:
-						// Update Thrown Weapon's Fuze
-						inventory_slots[temp_inventory_slot_index].item_instance.update_fuze();
+						// Update Thrown Weapon's Fuze Behaviour
+						var temp_inventory_slot_thrown_weapon_fuze_condition = inventory_slots[temp_inventory_slot_index].item_instance.update_fuze();
+						
+						// Check if Thrown Weapon's Fuze has gone off
+						if (temp_inventory_slot_thrown_weapon_fuze_condition)
+						{
+							// Thrown Weapon Trigger Fuze Behaviour
+							inventory_slots[temp_inventory_slot_index].item_instance.trigger_fuze();
+							
+							// Sympathetic Detonation - Post-Fuze Behaviour Empty Thrown Weapon Items from Inventory Slot
+							unit_inventory_empty_slot(id, inventory_index);
+						}
 						break;
 					default:
 						break;
@@ -1686,22 +1741,16 @@ switch (unit_equipment_animation_state)
 						// Advance Animation State from Throwing Thrown Weapon Swing to Post-Throw Swing Climax
 						unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwingClimax;
 						
-						//
-						thrown_weapon_direction = temp_unit_direction;
-						
 						// Set Thrown Weapon Swing Climax Timer
 						thrown_weapon_swing_climax_timer = thrown_weapon_swing_underhand ? thrown_weapon_swing_underhand_climax_duration : thrown_weapon_swing_overhand_climax_duration;
 						
 						// Launch Thrown Weapon from Hand Behaviour
 						item_equipped.update_weapon_attack(thrown_weapon_angle);
 						
-						//
+						// Check if Thrown Weapon is still Equipped or if Thrown Weapon no longer exists in the Unit's Inventory because... it was Thrown lol
 						if (item_equipped == noone)
 						{
-							//
-							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = 1;
-							
-							//
+							// Update Unit Animation States to play Post-Throw Transition Animation now that they no longer have a Weapon to Throw
 							unit_equipment_animation_state = UnitEquipmentAnimationState.Thrown;
 							unit_thrown_weapon_animation_state = UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft;
 						}
@@ -1720,7 +1769,7 @@ switch (unit_equipment_animation_state)
 					// Swing Climax Animation Finish Behaviour
 					if (thrown_weapon_swing_climax_timer <= 0)
 					{
-						//
+						// Check Swing Climax Behaviour Type
 						if (unit_thrown_weapon_animation_state == UnitThrownWeaponAnimationState.ThrowSwingClimax)
 						{
 							// Advance Animation State from Post-Throw Swing Climax to Grabbing another Thrown Weapon from Unit's Inventory
@@ -1732,13 +1781,13 @@ switch (unit_equipment_animation_state)
 						}
 						else
 						{
-							// Calculate Primary Hand Transition from Thrown Weapon Idle Pivot to 
+							// Lerp Primary Arm Transition from Thrown Weapon Swing Pivot to a Natural Post-Throw Arm Resting Position
 							thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value = lerp(thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value, 0, thrown_item_slot_to_holding_position_transition_spd * frame_delta);
 							
-							//
+							// End Unit's Throw Equipment Animation State once the Unit's Primary Arm has (relatively) completed its Transition
 							if (thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value < 0.25)
 							{
-								//
+								// Set Default Unit's Equipment Animation State
 								unit_equipment_animation_state = UnitEquipmentAnimationState.None;
 							}
 						}
@@ -2031,7 +2080,7 @@ switch (unit_equipment_animation_state)
 			item_equipped.update_item_physics(inventory_slots[inventory_index].slot_position_x, inventory_slots[inventory_index].slot_position_y, temp_thrown_weapon_holstered_item_angle, temp_unit_direction);
 		}
 		
-		// Update Unit's Weapon and Angle based on Facing Direction during Every Animation except the Weapon Throw Windup
+		// Update Unit's Weapon and Angle based on Facing Direction during Every Animation State except the Weapon Throw Windup and Weapon Throw Swing
 		if (unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowSwing and unit_thrown_weapon_animation_state != UnitThrownWeaponAnimationState.ThrowWindup and thrown_weapon_direction != temp_unit_direction)
 		{
 			// Thrown Weapon Facing Direction Behaviour
@@ -2085,7 +2134,7 @@ switch (unit_equipment_animation_state)
 					}
 					break;
 				case UnitThrownWeaponAnimationState.ThrowSwingClimaxNoItemLeft:
-					//
+					// Transition Thrown Weapon Unit Limbs back to a Natural Position after their Count of Throwable Weapons has been Exhausted and their Throw Animation is completed
 					if (thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value != 1)
 					{
 						// Perform Primary Limb's Inverse Kinematics Calculation
@@ -2103,7 +2152,7 @@ switch (unit_equipment_animation_state)
 						thrown_weapon_secondary_limb_pivot_b_angle = limb_secondary_arm.limb_pivot_b_angle;
 					}
 					
-					//
+					// Apply Throw Weapon Limb Animation Transition to Secondary Arm
 					temp_thrown_weapon_operate_transition_value = 1 - thrown_weapon_inventory_slot_pivot_to_thrown_weapon_position_pivot_transition_value;
 					break;
 				default:

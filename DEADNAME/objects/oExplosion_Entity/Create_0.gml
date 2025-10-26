@@ -14,16 +14,24 @@ instance_create_depth(x, y, 0, oExplosion_Flare_PointLight);
 instance_create_depth(x, y, 0, oExplosion_Shockwave);
 
 //
-var temp_back_explosion_clouds_num = irandom_range(12, 18);
+instance_create_depth(x, y, 0, oExplosion_Cloud, { sub_layer_index: 0 });
+instance_create_depth(x, y, 0, oExplosion_Cloud, { sub_layer_index: -1 });
+
+//
+/*
+var temp_back_explosion_clouds_num = irandom_range(24, 32);
 
 for (var i = 0; i < temp_back_explosion_clouds_num; i++)
 {
 	instance_create_depth(x, y, 0, oExplosion_SmokeCloud, { image_angle: random(360), sub_layer_index: 0 });
 }
 
-var temp_front_explosion_clouds_num = irandom_range(12, 18);
+var temp_front_explosion_clouds_num = irandom_range(24, 32);
 
 for (var i = 0; i < temp_front_explosion_clouds_num; i++)
 {
 	instance_create_depth(x, y, 0, oExplosion_SmokeCloud, { image_angle: random(360), sub_layer_index: -1 });
 }
+*/
+
+instance_destroy();
