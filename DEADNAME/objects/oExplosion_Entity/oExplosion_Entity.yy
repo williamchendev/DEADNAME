@@ -3,22 +3,15 @@
   "%Name":"oExplosion_Entity",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"oExplosion_Entity",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"emissive","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLighting_Dynamic_Object","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"propertyId":{"name":"roughness","path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.05",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"Explosion",
     "path":"folders/Objects/Entities/Explosion.yy",
   },
-  "parentObjectId":{
-    "name":"oLighting_Dynamic_Object",
-    "path":"objects/oLighting_Dynamic_Object/oLighting_Dynamic_Object.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -33,18 +26,15 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"life","filters":[],"listItems":[],"multiselect":false,"name":"life","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.9","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"life_decay","filters":[],"listItems":[],"multiselect":false,"name":"life_decay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.001","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"life_decay_mult","filters":[],"listItems":[],"multiselect":false,"name":"life_decay_mult","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"size","filters":[],"listItems":[],"multiselect":false,"name":"size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"sub_layer_index","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_index","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sExplosionImpact_Medium_Sprite1",
-    "path":"sprites/sExplosionImpact_Medium_Sprite1/sExplosionImpact_Medium_Sprite1.yy",
+    "name":"sImpact_Explosion_Collisionless",
+    "path":"sprites/sImpact_Explosion_Collisionless/sImpact_Explosion_Collisionless.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

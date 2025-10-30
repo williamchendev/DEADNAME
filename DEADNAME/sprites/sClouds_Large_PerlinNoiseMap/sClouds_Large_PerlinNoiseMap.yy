@@ -26,6 +26,7 @@
   "height":32,
   "HTile":false,
   "layers":[
+    {"$GMImageLayer":"","%Name":"06599190-5128-4b96-9539-7f3ca9f56a03","blendMode":0,"displayName":"default (2)","isLocked":false,"name":"06599190-5128-4b96-9539-7f3ca9f56a03","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
     {"$GMImageLayer":"","%Name":"6c6a03ee-39e8-4b71-8415-a42c9a3704ba","blendMode":0,"displayName":"default","isLocked":false,"name":"6c6a03ee-39e8-4b71-8415-a42c9a3704ba","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sClouds_Large_PerlinNoiseMap",

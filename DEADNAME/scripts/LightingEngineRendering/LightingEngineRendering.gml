@@ -114,15 +114,11 @@ function lighting_engine_render_sprite_alpha_filtered(diffusemap_index, diffusem
 	if (temp_mrt_shader_normal_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_texture_index, normalmap_texture);
-		
-		if (temp_mrt_shader_normal_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, -1, -1, -1, -1);
-		}
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, normalmap_uvs[0], normalmap_uvs[1], normalmap_uvs[2], normalmap_uvs[3]);
+	}
+	else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_normalmap_uv_index, -1, -1, -1, -1);
 	}
 	
     // Set Shader Metallic-Roughness Map Toggle and Texture Settings
@@ -130,17 +126,13 @@ function lighting_engine_render_sprite_alpha_filtered(diffusemap_index, diffusem
     
     if (temp_mrt_shader_metallicroughness_enabled)
     {
-    	texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
-		
-		if (temp_mrt_shader_metallicroughness_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
-		}
+		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_texture_index, metallicroughnessmap_texture);
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, metallicroughnessmap_uvs[0], metallicroughnessmap_uvs[1], metallicroughnessmap_uvs[2], metallicroughnessmap_uvs[3]);
     }
+    else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_metallicroughnessmap_uv_index, -1, -1, -1, -1);
+	}
     
     // Set Shader Bloom Map Toggle and Texture Settings
 	shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_enabled_index, temp_mrt_shader_emissive_enabled ? 1 : 0);
@@ -148,15 +140,11 @@ function lighting_engine_render_sprite_alpha_filtered(diffusemap_index, diffusem
 	if (temp_mrt_shader_emissive_enabled)
 	{
 		texture_set_stage(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_texture_index, emissivemap_texture);
-		
-		if (temp_mrt_shader_emissive_enabled)
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
-		}
-		else
-		{
-			shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, -1, -1, -1, -1);
-		}
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, emissivemap_uvs[0], emissivemap_uvs[1], emissivemap_uvs[2], emissivemap_uvs[3]);
+	}
+	else
+	{
+		shader_set_uniform_f(LightingEngine.mrt_deferred_lighting_dynamic_sprite_alpha_filtered_shader_emissivemap_uv_index, -1, -1, -1, -1);
 	}
 	
 	// Set Shader Alpha Filter Texture Settings
@@ -705,10 +693,30 @@ function lighting_engine_render_unlit_layer()
 		// Unlit Object Rendering Behaviour
 		switch (temp_unlit_object_type)
 		{
+			case LightingEngineUnlitObjectType.Default:
+				// Default Unlit Object Sprite Render Behaviour
+				with (temp_unlit_object_instance)
+				{
+					// Draw Unlit Sprite
+					draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+				}
+				break;
 			case LightingEngineUnlitObjectType.Hitmarker:
 				// Hitmarker Unlit Object Render Behaviour
 				with (temp_unlit_object_instance)
 				{
+					// Check if Hitmarker Trail should Depict Missed Impact
+					if (trail_miss)
+					{
+						// Draw Hitmarker Trail (Missed Impact - Slightly Transparent)
+						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 0.35);
+					}
+					else
+					{
+						// Draw Hitmarker Trail
+						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 1);
+					}
+					
 					// Check if Hitmarker Impact made Impact
 					if (hitmarker_contact)
 					{
@@ -723,14 +731,6 @@ function lighting_engine_render_unlit_layer()
 						// Draw Hitmarker Impact
 						draw_sprite_ext(hitmarker_sprite, hitmarker_image_index, x, y, temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, hitmarker_image_angle, c_white, 1);
 						draw_sprite_ext(trail_sprite, trail_image_index, x, y, temp_trail_sprite_scale * temp_hitmarker_sprite_scale, temp_hitmarker_sprite_scale, trail_angle, c_white, 1);
-						
-						// Draw Hitmarker Trail
-						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 1);
-					}
-					else
-					{
-						// Draw Hitmarker Trail (Missed Impact - Slightly Transparent)
-						draw_sprite_ext(sImpact_Trail_Pixel, 0, x, y, trail_distance * trail_multiplier * trail_length_multiplier, trail_thickness, trail_angle, c_white, 0.35);
 					}
 				}
 				break;

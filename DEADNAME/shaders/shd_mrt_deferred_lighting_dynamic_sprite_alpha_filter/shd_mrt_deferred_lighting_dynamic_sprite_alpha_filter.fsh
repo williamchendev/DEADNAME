@@ -53,10 +53,8 @@ void main()
 		return;
 	}
 	
-	// APPLY ALPHA FILTER TO NORMAL MAP
-	
 	// Normal Map
-	vec4 Normal = in_NormalMap_Enabled != 1.0 ? vec4(0.0, 0.0, 1.0, Diffuse.a) : (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - vec4(0.5, 0.5, 0.0, 0.0)) * vec4(2.0, 2.0, 1.0, 1.0);
+	vec4 Normal = in_NormalMap_Enabled != 1.0 ? vec4(0.0, 0.0, 1.0, 1.0) : (texture2D(gm_NormalTexture, v_vTexcoord_NormalMap) - vec4(0.5, 0.5, 0.0, 0.0)) * vec4(2.0, 2.0, 1.0, 1.0);
 	Normal *= vec4(in_VectorScale, 1.0, 1.0);
 	Normal = vec4(mix(vec3(0.0, 0.0, 1.0), Normal.rgb, in_NormalStrength), clamp(Normal.a - ((1.0 - AlphaFilter.r) * in_AlphaFilter), 0.0, 1.0));
 	

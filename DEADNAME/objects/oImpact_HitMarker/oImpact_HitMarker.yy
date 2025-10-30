@@ -43,6 +43,7 @@
     {"$GMObjectProperty":"v1","%Name":"trail_length_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"trail_length_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"trail_angle","filters":[],"listItems":[],"multiselect":false,"name":"trail_angle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"trail_distance","filters":[],"listItems":[],"multiselect":false,"name":"trail_distance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"trail_miss","filters":[],"listItems":[],"multiselect":false,"name":"trail_miss","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"hitmarker_contact","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_contact","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",

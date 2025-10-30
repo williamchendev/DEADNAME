@@ -31,6 +31,7 @@ enum LightingEngineObjectType
 enum LightingEngineUnlitObjectType
 {
 	Empty,
+	Default,
 	Hitmarker
 }
 

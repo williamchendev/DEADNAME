@@ -1348,7 +1348,7 @@ class FirearmClass extends WeaponClass define
 				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid))
 				{
 					// Firearm Projectile Contact has been made
-					temp_firearm_attack_contact = random(1.0) <= (instance_exists(item_unit) and item_unit.player_input) ? 0.5 : 0.25;
+					temp_firearm_attack_contact = true;
 					break;
 				}
 			}
@@ -1360,7 +1360,7 @@ class FirearmClass extends WeaponClass define
 		
 		if (temp_firearm_attack_contact or !point_in_rectangle(temp_hitmarker_x, temp_hitmarker_y, LightingEngine.render_x, LightingEngine.render_y, LightingEngine.render_x + GameManager.game_width, LightingEngine.render_y + GameManager.game_height))
 		{
-			instance_create_depth(temp_hitmarker_x, temp_hitmarker_y, 0, oImpact_Hitmarker, { hitmarker_contact: temp_firearm_attack_contact, trail_angle: (temp_firing_angle + 540) mod 360, trail_distance: temp_firearm_attack_distance });
+			instance_create_depth(temp_hitmarker_x, temp_hitmarker_y, 0, oImpact_Hitmarker, { trail_miss: !temp_firearm_attack_hit, hitmarker_contact: temp_firearm_attack_contact, trail_angle: (temp_firing_angle + 540) mod 360, trail_distance: temp_firearm_attack_distance });
 		}
 		
 		// Firing Effect

@@ -8,8 +8,14 @@ event_inherited();
 ds_list_destroy(clouds_velocity_spd_list);
 clouds_velocity_spd_list = -1;
 
-ds_list_destroy(clouds_velocity_direction_list);
-clouds_velocity_direction_list = -1;
+ds_list_destroy(clouds_velocity_gravity_list);
+clouds_velocity_gravity_list = -1;
+
+ds_list_destroy(clouds_velocity_horizontal_direction_list);
+clouds_velocity_horizontal_direction_list = -1;
+
+ds_list_destroy(clouds_velocity_vertical_direction_list);
+clouds_velocity_vertical_direction_list = -1;
 
 
 
