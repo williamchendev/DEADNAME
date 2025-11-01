@@ -16,6 +16,3 @@ clouds_velocity_horizontal_direction_list = -1;
 
 ds_list_destroy(clouds_velocity_vertical_direction_list);
 clouds_velocity_vertical_direction_list = -1;
-
-
-

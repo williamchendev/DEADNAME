@@ -355,6 +355,6 @@ else
 {
 	unit_inventory_add_item(id, ItemPack.Ammo, -2);
 
-	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, random(1.0) >= 0 ? ItemPack.OilerSMG : ItemPack.CorsoRifle);
+	var temp_weapon_equip_slot_index = unit_inventory_add_item(id, random(1.0) >= 0.8 ? ItemPack.OilerSMG : ItemPack.CorsoRifle);
 	unit_inventory_change_slot(id, temp_weapon_equip_slot_index);
 }

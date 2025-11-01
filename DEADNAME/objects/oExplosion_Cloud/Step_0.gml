@@ -6,17 +6,17 @@ var temp_cloud_index = ds_list_size(clouds_image_index_list) - 1;
 
 repeat (ds_list_size(clouds_image_index_list))
 {
-	//
+	// Find Cloud Alpha Transparency
 	var temp_cloud_alpha = ds_list_find_value(clouds_alpha_list, temp_cloud_index);
 	
-	//
+	// Decay Cloud Alpha Transparency
 	temp_cloud_alpha *= power(cloud_alpha_mult, frame_delta);
 	temp_cloud_alpha += cloud_alpha_spd * frame_delta;
 	
-	//
+	// Check if Cloud is fully Transparent and should be destroyed
 	if (temp_cloud_alpha <= 0)
 	{
-		//
+		// Destroy Cloud Visual DS Lists
 		ds_list_delete(clouds_image_index_list, temp_cloud_index);
 		ds_list_delete(clouds_rotation_list, temp_cloud_index);
 		ds_list_delete(clouds_horizontal_offset_list, temp_cloud_index);
@@ -27,7 +27,7 @@ repeat (ds_list_size(clouds_image_index_list))
 		ds_list_delete(clouds_alpha_filter_list, temp_cloud_index);
 		ds_list_delete(clouds_color_list, temp_cloud_index);
 		
-		//
+		// Destroy Cloud Physics DS Lists
 		ds_list_delete(clouds_velocity_spd_list, temp_cloud_index);
 		ds_list_delete(clouds_velocity_gravity_list, temp_cloud_index);
 		ds_list_delete(clouds_velocity_horizontal_direction_list, temp_cloud_index);
@@ -36,7 +36,7 @@ repeat (ds_list_size(clouds_image_index_list))
 		// Decrement Cloud Index
 		temp_cloud_index--;
 		
-		//
+		// Continue to next Cloud to Perform Behaviour
 		continue;
 	}
 	
@@ -71,7 +71,8 @@ repeat (ds_list_size(clouds_image_index_list))
 	temp_cloud_vertical_offset += temp_cloud_velocity_gravity * frame_delta;
 	
 	// Cloud Wind Movement Animation
-	temp_cloud_horizontal_offset += 0.05 * frame_delta;
+	temp_cloud_horizontal_offset += cloud_movement_wind_spd * cloud_movement_wind_horizontal_direction * frame_delta;
+	temp_cloud_vertical_offset += cloud_movement_wind_spd * cloud_movement_wind_vertical_direction * frame_delta;
 	
 	// Cloud Size Expansion Animation
 	temp_cloud_horizontal_scale += cloud_size_change * frame_delta;
@@ -100,8 +101,9 @@ repeat (ds_list_size(clouds_image_index_list))
 	temp_cloud_index--;
 }
 
-//
+// Check if Clouds DS Lists are Empty
 if (ds_list_size(clouds_image_index_list) == 0)
 {
+	// Destroy Instance
 	instance_destroy();
 }

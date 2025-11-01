@@ -1,17 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"oExplosion_Entity",
+  "%Name":"oExplosion_Cloud_Grenade",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oExplosion_Entity",
+  "name":"oExplosion_Cloud_Grenade",
   "overriddenProperties":[],
   "parent":{
-    "name":"Explosion",
-    "path":"folders/Objects/Entities/Explosion.yy",
+    "name":"Grenades",
+    "path":"folders/Objects/Entities/Explosion/Grenades.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oExplosion_Cloud",
+    "path":"objects/oExplosion_Cloud/oExplosion_Cloud.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -25,16 +28,14 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sub_layer_index","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_index","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sImpact_Explosion_Collisionless",
-    "path":"sprites/sImpact_Explosion_Collisionless/sImpact_Explosion_Collisionless.yy",
+    "name":"sClouds_Large_DiffuseMap",
+    "path":"sprites/sClouds_Large_DiffuseMap/sClouds_Large_DiffuseMap.yy",
   },
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }

@@ -5,14 +5,15 @@
   "managed":true,
   "name":"oExplosion_Flare_PointLight",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_radius","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"160",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleFlare","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"propertyId":{"name":"muzzle_flare_decay_mult","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.7",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_radius","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"180",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleFlare","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"propertyId":{"name":"muzzle_flare_start_color","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"$FFFFFFFF",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleFlare","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"propertyId":{"name":"muzzle_flare_end_color","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"$FF0000FF",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleFlare","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"propertyId":{"name":"muzzle_flare_end_color","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"$FF0061FF",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oFirearm_MuzzleFlare","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"propertyId":{"name":"muzzle_flare_decay_mult","path":"objects/oFirearm_MuzzleFlare/oFirearm_MuzzleFlare.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.8",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oLightingEngine_Source_PointLight","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"propertyId":{"name":"point_light_intensity","path":"objects/oLightingEngine_Source_PointLight/oLightingEngine_Source_PointLight.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2",},
   ],
   "parent":{
-    "name":"Explosion",
-    "path":"folders/Objects/Entities/Explosion.yy",
+    "name":"Templates",
+    "path":"folders/Objects/Entities/Explosion/Templates.yy",
   },
   "parentObjectId":{
     "name":"oFirearm_MuzzleFlare",

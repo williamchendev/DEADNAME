@@ -155,9 +155,9 @@ global.item_packs[ItemPack.None] =
 global.item_packs[ItemPack.CorsoRifle] =
 {
 	// Item Data
-	item_name: "\"Cane Knife\" Bolt-Action Rifle",
+	item_name: "\"Corso\" Bolt-Action Rifle",
 	item_description: "",
-	item_dialogue: [ "The Gun has gold print that says:", "\"Liberté ou la Mort\"" ],
+	item_dialogue: [ "", "" ],
 	item_sprite: sItem_CorsoRifle,
 	item_type: ItemType.Weapon,
 	item_hand: ItemHand.Both,
@@ -204,7 +204,7 @@ global.item_packs[ItemPack.CorsoRifle] =
 		// Weapon Properties
 		firearm_attack_delay: 14,
 		firearm_attack_distance: 1200,
-		firearm_attack_hit_percentage: 0.5,
+		firearm_attack_hit_percentage: 0.2,
 		
 		firearm_attack_damage: 3,
 		firearm_attack_luck_damage: 0.7,
@@ -353,7 +353,7 @@ global.item_packs[ItemPack.OilerSMG] =
 		// Weapon Properties
 		firearm_attack_delay: 5,
 		firearm_attack_distance: 1200,
-		firearm_attack_hit_percentage: 0.25,
+		firearm_attack_hit_percentage: 0.08,
 		
 		firearm_attack_damage: 2,
 		firearm_attack_luck_damage: 0.2,
@@ -703,7 +703,7 @@ global.item_packs[ItemPack.StickGrenade] =
 		
 		// Thrown Weapon Fuze Settings
 		thrown_weapon_fuze_timer: 6,
-		thrown_weapon_fuze_effect_instance: oExplosion_Entity,
+		thrown_weapon_fuze_effect_instance: oExplosion_Grenade,
 		
 		// Operate Animation
 		thrown_weapon_operate_angle: -20,

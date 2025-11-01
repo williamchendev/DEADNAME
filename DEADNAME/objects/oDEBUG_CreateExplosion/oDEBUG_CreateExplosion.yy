@@ -8,8 +8,8 @@
   "name":"oDEBUG_CreateExplosion",
   "overriddenProperties":[],
   "parent":{
-    "name":"Explosion",
-    "path":"folders/Objects/Entities/Explosion.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

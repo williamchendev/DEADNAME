@@ -886,7 +886,7 @@ if (canmove)
 					case WeaponType.Firearm:
 					case WeaponType.BoltActionFirearm:
 						// Unit cannot attack with their Firearm if they are performing their Firearm's reload animation
-						if (unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload)
+						if (unit_equipment_animation_state != UnitEquipmentAnimationState.FirearmReload and firearm_weapon_hip_pivot_to_aim_pivot_transition_value > 0.5)
 						{
 							// Unit must finish their Firearm's recoil animation cycle to attack again with their Firearm
 							if (firearm_weapon_hand_pivot_transition_value <= animation_asymptotic_tolerance and firearm_weapon_primary_hand_pivot_to_unit_inventory_pivot_transition_value <= animation_asymptotic_tolerance)

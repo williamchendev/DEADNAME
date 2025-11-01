@@ -12,8 +12,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oShockwave","path":"objects/oShockwave/oShockwave.yy",},"propertyId":{"name":"horizontal_scale_increment","path":"objects/oShockwave/oShockwave.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.07",},
   ],
   "parent":{
-    "name":"Explosion",
-    "path":"folders/Objects/Entities/Explosion.yy",
+    "name":"Templates",
+    "path":"folders/Objects/Entities/Explosion/Templates.yy",
   },
   "parentObjectId":{
     "name":"oShockwave",
