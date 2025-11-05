@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"icosphere",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"icosphere",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

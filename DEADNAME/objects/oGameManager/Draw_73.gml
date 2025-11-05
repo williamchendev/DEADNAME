@@ -6,6 +6,23 @@ surface_set_target(LightingEngine.ui_surface);
 
 // Cursor GUI Behaviour
 draw_set_alpha(1);
+draw_set_color(c_red);
+
+draw_rectangle_color(100, 100, 300, 300, c_black, c_black, c_black, c_black, false);
+
+rot_v += rot_spd * frame_delta;
+
+var temp_rot_c = cos(rot_v * 2 * pi);
+var temp_rot_s = sin(rot_v * 2 * pi);
+
+for (var i = 0; i < array_length(geo); i += 3)
+{
+	draw_set_color(merge_color(c_red, c_blue, i / array_length(geo)));
+	draw_circle(((geo[i] * temp_rot_c - geo[i + 2] * temp_rot_s) * 80) + 200, (geo[i + 1] * 80) + 200, 1, false);
+}
+
+// Cursor GUI Behaviour
+draw_set_alpha(1);
 draw_set_color(c_white);
 
 // Player UI Behaviour Variables

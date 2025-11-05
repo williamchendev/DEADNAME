@@ -13,6 +13,11 @@ if (instance_number(object_index) > 1)
 	exit;
 }
 
+//
+rot_v = 0;
+rot_spd = 0.001;
+geo = geodesic_icosphere_create(10);
+
 sprite_index = noone;
 
 // Game Manager Singleton
