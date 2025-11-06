@@ -15,10 +15,34 @@ rot_v += rot_spd * frame_delta;
 var temp_rot_c = cos(rot_v * 2 * pi);
 var temp_rot_s = sin(rot_v * 2 * pi);
 
-for (var i = 0; i < array_length(geo); i += 3)
+for (var q = 0; q < array_length(geo.triangles); q++)
 {
-	draw_set_color(merge_color(c_red, c_blue, i / array_length(geo)));
-	draw_circle(((geo[i] * temp_rot_c - geo[i + 2] * temp_rot_s) * 80) + 200, (geo[i + 1] * 80) + 200, 1, false);
+	var temp_tri = geo.triangles[q];
+	
+	var t1 = geo.vertices[temp_tri[0]];
+	var t2 = geo.vertices[temp_tri[1]];
+	var t3 = geo.vertices[temp_tri[2]];
+	
+	var q1 = ((t1[0] * temp_rot_c - t1[2] * temp_rot_s) * 80) + 200;
+	var q2 = (t1[1] * 80) + 200;
+	
+	var q3 = ((t2[0] * temp_rot_c - t2[2] * temp_rot_s) * 80) + 200;
+	var q4 = (t2[1] * 80) + 200;
+	
+	var q5 = ((t3[0] * temp_rot_c - t3[2] * temp_rot_s) * 80) + 200;
+	var q6 = (t3[1] * 80) + 200;
+	
+	draw_set_color(merge_color(c_red, c_blue, q / array_length(geo.triangles)));
+	draw_line(q1, q2, q3, q4);
+	draw_line(q3, q4, q5, q6);
+	draw_line(q5, q6, q1, q2);
+}
+
+for (var i = 0; i < array_length(geo.vertices); i++)
+{
+	var temp_vertex = geo.vertices[i];
+	draw_set_color(merge_color(c_red, c_blue, i / array_length(geo.vertices)));
+	draw_circle(((temp_vertex[0] * temp_rot_c - temp_vertex[2] * temp_rot_s) * 80) + 200, (temp_vertex[1] * 80) + 200, 1, false);
 }
 
 // Cursor GUI Behaviour
