@@ -142,6 +142,7 @@ enum DebugMenuRibbonMenuTabs
     Lighting,
     Pathfinding,
     Rendering,
+    Spheres,
     OptionTemplate
 }
 
@@ -553,6 +554,22 @@ ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Rendering] =
             },
             option_toggle: undefined
         },
+    ]
+};
+
+ribbon_menu_tabs[DebugMenuRibbonMenuTabs.Spheres] = 
+{
+    tab_name: "Spheres",
+    tab_options: 
+    [
+        {
+            option_name: "Initialize Icosphere",
+            option_function: function()
+            {
+            	instance_create_depth(GameManager.game_width / 2, GameManager.game_height / 2, 0, oIcosphere);
+            },
+            option_toggle: undefined
+        }
     ]
 };
 

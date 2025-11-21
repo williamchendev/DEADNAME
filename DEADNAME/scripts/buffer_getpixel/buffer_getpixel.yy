@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"buffer_getpixel",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"buffer_getpixel",
+  "parent":{
+    "name":"BufferGetPixel",
+    "path":"folders/Scripts/Plugins/BufferGetPixel.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

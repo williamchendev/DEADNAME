@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_sphere_unlit",
+  "name":"shd_sphere_unlit",
+  "parent":{
+    "name":"Spheres",
+    "path":"folders/Shaders/Spheres.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

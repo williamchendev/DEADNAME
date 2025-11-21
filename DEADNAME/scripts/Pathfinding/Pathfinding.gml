@@ -780,7 +780,7 @@ function pathfinding_save_level_data()
 	// Create Level File Directory
 	if (!directory_exists(temp_level_file_directory))
 	{
-	    directory_create(temp_level_file_directory);
+		directory_create(temp_level_file_directory);
 	}
 	
 	// Create Pathfinding File Data
@@ -868,8 +868,8 @@ function pathfinding_load_level_data()
 	
 	if (!directory_exists(temp_level_file_directory) or !file_exists(temp_level_file_path))
 	{
-	    show_debug_message($"Failed to read Pathfinding Level Data File - Missing File at \"{temp_level_file_path}\"");
-	    return;
+		show_debug_message($"Failed to read Pathfinding Level Data File - Missing File at \"{temp_level_file_path}\"");
+		return;
 	}
 	
 	// Open Pathfinding File
@@ -881,140 +881,140 @@ function pathfinding_load_level_data()
 	while (!file_text_eof(temp_pathfinding_data_file))
 	{
 		// Load Pathfinding Data Line by Line
-	    var temp_pathfinding_data_line = file_text_readln(temp_pathfinding_data_file);
-	    
-	    // Clean Pathfinding Data Line of Whitespace Characters
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, " ", "");
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\t", "");
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\n", "");
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\r", "");
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\f", "");
-	    temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\v", "");
-	    
-	    // Remove Comments
-	    var temp_comment_index = string_pos("//", temp_pathfinding_data_line);
-	    
-	    if (temp_comment_index != 0)
-	    {
-	    	temp_pathfinding_data_line = string_delete(temp_pathfinding_data_line, temp_comment_index, string_length(temp_pathfinding_data_line) - temp_comment_index + 1);
-	    }
-	    
-	    // Check if Pathfinding Data is Node or Edge
-	    var temp_pathfinding_data_type_start_index = string_pos("[", temp_pathfinding_data_line);
-	    var temp_pathfinding_data_type_end_index = string_pos("]", temp_pathfinding_data_line);
-	    
-	    if (temp_pathfinding_data_type_start_index == 0 or temp_pathfinding_data_type_end_index == 0 or temp_pathfinding_data_type_end_index < temp_pathfinding_data_type_start_index)
-	    {
-	    	continue;
-	    }
-	    
-	    var temp_pathfinding_data_type = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_type_start_index + 1, temp_pathfinding_data_type_end_index - temp_pathfinding_data_type_start_index - 1);
-	    
-	    // Clean Pathfinding Data
-	    var temp_pathfinding_data_start_index = string_pos("{", temp_pathfinding_data_line);
-	    var temp_pathfinding_data_end_index = string_last_pos("}", temp_pathfinding_data_line);
-	    
-	    if (temp_pathfinding_data_start_index == 0 or temp_pathfinding_data_end_index == 0 or temp_pathfinding_data_end_index < temp_pathfinding_data_start_index)
-	    {
-	    	continue;
-	    }
-	    
-	    var temp_pathfinding_data_raw = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_start_index + 1, temp_pathfinding_data_end_index - temp_pathfinding_data_start_index - 1);
-	    var temp_pathfinding_data_split = string_split(temp_pathfinding_data_raw, ",");
-	    
-	    // Use Pathfinding Type & Data to populate Level's Pathfinding Map
-	    switch (temp_pathfinding_data_type)
-	    {
-	    	case "Node":
-	    		// Establish Node Data
-	    		var temp_node_name = "";
-	    		var temp_node_id = undefined;
-	    		var temp_node_position_x = undefined;
-	    		var temp_node_position_y = undefined;
-	    		
-	    		// Parse Node Data
-	    		for (var temp_node_data_index = 0; temp_node_data_index < array_length(temp_pathfinding_data_split); temp_node_data_index++)
-	    		{
-	    			// Find Colon
-	    			var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_node_data_index]);
-	    			
-	    			// Set Node Data
-	    			if (temp_colon_index != 0)
-	    			{
-	    				// Seperate Node Data Type and Node Data Value
-	    				var temp_node_data_type = string_copy(temp_pathfinding_data_split[temp_node_data_index], 1, temp_colon_index - 1);
-	    				var temp_node_data_value = string_copy(temp_pathfinding_data_split[temp_node_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_node_data_index]) - temp_colon_index);
-	    				
-	    				// Check Node Data Type and set according Node Data Value
-	    				switch (temp_node_data_type)
-	    				{
-	    					case "node_name":
-	    						var temp_node_data_value_quote_start_index = string_pos("\"", temp_node_data_value);
-	    						var temp_node_data_value_quote_end_index = string_last_pos("\"", temp_node_data_value);
-	    						temp_node_name = string_copy(temp_node_data_value, temp_node_data_value_quote_start_index + 1, temp_node_data_value_quote_end_index - temp_node_data_value_quote_start_index - 1);
-	    						break;
-	    					case "node_id":
-	    						temp_node_id = int64(temp_node_data_value);
-	    						break;
-    						case "node_position_x":
-    							temp_node_position_x = real(temp_node_data_value);
-	    						break;
-    						case "node_position_y":
-    							temp_node_position_y = real(temp_node_data_value);
-	    						break;
-    						default:
-    							show_debug_message($"Unsupported Node Data Type found while reading Pathfinding Level Data - Unsupported Node Data Type \"{temp_node_data_type}\"");
-    							break;
-	    				}
-	    			}
-	    		}
-	    		
-	    		// Check if Node Data is Valid
-    			if (!is_undefined(temp_node_id) and !is_undefined(temp_node_position_x) and !is_undefined(temp_node_position_y))
-    			{
-    				pathfinding_add_node(temp_node_position_x, temp_node_position_y, temp_node_id, temp_node_name);
-    			}
-    			else
-    			{
-    				show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
-    			}
-	    		break;
-    		case "Edge":
-    			// Establish Edge Data
-    			var temp_edge_name = "";
-    			var temp_edge_first_node_id = undefined;
-	    		var temp_edge_second_node_id = undefined;
-	    		var temp_edge_type = undefined;
-    			
-    			// Parse Edge Data
-    			for (var temp_edge_data_index = 0; temp_edge_data_index < array_length(temp_pathfinding_data_split); temp_edge_data_index++)
-	    		{
-	    			// Find Colon
-	    			var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_edge_data_index]);
-	    			
-	    			// Set Edge Data
-	    			if (temp_colon_index != 0)
-	    			{
-	    				// Seperate Edge Data Type and Edge Data Value
-	    				var temp_edge_data_type = string_copy(temp_pathfinding_data_split[temp_edge_data_index], 1, temp_colon_index - 1);
-	    				var temp_edge_data_value = string_copy(temp_pathfinding_data_split[temp_edge_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_edge_data_index]) - temp_colon_index);
-	    				
-	    				// Check Edge Data Type and set according Edge Data Value
-	    				switch (temp_edge_data_type)
-	    				{
-	    					case "edge_name":
-	    						var temp_edge_data_value_quote_start_index = string_pos("\"", temp_edge_data_value);
-	    						var temp_edge_data_value_quote_end_index = string_last_pos("\"", temp_edge_data_value);
-	    						temp_edge_name = string_copy(temp_edge_data_value, temp_edge_data_value_quote_start_index + 1, temp_edge_data_value_quote_end_index - temp_edge_data_value_quote_start_index - 1);
-	    						break;
-	    					case "first_node_id":
-	    						temp_edge_first_node_id = int64(temp_edge_data_value);
-	    						break;
-    						case "second_node_id":
-    							temp_edge_second_node_id = int64(temp_edge_data_value);
-	    						break;
-    						case "edge_type":
-    							switch (temp_edge_data_value)
+		var temp_pathfinding_data_line = file_text_readln(temp_pathfinding_data_file);
+		
+		// Clean Pathfinding Data Line of Whitespace Characters
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, " ", "");
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\t", "");
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\n", "");
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\r", "");
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\f", "");
+		temp_pathfinding_data_line = string_replace_all(temp_pathfinding_data_line, "\v", "");
+		
+		// Remove Comments
+		var temp_comment_index = string_pos("//", temp_pathfinding_data_line);
+		
+		if (temp_comment_index != 0)
+		{
+			temp_pathfinding_data_line = string_delete(temp_pathfinding_data_line, temp_comment_index, string_length(temp_pathfinding_data_line) - temp_comment_index + 1);
+		}
+		
+		// Check if Pathfinding Data is Node or Edge
+		var temp_pathfinding_data_type_start_index = string_pos("[", temp_pathfinding_data_line);
+		var temp_pathfinding_data_type_end_index = string_pos("]", temp_pathfinding_data_line);
+		
+		if (temp_pathfinding_data_type_start_index == 0 or temp_pathfinding_data_type_end_index == 0 or temp_pathfinding_data_type_end_index < temp_pathfinding_data_type_start_index)
+		{
+			continue;
+		}
+		
+		var temp_pathfinding_data_type = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_type_start_index + 1, temp_pathfinding_data_type_end_index - temp_pathfinding_data_type_start_index - 1);
+		
+		// Clean Pathfinding Data
+		var temp_pathfinding_data_start_index = string_pos("{", temp_pathfinding_data_line);
+		var temp_pathfinding_data_end_index = string_last_pos("}", temp_pathfinding_data_line);
+		
+		if (temp_pathfinding_data_start_index == 0 or temp_pathfinding_data_end_index == 0 or temp_pathfinding_data_end_index < temp_pathfinding_data_start_index)
+		{
+			continue;
+		}
+		
+		var temp_pathfinding_data_raw = string_copy(temp_pathfinding_data_line, temp_pathfinding_data_start_index + 1, temp_pathfinding_data_end_index - temp_pathfinding_data_start_index - 1);
+		var temp_pathfinding_data_split = string_split(temp_pathfinding_data_raw, ",");
+		
+		// Use Pathfinding Type & Data to populate Level's Pathfinding Map
+		switch (temp_pathfinding_data_type)
+		{
+			case "Node":
+				// Establish Node Data
+				var temp_node_name = "";
+				var temp_node_id = undefined;
+				var temp_node_position_x = undefined;
+				var temp_node_position_y = undefined;
+				
+				// Parse Node Data
+				for (var temp_node_data_index = 0; temp_node_data_index < array_length(temp_pathfinding_data_split); temp_node_data_index++)
+				{
+					// Find Colon
+					var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_node_data_index]);
+					
+					// Set Node Data
+					if (temp_colon_index != 0)
+					{
+						// Seperate Node Data Type and Node Data Value
+						var temp_node_data_type = string_copy(temp_pathfinding_data_split[temp_node_data_index], 1, temp_colon_index - 1);
+						var temp_node_data_value = string_copy(temp_pathfinding_data_split[temp_node_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_node_data_index]) - temp_colon_index);
+						
+						// Check Node Data Type and set according Node Data Value
+						switch (temp_node_data_type)
+						{
+							case "node_name":
+								var temp_node_data_value_quote_start_index = string_pos("\"", temp_node_data_value);
+								var temp_node_data_value_quote_end_index = string_last_pos("\"", temp_node_data_value);
+								temp_node_name = string_copy(temp_node_data_value, temp_node_data_value_quote_start_index + 1, temp_node_data_value_quote_end_index - temp_node_data_value_quote_start_index - 1);
+								break;
+							case "node_id":
+								temp_node_id = int64(temp_node_data_value);
+								break;
+							case "node_position_x":
+								temp_node_position_x = real(temp_node_data_value);
+								break;
+							case "node_position_y":
+								temp_node_position_y = real(temp_node_data_value);
+								break;
+							default:
+								show_debug_message($"Unsupported Node Data Type found while reading Pathfinding Level Data - Unsupported Node Data Type \"{temp_node_data_type}\"");
+								break;
+						}
+					}
+				}
+				
+				// Check if Node Data is Valid
+				if (!is_undefined(temp_node_id) and !is_undefined(temp_node_position_x) and !is_undefined(temp_node_position_y))
+				{
+					pathfinding_add_node(temp_node_position_x, temp_node_position_y, temp_node_id, temp_node_name);
+				}
+				else
+				{
+					show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
+				}
+				break;
+			case "Edge":
+				// Establish Edge Data
+				var temp_edge_name = "";
+				var temp_edge_first_node_id = undefined;
+				var temp_edge_second_node_id = undefined;
+				var temp_edge_type = undefined;
+				
+				// Parse Edge Data
+				for (var temp_edge_data_index = 0; temp_edge_data_index < array_length(temp_pathfinding_data_split); temp_edge_data_index++)
+				{
+					// Find Colon
+					var temp_colon_index = string_pos(":", temp_pathfinding_data_split[temp_edge_data_index]);
+					
+					// Set Edge Data
+					if (temp_colon_index != 0)
+					{
+						// Seperate Edge Data Type and Edge Data Value
+						var temp_edge_data_type = string_copy(temp_pathfinding_data_split[temp_edge_data_index], 1, temp_colon_index - 1);
+						var temp_edge_data_value = string_copy(temp_pathfinding_data_split[temp_edge_data_index], temp_colon_index + 1, string_length(temp_pathfinding_data_split[temp_edge_data_index]) - temp_colon_index);
+						
+						// Check Edge Data Type and set according Edge Data Value
+						switch (temp_edge_data_type)
+						{
+							case "edge_name":
+								var temp_edge_data_value_quote_start_index = string_pos("\"", temp_edge_data_value);
+								var temp_edge_data_value_quote_end_index = string_last_pos("\"", temp_edge_data_value);
+								temp_edge_name = string_copy(temp_edge_data_value, temp_edge_data_value_quote_start_index + 1, temp_edge_data_value_quote_end_index - temp_edge_data_value_quote_start_index - 1);
+								break;
+							case "first_node_id":
+								temp_edge_first_node_id = int64(temp_edge_data_value);
+								break;
+							case "second_node_id":
+								temp_edge_second_node_id = int64(temp_edge_data_value);
+								break;
+							case "edge_type":
+								switch (temp_edge_data_value)
 								{
 									case "Jump":
 										temp_edge_type = PathfindingEdgeType.JumpEdge;
@@ -1026,31 +1026,31 @@ function pathfinding_load_level_data()
 										temp_edge_type = PathfindingEdgeType.DefaultEdge;
 										break;
 								}
-	    						break;
-    						default:
-    							show_debug_message($"Unsupported Edge Data Type found while reading Pathfinding Level Data - Unsupported Edge Data Type \"{temp_node_data_type}\"");
-    							break;
-	    				}
-	    			}
-	    		}
-	    		
-	    		// Check if Edge Data is Valid
-    			if (!is_undefined(temp_edge_first_node_id) and !is_undefined(temp_edge_second_node_id) and !is_undefined(temp_edge_type))
-    			{
-    				pathfinding_add_edge(temp_edge_first_node_id, temp_edge_second_node_id, temp_edge_type, temp_edge_name);
-    			}
-    			else
-    			{
-    				show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
-    			}
-    			break;
+								break;
+							default:
+								show_debug_message($"Unsupported Edge Data Type found while reading Pathfinding Level Data - Unsupported Edge Data Type \"{temp_node_data_type}\"");
+								break;
+						}
+					}
+				}
+				
+				// Check if Edge Data is Valid
+				if (!is_undefined(temp_edge_first_node_id) and !is_undefined(temp_edge_second_node_id) and !is_undefined(temp_edge_type))
+				{
+					pathfinding_add_edge(temp_edge_first_node_id, temp_edge_second_node_id, temp_edge_type, temp_edge_name);
+				}
+				else
+				{
+					show_debug_message($"Incomplete or Malformed Node Data found while reading Pathfinding Level Data - Invalid Node Data in File at \"{temp_level_file_path}\" at line #{temp_pathfinding_data_line_index}");
+				}
+				break;
 			default:
 				show_debug_message($"Unsupported Pathfinding Data Type found while reading Pathfinding Level Data - Unsupported Pathfinding Data Type \"{temp_pathfinding_data_raw}\"");
 				break;
-	    }
-	    
-	    // Increment Pathfinding Line Number
-	    temp_pathfinding_data_line_index++;
+		}
+		
+		// Increment Pathfinding Line Number
+		temp_pathfinding_data_line_index++;
 	}
 	
 	// Close Pathfinding File

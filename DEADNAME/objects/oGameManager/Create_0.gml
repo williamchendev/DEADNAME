@@ -13,16 +13,6 @@ if (instance_number(object_index) > 1)
 	exit;
 }
 
-//
-rot_v = 0;
-rot_spd = 0.001;
-geo = geodesic_icosphere_create(10);
-
-for (var q = 0; q < array_length(geo.triangles); q++)
-{
-	show_debug_message(geo.triangles[q]);
-}
-
 sprite_index = noone;
 
 // Game Manager Singleton

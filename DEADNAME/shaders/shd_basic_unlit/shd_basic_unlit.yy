@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_basic_unlit",
+  "name":"shd_basic_unlit",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

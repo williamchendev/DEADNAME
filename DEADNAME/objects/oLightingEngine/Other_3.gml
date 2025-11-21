@@ -88,37 +88,6 @@ lighting_engine_culling_regions_map = -1;
 // Free all Surfaces used by the Lighting Engine
 lighting_engine_render_clear_surfaces();
 
-// Reset Surface Variables
-background_surface = -1;
-
-diffuse_back_color_surface = -1;
-diffuse_mid_color_surface = -1;
-diffuse_front_color_surface = -1;
-diffuse_aggregate_color_surface = -1;
-
-pbr_lighting_back_color_surface = -1;
-pbr_lighting_mid_color_surface = -1;
-pbr_lighting_front_color_surface = -1;
-
-shadowmap_surface = -1;
-normalmap_vector_surface = -1;
-
-layered_prb_metalrough_emissive_depth_surface = -1;
-background_prb_metalrough_emissive_depth_surface = -1;
-aggregate_prb_metalrough_emissive_depth_surface = -1;
-
-bloom_effect_surface = -1;
-distortion_horizontal_effect_surface = -1;
-distortion_vertical_effect_surface = -1;
-
-post_processing_surface = -1;
-final_render_surface = -1;
-
-fx_surface = -1;
-ui_surface = -1;
-
-debug_surface = -1;
-
 // Delete Vertex Formats
 vertex_format_delete(lighting_engine_box_shadows_vertex_format);
 lighting_engine_box_shadows_vertex_format = -1;

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Primitives",
-    "path":"folders/Sprites/Debug/Primitives.yy",
+    "name":"Spheres",
+    "path":"folders/Sprites/Debug/Spheres.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -1063,9 +1063,43 @@ function lighting_engine_render_clear_surfaces()
 	surface_free(LightingEngine.fx_surface);
 	surface_free(LightingEngine.ui_surface);
 	
+	surface_free(LightingEngine.depth_enabled_surface);
+	
+	// Reset Surface Variables
+	background_surface = -1;
+	
+	diffuse_back_color_surface = -1;
+	diffuse_mid_color_surface = -1;
+	diffuse_front_color_surface = -1;
+	diffuse_aggregate_color_surface = -1;
+	
+	pbr_lighting_back_color_surface = -1;
+	pbr_lighting_mid_color_surface = -1;
+	pbr_lighting_front_color_surface = -1;
+	
+	shadowmap_surface = -1;
+	normalmap_vector_surface = -1;
+	
+	layered_prb_metalrough_emissive_depth_surface = -1;
+	background_prb_metalrough_emissive_depth_surface = -1;
+	aggregate_prb_metalrough_emissive_depth_surface = -1;
+	
+	bloom_effect_surface = -1;
+	distortion_horizontal_effect_surface = -1;
+	distortion_vertical_effect_surface = -1;
+	
+	post_processing_surface = -1;
+	final_render_surface = -1;
+	
+	fx_surface = -1;
+	ui_surface = -1;
+	
+	depth_enabled_surface = -1;
+	
 	// Free Debug Surface
 	if (global.debug_surface_enabled)
 	{
 		surface_free(LightingEngine.debug_surface);
+		debug_surface = -1;
 	}
 }

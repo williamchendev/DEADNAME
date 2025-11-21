@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_planet_body_lit",
+  "name":"shd_planet_body_lit",
+  "parent":{
+    "name":"Spheres",
+    "path":"folders/Shaders/Spheres.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

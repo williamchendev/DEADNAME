@@ -43,8 +43,6 @@ gpu_set_ztestenable(false);
 
 gpu_set_sprite_cull(false);
 
-surface_depth_disable(true);
-
 // Render Settings
 render_x = 0;
 render_y = 0;
@@ -100,6 +98,8 @@ final_render_surface = -1;
 fx_surface = -1;
 ui_surface = -1;
 
+depth_enabled_surface = -1;
+
 debug_surface = -1;
 
 #endregion
@@ -135,7 +135,6 @@ vertex_format_begin();
 vertex_format_add_position_3d();
 vertex_format_add_normal();
 vertex_format_add_color();
-vertex_format_add_texcoord();
 lighting_engine_icosphere_render_vertex_format = vertex_format_end();
 
 // Vertex Buffers
@@ -384,6 +383,11 @@ post_process_lighting_render_shader_lightblend_normal_dot_product_texture_index 
 post_process_lighting_render_shader_depth_specular_bloom_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_DepthSpecularBloomMap");
 
 post_process_lighting_render_shader_view_normal_map_index  = shader_get_sampler_index(shd_post_process_render, "gm_ViewNormal_Texture");
+
+// Sphere Unlit 3D Rendering Shader Indexes
+sphere_unlit_shader_radius_index = shader_get_uniform(shd_sphere_unlit, "u_Radius");
+sphere_unlit_shader_position_index = shader_get_uniform(shd_sphere_unlit, "u_Position");
+sphere_unlit_shader_euler_angles_index = shader_get_uniform(shd_sphere_unlit, "u_EulerAngles");
 
 // Bloom Effect Surface Rendering Shader Indexes
 bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_bloom_effect_render, "in_TexelSize");

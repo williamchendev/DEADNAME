@@ -1,6 +1,17 @@
 /// @description Surfaces Initialization
 // Creates the Surfaces for the Lighting Engine
 
+// Pre-Draw Check and Create Depth Enabled Surfaces Event
+surface_depth_disable(false);
+
+if (!surface_exists(depth_enabled_surface))
+{
+    depth_enabled_surface = surface_create(GameManager.game_width + (render_border * 2), GameManager.game_height + (render_border * 2), surface_rgba8unorm);
+}
+
+// Disable Depth for Lighting Engine Pipeline Surfaces
+surface_depth_disable(true);
+
 // Pre-Draw Check and Create Lighting Engine Utilized Surfaces Event
 if (!surface_exists(background_surface))
 {

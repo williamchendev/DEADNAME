@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"geodesic_icosphere",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"geodesic_icosphere",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
