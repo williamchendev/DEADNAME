@@ -36,7 +36,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"rain_color","filters":[],"listItems":[],"multiselect":false,"name":"rain_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFF3E9F","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"rain_color","filters":[],"listItems":[],"multiselect":false,"name":"rain_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFF3E9F","varType":7,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

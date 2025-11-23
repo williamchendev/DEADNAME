@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_HorizonBlue_MaskHat_Jump",
   "bboxMode":2,
   "bbox_bottom":54,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"340b9133-7da3-45e5-9c60-100b4b5ac684","name":"340b9133-7da3-45e5-9c60-100b4b5ac684","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"7d22c288-d6dc-414e-8911-c91f79da71b4","name":"7d22c288-d6dc-414e-8911-c91f79da71b4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"340b9133-7da3-45e5-9c60-100b4b5ac684","name":"340b9133-7da3-45e5-9c60-100b4b5ac684","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7d22c288-d6dc-414e-8911-c91f79da71b4","name":"7d22c288-d6dc-414e-8911-c91f79da71b4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -34,7 +34,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -70,15 +70,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"340b9133-7da3-45e5-9c60-100b4b5ac684","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"e60093fb-bafd-4dc4-b94c-877aaa6fed53","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"af28d0b3-8ac8-4719-b44c-bc160b6d6c8a","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"7d22c288-d6dc-414e-8911-c91f79da71b4","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"01d9f992-5528-479b-b305-4976a7538f99","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"340b9133-7da3-45e5-9c60-100b4b5ac684","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"e60093fb-bafd-4dc4-b94c-877aaa6fed53","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"57f3fce3-85cb-46a2-82d8-3ffc8d75a206","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"af28d0b3-8ac8-4719-b44c-bc160b6d6c8a","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"7d22c288-d6dc-414e-8911-c91f79da71b4","path":"sprites/sWilliam_HorizonBlue_MaskHat_Jump/sWilliam_HorizonBlue_MaskHat_Jump.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"01d9f992-5528-479b-b305-4976a7538f99","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

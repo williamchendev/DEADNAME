@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap",
   "bboxMode":2,
   "bbox_bottom":54,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -35,7 +35,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -71,18 +71,10 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"8fab8fe4-4f5e-4e8f-9168-e7d86fcd5feb","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9dba1e10-6529-4186-b5f9-ca27f1192f6c","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"4de06b3f-dbdf-467a-b1b7-e472bef9d715","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"54c753cd-1183-4344-9f93-e623e6092c05","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"094f613c-0a96-4ed2-be6e-d4b05e58bf47","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"8fab8fe4-4f5e-4e8f-9168-e7d86fcd5feb","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"75b51abc-1e6e-48fb-9d37-d9795e1b64c5","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"9dba1e10-6529-4186-b5f9-ca27f1192f6c","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d44a21d1-527f-47bb-9aaa-8ea5fc349a54","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"4de06b3f-dbdf-467a-b1b7-e472bef9d715","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7f92ac8-635d-4586-a82c-da71a592d1c8","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap/sWilliam_HorizonBlue_MaskUpHat_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"54c753cd-1183-4344-9f93-e623e6092c05","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

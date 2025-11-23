@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sAdobeHouse_DesertDeadShrub_DiffuseMap",
   "bboxMode":0,
   "bbox_bottom":32,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -34,7 +34,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"sAdobeHouse_DesertDeadShrub_DiffuseMap",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -70,15 +70,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f7a08246-79c7-4cef-9f2c-7e6b1e9a5339","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a87ac380-cfd5-48e9-b885-af5641b0f12d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"6372f286-47e1-4cf6-b890-786bf0387874","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"481c1798-a476-4cd9-8500-6884c2c5ce8c","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"f7a08246-79c7-4cef-9f2c-7e6b1e9a5339","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d1bc50e4-709b-45d6-bef9-9c8fbdafb6d1","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"a87ac380-cfd5-48e9-b885-af5641b0f12d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"e0129a34-a1ad-4884-9e5f-b45c6a2313e6","path":"sprites/sAdobeHouse_DesertDeadShrub_DiffuseMap/sAdobeHouse_DesertDeadShrub_DiffuseMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"6372f286-47e1-4cf6-b890-786bf0387874","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

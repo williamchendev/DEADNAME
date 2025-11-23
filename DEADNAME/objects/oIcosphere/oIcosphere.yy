@@ -28,19 +28,19 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"z","filters":[],"listItems":[],"multiselect":false,"name":"z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"resolution","filters":[],"listItems":[],"multiselect":false,"name":"resolution","rangeEnabled":true,"rangeMax":32.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"radius","filters":[],"listItems":[],"multiselect":false,"name":"radius","rangeEnabled":true,"rangeMax":500.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"100","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"euler_angle_x","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"euler_angle_y","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"euler_angle_z","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"sphere_texture","filters":[
+    {"$GMObjectProperty":"v2","%Name":"z","filters":[],"listItems":[],"multiselect":false,"name":"z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"resolution","filters":[],"listItems":[],"multiselect":false,"name":"resolution","rangeEnabled":true,"rangeMax":32.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"radius","filters":[],"listItems":[],"multiselect":false,"name":"radius","rangeEnabled":true,"rangeMax":500.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"100","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"euler_angle_x","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"euler_angle_y","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"euler_angle_z","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"sphere_texture","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"sphere_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sPlanet_PoliticalMap_Mom2","path":"sprites/sPlanet_PoliticalMap_Mom2/sPlanet_PoliticalMap_Mom2.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sPlanet_PoliticalMap_Mom2","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"heightmap_texture","filters":[
+    {"$GMObjectProperty":"v2","%Name":"heightmap_texture","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"heightmap_texture","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sPlanet_PoliticalMap_Mom1","path":"sprites/sPlanet_PoliticalMap_Mom1/sPlanet_PoliticalMap_Mom1.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sPlanet_PoliticalMap_Mom1","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"heightmap_offset","filters":[],"listItems":[],"multiselect":false,"name":"heightmap_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"10","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"heightmap_offset","filters":[],"listItems":[],"multiselect":false,"name":"heightmap_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"10","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

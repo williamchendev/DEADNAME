@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap",
   "bboxMode":2,
   "bbox_bottom":54,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"69f51339-b97e-4fee-988e-da317a504fe6","name":"69f51339-b97e-4fee-988e-da317a504fe6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"71418d53-4a78-4528-bb9e-18d7aad59766","name":"71418d53-4a78-4528-bb9e-18d7aad59766","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"69f51339-b97e-4fee-988e-da317a504fe6","name":"69f51339-b97e-4fee-988e-da317a504fe6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"71418d53-4a78-4528-bb9e-18d7aad59766","name":"71418d53-4a78-4528-bb9e-18d7aad59766","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"69f51339-b97e-4fee-988e-da317a504fe6","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"69dc94fd-e31e-473d-b6d5-21af6f794a1e","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"ae70cc0c-a69a-40b1-b406-1c698406e38d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"17b17142-e3d1-4c32-b637-9780155c74b4","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"71418d53-4a78-4528-bb9e-18d7aad59766","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"2b2b3437-a979-4fa7-a55a-ec335bd0baaf","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a5eea1bf-5f76-465d-81a5-23877081104c","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"69f51339-b97e-4fee-988e-da317a504fe6","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"69dc94fd-e31e-473d-b6d5-21af6f794a1e","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"3ba5a9f7-9fca-4f50-9ff1-82187c1abb70","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"ae70cc0c-a69a-40b1-b406-1c698406e38d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"0c0cd091-6bc2-4e51-acee-84d8278ee8ef","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"17b17142-e3d1-4c32-b637-9780155c74b4","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"71418d53-4a78-4528-bb9e-18d7aad59766","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"2b2b3437-a979-4fa7-a55a-ec335bd0baaf","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d3bcfa27-6f86-439e-99a4-7635c298b72d","path":"sprites/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap/sWilliam_HorizonBlue_MaskUpHat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"a5eea1bf-5f76-465d-81a5-23877081104c","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

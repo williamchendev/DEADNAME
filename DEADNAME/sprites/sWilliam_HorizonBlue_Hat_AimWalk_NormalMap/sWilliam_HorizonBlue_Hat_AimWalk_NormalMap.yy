@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_HorizonBlue_Hat_AimWalk_NormalMap",
   "bboxMode":2,
   "bbox_bottom":54,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"480ead5b-36c2-42c8-8f17-690234120eec","name":"480ead5b-36c2-42c8-8f17-690234120eec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"929fe11b-b10e-434e-9900-095ec905c27a","name":"929fe11b-b10e-434e-9900-095ec905c27a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"480ead5b-36c2-42c8-8f17-690234120eec","name":"480ead5b-36c2-42c8-8f17-690234120eec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"929fe11b-b10e-434e-9900-095ec905c27a","name":"929fe11b-b10e-434e-9900-095ec905c27a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"480ead5b-36c2-42c8-8f17-690234120eec","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"281ea478-0dfb-46dc-b998-1381c2f4aa2c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"929fe11b-b10e-434e-9900-095ec905c27a","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"253ccf60-617b-4a71-b210-d00ef8a8a6f1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"96c0c978-0909-4373-8b41-5bf0da42ff13","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"b3e8e305-ed34-424c-a034-c68e335a07c9","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"586bfb3a-b568-40b7-be69-7b5809beef78","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"480ead5b-36c2-42c8-8f17-690234120eec","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"281ea478-0dfb-46dc-b998-1381c2f4aa2c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"929fe11b-b10e-434e-9900-095ec905c27a","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"253ccf60-617b-4a71-b210-d00ef8a8a6f1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d6ad6968-ab2f-4f15-ab76-d874360309d2","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"96c0c978-0909-4373-8b41-5bf0da42ff13","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"840421ac-b4dc-49b4-8a6f-4e1a57672784","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"b3e8e305-ed34-424c-a034-c68e335a07c9","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"9a0eb2b4-1729-4727-bd5b-4c4d45b32820","path":"sprites/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap/sWilliam_HorizonBlue_Hat_AimWalk_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"586bfb3a-b568-40b7-be69-7b5809beef78","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

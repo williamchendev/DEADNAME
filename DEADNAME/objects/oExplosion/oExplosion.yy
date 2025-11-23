@@ -26,20 +26,20 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sub_layer_index","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_index","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"explosion_attack_radius","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"42","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"explosion_attack_damage","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_damage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"explosion_attack_impulse_power","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_impulse_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"50","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_instance","filters":[
+    {"$GMObjectProperty":"v2","%Name":"sub_layer_index","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_index","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"explosion_attack_radius","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"42","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"explosion_attack_damage","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_damage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"explosion_attack_impulse_power","filters":[],"listItems":[],"multiselect":false,"name":"explosion_attack_impulse_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"50","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_instance","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"hitmarker_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oExplosion_Hitmarker","path":"objects/oExplosion_Hitmarker/oExplosion_Hitmarker.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oExplosion_Hitmarker","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"shockwave_instance","filters":[
+    {"$GMObjectProperty":"v2","%Name":"shockwave_instance","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"shockwave_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oExplosion_Shockwave","path":"objects/oExplosion_Shockwave/oExplosion_Shockwave.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oExplosion_Shockwave","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"light_instance","filters":[
+    {"$GMObjectProperty":"v2","%Name":"light_instance","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"light_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oExplosion_Flare_PointLight","path":"objects/oExplosion_Flare_PointLight/oExplosion_Flare_PointLight.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oExplosion_Flare_PointLight","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"cloud_instance","filters":[
+    {"$GMObjectProperty":"v2","%Name":"cloud_instance","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"cloud_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oExplosion_Cloud_Grenade","path":"objects/oExplosion_Cloud_Grenade/oExplosion_Cloud_Grenade.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oExplosion_Cloud_Grenade","varType":5,},
   ],

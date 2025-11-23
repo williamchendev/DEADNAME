@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_NorthernBrigade_Mercenary_Idle",
   "bboxMode":2,
   "bbox_bottom":52,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"c84a5446-90a4-476c-a543-4295e353d3c5","name":"c84a5446-90a4-476c-a543-4295e353d3c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"23b0487a-9319-4651-ab1c-e40de7ce8363","name":"23b0487a-9319-4651-ab1c-e40de7ce8363","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c84a5446-90a4-476c-a543-4295e353d3c5","name":"c84a5446-90a4-476c-a543-4295e353d3c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"23b0487a-9319-4651-ab1c-e40de7ce8363","name":"23b0487a-9319-4651-ab1c-e40de7ce8363","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -35,7 +35,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -71,18 +71,10 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c84a5446-90a4-476c-a543-4295e353d3c5","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"ea4be66b-03ad-4e76-94ee-ff6e292abc08","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"23b0487a-9319-4651-ab1c-e40de7ce8363","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"01ce38a8-21e1-4414-bd89-009d9455b3fe","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c4ddc09a-9ad7-49e3-9cd6-c25f72a5ade8","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9a7ca5fb-c8f2-4dc6-9885-edb6b0e61992","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c84a5446-90a4-476c-a543-4295e353d3c5","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"ea4be66b-03ad-4e76-94ee-ff6e292abc08","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"23b0487a-9319-4651-ab1c-e40de7ce8363","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"01ce38a8-21e1-4414-bd89-009d9455b3fe","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a353b8eb-70fd-4e9e-8d73-17cbf75a4483","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"c4ddc09a-9ad7-49e3-9cd6-c25f72a5ade8","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"4e05a04e-2a83-4103-95ea-0f186b3eb7a8","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle/sWilliam_NorthernBrigade_Mercenary_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"9a7ca5fb-c8f2-4dc6-9885-edb6b0e61992","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

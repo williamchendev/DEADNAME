@@ -28,7 +28,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"play_button_event_room","filters":[
+    {"$GMObjectProperty":"v2","%Name":"play_button_event_room","filters":[
         "GMRoom",
       ],"listItems":[],"multiselect":false,"name":"play_button_event_room","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"rAdobeHouse_House","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"rAdobeHouse_House","varType":5,},
   ],

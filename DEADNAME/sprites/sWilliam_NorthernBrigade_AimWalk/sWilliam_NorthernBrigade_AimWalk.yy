@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_NorthernBrigade_AimWalk",
   "bboxMode":2,
   "bbox_bottom":52,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"e04af9ca-3869-47c8-85d4-df5b4e098133","name":"e04af9ca-3869-47c8-85d4-df5b4e098133","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"6a60e624-af59-454c-8d55-a08e999b1380","name":"6a60e624-af59-454c-8d55-a08e999b1380","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e04af9ca-3869-47c8-85d4-df5b4e098133","name":"e04af9ca-3869-47c8-85d4-df5b4e098133","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6a60e624-af59-454c-8d55-a08e999b1380","name":"6a60e624-af59-454c-8d55-a08e999b1380","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e04af9ca-3869-47c8-85d4-df5b4e098133","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1ea2851d-5e51-4d28-a269-e8be3e22cdd9","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"d54361dd-6b13-4fdb-801f-6133a474dc18","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6a60e624-af59-454c-8d55-a08e999b1380","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"35b70145-c21e-49b8-9d10-6cdb5d1a59fa","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"2f5914fa-88ba-499e-bf58-9ae46e1c3b3b","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"aaba7eec-3bba-42ed-9e3f-222ed2f713fa","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"e04af9ca-3869-47c8-85d4-df5b4e098133","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"1ea2851d-5e51-4d28-a269-e8be3e22cdd9","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b994efe7-3ddf-4341-8c9c-c7c67177f67f","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"d54361dd-6b13-4fdb-801f-6133a474dc18","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"6a60e624-af59-454c-8d55-a08e999b1380","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"35b70145-c21e-49b8-9d10-6cdb5d1a59fa","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d2d96859-cb8f-4afb-85fa-628a2232a6f8","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"2f5914fa-88ba-499e-bf58-9ae46e1c3b3b","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"cb2ad812-7b29-4010-bf1a-b8f7d567bc26","path":"sprites/sWilliam_NorthernBrigade_AimWalk/sWilliam_NorthernBrigade_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"aaba7eec-3bba-42ed-9e3f-222ed2f713fa","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

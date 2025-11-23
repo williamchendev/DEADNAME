@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_CapitalLoyalist_AimWalk",
   "bboxMode":2,
   "bbox_bottom":52,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"4826297e-d591-4304-a42d-cc8352323ce3","name":"4826297e-d591-4304-a42d-cc8352323ce3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"087f6690-bec8-43b5-848d-93aa9619e5cd","name":"087f6690-bec8-43b5-848d-93aa9619e5cd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"4826297e-d591-4304-a42d-cc8352323ce3","name":"4826297e-d591-4304-a42d-cc8352323ce3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"087f6690-bec8-43b5-848d-93aa9619e5cd","name":"087f6690-bec8-43b5-848d-93aa9619e5cd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"649a3274-75da-4699-bed7-6db75f8bf8dd","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4826297e-d591-4304-a42d-cc8352323ce3","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f94c0c4f-512d-43e4-8ec2-bc8c03835256","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"cad5dd0b-854e-430c-a3eb-b478c882750f","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"087f6690-bec8-43b5-848d-93aa9619e5cd","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"7286ec07-9801-4cf4-a16a-18ad637d184c","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1ee75c88-d9d8-4346-85db-b1bde0427291","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"7dbeeacb-93b2-49fa-8f66-db28e137487b","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"649a3274-75da-4699-bed7-6db75f8bf8dd","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"4826297e-d591-4304-a42d-cc8352323ce3","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"f94c0c4f-512d-43e4-8ec2-bc8c03835256","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d24cc6c5-41ac-411d-8ccb-a1cf7b4b603f","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"cad5dd0b-854e-430c-a3eb-b478c882750f","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"087f6690-bec8-43b5-848d-93aa9619e5cd","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"7286ec07-9801-4cf4-a16a-18ad637d184c","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7c0737f-b3e5-4c72-816f-5c435a7b6616","path":"sprites/sWilliam_CapitalLoyalist_AimWalk/sWilliam_CapitalLoyalist_AimWalk.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"1ee75c88-d9d8-4346-85db-b1bde0427291","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_Knives_Hair",
   "bboxMode":0,
   "bbox_bottom":3,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"f1b98def-e82c-41a6-b114-b51fbf17de26","name":"f1b98def-e82c-41a6-b114-b51fbf17de26","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f1b98def-e82c-41a6-b114-b51fbf17de26","name":"f1b98def-e82c-41a6-b114-b51fbf17de26","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"d95f87f4-8e03-4958-8f99-056a230aa143","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"aea9a8ef-a961-4bb2-aa45-84f1afda56c1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"fdb5e86e-50f8-4139-8e2d-7deef874935c","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f1b98def-e82c-41a6-b114-b51fbf17de26","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a4efa636-5d5e-446b-a61b-616efb98b1de","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"40a48283-a077-459b-997a-9939ec28c6ba","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a7844c54-aaaf-4cd3-bc74-8a5faf355ad9","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"d95f87f4-8e03-4958-8f99-056a230aa143","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a7e14fb2-6c02-4121-bc53-ddcba14a521f","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"aea9a8ef-a961-4bb2-aa45-84f1afda56c1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"32085ee5-dc6f-4754-b5d8-fd1b6efc696d","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"fdb5e86e-50f8-4139-8e2d-7deef874935c","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"f1b98def-e82c-41a6-b114-b51fbf17de26","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"a4efa636-5d5e-446b-a61b-616efb98b1de","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"8393c296-b6f0-4381-ae2c-e79669fc3fec","path":"sprites/sWilliam_Knives_Hair/sWilliam_Knives_Hair.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"40a48283-a077-459b-997a-9939ec28c6ba","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sAdobeHouse_CactusOpuntia_NormalMap",
   "bboxMode":0,
   "bbox_bottom":43,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a513ce93-bfb2-4872-b957-7d40dab9280b","name":"a513ce93-bfb2-4872-b957-7d40dab9280b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"717829dc-8c64-48ea-98d3-844e0a779874","name":"717829dc-8c64-48ea-98d3-844e0a779874","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"9e339010-b704-4b77-8ba8-026641f3345c","name":"9e339010-b704-4b77-8ba8-026641f3345c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8286a43e-9a8b-4c65-9999-23a882547704","name":"8286a43e-9a8b-4c65-9999-23a882547704","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a513ce93-bfb2-4872-b957-7d40dab9280b","name":"a513ce93-bfb2-4872-b957-7d40dab9280b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"717829dc-8c64-48ea-98d3-844e0a779874","name":"717829dc-8c64-48ea-98d3-844e0a779874","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9e339010-b704-4b77-8ba8-026641f3345c","name":"9e339010-b704-4b77-8ba8-026641f3345c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8286a43e-9a8b-4c65-9999-23a882547704","name":"8286a43e-9a8b-4c65-9999-23a882547704","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a513ce93-bfb2-4872-b957-7d40dab9280b","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"7c5e4cba-ad2b-42cb-b596-fc45dcb116b8","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"717829dc-8c64-48ea-98d3-844e0a779874","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c249177c-2079-4108-96a3-19ac6f88a2cf","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9e339010-b704-4b77-8ba8-026641f3345c","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"b65ef947-cb01-48fa-8b48-351dd92c7b5b","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c83228f4-666c-43ed-85c5-e1225cd5ffed","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8286a43e-9a8b-4c65-9999-23a882547704","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"168b1480-e567-4e3a-aa95-6a4bc15a7a85","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a513ce93-bfb2-4872-b957-7d40dab9280b","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"7c5e4cba-ad2b-42cb-b596-fc45dcb116b8","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"717829dc-8c64-48ea-98d3-844e0a779874","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"c249177c-2079-4108-96a3-19ac6f88a2cf","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"9e339010-b704-4b77-8ba8-026641f3345c","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"b65ef947-cb01-48fa-8b48-351dd92c7b5b","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"04dd4d02-1ab1-4e88-9bcd-c889b271bba1","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"c83228f4-666c-43ed-85c5-e1225cd5ffed","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"8286a43e-9a8b-4c65-9999-23a882547704","path":"sprites/sAdobeHouse_CactusOpuntia_NormalMap/sAdobeHouse_CactusOpuntia_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"168b1480-e567-4e3a-aa95-6a4bc15a7a85","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -26,8 +26,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"first_faction_id","filters":[],"listItems":[],"multiselect":false,"name":"first_faction_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Moralists","varType":2,},
-    {"$GMObjectProperty":"v1","%Name":"second_faction_id","filters":[],"listItems":[],"multiselect":false,"name":"second_faction_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Evil","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"first_faction_id","filters":[],"listItems":[],"multiselect":false,"name":"first_faction_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Moralists","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"second_faction_id","filters":[],"listItems":[],"multiselect":false,"name":"second_faction_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Evil","varType":2,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

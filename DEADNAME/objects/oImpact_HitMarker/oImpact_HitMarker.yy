@@ -30,21 +30,21 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_life","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_life","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_sprite","filters":[
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_life","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_life","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"hitmarker_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sImpact_Hitmarker","path":"sprites/sImpact_Hitmarker/sImpact_Hitmarker.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sImpact_Hitmarker","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_sprite_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_sprite_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_sprite","filters":[
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_sprite_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_sprite_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"trail_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sImpact_Trail","path":"sprites/sImpact_Trail/sImpact_Trail.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sImpact_Trail","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"trail_sprite_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"trail_sprite_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_thickness","filters":[],"listItems":[],"multiselect":false,"name":"trail_thickness","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_length_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"trail_length_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_angle","filters":[],"listItems":[],"multiselect":false,"name":"trail_angle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_distance","filters":[],"listItems":[],"multiselect":false,"name":"trail_distance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"trail_miss","filters":[],"listItems":[],"multiselect":false,"name":"trail_miss","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_contact","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_contact","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"trail_sprite_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"trail_sprite_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_thickness","filters":[],"listItems":[],"multiselect":false,"name":"trail_thickness","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_length_multiplier","filters":[],"listItems":[],"multiselect":false,"name":"trail_length_multiplier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_angle","filters":[],"listItems":[],"multiselect":false,"name":"trail_angle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_distance","filters":[],"listItems":[],"multiselect":false,"name":"trail_distance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"trail_miss","filters":[],"listItems":[],"multiselect":false,"name":"trail_miss","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_contact","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_contact","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sGodKingBunker_Wolfsbane",
   "bboxMode":0,
   "bbox_bottom":23,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d894647c-749f-490e-aaa5-ff9a994a9c97","name":"d894647c-749f-490e-aaa5-ff9a994a9c97","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8e1befff-14e7-40e4-910e-1c12de4831b4","name":"8e1befff-14e7-40e4-910e-1c12de4831b4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d894647c-749f-490e-aaa5-ff9a994a9c97","name":"d894647c-749f-490e-aaa5-ff9a994a9c97","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8e1befff-14e7-40e4-910e-1c12de4831b4","name":"8e1befff-14e7-40e4-910e-1c12de4831b4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -36,7 +36,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -72,21 +72,11 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"6acc8b7f-80c1-475d-a730-e93b75064df2","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d894647c-749f-490e-aaa5-ff9a994a9c97","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"95bf2a3e-88ef-4edf-b3eb-4018b099e767","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8e1befff-14e7-40e4-910e-1c12de4831b4","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"da4b01db-f8ca-4dfe-9a23-2abdb5d11041","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"00f1fb4b-2478-4d70-9c8c-e6b08839769e","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c1c45d7f-451b-4aef-b9f6-b654a70c455a","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"3696b503-382a-4a8e-9664-1e0d82bc75c5","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"6acc8b7f-80c1-475d-a730-e93b75064df2","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"d894647c-749f-490e-aaa5-ff9a994a9c97","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"95bf2a3e-88ef-4edf-b3eb-4018b099e767","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"8e1befff-14e7-40e4-910e-1c12de4831b4","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"da4b01db-f8ca-4dfe-9a23-2abdb5d11041","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"1da2fff8-27da-4918-91d2-0c5a12c4955e","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"00f1fb4b-2478-4d70-9c8c-e6b08839769e","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"cd8afc70-d6f5-4c09-9227-0ba74ef1bb43","path":"sprites/sGodKingBunker_Wolfsbane/sGodKingBunker_Wolfsbane.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"c1c45d7f-451b-4aef-b9f6-b654a70c455a","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

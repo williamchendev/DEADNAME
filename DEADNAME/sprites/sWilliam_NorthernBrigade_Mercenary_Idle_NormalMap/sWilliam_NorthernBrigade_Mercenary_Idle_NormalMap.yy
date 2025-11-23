@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap",
   "bboxMode":2,
   "bbox_bottom":52,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"5992e684-6c69-4033-bd4f-493d329a4c75","name":"5992e684-6c69-4033-bd4f-493d329a4c75","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"5992e684-6c69-4033-bd4f-493d329a4c75","name":"5992e684-6c69-4033-bd4f-493d329a4c75","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -35,7 +35,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -71,18 +71,10 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"b79863b5-8bb6-4a25-97c2-4f65f2e09df8","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"72a2e608-1be7-4c42-826e-e265a9db98a1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"5992e684-6c69-4033-bd4f-493d329a4c75","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"4b5c775f-25a8-4515-9e84-a6b916aca14c","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"ceb2f400-6bf1-4840-9eef-be9edb117e67","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"0f0bf42c-ef48-42a9-81f8-c471095c4091","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"b79863b5-8bb6-4a25-97c2-4f65f2e09df8","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"0e660ee0-dc49-4f3c-84e3-3b6708b88327","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"72a2e608-1be7-4c42-826e-e265a9db98a1","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"5992e684-6c69-4033-bd4f-493d329a4c75","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"4b5c775f-25a8-4515-9e84-a6b916aca14c","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b17a1f56-02ef-4e2e-bcb6-767230cafe4c","path":"sprites/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap/sWilliam_NorthernBrigade_Mercenary_Idle_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"ceb2f400-6bf1-4840-9eef-be9edb117e67","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

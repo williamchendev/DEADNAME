@@ -28,9 +28,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"single_sub_layer","filters":[],"listItems":[],"multiselect":false,"name":"single_sub_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
-    {"$GMObjectProperty":"v1","%Name":"region_culling_id","filters":[],"listItems":[],"multiselect":false,"name":"region_culling_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#NO_ID#","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"single_sub_layer","filters":[],"listItems":[],"multiselect":false,"name":"single_sub_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"sub_layer_name","filters":[],"listItems":[],"multiselect":false,"name":"sub_layer_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#USE_GAMEMAKER_LAYER_NAME#","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"region_culling_id","filters":[],"listItems":[],"multiselect":false,"name":"region_culling_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"#NO_ID#","varType":2,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

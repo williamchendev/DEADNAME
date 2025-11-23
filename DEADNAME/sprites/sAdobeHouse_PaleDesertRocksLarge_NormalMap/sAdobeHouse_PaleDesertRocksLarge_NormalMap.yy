@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sAdobeHouse_PaleDesertRocksLarge_NormalMap",
   "bboxMode":0,
   "bbox_bottom":25,
@@ -12,13 +12,13 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a571b129-9759-4be9-8a84-bc527cffc6e8","name":"a571b129-9759-4be9-8a84-bc527cffc6e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a70272a1-3f52-4a70-af14-8da70712350d","name":"a70272a1-3f52-4a70-af14-8da70712350d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a571b129-9759-4be9-8a84-bc527cffc6e8","name":"a571b129-9759-4be9-8a84-bc527cffc6e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a70272a1-3f52-4a70-af14-8da70712350d","name":"a70272a1-3f52-4a70-af14-8da70712350d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -38,7 +38,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"",
     "autoRecord":true,
     "backdropHeight":1080,
@@ -74,27 +74,13 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"4f10b482-996b-4191-8666-fee0645b5714","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a571b129-9759-4be9-8a84-bc527cffc6e8","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"87ad39c6-c396-4208-949d-13488b59d26d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f02cd123-6141-40f5-b7fd-8e83dacb305f","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a6f41282-7cc5-4694-a1f1-b6dd92e010a2","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a70272a1-3f52-4a70-af14-8da70712350d","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"e29f2230-3414-4c39-808f-f6283517f8b0","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9044543a-7507-47c1-8a34-d56e9386ddc3","IsCreationKey":false,"Key":5.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"08e092d1-f667-4faa-be62-2794f09997ac","IsCreationKey":false,"Key":6.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b6ba2554-ff0a-4e9d-9080-b88823d7e067","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"4f10b482-996b-4191-8666-fee0645b5714","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a571b129-9759-4be9-8a84-bc527cffc6e8","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"87ad39c6-c396-4208-949d-13488b59d26d","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a71dfe7d-4f34-42f5-a9e2-9d2e34df1c89","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"f02cd123-6141-40f5-b7fd-8e83dacb305f","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b93a7f0a-37ce-44b8-8b10-5536be349f20","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"a6f41282-7cc5-4694-a1f1-b6dd92e010a2","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a70272a1-3f52-4a70-af14-8da70712350d","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"e29f2230-3414-4c39-808f-f6283517f8b0","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a827aa60-dfbe-4166-85ee-0e8e616433a0","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"9044543a-7507-47c1-8a34-d56e9386ddc3","IsCreationKey":false,"Key":5.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c355a58d-8934-4136-8775-4c9a32cbb6e8","path":"sprites/sAdobeHouse_PaleDesertRocksLarge_NormalMap/sAdobeHouse_PaleDesertRocksLarge_NormalMap.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"08e092d1-f667-4faa-be62-2794f09997ac","IsCreationKey":false,"Key":6.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

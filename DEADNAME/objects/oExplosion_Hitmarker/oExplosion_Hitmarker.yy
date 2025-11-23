@@ -30,14 +30,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"hitmarker_collision","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_collision","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"life","filters":[],"listItems":[],"multiselect":false,"name":"life","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"size","filters":[],"listItems":[],"multiselect":false,"name":"size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"size_increase","filters":[],"listItems":[],"multiselect":false,"name":"size_increase","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"collision_sprite","filters":[
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_collision","filters":[],"listItems":[],"multiselect":false,"name":"hitmarker_collision","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"life","filters":[],"listItems":[],"multiselect":false,"name":"life","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"size","filters":[],"listItems":[],"multiselect":false,"name":"size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"size_increase","filters":[],"listItems":[],"multiselect":false,"name":"size_increase","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"collision_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"collision_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sImpact_Explosion_Collision","path":"sprites/sImpact_Explosion_Collision/sImpact_Explosion_Collision.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sImpact_Explosion_Collision","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"collisionless_sprite","filters":[
+    {"$GMObjectProperty":"v2","%Name":"collisionless_sprite","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"collisionless_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sImpact_Explosion_Collisionless","path":"sprites/sImpact_Explosion_Collisionless/sImpact_Explosion_Collisionless.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sImpact_Explosion_Collisionless","varType":5,},
   ],
