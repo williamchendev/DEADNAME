@@ -146,4 +146,4 @@ planet_simulator_reset_light_sources = function()
 planet_simulator_add_light_source(-1500, 240, -2400, c_white, 8000, 1.2, 0.1);
 //planet_simulator_add_light_source(-500, 240, -1400, make_color_rgb(206, 185, 240), 3000, 3, 2);
 //planet_simulator_add_light_source(1000, 240, -1400, c_red, 100, 1, 2);
-instance_create_depth(360, 240, 0, oPlanet, { image_blend: make_color_rgb(3, 0, 5) } );
+instance_create_depth(360, 240, 0, oPlanet, { image_blend: make_color_rgb(8, 0, 15) } );

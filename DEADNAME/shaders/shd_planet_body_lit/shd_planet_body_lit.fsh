@@ -76,7 +76,9 @@ void main()
 	//
 	float Height = texture2D(in_heightmap_texture, Texcoord).r;
 	
-	
+	//
+	vec3 ViewDirection = normalize(in_camera_position - v_vPosition);
+	float ViewStrength = max(dot(ViewDirection, v_vNormal), 0.0);
 	
 	/*
 	vec3 n = UnityObjectToWorldNormal(vertex.normal);         // Transform normal to world space
@@ -116,7 +118,39 @@ void main()
 	*/
 	
 	//
-	vec3 Light = v_vColour.rgb;
+	// Calculate angles of incidence and reflection
+	float theta_i = acos(1.0);
+	float theta_r = acos(dot(vec3(0.0), v_vNormal));
+	
+	// Determine max and min angles for roughness calculation
+	float alpha = max(theta_i, theta_r);
+	float beta = min(theta_i, theta_r);
+	
+	float sigma = 1.0 - pow(1.0 - Height, 2.0);
+	float sigmaSqr = sigma * sigma;
+	        
+    //
+    vec3 E0 = v_vColour.rgb; 
+    
+    // Project light and view vectors onto the tangent plane to calculate cosPhi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
+    vec3 Lproj = vec3(0.0);
+	vec3 Vproj = normalize(ViewDirection - v_vNormal * ViewStrength + 1.0); // +1 to remove a visual artifact
+	float cosPhi = dot(Lproj, Vproj);
+	
+	// Calculate C1, C2, C3
+	float C1 = 1.0 - 0.5 * (sigmaSqr / (sigmaSqr + 0.33));
+	float C2 = cosPhi >= 0.0 ? 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * sin(alpha) : 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * (sin(alpha) - pow((2.0 * beta) / Pi, 3.0));
+	float C3 = 0.125 * (sigmaSqr / (sigmaSqr + 0.09)) * pow((4.0 * alpha * beta) / (Pi * Pi), 2.0);
+	
+	// Compute direct illumination term L1 and interreflected term L2
+	vec3 L1 = Diffuse.rgb * E0 * cos(theta_i) * (C1 + (C2 * cosPhi * tan(beta)) + (C3 * (1.0 - abs(cosPhi)) * tan((alpha + beta) / 2.0)));
+	vec3 L2 = 0.17 * (Diffuse.rgb * Diffuse.rgb) * E0 * cos(theta_i) * (sigmaSqr / (sigmaSqr + 0.13)) * (1.0 - cosPhi * pow((2.0 * beta) / Pi, 2.0));
+	
+	// Final light intensity
+	vec3 L = clamp(L1 + L2, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
+	
+	//
+	vec3 Light = L;
 	
 	// Iterate through all Lights
 	for (int i = 0; i < MAX_LIGHTS; i++)
@@ -133,15 +167,11 @@ void main()
 		// Light Falloff Effect
 		float LightDistance = length(v_vPosition - LightPosition);
 		float LightFade = pow((in_light_radius[i] - LightDistance) / in_light_radius[i], in_light_falloff[i]);
-		//float LightFade = max((in_light_radius[i] - LightDistance) / in_light_radius[i], 0.0);
 		
 		//
 		vec3 LightDirection = normalize(LightPosition - v_vPosition);
-		vec3 ViewDirection = normalize(in_camera_position - v_vPosition);
-		
-		//
+		//vec3 LightDirection = v_vNormal;
 		float LightStrength = max(dot(LightDirection, v_vNormal), 0.0);
-		float ViewStrength = max(dot(ViewDirection, v_vNormal), 0.0);
 		
 		//
 		vec3 Reflection = 2.0 * LightStrength * (v_vNormal - LightDirection);
@@ -151,46 +181,32 @@ void main()
 		//Color += vec4(LightColor * LightStrength * in_light_intensity[i], 0.0);
 		
 		// Calculate angles of incidence and reflection
-		float theta_i = acos(dot(LightDirection, v_vNormal));
-		float theta_r = acos(dot(Reflection, v_vNormal));
+		theta_i = acos(dot(LightDirection, v_vNormal));
+		theta_r = acos(dot(Reflection, v_vNormal));
 		
 		// Determine max and min angles for roughness calculation
-		float alpha = max(theta_i, theta_r);
-		float beta = min(theta_i, theta_r);
-		float sigma = 1.0 - pow(1.0 - Height, 2.0);
-		float sigmaSqr = sigma * sigma;
-		float gamma = max(0.0, min(1.0, dot(LightStrength, ViewStrength)));
+		alpha = max(theta_i, theta_r);
+		beta = min(theta_i, theta_r);
 		        
         //
-        vec3 E0 = LightColor * LightStrength; 
+        E0 = LightColor * LightStrength; 
         
         // Project light and view vectors onto the tangent plane to calculate cosPhi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
-		vec3 Lproj = normalize(LightDirection - v_vNormal * LightStrength);
-		vec3 Vproj = normalize(ViewDirection - v_vNormal * ViewStrength + 1.0); // +1 to remove a visual artifact
-		float cosPhi = dot(Lproj, Vproj);
+		Lproj = normalize(LightDirection - v_vNormal * LightStrength);
+		Vproj = normalize(ViewDirection - v_vNormal * ViewStrength + 1.0); // +1 to remove a visual artifact
+		cosPhi = dot(Lproj, Vproj);
 		
 		// Calculate C1, C2, C3
-		float C1 = 1.0 - 0.5 * (sigmaSqr / (sigmaSqr + 0.33));
-		float C2 = cosPhi >= 0.0 ? 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * sin(alpha) : 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * (sin(alpha) - pow((2.0 * beta) / Pi, 3.0));
-		float C3 = 0.125 * (sigmaSqr / (sigmaSqr + 0.09)) * pow((4.0 * alpha * beta) / (Pi * Pi), 2.0);
+		C1 = 1.0 - 0.5 * (sigmaSqr / (sigmaSqr + 0.33));
+		C2 = cosPhi >= 0.0 ? 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * sin(alpha) : 0.45 * (sigmaSqr / (sigmaSqr + 0.09)) * (sin(alpha) - pow((2.0 * beta) / Pi, 3.0));
+		C3 = 0.125 * (sigmaSqr / (sigmaSqr + 0.09)) * pow((4.0 * alpha * beta) / (Pi * Pi), 2.0);
 		
 		// Compute direct illumination term L1 and interreflected term L2
-		vec3 L1 = Diffuse.rgb * E0 * cos(theta_i) * (C1 + (C2 * cosPhi * tan(beta)) + (C3 * (1.0 - abs(cosPhi)) * tan((alpha + beta) / 2.0)));
-		vec3 L2 = 0.17 * (Diffuse.rgb * Diffuse.rgb) * E0 * cos(theta_i) * (sigmaSqr / (sigmaSqr + 0.13)) * (1.0 - cosPhi * pow((2.0 * beta) / Pi, 2.0));
+		L1 = Diffuse.rgb * E0 * cos(theta_i) * (C1 + (C2 * cosPhi * tan(beta)) + (C3 * (1.0 - abs(cosPhi)) * tan((alpha + beta) / 2.0)));
+		L2 = 0.17 * (Diffuse.rgb * Diffuse.rgb) * E0 * cos(theta_i) * (sigmaSqr / (sigmaSqr + 0.13)) * (1.0 - cosPhi * pow((2.0 * beta) / Pi, 2.0));
 		
 		// Final light intensity
-		vec3 L = clamp(L1 + L2, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
-		
-		// Oren-Nayar coefficients
-		float A = 1.0 - 0.5 * (sigmaSqr / (sigmaSqr + 0.33));
-		float B = 0.45 * (sigmaSqr / (sigmaSqr + 0.09));
-		
-		// Calculate C coefficient
-		float C = sin(alpha) * tan(beta);
-		
-		// Oren-Nayar diffuse term
-		float LA = LightStrength * (A + B * gamma * C);
-		L = (L * 1.0) + (LA * Diffuse.rgb * LightColor * 0.0);
+		L = clamp(L1 + L2, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
 		
 		//
         Light += L * LightFade * in_light_intensity[i];
