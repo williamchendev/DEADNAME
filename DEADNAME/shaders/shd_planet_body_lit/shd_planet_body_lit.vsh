@@ -8,8 +8,14 @@ attribute vec3 in_Normal; // (x, y, z)
 attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_TextureCoord; // (u, v)
 
+// Camera Properties
+uniform vec3 in_camera_position;
+uniform mat4 in_camera_rotation;
+uniform vec2 in_camera_dimensions;
+
 // Planet Body Properties
 uniform float u_Radius;
+uniform float u_Elevation;
 uniform vec3 u_Position;
 uniform vec3 u_EulerAngles;
 
@@ -20,7 +26,7 @@ varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
 
 // Rotation Matrix Functions
-mat4 eulerRotationMatrix(vec3 euler_angles) 
+mat3 eulerRotationMatrix(vec3 euler_angles) 
 {
 	// Convert Euler Angles from Degrees to Radians
 	float pitch = radians(euler_angles.x);
@@ -36,48 +42,50 @@ mat4 eulerRotationMatrix(vec3 euler_angles)
 	float sr = sin(roll);
 	
 	// Build rotation matrix (ZYX order - roll, yaw, pitch)
-	mat4 rotMatrix;
+	mat3 rotMatrix;
     
     rotMatrix[0][0] = cy * cr;
     rotMatrix[0][1] = cy * sr;
     rotMatrix[0][2] = -sy;
-    rotMatrix[0][3] = 0.0;
     
     rotMatrix[1][0] = sp * sy * cr - cp * sr;
     rotMatrix[1][1] = sp * sy * sr + cp * cr;
     rotMatrix[1][2] = sp * cy;
-    rotMatrix[1][3] = 0.0;
     
     rotMatrix[2][0] = cp * sy * cr + sp * sr;
     rotMatrix[2][1] = cp * sy * sr - sp * cr;
     rotMatrix[2][2] = cp * cy;
-    rotMatrix[2][3] = 0.0;
-    
-    rotMatrix[3][0] = 0.0;
-    rotMatrix[3][1] = 0.0;
-    rotMatrix[3][2] = 0.0;
-    rotMatrix[3][3] = 1.0;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
 }
 
+// Constants
+const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
+
 // Vertex Shader
 void main() 
 {
-	// Create rotation matrix from Euler Angles
-	mat4 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
+	// Create Rotation Matrix from Euler Angles
+	mat3 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
 	
-	// Apply rotation to the Vertex Position
-	vec4 rotated_position = rotation_matrix * vec4(in_Position * u_Radius, 1.0);
+	// Apply Rotation Matrix to the Position Vector & Elevation Vector
+	vec3 rotated_vector = rotation_matrix * in_Position;
+	vec3 rotated_elevation = rotation_matrix * in_Normal;
+	
+	// Calculate Vertex Position relative to Origin
+	vec3 vertex_position = (rotated_vector * u_Radius) + (rotated_elevation * u_Elevation);
+	
+	// Calculate Render Vertex Position with Camera Rotation Matrix
+	vec4 render_position = vec4(vertex_position + u_Position - in_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
-	v_vNormal = normalize(rotated_position.xyz);
-	v_vPosition = rotated_position.xyz + u_Position;
-	v_vTexVector = normalize(in_Position);
+	v_vNormal = rotated_vector;
+	v_vPosition = (vertex_position + u_Position) * inverse_vertical_vector;
+	v_vTexVector = in_Position;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(rotated_position.xyz + u_Position, 1.0);
+	vec4 object_space_pos = vec4(render_position.xyz * inverse_vertical_vector + vec3(in_camera_dimensions * 0.5, 0.0), 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }

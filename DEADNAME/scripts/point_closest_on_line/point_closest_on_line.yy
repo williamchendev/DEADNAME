@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"point_closest_on_line",
   "parent":{
-    "name":"Physics & Collisions",
-    "path":"folders/Scripts/Physics & Collisions.yy",
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

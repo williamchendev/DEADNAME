@@ -4,10 +4,21 @@
   "eventList":[],
   "managed":true,
   "name":"oPlanet_Mom",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oPlanet","path":"objects/oPlanet/oPlanet.yy",},"propertyId":{"name":"ocean_elevation","path":"objects/oPlanet/oPlanet.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.2",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oPlanet","path":"objects/oPlanet/oPlanet.yy",},"propertyId":{"name":"ocean","path":"objects/oPlanet/oPlanet.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"height_map","path":"objects/oCelestialBody/oCelestialBody.yy",},"resource":{"name":"sPlanet_PoliticalMap_Mom1","path":"sprites/sPlanet_PoliticalMap_Mom1/sPlanet_PoliticalMap_Mom1.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sPlanet_PoliticalMap_Mom1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"orbit_size","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"400",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"orbit_speed","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"elevation","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"20",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"radius","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"120",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oPlanet","path":"objects/oPlanet/oPlanet.yy",},"propertyId":{"name":"ocean_foam_size","path":"objects/oPlanet/oPlanet.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"rotation_speed","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oPlanet","path":"objects/oPlanet/oPlanet.yy",},"propertyId":{"name":"ocean_alpha","path":"objects/oPlanet/oPlanet.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.6",},
+  ],
   "parent":{
     "name":"Grandmom",
-    "path":"folders/Objects/Planets/Grandmom.yy",
+    "path":"folders/Objects/Celestial/Grandmom.yy",
   },
   "parentObjectId":{
     "name":"oPlanet",
@@ -30,7 +41,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sPlanet_PoliticalMap_Mom2",
+    "path":"sprites/sPlanet_PoliticalMap_Mom2/sPlanet_PoliticalMap_Mom2.yy",
+  },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

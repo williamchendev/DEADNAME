@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PlanetPathfinding",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PlanetPathfinding",
+  "parent":{
+    "name":"Pathfinding",
+    "path":"folders/Scripts/Pathfinding.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

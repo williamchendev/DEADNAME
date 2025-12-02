@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sPlanet_PoliticalMap_Mom1",
+  "%Name":"sPlanet_ElevationMap_Earth",
   "bboxMode":0,
   "bbox_bottom":1023,
   "bbox_left":0,
@@ -12,16 +12,16 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"080c9902-9935-4a3e-81af-7b0f1c0116c4","name":"080c9902-9935-4a3e-81af-7b0f1c0116c4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"dcb50303-1785-41f1-b187-5c626ce201b8","name":"dcb50303-1785-41f1-b187-5c626ce201b8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":1024,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"c7866fb1-0932-4b85-a858-6f0bc528c3c0","blendMode":0,"displayName":"default","isLocked":false,"name":"c7866fb1-0932-4b85-a858-6f0bc528c3c0","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"213aa904-4836-43f8-ba22-b67b53170af7","blendMode":0,"displayName":"default","isLocked":false,"name":"213aa904-4836-43f8-ba22-b67b53170af7","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sPlanet_PoliticalMap_Mom1",
+  "name":"sPlanet_ElevationMap_Earth",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sPlanet_PoliticalMap_Mom1",
+    "%Name":"sPlanet_ElevationMap_Earth",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sPlanet_PoliticalMap_Mom1",
+    "name":"sPlanet_ElevationMap_Earth",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"080c9902-9935-4a3e-81af-7b0f1c0116c4","path":"sprites/sPlanet_PoliticalMap_Mom1/sPlanet_PoliticalMap_Mom1.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"69352edc-299f-4193-b760-a066a5375dfa","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"dcb50303-1785-41f1-b187-5c626ce201b8","path":"sprites/sPlanet_ElevationMap_Earth/sPlanet_ElevationMap_Earth.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"76ff79f7-d747-47d8-8e81-02e11fcc82c4","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"geodesic_icosphere_pathfinding",
+  "%Name":"rotation_math",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"geodesic_icosphere_pathfinding",
+  "name":"rotation_math",
   "parent":{
     "name":"InnoSoft",
     "path":"folders/Scripts/Plugins/InnoSoft.yy",

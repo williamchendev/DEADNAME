@@ -7,6 +7,7 @@
 
 // Camera Properties
 uniform vec3 in_camera_position;
+uniform vec2 in_camera_dimensions;
 
 // Light Source Properties
 uniform float in_light_exists[MAX_LIGHTS];
@@ -162,7 +163,7 @@ void main()
 		}
 		
 		//
-		vec3 LightPosition = vec3(in_light_position_x[i], in_light_position_y[i], in_light_position_z[i]);
+		vec3 LightPosition = vec3(in_light_position_x[i], in_light_position_y[i], in_light_position_z[i]) * vec3(1.0, -1.0, 1.0);
 		
 		// Light Falloff Effect
 		float LightDistance = length(v_vPosition - LightPosition);
@@ -170,7 +171,6 @@ void main()
 		
 		//
 		vec3 LightDirection = normalize(LightPosition - v_vPosition);
-		//vec3 LightDirection = v_vNormal;
 		float LightStrength = max(dot(LightDirection, v_vNormal), 0.0);
 		
 		//
@@ -178,7 +178,6 @@ void main()
 		
 		//
 		vec3 LightColor = vec3(in_light_color_r[i], in_light_color_g[i], in_light_color_b[i]);
-		//Color += vec4(LightColor * LightStrength * in_light_intensity[i], 0.0);
 		
 		// Calculate angles of incidence and reflection
 		theta_i = acos(dot(LightDirection, v_vNormal));

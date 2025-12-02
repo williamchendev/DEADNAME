@@ -1,5 +1,5 @@
 /// @description Game End Cleanup Event
-// Cleanup for Event Lighting Engine
+// Cleanup Event for Lighting Engine
 
 // Clean Up all Sub Layers and Lighting Objects from Lighting Object "Painter's Sorted List" DS Lists
 lighting_engine_delete_all_sub_layers();

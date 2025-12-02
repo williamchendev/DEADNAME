@@ -53,7 +53,6 @@ function geodesic_icosphere_biome_is_marine(biome)
 	}
 }
 
-//
 function planet_pathfinding_add_node(planet, position_x, position_y, position_z, node_id = undefined, node_name = "")
 {
 	

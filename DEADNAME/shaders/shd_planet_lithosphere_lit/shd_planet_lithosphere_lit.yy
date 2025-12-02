@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_sphere_unlit",
-  "name":"shd_sphere_unlit",
+  "%Name":"shd_planet_lithosphere_lit",
+  "name":"shd_planet_lithosphere_lit",
   "parent":{
     "name":"Celestial",
     "path":"folders/Shaders/Celestial.yy",

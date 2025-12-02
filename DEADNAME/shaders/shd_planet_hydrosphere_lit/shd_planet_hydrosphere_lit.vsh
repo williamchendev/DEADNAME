@@ -1,29 +1,33 @@
 //
-// Basic Unlit Sphere vertex shader meant to test rendering 3D models
+// Forward Rendered Lit Planet Hydrosphere vertex shader meant for Inno's Solar System Overworld
 //
 
 // Vertex Buffer Properties
 attribute vec3 in_Position; // (x, y, z)
-attribute vec3 in_Normal; // (x, y, z)
 attribute vec4 in_Colour; // (r, g, b, a)
-attribute vec2 in_TextureCoord; // (u, v)
+attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
 uniform vec3 in_camera_position;
 uniform mat4 in_camera_rotation;
 uniform vec2 in_camera_dimensions;
 
-// Planet Body Properties
+// Planet Properties
 uniform float u_Radius;
 uniform float u_Elevation;
+uniform float u_Ocean_Elevation;
 uniform vec3 u_Position;
 uniform vec3 u_EulerAngles;
 
-// Interpolated Color, Normal, Position, and Sphere Texture Vector
+// Interpolated Color, Normal, Position, Sphere Texture, and Elevation Vector
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
+varying highp float v_vElevation;
+
+// Constants
+const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // Rotation Matrix Functions
 mat3 eulerRotationMatrix(vec3 euler_angles) 
@@ -60,21 +64,17 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	return rotMatrix;
 }
 
-// Constants
-const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
-
 // Vertex Shader
 void main() 
 {
 	// Create Rotation Matrix from Euler Angles
 	mat3 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
 	
-	// Apply Rotation Matrix to the Position Vector & Elevation Vector
+	// Apply Rotation Matrix to the Position Vector
 	vec3 rotated_vector = rotation_matrix * in_Position;
-	vec3 rotated_elevation = rotation_matrix * in_Normal;
 	
 	// Calculate Vertex Position relative to Origin
-	vec3 vertex_position = (rotated_vector * u_Radius) + (rotated_elevation * u_Elevation);
+	vec3 vertex_position = rotated_vector * (u_Radius + (u_Ocean_Elevation * u_Elevation));
 	
 	// Calculate Render Vertex Position with Camera Rotation Matrix
 	vec4 render_position = vec4(vertex_position + u_Position - in_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
@@ -82,8 +82,11 @@ void main()
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
 	v_vNormal = rotated_vector;
-	v_vPosition = (vertex_position + u_Position) * inverse_vertical_vector;
+	v_vPosition = vertex_position + u_Position;
 	v_vTexVector = in_Position;
+	
+	// Interpolated Elevation
+	v_vElevation = in_Elevation.x * u_Elevation;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(render_position.xyz * inverse_vertical_vector + vec3(in_camera_dimensions * 0.5, 0.0), 1.0);

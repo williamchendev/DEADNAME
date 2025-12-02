@@ -3,8 +3,8 @@
   "%Name":"shd_planet_body_lit",
   "name":"shd_planet_body_lit",
   "parent":{
-    "name":"Spheres",
-    "path":"folders/Shaders/Spheres.yy",
+    "name":"Celestial",
+    "path":"folders/Shaders/Celestial.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

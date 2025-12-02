@@ -7,6 +7,10 @@
 /// @returns {real} Returns the percentage the given value is between the from and to arguments
 function inverse_lerp(from, to, value, clamp_value = true) 
 {
+	// Add to Compiler
+	gml_pragma("forceinline");
+	
+	// Return Inverse Lerp
 	var temp_inv_lerp = (value - from) / (to - from);
     return clamp_value ? clamp(temp_inv_lerp, 0, 1) : temp_inv_lerp;
 }
@@ -23,6 +27,9 @@ function inverse_lerp(from, to, value, clamp_value = true)
 /// @returns {real} Returns the percentage the given value is between the from and to arguments
 function inverse_lerp_position(from_x, from_y, to_x, to_y, value_x, value_y, clamp_value = true)
 {
+	// Add to Compiler
+	gml_pragma("forceinline");
+	
     // Direction vector of the line
     var temp_dx = to_x - from_x;
     var temp_dy = to_y - from_y;
