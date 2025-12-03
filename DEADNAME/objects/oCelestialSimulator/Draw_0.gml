@@ -102,6 +102,10 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 // Reset Shader
 shader_reset();
 
+// Disable Z-Depth Rendering
+gpu_set_zwriteenable(false);
+gpu_set_ztestenable(false);
+
 // Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
@@ -127,6 +131,10 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				// Check if Planet's Ocean is Enabled and should be Rendered
 				if (ocean)
 				{
+					// Enable Z-Depth Rendering
+					gpu_set_zwriteenable(true);
+					gpu_set_ztestenable(true);
+					
 					// Enable Planet Hydrosphere Shader
 					shader_set(shd_planet_hydrosphere_lit);
 					
@@ -160,7 +168,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_roughness_index, ocean_roughness);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_color_index, color_get_red(ocean_color) / 255, color_get_green(ocean_color) / 255, color_get_blue(ocean_color) / 255, ocean_alpha);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_foam_color_index, color_get_red(ocean_foam_color) / 255, color_get_green(ocean_foam_color) / 255, color_get_blue(ocean_foam_color) / 255, ocean_foam_alpha);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_foam_size_index, ocean_foam_size);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_foam_size_index, min(elevation * (1.0 - ocean_elevation), ocean_foam_size));
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_position_index, x, y, z);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 					
@@ -169,6 +177,33 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					
 					// Draw Planet from Icosphere Vertex Buffer
 					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
+					
+					// Reset Shader
+					shader_reset();
+					
+					// Disable Z-Depth Rendering
+					gpu_set_zwriteenable(false);
+					gpu_set_ztestenable(false);
+				}
+				
+				// Check if Planet's Atmosphere is Enabled and should be Rendered
+				if (sky)
+				{
+					// Enable Planet Atmosphere Shader
+					shader_set(shd_planet_atmosphere_lit);
+					
+					// Set Planet Atmosphere Shader Camera Properties
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					//shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					
+					// Set Planet Render Properties
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_radius_index, radius + elevation + sky_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_position_index, x, y, z);
+					
+					// Draw Planet from Icosphere Vertex Buffer
+					vertex_submit(CelestialSimulator.atmosphere_vertex_buffer, pr_trianglelist, -1);
 					
 					// Reset Shader
 					shader_reset();
@@ -186,10 +221,6 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 
 // Reset Surface Target
 surface_reset_target();
-
-// Disable Z-Depth Rendering
-gpu_set_zwriteenable(false);
-gpu_set_ztestenable(false);
 
 // Reset Camera Orientation
 camera_set_proj_mat(temp_camera, temp_camera_proj_matrix);

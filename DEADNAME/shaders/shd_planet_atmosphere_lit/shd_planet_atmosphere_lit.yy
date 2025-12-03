@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_planet_atmosphere_lit",
+  "name":"shd_planet_atmosphere_lit",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Shaders/Celestial.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

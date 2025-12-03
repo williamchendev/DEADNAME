@@ -121,26 +121,6 @@ void main()
     // Establish Ambient Occlusion Light Color
     vec3 e = v_vColour.rgb; 
     
-    // Cook-Torrance Specular Lighting
-	float s_a = 1.0; // Convert NdotH to an angle in radians
-	float s_m = clamp(sigma_sqr, pseudo_zero, 1.0);	// Clamp roughness value to avoid extreme cases
-	float s_exp = exp(-tan(s_a) * tan(s_a) / (s_m * s_m)); // Exponent term for Beckmann distribution
-	float s_d = clamp(s_exp / (Pi * s_m * s_m * pow(1.0, 4.0)), pseudo_zero, pseudo_infinity); // Beckmann Distribution. Clamped to get rid of a visual artefact
-	
-	// Calculate Light Reflection Coefficient
-	vec3 light_reflection_coefficient = (ocean_height_difference <= u_Ocean_Foam_Size) ? vec3(dielectric_material_light_reflection_coefficient) : diffuse_color.rgb;
-	
-	// Calculate Fresnel using Schlick's approximation
-	vec3 frenel_schlick = light_reflection_coefficient + ((1.0 - light_reflection_coefficient) * pow(1.0, 5.0));
-	
-	// Smith Model Geometry Shadowing Function
-	float s_ga = 2.0 * 0.5 * dot(v_vNormal, view_direction) / 0.5;
-	float s_gb = 2.0 * 0.5 * 1.0 / 0.5;
-	float s_g = min(1.0, min(s_ga, s_gb));
-	
-	// Specular Reflection Light Component
-	vec3 s_l = ((s_d * s_g * frenel_schlick) / (4.0 * 1.0 * dot(v_vNormal, view_direction))) * e;
-    
     // Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
     vec3 l_proj = vec3(0.0);
 	vec3 v_proj = normalize(view_direction - v_vNormal * view_strength + 1.0); // +1 to remove a visual artifact
@@ -156,10 +136,10 @@ void main()
 	vec3 l_b = 0.17 * (diffuse_color.rgb * diffuse_color.rgb) * e * cos(theta_i) * (sigma_sqr / (sigma_sqr + 0.13)) * (1.0 - cos_phi * pow((2.0 * beta) / Pi, 2.0));
 	
 	// Calculate Final Light Intensity
-	vec3 o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
+	vec3 o_l = clamp(l_a + l_b, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 	
 	// Establish Cumulative Light Value with Calculated Ambient Occlusion Light Value
-	vec3 light = (o_l + s_l);
+	vec3 light = o_l;
 	
 	// Iterate through all Lights
 	for (int i = 0; i < MAX_LIGHTS; i++)
@@ -203,24 +183,24 @@ void main()
         e = light_color * light_strength; 
         
         // Cook-Torrance Specular Lighting
-		s_a = acos(light_strength); // Convert NdotH to an angle in radians
-		s_m = clamp(sigma_sqr, pseudo_zero, 1.0);	// Clamp roughness value to avoid extreme cases
-		s_exp = exp(-tan(s_a) * tan(s_a) / (s_m * s_m)); // Exponent term for Beckmann distribution
-		s_d = clamp(s_exp / (Pi * s_m * s_m * pow(light_strength, 4.0)), pseudo_zero, pseudo_infinity); // Beckmann Distribution. Clamped to get rid of a visual artefact
+		float s_a = acos(light_strength); // Convert NdotH to an angle in radians
+		float s_m = clamp(sigma_sqr, pseudo_zero, 1.0);	// Clamp roughness value to avoid extreme cases
+		float s_exp = exp(-tan(s_a) * tan(s_a) / (s_m * s_m)); // Exponent term for Beckmann distribution
+		float s_d = clamp(s_exp / (Pi * s_m * s_m * pow(light_strength, 4.0)), pseudo_zero, pseudo_infinity); // Beckmann Distribution. Clamped to get rid of a visual artefact
 		
 		// Calculate Light Reflection Coefficient
-		light_reflection_coefficient = (ocean_height_difference <= u_Ocean_Foam_Size) ? vec3(dielectric_material_light_reflection_coefficient) : diffuse_color.rgb;
+		vec3 light_reflection_coefficient = (ocean_height_difference <= u_Ocean_Foam_Size) ? vec3(dielectric_material_light_reflection_coefficient) : diffuse_color.rgb;
 		
 		// Calculate Fresnel using Schlick's approximation
-		frenel_schlick = light_reflection_coefficient + ((1.0 - light_reflection_coefficient) * pow(1.0 - half_view_to_light_strength, 5.0));
+		vec3 frenel_schlick = light_reflection_coefficient + ((1.0 - light_reflection_coefficient) * pow(1.0 - half_view_to_light_strength, 5.0));
 		
 		// Smith Model Geometry Shadowing Function
-		s_ga = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, view_direction) / dot(view_direction, normalized_light_and_view_direction);
-		s_gb = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, light_direction) / dot(view_direction, normalized_light_and_view_direction);
-		s_g = min(1.0, min(s_ga, s_gb));
+		float s_ga = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, view_direction) / dot(view_direction, normalized_light_and_view_direction);
+		float s_gb = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, light_direction) / dot(view_direction, normalized_light_and_view_direction);
+		float s_g = min(1.0, min(s_ga, s_gb));
 		
 		// Specular Reflection Light Component
-		s_l = ((s_d * s_g * frenel_schlick) / (4.0 * dot(v_vNormal, light_direction) * dot(v_vNormal, view_direction))) * e;
+		vec3 s_l = ((s_d * s_g * frenel_schlick) / (4.0 * dot(v_vNormal, light_direction) * dot(v_vNormal, view_direction))) * e;
         
         // Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
 		l_proj = normalize(light_direction - v_vNormal * light_strength);

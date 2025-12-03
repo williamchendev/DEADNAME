@@ -36,7 +36,6 @@ varying vec2 v_vSurfaceUV;
 const vec2 Center = vec2(0.5, 0.5);
 
 const float Pi = 3.14159265359;
-const float HalfPi = 1.57079632679;
 const float OneOverPi = 0.31830988618;
 
 const float PseudoZero = 0.00001;
@@ -59,14 +58,14 @@ void main()
 	vec4 SurfaceNormal = (texture2D(gm_NormalTexture, v_vSurfaceUV) * 2.0) - 1.0;
 	
 	// Light Falloff Effect
-	float LightFade = 1.0 - pow((Distance / 0.5), in_LightFalloff);
+	float LightFade = 1.0 - pow(Distance * 2.0, in_LightFalloff);
 	
 	// Get Shadow Surface Texture's Pixel Value at Pixel's UV
 	vec4 SurfaceShadow = texture2D(gm_ShadowTexture, v_vSurfaceUV);
 	vec3 ShadowLayers = vec3(1.0) - (in_Shadow_Layers * SurfaceShadow.a);
 	
 	// Point Light Vector
-	vec3 PointLightVector = vec3(normalize(Center - v_vPosition), cos((Distance / 0.5) * HalfPi)) * vec3(1.0, -1.0, 1.0);
+	vec3 PointLightVector = vec3(normalize(Center - v_vPosition), cos(Distance * Pi)) * vec3(1.0, -1.0, 1.0);
 	
 	// Light Strength Dot Product
 	float HighlightStrength = dot(PointLightVector.xy, SurfaceNormal.xy) * in_HighLight_Strength_Multiplier;

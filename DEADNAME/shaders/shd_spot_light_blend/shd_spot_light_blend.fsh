@@ -97,7 +97,7 @@ void main()
 	float LightDepthVector = cos(LightDirectionStrength * HalfPi);
 	
 	// Light Falloff Effect
-	float LightFade = 1.0 - pow((Distance / 0.5), in_LightFalloff);
+	float LightFade = 1.0 - pow(Distance * 2.0, in_LightFalloff);
 	
 	// Get Shadow Surface Texture's Pixel Value at Pixel's UV
 	vec4 SurfaceShadow = texture2D(gm_ShadowTexture, v_vSurfaceUV);

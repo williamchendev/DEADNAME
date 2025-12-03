@@ -12,6 +12,13 @@ solar_system_render_depth_instances_list = -1;
 surface_free(planets_depth_surface);
 planets_depth_surface = -1;
 
-// Delete Vertex Buffers
+// Delete Vertex Formats
 vertex_format_delete(icosphere_render_vertex_format);
 icosphere_render_vertex_format = -1;
+
+vertex_format_delete(atmosphere_vertex_format);
+atmosphere_vertex_format = -1;
+
+// Delete Vertex Buffers
+vertex_delete_buffer(atmosphere_vertex_buffer);
+atmosphere_vertex_buffer = -1;

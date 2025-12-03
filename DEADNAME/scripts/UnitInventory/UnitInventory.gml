@@ -332,6 +332,13 @@ function unit_inventory_remove_slot(unit, slot_tier)
 		return;
 	}
 	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
+		return;
+	}
+	
 	// Find the appropriate Unit Inventory Slot to remove based on the given Inventory Slot Tier
 	var temp_remove_slot_index = -1;
 	
@@ -382,6 +389,13 @@ function unit_inventory_remove_all_slots(unit)
 		return;
 	}
 	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
+		return;
+	}
+	
 	// Iterate through all the Unit's Inventory Slots
 	for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
 	{
@@ -406,6 +420,9 @@ function unit_inventory_remove_all_slots(unit)
 	
 	// Clear and Destroy all Unit's Inventory Slots
 	array_clear(unit.inventory_slots);
+	
+	// Set Unit's Inventory as Undefined
+	unit.inventory_slots = undefined;
 }
 
 /// unit_inventory_empty_slot(unit, slot_index);
@@ -418,6 +435,13 @@ function unit_inventory_empty_slot(unit, slot_index)
 	if (!instance_exists(unit))
 	{
 		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
 		return;
 	}
 	
@@ -461,6 +485,13 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	if (!instance_exists(unit))
 	{
 		// Unit Instance is Invalid - Early Return
+		return -1;
+	}
+	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
 		return -1;
 	}
 	
@@ -587,6 +618,13 @@ function unit_inventory_check_item(unit, item_pack, item_count = 1)
 		return false;
 	}
 	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
+		return false;
+	}
+	
 	// Check if Item Instance's Item Pack is a valid Item Pack Index
 	if (item_pack < 0 or item_pack == ItemPack.None)
 	{
@@ -623,6 +661,13 @@ function unit_inventory_remove_item(unit, item_pack, item_count = 1)
 	if (!instance_exists(unit))
 	{
 		// Unit Instance is Invalid - Early Return
+		return;
+	}
+	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
 		return;
 	}
 	
@@ -684,6 +729,13 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	if (!instance_exists(item_instance) or !instance_exists(unit))
 	{
 		// Unit Instance or Item Instance is Invalid - Early Return
+		return -1;
+	}
+	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
 		return -1;
 	}
 	
@@ -865,6 +917,13 @@ function unit_inventory_drop_item_instance(unit, slot_index, drop_item_count = -
 	if (!instance_exists(unit))
 	{
 		// Unit does not exist - Cannot drop an item from an invalid Unit
+		return noone;
+	}
+	
+	// Check if Unit Inventory Exists
+	if (array_length(unit.inventory_slots) == 0)
+	{
+		// Unit Instance's Inventory is Empty - Early Return
 		return noone;
 	}
 	

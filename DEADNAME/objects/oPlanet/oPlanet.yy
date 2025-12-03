@@ -37,6 +37,8 @@
     {"$GMObjectProperty":"v2","%Name":"ocean_foam_color","filters":[],"listItems":[],"multiselect":false,"name":"ocean_foam_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
     {"$GMObjectProperty":"v2","%Name":"ocean_foam_alpha","filters":[],"listItems":[],"multiselect":false,"name":"ocean_foam_alpha","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"ocean_foam_size","filters":[],"listItems":[],"multiselect":false,"name":"ocean_foam_size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.001","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"sky","filters":[],"listItems":[],"multiselect":false,"name":"sky","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"sky_radius","filters":[],"listItems":[],"multiselect":false,"name":"sky_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

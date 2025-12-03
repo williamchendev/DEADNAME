@@ -23,7 +23,7 @@ for (var i = array_length(inventory_slots) - 1; i >= 0; i--)
 	}
 }
 
-array_clear(inventory_slots);
+inventory_slots = -1;
 
 // Clean Up Unit's Platform DS List
 ds_list_destroy(platform_list);

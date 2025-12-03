@@ -29,7 +29,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"light_source_color","filters":[],"listItems":[],"multiselect":false,"name":"light_source_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"light_source_color","filters":[],"listItems":[],"multiselect":false,"name":"light_source_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFD9F9FC","varType":7,},
     {"$GMObjectProperty":"v2","%Name":"light_source_radius","filters":[],"listItems":[],"multiselect":false,"name":"light_source_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"9000","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"light_source_intensity","filters":[],"listItems":[],"multiselect":false,"name":"light_source_intensity","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"light_source_distance_fade","filters":[],"listItems":[],"multiselect":false,"name":"light_source_distance_fade","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
