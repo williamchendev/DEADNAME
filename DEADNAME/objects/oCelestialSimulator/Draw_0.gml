@@ -131,7 +131,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set(shd_planet_hydrosphere_lit);
 					
 					// Set Planet Hydrosphere Shader Camera Properties
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
@@ -152,9 +153,10 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					
 					// Set Planet Render Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_radius_index, radius);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_elevation_index, elevation);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_felevation_index, elevation);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_elevation_index, ocean_elevation);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_elevation_index, elevation);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_elevation_index, elevation);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_ocean_elevation_index, ocean_elevation);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_ocean_elevation_index, ocean_elevation);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_roughness_index, ocean_roughness);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_color_index, color_get_red(ocean_color) / 255, color_get_green(ocean_color) / 255, color_get_blue(ocean_color) / 255, ocean_alpha);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_ocean_foam_color_index, color_get_red(ocean_foam_color) / 255, color_get_green(ocean_foam_color) / 255, color_get_blue(ocean_foam_color) / 255, ocean_foam_alpha);

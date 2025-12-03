@@ -93,9 +93,10 @@ planet_lithosphere_lit_shader_heightmap_texture_index = shader_get_sampler_index
 
 // (Forward Rendered Lighting) Planet Hydrosphere Lit Rendering Shader Indexes
 planet_hydrosphere_lit_shader_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Radius");
-planet_hydrosphere_lit_shader_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Elevation");
-planet_hydrosphere_lit_shader_felevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "f_Elevation");
-planet_hydrosphere_lit_shader_ocean_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Ocean_Elevation");
+planet_hydrosphere_lit_shader_vsh_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_vsh_Elevation");
+planet_hydrosphere_lit_shader_fsh_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_fsh_Elevation");
+planet_hydrosphere_lit_shader_vsh_ocean_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_vsh_Ocean_Elevation");
+planet_hydrosphere_lit_shader_fsh_ocean_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_fsh_Ocean_Elevation");
 planet_hydrosphere_lit_shader_ocean_roughness_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Ocean_Roughness");
 planet_hydrosphere_lit_shader_ocean_color_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Ocean_Color");
 planet_hydrosphere_lit_shader_ocean_foam_color_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Ocean_Foam_Color");
@@ -103,7 +104,8 @@ planet_hydrosphere_lit_shader_ocean_foam_size_index = shader_get_uniform(shd_pla
 planet_hydrosphere_lit_shader_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Position");
 planet_hydrosphere_lit_shader_euler_angles_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_EulerAngles");
 
-planet_hydrosphere_lit_shader_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_camera_position");
+planet_hydrosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_camera_position");
+planet_hydrosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_camera_position");
 planet_hydrosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_camera_rotation");
 planet_hydrosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_camera_dimensions");
 
@@ -168,7 +170,7 @@ generate_default_solar_system = function()
 	//
 	var temp_grandmom_solar_system = array_create(0);
 	temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oSun);
-	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(8, 0, 15) } );
+	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(8, 0, 15), ocean_roughness: 0 } );
 	temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 300, orbit_speed: 2  } );
 	temp_grandmom_solar_system[3] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 500, orbit_speed: -0.5 } );
 	temp_grandmom_solar_system[4] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 800, orbit_speed: -1 } );

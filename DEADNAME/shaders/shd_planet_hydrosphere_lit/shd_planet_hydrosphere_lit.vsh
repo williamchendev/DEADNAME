@@ -8,14 +8,14 @@ attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
-uniform vec3 in_camera_position;
+uniform vec3 in_vsh_camera_position;
 uniform mat4 in_camera_rotation;
 uniform vec2 in_camera_dimensions;
 
 // Planet Properties
 uniform float u_Radius;
-uniform float u_Elevation;
-uniform float u_Ocean_Elevation;
+uniform float u_vsh_Elevation;
+uniform float u_vsh_Ocean_Elevation;
 uniform vec3 u_Position;
 uniform vec3 u_EulerAngles;
 
@@ -24,7 +24,7 @@ varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
-varying highp float v_vElevation;
+varying float v_vElevation;
 
 // Constants
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
@@ -74,10 +74,10 @@ void main()
 	vec3 rotated_vector = rotation_matrix * in_Position;
 	
 	// Calculate Vertex Position relative to Origin
-	vec3 vertex_position = rotated_vector * (u_Radius + (u_Ocean_Elevation * u_Elevation));
+	vec3 vertex_position = rotated_vector * (u_Radius + (u_vsh_Ocean_Elevation * u_vsh_Elevation));
 	
 	// Calculate Render Vertex Position with Camera Rotation Matrix
-	vec4 render_position = vec4(vertex_position + u_Position - in_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
+	vec4 render_position = vec4(vertex_position + u_Position - in_vsh_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
@@ -86,7 +86,7 @@ void main()
 	v_vTexVector = in_Position;
 	
 	// Interpolated Elevation
-	v_vElevation = in_Elevation.x * u_Elevation;
+	v_vElevation = in_Elevation.x * u_vsh_Elevation;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(render_position.xyz * inverse_vertical_vector + vec3(in_camera_dimensions * 0.5, 0.0), 1.0);
