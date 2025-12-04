@@ -206,7 +206,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					surface_set_target(CelestialSimulator.atmosphere_depth_mask_surface);
 					
 					// Clear Atmosphere Depth Mask
-					draw_clear(c_black);
+					draw_clear_alpha(c_black, 0);
 					draw_clear_depth(1);
 					
 					// Enable Planet Atmosphere Depth Mask Shader

@@ -26,7 +26,7 @@ uniform float u_PlanetDistance;
 varying float v_vDepth;
 
 // Constants
-const vec3 forward_vector = vec3(0.0, 0.0, -1.0);
+const vec3 forward_vector = vec3(0.0, 0.0, 1.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // Rotation Matrix Functions
@@ -81,7 +81,7 @@ void main()
 	
 	// Calculate Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere Mask
 	vec4 camera_forward = vec4(forward_vector, 0.0) * in_camera_rotation;
-	float depth_render_dot_product = dot(camera_forward.z, vertex_position.z / u_vsh_Atmosphere_Mask_Radius) * 0.5 + 0.5;
+	float depth_render_dot_product = dot(camera_forward.xyz * vec3(-1.0, 1.0, 1.0), vertex_position.xyz / u_vsh_Atmosphere_Mask_Radius) * 0.5 + 0.5;
 	
 	// Interpolated Depth
 	v_vDepth = 1.0 - depth_render_dot_product;

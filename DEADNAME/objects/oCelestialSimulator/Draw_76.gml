@@ -18,7 +18,7 @@ if (!surface_exists(celestial_render_surface))
 
 if (!surface_exists(atmosphere_depth_mask_surface))
 {
-    atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
+    atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
 // Disable Depth for Celestial Simulation Pipeline Surfaces

@@ -67,15 +67,18 @@ void main()
 	if (radius > 0.5)
 	{
 		// Circle Cut-Out Early Return
-		return;
+		//return;
 	}
 	
 	//
-	float atmosphere_depth = cos(radius * Pi);
-	
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
+	vec4 planet_mask = texture2D(gm_Atmosphere_Depth_Mask, uv);
 	
-	atmosphere_depth -= texture2D(gm_Atmosphere_Depth_Mask, uv).r;
+	//
+	float atmosphere_depth = (cos(radius * Pi) * (1.0 - planet_mask.a)) + ((1.0 - planet_mask.r) * planet_mask.a);
+	
+	
+	//atmosphere_depth = (1.0 - planet_mask.r);
 	
 	//
 	//float planet_depth = texture2D(gm_Atmosphere_Depth_Mask, v_vSurfaceUV).r;
