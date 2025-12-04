@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_planet_atmosphere_depth_mask",
+  "name":"shd_planet_atmosphere_depth_mask",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Shaders/Celestial.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

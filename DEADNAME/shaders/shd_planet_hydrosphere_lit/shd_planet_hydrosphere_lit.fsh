@@ -10,11 +10,14 @@ uniform vec3 in_fsh_camera_position;
 
 // Planet Properties
 uniform float u_fsh_Elevation;
+
+// Hydrosphere Properties
 uniform float u_fsh_Ocean_Elevation;
 uniform float u_Ocean_Roughness;
 uniform vec4 u_Ocean_Color;
-uniform vec4 u_Ocean_Foam_Color;
+
 uniform float u_Ocean_Foam_Size;
+uniform vec4 u_Ocean_Foam_Color;
 
 // Light Source Properties
 uniform float in_light_exists[MAX_LIGHTS];

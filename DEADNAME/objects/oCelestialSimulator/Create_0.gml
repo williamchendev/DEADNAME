@@ -55,7 +55,9 @@ solar_system_render_depth_values_list = ds_list_create();
 solar_system_render_depth_instances_list = ds_list_create();
 
 // Surfaces
-planets_depth_surface = -1;
+celestial_render_surface = -1;
+
+atmosphere_depth_mask_surface = -1;
 
 // Vertex Formats
 vertex_format_begin();
@@ -145,14 +147,35 @@ planet_hydrosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_pla
 
 planet_hydrosphere_lit_shader_heightmap_texture_index = shader_get_sampler_index(shd_planet_hydrosphere_lit, "in_heightmap_texture");
 
+// Planet Atmosphere Depth Mask Rendering Shader Indexes
+planet_atmosphere_depth_mask_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_vsh_camera_position");
+planet_atmosphere_depth_mask_shader_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_camera_rotation");
+planet_atmosphere_depth_mask_shader_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_camera_dimensions");
+
+planet_atmosphere_depth_mask_shader_vsh_atmosphere_mask_radius_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_vsh_Atmosphere_Mask_Radius");
+
+planet_atmosphere_depth_mask_shader_radius_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_Radius");
+planet_atmosphere_depth_mask_shader_elevation_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_Elevation");
+planet_atmosphere_depth_mask_shader_position_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_Position");
+planet_atmosphere_depth_mask_shader_euler_angles_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_EulerAngles");
+planet_atmosphere_depth_mask_shader_planet_distance_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetDistance");
+
 // (Forward Rendered Lighting) Planet Atmosphere Lit Rendering Shader Indexes
 planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_camera_position");
 //planet_atmosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_camera_position");
 planet_atmosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_camera_rotation");
 planet_atmosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_camera_dimensions");
+planet_atmosphere_lit_shader_camera_view_projection_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_camera_view_projection");
+
+planet_atmosphere_lit_shader_vsh_atmosphere_mask_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_vsh_Atmosphere_Mask_Radius");
+planet_atmosphere_lit_shader_fsh_atmosphere_mask_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_fsh_Atmosphere_Mask_Radius");
 
 planet_atmosphere_lit_shader_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_Radius");
+planet_atmosphere_lit_shader_elevation_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_Elevation");
 planet_atmosphere_lit_shader_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_Position");
+planet_atmosphere_lit_shader_euler_angles_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_EulerAngles");
+
+planet_atmosphere_lit_shader_atmosphere_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_Atmosphere_Depth_Mask");
 
 // (Forward Rendered Lighting) Light Source Variables
 light_source_exists = array_create(CelestialSimMaxLights);
