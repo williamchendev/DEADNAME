@@ -557,6 +557,7 @@
     {"id":{"name":"shd_print_roughness_map","path":"shaders/shd_print_roughness_map/shd_print_roughness_map.yy",},},
     {"id":{"name":"shd_sphere_unlit","path":"shaders/shd_sphere_unlit/shd_sphere_unlit.yy",},},
     {"id":{"name":"shd_spot_light_blend","path":"shaders/shd_spot_light_blend/shd_spot_light_blend.yy",},},
+    {"id":{"name":"shd_sun_unlit","path":"shaders/shd_sun_unlit/shd_sun_unlit.yy",},},
     {"id":{"name":"shd_vertical_fade","path":"shaders/shd_vertical_fade/shd_vertical_fade.yy",},},
     {"id":{"name":"shd_white_pixel_binary","path":"shaders/shd_white_pixel_binary/shd_white_pixel_binary.yy",},},
     {"id":{"name":"sAdobeHouse_ArkovianTruckStill_DiffuseMap","path":"sprites/sAdobeHouse_ArkovianTruckStill_DiffuseMap/sAdobeHouse_ArkovianTruckStill_DiffuseMap.yy",},},

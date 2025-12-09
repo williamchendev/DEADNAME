@@ -6,25 +6,25 @@
 #define MAX_LIGHTS 6
 
 // Camera Properties
-uniform vec3 in_fsh_camera_position;
+uniform vec3 in_fsh_CameraPosition;
 
 // Light Source Properties
-uniform float in_light_exists[MAX_LIGHTS];
+uniform float in_Light_Exists[MAX_LIGHTS];
 
-uniform float in_light_position_x[MAX_LIGHTS];
-uniform float in_light_position_y[MAX_LIGHTS];
-uniform float in_light_position_z[MAX_LIGHTS];
+uniform float in_Light_Position_X[MAX_LIGHTS];
+uniform float in_Light_Position_Y[MAX_LIGHTS];
+uniform float in_Light_Position_Z[MAX_LIGHTS];
 
-uniform float in_light_color_r[MAX_LIGHTS];
-uniform float in_light_color_g[MAX_LIGHTS];
-uniform float in_light_color_b[MAX_LIGHTS];
+uniform float in_Light_Color_R[MAX_LIGHTS];
+uniform float in_Light_Color_G[MAX_LIGHTS];
+uniform float in_Light_Color_B[MAX_LIGHTS];
 
-uniform float in_light_radius[MAX_LIGHTS];
-uniform float in_light_falloff[MAX_LIGHTS];
-uniform float in_light_intensity[MAX_LIGHTS];
+uniform float in_Light_Radius[MAX_LIGHTS];
+uniform float in_Light_Falloff[MAX_LIGHTS];
+uniform float in_Light_Intensity[MAX_LIGHTS];
 
 // Planet Texture Properties
-uniform sampler2D in_heightmap_texture;
+uniform sampler2D in_PlanetTexture;
 
 // Interpolated Color, Normal, Position, and Sphere Texture Vector
 varying vec4 v_vColour;
@@ -70,14 +70,15 @@ void main()
 	// Sphere UV Calculation
 	vec2 sphere_uv = vec2(0.5 - atan2(-v_vTexVector.x, -v_vTexVector.z) / (2.0 * Pi), 0.5 - asin(-v_vTexVector.y) / Pi);
 	
-	// Establish Diffuse Texture Color at Sphere UV
+	// Establish Planet Texture Values at Sphere UV
 	vec4 diffuse_color = texture2D(gm_BaseTexture, sphere_uv);
+	vec4 planet_values = texture2D(in_PlanetTexture, sphere_uv);
 	
 	// Establish Roughness Texture Value at Sphere UV
-	float roughness = 1.0 - pow(1.0 - texture2D(in_heightmap_texture, sphere_uv).r, 2.0);
+	float roughness = 1.0 - pow(1.0 - planet_values.r, 2.0);
 	
 	// Calculate Camera View Direction Vector and View Dot Product to Surface Tangent
-	vec3 view_direction = normalize(in_fsh_camera_position - v_vPosition);
+	vec3 view_direction = normalize(in_fsh_CameraPosition - v_vPosition);
 	float view_strength = max(dot(view_direction, v_vNormal), 0.0);
 	
 	// Calculate Angles of incidence and reflection
@@ -119,18 +120,18 @@ void main()
 	for (int i = 0; i < MAX_LIGHTS; i++)
 	{
 		// Check if Light Source Exists
-		if (in_light_exists[i] != 1.0)
+		if (in_Light_Exists[i] != 1.0)
 		{
 			continue;
 		}
 		
 		// Establish Light Source's Color
-		vec3 light_color = vec3(in_light_color_r[i], in_light_color_g[i], in_light_color_b[i]);
+		vec3 light_color = vec3(in_Light_Color_R[i], in_Light_Color_G[i], in_Light_Color_B[i]);
 		
 		// Calculate Light Source's Position, Distance, and Falloff Effect
-		vec3 light_position = vec3(in_light_position_x[i], in_light_position_y[i], in_light_position_z[i]);
+		vec3 light_position = vec3(in_Light_Position_X[i], in_Light_Position_Y[i], in_Light_Position_Z[i]);
 		float light_distance = length(v_vPosition - light_position);
-		float light_fade = pow((in_light_radius[i] - light_distance) / in_light_radius[i], in_light_falloff[i]);
+		float light_fade = pow((in_Light_Radius[i] - light_distance) / in_Light_Radius[i], in_Light_Falloff[i]);
 		
 		// Calculate Light Source's Direction Vector and Light Source's Dot Product to Surface Tangent
 		vec3 light_direction = normalize(light_position - v_vPosition);
@@ -168,7 +169,7 @@ void main()
 		l = clamp(l_a + l_b, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
 		
 		// Add Calculated Light to Cumulative Light Value
-        light += l * light_fade * in_light_intensity[i];
+        light += l * light_fade * in_Light_Intensity[i];
 	}
 	
 	// Render Lit Sphere Fragment Value

@@ -59,5 +59,14 @@ else if (keyboard_check(ord("F")))
 	camera_rotation_z += temp_camera_rotate_spd * frame_delta;
 }
 
+if (keyboard_check(ord("T")))
+{
+	camera_rotation_x -= temp_camera_rotate_spd * frame_delta;
+}
+else if (keyboard_check(ord("Y")))
+{
+	camera_rotation_x += temp_camera_rotate_spd * frame_delta;
+}
+
 // Build Camera Rotation Matrix from Camera's Euler Angle Rotation
 camera_rotation_matrix = rotation_matrix_from_euler_angles(camera_rotation_x mod 360, camera_rotation_y mod 360, camera_rotation_z mod 360);

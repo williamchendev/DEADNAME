@@ -4,8 +4,8 @@
 // Initialize as Persistent Object
 persistent = true;
 
-// Initialize Empty Celestial Body Type
-celestial_body_type = CelestialBodyType.None;
+// Initialize Empty Celestial Object Type
+celestial_object_type = CelestialObjectType.None;
 
 // Initialize Geodesic Icosphere
 event_inherited();
@@ -43,16 +43,16 @@ if (height_map != noone)
 	
 	repeat (array_length(icosphere.vertex_elevations))
 	{
-		//
+		// Get Vertex's UV Position
 		var temp_vertex_uvs = icosphere.vertex_uvs[temp_vertex_elevation_index];
 		
-		//
+		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
 		var temp_vertex_elevation = buffer_getpixel_r(temp_heightmap_buffer, round(temp_vertex_uvs[0] * temp_heightmap_buffer_width), round(temp_vertex_uvs[1] * temp_heightmap_buffer_height)) / 255;
 		
-		//
+		// Set Icosphere Vertex's Elevation at Array Index
 		icosphere.vertex_elevations[temp_vertex_elevation_index] = temp_vertex_elevation;
 		
-		//
+		// Increment Vertex Index
 		temp_vertex_elevation_index++;
 	}
 	

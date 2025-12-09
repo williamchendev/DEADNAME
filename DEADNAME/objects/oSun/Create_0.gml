@@ -4,6 +4,5 @@
 // Initialize Celestial Body's Geodesic Icosphere
 event_inherited();
 
-// Update Celestial Body Type to Sun
-celestial_body_type = CelestialBodyType.Sun;
-
+// Update Celestial Object Type to Sun
+celestial_object_type = CelestialObjectType.Sun;

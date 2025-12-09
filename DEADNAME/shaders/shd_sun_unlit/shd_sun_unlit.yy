@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_sun_unlit",
+  "name":"shd_sun_unlit",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Shaders/Celestial.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

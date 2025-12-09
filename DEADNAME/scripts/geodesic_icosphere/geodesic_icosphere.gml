@@ -1,4 +1,4 @@
-/// @function geodesic_icosphere_create(resolution)
+/// @function geodesic_icosphere_create(resolution);
 /// @description Generates a struct that contains the geometric data for rendering a Geodesic Icosphere by unwrapping Five Rhombuses, uses a linear model for increasing resolution
 /// @param {real} resolution Resolution of the Geodesic Icosphere (determines triangle density)
 /// @return {struct} Struct containing the geometric data for rendering a Geodesic Icosphere: Vertices, Triangles, and Vertex_UVs

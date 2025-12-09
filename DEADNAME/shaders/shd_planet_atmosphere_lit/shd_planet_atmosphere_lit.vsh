@@ -6,22 +6,24 @@
 attribute vec2 in_Position; // (x, y)
 
 // Camera Properties
-uniform vec3 in_vsh_camera_position;
-uniform mat4 in_camera_rotation;
-uniform vec2 in_camera_dimensions;
-uniform mat4 in_camera_view_projection;
+uniform vec3 in_vsh_CameraPosition;
+uniform mat4 in_vsh_CameraRotation;
+uniform vec2 in_CameraDimensions;
 
 // Atmosphere Properties
-uniform float u_vsh_Atmosphere_Mask_Radius;
+uniform float u_vsh_AtmosphereRadius;
 
 // Planet Properties
-uniform vec3 u_Position;
+uniform vec3 u_vsh_PlanetPosition;
 
 // Interpolated Position and UV
 varying vec2 v_vPosition;
 varying vec4 v_vSurfaceUV;
+varying vec3 v_vWorldPosition;
 
 // Constants
+const vec3 up_vector = vec3(0.0, 1.0, 0.0);
+const vec3 right_vector = vec3(1.0, 0.0, 0.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // Rotation Matrix Functions
@@ -63,23 +65,19 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 void main() 
 {
 	// Calculate Render Vertex Position with Camera Rotation Matrix
-	vec4 vertex_position = vec4(u_Position - in_vsh_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
-	vertex_position += vec4(in_Position * u_vsh_Atmosphere_Mask_Radius, 0.0, 0.0);
+	vec4 vertex_position = vec4(u_vsh_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
+	vertex_position += vec4(in_Position * u_vsh_AtmosphereRadius, 0.0, 0.0);
 	
-	// Interpolated Position
+	// Interpolated Position & Surface UV
 	v_vPosition = (in_Position * 0.5) + 0.5;
+	v_vSurfaceUV = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * vec4(vertex_position.xyz * inverse_vertical_vector + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);
 	
-	//
-	v_vSurfaceUV = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * vec4(vertex_position.xyz + vec3(in_camera_dimensions * 0.5, 1.0), 1.0);
-	
-	// Point Light Surface UV
-	//v_vSurfaceUV = vertex_position.xy / in_camera_dimensions;
-	
-	// Point Light Surface UV
-	//vec4 vertex_transformed_position = vertex_position * in_camera_view_projection;
-	//v_vSurfaceUV = (vertex_transformed_position.xy / vertex_transformed_position.w) / in_camera_dimensions;
+	// Interpolated World Position
+	vec4 planet_position_horizontal = vec4(right_vector * in_Position.x * u_vsh_AtmosphereRadius, 0.0) * in_vsh_CameraRotation;
+	vec4 planet_position_vertical = vec4(-up_vector * in_Position.y * u_vsh_AtmosphereRadius, 0.0) * in_vsh_CameraRotation;
+	v_vWorldPosition = u_vsh_PlanetPosition + planet_position_horizontal.xyz + planet_position_vertical.xyz;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(vertex_position.xyz * inverse_vertical_vector + vec3(in_camera_dimensions * 0.5, 1.0), 1.0);
+	vec4 object_space_pos = vec4(vertex_position.xyz * inverse_vertical_vector + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }

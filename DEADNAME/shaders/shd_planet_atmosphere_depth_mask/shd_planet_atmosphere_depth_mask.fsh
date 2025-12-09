@@ -8,6 +8,6 @@ varying float v_vDepth;
 // Fragment Shader
 void main() 
 {
-	// Render Lit Sphere Fragment Value
+	// Render Value of Planet's Depth within its Atmosphere Mask
 	gl_FragColor = vec4(vec3(v_vDepth), 1.0);
 }

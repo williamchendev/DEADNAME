@@ -9,11 +9,14 @@ ds_list_destroy(solar_system_render_depth_instances_list);
 solar_system_render_depth_instances_list = -1;
 
 // Clean Up Celestial Simulation Surfaces
-surface_free(celestial_render_surface);
-celestial_render_surface = -1;
+surface_free(celestial_body_render_surface);
+celestial_body_render_surface = -1;
 
-surface_free(atmosphere_depth_mask_surface);
-atmosphere_depth_mask_surface = -1;
+surface_free(celestial_body_atmosphere_depth_mask_surface);
+celestial_body_atmosphere_depth_mask_surface = -1;
+
+surface_free(final_render_surface);
+final_render_surface = -1;
 
 // Delete Vertex Formats
 vertex_format_delete(icosphere_render_vertex_format);

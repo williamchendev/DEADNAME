@@ -21,7 +21,7 @@ function point_closest_on_line(x_position, y_position, first_point_x, first_poin
 	var temp_vy = y_position - first_point_y;
 	
 	// Compute the projection scalar (dot(v, d) / dot(d, d))
-	var temp_projection_scalar = dot_product(temp_vx, temp_vy, temp_dx, temp_dy);
+	var temp_projection_scalar = dot_product(temp_vx, temp_vy, temp_dx, temp_dy) / dot_product(temp_dx, temp_dy, temp_dx, temp_dy);
 	temp_projection_scalar = clamp(temp_projection_scalar, 0, 1);
 	
 	// Closest point on the line
@@ -62,7 +62,7 @@ function point_closest_on_line_3d(x_position, y_position, z_position, first_poin
 	var temp_vz = z_position - first_point_z;
 	
 	// Compute the projection scalar (dot(v, d) / dot(d, d))
-	var temp_projection_scalar = dot_product_3d(temp_vx, temp_vy, temp_vz, temp_dx, temp_dy, temp_dz);
+	var temp_projection_scalar = dot_product_3d(temp_vx, temp_vy, temp_vz, temp_dx, temp_dy, temp_dz) / dot_product_3d(temp_dx, temp_dy, temp_dz, temp_dx, temp_dy, temp_dz);
 	temp_projection_scalar = clamp(temp_projection_scalar, 0, 1);
 	
 	// Closest point on the line

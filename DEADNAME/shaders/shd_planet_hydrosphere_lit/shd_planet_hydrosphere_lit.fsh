@@ -6,43 +6,39 @@
 #define MAX_LIGHTS 6
 
 // Camera Properties
-uniform vec3 in_fsh_camera_position;
+uniform vec3 in_fsh_CameraPosition;
 
 // Planet Properties
-uniform float u_fsh_Elevation;
+uniform float u_fsh_PlanetElevation;
 
-// Hydrosphere Properties
-uniform float u_fsh_Ocean_Elevation;
-uniform float u_Ocean_Roughness;
-uniform vec4 u_Ocean_Color;
+uniform float u_fsh_PlanetOceanElevation;
+uniform float u_PlanetOceanRoughness;
+uniform vec4 u_PlanetOceanColor;
 
-uniform float u_Ocean_Foam_Size;
-uniform vec4 u_Ocean_Foam_Color;
+uniform float u_PlanetOceanFoamSize;
+uniform vec4 u_PlanetOceanFoamColor;
 
 // Light Source Properties
-uniform float in_light_exists[MAX_LIGHTS];
+uniform float in_Light_Exists[MAX_LIGHTS];
 
-uniform float in_light_position_x[MAX_LIGHTS];
-uniform float in_light_position_y[MAX_LIGHTS];
-uniform float in_light_position_z[MAX_LIGHTS];
+uniform float in_Light_Position_X[MAX_LIGHTS];
+uniform float in_Light_Position_Y[MAX_LIGHTS];
+uniform float in_Light_Position_Z[MAX_LIGHTS];
 
-uniform float in_light_color_r[MAX_LIGHTS];
-uniform float in_light_color_g[MAX_LIGHTS];
-uniform float in_light_color_b[MAX_LIGHTS];
+uniform float in_Light_Color_R[MAX_LIGHTS];
+uniform float in_Light_Color_G[MAX_LIGHTS];
+uniform float in_Light_Color_B[MAX_LIGHTS];
 
-uniform float in_light_radius[MAX_LIGHTS];
-uniform float in_light_falloff[MAX_LIGHTS];
-uniform float in_light_intensity[MAX_LIGHTS];
+uniform float in_Light_Radius[MAX_LIGHTS];
+uniform float in_Light_Falloff[MAX_LIGHTS];
+uniform float in_Light_Intensity[MAX_LIGHTS];
 
-// Planet Texture Properties
-uniform sampler2D in_heightmap_texture;
-
-// Interpolated Color, Normal, Position, Sphere Texture, and Elevation Vector
+// Interpolated Color, Normal, Position, Sphere Texture, and Planet Elevation
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
-varying float v_vElevation;
+varying float v_vPlanetElevation;
 
 // Constants
 const float Pi = 3.14159265359;
@@ -85,20 +81,20 @@ float atan2(float y, float x)
 void main() 
 {
 	// Calculate Camera View Direction Vector and View Dot Product to Surface Tangent
-	vec3 view_direction = normalize(in_fsh_camera_position - v_vPosition);
+	vec3 view_direction = normalize(in_fsh_CameraPosition - v_vPosition);
 	float view_strength = max(dot(view_direction, v_vNormal), 0.0);
 	
 	// Check if Sphere Fragment is facing Camera's Forward Vector
-	if (dot(view_direction, v_vNormal) <= 0.0)
+	if (dot(view_direction, v_vNormal) < 0.0)
 	{
 		return;
 	}
 	
 	// Calculate Ocean Foam Difference
-	float ocean_height = u_fsh_Elevation * u_fsh_Ocean_Elevation;
+	float ocean_height = u_fsh_PlanetElevation * u_fsh_PlanetOceanElevation;
 	
 	// Check if Elevation is Higher or Equal to Ocean Height
-	if (v_vElevation >= ocean_height)
+	if (v_vPlanetElevation >= ocean_height)
 	{
 		return;
 	}
@@ -107,8 +103,8 @@ void main()
 	vec2 sphere_uv = vec2(0.5 - atan2(-v_vTexVector.x, -v_vTexVector.z) / (2.0 * Pi), 0.5 - asin(-v_vTexVector.y) / Pi);
 	
 	// Establish Diffuse Texture Color
-	float ocean_height_difference = abs(ocean_height - v_vElevation);
-	vec4 diffuse_color = (ocean_height_difference <= u_Ocean_Foam_Size) ? u_Ocean_Foam_Color : u_Ocean_Color;
+	float ocean_height_difference = abs(ocean_height - v_vPlanetElevation);
+	vec4 diffuse_color = (ocean_height_difference <= u_PlanetOceanFoamSize) ? u_PlanetOceanFoamColor : u_PlanetOceanColor;
 	
 	// Calculate Angles of incidence and reflection
 	float theta_i = acos(1.0);
@@ -119,7 +115,7 @@ void main()
 	float beta = min(theta_i, theta_r);
 	
 	// Calculate Oren-Nayar Sigma Values
-	float sigma_sqr = u_Ocean_Roughness * u_Ocean_Roughness;
+	float sigma_sqr = u_PlanetOceanRoughness * u_PlanetOceanRoughness;
 	
     // Establish Ambient Occlusion Light Color
     vec3 e = v_vColour.rgb; 
@@ -148,18 +144,18 @@ void main()
 	for (int i = 0; i < MAX_LIGHTS; i++)
 	{
 		// Check if Light Source Exists
-		if (in_light_exists[i] != 1.0)
+		if (in_Light_Exists[i] != 1.0)
 		{
 			continue;
 		}
 		
 		// Establish Light Source's Color
-		vec3 light_color = vec3(in_light_color_r[i], in_light_color_g[i], in_light_color_b[i]);
+		vec3 light_color = vec3(in_Light_Color_R[i], in_Light_Color_G[i], in_Light_Color_B[i]);
 		
 		// Calculate Light Source's Position, Distance, and Falloff Effect
-		vec3 light_position = vec3(in_light_position_x[i], in_light_position_y[i], in_light_position_z[i]);
+		vec3 light_position = vec3(in_Light_Position_X[i], in_Light_Position_Y[i], in_Light_Position_Z[i]);
 		float light_distance = length(v_vPosition - light_position);
-		float light_fade = pow((in_light_radius[i] - light_distance) / in_light_radius[i], in_light_falloff[i]);
+		float light_fade = pow((in_Light_Radius[i] - light_distance) / in_Light_Radius[i], in_Light_Falloff[i]);
 		
 		// Calculate Light Source's Direction Vector and Light Source's Dot Product to Surface Tangent
 		vec3 light_direction = normalize(light_position - v_vPosition);
@@ -192,7 +188,7 @@ void main()
 		float s_d = clamp(s_exp / (Pi * s_m * s_m * pow(light_strength, 4.0)), pseudo_zero, pseudo_infinity); // Beckmann Distribution. Clamped to get rid of a visual artefact
 		
 		// Calculate Light Reflection Coefficient
-		vec3 light_reflection_coefficient = (ocean_height_difference <= u_Ocean_Foam_Size) ? vec3(dielectric_material_light_reflection_coefficient) : diffuse_color.rgb;
+		vec3 light_reflection_coefficient = (ocean_height_difference <= u_PlanetOceanFoamSize) ? vec3(dielectric_material_light_reflection_coefficient) : diffuse_color.rgb;
 		
 		// Calculate Fresnel using Schlick's approximation
 		vec3 frenel_schlick = light_reflection_coefficient + ((1.0 - light_reflection_coefficient) * pow(1.0 - half_view_to_light_strength, 5.0));
@@ -223,7 +219,7 @@ void main()
 		o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 		
 		// Add Calculated Light to Cumulative Light Value
-        light += (o_l + s_l) * light_fade * in_light_intensity[i];
+        light += (o_l + s_l) * light_fade * in_Light_Intensity[i];
 	}
 	
 	// Render Lit Sphere Fragment Value

@@ -64,12 +64,12 @@ repeat (array_length(solar_systems))
 			z = lengthdir_y(orbit_size, orbit_angle) + orbit_offset_z;
 			
 			// Celestial Body Type Behaviour
-			switch (celestial_body_type)
+			switch (celestial_object_type)
 			{
-				case CelestialBodyType.Planet:
+				case CelestialObjectType.Planet:
 					// Planet Simulation Behaviour
 					break;
-				case CelestialBodyType.Sun:
+				case CelestialObjectType.Sun:
 					// Sun Simulation Behaviour
 					if (CelestialSimulator.solar_system_index == temp_solar_systems_index)
 					{
@@ -92,7 +92,7 @@ repeat (array_length(solar_systems))
 						temp_light_source_index++;
 					}
 					break;
-				case CelestialBodyType.None:
+				case CelestialObjectType.None:
 				default:
 					// Empty Celestial Body Type - Skip Behaviour
 					break;

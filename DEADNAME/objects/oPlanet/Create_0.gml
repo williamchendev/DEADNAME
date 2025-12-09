@@ -4,5 +4,5 @@
 // Initialize Celestial Body's Geodesic Icosphere
 event_inherited();
 
-// Update Celestial Body Type to Planet
-celestial_body_type = CelestialBodyType.Planet;
+// Update Celestial Object Type to Planet
+celestial_object_type = CelestialObjectType.Planet;

@@ -8,19 +8,21 @@ attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
-uniform vec3 in_vsh_camera_position;
-uniform mat4 in_camera_rotation;
-uniform vec2 in_camera_dimensions;
+uniform vec3 in_CameraPosition;
+uniform mat4 in_CameraRotation;
+uniform vec2 in_CameraDimensions;
 
 // Atmosphere Properties
-uniform float u_vsh_Atmosphere_Mask_Radius;
+uniform float u_AtmosphereRadius;
+
+// Hydrosphere Properties
+uniform float u_PlanetOceanElevation;
 
 // Planet Properties
-uniform float u_Radius;
-uniform float u_Elevation;
-uniform vec3 u_Position;
-uniform vec3 u_EulerAngles;
-uniform float u_PlanetDistance;
+uniform float u_PlanetRadius;
+uniform float u_PlanetElevation;
+uniform vec3 u_PlanetPosition;
+uniform vec3 u_PlanetEulerAngles;
 
 // Interpolated Depth
 varying float v_vDepth;
@@ -28,6 +30,7 @@ varying float v_vDepth;
 // Constants
 const vec3 forward_vector = vec3(0.0, 0.0, 1.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
+const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 // Rotation Matrix Functions
 mat3 eulerRotationMatrix(vec3 euler_angles) 
@@ -67,29 +70,24 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 // Vertex Shader
 void main() 
 {
-	// Create Rotation Matrix from Euler Angles
-	mat3 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
+	// Create Rotation Matrix of Planet from Planet's Euler Angle Rotation
+	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
 	
-	// Apply Rotation Matrix to the Position Vector
-	vec3 rotated_vector = rotation_matrix * in_Position;
+	// Calculate Planet's Local Vertex Vector and Vertex Position relative to Origin
+	vec3 planet_rotated_local_vector = planet_rotation_matrix * in_Position;
+	vec3 planet_rotated_local_vertex_position = planet_rotated_local_vector * (u_PlanetRadius + (max(in_Elevation.x, u_PlanetOceanElevation) * u_PlanetElevation));
 	
-	// Calculate Vertex Position relative to Origin
-	vec3 vertex_position = rotated_vector * (u_Radius + (in_Elevation.x * u_Elevation));
+	// Calculate Vertex Render Position relative to Camera Perspective
+	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_CameraPosition * inverse_vertical_vector, 1.0) * in_CameraRotation;
 	
-	// Calculate Render Vertex Position with Camera Rotation Matrix
-	vec4 render_position = vec4(vertex_position + u_Position - in_vsh_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
-	
-	// Calculate Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere Mask
-	vec4 camera_forward = vec4(forward_vector, 0.0) * in_camera_rotation;
-	float depth_render_dot_product = dot(camera_forward.xyz * vec3(-1.0, 1.0, 1.0), vertex_position.xyz / u_vsh_Atmosphere_Mask_Radius) * 0.5 + 0.5;
+	// Calculate Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
+	vec4 camera_forward = vec4(forward_vector, 0.0) * in_CameraRotation;
+	float depth_render_dot_product = dot(camera_forward.xyz, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
 	
 	// Interpolated Depth
-	v_vDepth = 1.0 - depth_render_dot_product;
+	v_vDepth = depth_render_dot_product;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(render_position.xyz * inverse_vertical_vector + vec3(in_camera_dimensions * 0.5, 1.0), 1.0);
+	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
-	
-	//
-	//v_vDepth = length((gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos).xyz) / 8000.0;
 }

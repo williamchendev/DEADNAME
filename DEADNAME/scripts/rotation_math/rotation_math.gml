@@ -1,5 +1,9 @@
-
-//
+/// @function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_angle_z);
+/// @description Converts a set of Euler angles to the corresponding rotation matrix
+/// @param {real} euler_angle_x The x-axis euler rotation angle in degrees
+/// @param {real} euler_angle_y The y-axis euler rotation angle in degrees
+/// @param {real} euler_angle_z The z-axis euler rotation angle in degrees
+/// @return {array} Returns an array 16 indexes long corresponding to a 4x4 rotation matrix
 function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_angle_z)
 {
 	// Add Code to Compiler

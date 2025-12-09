@@ -8,15 +8,15 @@ attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
-uniform vec3 in_vsh_CameraPosition;
-uniform mat4 in_CameraRotation;
-uniform vec2 in_CameraDimensions;
+uniform vec3 in_camera_position;
+uniform mat4 in_camera_rotation;
+uniform vec2 in_camera_dimensions;
 
 // Planet Properties
-uniform float u_PlanetRadius;
-uniform float u_PlanetElevation;
-uniform vec3 u_PlanetPosition;
-uniform vec3 u_PlanetEulerAngles;
+uniform float u_Radius;
+uniform float u_Elevation;
+uniform vec3 u_Position;
+uniform vec3 u_EulerAngles;
 
 // Interpolated Color, Normal, Position, and Sphere Texture Vector
 varying vec4 v_vColour;
@@ -65,23 +65,25 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 // Vertex Shader
 void main() 
 {
-	// Create Rotation Matrix of Planet from Planet's Euler Angle Rotation
-	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
+	// Create Rotation Matrix from Euler Angles
+	mat3 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
 	
-	// Calculate Planet's Local Vertex Vector and Vertex Position relative to Origin
-	vec3 planet_rotated_local_vector = planet_rotation_matrix * in_Position;
-	vec3 planet_rotated_local_vertex_position = planet_rotated_local_vector * (u_PlanetRadius + (in_Elevation.x * u_PlanetElevation));
+	// Apply Rotation Matrix to the Position Vector
+	vec3 rotated_vector = rotation_matrix * in_Position;
 	
-	// Calculate Vertex Render Position relative to Camera Perspective
-	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_CameraRotation;
+	// Calculate Vertex Position relative to Origin
+	vec3 vertex_position = rotated_vector * u_Radius;
+	
+	// Calculate Render Vertex Position with Camera Rotation Matrix
+	vec4 render_position = vec4(vertex_position + u_Position - in_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
-	v_vNormal = planet_rotated_local_vector;
-	v_vPosition = planet_rotated_local_vertex_position + u_PlanetPosition;
+	v_vNormal = rotated_vector;
+	v_vPosition = vertex_position + u_Position;
 	v_vTexVector = in_Position;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);
+	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_camera_dimensions * 0.5, 0.0), 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
 }
