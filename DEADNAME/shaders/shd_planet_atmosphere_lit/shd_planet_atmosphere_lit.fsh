@@ -204,7 +204,7 @@ void main()
 	
 	//
 	vec3 light_position = vec3(0.0);
-	vec3 light_direction = normalize(light_position - point_in_atmosphere) * 100.0;
+	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0 * vec3(-1.0, 1.0, 1.0);
 	
 	//
 	vec3 light = calculateLight(point_in_atmosphere, camera_forward.xyz, distance_through_atmosphere - epsilon * 2.0, light_direction, 2.0, diffuse_color.rgb, vec2(0.0));
