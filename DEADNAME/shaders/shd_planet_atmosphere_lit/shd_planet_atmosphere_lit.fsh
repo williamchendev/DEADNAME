@@ -28,8 +28,6 @@ varying vec4 v_vSurfaceUV;
 varying vec3 v_vWorldPosition;
 
 // Constants
-const vec3 forward_vector = vec3(0.0, 0.0, 1.0);
-
 const vec2 center = vec2(0.5, 0.5);
 
 const float Pi = 3.14159265359;
@@ -38,6 +36,7 @@ const float HalfPi = 1.57079632679;
 const float epsilon = 0.0001;
 const float pseudo_infinity = 1.0 / 0.0;
 
+const float blend_strength = 1.5;
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
 
@@ -95,6 +94,19 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
+float opticalDepthBlended(vec3 ray_origin, vec3 ray_direction, float ray_length) 
+{
+	vec3 end_point = ray_origin + ray_direction * ray_length;
+	float d = dot(ray_direction, normalize(ray_origin - u_fsh_PlanetPosition));
+	
+	float blend_amount = clamp(d * blend_strength + 0.5, 0.0, 1.0);
+	
+	float d1 = opticalDepth(ray_origin, ray_direction, ray_length) - opticalDepth(end_point, ray_direction, ray_length);
+	float d2 = opticalDepth(end_point, -ray_direction, ray_length) - opticalDepth(ray_origin, -ray_direction, ray_length);
+	
+	return mix(d2, d1, blend_amount);
+}
+
 // Returns vector (distance_to_sphere, distance_through_sphere)
 vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ray_direction) 
 {
@@ -124,7 +136,7 @@ vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ra
 	return vec2(pseudo_infinity, 0.0);
 }
 
-vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 light_direction, float light_intensity, vec3 original_color, vec2 uv)
+vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 direction_to_light, float light_intensity, vec3 original_color, vec2 uv)
 {
 	// Calculate Blue Noise
 	float blue_noise = 0.01;
@@ -138,10 +150,8 @@ vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 
 	//
 	for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
 	{
-		vec2 sun_ray_length_data = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, light_direction);
-		
-		float sun_ray_length = sun_ray_length_data.y;
-		float sun_ray_optical_depth = opticalDepth(in_scatter_point, light_direction, sun_ray_length);
+		float sun_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, direction_to_light).y;
+		float sun_ray_optical_depth = opticalDepth(in_scatter_point, direction_to_light, sun_ray_length);
 		float local_density = densityAtPoint(in_scatter_point);
 		
 		view_ray_optical_depth = opticalDepth(in_scatter_point, -ray_direction, step_size * i);
@@ -152,7 +162,7 @@ vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 
 	}
 	
 	//
-	in_scattered_light *= u_AtmosphereScatteringCoefficients * light_intensity * step_size / u_PlanetRadius;
+	in_scattered_light *= u_AtmosphereScatteringCoefficients * light_intensity * (step_size / u_PlanetRadius);
 	
 	//
 	float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;
@@ -180,13 +190,13 @@ void main()
 	}
 	
 	// Calculate Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere Mask
-	vec4 camera_forward = vec4(forward_vector, 0.0) * in_fsh_CameraRotation;
+	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
 	
 	// Calculate Atmosphere Depth based on Radial Distance from Center of the Atmosphere
 	float atmosphere_depth = cos(radius * Pi);
 	
 	// Calculate Atmosphere Surface Position
-	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * camera_forward.xyz);
+	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * u_fsh_AtmosphereRadius * camera_forward);
 	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
@@ -195,19 +205,18 @@ void main()
 	// Retreive Surface Color
 	vec4 diffuse_color = texture2D(gm_BaseTexture, uv);
 	
-	// Calculate Distance to Atmosphere
-	float distance_to_atmosphere = distance(in_fsh_CameraPosition, atmosphere_surface_position);
+	// Calculate Distance through Atmosphere
 	float distance_through_atmosphere = ((atmosphere_depth * 2.0 * (1.0 - planet_mask.a)) + ((1.0 - planet_mask.r) * planet_mask.a)) * u_fsh_AtmosphereRadius;
 	
 	//
-	vec3 point_in_atmosphere = atmosphere_surface_position - (epsilon * camera_forward.xyz);
+	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_forward);
 	
 	//
 	vec3 light_position = vec3(0.0);
-	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0 * vec3(-1.0, 1.0, 1.0);
+	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
 	
 	//
-	vec3 light = calculateLight(point_in_atmosphere, camera_forward.xyz, distance_through_atmosphere - epsilon * 2.0, light_direction, 2.0, diffuse_color.rgb, vec2(0.0));
+	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, vec2(0.0));
 	
 	// Overlap Atmosphere Planet Depth Mask over Radial Atmosphere Depth Value
 	//atmosphere_depth = (atmosphere_depth * 2.0 * (1.0 - planet_mask.a)) + ((1.0 - planet_mask.r) * planet_mask.a);
@@ -216,5 +225,6 @@ void main()
 	float atmosphere_alpha = min(atmosphere_depth + planet_mask.a, 1.0);
 	
 	// Render Atmosphere
-    gl_FragColor = vec4(light, atmosphere_alpha * atmosphere_alpha);
+    gl_FragColor = vec4(light, atmosphere_alpha);
+    //gl_FragColor = vec4(light, 1.0);
 }

@@ -31,32 +31,32 @@ const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 mat3 eulerRotationMatrix(vec3 euler_angles) 
 {
 	// Convert Euler Angles from Degrees to Radians
-	float pitch = radians(euler_angles.x);
-	float yaw = radians(euler_angles.y);
-	float roll = radians(euler_angles.z);
+	float roll = radians(euler_angles.x);
+	float pitch = radians(euler_angles.y);
+	float yaw = radians(euler_angles.z);
 	
 	// Pre-calculate Sin and Cos values
+	float cr = cos(roll);
+	float sr = sin(roll);
 	float cp = cos(pitch);
 	float sp = sin(pitch);
 	float cy = cos(yaw);
 	float sy = sin(yaw);
-	float cr = cos(roll);
-	float sr = sin(roll);
 	
-	// Build rotation matrix (ZYX order - roll, yaw, pitch)
+	// Build rotation matrix (ZXY order - roll, yaw, pitch)
 	mat3 rotMatrix;
     
-    rotMatrix[0][0] = cy * cr;
-    rotMatrix[0][1] = cy * sr;
-    rotMatrix[0][2] = -sy;
+    rotMatrix[0][0] = cy * cp - sr * sy * sp;
+    rotMatrix[0][1] = sy * cp + sr * sp * cy;
+    rotMatrix[0][2] = -sp * cr;
     
-    rotMatrix[1][0] = sp * sy * cr - cp * sr;
-    rotMatrix[1][1] = sp * sy * sr + cp * cr;
-    rotMatrix[1][2] = sp * cy;
+    rotMatrix[1][0] = -sy * cr;
+    rotMatrix[1][1] = cr * cy;
+    rotMatrix[1][2] = sr;
     
-    rotMatrix[2][0] = cp * sy * cr + sp * sr;
-    rotMatrix[2][1] = cp * sy * sr - sp * cr;
-    rotMatrix[2][2] = cp * cy;
+    rotMatrix[2][0] = sp * cy + sr * sy * cp;
+    rotMatrix[2][1] = sp * sy - sr * cy * cp;
+    rotMatrix[2][2] = cr * cp;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
