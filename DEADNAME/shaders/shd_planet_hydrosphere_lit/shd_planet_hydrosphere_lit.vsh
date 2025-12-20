@@ -9,7 +9,7 @@ attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
 uniform vec3 in_vsh_CameraPosition;
-uniform mat4 in_CameraRotation;
+uniform mat4 in_vsh_CameraRotation;
 uniform vec2 in_CameraDimensions;
 
 // Planet Properties
@@ -76,7 +76,7 @@ void main()
 	vec3 planet_rotated_local_vertex_position = planet_rotated_local_vector * (u_PlanetRadius + (u_vsh_PlanetOceanElevation * u_vsh_PlanetElevation));
 	
 	// Calculate Vertex Render Position relative to Camera Perspective
-	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_CameraRotation;
+	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;

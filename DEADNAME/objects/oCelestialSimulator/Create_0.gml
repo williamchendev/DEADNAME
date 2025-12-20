@@ -120,7 +120,8 @@ planet_lithosphere_lit_shader_planet_texture_index = shader_get_sampler_index(sh
 // (Forward Rendered Lighting) Planet Hydrosphere Lit Rendering Shader Indexes
 planet_hydrosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraPosition");
 planet_hydrosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraPosition");
-planet_hydrosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_CameraRotation");
+planet_hydrosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraRotation");
+planet_hydrosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraRotation");
 planet_hydrosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_CameraDimensions");
 
 planet_hydrosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetRadius");

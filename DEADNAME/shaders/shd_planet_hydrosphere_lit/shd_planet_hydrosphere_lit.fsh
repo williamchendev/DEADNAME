@@ -7,6 +7,7 @@
 
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
+uniform mat4 in_fsh_CameraRotation;
 
 // Planet Properties
 uniform float u_fsh_PlanetElevation;
@@ -80,12 +81,11 @@ float atan2(float y, float x)
 // Fragment Shader
 void main() 
 {
-	// Calculate Camera View Direction Vector and View Dot Product to Surface Tangent
-	vec3 view_direction = normalize(in_fsh_CameraPosition - v_vPosition);
-	float view_strength = max(dot(view_direction, v_vNormal), 0.0);
+	//
+	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
 	
 	// Check if Sphere Fragment is facing Camera's Forward Vector
-	if (dot(view_direction, v_vNormal) < 0.0)
+	if (dot(camera_forward, v_vNormal) >= 0.0)
 	{
 		return;
 	}
@@ -105,6 +105,11 @@ void main()
 	// Establish Diffuse Texture Color
 	float ocean_height_difference = abs(ocean_height - v_vPlanetElevation);
 	vec4 diffuse_color = (ocean_height_difference <= u_PlanetOceanFoamSize) ? u_PlanetOceanFoamColor : u_PlanetOceanColor;
+	
+	// Calculate Camera View Direction Vector and View Dot Product to Surface Tangent
+	vec3 view_direction = normalize(in_fsh_CameraPosition - v_vPosition);
+	//vec3 view_direction = camera_forward;
+	float view_strength = max(dot(view_direction, v_vNormal), 0.0);
 	
 	// Calculate Angles of incidence and reflection
 	float theta_i = acos(1.0);

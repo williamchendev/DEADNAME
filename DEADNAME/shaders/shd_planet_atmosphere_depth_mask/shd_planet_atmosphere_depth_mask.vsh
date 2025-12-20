@@ -28,7 +28,6 @@ uniform vec3 u_PlanetEulerAngles;
 varying float v_vDepth;
 
 // Constants
-const vec3 forward_vector = vec3(0.0, 0.0, 1.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
@@ -81,8 +80,8 @@ void main()
 	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_CameraPosition * inverse_vertical_vector, 1.0) * in_CameraRotation;
 	
 	// Calculate Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
-	vec4 camera_forward = vec4(forward_vector, 0.0) * in_CameraRotation;
-	float depth_render_dot_product = dot(camera_forward.xyz, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
+	vec3 camera_forward = normalize(in_CameraRotation[2].xyz);
+	float depth_render_dot_product = dot(camera_forward, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
 	
 	// Interpolated Depth
 	v_vDepth = depth_render_dot_product;

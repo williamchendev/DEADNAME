@@ -171,7 +171,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					// Set Planet Hydrosphere Shader Camera Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// (Forward Rendered Lighting) Planet Hydrosphere Lit Shader Properties
