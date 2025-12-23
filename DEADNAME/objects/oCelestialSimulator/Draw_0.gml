@@ -280,7 +280,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// Set Planet Atmosphere Sampling Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_scatter_point_samples_num_index, CelestialSimulator.global_atmosphere_scatter_point_samples_count);
@@ -296,12 +297,16 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_density_falloff_index, sky_density_falloff);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_scattering_coefficients_index, temp_planet_atmosphere_scatter_r, temp_planet_atmosphere_scatter_g, temp_planet_atmosphere_scatter_b);
 					
+					// Set Blue Noise Texture Properties
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_blue_noise_texture_size_index, sprite_get_width(sSystem_PerlinNoise), sprite_get_height(sSystem_PerlinNoise));
+					
 					// Set Planet Render Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_planet_radius_index, radius);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_planet_position_index, x, y, z);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_planet_position_index, x, y, z);
 					
 					// Set the Atmosphere Mask Texture of the Planet's Depth Render
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_blue_noise_texture_index, sprite_get_texture(sSystem_PerlinNoise, 0));
 					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_planet_depth_mask_texture_index, surface_get_texture(CelestialSimulator.celestial_body_atmosphere_depth_mask_surface));
 					
 					// Draw Final Planet Render with Atmosphere from Icosphere Vertex Buffer

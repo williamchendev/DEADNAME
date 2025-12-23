@@ -203,6 +203,7 @@
     {"name":"Bodyparts","order":1,"path":"folders/Sprites/Characters/Wolf/Bodyparts.yy",},
     {"name":"Normals","order":2,"path":"folders/Sprites/Characters/Wolf/Normals.yy",},
     {"name":"Debug","order":2,"path":"folders/Sprites/Debug.yy",},
+    {"name":"Noise","order":21,"path":"folders/Sprites/Debug/Noise.yy",},
     {"name":"Levels","order":16,"path":"folders/Sprites/Debug/Levels.yy",},
     {"name":"Lighting","order":15,"path":"folders/Sprites/Debug/Lighting.yy",},
     {"name":"Entities","order":5,"path":"folders/Sprites/Debug/Lighting/Entities.yy",},

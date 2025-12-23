@@ -19,29 +19,21 @@ if (solar_system_index == -1)
 	return;
 }
 
-// Establish Solar System
+// Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
-// Establish Camera's Forward Vector
-var temp_camera_forward_vector = [ 0, 0, 1, 0 ];
-
-// Transform Camera's Forward Vector
-var temp_camera_transformed_forward_vector =
-[
-	temp_camera_forward_vector[0] * camera_rotation_matrix[0] + temp_camera_forward_vector[1] * camera_rotation_matrix[4] + temp_camera_forward_vector[2] * camera_rotation_matrix[8] + temp_camera_forward_vector[3] * camera_rotation_matrix[12],
-	temp_camera_forward_vector[0] * camera_rotation_matrix[1] + temp_camera_forward_vector[1] * camera_rotation_matrix[5] + temp_camera_forward_vector[2] * camera_rotation_matrix[9] + temp_camera_forward_vector[3] * camera_rotation_matrix[13],
-	temp_camera_forward_vector[0] * camera_rotation_matrix[2] + temp_camera_forward_vector[1] * camera_rotation_matrix[6] + temp_camera_forward_vector[2] * camera_rotation_matrix[10] + temp_camera_forward_vector[3] * camera_rotation_matrix[14],
-	temp_camera_forward_vector[0] * camera_rotation_matrix[3] + temp_camera_forward_vector[1] * camera_rotation_matrix[7] + temp_camera_forward_vector[2] * camera_rotation_matrix[11] + temp_camera_forward_vector[3] * camera_rotation_matrix[15],
-];
+// Establish Camera's Forward Vector from Camera's Rotation Matrix
+var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
+var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
 
 // Create Render Positions
-var temp_render_start_x = camera_position_x + temp_camera_transformed_forward_vector[0] * (camera_z_near + camera_z_near_depth_overpass);
-var temp_render_start_y = camera_position_y + temp_camera_transformed_forward_vector[1] * (camera_z_near + camera_z_near_depth_overpass);
-var temp_render_start_z = camera_position_z + temp_camera_transformed_forward_vector[2] * (camera_z_near + camera_z_near_depth_overpass);
+var temp_render_start_x = camera_position_x + temp_camera_forward_vector_normalized[0] * (camera_z_near + camera_z_near_depth_overpass);
+var temp_render_start_y = camera_position_y + temp_camera_forward_vector_normalized[1] * (camera_z_near + camera_z_near_depth_overpass);
+var temp_render_start_z = camera_position_z + temp_camera_forward_vector_normalized[2] * (camera_z_near + camera_z_near_depth_overpass);
 
-var temp_render_end_x = camera_position_x + temp_camera_transformed_forward_vector[0] * camera_z_far;
-var temp_render_end_y = camera_position_y + temp_camera_transformed_forward_vector[1] * camera_z_far;
-var temp_render_end_z = camera_position_z + temp_camera_transformed_forward_vector[2] * camera_z_far;
+var temp_render_end_x = camera_position_x + temp_camera_forward_vector_normalized[0] * camera_z_far;
+var temp_render_end_y = camera_position_y + temp_camera_forward_vector_normalized[1] * camera_z_far;
+var temp_render_end_z = camera_position_z + temp_camera_forward_vector_normalized[2] * camera_z_far;
 
 // Calculate Camera's Depth Render Vector
 var temp_dx = temp_render_end_x - temp_render_start_x;

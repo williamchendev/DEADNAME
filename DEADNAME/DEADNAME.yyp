@@ -228,6 +228,7 @@
     {"$GMFolder":"","%Name":"Bodyparts","folderPath":"folders/Sprites/Characters/Wolf/Bodyparts.yy","name":"Bodyparts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Normals","folderPath":"folders/Sprites/Characters/Wolf/Normals.yy","name":"Normals","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Debug","folderPath":"folders/Sprites/Debug.yy","name":"Debug","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Noise","folderPath":"folders/Sprites/Debug/Noise.yy","name":"Noise","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Levels","folderPath":"folders/Sprites/Debug/Levels.yy","name":"Levels","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Lighting","folderPath":"folders/Sprites/Debug/Lighting.yy","name":"Lighting","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Entities","folderPath":"folders/Sprites/Debug/Lighting/Entities.yy","name":"Entities","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -885,6 +886,7 @@
     {"id":{"name":"sSmokePuff_Small_NormalMap1","path":"sprites/sSmokePuff_Small_NormalMap1/sSmokePuff_Small_NormalMap1.yy",},},
     {"id":{"name":"sSmokePuff_Small_Sprite1","path":"sprites/sSmokePuff_Small_Sprite1/sSmokePuff_Small_Sprite1.yy",},},
     {"id":{"name":"sSquadIcons","path":"sprites/sSquadIcons/sSquadIcons.yy",},},
+    {"id":{"name":"sSystem_PerlinNoise","path":"sprites/sSystem_PerlinNoise/sSystem_PerlinNoise.yy",},},
     {"id":{"name":"sUI_CursorCrosshairIcons","path":"sprites/sUI_CursorCrosshairIcons/sUI_CursorCrosshairIcons.yy",},},
     {"id":{"name":"sUI_CursorMenu","path":"sprites/sUI_CursorMenu/sUI_CursorMenu.yy",},},
     {"id":{"name":"sUI_Inventory_Slot_Background","path":"sprites/sUI_Inventory_Slot_Background/sUI_Inventory_Slot_Background.yy",},},
@@ -1146,5 +1148,6 @@
     {"$GMTextureGroup":"","%Name":"UI","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"name":"UI","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"BulkDynamic","autocrop":false,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"name":"BulkDynamic","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"Spheres","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Spheres","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"PerlinNoise","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"PerlinNoise","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

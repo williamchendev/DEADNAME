@@ -81,7 +81,7 @@ float atan2(float y, float x)
 // Fragment Shader
 void main() 
 {
-	//
+	// Calculate Camera Forward Vector from Camera's Rotation Matrix
 	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
 	
 	// Check if Sphere Fragment is facing Camera's Forward Vector

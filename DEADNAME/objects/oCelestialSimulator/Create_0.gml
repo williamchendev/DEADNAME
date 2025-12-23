@@ -171,7 +171,8 @@ planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_
 planet_atmosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraPosition");
 planet_atmosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraRotation");
 planet_atmosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraRotation");
-planet_atmosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_CameraDimensions");
+planet_atmosphere_lit_shader_vsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraDimensions");
+planet_atmosphere_lit_shader_fsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraDimensions");
 
 planet_atmosphere_lit_shader_scatter_point_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_ScatterPointSamplesCount");
 planet_atmosphere_lit_shader_optical_depth_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_OpticalDepthSamplesCount");
@@ -185,6 +186,9 @@ planet_atmosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet
 planet_atmosphere_lit_shader_vsh_planet_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_vsh_PlanetPosition");
 planet_atmosphere_lit_shader_fsh_planet_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_fsh_PlanetPosition");
 
+planet_atmosphere_lit_shader_blue_noise_texture_size_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_BlueNoise_Texture_Size");
+
+planet_atmosphere_lit_shader_blue_noise_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_BlueNoiseTexture");
 planet_atmosphere_lit_shader_planet_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmospherePlanetDepthMask");
 
 // Sun Unlit Rendering Shader Indexes
