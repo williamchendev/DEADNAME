@@ -1,5 +1,5 @@
 //
-// Forward Rendered Lit Planet Lithosphere vertex shader meant for Inno's Solar System Overworld
+// (Multi Render Target) Forward Rendered Lit Planet Lithosphere vertex shader meant for Inno's Solar System Overworld
 //
 
 // Vertex Buffer Properties
@@ -18,14 +18,19 @@ uniform float u_PlanetElevation;
 uniform vec3 u_PlanetPosition;
 uniform vec3 u_PlanetEulerAngles;
 
-// Interpolated Color, Normal, Position, and Sphere Texture Vector
+// Atmosphere Properties
+uniform float u_AtmosphereRadius;
+
+// Interpolated Color, Normal, Position, Sphere Texture Vector, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
+varying float v_vDepth;
 
 // Constants
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
+const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 // Rotation Matrix Functions
 mat3 eulerRotationMatrix(vec3 euler_angles) 
@@ -45,18 +50,18 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	
 	// Build rotation matrix (ZXY order - roll, yaw, pitch)
 	mat3 rotMatrix;
-    
-    rotMatrix[0][0] = cy * cp - sr * sy * sp;
-    rotMatrix[0][1] = sy * cp + sr * sp * cy;
-    rotMatrix[0][2] = -sp * cr;
-    
-    rotMatrix[1][0] = -sy * cr;
-    rotMatrix[1][1] = cr * cy;
-    rotMatrix[1][2] = sr;
-    
-    rotMatrix[2][0] = sp * cy + sr * sy * cp;
-    rotMatrix[2][1] = sp * sy - sr * cy * cp;
-    rotMatrix[2][2] = cr * cp;
+	
+	rotMatrix[0][0] = cy * cp - sr * sy * sp;
+	rotMatrix[0][1] = sy * cp + sr * sp * cy;
+	rotMatrix[0][2] = -sp * cr;
+	
+	rotMatrix[1][0] = -sy * cr;
+	rotMatrix[1][1] = cr * cy;
+	rotMatrix[1][2] = sr;
+	
+	rotMatrix[2][0] = sp * cy + sr * sy * cp;
+	rotMatrix[2][1] = sp * sy - sr * cy * cp;
+	rotMatrix[2][2] = cr * cp;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
@@ -80,6 +85,10 @@ void main()
 	v_vNormal = planet_rotated_local_vector;
 	v_vPosition = planet_rotated_local_vertex_position + u_PlanetPosition;
 	v_vTexVector = in_Position;
+	
+	// Interpolated Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
+	vec3 camera_forward = normalize(in_CameraRotation[2].xyz);
+	v_vDepth = dot(camera_forward, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);

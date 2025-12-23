@@ -1,5 +1,5 @@
 //
-// Forward Rendered Lit Planet Hydrosphere fragment shader meant for Inno's Solar System Overworld
+// (Multi Render Target) Forward Rendered Lit Planet Hydrosphere fragment shader meant for Inno's Solar System Overworld
 //
 
 // Forward Rendered Lighting Properties
@@ -35,13 +35,14 @@ uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
 
-// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, and Planet Elevation
+// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vOceanNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
 varying float v_vPlanetElevation;
+varying float v_vDepth;
 
 // Constants
 const float Pi = 3.14159265359;
@@ -123,11 +124,11 @@ void main()
 	// Calculate Oren-Nayar Sigma Values
 	float sigma_sqr = u_PlanetOceanRoughness * u_PlanetOceanRoughness;
 	
-    // Establish Ambient Occlusion Light Color
-    vec3 e = v_vColour.rgb; 
-    
-    // Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
-    vec3 l_proj = vec3(0.0);
+	// Establish Ambient Occlusion Light Color
+	vec3 e = v_vColour.rgb; 
+	
+	// Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
+	vec3 l_proj = vec3(0.0);
 	vec3 v_proj = normalize(view_direction - v_vNormal * view_strength + 1.0); // +1 to remove a visual artifact
 	float cos_phi = dot(l_proj, v_proj);
 	
@@ -145,7 +146,7 @@ void main()
 	
 	// Establish Cumulative Light Value with Calculated Ambient Occlusion Light Value
 	vec3 light = o_l;
-	
+
 	// Iterate through all Lights
 	for (int i = 0; i < MAX_LIGHTS; i++)
 	{
@@ -184,10 +185,10 @@ void main()
 		alpha = max(theta_i, theta_r);
 		beta = min(theta_i, theta_r);
 		
-        // Establish Light Source Color with Surface Tangent's Light Strength 
-        e = light_color * light_strength; 
-        
-        // Cook-Torrance Specular Lighting
+		// Establish Light Source Color with Surface Tangent's Light Strength 
+		e = light_color * light_strength; 
+		
+		// Cook-Torrance Specular Lighting
 		float s_a = acos(light_strength); // Convert NdotH to an angle in radians
 		float s_m = clamp(sigma_sqr, pseudo_zero, 1.0);	// Clamp roughness value to avoid extreme cases
 		float s_exp = exp(-tan(s_a) * tan(s_a) / (s_m * s_m)); // Exponent term for Beckmann distribution
@@ -206,8 +207,8 @@ void main()
 		
 		// Specular Reflection Light Component
 		vec3 s_l = ((s_d * s_g * frenel_schlick) / (4.0 * dot(v_vOceanNormal, light_direction) * dot(v_vOceanNormal, view_direction))) * e;
-        
-        // Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
+		
+		// Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
 		l_proj = normalize(light_direction - v_vOceanNormal * light_strength);
 		v_proj = normalize(view_direction - v_vOceanNormal * view_strength + 1.0); // +1 to remove a visual artifact
 		cos_phi = dot(l_proj, v_proj);
@@ -225,9 +226,10 @@ void main()
 		o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 		
 		// Add Calculated Light to Cumulative Light Value
-        light += (o_l + s_l) * light_fade * in_Light_Intensity[i];
+		light += (o_l + s_l) * light_fade * in_Light_Intensity[i];
 	}
 	
-	// Render Lit Sphere Fragment Value
-	gl_FragColor = vec4(light, diffuse_color.a);
+	// (Multiple Render Targets) Render Lit Sphere & Depth Fragment Values
+	gl_FragData[0] = vec4(light, diffuse_color.a);
+	gl_FragData[1] = vec4(vec3(v_vDepth), 1.0);
 }

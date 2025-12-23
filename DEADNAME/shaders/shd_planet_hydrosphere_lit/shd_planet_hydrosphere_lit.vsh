@@ -1,5 +1,5 @@
 //
-// Forward Rendered Lit Planet Hydrosphere vertex shader meant for Inno's Solar System Overworld
+// (Multi Render Target) Forward Rendered Lit Planet Hydrosphere vertex shader meant for Inno's Solar System Overworld
 //
 
 // Planet Hydrosphere Properties
@@ -30,18 +30,23 @@ uniform float u_PlanetOcean_WaveSteepness[MAX_WAVES];
 uniform float u_PlanetOcean_WaveLength[MAX_WAVES];
 uniform float u_PlanetOcean_WaveSpeed[MAX_WAVES];
 
-// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, and Planet Elevation
+// Atmosphere Properties
+uniform float u_AtmosphereRadius;
+
+// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vOceanNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
 varying float v_vPlanetElevation;
+varying float v_vDepth;
 
 // Constants
 const float Pi = 3.14159265359;
 
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
+const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 const float ocean_waves_normal_strength = 0.25;
 
@@ -92,18 +97,18 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	
 	// Build rotation matrix (ZXY order - roll, yaw, pitch)
 	mat3 rotMatrix;
-    
-    rotMatrix[0][0] = cy * cp - sr * sy * sp;
-    rotMatrix[0][1] = sy * cp + sr * sp * cy;
-    rotMatrix[0][2] = -sp * cr;
-    
-    rotMatrix[1][0] = -sy * cr;
-    rotMatrix[1][1] = cr * cy;
-    rotMatrix[1][2] = sr;
-    
-    rotMatrix[2][0] = sp * cy + sr * sy * cp;
-    rotMatrix[2][1] = sp * sy - sr * cy * cp;
-    rotMatrix[2][2] = cr * cp;
+	
+	rotMatrix[0][0] = cy * cp - sr * sy * sp;
+	rotMatrix[0][1] = sy * cp + sr * sp * cy;
+	rotMatrix[0][2] = -sp * cr;
+	
+	rotMatrix[1][0] = -sy * cr;
+	rotMatrix[1][1] = cr * cy;
+	rotMatrix[1][2] = sr;
+	
+	rotMatrix[2][0] = sp * cy + sr * sy * cp;
+	rotMatrix[2][1] = sp * sy - sr * cy * cp;
+	rotMatrix[2][2] = cr * cp;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
@@ -117,7 +122,7 @@ void main()
 	
 	// Calculate Trochoidal Waveform Height
 	float ocean_wave_displacement = 0.0;
-	
+
 	for (int i = 0; i < MAX_WAVES; i++)
 	{
 		// Calculate Wave Properties
@@ -159,6 +164,10 @@ void main()
 	
 	// Interpolated Planet Elevation
 	v_vPlanetElevation = in_Elevation.x * u_vsh_PlanetElevation;
+	
+	// Interpolated Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
+	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);
+	v_vDepth = dot(camera_forward, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);

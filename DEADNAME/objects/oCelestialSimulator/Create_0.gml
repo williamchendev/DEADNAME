@@ -48,6 +48,8 @@ camera_z_far = 32000;
 
 camera_z_near_depth_overpass = -801;
 
+camera_frustum_culling_padding = 80;
+
 // Solar System Variables
 solar_system_index = -1;
 solar_systems = array_create(0);
@@ -96,7 +98,7 @@ vertex_position(atmosphere_vertex_buffer, 1, -1);
 vertex_end(atmosphere_vertex_buffer);
 vertex_freeze(atmosphere_vertex_buffer);
 
-// (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
+// MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
 planet_lithosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_fsh_CameraPosition");
 planet_lithosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_CameraRotation");
@@ -106,6 +108,8 @@ planet_lithosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_plane
 planet_lithosphere_lit_shader_planet_elevation_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetElevation");
 planet_lithosphere_lit_shader_planet_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetPosition");
 planet_lithosphere_lit_shader_planet_euler_angles_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetEulerAngles");
+
+planet_lithosphere_lit_shader_atmosphere_radius_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_AtmosphereRadius");
 
 planet_lithosphere_lit_shader_light_exists_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Light_Exists");
 
@@ -123,7 +127,7 @@ planet_lithosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_pla
 
 planet_lithosphere_lit_shader_planet_texture_index = shader_get_sampler_index(shd_planet_lithosphere_lit, "in_PlanetTexture");
 
-// (Forward Rendered Lighting) Planet Hydrosphere Lit Rendering Shader Indexes
+// MRT (Forward Rendered Lighting) Planet Hydrosphere Lit Rendering Shader Indexes
 planet_hydrosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraPosition");
 planet_hydrosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraPosition");
 planet_hydrosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraRotation");
@@ -150,6 +154,8 @@ planet_hydrosphere_lit_shader_planet_ocean_color_index = shader_get_uniform(shd_
 planet_hydrosphere_lit_shader_planet_ocean_foam_color_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetOceanFoamColor");
 planet_hydrosphere_lit_shader_planet_ocean_foam_size_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetOceanFoamSize");
 
+planet_hydrosphere_lit_shader_atmosphere_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_AtmosphereRadius");
+
 planet_hydrosphere_lit_shader_light_exists_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Exists");
 
 planet_hydrosphere_lit_shader_light_position_x_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Position_X");
@@ -163,20 +169,6 @@ planet_hydrosphere_lit_shader_light_color_b_index = shader_get_uniform(shd_plane
 planet_hydrosphere_lit_shader_light_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Radius");
 planet_hydrosphere_lit_shader_light_falloff_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Falloff");
 planet_hydrosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Intensity");
-
-// Planet Atmosphere Depth Mask Rendering Shader Indexes
-planet_atmosphere_depth_mask_shader_camera_position_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_CameraPosition");
-planet_atmosphere_depth_mask_shader_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_CameraRotation");
-planet_atmosphere_depth_mask_shader_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "in_CameraDimensions");
-
-planet_atmosphere_depth_mask_shader_atmosphere_radius_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_AtmosphereRadius");
-
-planet_atmosphere_depth_mask_shader_planet_radius_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetRadius");
-planet_atmosphere_depth_mask_shader_planet_elevation_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetElevation");
-planet_atmosphere_depth_mask_shader_planet_position_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetPosition");
-planet_atmosphere_depth_mask_shader_planet_euler_angles_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetEulerAngles");
-
-planet_atmosphere_depth_mask_shader_planet_ocean_elevation_index = shader_get_uniform(shd_planet_atmosphere_depth_mask, "u_PlanetOceanElevation");
 
 // (Forward Rendered Lighting) Planet Atmosphere Lit Rendering Shader Indexes
 planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraPosition");

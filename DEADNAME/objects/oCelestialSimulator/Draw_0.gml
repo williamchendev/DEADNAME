@@ -19,9 +19,8 @@ if (ds_list_size(solar_system_render_depth_instances_list) == 0)
 var temp_camera = camera_get_active();
 var temp_camera_proj_matrix = camera_get_proj_mat(temp_camera);
 
-// Calculate and set Camera Orientation
+// Create and Set Perspective Camera Projection Matrix
 var temp_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
-//var temp_projection_matrix = matrix_build_projection_ortho(640, 360, camera_z_near, camera_z_far);
 camera_set_proj_mat(temp_camera, temp_projection_matrix);
 
 // Depth Sorted Render Pass
@@ -29,7 +28,7 @@ var temp_celestial_object_depth_render_index = 0;
 
 repeat (ds_list_size(solar_system_render_depth_instances_list))
 {
-	// Establish Celestial Body Instance at Index
+	// Establish Celestial Object Instance at Index
 	var temp_celestial_object_depth = ds_list_find_value(solar_system_render_depth_values_list, temp_celestial_object_depth_render_index);
 	var temp_celestial_object_instance = ds_list_find_value(solar_system_render_depth_instances_list, temp_celestial_object_depth_render_index);
 	
@@ -100,8 +99,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				gpu_set_zwriteenable(true);
 				gpu_set_ztestenable(true);
 				
-				// Set Celestial Body Depth Render Surface as Surface Target
-				surface_set_target(CelestialSimulator.celestial_body_render_surface);
+				// (Multiple Render Targets) Set Celestial Body Render Surfaces as Surface Targets
+				surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+				surface_set_target_ext(1, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
 				
 				// Reset Celestial Body Depth Render Surface
 				draw_clear_alpha(c_black, 0);
@@ -136,6 +136,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_position_index, x, y, z);
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
+				// Set Planet Atmosphere Properties
+				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
+				
 				// Set Planet Texture Data
 				texture_set_stage(CelestialSimulator.planet_lithosphere_lit_shader_planet_texture_index, height_map != noone ? sprite_get_texture(height_map, 0) : sprite_get_texture(sPlanet_ElevationMap_Empty, 0));
 				
@@ -162,8 +165,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					gpu_set_zwriteenable(true);
 					gpu_set_ztestenable(true);
 					
-					// Set Celestial Body Depth Render Surface as Surface Target
-					surface_set_target(CelestialSimulator.celestial_body_render_surface);
+					// (Multiple Render Targets) Set Celestial Body Render Surfaces as Surface Targets
+					surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+					surface_set_target_ext(1, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
 					
 					// Enable Planet Hydrosphere Shader
 					shader_set(shd_planet_hydrosphere_lit);
@@ -211,6 +215,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_length_index, ocean_wave_length_array);
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_speed_index, ocean_wave_speed_array);
 					
+					// Set Planet Atmosphere Properties
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
+					
 					// Draw Planet from Icosphere Vertex Buffer
 					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
 					
@@ -230,50 +237,6 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				{
 					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-					
-					// Enable Z-Depth Rendering
-					gpu_set_zwriteenable(true);
-					gpu_set_ztestenable(true);
-					
-					// Set Atmosphere Depth Mask Rendering Surface as Surface Target
-					surface_set_target(CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
-					
-					// Clear Atmosphere Depth Mask
-					draw_clear_alpha(c_black, 0);
-					draw_clear_depth(1);
-					
-					// Enable Planet Atmosphere Depth Mask Shader
-					shader_set(shd_planet_atmosphere_depth_mask);
-					
-					// Set Planet Atmosphere Shader Camera Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_depth_mask_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
-					
-					// Set Planet Atmosphere Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_atmosphere_radius_index, radius + elevation + sky_radius);
-					
-					// Set Planet Hydrosphere Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_planet_ocean_elevation_index, ocean ? ocean_elevation : -0.05);
-					
-					// Set Planet Physical Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_planet_radius_index, radius);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_planet_elevation_index, elevation);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_planet_position_index, x, y, z);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_depth_mask_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
-					
-					// Draw Planet from Icosphere Vertex Buffer
-					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
-					
-					// Reset Shader
-					shader_reset();
-					
-					// Reset Surface Target
-					surface_reset_target();
-					
-					// Disable Z-Depth Rendering
-					gpu_set_zwriteenable(false);
-					gpu_set_ztestenable(false);
 					
 					// Set Celestial Body Depth Render Surface as Surface Target
 					surface_set_target(CelestialSimulator.final_render_surface);
@@ -337,11 +300,11 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 			}
 			break;
 		default:
-			// Celestial Body is not a Planet - Skip rendering Lithosphere
+			// Celestial Object is not a Planet - Skip rendering Lithosphere
 			break;
 	}
 	
-	// Increment Celestial Body Index
+	// Increment Celestial Object Index
 	temp_celestial_object_depth_render_index++;
 }
 

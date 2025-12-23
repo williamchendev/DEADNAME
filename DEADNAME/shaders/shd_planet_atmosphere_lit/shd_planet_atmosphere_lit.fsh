@@ -86,7 +86,7 @@ vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ra
 	float s_b = 2.0 * dot(offset, ray_direction);
 	float s_c = dot(offset, offset) - sphere_radius * sphere_radius;
 	float s_d = s_b * s_b - 4.0 * s_a * s_c; // Sphere Discriminant
-
+	
 	// Number of intersections: 0 when d < 0; 1 when d = 0; 2 when d > 0
 	if (s_d > 0.0) 
 	{
@@ -229,5 +229,5 @@ void main()
 	float atmosphere_alpha = min(atmosphere_depth + planet_mask.a, 1.0);
 	
 	// Render Lit Atmosphere Fragment Color Value
-    gl_FragColor = vec4(light, atmosphere_alpha);
+	gl_FragColor = vec4(light, atmosphere_alpha);
 }

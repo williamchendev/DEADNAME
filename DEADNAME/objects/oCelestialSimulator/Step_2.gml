@@ -32,7 +32,7 @@ var temp_camera_up_vector_normalized = [ camera_rotation_matrix[4] / temp_camera
 var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
 var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
 
-// Celestial Object Frustum Culling
+// Establish Camera Frustum Culling Variables
 var temp_camera_aspect = GameManager.game_width / GameManager.game_height;
 
 var temp_camera_fov_radians = (camera_fov * pi) / 180;
@@ -53,15 +53,15 @@ var temp_dx = temp_render_end_x - temp_render_start_x;
 var temp_dy = temp_render_end_y - temp_render_start_y;
 var temp_dz = temp_render_end_z - temp_render_start_z;
 
-// Iterate through Solar System's Celestial Bodies to Calculate their Depths from the Camera's Render Orientation
-var temp_celestial_body_index = 0;
+// Iterate through Solar System's Celestial Objects to Calculate their Depths from the Camera's Render Orientation
+var temp_celestial_object_index = 0;
 
 repeat (array_length(temp_solar_system))
 {
-	// Find Celestial Body Instance within Solar System at Index
-	var temp_celestial_object_instance = temp_solar_system[temp_celestial_body_index];
+	// Find Celestial Object Instance within Solar System at Index
+	var temp_celestial_object_instance = temp_solar_system[temp_celestial_object_index];
 	
-	// Calculate Vector from Camera to Celestial Body
+	// Calculate Vector from Camera to Celestial Object
 	var temp_vx = temp_celestial_object_instance.x - temp_render_start_x;
 	var temp_vy = temp_celestial_object_instance.y - temp_render_start_y;
 	var temp_vz = temp_celestial_object_instance.z - temp_render_start_z;
@@ -69,17 +69,20 @@ repeat (array_length(temp_solar_system))
 	// Compute the Projection Scalar (dot(v, d) / dot(d, d))
 	var temp_projection_scalar = dot_product_3d(temp_vx, temp_vy, temp_vz, temp_dx, temp_dy, temp_dz) / dot_product_3d(temp_dx, temp_dy, temp_dz, temp_dx, temp_dy, temp_dz);
 	
-	// Calculate Celestial Body Depth from Camera's Position, Rotation, and Forward Vector
-	var temp_celestial_body_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_projection_scalar);
+	// Calculate Celestial Object Depth from Camera's Position, Rotation, and Forward Vector
+	var temp_celestial_object_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_projection_scalar);
 	
 	// Celestial Object Frustum Culling Behaviour
 	if (temp_celestial_object_instance.frustum_culling_enabled)
 	{
+		// Establish Celestial Object Frustum Culling Radius
+		var temp_celestial_object_frustum_culling_radius = temp_celestial_object_instance.frustum_culling_radius + camera_frustum_culling_padding;
+		
 		// Celestial Object Frustum Depth Culling
-		if (temp_celestial_body_depth + temp_celestial_object_instance.frustum_culling_radius < camera_z_near)
+		if (temp_celestial_object_depth + temp_celestial_object_frustum_culling_radius < camera_z_near)
 		{
 			// Increment Celestial Object Index
-			temp_celestial_body_index++;
+			temp_celestial_object_index++;
 			
 			// Celestial Object Frustum Depth Culled - Skip Celestial Object
 			continue;
@@ -98,10 +101,10 @@ repeat (array_length(temp_solar_system))
 		// Check if Celestial Object can be Horizontally Frustum Culled
 		var temp_camera_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_object_dot_product;
 		
-		if (temp_camera_right_to_object_dot_product < -temp_camera_frustum_half_width - temp_celestial_object_instance.frustum_culling_radius or temp_camera_right_to_object_dot_product > temp_camera_frustum_half_width + temp_celestial_object_instance.frustum_culling_radius) 
+		if (temp_camera_right_to_object_dot_product < -temp_camera_frustum_half_width - temp_celestial_object_frustum_culling_radius or temp_camera_right_to_object_dot_product > temp_camera_frustum_half_width + temp_celestial_object_frustum_culling_radius) 
 		{
 			// Increment Celestial Object Index
-			temp_celestial_body_index++;
+			temp_celestial_object_index++;
 			
 			// Celestial Object Frustum Culled - Skip Celestial Object
 			continue;
@@ -110,56 +113,56 @@ repeat (array_length(temp_solar_system))
 		// Check if Celestial Object can be Vertically Frustum Culled
 		var temp_camera_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_object_dot_product;
 		
-		if (temp_camera_up_to_object_dot_product < -temp_camera_frustum_half_height - temp_celestial_object_instance.frustum_culling_radius or temp_camera_up_to_object_dot_product > temp_camera_frustum_half_height + temp_celestial_object_instance.frustum_culling_radius) 
+		if (temp_camera_up_to_object_dot_product < -temp_camera_frustum_half_height - temp_celestial_object_frustum_culling_radius or temp_camera_up_to_object_dot_product > temp_camera_frustum_half_height + temp_celestial_object_frustum_culling_radius) 
 		{
 			// Increment Celestial Object Index
-			temp_celestial_body_index++;
+			temp_celestial_object_index++;
 			
 			// Celestial Object Frustum Culled - Skip Celestial Object
 			continue;
 		}
 	}
 	
-	// Iterate through Solar System Depth Sorting List to Sort and Index Celestial Body Instance by Depth
+	// Iterate through Solar System Depth Sorting List to Sort and Index Celestial Object Instance by Depth
 	if (ds_list_size(solar_system_render_depth_values_list) == 0)
 	{
-		// Index Celestial Body Depth and Instance into Solar System Depth Sorting Lists
-		ds_list_add(solar_system_render_depth_values_list, temp_celestial_body_depth);
+		// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
+		ds_list_add(solar_system_render_depth_values_list, temp_celestial_object_depth);
 		ds_list_add(solar_system_render_depth_instances_list, temp_celestial_object_instance);
 	}
 	else
 	{
-		// Establish Toggle if Celestial Body was Indexed
-		var temp_celestial_body_depth_is_indexed = false;
+		// Establish Toggle if Celestial Object was Indexed
+		var temp_celestial_object_depth_is_indexed = false;
 		
 		// Iterate through Solar System Depth Sorting List
 		for (var i = 0; i < ds_list_size(solar_system_render_depth_values_list); i++)
 		{
-			// Find Solar System Depth Sorting List's Celestial Body Depth for Comparison
-			var temp_celestial_body_depth_comparison = ds_list_find_value(solar_system_render_depth_values_list, i);
+			// Find Solar System Depth Sorting List's Celestial Object Depth for Comparison
+			var temp_celestial_object_depth_comparison = ds_list_find_value(solar_system_render_depth_values_list, i);
 			
 			// Compare Depth Values
-			if (temp_celestial_body_depth >= temp_celestial_body_depth_comparison)
+			if (temp_celestial_object_depth >= temp_celestial_object_depth_comparison)
 			{
-				// Index Celestial Body Depth and Instance into Solar System Depth Sorting Lists
-				ds_list_insert(solar_system_render_depth_values_list, i, temp_celestial_body_depth);
+				// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
+				ds_list_insert(solar_system_render_depth_values_list, i, temp_celestial_object_depth);
 				ds_list_insert(solar_system_render_depth_instances_list, i, temp_celestial_object_instance);
 				
-				// Toggle Celestial Body was Indexed and Break Loop
-				temp_celestial_body_depth_is_indexed = true;
+				// Toggle Celestial Object was Indexed and Break Loop
+				temp_celestial_object_depth_is_indexed = true;
 				break;
 			}
 		}
 		
-		// Check if Celestial Body was Indexed
-		if (!temp_celestial_body_depth_is_indexed)
+		// Check if Celestial Object was Indexed
+		if (!temp_celestial_object_depth_is_indexed)
 		{
-			// Index Celestial Body Depth and Instance into Solar System Depth Sorting Lists
-			ds_list_add(solar_system_render_depth_values_list, temp_celestial_body_depth);
+			// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
+			ds_list_add(solar_system_render_depth_values_list, temp_celestial_object_depth);
 			ds_list_add(solar_system_render_depth_instances_list, temp_celestial_object_instance);
 		}
 	}
 	
-	// Increment Celestial Body Index
-	temp_celestial_body_index++;
+	// Increment Celestial Object Index
+	temp_celestial_object_index++;
 }

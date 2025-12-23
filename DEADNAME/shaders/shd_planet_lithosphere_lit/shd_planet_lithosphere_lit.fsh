@@ -1,5 +1,5 @@
 //
-// Forward Rendered Lit Planet Lithosphere fragment shader meant for Inno's Solar System Overworld
+// (Multi Render Target) Forward Rendered Lit Planet Lithosphere fragment shader meant for Inno's Solar System Overworld
 //
 
 // Forward Rendered Lighting Properties
@@ -26,11 +26,12 @@ uniform float in_Light_Intensity[MAX_LIGHTS];
 // Planet Texture Properties
 uniform sampler2D in_PlanetTexture;
 
-// Interpolated Color, Normal, Position, and Sphere Texture Vector
+// Interpolated Color, Normal, Position, Sphere Texture Vector, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
+varying float v_vDepth;
 
 // Constants
 const float Pi = 3.14159265359;
@@ -172,6 +173,7 @@ void main()
         light += l * light_fade * in_Light_Intensity[i];
 	}
 	
-	// Render Lit Sphere Fragment Value
-	gl_FragColor = vec4(light, diffuse_color.a);
+	// (Multiple Render Targets) Render Lit Sphere & Depth Fragment Values
+	gl_FragData[0] = vec4(light, diffuse_color.a);
+	gl_FragData[1] = vec4(vec3(v_vDepth), 1.0);
 }
