@@ -8,6 +8,10 @@ if (!active)
 	return;
 }
 
+// Increment Celestial Simulator's Global Hydrosphere Clock
+global_hydrosphere_time += global_hydrosphere_time_spd * frame_delta;
+global_hydrosphere_time = global_hydrosphere_time mod 9999999; // please don't overflow
+
 //
 var temp_camera_move_spd = 2;
 

@@ -12,6 +12,7 @@ uniform mat4 in_fsh_CameraRotation;
 // Planet Properties
 uniform float u_fsh_PlanetElevation;
 
+// Ocean Properties
 uniform float u_fsh_PlanetOceanElevation;
 uniform float u_PlanetOceanRoughness;
 uniform vec4 u_PlanetOceanColor;
@@ -34,9 +35,10 @@ uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
 
-// Interpolated Color, Normal, Position, Sphere Texture, and Planet Elevation
+// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, and Planet Elevation
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
+varying vec3 v_vOceanNormal;
 varying vec3 v_vPosition;
 varying vec3 v_vTexVector;
 varying float v_vPlanetElevation;
@@ -108,7 +110,6 @@ void main()
 	
 	// Calculate Camera View Direction Vector and View Dot Product to Surface Tangent
 	vec3 view_direction = normalize(in_fsh_CameraPosition - v_vPosition);
-	//vec3 view_direction = camera_forward;
 	float view_strength = max(dot(view_direction, v_vNormal), 0.0);
 	
 	// Calculate Angles of incidence and reflection
@@ -164,7 +165,7 @@ void main()
 		
 		// Calculate Light Source's Direction Vector and Light Source's Dot Product to Surface Tangent
 		vec3 light_direction = normalize(light_position - v_vPosition);
-		float light_strength = max(dot(light_direction, v_vNormal), 0.0);
+		float light_strength = max(dot(light_direction, v_vOceanNormal), 0.0);
 		
 		// Calculate Normalized Sum of Light Source's Direction Vector and the View Direction Vector
 		vec3 normalized_light_and_view_direction = normalize(light_direction + view_direction);      
@@ -173,11 +174,11 @@ void main()
 		float half_view_to_light_strength =  max(dot(normalized_light_and_view_direction, view_direction), 0.0);
 		
 		// Calculate Reflection Coefficent
-		vec3 reflection = 2.0 * light_strength * (v_vNormal - light_direction);
+		vec3 reflection = 2.0 * light_strength * (v_vOceanNormal - light_direction);
 		
 		// Calculate Angles of incidence and reflection
-		theta_i = acos(dot(light_direction, v_vNormal));
-		theta_r = acos(dot(reflection, v_vNormal));
+		theta_i = acos(dot(light_direction, v_vOceanNormal));
+		theta_r = acos(dot(reflection, v_vOceanNormal));
 		
 		// Determine max and min angles for Roughness calculation
 		alpha = max(theta_i, theta_r);
@@ -199,16 +200,16 @@ void main()
 		vec3 frenel_schlick = light_reflection_coefficient + ((1.0 - light_reflection_coefficient) * pow(1.0 - half_view_to_light_strength, 5.0));
 		
 		// Smith Model Geometry Shadowing Function
-		float s_ga = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, view_direction) / dot(view_direction, normalized_light_and_view_direction);
-		float s_gb = 2.0 * dot(normalized_light_and_view_direction, v_vNormal) * dot(v_vNormal, light_direction) / dot(view_direction, normalized_light_and_view_direction);
+		float s_ga = 2.0 * dot(normalized_light_and_view_direction, v_vOceanNormal) * dot(v_vOceanNormal, view_direction) / dot(view_direction, normalized_light_and_view_direction);
+		float s_gb = 2.0 * dot(normalized_light_and_view_direction, v_vOceanNormal) * dot(v_vOceanNormal, light_direction) / dot(view_direction, normalized_light_and_view_direction);
 		float s_g = min(1.0, min(s_ga, s_gb));
 		
 		// Specular Reflection Light Component
-		vec3 s_l = ((s_d * s_g * frenel_schlick) / (4.0 * dot(v_vNormal, light_direction) * dot(v_vNormal, view_direction))) * e;
+		vec3 s_l = ((s_d * s_g * frenel_schlick) / (4.0 * dot(v_vOceanNormal, light_direction) * dot(v_vOceanNormal, view_direction))) * e;
         
         // Project light and view vectors onto the tangent plane to calculate cos_phi, the cosine of the azimuthal angle (difference in orientation) between projected light and view
-		l_proj = normalize(light_direction - v_vNormal * light_strength);
-		v_proj = normalize(view_direction - v_vNormal * view_strength + 1.0); // +1 to remove a visual artifact
+		l_proj = normalize(light_direction - v_vOceanNormal * light_strength);
+		v_proj = normalize(view_direction - v_vOceanNormal * view_strength + 1.0); // +1 to remove a visual artifact
 		cos_phi = dot(l_proj, v_proj);
 		
 		// Calculate c_a, c_b, c_c

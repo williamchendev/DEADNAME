@@ -20,7 +20,7 @@ var temp_camera = camera_get_active();
 var temp_camera_proj_matrix = camera_get_proj_mat(temp_camera);
 
 // Calculate and set Camera Orientation
-var temp_projection_matrix = matrix_build_projection_perspective(GameManager.game_width, GameManager.game_height, camera_z_near, camera_z_far);
+var temp_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
 //var temp_projection_matrix = matrix_build_projection_ortho(640, 360, camera_z_near, camera_z_far);
 camera_set_proj_mat(temp_camera, temp_projection_matrix);
 
@@ -153,7 +153,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				gpu_set_ztestenable(false);
 				
 				// Check if Planet's Ocean is Enabled and should be Rendered
-				if (true)
+				if (ocean)
 				{
 					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
@@ -204,6 +204,12 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_color_index, color_get_red(ocean_color) / 255, color_get_green(ocean_color) / 255, color_get_blue(ocean_color) / 255, ocean_alpha);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_foam_color_index, color_get_red(ocean_foam_color) / 255, color_get_green(ocean_foam_color) / 255, color_get_blue(ocean_foam_color) / 255, ocean_foam_alpha);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_foam_size_index, min(elevation * (1.0 - ocean_elevation), ocean_foam_size));
+					
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_time_index, CelestialSimulator.global_hydrosphere_time);
+					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_direction_index, ocean_wave_direction_array);
+					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_steepness_index, ocean_wave_steepness_array);
+					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_length_index, ocean_wave_length_array);
+					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_speed_index, ocean_wave_speed_array);
 					
 					// Draw Planet from Icosphere Vertex Buffer
 					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
@@ -324,8 +330,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 					
 					// Render Celestial Object to Final Render Surface
-					surface_set_target(final_render_surface);
-					draw_surface_ext(celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
+					surface_set_target(CelestialSimulator.final_render_surface);
+					draw_surface_ext(CelestialSimulator.celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
 					surface_reset_target();
 				}
 			}
