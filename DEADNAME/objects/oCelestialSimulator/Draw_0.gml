@@ -67,7 +67,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
 				// Draw Sun from Icosphere Vertex Buffer
-				vertex_submit(icosphere_vertex_buffer, pr_trianglelist, diffuse_texture);
+				//vertex_submit(icosphere_vertex_buffer, pr_trianglelist, diffuse_texture);
 				
 				// Reset Shader
 				shader_reset();

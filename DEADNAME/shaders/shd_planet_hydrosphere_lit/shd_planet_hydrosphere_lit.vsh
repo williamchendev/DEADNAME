@@ -48,7 +48,7 @@ const float Pi = 3.14159265359;
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
-const float ocean_waves_normal_strength = 0.25;
+const float ocean_waves_normal_strength = 0.5;
 
 // Trigonometry Functions
 // returns the angle in the plane (in radians) between the positive x-axis and the ray from (0, 0) to the point (x, y)
