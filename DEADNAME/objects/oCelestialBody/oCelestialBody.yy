@@ -46,8 +46,6 @@
     {"$GMObjectProperty":"v2","%Name":"orbit_offset_x","filters":[],"listItems":[],"multiselect":false,"name":"orbit_offset_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"orbit_offset_z","filters":[],"listItems":[],"multiselect":false,"name":"orbit_offset_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"rotation_speed","filters":[],"listItems":[],"multiselect":false,"name":"rotation_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"frustum_culling_enabled","filters":[],"listItems":[],"multiselect":false,"name":"frustum_culling_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v2","%Name":"frustum_culling_radius","filters":[],"listItems":[],"multiselect":false,"name":"frustum_culling_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"-1","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

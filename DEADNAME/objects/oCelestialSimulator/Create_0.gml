@@ -48,8 +48,6 @@ camera_z_far = 32000;
 
 camera_z_near_depth_overpass = -801;
 
-camera_frustum_culling_padding = 80;
-
 // Solar System Variables
 solar_system_index = -1;
 solar_systems = array_create(0);
@@ -194,6 +192,9 @@ planet_atmosphere_lit_shader_blue_noise_texture_size_index = shader_get_uniform(
 
 planet_atmosphere_lit_shader_blue_noise_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_BlueNoiseTexture");
 planet_atmosphere_lit_shader_planet_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmospherePlanetDepthMask");
+
+//
+sdf_sphere_volumetric_clouds_lit_shader_time_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_Time");
 
 // Sun Unlit Rendering Shader Indexes
 sun_unlit_shader_camera_position_index = shader_get_uniform(shd_sun_unlit, "in_camera_position");

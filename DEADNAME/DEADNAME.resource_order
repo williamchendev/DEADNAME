@@ -447,6 +447,7 @@
     {"name":"shd_post_process_render","order":2,"path":"shaders/shd_post_process_render/shd_post_process_render.yy",},
     {"name":"shd_print_metallic_map","order":1,"path":"shaders/shd_print_metallic_map/shd_print_metallic_map.yy",},
     {"name":"shd_print_roughness_map","order":2,"path":"shaders/shd_print_roughness_map/shd_print_roughness_map.yy",},
+    {"name":"shd_sdf_sphere_volumetric_cloud_lit","order":6,"path":"shaders/shd_sdf_sphere_volumetric_cloud_lit/shd_sdf_sphere_volumetric_cloud_lit.yy",},
     {"name":"shd_sun_unlit","order":5,"path":"shaders/shd_sun_unlit/shd_sun_unlit.yy",},
     {"name":"shd_vertical_fade","order":2,"path":"shaders/shd_vertical_fade/shd_vertical_fade.yy",},
     {"name":"shd_white_pixel_binary","order":1,"path":"shaders/shd_white_pixel_binary/shd_white_pixel_binary.yy",},

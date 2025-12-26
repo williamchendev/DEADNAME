@@ -555,6 +555,7 @@
     {"id":{"name":"shd_print_depth_map","path":"shaders/shd_print_depth_map/shd_print_depth_map.yy",},},
     {"id":{"name":"shd_print_metallic_map","path":"shaders/shd_print_metallic_map/shd_print_metallic_map.yy",},},
     {"id":{"name":"shd_print_roughness_map","path":"shaders/shd_print_roughness_map/shd_print_roughness_map.yy",},},
+    {"id":{"name":"shd_sdf_sphere_volumetric_cloud_lit","path":"shaders/shd_sdf_sphere_volumetric_cloud_lit/shd_sdf_sphere_volumetric_cloud_lit.yy",},},
     {"id":{"name":"shd_sphere_unlit","path":"shaders/shd_sphere_unlit/shd_sphere_unlit.yy",},},
     {"id":{"name":"shd_spot_light_blend","path":"shaders/shd_spot_light_blend/shd_spot_light_blend.yy",},},
     {"id":{"name":"shd_sun_unlit","path":"shaders/shd_sun_unlit/shd_sun_unlit.yy",},},

@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_sdf_sphere_volumetric_cloud_lit",
+  "name":"shd_sdf_sphere_volumetric_cloud_lit",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Shaders/Celestial.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

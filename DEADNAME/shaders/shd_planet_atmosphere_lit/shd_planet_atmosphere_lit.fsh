@@ -223,7 +223,7 @@ void main()
 	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
 	
 	// Calculate Light Visible from Surface of Atmosphere
-	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, (uv * in_fsh_CameraDimensions) / u_BlueNoise_Texture_Size);
+	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 2.0, diffuse_color.rgb, (uv * in_fsh_CameraDimensions) / u_BlueNoise_Texture_Size);
 	
 	// Calculate Atmosphere Alpha
 	float atmosphere_alpha = min(atmosphere_depth + planet_mask.a, 1.0);

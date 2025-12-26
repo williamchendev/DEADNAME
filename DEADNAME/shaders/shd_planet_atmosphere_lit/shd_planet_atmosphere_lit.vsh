@@ -22,8 +22,8 @@ varying vec4 v_vSurfaceUV;
 varying vec3 v_vWorldPosition;
 
 // Constants
-const vec3 up_vector = vec3(0.0, 1.0, 0.0);
 const vec3 right_vector = vec3(1.0, 0.0, 0.0);
+const vec3 up_vector = vec3(0.0, 1.0, 0.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // Rotation Matrix Functions
