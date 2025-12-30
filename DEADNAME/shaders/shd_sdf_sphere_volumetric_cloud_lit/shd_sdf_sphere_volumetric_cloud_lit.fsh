@@ -2,14 +2,36 @@
 // Lit Raymarched SDF Sphere Cloud fragment shader meant for Inno's Solar System Overworld
 //
 
-// Inno's Test Noise Fragment Shader
+// Camera Properties
+uniform vec3 in_fsh_CameraPosition;
+uniform mat4 in_fsh_CameraRotation;
+
+//
+
+
+// 
 uniform float u_Time;
 
-// Interpolated UV & Color
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
+//
+uniform float u_fsh_CloudRadius;
+
+uniform float u_fsh_CloudSampleRadius;
+uniform float u_CloudPointSamplesCount;
+
+// Interpolated Square UV, Surface Mask UV, and World Position
+varying vec2 v_vSquareUV;
+varying vec4 v_vSurfaceUV;
+varying vec3 v_vWorldPosition;
+varying vec3 v_vSampleForward;
+varying vec3 v_vSamplePosition;
 
 // Constants
+const float Pi = 3.14159265359;
+
+const float epsilon = 0.0001;
+
+const vec2 center = vec2(0.5, 0.5);
+
 const float cell_count = 20.0;
 const float worley_noise_frequency = 15.0;
 const vec3 perlin_noise_period = vec3(25.0, 40.0, 15.0);
@@ -29,6 +51,23 @@ vec3 random(vec3 value)
 	return fract(value_mod * 43758.5453123) * 2.0 - 1.0;
 }
 
+vec3 randomAngle(vec3 value)
+{
+	vec2 value_dot_product = vec2(dot(value, vec3(12.9898, 78.233, 34.897)), dot(value, vec3(12.345, 67.89, 412.12)));
+	vec2 value_trig = vec2(cos(value_dot_product.x), sin(value_dot_product.y));
+	vec2 value_mod = (mod(197.0 * value_trig, 1.0) + value_trig) * 0.5453;
+	vec2 random_values = fract(value_mod * 43758.5453123);
+	
+	float theta = acos(2.0 * random_values.x - 1.0);
+	float phi = 2.0 * random_values.y * Pi;
+	
+	float angle_x = cos(phi) * sin(theta);
+	float angle_y = sin(phi) * sin(theta);
+	float angle_z = cos(theta);
+	
+	return vec3(angle_x, angle_y, angle_z);
+}
+
 float perlinNoise(vec3 uvw, vec3 period)
 {
 	// Perlin Noise Grid Variables
@@ -39,14 +78,14 @@ float perlinNoise(vec3 uvw, vec3 period)
 	vec3 blur = smoothstep(0.0, 1.0, uvw_fract);
 	
 	// Establish 8 Corners of Seamless Sample Cube
-	vec3 left_down_back 	= random(vec3(cells_min.x, cells_min.y, cells_min.z));
-	vec3 right_down_back	= random(vec3(cells_max.x, cells_min.y, cells_min.z));
-	vec3 left_up_back		= random(vec3(cells_min.x, cells_max.y, cells_min.z));
-	vec3 left_down_front	= random(vec3(cells_min.x, cells_min.y, cells_max.z));
-	vec3 right_up_back		= random(vec3(cells_max.x, cells_max.y, cells_min.z));
-	vec3 right_down_front	= random(vec3(cells_max.x, cells_min.y, cells_max.z));
-	vec3 left_up_front		= random(vec3(cells_min.x, cells_max.y, cells_max.z));
-	vec3 right_up_front 	= random(vec3(cells_max.x, cells_max.y, cells_max.z));
+	vec3 left_down_back 	= randomAngle(vec3(cells_min.x, cells_min.y, cells_min.z));
+	vec3 right_down_back	= randomAngle(vec3(cells_max.x, cells_min.y, cells_min.z));
+	vec3 left_up_back		= randomAngle(vec3(cells_min.x, cells_max.y, cells_min.z));
+	vec3 left_down_front	= randomAngle(vec3(cells_min.x, cells_min.y, cells_max.z));
+	vec3 right_up_back		= randomAngle(vec3(cells_max.x, cells_max.y, cells_min.z));
+	vec3 right_down_front	= randomAngle(vec3(cells_max.x, cells_min.y, cells_max.z));
+	vec3 left_up_front		= randomAngle(vec3(cells_min.x, cells_max.y, cells_max.z));
+	vec3 right_up_front 	= randomAngle(vec3(cells_max.x, cells_max.y, cells_max.z));
 	
 	// Interpolate Horizontal
 	float horizontal_sample_a = mix(dot(left_down_back, uvw_fract - vec3(0.0, 0.0, 0.0)), dot(right_down_back, uvw_fract - vec3(1.0, 0.0, 0.0)), blur.x);
@@ -113,12 +152,7 @@ float cloudNoise(vec3 uvw)
 	
 	float perlin_noise = abs((perlin_noise_oct_a + perlin_noise_oct_b + perlin_noise_oct_c) * 2.0 - 1.0);
 	
-	// 
-	//float perlin_noise_large = clamp(perlinNoise(uvw * 0.25, perlin_noise_period) * 2.0, 0.5, 1.0);
-	//float perlin_noise_large = min(abs(perlinNoise(uvw * 0.25, perlin_noise_period) * 2.0 - 1.0) * 2.0, 1.0);
-	
 	// Return Final Value
-	//return worley_noise + (perlin_noise * 0.2);
 	float final_result = worley_noise + (perlin_noise * 0.2);
 	return final_result;
 }
@@ -126,5 +160,41 @@ float cloudNoise(vec3 uvw)
 // Fragment Shader
 void main() 
 {
-	gl_FragColor = v_vColour * cloudNoise(vec3(v_vTexcoord, 0.0) + vec3(u_Time, u_Time, 0.0) * 0.00001);
+	// Atmosphere Radius
+	float radius = distance(v_vSquareUV, center);
+	
+	// Circle Cut-Out Early Return
+	if (radius > 0.5)
+	{
+		return;
+	}
+	
+	// Calculate Camera Forward Vector from Camera's Rotation Matrix
+	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
+	
+	// Calculate Cloud Depth
+	float cloud_depth = cos(radius * Pi);
+	
+	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
+	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
+	//vec4 planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv);
+	
+	// Sample Cloud Noise
+	float cloud_optical_density = 0.0;
+	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudSampleRadius - epsilon);
+	float cloud_sample_ray_length = u_fsh_CloudSampleRadius * cloud_depth - epsilon * 2.0;
+	float cloud_sample_step_size = cloud_sample_ray_length / (u_CloudPointSamplesCount - 1.0);
+	
+	for (float i = 0.0; i < u_CloudPointSamplesCount; i++)
+	{
+		//
+		cloud_optical_density += cloudNoise(cloud_sample_position * 0.01) * 0.05;
+		cloud_sample_position += v_vSampleForward * cloud_sample_step_size;
+	}
+	
+	//
+	//gl_FragColor = cloudNoise(vec3(v_vTexcoord, 0.0) + vec3(u_Time, u_Time, 0.0) * 0.00001);
+	
+	gl_FragData[0] = vec4(vec3(cloud_optical_density), 1.0);
+	gl_FragData[1] = vec4(vec3(cloud_optical_density), 1.0);
 }

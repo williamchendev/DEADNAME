@@ -200,14 +200,14 @@ void main()
 	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
-	vec4 planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv);
+	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
 	
 	// Retreive Celestial Body's Surface Color
 	vec4 diffuse_color = texture2D(gm_BaseTexture, uv);
 	
 	// Calculate Atmosphere Depth based on Radial Distance from Center of the Atmosphere
 	float atmosphere_depth = cos(radius * Pi);
-	float atmosphere_depth_mask_adjusted = (atmosphere_depth * 2.0 * (1.0 - planet_mask.a)) + ((1.0 - planet_mask.r) * planet_mask.a);
+	float atmosphere_depth_mask_adjusted = planet_mask == 0.0 ? atmosphere_depth * 2.0 : 1.0 - planet_mask;
 	
 	// Calculate Atmosphere Surface Position
 	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * u_fsh_AtmosphereRadius * camera_forward);
@@ -223,10 +223,10 @@ void main()
 	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
 	
 	// Calculate Light Visible from Surface of Atmosphere
-	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 2.0, diffuse_color.rgb, (uv * in_fsh_CameraDimensions) / u_BlueNoise_Texture_Size);
+	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, (uv * in_fsh_CameraDimensions) / u_BlueNoise_Texture_Size);
 	
 	// Calculate Atmosphere Alpha
-	float atmosphere_alpha = min(atmosphere_depth + planet_mask.a, 1.0);
+	float atmosphere_alpha = min(atmosphere_depth + (planet_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere Fragment Color Value
 	gl_FragColor = vec4(light, atmosphere_alpha);

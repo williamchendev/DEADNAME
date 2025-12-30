@@ -26,41 +26,6 @@ const vec3 right_vector = vec3(1.0, 0.0, 0.0);
 const vec3 up_vector = vec3(0.0, 1.0, 0.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
-// Rotation Matrix Functions
-mat3 eulerRotationMatrix(vec3 euler_angles) 
-{
-	// Convert Euler Angles from Degrees to Radians
-	float roll = radians(euler_angles.x);
-	float pitch = radians(euler_angles.y);
-	float yaw = radians(euler_angles.z);
-	
-	// Pre-calculate Sin and Cos values
-	float cr = cos(roll);
-	float sr = sin(roll);
-	float cp = cos(pitch);
-	float sp = sin(pitch);
-	float cy = cos(yaw);
-	float sy = sin(yaw);
-	
-	// Build rotation matrix (ZXY order - roll, yaw, pitch)
-	mat3 rotMatrix;
-    
-    rotMatrix[0][0] = cy * cp - sr * sy * sp;
-    rotMatrix[0][1] = sy * cp + sr * sp * cy;
-    rotMatrix[0][2] = -sp * cr;
-    
-    rotMatrix[1][0] = -sy * cr;
-    rotMatrix[1][1] = cr * cy;
-    rotMatrix[1][2] = sr;
-    
-    rotMatrix[2][0] = sp * cy + sr * sy * cp;
-    rotMatrix[2][1] = sp * sy - sr * cy * cp;
-    rotMatrix[2][2] = cr * cp;
-	
-	// Return Rotation Matrix
-	return rotMatrix;
-}
-
 // Vertex Shader
 void main() 
 {

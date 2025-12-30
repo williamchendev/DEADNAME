@@ -4,6 +4,36 @@
 // Initialize Celestial Body's Geodesic Icosphere
 event_inherited();
 
+// Initialize Planet Cloud System
+var temp_clouds_spawn_sphere = geodesic_icosphere_create(clouds_spawn_resolution);
+clouds_spawn_sphere_uvs = temp_clouds_spawn_sphere.vertex_uvs;
+
+show_debug_message(array_length(temp_clouds_spawn_sphere.vertices));
+
+clouds_active_array = array_create(clouds_spawn_limit);
+clouds_u_position_array = array_create(clouds_spawn_limit);
+clouds_v_position_array = array_create(clouds_spawn_limit);
+clouds_radius_array = array_create(clouds_spawn_limit);
+clouds_height_array = array_create(clouds_spawn_limit);
+clouds_moisture_array = array_create(clouds_spawn_limit);
+clouds_temperature_array = array_create(clouds_spawn_limit);
+
+var temp_cloud_spawn_num = 80;
+
+for (var i = 0; i < temp_cloud_spawn_num; i++)
+{
+	clouds_active_array[i] = 1;
+	clouds_radius_array[i] = 5;
+	clouds_height_array[i] = random_range(4, 8);
+	
+	var temp_random_cloud_uv = clouds_spawn_sphere_uvs[irandom_range(0, array_length(temp_clouds_spawn_sphere.vertices) - 1)];
+	clouds_u_position_array[i] = temp_random_cloud_uv[0];
+	clouds_v_position_array[i] = temp_random_cloud_uv[1];
+}
+
+// Initialize Clouds Depth Sorted Rendering DS List
+clouds_render_list = ds_list_create();
+
 // Update Celestial Object Type to Planet
 celestial_object_type = CelestialObjectType.Planet;
 

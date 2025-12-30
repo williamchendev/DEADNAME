@@ -19,7 +19,17 @@ if (!surface_exists(celestial_body_render_surface))
 
 if (!surface_exists(celestial_body_atmosphere_depth_mask_surface))
 {
-    celestial_body_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+    celestial_body_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
+}
+
+if (!surface_exists(clouds_render_surface))
+{
+    clouds_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
+if (!surface_exists(clouds_atmosphere_depth_mask_surface))
+{
+    clouds_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
 }
 
 // Disable Depth for Celestial Simulation Pipeline Surfaces
