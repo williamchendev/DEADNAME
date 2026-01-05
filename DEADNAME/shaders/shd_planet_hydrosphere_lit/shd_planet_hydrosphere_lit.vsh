@@ -132,7 +132,7 @@ void main()
 		float amplitude = u_PlanetOcean_WaveSteepness[i] / wave_number;
 		
 		// Calculate Wave Phase
-		float theta = atan2(in_Position.z, in_Position.x);
+		float theta = clamp(atan2(in_Position.z, in_Position.x), -Pi, Pi);
 		float phi = acos(in_Position.y);
 		
 		float wave_x = cos(theta) * sin(phi);
