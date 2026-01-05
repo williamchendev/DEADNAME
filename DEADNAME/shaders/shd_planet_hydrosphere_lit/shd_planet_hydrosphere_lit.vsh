@@ -46,7 +46,6 @@ varying float v_vDepth;
 const float Pi = 3.14159265359;
 
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
-const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 const float ocean_waves_normal_strength = 0.5;
 
@@ -167,7 +166,7 @@ void main()
 	
 	// Interpolated Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
 	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);
-	v_vDepth = dot(camera_forward, (planet_rotated_local_vertex_position.xyz * inverse_forward_vector) / u_AtmosphereRadius) * 0.5 + 0.5;
+	v_vDepth = (dot(-camera_forward, planet_rotated_local_vertex_position.xyz / u_AtmosphereRadius) * 0.5 + 0.5) * u_AtmosphereRadius;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);

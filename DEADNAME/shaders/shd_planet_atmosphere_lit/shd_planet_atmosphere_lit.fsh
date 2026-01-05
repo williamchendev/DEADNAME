@@ -20,12 +20,12 @@ uniform vec3 u_AtmosphereScatteringCoefficients;
 uniform vec3 u_fsh_PlanetPosition;
 uniform float u_PlanetRadius;
 
-// Blue Noise Texture Properties
-uniform vec2 u_BlueNoise_Texture_Size;
-
 // Texture Properties
-uniform sampler2D gm_BlueNoiseTexture;
 uniform sampler2D gm_AtmospherePlanetDepthMask;
+
+uniform sampler2D gm_AtmosphereCloudsSurface;
+uniform sampler2D gm_AtmosphereCloudsDepthMask;
+uniform sampler2D gm_AtmosphereCloudsAlphaMask;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
@@ -136,7 +136,7 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 direction_to_light, float light_intensity, vec3 original_color, vec2 uv)
 {
 	// Calculate Blue Noise
-	float blue_noise = (texture2D(gm_BlueNoiseTexture, uv * blue_noise_dithering_scale).b - 0.5) * blue_noise_strength;
+	float blue_noise = 0.0 * blue_noise_dithering_scale * blue_noise_strength;
 	
 	// Scatter Point Sampling Variables
 	vec3 in_scatter_point = ray_origin;
@@ -201,13 +201,17 @@ void main()
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
 	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
+	float clouds_mask = texture2D(gm_AtmosphereCloudsDepthMask, uv).r;
+	float surface_mask = (clouds_mask > planet_mask ? clouds_mask : planet_mask) / u_fsh_AtmosphereRadius;
 	
 	// Retreive Celestial Body's Surface Color
-	vec4 diffuse_color = texture2D(gm_BaseTexture, uv);
+	vec4 clouds_diffuse_color = vec4(texture2D(gm_AtmosphereCloudsSurface, uv).rgb, texture2D(gm_AtmosphereCloudsAlphaMask, uv).r);
+	vec4 planet_diffuse_color = texture2D(gm_BaseTexture, uv);
+	vec4 diffuse_color = clouds_mask > planet_mask ? (1.0 - clouds_diffuse_color.a) * planet_diffuse_color + clouds_diffuse_color : planet_diffuse_color;
 	
 	// Calculate Atmosphere Depth based on Radial Distance from Center of the Atmosphere
 	float atmosphere_depth = cos(radius * Pi);
-	float atmosphere_depth_mask_adjusted = planet_mask == 0.0 ? atmosphere_depth * 2.0 : 1.0 - planet_mask;
+	float atmosphere_depth_mask_adjusted = surface_mask == 0.0 ? atmosphere_depth * 2.0 : 1.0 - surface_mask;
 	
 	// Calculate Atmosphere Surface Position
 	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * u_fsh_AtmosphereRadius * camera_forward);
@@ -223,11 +227,13 @@ void main()
 	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
 	
 	// Calculate Light Visible from Surface of Atmosphere
-	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, (uv * in_fsh_CameraDimensions) / u_BlueNoise_Texture_Size);
+	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, uv);
 	
 	// Calculate Atmosphere Alpha
-	float atmosphere_alpha = min(atmosphere_depth + (planet_mask == 0.0 ? 0.0 : 1.0), 1.0);
+	float atmosphere_alpha = min(atmosphere_depth + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere Fragment Color Value
 	gl_FragColor = vec4(light, atmosphere_alpha);
+	//gl_FragColor = vec4(vec3(surface_mask), 1.0);
+	//gl_FragColor = vec4(vec3(clouds_diffuse_color), 1.0);
 }

@@ -24,14 +24,18 @@ for (var i = 0; i < temp_cloud_spawn_num; i++)
 {
 	clouds_active_array[i] = 1;
 	clouds_radius_array[i] = 5;
-	clouds_height_array[i] = random_range(4, 8);
+	clouds_height_array[i] = random_range(12, 18);
 	
 	var temp_random_cloud_uv = clouds_spawn_sphere_uvs[irandom_range(0, array_length(temp_clouds_spawn_sphere.vertices) - 1)];
 	clouds_u_position_array[i] = temp_random_cloud_uv[0];
 	clouds_v_position_array[i] = temp_random_cloud_uv[1];
+	
+	clouds_u_position_array[i] = random_range(0, 1);
+	clouds_v_position_array[i] = random_range(0, 1);
 }
 
 // Initialize Clouds Depth Sorted Rendering DS List
+clouds_depth_list = ds_list_create();
 clouds_render_list = ds_list_create();
 
 // Update Celestial Object Type to Planet

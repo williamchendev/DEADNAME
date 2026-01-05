@@ -12,6 +12,9 @@ uniform mat4 in_fsh_CameraRotation;
 // 
 uniform float u_Time;
 
+// Atmosphere Properties
+uniform float u_fsh_AtmosphereRadius;
+
 //
 uniform float u_fsh_CloudRadius;
 
@@ -21,7 +24,7 @@ uniform float u_CloudPointSamplesCount;
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
 varying vec4 v_vSurfaceUV;
-varying vec3 v_vWorldPosition;
+varying vec3 v_vLocalPosition;
 varying vec3 v_vSampleForward;
 varying vec3 v_vSamplePosition;
 
@@ -31,10 +34,13 @@ const float Pi = 3.14159265359;
 const float epsilon = 0.0001;
 
 const vec2 center = vec2(0.5, 0.5);
+const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 const float cell_count = 20.0;
 const float worley_noise_frequency = 15.0;
 const vec3 perlin_noise_period = vec3(25.0, 40.0, 15.0);
+
+const float cloud_absorption = 5.0;
 
 // Noise Methods
 vec3 modulo(vec3 divident, vec3 divisor)
@@ -175,26 +181,33 @@ void main()
 	// Calculate Cloud Depth
 	float cloud_depth = cos(radius * Pi);
 	
+	//
+	float atmosphere_depth = (dot(-camera_forward, (v_vLocalPosition - cloud_depth * camera_forward) / u_fsh_AtmosphereRadius) * 0.5 + 0.5) * u_fsh_AtmosphereRadius;
+	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
 	//vec4 planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv);
 	
 	// Sample Cloud Noise
-	float cloud_optical_density = 0.0;
-	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudSampleRadius - epsilon);
-	float cloud_sample_ray_length = u_fsh_CloudSampleRadius * cloud_depth - epsilon * 2.0;
+	float cloud_sample_value = 0.0;
+	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudRadius - epsilon);
+	float cloud_sample_ray_length = (u_fsh_CloudRadius * cloud_depth - epsilon) * 2.0;
 	float cloud_sample_step_size = cloud_sample_ray_length / (u_CloudPointSamplesCount - 1.0);
 	
 	for (float i = 0.0; i < u_CloudPointSamplesCount; i++)
 	{
 		//
-		cloud_optical_density += cloudNoise(cloud_sample_position * 0.01) * 0.05;
+		cloud_sample_value += cloudNoise(cloud_sample_position * 0.01) / u_CloudPointSamplesCount;
 		cloud_sample_position += v_vSampleForward * cloud_sample_step_size;
 	}
+	
+	//
+	float cloud_optical_density = exp(-cloud_sample_value * cloud_absorption) * (1.0 - exp(-cloud_sample_value * cloud_absorption * 2.0));
 	
 	//
 	//gl_FragColor = cloudNoise(vec3(v_vTexcoord, 0.0) + vec3(u_Time, u_Time, 0.0) * 0.00001);
 	
 	gl_FragData[0] = vec4(vec3(cloud_optical_density), 1.0);
 	gl_FragData[1] = vec4(vec3(cloud_optical_density), 1.0);
+	gl_FragData[2] = vec4(vec3(atmosphere_depth), 1.0);
 }

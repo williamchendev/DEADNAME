@@ -19,7 +19,7 @@ if (!surface_exists(celestial_body_render_surface))
 
 if (!surface_exists(celestial_body_atmosphere_depth_mask_surface))
 {
-    celestial_body_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
+    celestial_body_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r16float);
 }
 
 if (!surface_exists(clouds_render_surface))
@@ -27,9 +27,14 @@ if (!surface_exists(clouds_render_surface))
     clouds_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
+if (!surface_exists(clouds_alpha_mask_surface))
+{
+    clouds_alpha_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
+}
+
 if (!surface_exists(clouds_atmosphere_depth_mask_surface))
 {
-    clouds_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
+    clouds_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r16float);
 }
 
 // Disable Depth for Celestial Simulation Pipeline Surfaces
@@ -40,12 +45,6 @@ if (!surface_exists(final_render_surface))
 {
     final_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
-
-// Reset Depth Enabled Celestial Rendering Surface
-surface_set_target(celestial_body_render_surface);
-draw_clear_alpha(c_black, 1);
-draw_clear_depth(1);
-surface_reset_target();
 
 // Reset Celestial Simulator's Final Rendering Surface
 surface_set_target(final_render_surface);

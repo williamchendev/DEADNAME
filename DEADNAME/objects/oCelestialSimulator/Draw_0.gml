@@ -51,6 +51,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				
 				// Reset Celestial Body Depth Render Surface
 				draw_clear_alpha(c_black, 0);
+				draw_clear_depth(1);
 				
 				// Enable Sun Unlit Shader
 				shader_set(shd_sun_unlit);
@@ -105,6 +106,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				
 				// Reset Celestial Body Depth Render Surface
 				draw_clear_alpha(c_black, 0);
+				draw_clear_depth(1);
 				
 				// Enable Planet Lithosphere Shader
 				shader_set(shd_planet_lithosphere_lit);
@@ -220,13 +222,13 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					surface_reset_target();
 				}
 				
+				// Disable Z-Depth Rendering
+				gpu_set_zwriteenable(false);
+				gpu_set_ztestenable(false);
+				
 				// Check if Planet's Atmosphere is Enabled and should be Rendered
 				if (sky)
 				{
-					// Disable Z-Depth Rendering
-					gpu_set_zwriteenable(false);
-					gpu_set_ztestenable(false);
-					
 					// Check if Planet's Atmosphere will contain Clouds
 					if (clouds)
 					{
@@ -235,7 +237,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						
 						// Set Clouds Depth Render Surface as Surface Target
 						surface_set_target_ext(0, CelestialSimulator.clouds_render_surface);
-						surface_set_target_ext(1, CelestialSimulator.clouds_atmosphere_depth_mask_surface);
+						surface_set_target_ext(1, CelestialSimulator.clouds_alpha_mask_surface);
+						surface_set_target_ext(2, CelestialSimulator.clouds_atmosphere_depth_mask_surface);
 						
 						// Reset Clouds Depth Render Surface
 						draw_clear_alpha(c_black, 0);
@@ -246,15 +249,15 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						// Set Planet Atmosphere Cloud Rendering Shader Camera Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
+						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);
 						
 						// Set Planet Atmosphere Cloud Rendering Sampling Properties
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_point_samples_count_index, 20);
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_cloud_sample_radius_index, 10);
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_cloud_sample_radius_index, 10);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_point_samples_count_index, CelestialSimulator.global_clouds_point_samples_count);
 						
 						// Set Planet Atmosphere Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index, radius + elevation + sky_radius);
 						
 						// Planet Physical Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_planet_radius_index, radius);
@@ -262,24 +265,23 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 						
 						// Iterate through all Clouds in Planet's Atmosphere
-						var temp_cloud_index = 0;
+						var temp_cloud_render_index = 0;
 						
-						repeat (array_length(clouds_active_array))
+						repeat (ds_list_size(clouds_render_list))
 						{
-							// Check if Cloud is Active
-							if (clouds_active_array[temp_cloud_index] == 1)
-							{
-								// Set Planet Atmosphere Cloud Rendering Shader Camera Properties
-								shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_uv_index, clouds_u_position_array[temp_cloud_index], clouds_v_position_array[temp_cloud_index]);
-								shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_radius_index, clouds_radius_array[temp_cloud_index]);
-								shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_height_index, clouds_height_array[temp_cloud_index]);
-								
-								// Draw SDF Sphere Volumetric Cloud from Square UV Vertex Buffer
-								vertex_submit(CelestialSimulator.atmosphere_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
-							}
+							//
+							var temp_cloud_index = ds_list_find_value(clouds_render_list, temp_cloud_render_index);
 							
-							// Increment Cloud Index
-							temp_cloud_index++;
+							// Set Planet Atmosphere Cloud Rendering Shader Camera Properties
+							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_uv_index, clouds_u_position_array[temp_cloud_index], clouds_v_position_array[temp_cloud_index]);
+							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_radius_index, clouds_radius_array[temp_cloud_index]);
+							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_height_index, clouds_height_array[temp_cloud_index]);
+							
+							// Draw SDF Sphere Volumetric Cloud from Square UV Vertex Buffer
+							vertex_submit(CelestialSimulator.atmosphere_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
+							
+							// Increment Cloud Render Index
+							temp_cloud_render_index++;
 						}
 						
 						// Reset Shader
@@ -291,10 +293,6 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					
 					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-					
-					// Disable Z-Depth Rendering
-					gpu_set_zwriteenable(false);
-					gpu_set_ztestenable(false);
 					
 					// Set Final Render Surface as Surface Target
 					surface_set_target(CelestialSimulator.final_render_surface);
@@ -324,17 +322,17 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_density_falloff_index, sky_density_falloff);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_scattering_coefficients_index, temp_planet_atmosphere_scatter_r, temp_planet_atmosphere_scatter_g, temp_planet_atmosphere_scatter_b);
 					
-					// Set Blue Noise Texture Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_blue_noise_texture_size_index, sprite_get_width(sSystem_PerlinNoise), sprite_get_height(sSystem_PerlinNoise));
-					
 					// Set Planet Render Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_planet_radius_index, radius);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_planet_position_index, x, y, z);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_planet_position_index, x, y, z);
 					
 					// Set the Atmosphere Mask Texture of the Planet's Depth Render
-					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_blue_noise_texture_index, sprite_get_texture(sSystem_PerlinNoise, 0));
 					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_planet_depth_mask_texture_index, surface_get_texture(CelestialSimulator.celestial_body_atmosphere_depth_mask_surface));
+					
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_clouds_surface_texture_index, surface_get_texture(CelestialSimulator.clouds_render_surface));
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_clouds_depth_mask_texture_index, surface_get_texture(CelestialSimulator.clouds_atmosphere_depth_mask_surface));
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_clouds_alpha_mask_texture_index, surface_get_texture(CelestialSimulator.clouds_alpha_mask_surface));
 					
 					// Draw Final Planet Render with Atmosphere from Square UV Vertex Buffer
 					vertex_submit(CelestialSimulator.atmosphere_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
@@ -344,19 +342,11 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					
 					// Reset Surface Target
 					surface_reset_target();
-					
-					// Disable Z-Depth Rendering
-					gpu_set_zwriteenable(false);
-					gpu_set_ztestenable(false);
 				}
 				else
 				{
 					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-					
-					// Disable Z-Depth Rendering
-					gpu_set_zwriteenable(false);
-					gpu_set_ztestenable(false);
 					
 					// Render Celestial Object to Final Render Surface
 					surface_set_target(CelestialSimulator.final_render_surface);

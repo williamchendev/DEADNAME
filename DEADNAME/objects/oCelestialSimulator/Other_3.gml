@@ -18,6 +18,9 @@ celestial_body_atmosphere_depth_mask_surface = -1;
 surface_free(clouds_render_surface);
 clouds_render_surface = -1;
 
+surface_free(clouds_alpha_mask_surface);
+clouds_alpha_mask_surface = -1;
+
 surface_free(clouds_atmosphere_depth_mask_surface);
 clouds_atmosphere_depth_mask_surface = -1;
 

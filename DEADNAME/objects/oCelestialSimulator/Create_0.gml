@@ -60,6 +60,8 @@ solar_system_render_depth_instances_list = ds_list_create();
 global_hydrosphere_time = 0;
 global_hydrosphere_time_spd = 0.0037;
 
+global_clouds_point_samples_count = 20;
+
 global_atmosphere_scatter_point_samples_count = 10;
 global_atmosphere_optical_depth_samples_count = 10;
 
@@ -68,6 +70,7 @@ celestial_body_render_surface = -1;
 celestial_body_atmosphere_depth_mask_surface = -1;
 
 clouds_render_surface = -1;
+clouds_alpha_mask_surface = -1;
 clouds_atmosphere_depth_mask_surface = -1;
 
 final_render_surface = -1;
@@ -191,19 +194,22 @@ planet_atmosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet
 planet_atmosphere_lit_shader_vsh_planet_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_vsh_PlanetPosition");
 planet_atmosphere_lit_shader_fsh_planet_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_fsh_PlanetPosition");
 
-planet_atmosphere_lit_shader_blue_noise_texture_size_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_BlueNoise_Texture_Size");
-
-planet_atmosphere_lit_shader_blue_noise_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_BlueNoiseTexture");
 planet_atmosphere_lit_shader_planet_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmospherePlanetDepthMask");
+
+planet_atmosphere_lit_shader_clouds_surface_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmosphereCloudsSurface");
+planet_atmosphere_lit_shader_clouds_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmosphereCloudsDepthMask");
+planet_atmosphere_lit_shader_clouds_alpha_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmosphereCloudsAlphaMask");
 
 // MRT (Forward Rendered Lighting) Signed Distance Field Sphere-Shaped Volumetric Clouds Lit Rendering Shader Indexes
 sdf_sphere_volumetric_clouds_lit_shader_time_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_Time");
 
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraPosition");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraRotation");
+sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraDimensions");
 
-sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_AtmosphereRadius");
+sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_AtmosphereRadius");
+sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_AtmosphereRadius");
 
 sdf_sphere_volumetric_clouds_lit_shader_planet_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_PlanetRadius");
 sdf_sphere_volumetric_clouds_lit_shader_planet_position_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_PlanetPosition");
@@ -211,8 +217,6 @@ sdf_sphere_volumetric_clouds_lit_shader_planet_euler_angles_index = shader_get_u
 
 sdf_sphere_volumetric_clouds_lit_shader_cloud_uv_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudUV");
 sdf_sphere_volumetric_clouds_lit_shader_cloud_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudRadius");
-sdf_sphere_volumetric_clouds_lit_shader_vsh_cloud_sample_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_CloudSampleRadius");
-sdf_sphere_volumetric_clouds_lit_shader_fsh_cloud_sample_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_CloudSampleRadius");
 sdf_sphere_volumetric_clouds_lit_shader_cloud_height_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudHeight");
 
 sdf_sphere_volumetric_clouds_lit_shader_cloud_point_samples_count_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudPointSamplesCount");
