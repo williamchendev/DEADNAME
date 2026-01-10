@@ -14,23 +14,23 @@ uniform vec2 in_vsh_CameraDimensions;
 uniform float u_vsh_AtmosphereRadius;
 
 // Planet Properties
-uniform float u_PlanetRadius;
-uniform vec3 u_PlanetPosition;
+uniform float u_vsh_PlanetRadius;
+uniform vec3 u_vsh_PlanetPosition;
 uniform vec3 u_PlanetEulerAngles;
 
 // Cloud Properties
 uniform vec2 u_CloudUV;
-uniform float u_CloudRadius;
+uniform float u_vsh_CloudRadius;
 uniform float u_CloudHeight;
-
-uniform float u_vsh_CloudSampleRadius;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
 varying vec4 v_vSurfaceUV;
+varying vec3 v_vCloudPosition;
 varying vec3 v_vLocalPosition;
 varying vec3 v_vSampleForward;
 varying vec3 v_vSamplePosition;
+varying mat3 v_vPlanetRotation;
 
 // Constants
 const float Pi = 3.14159265359;
@@ -115,36 +115,35 @@ void main()
 	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);
 	
 	// Calculate Planet Rotation Matrix from Planet's Euler Angles
-	mat3 planet_rotation_matrix = eulerRotationMatrix(-u_PlanetEulerAngles);
+	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
 	mat3 inverse_planet_rotation_matrix = inverse(planet_rotation_matrix);
 	
 	// Convert Cloud UV into Normalized Position Vector Relative to Planet Center
 	vec3 cloud_sphere_vector = sphereVectorFromUV(u_CloudUV);
 	
-	// Calculate Render Planet Position with Camera Rotation Matrix
-	vec4 planet_position = vec4(u_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
-	
 	// Calculate Cloud Offset from Planet Center
-	vec3 cloud_planet_center_offset = (u_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * planet_rotation_matrix;
+	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_planet_rotation_matrix;
 	
 	// Calculate Render Cloud Vertex Position with Camera Rotation Matrix
-	vec4 cloud_world_position = vec4(u_PlanetPosition + cloud_planet_center_offset - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
-	vec4 cloud_vertex_position = cloud_world_position + vec4(in_Position * u_CloudRadius, 0.0, 0.0);
+	vec4 cloud_world_position = vec4(u_vsh_PlanetPosition + cloud_planet_center_offset - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
+	vec4 cloud_vertex_position = cloud_world_position + vec4(in_Position * u_vsh_CloudRadius, 0.0, 0.0);
 	
 	// Interpolated Square UV and Surface UV
 	v_vSquareUV = (in_Position * 0.5) + 0.5;
 	v_vSurfaceUV = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * vec4(cloud_vertex_position.xyz * inverse_vertical_vector + vec3(in_vsh_CameraDimensions * 0.5, 0.0), 1.0);
 	
-	// Interpolated World Position
-	vec3 planet_position_horizontal = camera_right * in_Position.x * u_CloudRadius;
-	vec3 planet_position_vertical = camera_up * in_Position.y * u_CloudRadius;
+	// Interpolated Local Position
+	vec3 planet_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius;
+	vec3 planet_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius;
 	v_vLocalPosition = cloud_planet_center_offset + planet_position_horizontal + planet_position_vertical;
+	v_vCloudPosition = u_vsh_PlanetPosition + cloud_planet_center_offset;
 	
 	// Interpolated Sample Position
-	vec3 sample_position_horizontal = camera_right * in_Position.x * u_CloudRadius * inverse_planet_rotation_matrix;
-	vec3 sample_position_vertical = camera_up * in_Position.y * u_CloudRadius * inverse_planet_rotation_matrix;
-	v_vSampleForward = camera_forward * inverse_planet_rotation_matrix;
-	v_vSamplePosition = (u_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position_horizontal + sample_position_vertical;
+	vec3 sample_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius * planet_rotation_matrix;
+	vec3 sample_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius * planet_rotation_matrix;
+	v_vSampleForward = camera_forward * planet_rotation_matrix;
+	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position_horizontal + sample_position_vertical;
+	v_vPlanetRotation = planet_rotation_matrix;
 	
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(cloud_vertex_position.xyz + vec3(in_vsh_CameraDimensions * 0.5, 0.0), 1.0);

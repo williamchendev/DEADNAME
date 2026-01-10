@@ -476,6 +476,7 @@
     {"id":{"name":"game_get_","path":"scripts/game_get_/game_get_.yy",},},
     {"id":{"name":"geodesic_icosphere","path":"scripts/geodesic_icosphere/geodesic_icosphere.yy",},},
     {"id":{"name":"gml_classes","path":"scripts/gml_classes/gml_classes.yy",},},
+    {"id":{"name":"haversine_distance_uv","path":"scripts/haversine_distance_uv/haversine_distance_uv.yy",},},
     {"id":{"name":"instance_create_unit","path":"scripts/instance_create_unit/instance_create_unit.yy",},},
     {"id":{"name":"instance_find_var","path":"scripts/instance_find_var/instance_find_var.yy",},},
     {"id":{"name":"instance_link","path":"scripts/instance_link/instance_link.yy",},},

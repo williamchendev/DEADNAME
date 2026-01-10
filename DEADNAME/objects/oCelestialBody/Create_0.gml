@@ -114,3 +114,6 @@ repeat (array_length(icosphere.triangles))
 // Finish Initializing Vertex Buffer
 vertex_end(icosphere_vertex_buffer);
 vertex_freeze(icosphere_vertex_buffer);
+
+// Initialize Empty Frustum Culling Radius
+frustum_culling_radius = -1;

@@ -48,6 +48,7 @@
     {"$GMObjectProperty":"v2","%Name":"clouds","filters":[],"listItems":[],"multiselect":false,"name":"clouds","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"clouds_spawn_limit","filters":[],"listItems":[],"multiselect":false,"name":"clouds_spawn_limit","rangeEnabled":true,"rangeMax":160.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"80","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"clouds_spawn_resolution","filters":[],"listItems":[],"multiselect":false,"name":"clouds_spawn_resolution","rangeEnabled":true,"rangeMax":6.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"clouds_ambient_color","filters":[],"listItems":[],"multiselect":false,"name":"clouds_ambient_color","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF808080","varType":7,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

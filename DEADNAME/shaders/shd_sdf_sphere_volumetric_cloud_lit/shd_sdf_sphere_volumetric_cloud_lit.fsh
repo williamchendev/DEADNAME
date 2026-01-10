@@ -6,32 +6,46 @@
 uniform vec3 in_fsh_CameraPosition;
 uniform mat4 in_fsh_CameraRotation;
 
-//
-
-
-// 
-uniform float u_Time;
+// Sample Properties
+uniform float u_ScatterPointSamplesCount;
+uniform float u_LightDepthSamplesCount;
+uniform float u_CloudSampleScale;
 
 // Atmosphere Properties
 uniform float u_fsh_AtmosphereRadius;
 
-//
+// Planet Properties
+uniform float u_fsh_PlanetRadius;
+uniform vec3 u_fsh_PlanetPosition;
+
+// Cloud Properties
 uniform float u_fsh_CloudRadius;
 
-uniform float u_fsh_CloudSampleRadius;
-uniform float u_CloudPointSamplesCount;
+uniform float u_CloudAbsorption;
+uniform float u_CloudDensity;
+uniform float u_CloudDensityFalloff;
+uniform float u_CloudAnisotropicLightScattering;
+
+uniform vec3 u_CloudColor;
+uniform vec3 u_CloudAmbientLightColor;
+
+// Texture Properties
+uniform sampler2D gm_AtmospherePlanetDepthMask;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
 varying vec4 v_vSurfaceUV;
+varying vec3 v_vCloudPosition;
 varying vec3 v_vLocalPosition;
 varying vec3 v_vSampleForward;
 varying vec3 v_vSamplePosition;
+varying mat3 v_vPlanetRotation;
 
 // Constants
 const float Pi = 3.14159265359;
 
 const float epsilon = 0.0001;
+const float pseudo_infinity = 1.0 / 0.0;
 
 const vec2 center = vec2(0.5, 0.5);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
@@ -39,8 +53,6 @@ const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 const float cell_count = 20.0;
 const float worley_noise_frequency = 15.0;
 const vec3 perlin_noise_period = vec3(25.0, 40.0, 15.0);
-
-const float cloud_absorption = 5.0;
 
 // Noise Methods
 vec3 modulo(vec3 divident, vec3 divisor)
@@ -163,13 +175,86 @@ float cloudNoise(vec3 uvw)
 	return final_result;
 }
 
+vec3 cloudNoiseNormal(vec3 uvw, float offset)
+{
+	vec3 offset_xyy = vec3(offset, 0.0, 0.0);
+	vec3 offset_yxy = vec3(0.0, offset, 0.0);
+	vec3 offset_yyx = vec3(0.0, 0.0, offset);
+	vec3 normal = vec3(cloudNoise(uvw)) - vec3(cloudNoise(uvw - offset_xyy), cloudNoise(uvw - offset_yxy), cloudNoise(uvw - offset_yyx));
+	return normalize(normal);
+}
+
+// Sphere Functions
+// Returns vector (distance_to_sphere, distance_through_sphere)
+vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ray_direction) 
+{
+	// If ray origin is inside sphere, dstToSphere = 0
+	// If ray misses sphere, dstToSphere = maxValue; dstThroughSphere = 0
+	vec3 offset = ray_origin - sphere_center;
+	float s_a = dot(ray_direction, ray_direction);
+	float s_b = 2.0 * dot(offset, ray_direction);
+	float s_c = dot(offset, offset) - sphere_radius * sphere_radius;
+	float s_d = s_b * s_b - 4.0 * s_a * s_c; // Sphere Discriminant
+	
+	// Number of intersections: 0 when d < 0; 1 when d = 0; 2 when d > 0
+	if (s_d > 0.0) 
+	{
+		float s_s = sqrt(s_d);
+		float distance_to_sphere_near = max(0.0, (-s_b - s_s) / (2.0 * s_a));
+		float distance_to_sphere_far = (-s_b + s_s) / (2.0 * s_a);
+		
+		// Ignore intersections that occur behind the ray
+		if (distance_to_sphere_far >= 0.0) 
+		{
+			return vec2(distance_to_sphere_near, distance_to_sphere_far - distance_to_sphere_near);
+		}
+	}
+	
+	// Ray did not intersect sphere
+	return vec2(pseudo_infinity, 0.0);
+}
+
+// Density Functions
+float densityAtPoint(vec3 density_sample_position)
+{
+	float distance_from_center = distance(density_sample_position, v_vCloudPosition);
+	float sample_distance = distance_from_center / u_fsh_CloudRadius;
+	float sample_density = exp(-sample_distance * u_CloudDensityFalloff) * (1.0 - sample_distance);
+	return sample_density;
+}
+
+// Light Scattering Approximation Functions
+float henyeyGreenstein(float g_anisotropy_factor, float cos_theta) 
+{
+	float g_sqr = g_anisotropy_factor * g_anisotropy_factor;
+	return (1.0 - g_sqr) / (4.0 * Pi * pow(1.0 + g_sqr - 2.0 * g_anisotropy_factor * cos_theta, 1.5));
+}
+
+float doubleHenyeyGreenstein(float cos_theta, float g1, float g2, float blend) 
+{
+	float forward_scattering_g = henyeyGreenstein(g1, cos_theta);
+	float backward_scattering_g = henyeyGreenstein(g2, cos_theta);
+	return mix(backward_scattering_g, forward_scattering_g, blend);
+}
+
+float beer(float sample_density, float absorption) 
+{
+	return exp(-sample_density * absorption);
+}
+
+float powder(float sample_density, float cos_theta) 
+{
+	float powder_value = 1.0 - exp(-sample_density * 2.0);
+	return mix(1.0, powder_value, clamp((-cos_theta * 0.5) + 0.5, 0.0, 1.0));
+}
+
 // Fragment Shader
 void main() 
 {
-	// Atmosphere Radius
+	// Find Pixel's Cloud Radius
 	float radius = distance(v_vSquareUV, center);
 	
-	// Circle Cut-Out Early Return
+	// Circle Cut-Out - Early Return
 	if (radius > 0.5)
 	{
 		return;
@@ -178,36 +263,99 @@ void main()
 	// Calculate Camera Forward Vector from Camera's Rotation Matrix
 	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
 	
-	// Calculate Cloud Depth
-	float cloud_depth = cos(radius * Pi);
-	
-	//
-	float atmosphere_depth = (dot(-camera_forward, (v_vLocalPosition - cloud_depth * camera_forward) / u_fsh_AtmosphereRadius) * 0.5 + 0.5) * u_fsh_AtmosphereRadius;
+	// Calculate Cloud Depth, Position within Cloud, and Depth relative to the Planet's Atmosphere
+	float sphere_depth = cos(radius * Pi);
+	vec3 point_in_cloud = u_fsh_PlanetPosition + v_vLocalPosition - (sphere_depth - epsilon) * camera_forward;
+	float atmosphere_depth = (dot(-camera_forward, (v_vLocalPosition - (u_fsh_CloudRadius * sphere_depth - epsilon) * camera_forward) / u_fsh_AtmosphereRadius) * 0.5 + 0.5) * u_fsh_AtmosphereRadius;
 	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
-	//vec4 planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv);
+	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
 	
-	// Sample Cloud Noise
-	float cloud_sample_value = 0.0;
-	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudRadius - epsilon);
-	float cloud_sample_ray_length = (u_fsh_CloudRadius * cloud_depth - epsilon) * 2.0;
-	float cloud_sample_step_size = cloud_sample_ray_length / (u_CloudPointSamplesCount - 1.0);
-	
-	for (float i = 0.0; i < u_CloudPointSamplesCount; i++)
+	// Check if Cloud Pixel Render's Depth is behind Planet - Early Return
+	if (planet_mask > atmosphere_depth)
 	{
-		//
-		cloud_sample_value += cloudNoise(cloud_sample_position * 0.01) / u_CloudPointSamplesCount;
-		cloud_sample_position += v_vSampleForward * cloud_sample_step_size;
+		return;
 	}
 	
-	//
-	float cloud_optical_density = exp(-cloud_sample_value * cloud_absorption) * (1.0 - exp(-cloud_sample_value * cloud_absorption * 2.0));
+	// Establish Light Source
+	float light_radius = 1000.0;
+	vec3 light_position = vec3(0.0);
+	vec3 light_color = vec3(1.0);
 	
-	//
-	//gl_FragColor = cloudNoise(vec3(v_vTexcoord, 0.0) + vec3(u_Time, u_Time, 0.0) * 0.00001);
+	vec3 light_direction = point_in_cloud - light_position;
+	float light_distance = length(light_direction);
+	light_direction = normalize(light_direction);
 	
-	gl_FragData[0] = vec4(vec3(cloud_optical_density), 1.0);
-	gl_FragData[1] = vec4(vec3(cloud_optical_density), 1.0);
-	gl_FragData[2] = vec4(vec3(atmosphere_depth), 1.0);
+	vec3 light_sample_direction = light_direction * v_vPlanetRotation;
+	
+	// Calculate Light Source's Directional Scattering Phase
+	float light_cos_theta = dot(camera_forward, light_direction);
+	float light_scattering_phase = doubleHenyeyGreenstein(light_cos_theta, 0.6, -0.3, 0.75) * u_CloudAnisotropicLightScattering + (1.0 - u_CloudAnisotropicLightScattering);
+	
+	// Establish Cloud Noise Sampling Variables
+	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudRadius - epsilon);
+	float cloud_sample_ray_length = (u_fsh_CloudRadius * sphere_depth - epsilon) * 2.0;
+	float cloud_sample_step_size = cloud_sample_ray_length / (u_ScatterPointSamplesCount - 1.0);
+	
+	// Establish Cloud Light, Alpha, and Transmittance
+	vec3 light = vec3(0.0);
+	float alpha = 0.0;
+	float transmittance = 1.0;
+	
+	// Iterate through Cloud Light Scatter Point Sampling
+	for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
+	{
+		// Sample Local Density from Cloud Noise
+		float local_noise = cloudNoise(cloud_sample_position * u_CloudSampleScale);
+		float local_density = local_noise * densityAtPoint(point_in_cloud);
+		
+		// Calculate Cloud's Powder Effect with Sample's Local Density
+		float powder_effect = powder(local_noise, light_cos_theta);
+		
+		// Calculate Planet Shadow Impact on Light Source
+		vec3 planet_direction = u_fsh_PlanetPosition - point_in_cloud;
+		float planet_distance = length(planet_direction);
+		planet_direction = normalize(planet_direction);
+		
+		float planet_shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, planet_direction)))) - asin(min(1.0, u_fsh_PlanetRadius / planet_distance)));
+		float planet_shadow_w = smoothstep(-1.0, 1.0, -planet_shadow_d / light_radius);
+		planet_shadow_w = planet_shadow_w * smoothstep(0.0, 0.2, dot(light_direction, planet_direction));
+		
+		// Iterate through Light Sample Ray through Cloud Density to obtain Light Source's Transmittance
+		float light_source_transmittance = 1.0;
+		
+		vec3 light_source_cloud_sample_position = cloud_sample_position;
+		float light_source_sample_ray_length = raySphere(v_vCloudPosition, u_fsh_CloudRadius, point_in_cloud, -light_direction).y - epsilon;
+		float light_source_sample_step_size = light_source_sample_ray_length / (u_LightDepthSamplesCount - 1.0);
+		
+		for (float j = 0.0; j < u_LightDepthSamplesCount; j++)
+		{
+			// Sample Local Density from Cloud Noise
+			float light_density = cloudNoise(light_source_cloud_sample_position * u_CloudSampleScale);
+			
+			// Multiply Beer's Law Light Absoption from Light Source's Light passing through Cloud's Density
+			light_source_transmittance *= beer(light_density, u_CloudAbsorption);
+			
+			// Increment Cloud Sampling Position
+			light_source_cloud_sample_position -= light_sample_direction * light_source_sample_step_size;
+		}
+		
+		// Calculate Total Scattered Light at Point in Cloud - Add Visible Scattered Light to Cloud's Cumulative Light Value
+		vec3 scattered_light = light_color * light_scattering_phase * light_source_transmittance * powder_effect;
+		light += scattered_light * transmittance * planet_shadow_w;
+		
+		// Add Local Density to Cloud's Visible Alpha
+		alpha += local_density * u_CloudDensity;
+		
+		// Multiply Beer's Law Light Absoption from Observable Light passing through Cloud's Density
+		transmittance *= beer(local_density, u_CloudAbsorption);
+		
+		// Increment Cloud Sampling Positions
+		cloud_sample_position += v_vSampleForward * cloud_sample_step_size;
+		point_in_cloud += camera_forward * cloud_sample_step_size;
+	}
+	
+	// Render Lit Cloud Fragment Color Value
+	gl_FragColor = vec4(u_CloudColor * (u_CloudAmbientLightColor + light), alpha);
 }

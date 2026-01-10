@@ -36,6 +36,7 @@
     {"$GMObjectProperty":"v2","%Name":"euler_angle_y","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"euler_angle_z","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"radius","filters":[],"listItems":[],"multiselect":false,"name":"radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"120","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"frustum_culling","filters":[],"listItems":[],"multiselect":false,"name":"frustum_culling","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"elevation","filters":[],"listItems":[],"multiselect":false,"name":"elevation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"18","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"height_map","filters":[
         "GMSprite",

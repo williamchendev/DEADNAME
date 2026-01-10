@@ -10,11 +10,14 @@ clouds_spawn_sphere_uvs = temp_clouds_spawn_sphere.vertex_uvs;
 
 show_debug_message(array_length(temp_clouds_spawn_sphere.vertices));
 
-clouds_active_array = array_create(clouds_spawn_limit);
+clouds_active_array = array_create(clouds_spawn_limit, false);
 clouds_u_position_array = array_create(clouds_spawn_limit);
 clouds_v_position_array = array_create(clouds_spawn_limit);
 clouds_radius_array = array_create(clouds_spawn_limit);
 clouds_height_array = array_create(clouds_spawn_limit);
+clouds_density_array = array_create(clouds_spawn_limit);
+clouds_absorption_array = array_create(clouds_spawn_limit);
+clouds_color_array = array_create(clouds_spawn_limit);
 clouds_moisture_array = array_create(clouds_spawn_limit);
 clouds_temperature_array = array_create(clouds_spawn_limit);
 
@@ -22,16 +25,26 @@ var temp_cloud_spawn_num = 80;
 
 for (var i = 0; i < temp_cloud_spawn_num; i++)
 {
-	clouds_active_array[i] = 1;
-	clouds_radius_array[i] = 5;
+	clouds_active_array[i] = true;
+	clouds_radius_array[i] = 15;
 	clouds_height_array[i] = random_range(12, 18);
 	
-	var temp_random_cloud_uv = clouds_spawn_sphere_uvs[irandom_range(0, array_length(temp_clouds_spawn_sphere.vertices) - 1)];
-	clouds_u_position_array[i] = temp_random_cloud_uv[0];
-	clouds_v_position_array[i] = temp_random_cloud_uv[1];
+	//clouds_color_array[i] = make_color_rgb(245, 228, 202);
+	clouds_density_array[i] = 3.0;
+	clouds_absorption_array[i] = 0.6;
+	clouds_color_array[i] = make_color_rgb(252, 224, 186);
+	//clouds_color_array[i] = make_color_rgb(204, 102, 15);
 	
-	clouds_u_position_array[i] = random_range(0, 1);
-	clouds_v_position_array[i] = random_range(0, 1);
+	//var temp_random_cloud_uv = clouds_spawn_sphere_uvs[irandom_range(0, array_length(temp_clouds_spawn_sphere.vertices) - 1)];
+	//clouds_u_position_array[i] = temp_random_cloud_uv[0];
+	//clouds_v_position_array[i] = temp_random_cloud_uv[1];
+	
+	//clouds_u_position_array[i] = random_range(0, 1);
+	//clouds_v_position_array[i] = random_range(0, 1);
+	
+	var temp_random_cloud_uv = haversine_distance_random_uv_offset(0, 0.5, radius, 5, 50);
+	clouds_u_position_array[i] = temp_random_cloud_uv[0];
+	clouds_v_position_array[i] = temp_random_cloud_uv[1] + 0.5;
 }
 
 // Initialize Clouds Depth Sorted Rendering DS List

@@ -22,7 +22,20 @@ if (solar_system_index == -1)
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
-// Establish Forward Camera Vector from Camera's Rotation Matrix
+// Establish Camera Frustum Culling Variables
+var temp_camera_aspect = GameManager.game_width / GameManager.game_height;
+
+var temp_camera_fov_radians = (camera_fov * pi) / 180;
+var temp_camera_half_v = tan(temp_camera_fov_radians / 2);
+var temp_camera_half_h = temp_camera_half_v * temp_camera_aspect;
+
+// Establish Camera Vectors from Camera's Rotation Matrix
+var temp_camera_right_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2], camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2]));
+var temp_camera_right_vector_normalized = [ camera_rotation_matrix[0] / temp_camera_right_vector_magnitude, camera_rotation_matrix[1] / temp_camera_right_vector_magnitude, camera_rotation_matrix[2] / temp_camera_right_vector_magnitude ];
+
+var temp_camera_up_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6], camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6]));
+var temp_camera_up_vector_normalized = [ camera_rotation_matrix[4] / temp_camera_up_vector_magnitude, camera_rotation_matrix[5] / temp_camera_up_vector_magnitude, camera_rotation_matrix[6] / temp_camera_up_vector_magnitude ];
+
 var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
 var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
 
@@ -61,6 +74,57 @@ repeat (array_length(temp_solar_system))
 	// Calculate Celestial Object Depth from Camera's Position, Rotation, and Forward Vector
 	var temp_celestial_object_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_projection_scalar);
 	
+	// Celestial Object Frustum Culling Behaviour
+	if (temp_celestial_object_instance.frustum_culling)
+	{
+		// Establish Celestial Object Frustum Culling Radius
+		var temp_frustum_culling_radius = temp_celestial_object_instance.frustum_culling_radius;
+		
+		// Celestial Object Frustum Depth Culling
+		if (temp_celestial_object_depth + temp_frustum_culling_radius < camera_z_near)
+		{
+			// Increment Celestial Object Index
+			temp_celestial_object_index++;
+			
+			// Celestial Object Frustum Depth Culled - Skip Celestial Object
+			continue;
+		}
+		
+		// Calculate Celestial Object Frustum Culling Vectors
+		var temp_camera_to_object_vector_x = temp_celestial_object_instance.x - camera_position_x;
+		var temp_camera_to_object_vector_y = temp_celestial_object_instance.y - camera_position_y;
+		var temp_camera_to_object_vector_z = temp_celestial_object_instance.z - camera_position_z;
+		
+		// Calculate Celestial Object Frustum Culling Dot Products
+		var temp_camera_right_to_object_dot_product = dot_product_3d(temp_camera_to_object_vector_x, temp_camera_to_object_vector_y, temp_camera_to_object_vector_z, temp_camera_right_vector_normalized[0], temp_camera_right_vector_normalized[1], temp_camera_right_vector_normalized[2]);
+		var temp_camera_up_to_object_dot_product = dot_product_3d(temp_camera_to_object_vector_x, temp_camera_to_object_vector_y, temp_camera_to_object_vector_z, temp_camera_up_vector_normalized[0], temp_camera_up_vector_normalized[1], temp_camera_up_vector_normalized[2]);
+		var temp_camera_forward_to_object_dot_product = dot_product_3d(temp_camera_to_object_vector_x, temp_camera_to_object_vector_y, temp_camera_to_object_vector_z, temp_camera_forward_vector_normalized[0], temp_camera_forward_vector_normalized[1], temp_camera_forward_vector_normalized[2]);
+		
+		// Check if Celestial Object can be Horizontally Frustum Culled
+		var temp_camera_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_object_dot_product * 2;
+		
+		if (temp_camera_right_to_object_dot_product < -temp_camera_frustum_half_width - temp_frustum_culling_radius or temp_camera_right_to_object_dot_product > temp_camera_frustum_half_width + temp_frustum_culling_radius) 
+		{
+			// Increment Celestial Object Index
+			temp_celestial_object_index++;
+			
+			// Celestial Object Frustum Culled - Skip Celestial Object
+			continue;
+		}
+		
+		// Check if Celestial Object can be Vertically Frustum Culled
+		var temp_camera_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_object_dot_product * 2;
+		
+		if (temp_camera_up_to_object_dot_product < -temp_camera_frustum_half_height - temp_frustum_culling_radius or temp_camera_up_to_object_dot_product > temp_camera_frustum_half_height + temp_frustum_culling_radius) 
+		{
+			// Increment Celestial Object Index
+			temp_celestial_object_index++;
+			
+			// Celestial Object Frustum Culled - Skip Celestial Object
+			continue;
+		}
+	}
+	
 	// Celestial Object Type  Depth Sorting Behaviour
 	switch (temp_celestial_object_instance.celestial_object_type)
 	{
@@ -68,12 +132,13 @@ repeat (array_length(temp_solar_system))
 			// Planet Depth Sorting Behaviour
 			if (temp_celestial_object_instance.clouds)
 			{
-				//
+				// Reset Planet Cloud Depth Sorting Lists
 				ds_list_clear(temp_celestial_object_instance.clouds_depth_list);
 				ds_list_clear(temp_celestial_object_instance.clouds_render_list);
 				
-				//
-				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(-temp_celestial_object_instance.euler_angle_x, -temp_celestial_object_instance.euler_angle_y, -temp_celestial_object_instance.euler_angle_z);
+				// 
+				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
+				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
 				
 				// Iterate through Planet's Clouds
 				var temp_cloud_index = 0;
@@ -101,9 +166,9 @@ repeat (array_length(temp_solar_system))
 						var temp_cloud_z_value = temp_cloud_sphere_horizontal_radius * -cos(temp_cloud_atan_value);
 						
 						//
-						var temp_cloud_x = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix[0] + temp_cloud_y_value * temp_planet_rotation_matrix[1] + temp_cloud_z_value * temp_planet_rotation_matrix[2]) + temp_celestial_object_instance.x;
-						var temp_cloud_y = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix[4] + temp_cloud_y_value * temp_planet_rotation_matrix[5] + temp_cloud_z_value * temp_planet_rotation_matrix[6]) + temp_celestial_object_instance.y;
-						var temp_cloud_z = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix[8] + temp_cloud_y_value * temp_planet_rotation_matrix[9] + temp_cloud_z_value * temp_planet_rotation_matrix[10]) + temp_celestial_object_instance.z;
+						var temp_cloud_x = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[2]) + temp_celestial_object_instance.x;
+						var temp_cloud_y = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[6]) + temp_celestial_object_instance.y;
+						var temp_cloud_z = temp_cloud_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[8] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[9] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
 						
 						//
 						var temp_cloud_vx = temp_cloud_x - temp_render_start_x;
@@ -112,6 +177,44 @@ repeat (array_length(temp_solar_system))
 						
 						//
 						var temp_cloud_depth = dot_product_3d(temp_cloud_vx, temp_cloud_vy, temp_cloud_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
+						
+						/*
+						var temp_cloud_frustum_culling_radius = temp_celestial_object_instance.clouds_radius_array[temp_cloud_index];
+						
+						// Calculate Celestial Object Frustum Culling Vectors
+						var temp_camera_to_cloud_vector_x = temp_cloud_x + camera_position_x;
+						var temp_camera_to_cloud_vector_y = temp_cloud_y + camera_position_y;
+						var temp_camera_to_cloud_vector_z = temp_cloud_z + camera_position_z;
+						
+						// Calculate Celestial Object Frustum Culling Dot Products
+						var temp_camera_right_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_right_vector_normalized[0], temp_camera_right_vector_normalized[1], temp_camera_right_vector_normalized[2]);
+						var temp_camera_up_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_up_vector_normalized[0], temp_camera_up_vector_normalized[1], temp_camera_up_vector_normalized[2]);
+						var temp_camera_forward_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_forward_vector_normalized[0], temp_camera_forward_vector_normalized[1], temp_camera_forward_vector_normalized[2]);
+						
+						// Check if Celestial Object can be Horizontally Frustum Culled
+						var temp_camera_cloud_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_cloud_dot_product * 2;
+						
+						if (temp_camera_right_to_cloud_dot_product < -temp_camera_cloud_frustum_half_width - temp_cloud_frustum_culling_radius or temp_camera_right_to_cloud_dot_product > temp_camera_cloud_frustum_half_width + temp_cloud_frustum_culling_radius) 
+						{
+							// Increment Celestial Object Index
+							temp_cloud_index++;
+							
+							// Celestial Object Frustum Culled - Skip Celestial Object
+							continue;
+						}
+						
+						// Check if Celestial Object can be Vertically Frustum Culled
+						var temp_camera_cloud_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_cloud_dot_product * 2;
+						
+						if (temp_camera_up_to_cloud_dot_product < -temp_camera_cloud_frustum_half_height - temp_cloud_frustum_culling_radius or temp_camera_up_to_cloud_dot_product > temp_camera_cloud_frustum_half_height + temp_cloud_frustum_culling_radius) 
+						{
+							// Increment Celestial Object Index
+							temp_cloud_index++;
+							
+							// Celestial Object Frustum Culled - Skip Celestial Object
+							continue;
+						}
+						*/
 						
 						// Iterate through Planet's Cloud Depth Sorting List to Sort and Index Cloud by Depth
 						if (ds_list_size(temp_celestial_object_instance.clouds_depth_list) == 0)

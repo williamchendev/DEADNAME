@@ -27,16 +27,6 @@ if (!surface_exists(clouds_render_surface))
     clouds_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
-if (!surface_exists(clouds_alpha_mask_surface))
-{
-    clouds_alpha_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r8unorm);
-}
-
-if (!surface_exists(clouds_atmosphere_depth_mask_surface))
-{
-    clouds_atmosphere_depth_mask_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_r16float);
-}
-
 // Disable Depth for Celestial Simulation Pipeline Surfaces
 surface_depth_disable(true);
 

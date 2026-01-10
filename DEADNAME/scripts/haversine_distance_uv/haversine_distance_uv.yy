@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"haversine_distance_uv",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"haversine_distance_uv",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

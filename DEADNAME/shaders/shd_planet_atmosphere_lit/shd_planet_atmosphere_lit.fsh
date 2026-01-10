@@ -21,11 +21,8 @@ uniform vec3 u_fsh_PlanetPosition;
 uniform float u_PlanetRadius;
 
 // Texture Properties
-uniform sampler2D gm_AtmospherePlanetDepthMask;
-
 uniform sampler2D gm_AtmosphereCloudsSurface;
-uniform sampler2D gm_AtmosphereCloudsDepthMask;
-uniform sampler2D gm_AtmosphereCloudsAlphaMask;
+uniform sampler2D gm_AtmospherePlanetDepthMask;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
@@ -198,16 +195,19 @@ void main()
 	// Calculate Camera Forward Vector from Camera's Rotation Matrix
 	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
 	
-	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
+	// Calculate UV Position of Surface
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
-	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
-	float clouds_mask = texture2D(gm_AtmosphereCloudsDepthMask, uv).r;
-	float surface_mask = (clouds_mask > planet_mask ? clouds_mask : planet_mask) / u_fsh_AtmosphereRadius;
 	
-	// Retreive Celestial Body's Surface Color
-	vec4 clouds_diffuse_color = vec4(texture2D(gm_AtmosphereCloudsSurface, uv).rgb, texture2D(gm_AtmosphereCloudsAlphaMask, uv).r);
+	// Retreive Celestial Body's Combined Planet & Clouds Diffuse Color
+	vec4 clouds_diffuse_color = texture2D(gm_AtmosphereCloudsSurface, uv);
 	vec4 planet_diffuse_color = texture2D(gm_BaseTexture, uv);
-	vec4 diffuse_color = clouds_mask > planet_mask ? (1.0 - clouds_diffuse_color.a) * planet_diffuse_color + clouds_diffuse_color : planet_diffuse_color;
+	
+	float cloud_blend_alpha = pow(clouds_diffuse_color.a, 2.0);
+	vec4 diffuse_color = (1.0 - cloud_blend_alpha) * planet_diffuse_color + clouds_diffuse_color;
+	
+	// Retreive Atmosphere's Planet Mask and Create Combined Planet & Clouds Surface Depth Mask from Cloud Alpha Blending
+	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
+	float surface_mask = (cloud_blend_alpha > 0.05 ? max(u_fsh_AtmosphereRadius * 0.6, planet_mask) : planet_mask) / u_fsh_AtmosphereRadius;
 	
 	// Calculate Atmosphere Depth based on Radial Distance from Center of the Atmosphere
 	float atmosphere_depth = cos(radius * Pi);
@@ -234,6 +234,4 @@ void main()
 	
 	// Render Lit Atmosphere Fragment Color Value
 	gl_FragColor = vec4(light, atmosphere_alpha);
-	//gl_FragColor = vec4(vec3(surface_mask), 1.0);
-	//gl_FragColor = vec4(vec3(clouds_diffuse_color), 1.0);
 }
