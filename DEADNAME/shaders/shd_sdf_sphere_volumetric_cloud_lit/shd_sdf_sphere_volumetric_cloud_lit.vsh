@@ -109,7 +109,7 @@ mat3 inverse(mat3 m)
 // Vertex Shader
 void main() 
 {
-	// Calculate Camera Right and Up Vectors from Camera's Rotation Matrix
+	// Calculate Camera Right, Up, and Forward Vectors from Camera's Rotation Matrix
 	vec3 camera_right = normalize(in_vsh_CameraRotation[0].xyz);
 	vec3 camera_up = normalize(in_vsh_CameraRotation[1].xyz);
 	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);

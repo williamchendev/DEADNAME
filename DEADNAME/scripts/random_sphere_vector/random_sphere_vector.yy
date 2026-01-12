@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"random_sphere_vector",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"random_sphere_vector",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

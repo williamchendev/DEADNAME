@@ -299,7 +299,7 @@ void main()
 	float cloud_sample_step_size = cloud_sample_ray_length / (u_ScatterPointSamplesCount - 1.0);
 	
 	// Establish Cloud Light, Alpha, and Transmittance
-	vec3 light = vec3(0.0);
+	vec3 light = u_CloudAmbientLightColor;
 	float alpha = 0.0;
 	float transmittance = 1.0;
 	
@@ -307,11 +307,10 @@ void main()
 	for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
 	{
 		// Sample Local Density from Cloud Noise
-		float local_noise = cloudNoise(cloud_sample_position * u_CloudSampleScale);
-		float local_density = local_noise * densityAtPoint(point_in_cloud);
+		float local_density = cloudNoise(cloud_sample_position * u_CloudSampleScale) * densityAtPoint(point_in_cloud);
 		
 		// Calculate Cloud's Powder Effect with Sample's Local Density
-		float powder_effect = powder(local_noise, light_cos_theta);
+		float powder_effect = powder(local_density, light_cos_theta);
 		
 		// Calculate Planet Shadow Impact on Light Source
 		vec3 planet_direction = u_fsh_PlanetPosition - point_in_cloud;
@@ -342,7 +341,7 @@ void main()
 		}
 		
 		// Calculate Total Scattered Light at Point in Cloud - Add Visible Scattered Light to Cloud's Cumulative Light Value
-		vec3 scattered_light = light_color * light_scattering_phase * light_source_transmittance * powder_effect;
+		vec3 scattered_light = light_color * light_source_transmittance * light_scattering_phase * powder_effect;
 		light += scattered_light * transmittance * planet_shadow_w;
 		
 		// Add Local Density to Cloud's Visible Alpha
@@ -357,5 +356,5 @@ void main()
 	}
 	
 	// Render Lit Cloud Fragment Color Value
-	gl_FragColor = vec4(u_CloudColor * (u_CloudAmbientLightColor + light), alpha);
+	gl_FragColor = vec4(u_CloudColor * light, alpha);
 }

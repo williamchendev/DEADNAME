@@ -20,6 +20,9 @@ uniform vec4 u_PlanetOceanColor;
 uniform float u_PlanetOceanFoamSize;
 uniform vec4 u_PlanetOceanFoamColor;
 
+// Lighting Properties
+uniform float u_SpecularIntensity;
+
 // Light Source Properties
 uniform float in_Light_Exists[MAX_LIGHTS];
 
@@ -50,7 +53,6 @@ const float Pi = 3.14159265359;
 const float pseudo_zero = 0.00001;
 const float pseudo_infinity = 1.0 / 0.0;
 
-const float specular_intensity = 0.5;
 const float dielectric_material_light_reflection_coefficient = 0.04;
 
 // Trigonometry Functions
@@ -227,7 +229,7 @@ void main()
 		o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 		
 		// Add Calculated Light to Cumulative Light Value
-		light += (o_l + s_l * specular_intensity) * light_fade * in_Light_Intensity[i];
+		light += (o_l + s_l * u_SpecularIntensity) * light_fade * in_Light_Intensity[i];
 	}
 	
 	// (Multiple Render Targets) Render Lit Sphere & Depth Fragment Values
