@@ -7,6 +7,9 @@ uniform vec3 in_fsh_CameraPosition;
 uniform mat4 in_fsh_CameraRotation;
 
 // Sample Properties
+uniform float u_CloudNoiseSquareSize;
+uniform float u_CloudNoiseCubeSize;
+
 uniform float u_ScatterPointSamplesCount;
 uniform float u_LightDepthSamplesCount;
 uniform float u_CloudSampleScale;
@@ -50,138 +53,27 @@ const float pseudo_infinity = 1.0 / 0.0;
 const vec2 center = vec2(0.5, 0.5);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
-const float cell_count = 20.0;
-const float worley_noise_frequency = 15.0;
-const vec3 perlin_noise_period = vec3(25.0, 40.0, 15.0);
+const float breakpoint = 50.0;
 
 // Noise Methods
-vec3 modulo(vec3 divident, vec3 divisor)
+float cloudSampleNoise(vec3 uvw)
 {
-	vec3 positive_divident = mod(divident, divisor) + divisor;
-	return mod(positive_divident, divisor);
-}
-
-vec3 random(vec3 value)
-{
-	vec3 value_dot_product = vec3(dot(value, vec3(12.9898, 78.233, 34.897)), dot(value, vec3(12.345, 67.89, 412.12)), dot(value, vec3(56.345, 290.8912, 14.1212)));
-	vec3 value_trig = vec3(cos(value_dot_product.x), sin(value_dot_product.y), cos(value_dot_product.z));
-	vec3 value_mod = (mod(197.0 * value_trig, 1.0) + value_trig) * 0.5453;
-	return fract(value_mod * 43758.5453123) * 2.0 - 1.0;
-}
-
-vec3 randomAngle(vec3 value)
-{
-	vec2 value_dot_product = vec2(dot(value, vec3(12.9898, 78.233, 34.897)), dot(value, vec3(12.345, 67.89, 412.12)));
-	vec2 value_trig = vec2(cos(value_dot_product.x), sin(value_dot_product.y));
-	vec2 value_mod = (mod(197.0 * value_trig, 1.0) + value_trig) * 0.5453;
-	vec2 random_values = fract(value_mod * 43758.5453123);
+	vec3 sample_uvw = floor(mod(uvw, 1.0) * u_CloudNoiseCubeSize);
+	sample_uvw = mod(sample_uvw + u_CloudNoiseCubeSize, u_CloudNoiseCubeSize);
 	
-	float theta = acos(2.0 * random_values.x - 1.0);
-	float phi = 2.0 * random_values.y * Pi;
+	float linear = sample_uvw.x * u_CloudNoiseCubeSize * u_CloudNoiseCubeSize + sample_uvw.y * u_CloudNoiseCubeSize + sample_uvw.z;
+	float rgba_id = floor(linear / (u_CloudNoiseSquareSize * u_CloudNoiseSquareSize));
+	float offset = mod(linear, u_CloudNoiseSquareSize * u_CloudNoiseSquareSize);
 	
-	float angle_x = cos(phi) * sin(theta);
-	float angle_y = sin(phi) * sin(theta);
-	float angle_z = cos(theta);
+	float row = floor(offset / u_CloudNoiseSquareSize) / u_CloudNoiseSquareSize;
+	float col = mod(offset, u_CloudNoiseSquareSize) / u_CloudNoiseSquareSize;
 	
-	return vec3(angle_x, angle_y, angle_z);
-}
-
-float perlinNoise(vec3 uvw, vec3 period)
-{
-	// Perlin Noise Grid Variables
-	uvw = uvw * float(cell_count);
-	vec3 cells_min = modulo(floor(uvw), period);
-	vec3 cells_max = modulo(ceil(uvw), period);
-	vec3 uvw_fract = fract(uvw);
-	vec3 blur = smoothstep(0.0, 1.0, uvw_fract);
+	vec2 uv = vec2(row, col);
 	
-	// Establish 8 Corners of Seamless Sample Cube
-	vec3 left_down_back 	= randomAngle(vec3(cells_min.x, cells_min.y, cells_min.z));
-	vec3 right_down_back	= randomAngle(vec3(cells_max.x, cells_min.y, cells_min.z));
-	vec3 left_up_back		= randomAngle(vec3(cells_min.x, cells_max.y, cells_min.z));
-	vec3 left_down_front	= randomAngle(vec3(cells_min.x, cells_min.y, cells_max.z));
-	vec3 right_up_back		= randomAngle(vec3(cells_max.x, cells_max.y, cells_min.z));
-	vec3 right_down_front	= randomAngle(vec3(cells_max.x, cells_min.y, cells_max.z));
-	vec3 left_up_front		= randomAngle(vec3(cells_min.x, cells_max.y, cells_max.z));
-	vec3 right_up_front 	= randomAngle(vec3(cells_max.x, cells_max.y, cells_max.z));
+	vec4 noise = texture2D(gm_BaseTexture, uv);
 	
-	// Interpolate Horizontal
-	float horizontal_sample_a = mix(dot(left_down_back, uvw_fract - vec3(0.0, 0.0, 0.0)), dot(right_down_back, uvw_fract - vec3(1.0, 0.0, 0.0)), blur.x);
-	float horizontal_sample_b = mix(dot(left_up_back, uvw_fract - vec3(0.0, 1.0, 0.0)), dot(right_up_back, uvw_fract - vec3(1.0, 1.0, 0.0)), blur.x);
-	float horizontal_sample_c = mix(dot(left_down_front, uvw_fract - vec3(0.0, 0.0, 1.0)), dot(right_down_front, uvw_fract - vec3(1.0, 0.0, 1.0)), blur.x);
-	float horizontal_sample_d = mix(dot(left_up_front, uvw_fract - vec3(0.0, 1.0, 1.0)), dot(right_up_front, uvw_fract - vec3(1.0, 1.0, 1.0)), blur.x);
-	
-	// Interpolate Vertical
-	float vertical_sample_a = mix(horizontal_sample_a, horizontal_sample_b, blur.y);
-	float vertical_sample_b = mix(horizontal_sample_c, horizontal_sample_d, blur.y);
-	
-	// Return Final Value
-	return mix(vertical_sample_a, vertical_sample_b, blur.z) * 0.8 + 0.5;
-}
-
-float worleyNoise(vec3 uvw, float freq)
-{
-	// Worley Noise Variables
-	float minDist = 10000.0;
-	vec3 index_uvw = floor(uvw);
-	vec3 fract_uvw = fract(uvw);
-	
-	// Obtain Offset from Each Neighboring Voronoi Cell to find Gradient
-	for (float w_w = -1.0; w_w <= 1.0; ++w_w)
-	{
-		for(float w_h = -1.0; w_h <= 1.0; ++w_h)
-		{
-			for(float w_l = -1.0; w_l <= 1.0; ++w_l)
-			{
-				vec3 offset = vec3(w_w, w_h, w_l);
-				vec3 h = random(mod(index_uvw + offset, vec3(freq))) * .5 + .5;
-				h += offset;
-				vec3 d = fract_uvw - h;
-				minDist = min(minDist, dot(d, d));
-			}
-		}
-	}
-	
-	// Return Inverted Worley Noise Value
-	return 1.0 - minDist;
-}
-
-float worleyFractionalBrownianMotion(vec3 uvw, float freq)
-{
-	float worley_noise_oct_a = worleyNoise(uvw * freq, freq) * 0.625;
-	float worley_noise_oct_b = worleyNoise(uvw * freq * 2.0, freq * 2.0) * 0.25;
-	float worley_noise_oct_c = worleyNoise(uvw * freq * 4.0, freq * 4.0) * 0.125;
-	return worley_noise_oct_a + worley_noise_oct_b + worley_noise_oct_c;
-}
-
-float cloudNoise(vec3 uvw)
-{
-	// Worley Noise Generation
-	float worley_noise_oct_a = worleyFractionalBrownianMotion(uvw, 10.0) * 0.75;
-	float worley_noise_oct_b = worleyFractionalBrownianMotion(uvw * 2.0, 20.0) * 0.15;
-	float worley_noise_oct_c = worleyFractionalBrownianMotion(uvw * 4.0, 40.0) * 0.1;
-	
-	float worley_noise = worley_noise_oct_a + worley_noise_oct_b + worley_noise_oct_c;
-	
-	// Perlin Noise Generation
-	float perlin_noise_oct_a = perlinNoise(uvw * 2.0, perlin_noise_period) * 0.625;
-	float perlin_noise_oct_b = perlinNoise(uvw * 7.0, perlin_noise_period * 25.0) * 0.25;
-	float perlin_noise_oct_c = perlinNoise(uvw * 16.0, perlin_noise_period * 50.0) * 0.125;
-	
-	float perlin_noise = abs((perlin_noise_oct_a + perlin_noise_oct_b + perlin_noise_oct_c) * 2.0 - 1.0);
-	
-	// Return Final Value
-	float final_result = worley_noise + (perlin_noise * 0.2);
-	return final_result;
-}
-
-vec3 cloudNoiseNormal(vec3 uvw, float offset)
-{
-	vec3 offset_xyy = vec3(offset, 0.0, 0.0);
-	vec3 offset_yxy = vec3(0.0, offset, 0.0);
-	vec3 offset_yyx = vec3(0.0, 0.0, offset);
-	vec3 normal = vec3(cloudNoise(uvw)) - vec3(cloudNoise(uvw - offset_xyy), cloudNoise(uvw - offset_yxy), cloudNoise(uvw - offset_yyx));
-	return normalize(normal);
+	float value = rgba_id == 0.0 ? noise.r : (rgba_id == 1.0 ? noise.g : (rgba_id == 2.0 ? noise.b : noise.a));
+	return value;
 }
 
 // Sphere Functions
@@ -227,7 +119,7 @@ float densityAtPoint(vec3 density_sample_position)
 float henyeyGreenstein(float g_anisotropy_factor, float cos_theta) 
 {
 	float g_sqr = g_anisotropy_factor * g_anisotropy_factor;
-	return (1.0 - g_sqr) / (4.0 * Pi * pow(1.0 + g_sqr - 2.0 * g_anisotropy_factor * cos_theta, 1.5));
+	return (1.0 - g_sqr) / (4.0 * Pi * pow(abs(1.0 + g_sqr - 2.0 * g_anisotropy_factor * cos_theta), 1.5));
 }
 
 float doubleHenyeyGreenstein(float cos_theta, float g1, float g2, float blend) 
@@ -306,8 +198,14 @@ void main()
 	// Iterate through Cloud Light Scatter Point Sampling
 	for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
 	{
+		// Manual Breakpoint so the Compiler doesn't get mad
+		if (i >= breakpoint) 
+		{
+			break;
+		}
+		
 		// Sample Local Density from Cloud Noise
-		float local_density = cloudNoise(cloud_sample_position * u_CloudSampleScale) * densityAtPoint(point_in_cloud);
+		float local_density = cloudSampleNoise(cloud_sample_position * u_CloudSampleScale) * densityAtPoint(point_in_cloud);
 		
 		// Calculate Cloud's Powder Effect with Sample's Local Density
 		float powder_effect = powder(local_density, light_cos_theta);
@@ -331,7 +229,7 @@ void main()
 		for (float j = 0.0; j < u_LightDepthSamplesCount; j++)
 		{
 			// Sample Local Density from Cloud Noise
-			float light_density = cloudNoise(light_source_cloud_sample_position * u_CloudSampleScale);
+			float light_density = cloudSampleNoise(light_source_cloud_sample_position * u_CloudSampleScale);
 			
 			// Multiply Beer's Law Light Absoption from Light Source's Light passing through Cloud's Density
 			light_source_transmittance *= beer(light_density, u_CloudAbsorption);

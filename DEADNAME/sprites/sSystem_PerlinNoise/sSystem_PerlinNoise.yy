@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Noise",
-    "path":"folders/Sprites/Debug/Noise.yy",
+    "path":"folders/Sprites/Effects/Noise.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

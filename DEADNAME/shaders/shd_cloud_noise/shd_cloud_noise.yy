@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_cloud_noise",
+  "name":"shd_cloud_noise",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

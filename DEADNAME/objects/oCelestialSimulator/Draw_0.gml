@@ -253,6 +253,10 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);
 						
+						//
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_square_size_index, 2048);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_cube_size_index, 256);
+						
 						// Set Planet Atmosphere Cloud Rendering Sampling Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_scatter_point_samples_count_index, CelestialSimulator.global_clouds_scatter_point_samples_count);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_depth_samples_count_index, CelestialSimulator.global_clouds_light_depth_samples_count);
@@ -310,7 +314,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_absorption_index, CelestialSimulator.global_clouds_absorption * temp_cloud_absorption);
 							
 							// Draw SDF Sphere Volumetric Cloud from Square UV Vertex Buffer
-							vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
+							vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, CelestialSimulator.cloud_noise_texture);
 							
 							// Increment Cloud Depth Index
 							temp_cloud_depth_index++;

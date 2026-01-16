@@ -54,7 +54,7 @@ solar_systems = array_create(0);
 solar_systems_names = array_create(0);
 solar_systems_background_stars_vertex_buffer = array_create(0);
 
-solar_systems_background_star_sphere = geodesic_icosphere_create(5);
+solar_systems_background_star_sphere = geodesic_icosphere_create(3);
 
 // Rendering Variables
 solar_system_render_depth_values_list = ds_list_create();
@@ -89,6 +89,9 @@ celestial_body_atmosphere_depth_mask_surface = -1;
 clouds_render_surface = -1;
 
 final_render_surface = -1;
+
+// Textures
+cloud_noise_texture = sprite_get_texture(sSystem_CloudNoise, 0);
 
 // Vertex Formats
 vertex_format_begin();
@@ -227,12 +230,13 @@ planet_atmosphere_lit_shader_clouds_surface_texture_index = shader_get_sampler_i
 planet_atmosphere_lit_shader_planet_depth_mask_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_AtmospherePlanetDepthMask");
 
 // MRT (Forward Rendered Lighting) Signed Distance Field Sphere-Shaped Volumetric Clouds Lit Rendering Shader Indexes
-sdf_sphere_volumetric_clouds_lit_shader_time_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_Time");
-
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraPosition");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraDimensions");
+
+sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_square_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudNoiseSquareSize");
+sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_cube_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudNoiseCubeSize");
 
 sdf_sphere_volumetric_clouds_lit_shader_scatter_point_samples_count_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_ScatterPointSamplesCount");
 sdf_sphere_volumetric_clouds_lit_shader_light_depth_samples_count_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_LightDepthSamplesCount");
@@ -333,7 +337,7 @@ generate_solar_system_background_stars_vertex_buffer = function(stars)
 		var temp_star_radius = 0.35;
 		
 		// Generate Star Color
-		var temp_star_alpha = random_range(0.85, 1);
+		var temp_star_alpha = random_range(0.95, 1);
 		var temp_star_color = c_white;
 		var temp_star_color_value = random(1);
 		
@@ -350,27 +354,27 @@ generate_solar_system_background_stars_vertex_buffer = function(stars)
 		else if (temp_star_color_value < 0.6)
 		{
 			temp_star_color = merge_color(c_white, temp_star_class_g_color, sqr(random(1.0)));
-			temp_star_radius *= random_range(4, 6);
+			temp_star_radius *= random_range(3, 5);
 		}
 		else if (temp_star_color_value < 0.9)
 		{
 			temp_star_color = merge_color(c_white, temp_star_class_f_color, sqr(random(1.0)));
-			temp_star_radius *= random_range(4, 6);
+			temp_star_radius *= random_range(3, 5);
 		}
 		else if (temp_star_color_value < 0.95)
 		{
 			temp_star_color = merge_color(c_white, temp_star_class_a_color, sqr(random(1.0)));
-			temp_star_radius *= random_range(5, 7);
+			temp_star_radius *= random_range(3, 5);
 		}
 		else if (temp_star_color_value < 0.99)
 		{
 			temp_star_color = merge_color(c_white, temp_star_class_b_color, sqr(random(1.0)));
-			temp_star_radius *= random_range(5, 7);
+			temp_star_radius *= random_range(3, 6);
 		}
 		else
 		{
 			temp_star_color = merge_color(c_white, temp_star_class_o_color, sqr(random(1.0)));
-			temp_star_radius *= random_range(9, 10);
+			temp_star_radius *= random_range(3, 6);
 		}
 		
 		// Generate Star Position
@@ -438,7 +442,7 @@ generate_default_solar_system = function()
 	//temp_grandmom_solar_system[4] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 800, orbit_speed: -1 } );
 	
 	solar_systems[0] = temp_grandmom_solar_system;
-	solar_systems_background_stars_vertex_buffer[0] = generate_solar_system_background_stars_vertex_buffer(2000);
+	solar_systems_background_stars_vertex_buffer[0] = generate_solar_system_background_stars_vertex_buffer(3000);
 	
 	//
 	solar_system_index = 0;
@@ -448,3 +452,5 @@ generate_default_solar_system = function()
 //planet_simulator_add_light_source(-500, 240, -1400, make_color_rgb(206, 185, 240), 3000, 3, 2);
 //planet_simulator_add_light_source(1000, 240, -1400, c_red, 100, 1, 2);
 generate_default_solar_system();
+
+//cloud_noise(2048, 256);

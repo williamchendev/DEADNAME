@@ -32,8 +32,6 @@ clouds_group_height_list = ds_list_create();
 clouds_group_bearing_list = ds_list_create();
 clouds_group_distance_list = ds_list_create();
 
-show_debug_message(haversine_distance_uv(0.5, 0.5, 0.75, 0.5, radius));
-
 // Spawn Planet Clouds via Groups to create Naturalistic Clustering
 var temp_cloud_spawn_num = 24;
 

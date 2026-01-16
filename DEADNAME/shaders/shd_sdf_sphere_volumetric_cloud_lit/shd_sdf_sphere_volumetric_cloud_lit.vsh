@@ -3,7 +3,7 @@
 //
 
 // Vertex Buffer Properties
-attribute vec2 in_Position; // (x, y, z)
+attribute vec2 in_Position; // (x, y)
 
 // Camera Properties
 uniform vec3 in_vsh_CameraPosition;
