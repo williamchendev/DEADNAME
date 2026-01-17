@@ -64,11 +64,14 @@ global_hydrosphere_time = 0;
 global_hydrosphere_time_spd = 0.0037;
 global_hydrosphere_specular_intensity = 0.5;
 
-global_clouds_scatter_point_samples_count = 6;
-global_clouds_light_depth_samples_count = 4;
-global_clouds_sample_scale = 0.007;
-global_clouds_absorption = 0.3;
-global_clouds_density = 1.25;
+global_atmosphere_time = 0;
+global_atmosphere_time_spd = 0.008;
+
+global_clouds_scatter_point_samples_count = 8;
+global_clouds_light_depth_samples_count = 8;
+global_clouds_sample_scale = 0.008;
+global_clouds_absorption = 0.25;
+global_clouds_density = 1;
 global_clouds_density_falloff = 5;
 global_clouds_anisotropic_light_scattering_strength = 0.4;
 global_clouds_alpha_blending_power = 2;
@@ -211,6 +214,8 @@ planet_atmosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_
 planet_atmosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraRotation");
 planet_atmosphere_lit_shader_vsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraDimensions");
 planet_atmosphere_lit_shader_fsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraDimensions");
+
+planet_atmosphere_lit_shader_time_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_Time");
 
 planet_atmosphere_lit_shader_scatter_point_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_ScatterPointSamplesCount");
 planet_atmosphere_lit_shader_optical_depth_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_OpticalDepthSamplesCount");
@@ -430,7 +435,7 @@ generate_default_solar_system = function()
 	var temp_grandmom_solar_system = array_create(0);
 	temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60 });
 	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_angle: 270, rotation_speed: 0.3 } );
-	camera_position_z = -1000;
+	camera_position_z = 0;
 	//temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(8, 0, 15), orbit_size: 400 } );
 	
 	//temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 1600, orbit_speed: 0, orbit_angle: 90 });

@@ -7,6 +7,9 @@ uniform vec3 in_fsh_CameraPosition;
 uniform mat4 in_fsh_CameraRotation;
 uniform vec2 in_fsh_CameraDimensions;
 
+// Temporal Properties
+uniform float u_Time;
+
 // Sample Properties
 uniform float u_ScatterPointSamplesCount;
 uniform float u_OpticalDepthSamplesCount;
@@ -42,6 +45,9 @@ const float pseudo_infinity = 1.0 / 0.0;
 
 const float cloud_alpha_minimum = 0.02;
 const float cloud_surface_mask_cutout_depth = 0.65;
+
+const float blue_noise_ditering_scale = 2.0;
+const float blue_noise_ditering_strength = 0.5;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -105,6 +111,63 @@ vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ra
 	return vec2(pseudo_infinity, 0.0);
 }
 
+// Noise Functions
+// Hash function for pseudo-random values
+float hash(vec2 p) 
+{
+	p = fract(p * vec2(443.897, 441.423));
+	p += dot(p, p.yx + 19.19);
+	return fract(p.x * p.y);
+}
+
+// Spatiotemporal pseudo-random Blue Noise
+float blueNoiseTemporal(vec2 uv, float time) 
+{
+	// Temporal offset - rotates through different noise patterns over time
+	float temporalOffset = floor(time * 60.0);
+	vec2 timeVec = vec2(temporalOffset * 0.754877, temporalOffset * 0.569840);
+	
+	// Spatial Blue Noise approximation using multiple octaves
+	vec2 p1 = uv * 256.0;
+	vec2 i1 = floor(p1);
+	vec2 f1 = fract(p1);
+	
+	// Smooth interpolation
+	vec2 u1 = f1 * f1 * (3.0 - 2.0 * f1);
+	
+	// Sample 4 corners with temporal variation
+	float a1 = hash(i1 + timeVec);
+	float b1 = hash(i1 + vec2(1.0, 0.0) + timeVec);
+	float c1 = hash(i1 + vec2(0.0, 1.0) + timeVec);
+	float d1 = hash(i1 + vec2(1.0, 1.0) + timeVec);
+	
+	// Bilinear interpolation
+	float noise = mix(mix(a1, b1, u1.x), mix(c1, d1, u1.x), u1.y);
+	
+	// Add higher frequency detail for better blue noise characteristics
+	vec2 p2 = uv * 512.0;
+	vec2 i2 = floor(p2);
+	vec2 f2 = fract(p2);
+	
+	// Smooth interpolation
+	vec2 u2 = f2 * f2 * (3.0 - 2.0 * f2);
+	
+	// Sample 4 corners with temporal variation
+	float a2 = hash(i2 + timeVec);
+	float b2 = hash(i2 + vec2(1.0, 0.0) + timeVec);
+	float c2 = hash(i2 + vec2(0.0, 1.0) + timeVec);
+	float d2 = hash(i2 + vec2(1.0, 1.0) + timeVec);
+	
+	// Bilinear interpolation
+	float detail = mix(mix(a2, b2, u2.x), mix(c2, d2, u2.x), u2.y);
+	
+	// Combine base and detail
+	noise = noise * 0.7 + detail * 0.3;
+	
+	// Map from [0,1] to [-1,1]
+	return noise * 2.0 - 1.0;
+}
+
 // Atmosphere Functions
 // Calculates the Atmosphere Density with the given Sample Position based on the Celestial Body's Position, Radius, and Atmosphere Radius
 float densityAtPoint(vec3 density_sample_position)
@@ -135,6 +198,9 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 // Calculates the Visible Light when viewing the Atmosphere from a Ray's Position, Direction
 vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 direction_to_light, float light_intensity, vec3 original_color, vec2 uv)
 {
+	// Calculate Temporal Blue Noise at UV position and Time
+	float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time) * blue_noise_ditering_strength;
+	
 	// Scatter Point Sampling Variables
 	vec3 in_scatter_point = ray_origin;
 	vec3 in_scattered_light = vec3(0.0);
@@ -166,6 +232,7 @@ vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 
 	
 	// Normalize Total Atmosphere Light Visible at the given Pixel
 	in_scattered_light *= u_AtmosphereScatteringCoefficients * light_intensity * (step_size / u_PlanetRadius);
+	in_scattered_light += blue_noise * 0.01;
 	
 	// Attenuate brightness of light reflected from Celestial Body's Surface
 	float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;

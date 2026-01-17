@@ -341,6 +341,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
+					//
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_time_index, CelestialSimulator.global_atmosphere_time);
+					
 					// Set Planet Atmosphere Sampling Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_scatter_point_samples_num_index, CelestialSimulator.global_atmosphere_scatter_point_samples_count);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_optical_depth_samples_num_index, CelestialSimulator.global_atmosphere_optical_depth_samples_count);

@@ -119,7 +119,7 @@ float densityAtPoint(vec3 density_sample_position)
 float henyeyGreenstein(float g_anisotropy_factor, float cos_theta) 
 {
 	float g_sqr = g_anisotropy_factor * g_anisotropy_factor;
-	return (1.0 - g_sqr) / (4.0 * Pi * pow(abs(1.0 + g_sqr - 2.0 * g_anisotropy_factor * cos_theta), 1.5));
+	return (1.0 - g_sqr) / (4.0 * Pi * pow(1.0 + g_sqr - 2.0 * g_anisotropy_factor * cos_theta, 1.5));
 }
 
 float doubleHenyeyGreenstein(float cos_theta, float g1, float g2, float blend) 
