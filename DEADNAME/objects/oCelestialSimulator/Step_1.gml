@@ -1,5 +1,5 @@
-/// @description Celestial Body Behaviour
-// Iterates through all Celestial Bodies within the Simulator to perform their Behaviours while orienting their Orbital Positions and Rotations
+/// @description Celestial Object Behaviour
+// Iterates through all Celestial Objects within the Simulator to perform their Behaviours while orienting their Orbital Positions and Rotations
 
 // Check if Celestial Simulator is Active
 if (!active)
@@ -103,10 +103,10 @@ repeat (array_length(solar_systems))
 			}
 		}
 		
-		// Decrement the Celestial Object Index
+		// Increment the Celestial Object Index
 		temp_celestial_object_index++;
 	}
 	
-	// Decrement the Solar System Index
+	// Increment the Solar System Index
 	temp_solar_systems_index++;
 }

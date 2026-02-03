@@ -21,7 +21,7 @@ const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 // Vertex Shader
 void main() 
 {
-	//
+	// 
 	vec3 camera_forward = normalize(in_CameraRotation[2].xyz);
 	
 	//

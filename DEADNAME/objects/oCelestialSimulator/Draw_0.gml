@@ -23,7 +23,7 @@ var temp_camera_proj_matrix = camera_get_proj_mat(temp_camera);
 var temp_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
 camera_set_proj_mat(temp_camera, temp_projection_matrix);
 
-// Depth Sorted Render Pass
+// Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
 
 repeat (ds_list_size(solar_system_render_depth_instances_list))
@@ -90,7 +90,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 			surface_reset_target();
 			break;
 		case CelestialObjectType.Planet:
-			// Render Planet's Depth Sorted Visual Effects
+			// Render Planet (Lithosphere, Hydrosphere, Atmosphere)
 			with (temp_celestial_object_instance)
 			{
 				// Set Default Blendmode
@@ -253,16 +253,14 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);
 						
-						//
+						// Set Cloud Noise Texture Sampling Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_square_size_index, 2048);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_cube_size_index, 256);
 						
-						// Set Planet Atmosphere Cloud Rendering Sampling Properties
+						// Set Global Cloud Lighting and Rendering Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_scatter_point_samples_count_index, CelestialSimulator.global_clouds_scatter_point_samples_count);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_depth_samples_count_index, CelestialSimulator.global_clouds_light_depth_samples_count);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_sample_scale_index, CelestialSimulator.global_clouds_sample_scale);
-						
-						// Set 
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_density_falloff_index, CelestialSimulator.global_clouds_density_falloff);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_anisotropic_light_scattering_index, CelestialSimulator.global_clouds_anisotropic_light_scattering_strength);
 						
@@ -295,7 +293,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						
 						repeat (ds_list_size(clouds_depth_list))
 						{
-							//
+							// Find Individual Cloud Render Properties from Planet Cloud Depth Sorted Render Property DS Lists
 							var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_depth_index);
 							var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_depth_index);
 							var temp_cloud_height = ds_list_find_value(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_depth_index);
@@ -303,7 +301,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 							var temp_cloud_density = ds_list_find_value(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_depth_index);
 							var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_depth_index);
 							
-							// Set Cloud Properties
+							// Set Cloud Render Properties
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_cloud_radius_index, temp_cloud_radius);
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_cloud_radius_index, temp_cloud_radius);
 							
@@ -341,12 +339,23 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
-					//
+					// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_time_index, CelestialSimulator.global_atmosphere_time);
 					
 					// Set Planet Atmosphere Sampling Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_scatter_point_samples_num_index, CelestialSimulator.global_atmosphere_scatter_point_samples_count);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_optical_depth_samples_num_index, CelestialSimulator.global_atmosphere_optical_depth_samples_count);
+					
+					// (Forward Rendered Lighting) Planet Atmosphere Light Source Shader Properties
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_exists_index, CelestialSimulator.light_source_exists);
+					
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_position_x_index, CelestialSimulator.light_source_position_x);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_position_y_index, CelestialSimulator.light_source_position_y);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_position_z_index, CelestialSimulator.light_source_position_z);
+					
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_radius_index, CelestialSimulator.light_source_radius);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_falloff_index, CelestialSimulator.light_source_falloff);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_intensity_index, CelestialSimulator.light_source_intensity);
 					
 					// Set Planet Atmosphere Cloud Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_clouds_alpha_blending_power_index, CelestialSimulator.global_clouds_alpha_blending_power);

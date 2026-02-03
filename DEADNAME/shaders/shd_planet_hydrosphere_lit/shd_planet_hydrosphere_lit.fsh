@@ -150,7 +150,7 @@ void main()
 	// Establish Cumulative Light Value with Calculated Ambient Occlusion Light Value
 	vec3 light = o_l;
 
-	// Iterate through all Lights
+	// Iterate through all Light Sources
 	for (int i = 0; i < MAX_LIGHTS; i++)
 	{
 		// Check if Light Source Exists

@@ -1,4 +1,4 @@
-/// @description Celestial Body Depth Sorting Event
+/// @description Celestial Object Depth Sorting Event
 // Celestial Simulator Object Depth Sorting Behaviour for Rendering Pipeline
 
 // Check if Celestial Simulator is Active
@@ -39,7 +39,7 @@ var temp_camera_up_vector_normalized = [ camera_rotation_matrix[4] / temp_camera
 var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
 var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
 
-// Create Render Positions
+// Create Camera Render Near and Far Positions
 var temp_render_start_x = camera_position_x + temp_camera_forward_vector_normalized[0] * (camera_z_near + camera_z_near_depth_overpass);
 var temp_render_start_y = camera_position_y + temp_camera_forward_vector_normalized[1] * (camera_z_near + camera_z_near_depth_overpass);
 var temp_render_start_z = camera_position_z + temp_camera_forward_vector_normalized[2] * (camera_z_near + camera_z_near_depth_overpass);
@@ -125,7 +125,7 @@ repeat (array_length(temp_solar_system))
 		}
 	}
 	
-	// Celestial Object Type  Depth Sorting Behaviour
+	// Celestial Object Type Depth Sorting Behaviour
 	switch (temp_celestial_object_instance.celestial_object_type)
 	{
 		case CelestialObjectType.Planet:
@@ -141,7 +141,7 @@ repeat (array_length(temp_solar_system))
 				ds_list_clear(temp_celestial_object_instance.clouds_render_density_list);
 				ds_list_clear(temp_celestial_object_instance.clouds_render_absorption_list);
 				
-				// 
+				// Create Planet's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
 				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
 				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
 				
@@ -156,7 +156,7 @@ repeat (array_length(temp_solar_system))
 					// Check if Cloud is Active
 					if (temp_cloud_density > 0)
 					{
-						//
+						// Find Cloud's Absorption
 						var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_absorption_list, temp_cloud_index);
 						
 						// Find Cloud Height
@@ -166,24 +166,24 @@ repeat (array_length(temp_solar_system))
 						var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_position_u_list, temp_cloud_index);
 						var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_position_v_list, temp_cloud_index);
 						
-						//
+						// Find Cloud Group's Individual Cloud Properties nested DS Lists
 						var temp_cloud_group_radius_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_radius_list, temp_cloud_index);
 						var temp_cloud_group_height_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_height_list, temp_cloud_index);
 						var temp_cloud_group_bearing_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_bearing_list, temp_cloud_index);
 						var temp_cloud_group_distance_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_distance_list, temp_cloud_index);
 						
-						//
+						// Iterate through Cloud Group's Individual Clouds
 						var temp_cloud_individual_index = 0;
 						
 						repeat (ds_list_size(temp_cloud_group_radius_list))
 						{
-							//
+							// Find Individual Cloud's Properties from nested DS Lists
 							var temp_cloud_individual_radius = ds_list_find_value(temp_cloud_group_radius_list, temp_cloud_individual_index);
 							var temp_cloud_individual_height = temp_cloud_height + ds_list_find_value(temp_cloud_group_height_list, temp_cloud_individual_index);
 							var temp_cloud_individual_bearing = ds_list_find_value(temp_cloud_group_bearing_list, temp_cloud_individual_index);
 							var temp_cloud_individual_distance = ds_list_find_value(temp_cloud_group_distance_list, temp_cloud_individual_index);
 							
-							//
+							// Find Individual Cloud's UV from Cloud Group's Origin UV Position
 							var temp_cloud_individual_uv_offset = haversine_distance_uv_offset(temp_cloud_u, temp_cloud_v, temp_cloud_individual_bearing, temp_cloud_individual_distance, temp_celestial_object_instance.radius);
 							var temp_cloud_individual_u = temp_cloud_u + temp_cloud_individual_uv_offset[0];
 							var temp_cloud_individual_v = temp_cloud_v + temp_cloud_individual_uv_offset[1];
@@ -198,63 +198,27 @@ repeat (array_length(temp_solar_system))
 							var temp_cloud_x_value = temp_cloud_sphere_horizontal_radius * -sin(temp_cloud_atan_value);
 							var temp_cloud_z_value = temp_cloud_sphere_horizontal_radius * -cos(temp_cloud_atan_value);
 							
-							//
+							// Find Individual Cloud's Position in World Space
 							var temp_cloud_adjusted_height = temp_celestial_object_instance.radius + temp_cloud_individual_height;
+							
 							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[2]) + temp_celestial_object_instance.x;
 							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[6]) + temp_celestial_object_instance.y;
 							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[8] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[9] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
 							
-							//
+							// Find Individual Cloud's Depth from Render Camera
 							var temp_cloud_vx = temp_cloud_x - temp_render_start_x;
 							var temp_cloud_vy = temp_cloud_y - temp_render_start_y;
 							var temp_cloud_vz = temp_cloud_z - temp_render_start_z;
 							
-							//
 							var temp_cloud_depth = dot_product_3d(temp_cloud_vx, temp_cloud_vy, temp_cloud_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
-							
-							/*
-							// Calculate Celestial Object Frustum Culling Vectors
-							var temp_camera_to_cloud_vector_x = temp_cloud_x - camera_position_x;
-							var temp_camera_to_cloud_vector_y = temp_cloud_y - camera_position_y;
-							var temp_camera_to_cloud_vector_z = temp_cloud_z - camera_position_z;
-							
-							// Calculate Celestial Object Frustum Culling Dot Products
-							var temp_camera_right_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_right_vector_normalized[0], temp_camera_right_vector_normalized[1], temp_camera_right_vector_normalized[2]);
-							var temp_camera_up_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_up_vector_normalized[0], temp_camera_up_vector_normalized[1], temp_camera_up_vector_normalized[2]);
-							var temp_camera_forward_to_cloud_dot_product = dot_product_3d(temp_camera_to_cloud_vector_x, temp_camera_to_cloud_vector_y, temp_camera_to_cloud_vector_z, temp_camera_forward_vector_normalized[0], temp_camera_forward_vector_normalized[1], temp_camera_forward_vector_normalized[2]);
-							
-							// Check if Celestial Object can be Horizontally Frustum Culled
-							var temp_camera_cloud_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_cloud_dot_product;
-							
-							if (temp_camera_right_to_cloud_dot_product < -temp_camera_cloud_frustum_half_width - temp_cloud_individual_radius or temp_camera_right_to_cloud_dot_product > temp_camera_cloud_frustum_half_width + temp_cloud_individual_radius) 
-							{
-								// Increment Celestial Object Index
-								temp_cloud_index++;
-								
-								// Celestial Object Frustum Culled - Skip Celestial Object
-								continue;
-							}
-							
-							// Check if Celestial Object can be Vertically Frustum Culled
-							var temp_camera_cloud_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_cloud_dot_product;
-							
-							if (temp_camera_up_to_cloud_dot_product < -temp_camera_cloud_frustum_half_height - temp_cloud_individual_radius or temp_camera_up_to_cloud_dot_product > temp_camera_cloud_frustum_half_height + temp_cloud_individual_radius) 
-							{
-								// Increment Celestial Object Index
-								temp_cloud_index++;
-								
-								// Celestial Object Frustum Culled - Skip Celestial Object
-								continue;
-							}
-							*/
 							
 							// Iterate through Planet's Cloud Depth Sorting List to Sort and Index Cloud by Depth
 							if (ds_list_size(temp_celestial_object_instance.clouds_depth_list) == 0)
 							{
-								// Index Cloud Depth and Index into Planet's Cloud Depth Sorting Lists
+								// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
 								ds_list_add(temp_celestial_object_instance.clouds_depth_list, temp_cloud_depth);
 								
-								//
+								// Index Cloud's Properties into Planet's Cloud Render Properties Lists
 								ds_list_add(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_individual_u);
 								ds_list_add(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_individual_v);
 								ds_list_add(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_individual_height);
@@ -264,21 +228,22 @@ repeat (array_length(temp_solar_system))
 							}
 							else
 							{
-								// Establish Toggle if Celestial Object was Indexed
+								// Establish Toggle if Cloud Depth was Indexed
 								var temp_cloud_depth_is_indexed = false;
 								
-								// Iterate through Solar System Depth Sorting List
+								// Iterate through Planet's Cloud Depth Sorting List
 								for (var q = 0; q < ds_list_size(temp_celestial_object_instance.clouds_depth_list); q++)
 								{
-									// Find Solar System Depth Sorting List's Celestial Object Depth for Comparison
+									// Find Planet Cloud Depth Sorting List's Cloud Depth at Index for Comparison
 									var temp_cloud_depth_comparison = ds_list_find_value(temp_celestial_object_instance.clouds_depth_list, q);
 									
 									// Compare Depth Values
 									if (temp_cloud_depth >= temp_cloud_depth_comparison)
 									{
-										// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
+										// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
 										ds_list_insert(temp_celestial_object_instance.clouds_depth_list, q, temp_cloud_depth);
 										
+										// Index Cloud's Properties into Planet's Cloud Render Properties Lists
 										ds_list_insert(temp_celestial_object_instance.clouds_render_u_list, q, temp_cloud_individual_u);
 										ds_list_insert(temp_celestial_object_instance.clouds_render_v_list, q, temp_cloud_individual_v);
 										ds_list_insert(temp_celestial_object_instance.clouds_render_height_list, q, temp_cloud_individual_height);
@@ -286,19 +251,19 @@ repeat (array_length(temp_solar_system))
 										ds_list_insert(temp_celestial_object_instance.clouds_render_density_list, q, temp_cloud_density);
 										ds_list_insert(temp_celestial_object_instance.clouds_render_absorption_list, q, temp_cloud_absorption);
 										
-										// Toggle Celestial Object was Indexed and Break Loop
+										// Toggle Cloud Depth was Indexed and Break Loop
 										temp_cloud_depth_is_indexed = true;
 										break;
 									}
 								}
 								
-								// Check if Celestial Object was Indexed
+								// Check if Cloud Depth was Indexed
 								if (!temp_cloud_depth_is_indexed)
 								{
-									// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
+									// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
 									ds_list_add(temp_celestial_object_instance.clouds_depth_list, temp_cloud_depth);
 									
-									//
+									// Index Cloud's Properties into Planet's Cloud Render Properties Lists
 									ds_list_add(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_individual_u);
 									ds_list_add(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_individual_v);
 									ds_list_add(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_individual_height);
@@ -308,7 +273,7 @@ repeat (array_length(temp_solar_system))
 								}
 							}
 							
-							//
+							// Increment Individual Cloud Index
 							temp_cloud_individual_index++;
 						}
 					}

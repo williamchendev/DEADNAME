@@ -1,3 +1,11 @@
+/// @function haversine_distance_uv(first_u, first_v, second_u, second_v, radius);
+/// @description Finds the distance between two mercator projection UV coordinates on a sphere with the given radius of the sphere
+/// @param {real} first_u The first mercator projection UV coordinate's U position
+/// @param {real} first_v The first mercator projection UV coordinate's V position
+/// @param {real} second_u The second mercator projection UV coordinate's U position
+/// @param {real} second_v The second mercator projection UV coordinate's V position
+/// @param {real} radius The radius of the sphere
+/// @returns {real} Returns the distance between the two mercator projection UV coordinates on the sphere
 function haversine_distance_uv(first_u, first_v, second_u, second_v, radius) 
 {
 	// Add to Compiler
@@ -23,7 +31,15 @@ function haversine_distance_uv(first_u, first_v, second_u, second_v, radius)
 	return temp_c * radius;
 }
 
-function haversine_distance_uv_offset(u, v, bearing, distance, sphere_radius)
+/// @function haversine_distance_uv_offset(u, v, bearing, distance, radius);
+/// @description Finds and returns the UV offset of a given mercator projection UV coordinate on a sphere using the given bearing, distance, and radius of said sphere
+/// @param {real} u The mercator projection UV coordinate's U position
+/// @param {real} v The mercator projection UV coordinate's V position
+/// @param {real} bearing The angle to calculate the UV offset from the given mercator projection UV coordinate on a sphere, in degrees
+/// @param {real} distance The distance of the UV offset from the given mercator projection UV coordinate on a sphere
+/// @param {real} radius The radius of the sphere
+/// @returns {array<real>} Returns an array of two entries cooresponding to the horizontal and vertical offset of the new position from the given UV position
+function haversine_distance_uv_offset(u, v, bearing, distance, radius)
 {
 	// Add to Compiler
 	gml_pragma("forceinline");
@@ -33,7 +49,7 @@ function haversine_distance_uv_offset(u, v, bearing, distance, sphere_radius)
 	var temp_lon = lerp(-pi, pi, u);
 	
 	// Establish distance and bearing from given uv coordinates to create uv offset
-	var temp_angular_distance = distance / sphere_radius;
+	var temp_angular_distance = distance / radius;
 	var temp_bearing = degtorad(bearing);
 	
 	// Find Great Circle distance from original coordinate to offset

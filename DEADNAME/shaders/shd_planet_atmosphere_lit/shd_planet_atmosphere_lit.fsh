@@ -2,6 +2,9 @@
 // Forward Rendered Lit Planet Atmosphere fragment shader meant for Inno's Solar System Overworld
 //
 
+// Forward Rendered Lighting Properties
+#define MAX_LIGHTS 6
+
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
 uniform mat4 in_fsh_CameraRotation;
@@ -13,6 +16,17 @@ uniform float u_Time;
 // Sample Properties
 uniform float u_ScatterPointSamplesCount;
 uniform float u_OpticalDepthSamplesCount;
+
+// Light Source Properties
+uniform float in_Light_Exists[MAX_LIGHTS];
+
+uniform float in_Light_Position_X[MAX_LIGHTS];
+uniform float in_Light_Position_Y[MAX_LIGHTS];
+uniform float in_Light_Position_Z[MAX_LIGHTS];
+
+uniform float in_Light_Radius[MAX_LIGHTS];
+uniform float in_Light_Falloff[MAX_LIGHTS];
+uniform float in_Light_Intensity[MAX_LIGHTS];
 
 // Atmosphere Properties
 uniform float u_fsh_AtmosphereRadius;
@@ -47,7 +61,10 @@ const float cloud_alpha_minimum = 0.02;
 const float cloud_surface_mask_cutout_depth = 0.65;
 
 const float blue_noise_ditering_scale = 2.0;
-const float blue_noise_ditering_strength = 0.5;
+const float blue_noise_ditering_strength = 0.007;
+const float blue_noise_light_source_time_interval = 20.0;
+
+const float light_source_intensity_multiplier = 4.0;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -195,57 +212,6 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
-// Calculates the Visible Light when viewing the Atmosphere from a Ray's Position, Direction
-vec3 calculateLight(vec3 ray_origin, vec3 ray_direction, float ray_length, vec3 direction_to_light, float light_intensity, vec3 original_color, vec2 uv)
-{
-	// Calculate Temporal Blue Noise at UV position and Time
-	float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time) * blue_noise_ditering_strength;
-	
-	// Scatter Point Sampling Variables
-	vec3 in_scatter_point = ray_origin;
-	vec3 in_scattered_light = vec3(0.0);
-	float view_ray_optical_depth = 0.0;
-	float step_size = ray_length / (u_ScatterPointSamplesCount - 1.0);
-	
-	// Calculate Scattered Light through Atmosphere based on Ray-Marching through Atmosphere to retreive Density and Light from Light Source
-	for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
-	{
-		// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
-		float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, direction_to_light).y;
-		float light_source_ray_optical_depth = opticalDepth(in_scatter_point, direction_to_light, light_source_ray_length);
-		
-		// Calculate View Ray's Optical Depth at Scattering Sample Point
-		view_ray_optical_depth = opticalDepth(in_scatter_point, -ray_direction, step_size * i);
-		
-		// Find Atmosphere's Local Density at Scattering Sample Point
-		float local_density = densityAtPoint(in_scatter_point);
-		
-		// Calculate Transmittance of Light at Scattering Sample Point
-		vec3 transmittance = exp(-(light_source_ray_optical_depth + view_ray_optical_depth) * u_AtmosphereScatteringCoefficients);
-		
-		// Add Transmittance of Light to Total Atmosphere Light Visible at the given Pixel based on Local Density of Atmosphere at Scattering Sample Point
-		in_scattered_light += local_density * transmittance;
-		
-		// Increment Scattering Sample Point by Ray Marching Step Size in Direction of View Vector
-		in_scatter_point += ray_direction * step_size;
-	}
-	
-	// Normalize Total Atmosphere Light Visible at the given Pixel
-	in_scattered_light *= u_AtmosphereScatteringCoefficients * light_intensity * (step_size / u_PlanetRadius);
-	in_scattered_light += blue_noise * 0.01;
-	
-	// Attenuate brightness of light reflected from Celestial Body's Surface
-	float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;
-	float brightness_sum = view_ray_optical_depth * light_intensity * reflected_light_out_scatter_strength + brightness_adaption;
-	float reflected_light_strength = exp(-brightness_sum);
-	float hdr_strength = max(min((dot(original_color, vec3(1.0)) / 3.0) - 1.0, 1.0), 0.0);
-	reflected_light_strength = mix(reflected_light_strength, 1.0, hdr_strength);
-	vec3 reflected_light = original_color * reflected_light_strength;
-	
-	// Return Final Color
-	return (original_color + in_scattered_light);
-}
-
 // Fragment Shader
 void main()
 {
@@ -288,12 +254,74 @@ void main()
 	// Calculate Point within Atmosphere by incrementing a distance of Epsilon to intersect the Surface of the Sphere
 	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_forward);
 	
-	// Calculate Light Source's Direction Vector
-	vec3 light_position = vec3(0.0);
-	vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
+	// Establish Cumulative Light Value
+	vec3 light = vec3(0.0);
 	
-	// Calculate Light Visible from Surface of Atmosphere
-	vec3 light = calculateLight(point_in_atmosphere, camera_forward, distance_through_atmosphere - epsilon * 2.0, -light_direction, 4.0, diffuse_color.rgb, uv);
+	// Iterate through all Light Sources
+	for (int l = 0; l < MAX_LIGHTS; l++)
+	{
+		// Check if Light Source Exists
+		if (in_Light_Exists[l] != 1.0)
+		{
+			continue;
+		}
+		
+		// Calculate Temporal Blue Noise at UV position and Time
+		float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time + blue_noise_light_source_time_interval * float(l)) * blue_noise_ditering_strength;
+		
+		// Calculate Light Source's Position & Direction Vector
+		vec3 light_position = vec3(in_Light_Position_X[l], in_Light_Position_Y[l], in_Light_Position_Z[l]);
+		vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
+		
+		// Scatter Point Sampling Variables
+		vec3 in_scatter_point = point_in_atmosphere;
+		vec3 in_scattered_light = vec3(0.0);
+		float view_ray_optical_depth = 0.0;
+		float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
+		
+		// Calculate Scattered Light through Atmosphere based on Ray-Marching through Atmosphere to retreive Density and Light from Light Source
+		for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
+		{
+			// Calculate Light Source Distance Fade Falloff Effect
+			float light_source_distance = length(in_scatter_point - light_position);
+			float light_source_fade = pow((in_Light_Radius[l] - light_source_distance) / in_Light_Radius[l], in_Light_Falloff[l]);
+			
+			// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
+			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction).y;
+			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction, light_source_ray_length);
+			
+			// Calculate View Ray's Optical Depth at Scattering Sample Point
+			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_forward, step_size * i);
+			
+			// Find Atmosphere's Local Density at Scattering Sample Point
+			float local_density = densityAtPoint(in_scatter_point);
+			
+			// Calculate Transmittance of Light at Scattering Sample Point
+			vec3 transmittance = exp(-(light_source_ray_optical_depth + view_ray_optical_depth) * u_AtmosphereScatteringCoefficients);
+			
+			// Add Transmittance of Light to Total Atmosphere Light Visible at the given Pixel based on Local Density of Atmosphere at Scattering Sample Point
+			in_scattered_light += local_density * transmittance * light_source_fade;
+			
+			// Increment Scattering Sample Point by Ray Marching Step Size in Direction of View Vector
+			in_scatter_point += camera_forward * step_size;
+		}
+		
+		// Normalize Total Atmosphere Light Visible at the given Pixel
+		in_scattered_light *= u_AtmosphereScatteringCoefficients * light_source_intensity_multiplier * in_Light_Intensity[l] * (step_size / u_PlanetRadius);
+		in_scattered_light += blue_noise;
+		
+		// Attenuate brightness of light reflected from Celestial Body's Surface
+		float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;
+		float brightness_sum = view_ray_optical_depth * light_source_intensity_multiplier * in_Light_Intensity[l] * reflected_light_out_scatter_strength + brightness_adaption;
+		float reflected_light_strength = exp(-brightness_sum);
+		float hdr_strength = max(min((dot(diffuse_color.rgb, vec3(1.0)) / 3.0) - 1.0, 1.0), 0.0);
+		reflected_light_strength = mix(reflected_light_strength, 1.0, hdr_strength);
+		vec3 reflected_light = diffuse_color.rgb * reflected_light_strength;
+		
+		// Add Light Visible from Surface of Atmosphere
+		light += diffuse_color.rgb + reflected_light + in_scattered_light;
+		//light += (diffuse_color.rgb + in_scattered_light);
+	}
 	
 	// Calculate Atmosphere Alpha
 	float atmosphere_alpha = min(atmosphere_depth + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);

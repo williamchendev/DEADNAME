@@ -32,7 +32,7 @@ clouds_group_height_list = ds_list_create();
 clouds_group_bearing_list = ds_list_create();
 clouds_group_distance_list = ds_list_create();
 
-// Spawn Planet Clouds via Groups to create Naturalistic Clustering
+// (DEBUG, FIND ANOTHER WAY TO DO THIS LATER) Spawn Planet Clouds via Groups to create Naturalistic Clustering
 var temp_cloud_spawn_num = 64;
 
 for (var temp_cloud_spawn_index = 0; temp_cloud_spawn_index < temp_cloud_spawn_num; temp_cloud_spawn_index++)

@@ -1,5 +1,8 @@
-
-
+/// @function cloud_noise(square_texture_size, cube_texture_size, file_name);
+/// @description Generates a three-dimensional Cloud Noise Texture as a two dimensional PNG image given the desired texture size, cube texture size, and name of the file
+/// @param {int} square_texture_size The Cloud Noise Texture's square length
+/// @param {int} cube_texture_size The Cloud Noise Texture's cube length
+/// @param {string} file_name The name of the Cloud Noise Texture image file to save
 function cloud_noise(square_texture_size, cube_texture_size, file_name = "cloud_noise") 
 {
 	// Vertex Format
@@ -28,19 +31,19 @@ function cloud_noise(square_texture_size, cube_texture_size, file_name = "cloud_
 	var temp_cloud_noise_shader_cube_size_index = shader_get_uniform(shd_cloud_noise, "u_CubeSize");
 	var temp_cloud_noise_shader_square_size_index = shader_get_uniform(shd_cloud_noise, "u_SquareSize");
 	
-	//
+	// Create Cloud Noise Surface with given Cloud Noise Texture Pixel Dimensions
 	var temp_cloud_noise_surface = surface_create(square_texture_size, square_texture_size, surface_rgba8unorm);
 	
-	//
+	// Set Cloud Noise Surface as Target Surface
 	surface_set_target(temp_cloud_noise_surface);
 	
-	//
+	// Reset Cloud Noise Surface Color and Transparency
 	draw_clear_alpha(c_black, 0);
 	
-	//
+	// Set Default Blendmode
 	gpu_set_blendmode(bm_normal);
 	
-	//
+	// Set Cloud Noise Shader
 	shader_set(shd_cloud_noise);
 	
 	// Set Cloud Noise Shader Properties
@@ -48,16 +51,16 @@ function cloud_noise(square_texture_size, cube_texture_size, file_name = "cloud_
 	shader_set_uniform_f(temp_cloud_noise_shader_cube_size_index, cube_texture_size);
 	shader_set_uniform_f(temp_cloud_noise_shader_square_size_index, square_texture_size);
 	
-	//
+	// Draw Square UV Vertex Buffer
 	vertex_submit(temp_square_uv_vertex_buffer, pr_trianglelist, -1);
 	
-	//
+	// Reset Shader
 	shader_reset();
 	
-	//
+	// Reset Surface Target
 	surface_reset_target();
 	
-	//
+	// Save Cloud Noise Texture
 	var temp_file_path = $"{program_directory}\\{file_name}.png";
 	surface_save(temp_cloud_noise_surface, temp_file_path);
 	show_debug_message($"Cloud Noise Image saved - {temp_file_path}");
@@ -70,28 +73,7 @@ function cloud_noise(square_texture_size, cube_texture_size, file_name = "cloud_
 	vertex_delete_buffer(temp_square_uv_vertex_buffer);
 	temp_square_uv_vertex_buffer = -1;
 	
-	//
+	// Delete Cloud Noise Surface
 	surface_free(temp_cloud_noise_surface);
 	temp_cloud_noise_surface = -1;
-}
-
-function cloud_noise_random(cloud_x, cloud_y, cloud_z)
-{
-	var temp_dot_a = dot_product_3d(cloud_x, cloud_y, cloud_z, 12.9898, 78.233, 34.897);
-	var temp_dot_b = dot_product_3d(cloud_x, cloud_y, cloud_z, 12.345, 67.89, 412.12);
-	var temp_dot_c = dot_product_3d(cloud_x, cloud_y, cloud_z, 56.345, 290.8912, 14.1212);
-	
-	var temp_trig_a = cos(temp_dot_a);
-	var temp_trig_b = sin(temp_dot_b);
-	var temp_trig_c = cos(temp_dot_c);
-	
-	var temp_mod_a = ((197.0 * temp_trig_a) mod 1.0 + temp_trig_a) * 0.5453;
-	var temp_mod_b = ((197.0 * temp_trig_b) mod 1.0 + temp_trig_b) * 0.5453;
-	var temp_mod_c = ((197.0 * temp_trig_c) mod 1.0 + temp_trig_c) * 0.5453;
-	
-	var temp_frac_a = frac(temp_mod_a * 43758.5453123) * 2.0 - 1.0;
-	var temp_frac_b = frac(temp_mod_b * 43758.5453123) * 2.0 - 1.0;
-	var temp_frac_c = frac(temp_mod_c * 43758.5453123) * 2.0 - 1.0;
-	
-	return [ temp_frac_a, temp_frac_b, temp_frac_c ];
 }
