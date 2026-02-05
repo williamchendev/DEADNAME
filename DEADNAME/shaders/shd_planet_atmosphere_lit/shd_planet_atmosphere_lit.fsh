@@ -340,9 +340,7 @@ void main()
 		vec3 reflected_light = diffuse_color.rgb * reflected_light_strength;
 		
 		// Add Light Visible from Surface of Atmosphere
-		light += diffuse_color.rgb + reflected_light + in_scattered_light + blue_noise;
-		//light += dither(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time + blue_noise_light_source_time_interval * float(l), in_scattered_light);
-		//light += (diffuse_color.rgb + in_scattered_light);
+		light += diffuse_color.rgb + in_scattered_light + reflected_light + blue_noise;
 	}
 	
 	// Calculate Atmosphere Alpha
