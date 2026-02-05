@@ -57,11 +57,13 @@ const float Pi = 3.14159265359;
 const float epsilon = 0.0001;
 const float pseudo_infinity = 1.0 / 0.0;
 
+const float color_range = 256.0;
+
 const float cloud_alpha_minimum = 0.02;
 const float cloud_surface_mask_cutout_depth = 0.65;
 
 const float blue_noise_ditering_scale = 2.0;
-const float blue_noise_ditering_strength = 0.007;
+const float blue_noise_ditering_strength = 0.005;
 const float blue_noise_light_source_time_interval = 20.0;
 
 const float light_source_intensity_multiplier = 4.0;
@@ -212,6 +214,26 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
+//
+// Dithering Functions
+// Screen Space pseudo-random Blue Noise dithered color quantization
+vec3 dither(vec2 uv, float time, vec3 light)
+{
+	// Generate stable Spatiotemporal pseudo-random screen-space Blue Noise
+	float dither_noise = blueNoiseTemporal(uv, time) - 0.5;
+	
+	// Luminosity correction
+	float luma = dot(light, vec3(0.0722, 0.2126, 0.7152));
+	light += dither_noise / color_range;
+	light *= luma < 0.05 ? 1.0 : luma / max(dot(light, vec3(0.0722, 0.2126, 0.7152)), 0.0001);
+	
+	// Apply dither before quantization
+	vec3 dithered_color = light + (dither_noise / color_range);
+	
+	// Quantize lighting
+	return floor(dithered_color * color_range) / color_range;
+}
+
 // Fragment Shader
 void main()
 {
@@ -308,7 +330,6 @@ void main()
 		
 		// Normalize Total Atmosphere Light Visible at the given Pixel
 		in_scattered_light *= u_AtmosphereScatteringCoefficients * light_source_intensity_multiplier * in_Light_Intensity[l] * (step_size / u_PlanetRadius);
-		in_scattered_light += blue_noise;
 		
 		// Attenuate brightness of light reflected from Celestial Body's Surface
 		float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;
@@ -319,7 +340,8 @@ void main()
 		vec3 reflected_light = diffuse_color.rgb * reflected_light_strength;
 		
 		// Add Light Visible from Surface of Atmosphere
-		light += diffuse_color.rgb + reflected_light + in_scattered_light;
+		light += diffuse_color.rgb + reflected_light + in_scattered_light + blue_noise;
+		//light += dither(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time + blue_noise_light_source_time_interval * float(l), in_scattered_light);
 		//light += (diffuse_color.rgb + in_scattered_light);
 	}
 	

@@ -9,11 +9,11 @@ if (!active)
 }
 
 // Increment Celestial Simulator's Global Clocks
+global_noise_time += global_noise_time_spd * frame_delta;
+global_noise_time = global_noise_time mod 1;
+
 global_hydrosphere_time += global_hydrosphere_time_spd * frame_delta;
 global_hydrosphere_time = global_hydrosphere_time mod 9999999; // please don't overflow
-
-global_atmosphere_time += global_atmosphere_time_spd * frame_delta;
-global_atmosphere_time = global_atmosphere_time mod 1;
 
 //
 var temp_camera_move_spd = 2;

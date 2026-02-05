@@ -60,12 +60,12 @@ solar_systems_background_star_sphere = geodesic_icosphere_create(3);
 solar_system_render_depth_values_list = ds_list_create();
 solar_system_render_depth_instances_list = ds_list_create();
 
+global_noise_time = 0;
+global_noise_time_spd = 0.03;
+
 global_hydrosphere_time = 0;
 global_hydrosphere_time_spd = 0.0037;
 global_hydrosphere_specular_intensity = 0.5;
-
-global_atmosphere_time = 0;
-global_atmosphere_time_spd = 0.008;
 
 global_clouds_scatter_point_samples_count = 8;
 global_clouds_light_depth_samples_count = 8;
@@ -139,6 +139,8 @@ planet_lithosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd
 planet_lithosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_CameraRotation");
 planet_lithosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_CameraDimensions");
 
+planet_lithosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_NoiseTime");
+
 planet_lithosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetRadius");
 planet_lithosphere_lit_shader_planet_elevation_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetElevation");
 planet_lithosphere_lit_shader_planet_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_PlanetPosition");
@@ -168,6 +170,8 @@ planet_hydrosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd
 planet_hydrosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraRotation");
 planet_hydrosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraRotation");
 planet_hydrosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_CameraDimensions");
+
+planet_hydrosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_NoiseTime");
 
 planet_hydrosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetRadius");
 planet_hydrosphere_lit_shader_vsh_planet_elevation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_vsh_PlanetElevation");

@@ -117,6 +117,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 				shader_set_uniform_matrix_array(CelestialSimulator.planet_lithosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 				
+				// Set Planet Lithosphere Time Clock for Spatiotemporal Blue Noise
+				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
+				
 				// (Forward Rendered Lighting) Planet Lithosphere Light Source Shader Properties
 				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_light_exists_index, CelestialSimulator.light_source_exists);
 				
@@ -172,6 +175,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					
+					// Set Planet Hydrosphere Time Clock for Spatiotemporal Blue Noise
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
 					
 					// Set Planet Hydrosphere Lighting Render Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_specular_intensity_index, CelestialSimulator.global_hydrosphere_specular_intensity);
@@ -340,7 +346,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_time_index, CelestialSimulator.global_atmosphere_time);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_time_index, CelestialSimulator.global_noise_time);
 					
 					// Set Planet Atmosphere Sampling Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_scatter_point_samples_num_index, CelestialSimulator.global_atmosphere_scatter_point_samples_count);

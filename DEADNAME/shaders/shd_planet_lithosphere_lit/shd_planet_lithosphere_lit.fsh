@@ -8,6 +8,9 @@
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
 
+// Temporal Properties
+uniform float u_NoiseTime;
+
 // Light Source Properties
 uniform float in_Light_Exists[MAX_LIGHTS];
 
@@ -36,6 +39,8 @@ varying float v_vDepth;
 // Constants
 const float Pi = 3.14159265359;
 
+const float color_range = 256.0;
+
 // Trigonometry Functions
 // returns the angle in the plane (in radians) between the positive x-axis and the ray from (0, 0) to the point (x, y)
 float atan2(float y, float x)
@@ -63,6 +68,97 @@ float atan2(float y, float x)
 	t3 = (y < 0.0) ? -t3 : t3;
 	
 	return t3;
+}
+
+// Noise Functions
+// Hash function for pseudo-random values
+float hash(vec3 p) 
+{
+	p = fract(p * 0.1031);
+    p += dot(p, p.yzx + 33.33);
+    return fract((p.x + p.y) * p.z);
+}
+
+// Spatiotemporal pseudo-random Blue Noise
+float blueNoiseTemporal(vec3 pos, float time) 
+{
+	// Temporal offset – cycles through stable patterns
+	float temporal_offset = floor(time * 60.0);
+	vec3 time_vec = vec3(temporal_offset * 0.754877, temporal_offset * 0.569840, temporal_offset * 0.885301);
+	
+	// Base Blue Noise
+	vec3 pb = pos * 256.0;
+	vec3 ib = floor(pb);
+	vec3 fb = fract(pb);
+	
+	// Smooth interpolation
+	vec3 u1 = fb * fb * (3.0 - 2.0 * fb);
+	
+	// Sample 8 corners (trilinear)
+	float a1 = hash(ib + vec3(0.0, 0.0, 0.0) + time_vec);
+	float b1 = hash(ib + vec3(1.0, 0.0, 0.0) + time_vec);
+	float c1 = hash(ib + vec3(0.0, 1.0, 0.0) + time_vec);
+	float d1 = hash(ib + vec3(1.0, 1.0, 0.0) + time_vec);
+	float e1 = hash(ib + vec3(0.0, 0.0, 1.0) + time_vec);
+	float f1 = hash(ib + vec3(1.0, 0.0, 1.0) + time_vec);
+	float g1 = hash(ib + vec3(0.0, 1.0, 1.0) + time_vec);
+	float h1 = hash(ib + vec3(1.0, 1.0, 1.0) + time_vec);
+	
+	float x00b = mix(a1, b1, u1.x);
+	float x10b = mix(c1, d1, u1.x);
+	float x01b = mix(e1, f1, u1.x);
+	float x11b = mix(g1, h1, u1.x);
+	
+	float y0b = mix(x00b, x10b, u1.y);
+	float y1b = mix(x01b, x11b, u1.y);
+	
+	float base_noise = mix(y0b, y1b, u1.z);
+	
+	// Detail Blue Noise
+	vec3 pd = pos * 512.0;
+	vec3 id = floor(pd);
+	vec3 fd = fract(pd);
+	
+	vec3 u2 = fd * fd * (3.0 - 2.0 * fd);
+	
+	float a2 = hash(id + vec3(0.0, 0.0, 0.0) + time_vec);
+	float b2 = hash(id + vec3(1.0, 0.0, 0.0) + time_vec);
+	float c2 = hash(id + vec3(0.0, 1.0, 0.0) + time_vec);
+	float d2 = hash(id + vec3(1.0, 1.0, 0.0) + time_vec);
+	float e2 = hash(id + vec3(0.0, 0.0, 1.0) + time_vec);
+	float f2 = hash(id + vec3(1.0, 0.0, 1.0) + time_vec);
+	float g2 = hash(id + vec3(0.0, 1.0, 1.0) + time_vec);
+	float h2 = hash(id + vec3(1.0, 1.0, 1.0) + time_vec);
+	
+	float x00d = mix(a2, b2, u2.x);
+	float x10d = mix(c2, d2, u2.x);
+	float x01d = mix(e2, f2, u2.x);
+	float x11d = mix(g2, h2, u2.x);
+	
+	float y0d = mix(x00d, x10d, u2.y);
+	float y1d = mix(x01d, x11d, u2.y);
+	
+	float detail_noise = mix(y0d, y1d, u2.z);
+	
+	// Combine base + detail
+	float noise = base_noise * 0.7 + detail_noise * 0.3;
+	
+	// Map from [0,1] → [-1,1]
+	return noise * 2.0 - 1.0;
+}
+
+// Dithering Functions
+// Spatiotemporal pseudo-random Blue Noise dithered color quantization
+vec3 dither(vec3 pos, float time, vec3 light)
+{
+	// Generate stable Spatiotemporal pseudo-random world-space Blue Noise
+	float dither_noise = blueNoiseTemporal(pos, time) - 0.5;
+	
+	// Apply dither before quantization
+	vec3 dithered_color = light + (dither_noise / color_range);
+	
+	// Quantize lighting
+	return floor(dithered_color * color_range) / color_range;
 }
 
 // Fragment Shader
@@ -172,6 +268,9 @@ void main()
 		// Add Calculated Light to Cumulative Light Value
         light += l * light_fade * in_Light_Intensity[i];
 	}
+	
+	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding
+	light = dither(v_vPosition, u_NoiseTime, light);
 	
 	// (Multiple Render Targets) Render Lit Sphere & Depth Fragment Values
 	gl_FragData[0] = vec4(light, diffuse_color.a);
