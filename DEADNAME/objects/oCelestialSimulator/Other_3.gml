@@ -21,6 +21,9 @@ background_stars_surface = -1;
 surface_free(background_stars_emissive_surface);
 background_stars_emissive_surface = -1;
 
+surface_free(temp_surface);
+temp_surface = -1;
+
 surface_free(celestial_body_render_surface);
 celestial_body_render_surface = -1;
 

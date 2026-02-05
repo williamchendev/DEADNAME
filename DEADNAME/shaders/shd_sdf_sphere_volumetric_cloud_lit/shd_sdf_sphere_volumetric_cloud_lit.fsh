@@ -6,6 +6,9 @@
 uniform vec3 in_fsh_CameraPosition;
 uniform mat4 in_fsh_CameraRotation;
 
+// Temporal Properties
+uniform float u_NoiseTime;
+
 // Sample Properties
 uniform float u_CloudNoiseSquareSize;
 uniform float u_CloudNoiseCubeSize;
@@ -53,7 +56,8 @@ const float pseudo_infinity = 1.0 / 0.0;
 const vec2 center = vec2(0.5, 0.5);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
-const float blue_noise_ditering_strength = 0.005;
+const float blue_noise_alpha_ditering_strength = 0.005;
+const float blue_noise_offset_ditering_strength = 0.25;
 
 const float breakpoint = 50.0;
 
@@ -66,9 +70,13 @@ float hash(vec3 p)
 	return fract((p.y + p.z) * p.x);
 }
 
-// Spatial pseudo-random Blue Noise
-float blueNoise(vec3 pos) 
+// Spatiotemporal pseudo-random Blue Noise
+float blueNoiseTemporal(vec3 pos, float time) 
 {
+	// Temporal offset – cycles through stable patterns
+	float temporal_offset = floor(time * 60.0);
+	vec3 time_vec = vec3(temporal_offset * 0.754877, temporal_offset * 0.569840, temporal_offset * 0.885301);
+	
 	// Base Blue Noise
 	vec3 pb = pos * 256.0;
 	vec3 ib = floor(pb);
@@ -78,14 +86,14 @@ float blueNoise(vec3 pos)
 	vec3 u1 = fb * fb * (3.0 - 2.0 * fb);
 	
 	// Sample 8 corners (trilinear)
-	float a1 = hash(ib + vec3(0.0, 0.0, 0.0));
-	float b1 = hash(ib + vec3(1.0, 0.0, 0.0));
-	float c1 = hash(ib + vec3(0.0, 1.0, 0.0));
-	float d1 = hash(ib + vec3(1.0, 1.0, 0.0));
-	float e1 = hash(ib + vec3(0.0, 0.0, 1.0));
-	float f1 = hash(ib + vec3(1.0, 0.0, 1.0));
-	float g1 = hash(ib + vec3(0.0, 1.0, 1.0));
-	float h1 = hash(ib + vec3(1.0, 1.0, 1.0));
+	float a1 = hash(ib + vec3(0.0, 0.0, 0.0) + time_vec);
+	float b1 = hash(ib + vec3(1.0, 0.0, 0.0) + time_vec);
+	float c1 = hash(ib + vec3(0.0, 1.0, 0.0) + time_vec);
+	float d1 = hash(ib + vec3(1.0, 1.0, 0.0) + time_vec);
+	float e1 = hash(ib + vec3(0.0, 0.0, 1.0) + time_vec);
+	float f1 = hash(ib + vec3(1.0, 0.0, 1.0) + time_vec);
+	float g1 = hash(ib + vec3(0.0, 1.0, 1.0) + time_vec);
+	float h1 = hash(ib + vec3(1.0, 1.0, 1.0) + time_vec);
 	
 	float x00b = mix(a1, b1, u1.x);
 	float x10b = mix(c1, d1, u1.x);
@@ -104,14 +112,14 @@ float blueNoise(vec3 pos)
 	
 	vec3 u2 = fd * fd * (3.0 - 2.0 * fd);
 	
-	float a2 = hash(id + vec3(0.0, 0.0, 0.0));
-	float b2 = hash(id + vec3(1.0, 0.0, 0.0));
-	float c2 = hash(id + vec3(0.0, 1.0, 0.0));
-	float d2 = hash(id + vec3(1.0, 1.0, 0.0));
-	float e2 = hash(id + vec3(0.0, 0.0, 1.0));
-	float f2 = hash(id + vec3(1.0, 0.0, 1.0));
-	float g2 = hash(id + vec3(0.0, 1.0, 1.0));
-	float h2 = hash(id + vec3(1.0, 1.0, 1.0));
+	float a2 = hash(id + vec3(0.0, 0.0, 0.0) + time_vec);
+	float b2 = hash(id + vec3(1.0, 0.0, 0.0) + time_vec);
+	float c2 = hash(id + vec3(0.0, 1.0, 0.0) + time_vec);
+	float d2 = hash(id + vec3(1.0, 1.0, 0.0) + time_vec);
+	float e2 = hash(id + vec3(0.0, 0.0, 1.0) + time_vec);
+	float f2 = hash(id + vec3(1.0, 0.0, 1.0) + time_vec);
+	float g2 = hash(id + vec3(0.0, 1.0, 1.0) + time_vec);
+	float h2 = hash(id + vec3(1.0, 1.0, 1.0) + time_vec);
 	
 	float x00d = mix(a2, b2, u2.x);
 	float x10d = mix(c2, d2, u2.x);
@@ -245,6 +253,9 @@ void main()
 		return;
 	}
 	
+	// Generate Blue Noise
+	float blue_noise = blueNoiseTemporal(point_in_cloud, u_NoiseTime);
+	
 	// Establish Light Source
 	float light_radius = 1000.0;
 	vec3 light_position = vec3(0.0);
@@ -265,9 +276,12 @@ void main()
 	float cloud_sample_ray_length = (u_fsh_CloudRadius * sphere_depth - epsilon) * 2.0;
 	float cloud_sample_step_size = cloud_sample_ray_length / (u_ScatterPointSamplesCount - 1.0);
 	
+	// Apply Blue Noise Offset to Sample Positions
+	cloud_sample_position += v_vSampleForward * cloud_sample_step_size * blue_noise * blue_noise_offset_ditering_strength;
+	
 	// Establish Cloud Light, Alpha, and Transmittance
 	vec3 light = u_CloudAmbientLightColor;
-	float alpha = blueNoise(point_in_cloud) * blue_noise_ditering_strength;
+	float alpha = blue_noise * blue_noise_alpha_ditering_strength;
 	float transmittance = 1.0;
 	
 	// Iterate through Cloud Light Scatter Point Sampling

@@ -54,6 +54,11 @@ if (!surface_exists(background_stars_emissive_surface))
     background_stars_emissive_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
+if (!surface_exists(temp_surface))
+{
+    temp_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
 if (!surface_exists(final_render_surface))
 {
     final_render_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);

@@ -75,6 +75,8 @@ global_clouds_density = 1;
 global_clouds_density_falloff = 5;
 global_clouds_anisotropic_light_scattering_strength = 0.4;
 global_clouds_alpha_blending_power = 2;
+global_clouds_gaussian_blur_size = 0.1;
+global_clouds_temporal_blue_noise_offset = 0.03;
 
 global_atmosphere_scatter_point_samples_count = 10;
 global_atmosphere_optical_depth_samples_count = 10;
@@ -85,6 +87,8 @@ background_bloom_premult_surface = -1;
 
 background_stars_surface = -1;
 background_stars_emissive_surface = -1;
+
+temp_surface = -1;
 
 celestial_body_render_surface = -1;
 celestial_body_atmosphere_depth_mask_surface = -1;
@@ -219,7 +223,7 @@ planet_atmosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_
 planet_atmosphere_lit_shader_vsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraDimensions");
 planet_atmosphere_lit_shader_fsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraDimensions");
 
-planet_atmosphere_lit_shader_time_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_Time");
+planet_atmosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_NoiseTime");
 
 planet_atmosphere_lit_shader_scatter_point_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_ScatterPointSamplesCount");
 planet_atmosphere_lit_shader_optical_depth_samples_num_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_OpticalDepthSamplesCount");
@@ -253,6 +257,8 @@ sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position = shader_get_uniform
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraDimensions");
+
+sdf_sphere_volumetric_clouds_lit_shader_noise_time_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_NoiseTime");
 
 sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_square_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudNoiseSquareSize");
 sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_cube_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudNoiseCubeSize");
@@ -294,6 +300,14 @@ sun_unlit_shader_radius_index = shader_get_uniform(shd_sun_unlit, "u_Radius");
 sun_unlit_shader_elevation_index = shader_get_uniform(shd_sun_unlit, "u_Elevation");
 sun_unlit_shader_position_index = shader_get_uniform(shd_sun_unlit, "u_Position");
 sun_unlit_shader_euler_angles_index = shader_get_uniform(shd_sun_unlit, "u_EulerAngles");
+
+// Horizontal Gaussian Blur Shader Indexes
+horizontal_gaussian_blur_shader_blur_width_index = shader_get_uniform(shd_blur_horizontal, "in_BlurWidth");
+horizontal_gaussian_blur_shader_texel_width_index = shader_get_uniform(shd_blur_horizontal, "in_TexelWidth");
+
+// Vertical Gaussian Blur Shader Indexes
+vertical_gaussian_blur_shader_blur_height_index = shader_get_uniform(shd_blur_vertical, "in_BlurHeight");
+vertical_gaussian_blur_shader_texel_height_index = shader_get_uniform(shd_blur_vertical, "in_TexelHeight");
 
 // (Forward Rendered Lighting) Light Source Variables
 light_source_exists = array_create(CelestialSimMaxLights);

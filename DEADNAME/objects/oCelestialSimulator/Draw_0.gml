@@ -307,6 +307,9 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 							var temp_cloud_density = ds_list_find_value(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_depth_index);
 							var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_depth_index);
 							
+							// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
+							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_noise_time_index, CelestialSimulator.global_noise_time + temp_cloud_depth_index * CelestialSimulator.global_clouds_temporal_blue_noise_offset);
+							
 							// Set Cloud Render Properties
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_cloud_radius_index, temp_cloud_radius);
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_cloud_radius_index, temp_cloud_radius);
@@ -331,6 +334,50 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					// Reset Surface Target
 					surface_reset_target();
 					
+					// Set Temporary Surface as Surface Target for Horizontal Blur
+					surface_set_target(CelestialSimulator.temp_surface);
+					
+					// Reset Temporary Surface
+					draw_clear_alpha(c_black, 0);
+					
+					// Enable Horizontal Blur Shader
+					shader_set(shd_blur_horizontal);
+					
+					// Set Horizontal Blur Shader Properties
+					shader_set_uniform_f(CelestialSimulator.horizontal_gaussian_blur_shader_blur_width_index, CelestialSimulator.global_clouds_gaussian_blur_size);
+					shader_set_uniform_f(CelestialSimulator.horizontal_gaussian_blur_shader_texel_width_index, 1 / GameManager.game_width);
+					
+					// Draw Clouds Render Surface with Horizontal Gaussian Blur
+					draw_surface(CelestialSimulator.clouds_render_surface, 0, 0);
+					
+					// Reset Shader
+					shader_reset();
+					
+					// Reset Surface Target
+					surface_reset_target();
+					
+					// Set Clouds Render Surface as Surface Target for Vertical Blur
+					surface_set_target(CelestialSimulator.clouds_render_surface);
+					
+					// Reset Clouds Render Surface Surface
+					draw_clear_alpha(c_black, 0);
+					
+					// Enable Vertical Blur Shader
+					shader_set(shd_blur_vertical);
+					
+					// Set Vertical Blur Shader Properties
+					shader_set_uniform_f(CelestialSimulator.vertical_gaussian_blur_shader_blur_height_index, CelestialSimulator.global_clouds_gaussian_blur_size);
+					shader_set_uniform_f(CelestialSimulator.vertical_gaussian_blur_shader_texel_height_index, 1 / GameManager.game_height);
+					
+					// Draw Temporary Surface with Vertical Gaussian Blur
+					draw_surface(CelestialSimulator.temp_surface, 0, 0);
+					
+					// Reset Shader
+					shader_reset();
+					
+					// Reset Surface Target
+					surface_reset_target();
+					
 					// Set Final Render Surface as Surface Target
 					surface_set_target(CelestialSimulator.final_render_surface);
 					
@@ -346,7 +393,7 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_time_index, CelestialSimulator.global_noise_time);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
 					
 					// Set Planet Atmosphere Sampling Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_scatter_point_samples_num_index, CelestialSimulator.global_atmosphere_scatter_point_samples_count);

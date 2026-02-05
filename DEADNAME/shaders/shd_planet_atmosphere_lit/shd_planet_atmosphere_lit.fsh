@@ -11,7 +11,7 @@ uniform mat4 in_fsh_CameraRotation;
 uniform vec2 in_fsh_CameraDimensions;
 
 // Temporal Properties
-uniform float u_Time;
+uniform float u_NoiseTime;
 
 // Sample Properties
 uniform float u_ScatterPointSamplesCount;
@@ -289,7 +289,7 @@ void main()
 		}
 		
 		// Calculate Temporal Blue Noise at UV position and Time
-		float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_Time + blue_noise_light_source_time_interval * float(l)) * blue_noise_ditering_strength;
+		float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_NoiseTime + blue_noise_light_source_time_interval * float(l)) * blue_noise_ditering_strength;
 		
 		// Calculate Light Source's Position & Direction Vector
 		vec3 light_position = vec3(in_Light_Position_X[l], in_Light_Position_Y[l], in_Light_Position_Z[l]);
