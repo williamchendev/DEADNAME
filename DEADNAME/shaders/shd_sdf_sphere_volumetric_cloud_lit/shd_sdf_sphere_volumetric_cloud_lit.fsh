@@ -57,7 +57,6 @@ const vec2 center = vec2(0.5, 0.5);
 const vec3 inverse_forward_vector = vec3(1.0, 1.0, -1.0);
 
 const float blue_noise_alpha_ditering_strength = 0.005;
-const float blue_noise_offset_ditering_strength = 0.25;
 
 const float breakpoint = 50.0;
 
@@ -275,9 +274,6 @@ void main()
 	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudRadius - epsilon);
 	float cloud_sample_ray_length = (u_fsh_CloudRadius * sphere_depth - epsilon) * 2.0;
 	float cloud_sample_step_size = cloud_sample_ray_length / (u_ScatterPointSamplesCount - 1.0);
-	
-	// Apply Blue Noise Offset to Sample Positions
-	cloud_sample_position += v_vSampleForward * cloud_sample_step_size * blue_noise * blue_noise_offset_ditering_strength;
 	
 	// Establish Cloud Light, Alpha, and Transmittance
 	vec3 light = u_CloudAmbientLightColor;

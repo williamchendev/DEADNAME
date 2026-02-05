@@ -334,50 +334,6 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 					// Reset Surface Target
 					surface_reset_target();
 					
-					// Set Temporary Surface as Surface Target for Horizontal Blur
-					surface_set_target(CelestialSimulator.temp_surface);
-					
-					// Reset Temporary Surface
-					draw_clear_alpha(c_black, 0);
-					
-					// Enable Horizontal Blur Shader
-					shader_set(shd_blur_horizontal);
-					
-					// Set Horizontal Blur Shader Properties
-					shader_set_uniform_f(CelestialSimulator.horizontal_gaussian_blur_shader_blur_width_index, CelestialSimulator.global_clouds_gaussian_blur_size);
-					shader_set_uniform_f(CelestialSimulator.horizontal_gaussian_blur_shader_texel_width_index, 1 / GameManager.game_width);
-					
-					// Draw Clouds Render Surface with Horizontal Gaussian Blur
-					draw_surface(CelestialSimulator.clouds_render_surface, 0, 0);
-					
-					// Reset Shader
-					shader_reset();
-					
-					// Reset Surface Target
-					surface_reset_target();
-					
-					// Set Clouds Render Surface as Surface Target for Vertical Blur
-					surface_set_target(CelestialSimulator.clouds_render_surface);
-					
-					// Reset Clouds Render Surface Surface
-					draw_clear_alpha(c_black, 0);
-					
-					// Enable Vertical Blur Shader
-					shader_set(shd_blur_vertical);
-					
-					// Set Vertical Blur Shader Properties
-					shader_set_uniform_f(CelestialSimulator.vertical_gaussian_blur_shader_blur_height_index, CelestialSimulator.global_clouds_gaussian_blur_size);
-					shader_set_uniform_f(CelestialSimulator.vertical_gaussian_blur_shader_texel_height_index, 1 / GameManager.game_height);
-					
-					// Draw Temporary Surface with Vertical Gaussian Blur
-					draw_surface(CelestialSimulator.temp_surface, 0, 0);
-					
-					// Reset Shader
-					shader_reset();
-					
-					// Reset Surface Target
-					surface_reset_target();
-					
 					// Set Final Render Surface as Surface Target
 					surface_set_target(CelestialSimulator.final_render_surface);
 					

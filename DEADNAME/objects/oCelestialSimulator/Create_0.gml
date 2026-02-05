@@ -75,7 +75,6 @@ global_clouds_density = 1;
 global_clouds_density_falloff = 5;
 global_clouds_anisotropic_light_scattering_strength = 0.4;
 global_clouds_alpha_blending_power = 2;
-global_clouds_gaussian_blur_size = 0.1;
 global_clouds_temporal_blue_noise_offset = 0.03;
 
 global_atmosphere_scatter_point_samples_count = 10;
@@ -301,14 +300,6 @@ sun_unlit_shader_elevation_index = shader_get_uniform(shd_sun_unlit, "u_Elevatio
 sun_unlit_shader_position_index = shader_get_uniform(shd_sun_unlit, "u_Position");
 sun_unlit_shader_euler_angles_index = shader_get_uniform(shd_sun_unlit, "u_EulerAngles");
 
-// Horizontal Gaussian Blur Shader Indexes
-horizontal_gaussian_blur_shader_blur_width_index = shader_get_uniform(shd_blur_horizontal, "in_BlurWidth");
-horizontal_gaussian_blur_shader_texel_width_index = shader_get_uniform(shd_blur_horizontal, "in_TexelWidth");
-
-// Vertical Gaussian Blur Shader Indexes
-vertical_gaussian_blur_shader_blur_height_index = shader_get_uniform(shd_blur_vertical, "in_BlurHeight");
-vertical_gaussian_blur_shader_texel_height_index = shader_get_uniform(shd_blur_vertical, "in_TexelHeight");
-
 // (Forward Rendered Lighting) Light Source Variables
 light_source_exists = array_create(CelestialSimMaxLights);
 
@@ -461,7 +452,7 @@ generate_default_solar_system = function()
 {
 	//
 	var temp_grandmom_solar_system = array_create(0);
-	temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_angle: 270, rotation_speed: 0 } );
+	temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_angle: 270, rotation_speed: 0.3 } );
 	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 8000, orbit_speed: 0, orbit_angle: 90 });
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_speed: 0 });
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 8000, orbit_speed: 0, orbit_angle: 270 });
