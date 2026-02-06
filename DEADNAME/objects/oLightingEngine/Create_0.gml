@@ -8,7 +8,7 @@
 #macro LightingEngineUseGameMakerLayerName "#USE_GAMEMAKER_LAYER_NAME#"
 #macro LightingEngineEmptyRegionCullingID "#NO_ID#"
 
-// Configure Lighting Engine - Global Init Event
+// Lighting Engine Singleton Global Initialization
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oLightingEngine);");
 
 // Delete to prevent multiple Lighting Engine Instances

@@ -3,7 +3,7 @@
 // Global Game Manager Properties
 #macro GameManager global.game_manager
 
-// Configure Game Manager - Global Init Event
+// Game Manager Singleton Global Initialization
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oGameManager);");
 
 // Delete to prevent multiple Game Manager Instances

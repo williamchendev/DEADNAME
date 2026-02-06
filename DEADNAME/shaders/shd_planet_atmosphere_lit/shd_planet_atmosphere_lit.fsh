@@ -64,9 +64,9 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
-const float blue_noise_light_source_time_interval = 20.0;
 
-const float light_source_intensity_multiplier = 4.0;
+const float light_source_intensity_multiplier = 3.0;
+const float light_source_direction_multiplier = 100.0;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -134,7 +134,7 @@ vec2 raySphere(vec3 sphere_center, float sphere_radius, vec3 ray_origin, vec3 ra
 // Hash function for pseudo-random values
 float hash(vec2 p) 
 {
-	p = fract(p * vec2(443.897, 441.423));
+	p = fract(p * vec2(21.897, 8.423));
 	p += dot(p, p.yx + 19.19);
 	return fract(p.x * p.y);
 }
@@ -214,6 +214,19 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
+// Shadow Functions
+// Calculates the visible light accumulated at a position behind a sphere's soft shadow
+float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+{
+	vec3 shadow_direction = sphere_position - world_position;
+	float shadow_distance = length(shadow_direction);
+	shadow_direction = normalize(shadow_direction);
+	
+	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
+	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_radius);
+	return shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction));
+}
+
 // Dithering Functions
 // Screen Space pseudo-random Blue Noise dithered color quantization
 vec3 dither(vec2 uv, float time, vec3 light)
@@ -251,6 +264,9 @@ void main()
 	// Calculate UV Position of Surface
 	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
 	
+	// Calculate Temporal Blue Noise at UV position and Time
+	float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_NoiseTime) * blue_noise_ditering_strength;
+	
 	// Retreive Celestial Body's Combined Planet & Clouds Diffuse Color
 	vec4 planet_diffuse_color = texture2D(gm_BaseTexture, uv);
 	vec4 clouds_diffuse_color = texture2D(gm_AtmosphereCloudsSurface, uv);
@@ -276,8 +292,8 @@ void main()
 	float distance_through_atmosphere = atmosphere_depth_mask_adjusted * u_fsh_AtmosphereRadius;
 	float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
 	
-	// Establish Cumulative Light Value
-	vec3 light = vec3(0.0);
+	// Establish Cumulative Atmosphere Light Color Value
+	vec3 atmosphere_light = vec3(0.0);
 	
 	// Iterate through all Light Sources
 	for (int l = 0; l < MAX_LIGHTS; l++)
@@ -288,12 +304,9 @@ void main()
 			continue;
 		}
 		
-		// Calculate Temporal Blue Noise at UV position and Time
-		float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_NoiseTime + blue_noise_light_source_time_interval * float(l)) * blue_noise_ditering_strength;
-		
 		// Calculate Light Source's Position & Direction Vector
 		vec3 light_position = vec3(in_Light_Position_X[l], in_Light_Position_Y[l], in_Light_Position_Z[l]);
-		vec3 light_direction = normalize(point_in_atmosphere - light_position) * 100.0;
+		vec3 light_direction = normalize(point_in_atmosphere - light_position);
 		
 		// Scatter Point Sampling Variables
 		vec3 in_scatter_point = point_in_atmosphere;
@@ -308,8 +321,8 @@ void main()
 			float light_source_fade = pow((in_Light_Radius[l] - light_source_distance) / in_Light_Radius[l], in_Light_Falloff[l]);
 			
 			// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
-			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction).y;
-			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction, light_source_ray_length);
+			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction * light_source_direction_multiplier).y;
+			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction * light_source_direction_multiplier, light_source_ray_length);
 			
 			// Calculate View Ray's Optical Depth at Scattering Sample Point
 			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_forward, step_size * i);
@@ -339,8 +352,11 @@ void main()
 		vec3 reflected_light = diffuse_color.rgb * reflected_light_strength;
 		
 		// Add Light Visible from Surface of Atmosphere
-		light += diffuse_color.rgb + in_scattered_light + reflected_light + blue_noise;
+		atmosphere_light += in_scattered_light + reflected_light;
 	}
+	
+	// Calculate Light
+	vec3 light = diffuse_color.rgb + atmosphere_light + blue_noise;
 	
 	// Calculate Atmosphere Alpha
 	float atmosphere_alpha = min(atmosphere_depth + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
