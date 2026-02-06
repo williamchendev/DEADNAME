@@ -214,7 +214,6 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
-//
 // Dithering Functions
 // Screen Space pseudo-random Blue Noise dithered color quantization
 vec3 dither(vec2 uv, float time, vec3 light)
@@ -270,11 +269,12 @@ void main()
 	// Calculate Atmosphere Surface Position
 	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * u_fsh_AtmosphereRadius * camera_forward);
 	
-	// Calculate Distance through Atmosphere
-	float distance_through_atmosphere = atmosphere_depth_mask_adjusted * u_fsh_AtmosphereRadius;
-	
 	// Calculate Point within Atmosphere by incrementing a distance of Epsilon to intersect the Surface of the Sphere
 	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_forward);
+	
+	// Calculate Distance through Atmosphere & Scatter Point Sampling Step Size
+	float distance_through_atmosphere = atmosphere_depth_mask_adjusted * u_fsh_AtmosphereRadius;
+	float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
 	
 	// Establish Cumulative Light Value
 	vec3 light = vec3(0.0);
@@ -299,7 +299,6 @@ void main()
 		vec3 in_scatter_point = point_in_atmosphere;
 		vec3 in_scattered_light = vec3(0.0);
 		float view_ray_optical_depth = 0.0;
-		float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
 		
 		// Calculate Scattered Light through Atmosphere based on Ray-Marching through Atmosphere to retreive Density and Light from Light Source
 		for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)

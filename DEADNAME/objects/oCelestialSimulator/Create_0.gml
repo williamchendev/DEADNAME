@@ -266,6 +266,20 @@ sdf_sphere_volumetric_clouds_lit_shader_scatter_point_samples_count_index = shad
 sdf_sphere_volumetric_clouds_lit_shader_light_depth_samples_count_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_LightDepthSamplesCount");
 sdf_sphere_volumetric_clouds_lit_shader_cloud_sample_scale_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudSampleScale");
 
+sdf_sphere_volumetric_clouds_lit_shader_light_exists_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Exists");
+
+sdf_sphere_volumetric_clouds_lit_shader_light_position_x_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Position_X");
+sdf_sphere_volumetric_clouds_lit_shader_light_position_y_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Position_Y");
+sdf_sphere_volumetric_clouds_lit_shader_light_position_z_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Position_Z");
+
+sdf_sphere_volumetric_clouds_lit_shader_light_color_r_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Color_R");
+sdf_sphere_volumetric_clouds_lit_shader_light_color_g_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Color_G");
+sdf_sphere_volumetric_clouds_lit_shader_light_color_b_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Color_B");
+
+sdf_sphere_volumetric_clouds_lit_shader_light_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Radius");
+sdf_sphere_volumetric_clouds_lit_shader_light_falloff_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Falloff");
+sdf_sphere_volumetric_clouds_lit_shader_light_intensity_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Intensity");
+
 sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_AtmosphereRadius");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_AtmosphereRadius");
 
@@ -453,7 +467,7 @@ generate_default_solar_system = function()
 	//
 	var temp_grandmom_solar_system = array_create(0);
 	temp_grandmom_solar_system[0] = instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_angle: 270, rotation_speed: 0.3 } );
-	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 8000, orbit_speed: 0, orbit_angle: 90 });
+	temp_grandmom_solar_system[1] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 2000, orbit_speed: 0, orbit_angle: 90 });
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_speed: 0 });
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 8000, orbit_speed: 0, orbit_angle: 270 });
 	camera_position_z = 0;
