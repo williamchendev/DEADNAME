@@ -27,6 +27,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"euler_angle_y","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"euler_angle_x","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"euler_angle_z","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"18",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"celestial_id","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"planet_mom",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oIcosphere","path":"objects/oIcosphere/oIcosphere.yy",},"propertyId":{"name":"resolution","path":"objects/oIcosphere/oIcosphere.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"64",},
   ],
   "parent":{
     "name":"Grandmom",

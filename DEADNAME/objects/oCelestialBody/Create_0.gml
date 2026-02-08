@@ -46,8 +46,12 @@ if (height_map != noone)
 		// Get Vertex's UV Position
 		var temp_vertex_uvs = icosphere.vertex_uvs[temp_vertex_elevation_index];
 		
+		// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
+		var temp_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+		var temp_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+		
 		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
-		var temp_vertex_elevation = buffer_getpixel_r(temp_heightmap_buffer, round(temp_vertex_uvs[0] * temp_heightmap_buffer_width), round(temp_vertex_uvs[1] * temp_heightmap_buffer_height)) / 255;
+		var temp_vertex_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v) / 255;
 		
 		// Set Icosphere Vertex's Elevation at Array Index
 		icosphere.vertex_elevations[temp_vertex_elevation_index] = temp_vertex_elevation;

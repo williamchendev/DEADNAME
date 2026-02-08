@@ -7,7 +7,9 @@
   ],
   "managed":true,
   "name":"oCelestialBody",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oIcosphere","path":"objects/oIcosphere/oIcosphere.yy",},"propertyId":{"name":"resolution","path":"objects/oIcosphere/oIcosphere.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"32",},
+  ],
   "parent":{
     "name":"Templates",
     "path":"folders/Objects/Celestial/Templates.yy",
@@ -36,11 +38,13 @@
     {"$GMObjectProperty":"v2","%Name":"euler_angle_y","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"euler_angle_z","filters":[],"listItems":[],"multiselect":false,"name":"euler_angle_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"radius","filters":[],"listItems":[],"multiselect":false,"name":"radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"120","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"celestial_id","filters":[],"listItems":[],"multiselect":false,"name":"celestial_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"celestial_body","varType":2,},
     {"$GMObjectProperty":"v2","%Name":"frustum_culling","filters":[],"listItems":[],"multiselect":false,"name":"frustum_culling","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"elevation","filters":[],"listItems":[],"multiselect":false,"name":"elevation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"18","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"height_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"height_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"orbit_id","filters":[],"listItems":[],"multiselect":false,"name":"orbit_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
     {"$GMObjectProperty":"v2","%Name":"orbit_size","filters":[],"listItems":[],"multiselect":false,"name":"orbit_size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"orbit_angle","filters":[],"listItems":[],"multiselect":false,"name":"orbit_angle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"orbit_speed","filters":[],"listItems":[],"multiselect":false,"name":"orbit_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
