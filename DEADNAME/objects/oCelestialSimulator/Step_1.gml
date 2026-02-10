@@ -40,28 +40,48 @@ repeat (array_length(solar_systems))
 	// Find the Solar System at the given Solar System Index
 	var temp_solar_system = solar_systems[temp_solar_systems_index];
 	
+	// Find the Solar System's Orbit Update Order Array at the given Solar System Index
+	var temp_solar_system_orbit_update_order = solar_systems_orbit_update_order[temp_solar_systems_index];
+	
 	// Iterate through all the Celestial Objects within the given Solar System
 	var temp_celestial_object_index = 0;
 	
 	repeat (array_length(temp_solar_system))
 	{
-		// Find the given Celestial Object at the given Celestial Object Index within the Solar System
-		var temp_celestial_object = temp_solar_system[temp_celestial_object_index];
+		// Find the given Celestial Object at the given Celestial Object Orbit Update Order Index within the Solar System's Celestial Objects Array
+		var temp_celestial_object = temp_solar_system[temp_solar_system_orbit_update_order[temp_celestial_object_index]];
 		
 		// Perform Celestial Object Simulation
 		with (temp_celestial_object)
 		{
-			// Update Orbital Rotation around Solar System's Origin
-			orbit_angle += orbit_speed * frame_delta;
-			orbit_angle = orbit_angle mod 360;
-			
 			// Update Celestial Object's Rotation around Y Axis
 			euler_angle_y += rotation_speed * frame_delta;
 			euler_angle_y = euler_angle_y mod 360;
 			
+			// Update Orbital Rotation around Solar System's Origin
+			orbit_rotation += orbit_speed * frame_delta;
+			orbit_rotation = orbit_rotation mod 360;
+			
+			// Calculate Local Orbit Position Offset from Orbit Parent
+			var temp_orbit_x = lengthdir_x(orbit_size, orbit_rotation);
+			var temp_orbit_y = 0;
+			var temp_orbit_z = lengthdir_y(orbit_size, orbit_rotation);
+			
+			// Create Celestial Object's Orbit Rotation Matrix its Orbit Rotation Euler Angles
+			var temp_orbit_rotation_matrix = rotation_matrix_from_euler_angles(orbit_angle_x, orbit_angle_y, orbit_angle_z);
+			
 			// Update Position within Solar System's Space based on Orbital Rotation
-			x = lengthdir_x(orbit_size, orbit_angle) + orbit_offset_x;
-			z = lengthdir_y(orbit_size, orbit_angle) + orbit_offset_z;
+			x = orbit_offset_x + (temp_orbit_x * temp_orbit_rotation_matrix[0] + temp_orbit_y * temp_orbit_rotation_matrix[1] + temp_orbit_z * temp_orbit_rotation_matrix[2]);
+			y = orbit_offset_y + (temp_orbit_x * temp_orbit_rotation_matrix[4] + temp_orbit_y * temp_orbit_rotation_matrix[5] + temp_orbit_z * temp_orbit_rotation_matrix[6]);
+			z = orbit_offset_z + (temp_orbit_x * temp_orbit_rotation_matrix[8] + temp_orbit_y * temp_orbit_rotation_matrix[9] + temp_orbit_z * temp_orbit_rotation_matrix[10]);
+			
+			// Check if Orbit Parent Exists
+			if (instance_exists(orbit_parent_instance))
+			{
+				x += orbit_parent_instance.x;
+				y += orbit_parent_instance.y;
+				z += orbit_parent_instance.z;
+			}
 			
 			// Celestial Object Type Behaviour
 			switch (celestial_object_type)

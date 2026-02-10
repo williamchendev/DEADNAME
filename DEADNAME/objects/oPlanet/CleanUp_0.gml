@@ -5,9 +5,6 @@
 event_inherited();
 
 // Destroy Clouds Depth Sorted Rendering DS List
-ds_list_destroy(clouds_depth_list);
-clouds_depth_list = -1;
-
 ds_list_destroy(clouds_render_u_list);
 clouds_render_u_list = -1;
 

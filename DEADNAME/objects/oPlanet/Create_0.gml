@@ -11,8 +11,10 @@ celestial_object_type = CelestialObjectType.Planet;
 var temp_clouds_spawn_sphere = geodesic_icosphere_create(clouds_spawn_resolution);
 clouds_spawn_sphere_uvs = temp_clouds_spawn_sphere.vertex_uvs;
 
-// Initialize Planet Clouds Depth Sorted Rendering DS Lists
-clouds_depth_list = ds_list_create();
+// Initialize Planet Clouds Depth Sorting Arrays
+clouds_index_array = array_create(1);
+
+// Initialize Planet Clouds Rendering DS Lists
 clouds_render_u_list = ds_list_create();
 clouds_render_v_list = ds_list_create();
 clouds_render_height_list = ds_list_create();

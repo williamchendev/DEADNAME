@@ -8,9 +8,16 @@ if (!active)
 	return;
 }
 
-// Clear Solar System Depth Sorting Lists
-ds_list_clear(solar_system_render_depth_values_list);
-ds_list_clear(solar_system_render_depth_instances_list);
+// Clear Celestial Simulator Solar System Depth Sorting Arrays
+if (array_length(solar_system_render_depth_sorting_index_array) > 0)
+{
+	array_clear(solar_system_render_depth_sorting_index_array);
+}
+
+if (array_length(solar_system_render_depth_sorting_depth_array) > 0)
+{
+	array_clear(solar_system_render_depth_sorting_depth_array);
+}
 
 // Check if Solar System exists and is being viewed
 if (solar_system_index == -1)
@@ -74,6 +81,9 @@ repeat (array_length(temp_solar_system))
 	// Calculate Celestial Object Depth from Camera's Position, Rotation, and Forward Vector
 	var temp_celestial_object_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_projection_scalar);
 	
+	// Index Celestial Object's Depth into Celestial Simulator's Render Depth Sorting Arrays
+	array_push(solar_system_render_depth_sorting_depth_array, temp_celestial_object_depth);
+	
 	// Celestial Object Frustum Culling Behaviour
 	if (temp_celestial_object_instance.frustum_culling)
 	{
@@ -132,8 +142,14 @@ repeat (array_length(temp_solar_system))
 			// Planet Depth Sorting Behaviour
 			if (temp_celestial_object_instance.clouds)
 			{
-				// Reset Planet Cloud Depth Sorting Lists
-				ds_list_clear(temp_celestial_object_instance.clouds_depth_list);
+				// Reset Celestial Simulator Clouds Render Depth Sorting Arrays
+				array_clear(CelestialSimulator.clouds_render_depth_sorting_index_array);
+				array_clear(CelestialSimulator.clouds_render_depth_sorting_depth_array);
+				
+				// Reset Planet Cloud Depth Sorted Index Array
+				array_clear(temp_celestial_object_instance.clouds_index_array);
+				
+				// Reset Planet Cloud Rendering Lists
 				ds_list_clear(temp_celestial_object_instance.clouds_render_u_list);
 				ds_list_clear(temp_celestial_object_instance.clouds_render_v_list);
 				ds_list_clear(temp_celestial_object_instance.clouds_render_height_list);
@@ -146,6 +162,7 @@ repeat (array_length(temp_solar_system))
 				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
 				
 				// Iterate through Planet's Clouds
+				var temp_cloud_count = 0;
 				var temp_cloud_index = 0;
 				
 				repeat (ds_list_size(temp_celestial_object_instance.clouds_density_list))
@@ -212,75 +229,35 @@ repeat (array_length(temp_solar_system))
 							
 							var temp_cloud_depth = dot_product_3d(temp_cloud_vx, temp_cloud_vy, temp_cloud_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
 							
-							// Iterate through Planet's Cloud Depth Sorting List to Sort and Index Cloud by Depth
-							if (ds_list_size(temp_celestial_object_instance.clouds_depth_list) == 0)
-							{
-								// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
-								ds_list_add(temp_celestial_object_instance.clouds_depth_list, temp_cloud_depth);
-								
-								// Index Cloud's Properties into Planet's Cloud Render Properties Lists
-								ds_list_add(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_individual_u);
-								ds_list_add(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_individual_v);
-								ds_list_add(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_individual_height);
-								ds_list_add(temp_celestial_object_instance.clouds_render_radius_list, temp_cloud_individual_radius);
-								ds_list_add(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_density);
-								ds_list_add(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_absorption);
-							}
-							else
-							{
-								// Establish Toggle if Cloud Depth was Indexed
-								var temp_cloud_depth_is_indexed = false;
-								
-								// Iterate through Planet's Cloud Depth Sorting List
-								for (var q = 0; q < ds_list_size(temp_celestial_object_instance.clouds_depth_list); q++)
-								{
-									// Find Planet Cloud Depth Sorting List's Cloud Depth at Index for Comparison
-									var temp_cloud_depth_comparison = ds_list_find_value(temp_celestial_object_instance.clouds_depth_list, q);
-									
-									// Compare Depth Values
-									if (temp_cloud_depth >= temp_cloud_depth_comparison)
-									{
-										// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
-										ds_list_insert(temp_celestial_object_instance.clouds_depth_list, q, temp_cloud_depth);
-										
-										// Index Cloud's Properties into Planet's Cloud Render Properties Lists
-										ds_list_insert(temp_celestial_object_instance.clouds_render_u_list, q, temp_cloud_individual_u);
-										ds_list_insert(temp_celestial_object_instance.clouds_render_v_list, q, temp_cloud_individual_v);
-										ds_list_insert(temp_celestial_object_instance.clouds_render_height_list, q, temp_cloud_individual_height);
-										ds_list_insert(temp_celestial_object_instance.clouds_render_radius_list, q, temp_cloud_individual_radius);
-										ds_list_insert(temp_celestial_object_instance.clouds_render_density_list, q, temp_cloud_density);
-										ds_list_insert(temp_celestial_object_instance.clouds_render_absorption_list, q, temp_cloud_absorption);
-										
-										// Toggle Cloud Depth was Indexed and Break Loop
-										temp_cloud_depth_is_indexed = true;
-										break;
-									}
-								}
-								
-								// Check if Cloud Depth was Indexed
-								if (!temp_cloud_depth_is_indexed)
-								{
-									// Index Cloud's Depth into Planet's Cloud Depth Sorting Lists
-									ds_list_add(temp_celestial_object_instance.clouds_depth_list, temp_cloud_depth);
-									
-									// Index Cloud's Properties into Planet's Cloud Render Properties Lists
-									ds_list_add(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_individual_u);
-									ds_list_add(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_individual_v);
-									ds_list_add(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_individual_height);
-									ds_list_add(temp_celestial_object_instance.clouds_render_radius_list, temp_cloud_individual_radius);
-									ds_list_add(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_density);
-									ds_list_add(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_absorption);
-								}
-							}
+							// Index Cloud's Index and Depth into Planet's Cloud Depth Sorting Arrays
+							array_push(CelestialSimulator.clouds_render_depth_sorting_index_array, temp_cloud_count);
+							array_push(CelestialSimulator.clouds_render_depth_sorting_depth_array, temp_cloud_depth);
+							
+							// Index Cloud's Properties into Planet's Cloud Render Properties Lists
+							ds_list_add(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_individual_u);
+							ds_list_add(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_individual_v);
+							ds_list_add(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_individual_height);
+							ds_list_add(temp_celestial_object_instance.clouds_render_radius_list, temp_cloud_individual_radius);
+							ds_list_add(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_density);
+							ds_list_add(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_absorption);
 							
 							// Increment Individual Cloud Index
 							temp_cloud_individual_index++;
+							
+							// Increment Cloud Count
+							temp_cloud_count++;
 						}
 					}
 					
 					// Increment Cloud Index
 					temp_cloud_index++;
 				}
+				
+				// Sort Celestial Simulator's Clouds Render Depth Sorting Array
+				array_sort(CelestialSimulator.clouds_render_depth_sorting_index_array, clouds_render_depth_sort);
+				
+				// Copy Depth Sorted Cloud Index Order to Planet's Cloud Index Array
+				array_copy(temp_celestial_object_instance.clouds_index_array, 0, CelestialSimulator.clouds_render_depth_sorting_index_array, 0, temp_cloud_count);
 			}
 			break;
 		default:
@@ -288,46 +265,16 @@ repeat (array_length(temp_solar_system))
 			break;
 	}
 	
-	// Iterate through Solar System Depth Sorting List to Sort and Index Celestial Object Instance by Depth
-	if (ds_list_size(solar_system_render_depth_values_list) == 0)
-	{
-		// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
-		ds_list_add(solar_system_render_depth_values_list, temp_celestial_object_depth);
-		ds_list_add(solar_system_render_depth_instances_list, temp_celestial_object_instance);
-	}
-	else
-	{
-		// Establish Toggle if Celestial Object was Indexed
-		var temp_celestial_object_depth_is_indexed = false;
-		
-		// Iterate through Solar System Depth Sorting List
-		for (var i = 0; i < ds_list_size(solar_system_render_depth_values_list); i++)
-		{
-			// Find Solar System Depth Sorting List's Celestial Object Depth for Comparison
-			var temp_celestial_object_depth_comparison = ds_list_find_value(solar_system_render_depth_values_list, i);
-			
-			// Compare Depth Values
-			if (temp_celestial_object_depth >= temp_celestial_object_depth_comparison)
-			{
-				// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
-				ds_list_insert(solar_system_render_depth_values_list, i, temp_celestial_object_depth);
-				ds_list_insert(solar_system_render_depth_instances_list, i, temp_celestial_object_instance);
-				
-				// Toggle Celestial Object was Indexed and Break Loop
-				temp_celestial_object_depth_is_indexed = true;
-				break;
-			}
-		}
-		
-		// Check if Celestial Object was Indexed
-		if (!temp_celestial_object_depth_is_indexed)
-		{
-			// Index Celestial Object Depth and Instance into Solar System Depth Sorting Lists
-			ds_list_add(solar_system_render_depth_values_list, temp_celestial_object_depth);
-			ds_list_add(solar_system_render_depth_instances_list, temp_celestial_object_instance);
-		}
-	}
+	// Index Celestial Object's Index into Celestial Simulator's Render Depth Sorting Arrays
+	array_push(solar_system_render_depth_sorting_index_array, temp_celestial_object_index);
 	
 	// Increment Celestial Object Index
 	temp_celestial_object_index++;
+}
+
+// Check if Celestial Simulator's Solar System Render Depth Sorting Array contains any entries
+if (array_length(solar_system_render_depth_sorting_index_array) > 0)
+{
+	// Sort Celestial Simulator's Solar System Render Depth Sorting Array
+	array_sort(solar_system_render_depth_sorting_index_array, solar_system_render_depth_sort);
 }

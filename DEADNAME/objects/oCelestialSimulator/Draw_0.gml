@@ -9,9 +9,19 @@ if (!active)
 }
 
 // Check if Solar System exists and is being viewed
-if (ds_list_size(solar_system_render_depth_instances_list) == 0)
+if (solar_system_index == -1)
 {
 	// Not currently viewing a Solar System - Early Return
+	return;
+}
+
+// Establish Solar System from Solar Systems Array
+var temp_solar_system = solar_systems[solar_system_index];
+
+// Check if any Celestial Objects within the Solar System are eligible to be Rendered
+if (array_length(solar_system_render_depth_sorting_index_array) == 0)
+{
+	// There are no Celestial Objects in the Solar System eligible to be Rendered - Early Return
 	return;
 }
 
@@ -26,11 +36,12 @@ camera_set_proj_mat(temp_camera, temp_projection_matrix);
 // Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
 
-repeat (ds_list_size(solar_system_render_depth_instances_list))
+repeat (array_length(solar_system_render_depth_sorting_index_array))
 {
 	// Establish Celestial Object Instance at Index
-	var temp_celestial_object_depth = ds_list_find_value(solar_system_render_depth_values_list, temp_celestial_object_depth_render_index);
-	var temp_celestial_object_instance = ds_list_find_value(solar_system_render_depth_instances_list, temp_celestial_object_depth_render_index);
+	var temp_celestial_object_index = solar_system_render_depth_sorting_index_array[temp_celestial_object_depth_render_index];
+	var temp_celestial_object_depth = solar_system_render_depth_sorting_depth_array[temp_celestial_object_index];
+	var temp_celestial_object_instance = temp_solar_system[temp_celestial_object_index];
 	
 	// Compare Celestial Object's Type to determine Celestial Object's Render Behaviour
 	switch (temp_celestial_object_instance.celestial_object_type)
@@ -310,20 +321,23 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 						texture_set_stage(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_planet_depth_mask_texture_index, surface_get_texture(CelestialSimulator.celestial_body_atmosphere_depth_mask_surface));
 						
 						// Iterate through all Clouds in Planet's Atmosphere
-						var temp_cloud_depth_index = 0;
+						var temp_cloud_index = 0;
 						
-						repeat (ds_list_size(clouds_depth_list))
+						repeat (array_length(temp_celestial_object_instance.clouds_index_array))
 						{
+							// Find Cloud's Sorted Index
+							var temp_cloud_sorted_index = temp_celestial_object_instance.clouds_index_array[temp_cloud_index];
+							
 							// Find Individual Cloud Render Properties from Planet Cloud Depth Sorted Render Property DS Lists
-							var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_depth_index);
-							var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_depth_index);
-							var temp_cloud_height = ds_list_find_value(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_depth_index);
-							var temp_cloud_radius = ds_list_find_value(temp_celestial_object_instance.clouds_render_radius_list, temp_cloud_depth_index);
-							var temp_cloud_density = ds_list_find_value(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_depth_index);
-							var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_depth_index);
+							var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_render_u_list, temp_cloud_sorted_index);
+							var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_render_v_list, temp_cloud_sorted_index);
+							var temp_cloud_height = ds_list_find_value(temp_celestial_object_instance.clouds_render_height_list, temp_cloud_sorted_index);
+							var temp_cloud_radius = ds_list_find_value(temp_celestial_object_instance.clouds_render_radius_list, temp_cloud_sorted_index);
+							var temp_cloud_density = ds_list_find_value(temp_celestial_object_instance.clouds_render_density_list, temp_cloud_sorted_index);
+							var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_render_absorption_list, temp_cloud_sorted_index);
 							
 							// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
-							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_noise_time_index, CelestialSimulator.global_noise_time + temp_cloud_depth_index * CelestialSimulator.global_clouds_temporal_blue_noise_offset);
+							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_noise_time_index, CelestialSimulator.global_noise_time + temp_cloud_sorted_index * CelestialSimulator.global_clouds_temporal_blue_noise_offset);
 							
 							// Set Cloud Render Properties
 							shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_cloud_radius_index, temp_cloud_radius);
@@ -338,8 +352,8 @@ repeat (ds_list_size(solar_system_render_depth_instances_list))
 							// Draw SDF Sphere Volumetric Cloud from Square UV Vertex Buffer
 							vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, CelestialSimulator.cloud_noise_texture);
 							
-							// Increment Cloud Depth Index
-							temp_cloud_depth_index++;
+							// Increment Cloud Index
+							temp_cloud_index++;
 						}
 						
 						// Reset Shader

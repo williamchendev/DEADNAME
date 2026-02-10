@@ -119,5 +119,9 @@ repeat (array_length(icosphere.triangles))
 vertex_end(icosphere_vertex_buffer);
 vertex_freeze(icosphere_vertex_buffer);
 
+// Initialize Solar System Variables
+solar_system_id = "null";
+orbit_parent_instance = noone;
+
 // Initialize Empty Frustum Culling Radius
 frustum_culling_radius = -1;
