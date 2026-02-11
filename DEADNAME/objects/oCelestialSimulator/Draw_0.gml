@@ -145,6 +145,15 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_light_radius_index, CelestialSimulator.light_source_radius);
 				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_light_falloff_index, CelestialSimulator.light_source_falloff);
 				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_light_intensity_index, CelestialSimulator.light_source_intensity);
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_light_emitter_size_index, CelestialSimulator.light_source_emitter_size);
+				
+				// (Forward Rendered Lighting) Planet Lithosphere Sphere Soft Shadows Shader Properties
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_shadow_exists_index, sphere_shadow_exists);
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_shadow_radius_index, sphere_shadow_radius);
+				
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_shadow_position_x_index, sphere_shadow_position_x);
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_shadow_position_y_index, sphere_shadow_position_y);
+				shader_set_uniform_f_array(CelestialSimulator.planet_lithosphere_lit_shader_shadow_position_z_index, sphere_shadow_position_z);
 				
 				// Set Planet Physical Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_radius_index, radius);
@@ -207,6 +216,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_light_radius_index, CelestialSimulator.light_source_radius);
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_light_falloff_index, CelestialSimulator.light_source_falloff);
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_light_intensity_index, CelestialSimulator.light_source_intensity);
+					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_light_emitter_size_index, CelestialSimulator.light_source_emitter_size);
 					
 					// Set Planet Physical Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_radius_index, radius);
@@ -295,6 +305,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_radius_index, CelestialSimulator.light_source_radius);
 						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_falloff_index, CelestialSimulator.light_source_falloff);
 						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_intensity_index, CelestialSimulator.light_source_intensity);
+						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_light_emitter_size_index, CelestialSimulator.light_source_emitter_size);
 						
 						// Set Planet Atmosphere Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
@@ -394,6 +405,15 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_radius_index, CelestialSimulator.light_source_radius);
 					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_falloff_index, CelestialSimulator.light_source_falloff);
 					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_intensity_index, CelestialSimulator.light_source_intensity);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_light_emitter_size_index, CelestialSimulator.light_source_emitter_size);
+					
+					// (Forward Rendered Lighting) Planet Atmosphere Sphere Soft Shadows Shader Properties
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_shadow_exists_index, sphere_shadow_exists);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_shadow_radius_index, sphere_shadow_radius);
+					
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_shadow_position_x_index, sphere_shadow_position_x);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_shadow_position_y_index, sphere_shadow_position_y);
+					shader_set_uniform_f_array(CelestialSimulator.planet_atmosphere_lit_shader_shadow_position_z_index, sphere_shadow_position_z);
 					
 					// Set Planet Atmosphere Cloud Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_clouds_alpha_blending_power_index, CelestialSimulator.global_clouds_alpha_blending_power);

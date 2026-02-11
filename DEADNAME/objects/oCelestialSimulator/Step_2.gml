@@ -139,15 +139,52 @@ repeat (array_length(temp_solar_system))
 	switch (temp_celestial_object_instance.celestial_object_type)
 	{
 		case CelestialObjectType.Planet:
-			// Planet Depth Sorting Behaviour
+			// Planet Sphere Shadows Behaviour
+			var temp_planet_shadow_index = 0;
+			
+			// Iterate through all of the Planet's Sphere Shadows
+			repeat (CelestialSimMaxShadows)
+			{
+				// Check if Sphere Shadow is Active
+				if (temp_celestial_object_instance.sphere_shadow_exists[temp_planet_shadow_index])
+				{
+					// Check if Sphere Shadow's Instance exists
+					if (!instance_exists(temp_celestial_object_instance.sphere_shadow_instance[temp_planet_shadow_index]))
+					{
+						// Set Sphere Shadow to be Inactive
+						temp_celestial_object_instance.sphere_shadow_exists[temp_planet_shadow_index] = false;
+					}
+					else
+					{
+						// Update Sphere Shadow's Radius
+						temp_celestial_object_instance.sphere_shadow_radius[temp_planet_shadow_index] = temp_celestial_object_instance.sphere_shadow_instance[temp_planet_shadow_index].radius;
+						
+						// Update Sphere Shadow's World Position
+						temp_celestial_object_instance.sphere_shadow_position_x[temp_planet_shadow_index] = temp_celestial_object_instance.sphere_shadow_instance[temp_planet_shadow_index].x;
+						temp_celestial_object_instance.sphere_shadow_position_y[temp_planet_shadow_index] = temp_celestial_object_instance.sphere_shadow_instance[temp_planet_shadow_index].y;
+						temp_celestial_object_instance.sphere_shadow_position_z[temp_planet_shadow_index] = temp_celestial_object_instance.sphere_shadow_instance[temp_planet_shadow_index].z;
+					}
+				}
+				
+				// Increment Planet's Sphere Shadow Index
+				temp_planet_shadow_index++;
+			}
+			
+			// Planet Cloud Depth Sorting Behaviour
 			if (temp_celestial_object_instance.clouds)
 			{
 				// Reset Celestial Simulator Clouds Render Depth Sorting Arrays
-				array_clear(CelestialSimulator.clouds_render_depth_sorting_index_array);
-				array_clear(CelestialSimulator.clouds_render_depth_sorting_depth_array);
+				if (array_length(CelestialSimulator.clouds_render_depth_sorting_index_array) > 0)
+				{
+					array_clear(CelestialSimulator.clouds_render_depth_sorting_index_array);
+					array_clear(CelestialSimulator.clouds_render_depth_sorting_depth_array);
+				}
 				
 				// Reset Planet Cloud Depth Sorted Index Array
-				array_clear(temp_celestial_object_instance.clouds_index_array);
+				if (array_length(temp_celestial_object_instance.clouds_index_array) > 0)
+				{
+					array_clear(temp_celestial_object_instance.clouds_index_array);
+				}
 				
 				// Reset Planet Cloud Rendering Lists
 				ds_list_clear(temp_celestial_object_instance.clouds_render_u_list);

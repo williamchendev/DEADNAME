@@ -40,6 +40,7 @@ uniform float in_Light_Color_B[MAX_LIGHTS];
 uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
+uniform float in_Light_Emitter_Size[MAX_LIGHTS];
 
 // Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
 varying vec4 v_vColour;

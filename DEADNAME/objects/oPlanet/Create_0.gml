@@ -7,12 +7,22 @@ event_inherited();
 // Update Celestial Object Type to Planet
 celestial_object_type = CelestialObjectType.Planet;
 
+// Initialize Empty Sphere Soft Shadow Settings
+sphere_shadow_instance = array_create(CelestialSimMaxShadows, noone);
+
+sphere_shadow_exists = array_create(CelestialSimMaxShadows);
+sphere_shadow_radius = array_create(CelestialSimMaxShadows);
+
+sphere_shadow_position_x = array_create(CelestialSimMaxShadows);
+sphere_shadow_position_y = array_create(CelestialSimMaxShadows);
+sphere_shadow_position_z = array_create(CelestialSimMaxShadows);
+
 // Initialize Planet Cloud Spawn Sphere
 var temp_clouds_spawn_sphere = geodesic_icosphere_create(clouds_spawn_resolution);
 clouds_spawn_sphere_uvs = temp_clouds_spawn_sphere.vertex_uvs;
 
 // Initialize Planet Clouds Depth Sorting Arrays
-clouds_index_array = array_create(1);
+clouds_index_array = array_create(0);
 
 // Initialize Planet Clouds Rendering DS Lists
 clouds_render_u_list = ds_list_create();

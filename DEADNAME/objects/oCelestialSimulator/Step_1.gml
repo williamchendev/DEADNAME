@@ -30,6 +30,7 @@ repeat (CelestialSimMaxLights)
 	light_source_radius[temp_light_source_index] = 0;
 	light_source_falloff[temp_light_source_index] = 0;
 	light_source_intensity[temp_light_source_index] = 0;
+	light_source_emitter_size[temp_light_source_index] = 0;
 }
 
 // Iterate through all Solar Systems within the Celestial Simulation
@@ -108,6 +109,7 @@ repeat (array_length(solar_systems))
 						CelestialSimulator.light_source_radius[temp_light_source_index] = light_source_radius;
 						CelestialSimulator.light_source_falloff[temp_light_source_index] = light_source_distance_fade;
 						CelestialSimulator.light_source_intensity[temp_light_source_index] = light_source_intensity;
+						CelestialSimulator.light_source_emitter_size[temp_light_source_index] = radius;
 						
 						// Increment Light Source Index
 						temp_light_source_index++;

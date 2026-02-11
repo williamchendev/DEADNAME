@@ -4,6 +4,7 @@
 // Global Celestial Simulator Properties
 #macro CelestialSimulator global.celestial_simulator
 #macro CelestialSimMaxLights 6
+#macro CelestialSimMaxShadows 8
 #macro CelestialSimMaxHydrosphereWaves 4
 
 // Celestial Simulator Singleton Global Initialization
@@ -85,8 +86,8 @@ global_hydrosphere_time = 0;
 solar_system_render_depth_sorting_index_array = array_create(0);
 solar_system_render_depth_sorting_depth_array = array_create(0);
 
-clouds_render_depth_sorting_index_array = array_create(1);
-clouds_render_depth_sorting_depth_array = array_create(1);
+clouds_render_depth_sorting_index_array = array_create(0);
+clouds_render_depth_sorting_depth_array = array_create(0);
 
 // Surfaces
 background_surface = -1;
@@ -172,6 +173,14 @@ planet_lithosphere_lit_shader_light_color_b_index = shader_get_uniform(shd_plane
 planet_lithosphere_lit_shader_light_radius_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Light_Radius");
 planet_lithosphere_lit_shader_light_falloff_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Light_Falloff");
 planet_lithosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Light_Intensity");
+planet_lithosphere_lit_shader_light_emitter_size_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Light_Emitter_Size");
+
+planet_lithosphere_lit_shader_shadow_exists_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Shadow_Exists");
+planet_lithosphere_lit_shader_shadow_radius_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Shadow_Radius");
+
+planet_lithosphere_lit_shader_shadow_position_x_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Shadow_Position_X");
+planet_lithosphere_lit_shader_shadow_position_y_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Shadow_Position_Y");
+planet_lithosphere_lit_shader_shadow_position_z_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_Shadow_Position_Z");
 
 planet_lithosphere_lit_shader_planet_texture_index = shader_get_sampler_index(shd_planet_lithosphere_lit, "in_PlanetTexture");
 
@@ -221,6 +230,7 @@ planet_hydrosphere_lit_shader_light_color_b_index = shader_get_uniform(shd_plane
 planet_hydrosphere_lit_shader_light_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Radius");
 planet_hydrosphere_lit_shader_light_falloff_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Falloff");
 planet_hydrosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Intensity");
+planet_hydrosphere_lit_shader_light_emitter_size_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Emitter_Size");
 
 // (Forward Rendered Lighting) Planet Atmosphere Lit Rendering Shader Indexes
 planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraPosition");
@@ -244,6 +254,14 @@ planet_atmosphere_lit_shader_light_position_z_index = shader_get_uniform(shd_pla
 planet_atmosphere_lit_shader_light_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Light_Radius");
 planet_atmosphere_lit_shader_light_falloff_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Light_Falloff");
 planet_atmosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Light_Intensity");
+planet_atmosphere_lit_shader_light_emitter_size_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Light_Emitter_Size");
+
+planet_atmosphere_lit_shader_shadow_exists_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Shadow_Exists");
+planet_atmosphere_lit_shader_shadow_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Shadow_Radius");
+
+planet_atmosphere_lit_shader_shadow_position_x_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Shadow_Position_X");
+planet_atmosphere_lit_shader_shadow_position_y_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Shadow_Position_Y");
+planet_atmosphere_lit_shader_shadow_position_z_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_Shadow_Position_Z");
 
 planet_atmosphere_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_vsh_AtmosphereRadius");
 planet_atmosphere_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_fsh_AtmosphereRadius");
@@ -287,6 +305,7 @@ sdf_sphere_volumetric_clouds_lit_shader_light_color_b_index = shader_get_uniform
 sdf_sphere_volumetric_clouds_lit_shader_light_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Radius");
 sdf_sphere_volumetric_clouds_lit_shader_light_falloff_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Falloff");
 sdf_sphere_volumetric_clouds_lit_shader_light_intensity_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Intensity");
+sdf_sphere_volumetric_clouds_lit_shader_light_emitter_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Emitter_Size");
 
 sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_AtmosphereRadius");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_AtmosphereRadius");
@@ -336,24 +355,7 @@ light_source_color_b = array_create(CelestialSimMaxLights);
 light_source_radius = array_create(CelestialSimMaxLights);
 light_source_falloff = array_create(CelestialSimMaxLights);
 light_source_intensity = array_create(CelestialSimMaxLights);
-
-for (var i = CelestialSimMaxLights - 1; i >= 0; i--)
-{
-	// Initialize Empty Light Sources
-	light_source_exists[i] = 0;
-
-	light_source_position_x[i] = 0;
-	light_source_position_y[i] = 0;
-	light_source_position_z[i] = 0;
-	
-	light_source_color_r[i] = 0;
-	light_source_color_g[i] = 0;
-	light_source_color_b[i] = 0;
-	
-	light_source_radius[i] = 0;
-	light_source_falloff[i] = 0;
-	light_source_intensity[i] = 0;
-}
+light_source_emitter_size = array_create(CelestialSimMaxLights);
 
 // Render Depth Sort Type Functions
 clouds_render_depth_sort = function(current, next) 
@@ -602,6 +604,90 @@ load_solar_system = function(solar_system_id)
 	}
 }
 
+create_celestial_shadows = function(solar_system_id, celestial_ids_array)
+{
+	// Establish empty Solar System Index
+	var temp_solar_system_index = -1;
+	
+	// Iterate through Solar System IDs to check if Solar System exists
+	for (var q = 0; q < array_length(CelestialSimulator.solar_systems_ids); q++)
+	{
+		// Solar System ID comparison
+		if (solar_system_id == CelestialSimulator.solar_systems_ids[q])
+		{
+			// Solar System exists - Index Celestial Object
+			temp_solar_system_index = q;
+			break;
+		}
+	}
+	
+	// Check if Solar System ID exists
+	if (temp_solar_system_index != -1)
+	{
+		// Find Solar System Array
+		var temp_solar_system = CelestialSimulator.solar_systems[temp_solar_system_index];
+		
+		// Create Empty Celestial Objects Array
+		var temp_celestial_objects_array = array_create(0);
+		
+		// Iterate through Celestial Objects within Solar System to check if they 
+		for (var n = 0; n < array_length(temp_solar_system); n++)
+		{
+			// Check if Celestial Object's Celestial ID matches any Celestial ID in the given Celestial IDs Array
+			if (!array_contains(celestial_ids_array, temp_solar_system[n].celestial_id))
+			{
+				continue;
+			}
+			
+			// Celestial Object Type Behaviour
+			switch (temp_solar_system[n].celestial_object_type)
+			{
+				case CelestialObjectType.Planet:
+					// Celestial Object Type does support Shadows - Add Celestial Object for Shadow Indexing
+					array_push(temp_celestial_objects_array, temp_solar_system[n]);
+					break;
+				default:
+					// Celestial Object Type does not support Shadows - Skip Behaviour
+					break;
+			}
+		}
+		
+		// Iterate through Celestial Object Array to add Shadows to each other
+		for (var j = array_length(temp_celestial_objects_array) - 1; j >= 0; j--)
+		{
+			// Nested Loop to add each others' Shadows
+			for (var l = array_length(temp_celestial_objects_array) - 1; l >= 0; l--)
+			{
+				// Check if on the same index - Can't add your own shadow
+				if (j == l)
+				{
+					continue;
+				}
+				
+				// Check if this Celestial Object already has the Celestial Object about to be added as a Shadow
+				if (array_contains(temp_celestial_objects_array[j].sphere_shadow_instance, temp_celestial_objects_array[l].sphere_shadow_instance))
+				{
+					continue;
+				}
+				
+				// Iterate through Celestial Object's Shadow Array to add Shadow
+				for (var m = 0; m < CelestialSimMaxShadows; m++)
+				{
+					if (!instance_exists(temp_celestial_objects_array[j].sphere_shadow_instance[m]) or !temp_celestial_objects_array[j].sphere_shadow_exists[m])
+					{
+						// Add Shadow Instance
+						temp_celestial_objects_array[j].sphere_shadow_exists[m] = true;
+						temp_celestial_objects_array[j].sphere_shadow_instance[m] = temp_celestial_objects_array[l];
+						
+						// Exit Loop
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
 reset_solar_system_orbit_update_order = function(solar_system_id)
 {
 	// Establish empty Solar System Index
@@ -823,10 +909,11 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15) }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3, sky: false, ocean: false }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 400 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 1000, orbit_speed: 0, orbit_rotation: 90 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 3000, orbit_speed: 0, orbit_rotation: 90 }));
+	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
 	
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_speed: 0 });

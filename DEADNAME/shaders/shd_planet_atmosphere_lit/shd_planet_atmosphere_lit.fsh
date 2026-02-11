@@ -4,6 +4,7 @@
 
 // Forward Rendered Lighting Properties
 #define MAX_LIGHTS 6
+#define MAX_SHADOWS 8
 
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
@@ -27,6 +28,15 @@ uniform float in_Light_Position_Z[MAX_LIGHTS];
 uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
+uniform float in_Light_Emitter_Size[MAX_LIGHTS];
+
+// Shadow Properties
+uniform float in_Shadow_Exists[MAX_SHADOWS];
+uniform float in_Shadow_Radius[MAX_SHADOWS];
+
+uniform float in_Shadow_Position_X[MAX_SHADOWS];
+uniform float in_Shadow_Position_Y[MAX_SHADOWS];
+uniform float in_Shadow_Position_Z[MAX_SHADOWS];
 
 // Atmosphere Properties
 uniform float u_fsh_AtmosphereRadius;
@@ -216,6 +226,8 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 
 // Shadow Functions
 // Calculates the visible light accumulated at a position behind a sphere's soft shadow
+
+/*
 float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
 {
 	vec3 shadow_direction = sphere_position - world_position;
@@ -225,6 +237,36 @@ float shadow(vec3 world_position, vec3 light_direction, float light_radius, floa
 	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
 	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_radius);
 	return shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction));
+}
+*/
+
+/*
+float shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+{
+	
+	return shadow_raycast.y > 0.0 ? (shadow_raycast.x < light_distance ? max(shadow_raycast.x, 0.0) / shadow_raycast.y : 0.0) : 0.0;
+}
+*/
+
+float shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+{
+	float k = 2.0;
+	
+	vec2 shadow_raycast = raySphere(sphere_position, sphere_radius, light_position, light_direction);
+	
+	vec3 oc = light_position - sphere_position;
+    float b = dot( oc, light_direction );
+    float c = dot( oc, oc ) - sphere_radius * sphere_radius;
+    float h = b * b - c;
+	
+    //return shadow_raycast.x < light_distance ? ((b > 0.0) ? step(-0.0001, c) : smoothstep(0.0, 1.0, h * k / b)) : 1.0;
+    
+    float d = sqrt(max(0.,sphere_radius*sphere_radius-h)) - sphere_radius;
+    float t = -b - sqrt(max(h,0.)); // intersection distance
+            
+    float res = b>0. ? 1. : .5+.5*clamp(k*d/t, -1., 1.);
+    
+    return res*res*(3.-2.*res); // S curve
 }
 
 // Dithering Functions
@@ -319,6 +361,20 @@ void main()
 			// Calculate Light Source Distance Fade Falloff Effect
 			float light_source_distance = length(in_scatter_point - light_position);
 			float light_source_fade = pow((in_Light_Radius[l] - light_source_distance) / in_Light_Radius[l], in_Light_Falloff[l]);
+			
+			// Calculate Soft Sphere Shadows
+			float shadows = 0.0;
+			
+			for (int n = 0; n < MAX_SHADOWS; n++)
+			{
+				//shadows = in_Shadow_Exists[n] != 1.0 ? shadows : max(shadows, shadow(in_scatter_point, light_position, light_direction, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
+				shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, shadow(in_scatter_point, light_position, light_direction, in_Light_Radius[l], light_source_distance, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
+				
+				//shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+				//shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, 1.0 - shadow(in_scatter_point, light_position, in_Light_Radius[l], ));
+				//vec2 shadow_raycast = raySphere(vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n], light_position, light_direction);
+				//shadows = shadow_raycast.y > 0.0 ? (shadow_raycast.x < light_source_distance ? 1.0 : shadows) : shadows;
+			}
 			
 			// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
 			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction * light_source_direction_multiplier).y;

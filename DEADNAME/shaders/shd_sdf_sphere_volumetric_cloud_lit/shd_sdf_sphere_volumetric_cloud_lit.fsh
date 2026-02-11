@@ -34,6 +34,7 @@ uniform float in_Light_Color_B[MAX_LIGHTS];
 uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
+uniform float in_Light_Emitter_Size[MAX_LIGHTS];
 
 // Atmosphere Properties
 uniform float u_fsh_AtmosphereRadius;
@@ -241,7 +242,7 @@ float powder(float sample_density, float cos_theta)
 }
 
 // Shadow Functions
-// Calculates the visible light accumulated at a position behind a sphere's soft shadow
+// Calculates the soft shadow of a position on a sphere given the properties of a light source
 float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
 {
 	vec3 shadow_direction = sphere_position - world_position;
@@ -331,7 +332,7 @@ void main()
 			vec3 light_sample_direction = light_direction * v_vPlanetRotation;
 			
 			// Calculate Planet Shadow Impact on Light Source
-			float planet_shadow = shadow(point_in_cloud, light_direction, in_Light_Radius[l], light_distance, u_fsh_PlanetPosition, u_fsh_PlanetRadius);
+			float planet_shadow = shadow(point_in_cloud, light_direction, in_Light_Emitter_Size[l], light_distance, u_fsh_PlanetPosition, u_fsh_PlanetRadius);
 			
 			// Calculate Light Source's Directional Scattering Phase
 			float light_cos_theta = dot(camera_forward, light_direction);
