@@ -4,6 +4,7 @@
 
 // Forward Rendered Lighting Properties
 #define MAX_LIGHTS 6
+#define MAX_SHADOWS 8
 
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
@@ -41,6 +42,14 @@ uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
 uniform float in_Light_Emitter_Size[MAX_LIGHTS];
+
+// Shadow Properties
+uniform float in_Shadow_Exists[MAX_SHADOWS];
+uniform float in_Shadow_Radius[MAX_SHADOWS];
+
+uniform float in_Shadow_Position_X[MAX_SHADOWS];
+uniform float in_Shadow_Position_Y[MAX_SHADOWS];
+uniform float in_Shadow_Position_Z[MAX_SHADOWS];
 
 // Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
 varying vec4 v_vColour;
@@ -186,6 +195,19 @@ vec3 dither(vec3 pos, float time, vec3 light)
 	return floor(dithered_color * color_range) / color_range;
 }
 
+// Shadow Functions
+// Calculates the visible light accumulated at a position behind a sphere's soft shadow
+float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size, float light_distance, vec3 sphere_position, float sphere_radius)
+{
+	vec3 shadow_direction = sphere_position - world_position;
+	float shadow_distance = length(shadow_direction);
+	shadow_direction = normalize(shadow_direction);
+	
+	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
+	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_emitter_size);
+	return 1.0 - (shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction)));
+}
+
 // Fragment Shader
 void main() 
 {
@@ -273,6 +295,14 @@ void main()
 		vec3 light_direction = normalize(light_position - v_vPosition);
 		float light_strength = max(dot(light_direction, v_vOceanNormal), 0.0);
 		
+		// Calculate Cumulative Shadow by iterating through all Shadow Spheres casting Soft Shadows
+		float shadows = 1.0;
+		
+		for (int n = 0; n < MAX_SHADOWS; n++)
+		{
+			shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, shadow(v_vPosition, light_direction, in_Light_Emitter_Size[i], light_distance, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
+		}
+		
 		// Calculate Normalized Sum of Light Source's Direction Vector and the View Direction Vector
 		vec3 normalized_light_and_view_direction = normalize(light_direction + view_direction);      
 		
@@ -331,7 +361,7 @@ void main()
 		o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 		
 		// Add Calculated Light to Cumulative Light Value
-		light += (o_l + s_l * u_SpecularIntensity) * light_fade * in_Light_Intensity[i];
+		light += (o_l + s_l * u_SpecularIntensity) * light_fade * in_Light_Intensity[i] * shadows;
 	}
 	
 	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding

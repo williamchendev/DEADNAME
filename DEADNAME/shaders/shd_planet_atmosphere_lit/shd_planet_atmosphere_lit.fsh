@@ -224,51 +224,6 @@ float opticalDepth(vec3 ray_origin, vec3 ray_direction, float ray_length)
 	return optical_depth;
 }
 
-// Shadow Functions
-// Calculates the visible light accumulated at a position behind a sphere's soft shadow
-
-/*
-float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
-{
-	vec3 shadow_direction = sphere_position - world_position;
-	float shadow_distance = length(shadow_direction);
-	shadow_direction = normalize(shadow_direction);
-	
-	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
-	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_radius);
-	return shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction));
-}
-*/
-
-/*
-float shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
-{
-	
-	return shadow_raycast.y > 0.0 ? (shadow_raycast.x < light_distance ? max(shadow_raycast.x, 0.0) / shadow_raycast.y : 0.0) : 0.0;
-}
-*/
-
-float shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
-{
-	float k = 2.0;
-	
-	vec2 shadow_raycast = raySphere(sphere_position, sphere_radius, light_position, light_direction);
-	
-	vec3 oc = light_position - sphere_position;
-    float b = dot( oc, light_direction );
-    float c = dot( oc, oc ) - sphere_radius * sphere_radius;
-    float h = b * b - c;
-	
-    //return shadow_raycast.x < light_distance ? ((b > 0.0) ? step(-0.0001, c) : smoothstep(0.0, 1.0, h * k / b)) : 1.0;
-    
-    float d = sqrt(max(0.,sphere_radius*sphere_radius-h)) - sphere_radius;
-    float t = -b - sqrt(max(h,0.)); // intersection distance
-            
-    float res = b>0. ? 1. : .5+.5*clamp(k*d/t, -1., 1.);
-    
-    return res*res*(3.-2.*res); // S curve
-}
-
 // Dithering Functions
 // Screen Space pseudo-random Blue Noise dithered color quantization
 vec3 dither(vec2 uv, float time, vec3 light)
@@ -286,6 +241,19 @@ vec3 dither(vec2 uv, float time, vec3 light)
 	
 	// Quantize lighting
 	return floor(dithered_color * color_range) / color_range;
+}
+
+// Shadow Functions
+// Calculates the visible light accumulated at a position behind a sphere's soft shadow
+float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size, float light_distance, vec3 sphere_position, float sphere_radius)
+{
+	vec3 shadow_direction = world_position - sphere_position;
+	float shadow_distance = length(shadow_direction);
+	shadow_direction = normalize(shadow_direction);
+	
+	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
+	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_emitter_size);
+	return pow(shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction)), 2.5);
 }
 
 // Fragment Shader
@@ -359,21 +327,34 @@ void main()
 		for (float i = 0.0; i < u_ScatterPointSamplesCount; i++)
 		{
 			// Calculate Light Source Distance Fade Falloff Effect
-			float light_source_distance = length(in_scatter_point - light_position);
+			vec3 light_source_direction = in_scatter_point - light_position;
+			float light_source_distance = length(light_source_direction);
 			float light_source_fade = pow((in_Light_Radius[l] - light_source_distance) / in_Light_Radius[l], in_Light_Falloff[l]);
 			
-			// Calculate Soft Sphere Shadows
+			// Calculate Cumulative Shadow by iterating through all Shadow Spheres casting Soft Shadows
 			float shadows = 0.0;
 			
 			for (int n = 0; n < MAX_SHADOWS; n++)
 			{
-				//shadows = in_Shadow_Exists[n] != 1.0 ? shadows : max(shadows, shadow(in_scatter_point, light_position, light_direction, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
-				shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, shadow(in_scatter_point, light_position, light_direction, in_Light_Radius[l], light_source_distance, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
+				// Check if Shadow Exists
+				if (in_Shadow_Exists[n] != 1.0)
+				{
+					continue;
+				}
 				
-				//shadow(vec3 world_position, vec3 light_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
-				//shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, 1.0 - shadow(in_scatter_point, light_position, in_Light_Radius[l], ));
-				//vec2 shadow_raycast = raySphere(vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n], light_position, light_direction);
-				//shadows = shadow_raycast.y > 0.0 ? (shadow_raycast.x < light_source_distance ? 1.0 : shadows) : shadows;
+				// Find Shadow Sphere's Position & Distance from Light Source
+				vec3 shadow_sphere_position = vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]);
+				float shadow_sphere_distance = length(shadow_sphere_position - light_position);
+				
+				// Check if World Position to calculate Shade is behind Shadow Sphere relative to Light Source
+				if (shadow_sphere_distance > light_source_distance)
+				{
+					continue;
+				}
+				
+				// Calculate Cumulative Shadow at World Position
+				float sha = shadow(in_scatter_point, normalize(light_source_direction), in_Light_Emitter_Size[l] * 1.5, light_source_distance, shadow_sphere_position, in_Shadow_Radius[n]);
+				shadows = max(shadows, sha);
 			}
 			
 			// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
@@ -387,7 +368,7 @@ void main()
 			float local_density = densityAtPoint(in_scatter_point);
 			
 			// Calculate Transmittance of Light at Scattering Sample Point
-			vec3 transmittance = exp(-(light_source_ray_optical_depth + view_ray_optical_depth) * u_AtmosphereScatteringCoefficients);
+			vec3 transmittance = exp(-(light_source_ray_optical_depth + view_ray_optical_depth + shadows) * u_AtmosphereScatteringCoefficients);
 			
 			// Add Transmittance of Light to Total Atmosphere Light Visible at the given Pixel based on Local Density of Atmosphere at Scattering Sample Point
 			in_scattered_light += local_density * transmittance * light_source_fade;

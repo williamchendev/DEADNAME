@@ -172,18 +172,16 @@ vec3 dither(vec3 pos, float time, vec3 light)
 }
 
 // Shadow Functions
-// Calculates the soft shadow of a position on a sphere given the properties of a light source
-float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+// Calculates the visible light accumulated at a position behind a sphere's soft shadow
+float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size, float light_distance, vec3 sphere_position, float sphere_radius)
 {
 	vec3 shadow_direction = sphere_position - world_position;
 	float shadow_distance = length(shadow_direction);
 	shadow_direction = normalize(shadow_direction);
 	
 	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
-	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_radius);
-	float res = 1.0 - (shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction)));
-	
-	return res * res * (3.0 - 2.0 * res);
+	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_emitter_size);
+	return 1.0 - (shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction)));
 }
 
 // Fragment Shader
@@ -259,12 +257,12 @@ void main()
 		vec3 light_direction = normalize(light_position - v_vPosition);
 		float light_strength = max(dot(light_direction, v_vNormal), 0.0);
 		
-		// Calculate Shadow
-		float cumulative_shadows = 1.0;
+		// Calculate Cumulative Shadow by iterating through all Shadow Spheres casting Soft Shadows
+		float shadows = 1.0;
 		
 		for (int n = 0; n < MAX_SHADOWS; n++)
 		{
-			cumulative_shadows = in_Shadow_Exists[n] != 1.0 ? cumulative_shadows : min(cumulative_shadows, shadow(v_vPosition, light_direction, in_Light_Emitter_Size[i], light_distance, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
+			shadows = in_Shadow_Exists[n] != 1.0 ? shadows : min(shadows, shadow(v_vPosition, light_direction, in_Light_Emitter_Size[i], light_distance, vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]), in_Shadow_Radius[n]));
 		}
 		
 		// Calculate Reflection Coefficent
@@ -299,7 +297,7 @@ void main()
 		l = clamp(l_a + l_b, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
 		
 		// Add Calculated Light to Cumulative Light Value
-        light += l * light_fade * in_Light_Intensity[i] * cumulative_shadows;
+		light += l * light_fade * in_Light_Intensity[i] * shadows;
 	}
 	
 	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding

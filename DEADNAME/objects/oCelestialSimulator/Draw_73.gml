@@ -17,6 +17,7 @@ surface_set_target(LightingEngine.ui_surface);
 draw_clear_alpha(c_black, 0);
 draw_surface(final_render_surface, 0, 0);
 //draw_surface(celestial_body_atmosphere_depth_mask_surface, 0, 0);
+
 surface_reset_target();
 
 // DEBUG DEBUG DEBUG NOISE TEST HERE

@@ -232,6 +232,13 @@ planet_hydrosphere_lit_shader_light_falloff_index = shader_get_uniform(shd_plane
 planet_hydrosphere_lit_shader_light_intensity_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Intensity");
 planet_hydrosphere_lit_shader_light_emitter_size_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Light_Emitter_Size");
 
+planet_hydrosphere_lit_shader_shadow_exists_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Shadow_Exists");
+planet_hydrosphere_lit_shader_shadow_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Shadow_Radius");
+
+planet_hydrosphere_lit_shader_shadow_position_x_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Shadow_Position_X");
+planet_hydrosphere_lit_shader_shadow_position_y_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Shadow_Position_Y");
+planet_hydrosphere_lit_shader_shadow_position_z_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_Shadow_Position_Z");
+
 // (Forward Rendered Lighting) Planet Atmosphere Lit Rendering Shader Indexes
 planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraPosition");
 planet_atmosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraPosition");
@@ -306,6 +313,13 @@ sdf_sphere_volumetric_clouds_lit_shader_light_radius_index = shader_get_uniform(
 sdf_sphere_volumetric_clouds_lit_shader_light_falloff_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Falloff");
 sdf_sphere_volumetric_clouds_lit_shader_light_intensity_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Intensity");
 sdf_sphere_volumetric_clouds_lit_shader_light_emitter_size_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Light_Emitter_Size");
+
+sdf_sphere_volumetric_clouds_lit_shader_shadow_exists_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Exists");
+sdf_sphere_volumetric_clouds_lit_shader_shadow_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Radius");
+
+sdf_sphere_volumetric_clouds_lit_shader_shadow_position_x_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Position_X");
+sdf_sphere_volumetric_clouds_lit_shader_shadow_position_y_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Position_Y");
+sdf_sphere_volumetric_clouds_lit_shader_shadow_position_z_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Position_Z");
 
 sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_AtmosphereRadius");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_AtmosphereRadius");
@@ -909,10 +923,10 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3, sky: false, ocean: false }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 400 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 3000, orbit_speed: 0, orbit_rotation: 90 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
 	

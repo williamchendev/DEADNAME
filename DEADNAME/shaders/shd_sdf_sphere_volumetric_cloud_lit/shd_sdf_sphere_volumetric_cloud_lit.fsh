@@ -4,6 +4,7 @@
 
 // Forward Rendered Lighting Properties
 #define MAX_LIGHTS 6
+#define MAX_SHADOWS 8
 
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
@@ -35,6 +36,14 @@ uniform float in_Light_Radius[MAX_LIGHTS];
 uniform float in_Light_Falloff[MAX_LIGHTS];
 uniform float in_Light_Intensity[MAX_LIGHTS];
 uniform float in_Light_Emitter_Size[MAX_LIGHTS];
+
+// Shadow Properties
+uniform float in_Shadow_Exists[MAX_SHADOWS];
+uniform float in_Shadow_Radius[MAX_SHADOWS];
+
+uniform float in_Shadow_Position_X[MAX_SHADOWS];
+uniform float in_Shadow_Position_Y[MAX_SHADOWS];
+uniform float in_Shadow_Position_Z[MAX_SHADOWS];
 
 // Atmosphere Properties
 uniform float u_fsh_AtmosphereRadius;
@@ -243,15 +252,14 @@ float powder(float sample_density, float cos_theta)
 
 // Shadow Functions
 // Calculates the soft shadow of a position on a sphere given the properties of a light source
-float shadow(vec3 world_position, vec3 light_direction, float light_radius, float light_distance, vec3 sphere_position, float sphere_radius)
+float shadow(vec3 shadow_direction, vec3 light_direction, float light_emitter_size, float light_distance, float sphere_radius)
 {
-	vec3 shadow_direction = sphere_position - world_position;
 	float shadow_distance = length(shadow_direction);
 	shadow_direction = normalize(shadow_direction);
 	
 	float shadow_d = light_distance * (asin(min(1.0, length(cross(light_direction, shadow_direction)))) - asin(min(1.0, sphere_radius / shadow_distance)));
-	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_radius);
-	return shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction));
+	float shadow_w = smoothstep(-1.0, 1.0, -shadow_d / light_emitter_size);
+	return 1.0 - (shadow_w * smoothstep(0.0, 0.2, dot(light_direction, shadow_direction)));
 }
 
 // Fragment Shader
@@ -332,7 +340,32 @@ void main()
 			vec3 light_sample_direction = light_direction * v_vPlanetRotation;
 			
 			// Calculate Planet Shadow Impact on Light Source
-			float planet_shadow = shadow(point_in_cloud, light_direction, in_Light_Emitter_Size[l], light_distance, u_fsh_PlanetPosition, u_fsh_PlanetRadius);
+			float planet_shadow = 1.0 - shadow(u_fsh_PlanetPosition - point_in_cloud, light_direction, in_Light_Radius[l], light_distance, u_fsh_PlanetRadius);
+			
+			// Calculate Cumulative Shadow by iterating through all Shadow Spheres casting Soft Shadows
+			float shadows = 1.0;
+			
+			for (int n = 0; n < MAX_SHADOWS; n++)
+			{
+				// Check if Shadow Exists
+				if (in_Shadow_Exists[n] != 1.0)
+				{
+					continue;
+				}
+				
+				// Find Shadow Sphere's Position & Distance from Light Source
+				vec3 shadow_sphere_position = vec3(in_Shadow_Position_X[n], in_Shadow_Position_Y[n], in_Shadow_Position_Z[n]);
+				float shadow_sphere_distance = length(shadow_sphere_position - light_position);
+				
+				// Check if World Position to calculate Shade is behind Shadow Sphere relative to Light Source
+				if (shadow_sphere_distance > light_distance)
+				{
+					continue;
+				}
+				
+				// Calculate Cumulative Shadow at World Position
+				shadows = min(shadows, shadow(point_in_cloud - shadow_sphere_position, light_direction, in_Light_Emitter_Size[l], light_distance, in_Shadow_Radius[n]));
+			}
 			
 			// Calculate Light Source's Directional Scattering Phase
 			float light_cos_theta = dot(camera_forward, light_direction);
@@ -362,7 +395,7 @@ void main()
 			
 			// Calculate Total Scattered Light at Point in Cloud - Add Visible Scattered Light to Cloud's Cumulative Light Value
 			vec3 scattered_light = light_color * light_source_transmittance * light_scattering_phase * powder_effect;
-			light += scattered_light * transmittance * planet_shadow * light_fade * in_Light_Intensity[l];
+			light += scattered_light * transmittance * planet_shadow * shadows * light_fade * in_Light_Intensity[l];
 		}
 		
 		// Add Local Density to Cloud's Visible Alpha
