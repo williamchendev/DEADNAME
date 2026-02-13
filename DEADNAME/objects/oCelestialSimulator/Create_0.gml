@@ -71,6 +71,11 @@ global_clouds_temporal_blue_noise_offset = 0.03;
 global_atmosphere_scatter_point_samples_count = 10;
 global_atmosphere_optical_depth_samples_count = 10;
 
+// Bloom Settings
+bloom_global_size = 3;
+bloom_global_color = c_white;
+bloom_global_intensity = 1.0;
+
 // Solar System Variables
 solar_system_index = -1;
 solar_systems = array_create(0);
@@ -91,17 +96,19 @@ clouds_render_depth_sorting_depth_array = array_create(0);
 
 // Surfaces
 background_surface = -1;
-background_bloom_premult_surface = -1;
-
-background_stars_surface = -1;
-background_stars_emissive_surface = -1;
-
-temp_surface = -1;
 
 celestial_body_render_surface = -1;
+celestial_body_diffuse_surface = -1;
+celestial_body_emissive_surface = -1;
 celestial_body_atmosphere_depth_mask_surface = -1;
 
 clouds_render_surface = -1;
+
+post_processing_surface = -1;
+
+diffuse_surface = -1;
+emissive_surface = -1;
+bloom_premult_surface = -1;
 
 final_render_surface = -1;
 
@@ -344,6 +351,13 @@ sdf_sphere_volumetric_clouds_lit_shader_cloud_color_index = shader_get_uniform(s
 sdf_sphere_volumetric_clouds_lit_shader_cloud_ambient_light_color_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_CloudAmbientLightColor");
 
 sdf_sphere_volumetric_clouds_lit_shader_planet_depth_mask_texture_index = shader_get_sampler_index(shd_sdf_sphere_volumetric_cloud_lit, "gm_AtmospherePlanetDepthMask");
+
+// Bloom Effect Surface Rendering Shader Indexes
+bloom_effect_render_shader_surface_texel_size_index  = shader_get_uniform(shd_celestial_bloom_effect_render, "in_TexelSize");
+bloom_effect_render_shader_alpha_multiplier_index  = shader_get_uniform(shd_celestial_bloom_effect_render, "in_AlphaMult");
+
+bloom_effect_render_shader_diffusemap_index  = shader_get_sampler_index(shd_celestial_bloom_effect_render, "in_DiffuseMap");
+bloom_effect_render_shader_emissivemap_index  = shader_get_sampler_index(shd_celestial_bloom_effect_render, "in_EmissiveMap");
 
 // Sun Unlit Rendering Shader Indexes
 sun_unlit_shader_camera_position_index = shader_get_uniform(shd_sun_unlit, "in_camera_position");

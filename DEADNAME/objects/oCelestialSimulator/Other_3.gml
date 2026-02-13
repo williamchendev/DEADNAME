@@ -5,26 +5,32 @@
 surface_free(background_surface);
 background_surface = -1;
 
-surface_free(background_bloom_premult_surface);
-background_bloom_premult_surface = -1;
-
-surface_free(background_stars_surface);
-background_stars_surface = -1;
-
-surface_free(background_stars_emissive_surface);
-background_stars_emissive_surface = -1;
-
-surface_free(temp_surface);
-temp_surface = -1;
-
 surface_free(celestial_body_render_surface);
 celestial_body_render_surface = -1;
+
+surface_free(celestial_body_diffuse_surface);
+celestial_body_diffuse_surface = -1;
+
+surface_free(celestial_body_emissive_surface);
+celestial_body_emissive_surface = -1;
 
 surface_free(celestial_body_atmosphere_depth_mask_surface);
 celestial_body_atmosphere_depth_mask_surface = -1;
 
 surface_free(clouds_render_surface);
 clouds_render_surface = -1;
+
+surface_free(post_processing_surface);
+post_processing_surface = -1;
+
+surface_free(diffuse_surface);
+diffuse_surface = -1;
+
+surface_free(emissive_surface);
+emissive_surface = -1;
+
+surface_free(bloom_premult_surface);
+bloom_premult_surface = -1;
 
 surface_free(final_render_surface);
 final_render_surface = -1;

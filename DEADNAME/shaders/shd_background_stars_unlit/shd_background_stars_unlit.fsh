@@ -10,5 +10,6 @@ void main()
 {
 	// Render Lit Background Stars Color Fragment Value
 	gl_FragData[0] = v_vColour;
-	gl_FragData[1] = vec4(vec3(1.0), v_vColour.a);
+	gl_FragData[1] = v_vColour;
+	gl_FragData[2] = vec4(vec3(v_vColour.a), 1.0);
 }

@@ -95,8 +95,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 			}
 			
-			// Render Celestial Object to Final Render Surface
-			surface_set_target(final_render_surface);
+			// Render Celestial Object to Post Processing Surface
+			surface_set_target(post_processing_surface);
 			draw_surface_ext(celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
 			surface_reset_target();
 			break;
@@ -111,9 +111,11 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(true);
 				gpu_set_ztestenable(true);
 				
-				// (Multiple Render Targets) Set Celestial Body Render Surfaces as Surface Targets
+				// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
 				surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
-				surface_set_target_ext(1, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
+				surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+				surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
+				surface_set_target_ext(3, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
 				
 				// Reset Celestial Body Depth Render Surface
 				draw_clear_alpha(c_black, 0);
@@ -173,18 +175,11 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Reset Shader
 				shader_reset();
 				
-				// Reset Surface Target
-				surface_reset_target();
-				
 				// Check if Planet's Ocean is Enabled and should be Rendered
 				if (ocean)
 				{
 					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-					
-					// (Multiple Render Targets) Set Celestial Body Render Surfaces as Surface Targets
-					surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
-					surface_set_target_ext(1, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
 					
 					// Enable Planet Hydrosphere Shader
 					shader_set(shd_planet_hydrosphere_lit);
@@ -255,10 +250,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					
 					// Reset Shader
 					shader_reset();
-					
-					// Reset Surface Target
-					surface_reset_target();
 				}
+				
+				// Reset Surface Target
+				surface_reset_target();
 				
 				// Disable Z-Depth Rendering
 				gpu_set_zwriteenable(false);
@@ -390,8 +385,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Reset Surface Target
 					surface_reset_target();
 					
-					// Set Final Render Surface as Surface Target
-					surface_set_target(CelestialSimulator.final_render_surface);
+					// Set Post Processing Surface as Surface Target
+					surface_set_target(CelestialSimulator.post_processing_surface);
 					
 					// Enable Planet Atmosphere Shader
 					shader_set(shd_planet_atmosphere_lit);
@@ -464,8 +459,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				}
 				else
 				{
-					// Render Celestial Object to Final Render Surface
-					surface_set_target(CelestialSimulator.final_render_surface);
+					// Render Celestial Object to Post Processing Surface
+					surface_set_target(CelestialSimulator.post_processing_surface);
 					draw_surface_ext(CelestialSimulator.celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
 					surface_reset_target();
 				}

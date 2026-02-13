@@ -367,7 +367,9 @@ void main()
 	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding
 	light = dither(v_vPosition, u_NoiseTime, light);
 	
-	// (Multiple Render Targets) Render Lit Sphere & Depth Fragment Values
+	// (Multiple Render Targets) Render Lit Sphere, Diffuse, Emissive, and Atmospheric Depth Fragment Values
 	gl_FragData[0] = vec4(light, diffuse_color.a);
-	gl_FragData[1] = vec4(vec3(v_vDepth), 1.0);
+	gl_FragData[1] = diffuse_color;
+	gl_FragData[2] = vec4(vec3(0.0), 1.0);
+	gl_FragData[3] = vec4(vec3(v_vDepth), 1.0);
 }

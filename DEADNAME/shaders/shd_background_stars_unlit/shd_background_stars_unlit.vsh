@@ -21,13 +21,13 @@ const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 // Vertex Shader
 void main() 
 {
-	// 
+	// Calculate Camera Forward Vector from Camera's Rotation Matrix
 	vec3 camera_forward = normalize(in_CameraRotation[2].xyz);
 	
-	//
+	// Calculate Render Vertex Position with Camera Rotation Matrix
 	vec4 render_position = vec4(in_Position - in_CameraPosition * camera_position_scale * inverse_vertical_vector, 1.0) * in_CameraRotation;
 	
-	//
+	// Calculate if Render Vertex Position is in front of the Camera
 	float render_forward_dot_product = dot(camera_forward, normalize(in_Position)) > 0.0 ? 1.0 : 0.0;
 	
 	// Interpolated Color

@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_celestial_bloom_effect_render",
+  "name":"shd_celestial_bloom_effect_render",
+  "parent":{
+    "name":"Post",
+    "path":"folders/Shaders/Post.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
