@@ -51,6 +51,9 @@ uniform float in_Shadow_Position_X[MAX_SHADOWS];
 uniform float in_Shadow_Position_Y[MAX_SHADOWS];
 uniform float in_Shadow_Position_Z[MAX_SHADOWS];
 
+// Emissive Properties
+uniform float u_Emissive;
+
 // Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
@@ -370,6 +373,6 @@ void main()
 	// (Multiple Render Targets) Render Lit Sphere, Diffuse, Emissive, and Atmospheric Depth Fragment Values
 	gl_FragData[0] = vec4(light, diffuse_color.a);
 	gl_FragData[1] = diffuse_color;
-	gl_FragData[2] = vec4(vec3(0.0), 1.0);
+	gl_FragData[2] = vec4(vec3(u_Emissive), diffuse_color.a);
 	gl_FragData[3] = vec4(vec3(v_vDepth), 1.0);
 }

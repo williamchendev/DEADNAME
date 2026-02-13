@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_planet_body_lit",
-  "name":"shd_planet_body_lit",
+  "%Name":"shd_planet_no_atmosphere_lit",
+  "name":"shd_planet_no_atmosphere_lit",
   "parent":{
     "name":"Celestial",
     "path":"folders/Shaders/Celestial.yy",

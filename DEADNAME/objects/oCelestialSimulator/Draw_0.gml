@@ -166,6 +166,9 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Set Planet Atmosphere Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
 				
+				// Set Planet Emissive Properties
+				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_emissive_index, surface_emissive);
+				
 				// Set Planet Texture Data
 				texture_set_stage(CelestialSimulator.planet_lithosphere_lit_shader_planet_texture_index, height_map != noone ? sprite_get_texture(height_map, 0) : sprite_get_texture(sPlanet_ElevationMap_Empty, 0));
 				
@@ -241,6 +244,9 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_steepness_index, ocean_wave_steepness_array);
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_length_index, ocean_wave_length_array);
 					shader_set_uniform_f_array(CelestialSimulator.planet_hydrosphere_lit_shader_planet_ocean_wave_speed_index, ocean_wave_speed_array);
+					
+					// Set Planet Emissive Properties
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_emissive_index, ocean_emissive);
 					
 					// Set Planet Atmosphere Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
@@ -385,8 +391,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Reset Surface Target
 					surface_reset_target();
 					
-					// Set Post Processing Surface as Surface Target
-					surface_set_target(CelestialSimulator.post_processing_surface);
+					// (Multiple Render Targets) Set Post Processing, Diffuse, & Emissive Surfaces as Surface Targets
+					surface_set_target_ext(0, CelestialSimulator.post_processing_surface);
+					surface_set_target_ext(1, CelestialSimulator.diffuse_surface);
+					surface_set_target_ext(2, CelestialSimulator.emissive_surface);
 					
 					// Enable Planet Atmosphere Shader
 					shader_set(shd_planet_atmosphere_lit);
@@ -448,6 +456,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_clouds_surface_texture_index, surface_get_texture(CelestialSimulator.clouds_render_surface));
 					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_planet_depth_mask_texture_index, surface_get_texture(CelestialSimulator.celestial_body_atmosphere_depth_mask_surface));
 					
+					// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_celestial_body_diffuse_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_diffuse_surface));
+					texture_set_stage(CelestialSimulator.planet_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_emissive_surface));
+					
 					// Draw Final Planet Render with Atmosphere from Square UV Vertex Buffer
 					vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
 					
@@ -459,9 +471,34 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				}
 				else
 				{
-					// Render Celestial Object to Post Processing Surface
-					surface_set_target(CelestialSimulator.post_processing_surface);
-					draw_surface_ext(CelestialSimulator.celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
+					// (Multiple Render Targets) Set Post Processing, Diffuse, & Emissive Surfaces as Surface Targets
+					surface_set_target_ext(0, CelestialSimulator.post_processing_surface);
+					surface_set_target_ext(1, CelestialSimulator.diffuse_surface);
+					surface_set_target_ext(2, CelestialSimulator.emissive_surface);
+					
+					// Enable Planet Render without Atmosphere Shader
+					shader_set(shd_planet_no_atmosphere_lit);
+					
+					// Set Planet Render Shader Camera Properties
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					shader_set_uniform_matrix_array(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					
+					// Set Planet Render Properties
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius + elevation + 32);
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_position_index, x, y, z);
+					
+					// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect
+					texture_set_stage(CelestialSimulator.planet_no_atmosphere_lit_shader_celestial_body_diffuse_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_diffuse_surface));
+					texture_set_stage(CelestialSimulator.planet_no_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_emissive_surface));
+					
+					// Draw Final Planet Render with Atmosphere from Square UV Vertex Buffer
+					vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
+					
+					// Reset Shader
+					shader_reset();
+					
+					// Reset Surface Target
 					surface_reset_target();
 				}
 			}

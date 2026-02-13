@@ -54,6 +54,9 @@ uniform float u_PlanetRadius;
 uniform sampler2D gm_AtmosphereCloudsSurface;
 uniform sampler2D gm_AtmospherePlanetDepthMask;
 
+uniform sampler2D gm_CelestialBodyDiffuseSurface;
+uniform sampler2D gm_CelestialBodyEmissiveSurface;
+
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
 varying vec4 v_vSurfaceUV;
@@ -284,6 +287,10 @@ void main()
 	float cloud_blend_alpha = pow(clouds_diffuse_color.a, u_CloudsAlphaBlendingPower);
 	vec4 diffuse_color = (1.0 - cloud_blend_alpha) * planet_diffuse_color + vec4(clouds_diffuse_color.rgb, cloud_blend_alpha);
 	
+	// Retreive Celestial Body's Bloom Diffuse & Emissive Surface Values
+	vec3 planet_bloom_diffuse = texture2D(gm_CelestialBodyDiffuseSurface, uv).rgb;
+	float planet_bloom_emissive = cloud_blend_alpha > 0.005 ? 0.0 : texture2D(gm_CelestialBodyEmissiveSurface, uv).r;
+	
 	// Retreive Atmosphere's Planet Mask and Create Combined Planet & Clouds Surface Depth Mask from Cloud Alpha Blending
 	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
 	float surface_mask = (cloud_blend_alpha > cloud_alpha_minimum ? max(u_fsh_AtmosphereRadius * cloud_surface_mask_cutout_depth, planet_mask) : planet_mask) / u_fsh_AtmosphereRadius;
@@ -398,6 +405,8 @@ void main()
 	// Calculate Atmosphere Alpha
 	float atmosphere_alpha = min(atmosphere_depth + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
-	// Render Lit Atmosphere Fragment Color Value
-	gl_FragColor = vec4(light, atmosphere_alpha);
+	// Render Lit Atmosphere, Diffuse, and Emissive Fragment Color Value
+	gl_FragData[0] = vec4(light, atmosphere_alpha);
+	gl_FragData[1] = vec4(planet_bloom_diffuse, diffuse_color.a);
+	gl_FragData[2] = vec4(vec3(planet_bloom_emissive), diffuse_color.a);
 }
