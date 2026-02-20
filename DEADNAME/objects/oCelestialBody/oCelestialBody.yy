@@ -45,6 +45,9 @@
     {"$GMObjectProperty":"v2","%Name":"height_map","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"height_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"region_map","filters":[
+        "GMSprite",
+      ],"listItems":[],"multiselect":false,"name":"region_map","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"orbit_id","filters":[],"listItems":[],"multiselect":false,"name":"orbit_id","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
     {"$GMObjectProperty":"v2","%Name":"orbit_size","filters":[],"listItems":[],"multiselect":false,"name":"orbit_size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"orbit_rotation","filters":[],"listItems":[],"multiselect":false,"name":"orbit_rotation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
@@ -56,6 +59,8 @@
     {"$GMObjectProperty":"v2","%Name":"orbit_angle_y","filters":[],"listItems":[],"multiselect":false,"name":"orbit_angle_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"orbit_angle_z","filters":[],"listItems":[],"multiselect":false,"name":"orbit_angle_z","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"rotation_speed","filters":[],"listItems":[],"multiselect":false,"name":"rotation_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"pathfinding_enabled","filters":[],"listItems":[],"multiselect":false,"name":"pathfinding_enabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"pathfinding_resolution","filters":[],"listItems":[],"multiselect":false,"name":"pathfinding_resolution","rangeEnabled":true,"rangeMax":32.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"24","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

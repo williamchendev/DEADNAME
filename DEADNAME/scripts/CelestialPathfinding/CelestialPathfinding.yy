@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CelestialPathfinding",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CelestialPathfinding",
+  "parent":{
+    "name":"Pathfinding",
+    "path":"folders/Scripts/Pathfinding.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

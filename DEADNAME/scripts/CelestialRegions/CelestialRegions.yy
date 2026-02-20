@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"PlanetPathfinding",
+  "%Name":"CelestialRegions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"PlanetPathfinding",
+  "name":"CelestialRegions",
   "parent":{
-    "name":"Pathfinding",
-    "path":"folders/Scripts/Pathfinding.yy",
+    "name":"Celestial",
+    "path":"folders/Scripts/Celestial.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

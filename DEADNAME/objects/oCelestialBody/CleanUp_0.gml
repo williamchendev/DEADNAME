@@ -4,3 +4,4 @@
 // Delete Icosphere Vertex Buffer
 vertex_delete_buffer(icosphere_vertex_buffer);
 icosphere_vertex_buffer = -1;
+
