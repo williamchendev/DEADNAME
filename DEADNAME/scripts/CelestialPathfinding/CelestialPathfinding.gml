@@ -53,137 +53,154 @@ function geodesic_icosphere_biome_is_marine(biome)
 	}
 }
 
-//
-function celestial_pathfinding_find_path_weight(celestial_object, path_list)
+/// @function celestial_pathfinding_find_edge_weight(celestial_object, first_node_index, second_node_index);
+/// @description Finds the weight of the Pathfinding Edge between two Pathfinding Node Indexes on the given Celestial Object and returns it as a real value or returns Undefined if the edge does not exist
+/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
+/// @param {int} first_node_index The first Pathfinding Node's Index in the Pathfinding Edge to find the Weights of
+/// @param {int} second_node_index The second Pathfinding Node's Index in the Pathfinding Edge to find the Weights of
+/// @returns {?real} Returns the cumulative weight of the edge between the given Node IDs, and returns Undefined if the Edge is not viable
+function celestial_pathfinding_find_edge_weight(celestial_object, first_node_index, second_node_index)
 {
-	// Check if Path List contains less than 2 nodes
-	if (ds_list_size(path_list) < 2)
-	{
-		return 0;
-	}
-	
-	// Iterate through Path Edges to find Cumulative Weight
-	var temp_weight = 0;
-	var temp_path_index = 1;
-	
-	repeat (ds_list_size(path_list) - 1)
-	{
-		// Find Path Node
-		var temp_node_index = ds_list_find_value(path_list, temp_path_index);
-		
-		// Add Weight Between Edges
-		temp_weight += 1;
-		
-		// Increment Path Index
-		temp_path_index++;
-	}
-	
-	// Return Cumulative Path Weight
-	return temp_weight;
+	return 1;
 }
 
-function celestial_pathfinding_recursive(celestial_object, start_node_index, end_node_index, path_list = ds_list_create())
+/// @function celestial_pathfinding_reconstruct_path(path_map, node_index);
+/// @description Reconstructs a Pathfinding Path using a Path Map and the given Pathfinding Node Index to work backwards from, tracing a sequence of Nodes that each "come from" the original Starting Pathfinding Node of the Path indexed in the Path Map
+/// @param {Id.DsMap<int, int>} path_map The Path Map to reconstruct a Pathfinding Path backwards from (the path_map is a DS Map of directions mapped to Pathfinding Node Indexes coming from the Path's starting Node Index)
+/// @param {int} node_index A Pathfinding Node's Index that represents the last Node in the Path to reconstruct that will lead to the given Path Map's original Starting Pathfinding Node
+/// @return {Id.DsList<int>} Returns a DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index
+function celestial_pathfinding_reconstruct_path(path_map, node_index)
 {
-	// Index Start Node in Array
-	ds_list_add(path_list, start_node_index);
+	// Create new Pathfinding DS List
+	var temp_reconstructed_path_list = ds_list_create();
 	
-	// Check that Start Node and End Node Match - Early Return of Recursive Path Structure
-	if (start_node_index == end_node_index)
+	// Add given Pathfinding Node Index to start reconstructing Pathfinding Path backwards from (the path_map is a DS Map of directions mapped to Pathfinding Node Indexes coming from the Path's starting Node Index)
+	ds_list_add(temp_reconstructed_path_list, node_index);
+	
+	// Iterate through Pathfinding Map until there are no more Pathfinding Nodes to "come from"
+	while (ds_map_exists(path_map, node_index))
 	{
-		return path_list;
+		// Find next Pathfinding Node Index the current Pathfinding Node Index "comes from" from Pathfinding Map using the current Node Index
+		node_index = ds_map_find_value(path_map, node_index);
+		
+		// Add Pathfinding Node Index to the start of the Reconstructed Path DS List (so the order is from the Start Pathfinding Node Index to End Pathfinding Node Index)
+		ds_list_insert(temp_reconstructed_path_list, 0, node_index);
 	}
 	
-	// Find Node Edges Array
-	var temp_node_edges_array = celestial_object.pathfinding_node_edges_array[start_node_index];
+	// Return the Reconstructed Path DS List
+	return temp_reconstructed_path_list;
+}
+
+/// @function celestial_pathfinding(celestial_object, start_node_index, end_node_index);
+/// @description Finds the path of least resistance between the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index (or, optionally, to multiple possible Ending Pathfinding Node Indexes within an array)
+/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
+/// @param {int} start_node_index The starting Pathfinding Node's Index to create a Path from to the given ending Pathfinding Node
+/// @param {*int,array<int>} end_node_index The ending Pathfinding Node's Index to create a Path to the given starting Pathfinding Node, optionally can be passed as an array of multiple acceptable ending Pathfinding Node Indexes
+/// @return {?Id.DsList<int>} Returns a DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index, and Undefined if a Path is not viable between the two given Pathfinding Nodes
+function celestial_pathfinding(celestial_object, start_node_index, end_node_index)
+{
+	// Initialize Unchecked Nodes Priority List, Path Reconstruction Map, and G Score Map Data Structures
+	var temp_unchecked_nodes = ds_priority_create();
+	var temp_path_map = ds_map_create();
+	var temp_g_score_map = ds_map_create();
 	
-	// Establish Path Comparison Variables
-	var temp_path_weight = -1;
-	var temp_path_list = undefined;
+	// Initialize Checked Nodes Array
+	var temp_checked_nodes = array_create(celestial_object.pathfinding_nodes_count, false);
 	
-	// Iterate through all Node Edges
-	var temp_edge_index = 0;
+	// Calculate Path Starting Node's G Score
+	var temp_starting_node_g_score = is_array(end_node_index) ? celestial_object.celestial_pathfinding_heuristic_multiple(start_node_index, end_node_index) : celestial_object.celestial_pathfinding_heuristic(start_node_index, end_node_index);
 	
-	repeat (array_length(temp_node_edges_array))
+	// Initialize Path Starting Node's G Score and index in Pathfinding Data Structures
+	ds_map_add(temp_g_score_map, start_node_index, 0);
+	ds_priority_add(temp_unchecked_nodes, start_node_index, temp_starting_node_g_score);
+	
+	// Iterate until Optimal Path is found
+	while (!ds_priority_empty(temp_unchecked_nodes))
 	{
-		// Find Edge Node Index
-		var temp_edge_node_index = temp_node_edges_array[temp_edge_index];
+		// Get Current Pathfinding Node from Pathfinding Node with lowest F Score (f_score = g_score + h_score)
+		var temp_current_pathfinding_node_index = ds_priority_delete_min(temp_unchecked_nodes);
 		
-		show_debug_message($"{start_node_index} {temp_edge_index} {temp_edge_node_index}");
-		
-		// Check if Path contains Edge Node
-		var temp_path_contains_edge_node = ds_list_find_index(path_list, temp_edge_node_index) != -1;
-		
-		// If Path does not contain Edge Node continue Recursive Pathfinding from there
-		if (!temp_path_contains_edge_node)
+		// Check if Current Pathfinding Node has already been iterated over
+		if (temp_checked_nodes[temp_current_pathfinding_node_index])
 		{
-			// Duplicate Path List
-			var temp_comparison_path = ds_list_create();
-			ds_list_copy(temp_comparison_path, path_list);
+			continue;
+		}
+		
+		// Mark Current Pathfinding Node as Checked
+		temp_checked_nodes[temp_current_pathfinding_node_index] = true;
+		
+		// Check if (a) Pathfinding Goal was reached
+		if (is_array(end_node_index) ? array_contains(end_node_index, temp_current_pathfinding_node_index) : temp_current_pathfinding_node_index == end_node_index)
+		{
+			// Pathfinding Goal Found - Reconstruct Path DS List to return
+			var temp_reconstructed_path = celestial_pathfinding_reconstruct_path(temp_path_map, temp_current_pathfinding_node_index);
 			
-			// Create Comparison Path List and Path Weight
-			temp_comparison_path = celestial_pathfinding_recursive(celestial_object, temp_edge_node_index, end_node_index, temp_comparison_path);
+			// Destroy Pathfinding Data Structures
+			ds_priority_destroy(temp_unchecked_nodes);
+			ds_map_destroy(temp_g_score_map);
+			ds_map_destroy(temp_path_map);
 			
-			// Check if Comparison Path Exists
-			if (is_undefined(temp_comparison_path))
+			// Return Reconstructed Path DS List as Final Path
+			return temp_reconstructed_path;
+		}
+		
+		// Find Current Pathfinding Node's G Score
+		var temp_current_pathfinding_node_g_score = ds_map_find_value(temp_g_score_map, temp_current_pathfinding_node_index);
+		
+		// Find Current Pathfinding Node's Edge Neighbors Array
+		var temp_node_edges_array = celestial_object.pathfinding_node_edges_array[temp_current_pathfinding_node_index];
+		var temp_node_edges_array_size = array_length(temp_node_edges_array);
+		
+		// Iterate through Current Pathfinding Node's Edge Neighbors for Pathfinding Evaluation
+		var temp_node_edges_index = temp_node_edges_array_size - 1;
+		
+		repeat (temp_node_edges_array_size)
+		{
+			// Get Pathfinding Node Edge Neighbor's Pathfinding Node Index from Current Pathfinding Node's Edge Neighbors Array
+			var temp_pathfinding_node_edge_neighbor_index = temp_node_edges_array[temp_node_edges_index];
+			
+			// Check if Current Pathfinding Node Edge Neighbor's Pathfinding Node Index has already been iterated over
+			if (temp_checked_nodes[temp_pathfinding_node_edge_neighbor_index])
 			{
-				// Comparison Path does not Exist - Increment Edge Index
-				temp_edge_index++;
+				// Decrement Node Edge Neighbor Index
+				temp_node_edges_index--;
 				continue;
 			}
 			
-			// Calculate Comparison Path's Weight
-			var temp_comparison_path_weight = celestial_pathfinding_find_path_weight(celestial_object, temp_comparison_path);
+			// Calculate Pathfinding Edge Weight between Current Pathfinding Node and Neighbor Pathfinding Node
+			var temp_edge_weight = celestial_pathfinding_find_edge_weight(celestial_object, temp_current_pathfinding_node_index, temp_pathfinding_node_edge_neighbor_index);
+			var temp_tentative_comparison_g_score = temp_current_pathfinding_node_g_score + temp_edge_weight;
 			
-			// Check if Path List Exists and can be Compared
-			if (!is_undefined(temp_path_list))
+			// Retreive Neighboring Pathfinding Node's G Score (if it exists)
+			var temp_neighbor_g_score = ds_map_exists(temp_g_score_map, temp_pathfinding_node_edge_neighbor_index) ? ds_map_find_value(temp_g_score_map, temp_pathfinding_node_edge_neighbor_index) : undefined;
+			
+			// Check if Neighboring Pathfinding Node's G Score Exists or if the Neighboring Pathfinding Node's G Score is worse than the Current Pathfinding Node's G Score
+			if (is_undefined(temp_neighbor_g_score) || temp_neighbor_g_score > temp_tentative_comparison_g_score)
 			{
-				// Compare Path Weights
-				if (temp_comparison_path_weight >= temp_path_weight)
-				{
-					// Comparison Path Weight is greater or equal than the current Path - Destroy Comparison Path List
-					ds_list_destroy(temp_comparison_path);
-					temp_comparison_path = -1;
-					
-					// Increment Edge Index
-					temp_edge_index++;
-					continue;
-				}
-				else
-				{
-					// Comparison Path Weight is less than the current Path - Destroy Old Path List
-					ds_list_destroy(temp_path_list);
-					temp_path_list = -1;
-				}
+				// Set Neighboring Pathfinding Node's G Score within Pathfinding G Score Map
+				ds_map_replace(temp_g_score_map, temp_pathfinding_node_edge_neighbor_index, temp_tentative_comparison_g_score);
+				
+				// Set Pathfinding Map to reflect path direction from Neighboring Pathfinding Node comes from the Current Pathfinding Node
+				ds_map_replace(temp_path_map, temp_pathfinding_node_edge_neighbor_index, temp_current_pathfinding_node_index);
+				
+				// Calculate H Score and F Score from Pathfinding Heuristic between Neighbor Pathfinding Node and Goal Pathfinding Node
+				var temp_h_score = is_array(end_node_index) ? celestial_object.celestial_pathfinding_heuristic_multiple(temp_pathfinding_node_edge_neighbor_index, end_node_index) : celestial_object.celestial_pathfinding_heuristic(temp_pathfinding_node_edge_neighbor_index, end_node_index);
+				var temp_f_score = temp_tentative_comparison_g_score + temp_h_score;
+				
+				// Add Neighboring Pathfinding Node to Pathfinding Priority Data Structure with F Score
+				ds_priority_add(temp_unchecked_nodes, temp_pathfinding_node_edge_neighbor_index, temp_f_score);
 			}
 			
-			// Set new Path List and Path Weight
-			temp_path_list = temp_comparison_path;
-			temp_path_weight = temp_comparison_path_weight;
+			// Decrement Node Edge Neighbor Index
+			temp_node_edges_index--;
 		}
-		
-		// Increment Edge Index
-		temp_edge_index++;
 	}
 	
-	// Destroy Unused Given Path List
-	ds_list_destroy(path_list);
-	path_list = -1;
+	// Destroy Pathfinding Data Structures
+	ds_priority_destroy(temp_unchecked_nodes);
+	ds_map_destroy(temp_g_score_map);
+	ds_map_destroy(temp_path_map);
 	
-	// Return Compared Path List
-	return temp_path_list;
-}
-
-function celestial_pathfinding_recursive_ext(celestial_object, start_node_index, end_node_feature, path_list = ds_list_create())
-{
-	
-}
-
-function celestial_pathfinding_get_closest_point_on_edge(x_position, y_position, position_z)
-{
-	
-}
-
-function celestial_pathfinding_create_path(planet, start_x_position, start_y_position, start_z_position, end_x_position, end_y_position, end_z_position)
-{
-	
+	// Viable Path not found - Return Undefined
+	return undefined;
 }

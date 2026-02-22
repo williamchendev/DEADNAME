@@ -7,9 +7,7 @@
   ],
   "managed":true,
   "name":"oPlanet",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"pathfinding_enabled","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"Templates",
     "path":"folders/Objects/Celestial/Templates.yy",

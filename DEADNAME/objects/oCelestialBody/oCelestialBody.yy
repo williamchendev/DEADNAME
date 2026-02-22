@@ -9,7 +9,7 @@
   "managed":true,
   "name":"oCelestialBody",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oIcosphere","path":"objects/oIcosphere/oIcosphere.yy",},"propertyId":{"name":"resolution","path":"objects/oIcosphere/oIcosphere.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"32",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oIcosphere","path":"objects/oIcosphere/oIcosphere.yy",},"propertyId":{"name":"resolution","path":"objects/oIcosphere/oIcosphere.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"32",},
   ],
   "parent":{
     "name":"Templates",

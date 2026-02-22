@@ -162,6 +162,7 @@ city_region_array = array_create(0);
 city_pathfinding_node_array = array_create(0);
 
 // Initialize Celestial Body's Pathfinding System
+pathfinding_nodes_count = 0;
 pathfinding_node_x_array = -1;
 pathfinding_node_y_array = -1;
 pathfinding_node_z_array = -1;
@@ -171,27 +172,94 @@ pathfinding_node_region_array = -1;
 pathfinding_node_elevation_array = -1;
 pathfinding_node_edges_array = -1;
 
+/// @function celestial_pathfinding_heuristic(celestial_object, first_node_index, second_node_index);
+/// @description Finds the distance heuristic between two Pathfinding Node Indexes on the Celestial Object
+/// @param {int} first_node_index The first Pathfinding Node's Index to find the distance heuristic relative to the second Pathfinding Node Index
+/// @param {int} second_node_index The second Pathfinding Node's Index to find the distance heuristic relative to the first Pathfinding Node Index
+/// @returns {real} Returns the Pathfinding Heuristic Score of the two given Pathfinding Node Indexes
+celestial_pathfinding_heuristic = function(first_node_index, second_node_index)
+{
+	// Find the Position of the First Pathfinding Node's Local Position
+	var temp_first_node_x = pathfinding_node_x_array[first_node_index];
+	var temp_first_node_y = pathfinding_node_y_array[first_node_index];
+	var temp_first_node_z = pathfinding_node_z_array[first_node_index];
+	
+	// Find the Position of the Second Pathfinding Node's Local Position
+	var temp_second_node_x = pathfinding_node_x_array[second_node_index];
+	var temp_second_node_y = pathfinding_node_y_array[second_node_index];
+	var temp_second_node_z = pathfinding_node_z_array[second_node_index];
+	
+	// Find the Great Circle Distance between the First Pathfinding Node and the Second Pathfinding Node
+	var temp_dot = clamp(dot_product_3d(temp_first_node_x, temp_first_node_y, temp_first_node_z, temp_second_node_x, temp_second_node_y, temp_second_node_z), -1, 1);
+	var temp_angle = arccos(temp_dot);
+	
+	// Return Pathfinding Heuristic Score as the Great Circle Distance
+	return radius * temp_angle;
+}
+
+/// @function celestial_pathfinding_heuristic_multiple(celestial_object, first_node_index, second_node_index);
+/// @description Finds the smallest distance heuristic between the first Pathfinding Node Index and any of the Pathfinding Node Indexes within the given array of Pathfinding Node Indexes on the Celestial Object
+/// @param {int} first_node_index The first Pathfinding Node's Index to find the distance heuristic relative to any of the possible second Pathfinding Node Indexes
+/// @param {array<int>} second_node_indexes An array of possible second Pathfinding Node Indexes to find the distance heuristic relative to the first Pathfinding Node Index
+/// @returns {real} Returns the Pathfinding Heuristic Score of the two given Pathfinding Node Indexes
+celestial_pathfinding_heuristic_multiple = function(first_node_index, second_node_indexes)
+{
+	// Find the Pathfinding Heuristic between the First Pathfinding Node and the first indexed Pathfinding Node within the array of possible Second Pathfinding Node Indexes
+	var temp_heuristic = celestial_pathfinding_heuristic(first_node_index, second_node_indexes[0]);
+	
+	// Iterate through the remaining possible Second Pathfinding Node Indexes to find the minimum possible Second Node Distance
+	var temp_second_node_array_index = 1;
+	
+	repeat (array_length(second_node_indexes) - 1)
+	{
+		// Find the Position of the First Pathfinding Node's Local Position
+		var temp_first_node_x = pathfinding_node_x_array[first_node_index];
+		var temp_first_node_y = pathfinding_node_y_array[first_node_index];
+		var temp_first_node_z = pathfinding_node_z_array[first_node_index];
+		
+		// Find the Position of the Second Pathfinding Node's Local Position
+		var temp_second_node_x = pathfinding_node_x_array[second_node_indexes[temp_second_node_array_index]];
+		var temp_second_node_y = pathfinding_node_y_array[second_node_indexes[temp_second_node_array_index]];
+		var temp_second_node_z = pathfinding_node_z_array[second_node_indexes[temp_second_node_array_index]];
+		
+		// Find the Great Circle Distance between the First Pathfinding Node and the Second Pathfinding Node
+		var temp_dot = clamp(dot_product_3d(temp_first_node_x, temp_first_node_y, temp_first_node_z, temp_second_node_x, temp_second_node_y, temp_second_node_z), -1, 1);
+		var temp_angle = arccos(temp_dot);
+		
+		// Compare the current Pathfinding Heuristic Score to the new Pathfinding Heuristic Score and take the minimum
+		temp_heuristic = min(temp_heuristic, radius * temp_angle);
+		
+		// Increment Index of the possible Second Pathfinding Node
+		temp_second_node_array_index++;
+	}
+	
+	// Return Pathfinding Heuristic Score as the Great Circle Distance
+	return temp_heuristic;
+}
+
 // Check if Celestial Body has Pathfinding Enabled
 if (pathfinding_enabled)
 {
-	// Initialize Pathfinding Icosphere & Pathfinding Nodes Count
+	// Initialize Pathfinding Icosphere
 	var temp_pathfinding_geodesic_icosphere = geodesic_icosphere_create(pathfinding_resolution);
-	var temp_pathfinding_nodes_count = array_length(temp_pathfinding_geodesic_icosphere.vertices);
+	
+	// Initialize Pathfinding Nodes Count
+	pathfinding_nodes_count = array_length(temp_pathfinding_geodesic_icosphere.vertices);
 	
 	// Initialize Pathfinding Node Arrays to Size of Pathfinding Icosphere's Vertices Count
-	pathfinding_node_x_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_y_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_z_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_u_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_v_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_region_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_elevation_array = array_create(temp_pathfinding_nodes_count);
-	pathfinding_node_edges_array = array_create(temp_pathfinding_nodes_count, array_create(0));
+	pathfinding_node_x_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_y_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_z_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_u_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_v_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_region_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_elevation_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_edges_array = array_create(pathfinding_nodes_count, -1);
 	
 	// Establish Pathfinding Icosphere's Pathfinding Node Data
 	var temp_pathfinding_vertex_index = 0;
 	
-	repeat (temp_pathfinding_nodes_count)
+	repeat (pathfinding_nodes_count)
 	{
 		// Get Vertex's Position
 		var temp_vertex_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_vertex_index];
@@ -238,7 +306,7 @@ if (pathfinding_enabled)
 		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
 		var temp_vertex_elevation = temp_heightmap_buffer_exists ? buffer_getpixel_r(temp_heightmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v) / 255 : 0;
 		
-		// Set Pathfinding Node's Array Entry from Vertex Data
+		// Set Pathfinding Node's Position from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_x_array[temp_pathfinding_vertex_index] = temp_vertex_pos[0];
 		pathfinding_node_y_array[temp_pathfinding_vertex_index] = temp_vertex_pos[1];
 		pathfinding_node_z_array[temp_pathfinding_vertex_index] = temp_vertex_pos[2];
@@ -246,9 +314,14 @@ if (pathfinding_enabled)
 		pathfinding_node_u_array[temp_pathfinding_vertex_index] = temp_clamped_vertex_u;
 		pathfinding_node_v_array[temp_pathfinding_vertex_index] = temp_clamped_vertex_v;
 		
+		// Set Pathfinding Node's Region from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_region_array[temp_pathfinding_vertex_index] = temp_vertex_region;
 		
+		// Set Pathfinding Node's Elevation from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_elevation_array[temp_pathfinding_vertex_index] = temp_vertex_elevation;
+		
+		// Create empty Pathfinding Node Edges Array for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_edges_array[temp_pathfinding_vertex_index] = array_create(0);
 		
 		// Increment Vertex Index
 		temp_pathfinding_vertex_index++;
@@ -296,11 +369,19 @@ if (pathfinding_enabled)
 	}
 	
 	//
-	var temp_test = celestial_pathfinding_recursive(id, 50, 400);
+	var temp_goals = [ 1, 1, 1, 1, 1, 1, 1, 1 ];
+	show_debug_message(temp_goals);
 	
-	for (var i = 0; i < ds_list_size(temp_test); i++)
+	var temp_time_start = get_timer();
+	var temp_test = celestial_pathfinding(id, 0, temp_goals);
+	show_debug_message($"{(get_timer() - temp_time_start) / 1000} ms");
+	
+	if (!is_undefined(temp_test))
 	{
-		show_debug_message(ds_list_find_value(temp_test, i));
+		for (var i = 0; i < ds_list_size(temp_test); i++)
+		{
+			show_debug_message(ds_list_find_value(temp_test, i));
+		}
 	}
 	
 	ds_list_destroy(temp_test);

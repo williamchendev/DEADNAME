@@ -322,8 +322,8 @@ function pathfinding_create_edge_weight(first_node_index, second_node_index, edg
 
 /// @function pathfinding_find_edge_weight(first_node_id, second_node_id);
 /// @description Finds the weight of the Pathfinding Edge between two given Pathfinding Node IDs in the active Scene and returns it as a real value, returns Undefined if the edge does not exist
-/// @param {int} first_node_id The first Node's ID in the Pathfinding Edge find the Weights of
-/// @param {int} second_node_id The second Node's ID in the Pathfinding Edge find the Weights of
+/// @param {int} first_node_id The first Node's ID in the Pathfinding Edge to find the Weights of
+/// @param {int} second_node_id The second Node's ID in the Pathfinding Edge to find the Weights of
 /// @returns {?real} Returns the cumulative weight of the edge between the given Node IDs, and returns Undefined if the Edge does not exist
 function pathfinding_find_edge_weight(first_node_id, second_node_id)
 {
