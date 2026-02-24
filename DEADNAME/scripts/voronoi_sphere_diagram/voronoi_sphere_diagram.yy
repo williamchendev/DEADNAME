@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"voronoi_sphere_diagram",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"voronoi_sphere_diagram",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

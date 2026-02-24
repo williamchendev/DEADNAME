@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_voronoi_sphere_diagram",
+  "name":"shd_voronoi_sphere_diagram",
+  "parent":{
+    "name":"Basic",
+    "path":"folders/Shaders/Basic.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

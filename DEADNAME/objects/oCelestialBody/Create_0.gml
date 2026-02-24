@@ -95,6 +95,36 @@ if (region_map != noone)
 	temp_regionmap_buffer_exists = true;
 }
 
+// Establish Undefined Microclimatemap Buffer
+var temp_microclimatemap_buffer = undefined;
+var temp_microclimatemap_buffer_exists = false;
+
+// Establish Microclimatemap Texture & Microclimatemap Buffer for Celestial Body's Icosphere
+if (microclimate_map != noone)
+{
+	// Establish Microclimatemap Texture Dimensions
+	var temp_microclimatemap_buffer_width = sprite_get_width(microclimate_map);
+	var temp_microclimatemap_buffer_height = sprite_get_height(microclimate_map);
+	
+	// Establish Microclimatemap Surface from Microclimatemap Texture Dimensions
+	var temp_microclimatemap_surface = surface_create(temp_microclimatemap_buffer_width, temp_microclimatemap_buffer_height, surface_rgba8unorm);
+	
+	// Draw Microclimatemap to Microclimatemap Surface
+	surface_set_target(temp_microclimatemap_surface);
+	draw_sprite_ext(microclimate_map, 0, 0, 0, 1, 1, 0, c_white, 1);
+	surface_reset_target();
+	
+	// Load Microclimatemap Surface into Microclimatemap Buffer
+	temp_microclimatemap_buffer = buffer_getpixel_begin(temp_microclimatemap_surface, temp_microclimatemap_buffer);
+	
+	// Clear and Delete Microclimatemap Surface
+	surface_free(temp_microclimatemap_surface);
+	temp_microclimatemap_surface = -1;
+	
+	// Set Microclimatemap Buffer Exists Toggle
+	temp_microclimatemap_buffer_exists = true;
+}
+
 // Establish Icosphere Diffuse Texture
 diffuse_texture = sprite_get_texture(sprite_index, 0);
 sprite_index = -1;
@@ -161,6 +191,10 @@ city_infrastructure_array = array_create(0);
 city_region_array = array_create(0);
 city_pathfinding_node_array = array_create(0);
 
+// Initialize Microclimates Arrays
+microclimate_name_array = array_create(0);
+microclimate_color_hex_array = array_create(0);
+
 // Initialize Celestial Body's Pathfinding System
 pathfinding_nodes_count = 0;
 pathfinding_node_x_array = -1;
@@ -170,6 +204,7 @@ pathfinding_node_u_array = -1;
 pathfinding_node_v_array = -1;
 pathfinding_node_region_array = -1;
 pathfinding_node_elevation_array = -1;
+pathfinding_node_microclimate_array = -1;
 pathfinding_node_edges_array = -1;
 
 /// @function celestial_pathfinding_heuristic(celestial_object, first_node_index, second_node_index);
@@ -297,7 +332,7 @@ if (pathfinding_enabled)
 			{
 				// Region Hexadecimal Code is not Indexed - Create new Region Index
 				temp_vertex_region = array_length(region_color_hex_array);
-				array_push(region_name_array, "new_region");
+				array_push(region_name_array, $"region_{temp_vertex_region}");
 				array_push(region_cities_array, array_create(0));
 				array_push(region_color_hex_array, temp_vertex_region_color_hex);
 			}
@@ -305,6 +340,37 @@ if (pathfinding_enabled)
 		
 		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
 		var temp_vertex_elevation = temp_heightmap_buffer_exists ? buffer_getpixel_r(temp_heightmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v) / 255 : 0;
+		
+		// Retreive Vertex's Microclimate from Microclimatemap using the Vertex's UV Position
+		var temp_vertex_microclimate = -1;
+		
+		if (temp_microclimatemap_buffer_exists)
+		{
+			// Find Vertex's Microclimate Color Red, Green, and Blue Values
+			var temp_vertex_microclimate_color_r = buffer_getpixel_r(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
+			var temp_vertex_microclimate_color_g = buffer_getpixel_g(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
+			var temp_vertex_microclimate_color_b = buffer_getpixel_b(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
+			
+			// Create Vertex's Microclimate Color Hexadecimal Code from Red, Green, and Blue Values
+			var temp_vertex_microclimate_color_hex = color_get_hex(make_color_rgb(temp_vertex_microclimate_color_r, temp_vertex_microclimate_color_g, temp_vertex_microclimate_color_b));
+			
+			// Find Index of Vertex's Microclimate Color Hexadecimal Code in Microclimates Color Hexadecimal Array
+			var temp_vertex_microclimate_index = array_get_index(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+			
+			// Check if Vertex's Region Color Hexadecimal Code corresponds to a indexed Region
+			if (temp_vertex_microclimate_index != -1)
+			{
+				// Region Hexadecimal Code is Indexed - Use Region Index
+				temp_vertex_microclimate = temp_vertex_microclimate_index;
+			}
+			else
+			{
+				// Region Hexadecimal Code is not Indexed - Create new Region Index
+				temp_vertex_microclimate = array_length(microclimate_color_hex_array);
+				array_push(microclimate_name_array, $"microclimate_{temp_vertex_microclimate}");
+				array_push(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+			}
+		}
 		
 		// Set Pathfinding Node's Position from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_x_array[temp_pathfinding_vertex_index] = temp_vertex_pos[0];
@@ -319,6 +385,9 @@ if (pathfinding_enabled)
 		
 		// Set Pathfinding Node's Elevation from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_elevation_array[temp_pathfinding_vertex_index] = temp_vertex_elevation;
+		
+		// Set Pathfinding Node's Microclimate from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_microclimate_array[temp_pathfinding_vertex_index] = temp_vertex_microclimate;
 		
 		// Create empty Pathfinding Node Edges Array for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_edges_array[temp_pathfinding_vertex_index] = array_create(0);
@@ -385,6 +454,12 @@ if (pathfinding_enabled)
 	}
 	
 	ds_list_destroy(temp_test);
+	
+	//
+	show_debug_message($"microclimates count: {array_length(microclimate_color_hex_array)}");
+	
+	//
+	voronoi_sphere_diagram(1024);
 }
 
 // Check if Heightmap Buffer Exists
@@ -401,6 +476,14 @@ if (temp_regionmap_buffer_exists)
 	// Delete Regionmap Buffer
 	buffer_delete(temp_regionmap_buffer);
 	temp_regionmap_buffer = -1;
+}
+
+// Check if Microclimatemap Buffer Exists
+if (temp_microclimatemap_buffer_exists)
+{
+	// Delete Microclimatemap Buffer
+	buffer_delete(temp_microclimatemap_buffer);
+	temp_microclimatemap_buffer = -1;
 }
 
 // Initialize Solar System Variables

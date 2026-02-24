@@ -1,12 +1,11 @@
 //
-// Lit Raymarched SDF Sphere Cloud vertex shader meant for Inno's Solar System Overworld
+// Cloud Noise fragment shader that made for her Projects
 //
 
-//
+// Interpolated UV
 varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
 
-//
+// Texture Size Settings
 uniform float u_CubeSize;
 uniform float u_SquareSize;
 
@@ -85,28 +84,29 @@ float perlinNoise(vec3 uvw, vec3 period)
 float worleyNoise(vec3 uvw, float freq)
 {
 	// Worley Noise Variables
-	float minDist = 10000.0;
+	float min_distance = 10000.0;
 	vec3 index_uvw = floor(uvw);
 	vec3 fract_uvw = fract(uvw);
 	
 	// Obtain Offset from Each Neighboring Voronoi Cell to find Gradient
-	for (float w_w = -1.0; w_w <= 1.0; ++w_w)
+	for (float w_w = -1.0; w_w <= 1.0; w_w++)
 	{
-		for(float w_h = -1.0; w_h <= 1.0; ++w_h)
+		for(float w_h = -1.0; w_h <= 1.0; w_h++)
 		{
-			for(float w_l = -1.0; w_l <= 1.0; ++w_l)
+			for(float w_l = -1.0; w_l <= 1.0; w_l++)
 			{
 				vec3 offset = vec3(w_w, w_h, w_l);
-				vec3 h = random(mod(index_uvw + offset, vec3(freq))) * .5 + .5;
-				h += offset;
-				vec3 d = fract_uvw - h;
-				minDist = min(minDist, dot(d, d));
+				vec3 cell = index_uvw + offset;
+				vec3 wrapped_cell = mod(mod(cell, vec3(freq)) + vec3(freq), vec3(freq));
+				vec3 h = random(wrapped_cell) * 0.5 + 0.5;
+				vec3 d = fract_uvw - h + offset;
+				min_distance = min(min_distance, dot(d, d));
 			}
 		}
 	}
 	
 	// Return Inverted Worley Noise Value
-	return 1.0 - minDist;
+	return 1.0 - min_distance;
 }
 
 float worleyFractionalBrownianMotion(vec3 uvw, float freq)
@@ -138,12 +138,13 @@ float cloudNoise(vec3 uvw)
 	return final_result;
 }
 
+// Fragment Shader
 void main() 
 {
-	//
+	// Establish Empty Cloud Density Color Value
 	vec4 color_value = vec4(0.0);
 	
-	//
+	// Calculate Cloud Density from Sample Cube to pack into RGBA Color Value
 	float row = floor(v_vTexcoord.x * u_SquareSize);
 	float col = floor(v_vTexcoord.y * u_SquareSize);
 	
@@ -177,5 +178,6 @@ void main()
 		}
 	}
 	
+	// Return Cloud Density Packed RGBA Color Value
 	gl_FragColor = color_value;
 }
