@@ -194,6 +194,8 @@ city_pathfinding_node_array = array_create(0);
 // Initialize Microclimates Arrays
 microclimate_name_array = array_create(0);
 microclimate_color_hex_array = array_create(0);
+microclimate_sample_index_array = array_create(0);
+microclimate_pathfinding_nodes_array = array_create(0);
 
 // Initialize Celestial Body's Pathfinding System
 pathfinding_nodes_count = 0;
@@ -203,6 +205,7 @@ pathfinding_node_z_array = -1;
 pathfinding_node_u_array = -1;
 pathfinding_node_v_array = -1;
 pathfinding_node_region_array = -1;
+pathfinding_node_city_array = -1;
 pathfinding_node_elevation_array = -1;
 pathfinding_node_microclimate_array = -1;
 pathfinding_node_edges_array = -1;
@@ -288,7 +291,9 @@ if (pathfinding_enabled)
 	pathfinding_node_u_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_v_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_region_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_city_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_elevation_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_microclimate_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_edges_array = array_create(pathfinding_nodes_count, -1);
 	
 	// Establish Pathfinding Icosphere's Pathfinding Node Data
@@ -357,18 +362,21 @@ if (pathfinding_enabled)
 			// Find Index of Vertex's Microclimate Color Hexadecimal Code in Microclimates Color Hexadecimal Array
 			var temp_vertex_microclimate_index = array_get_index(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
 			
-			// Check if Vertex's Region Color Hexadecimal Code corresponds to a indexed Region
+			// Check if Vertex's Microclimate Color Hexadecimal Code corresponds to a indexed Microclimate
 			if (temp_vertex_microclimate_index != -1)
 			{
-				// Region Hexadecimal Code is Indexed - Use Region Index
+				// Microclimate Hexadecimal Code is Indexed - Use Microclimate Index
 				temp_vertex_microclimate = temp_vertex_microclimate_index;
+				array_push(microclimate_pathfinding_nodes_array[temp_vertex_microclimate], temp_pathfinding_vertex_index);
 			}
 			else
 			{
-				// Region Hexadecimal Code is not Indexed - Create new Region Index
+				// Microclimate Hexadecimal Code is not Indexed - Create new Microclimate Index
 				temp_vertex_microclimate = array_length(microclimate_color_hex_array);
 				array_push(microclimate_name_array, $"microclimate_{temp_vertex_microclimate}");
 				array_push(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+				array_push(microclimate_sample_index_array, 0);
+				array_push(microclimate_pathfinding_nodes_array, [ temp_pathfinding_vertex_index ]);
 			}
 		}
 		
@@ -382,6 +390,9 @@ if (pathfinding_enabled)
 		
 		// Set Pathfinding Node's Region from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_region_array[temp_pathfinding_vertex_index] = temp_vertex_region;
+		
+		// Set Pathfinding Node's City as Empty to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_city_array[temp_pathfinding_vertex_index] = -1;
 		
 		// Set Pathfinding Node's Elevation from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_elevation_array[temp_pathfinding_vertex_index] = temp_vertex_elevation;
@@ -458,8 +469,16 @@ if (pathfinding_enabled)
 	//
 	show_debug_message($"microclimates count: {array_length(microclimate_color_hex_array)}");
 	
-	//
-	voronoi_sphere_diagram(1024);
+	for (var q = 0; q < array_length(microclimate_name_array); q++)
+	{
+		show_debug_message($"[{microclimate_name_array[q]}] - color:{microclimate_color_hex_array[q]}");
+		var temp_nodes_array = microclimate_pathfinding_nodes_array[q];
+		
+		for (var p = 0; p < array_length(temp_nodes_array); p++)
+		{
+			show_debug_message($"     node[{p}]:{temp_nodes_array[p]}");
+		}
+	}
 }
 
 // Check if Heightmap Buffer Exists

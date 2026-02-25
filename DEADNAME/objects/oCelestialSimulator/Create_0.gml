@@ -49,6 +49,14 @@ camera_z_far = 32000;
 
 camera_z_near_depth_overpass = -801;
 
+camera_observing_instance = noone;
+camera_observing_direction_horizontal_angle = 0;
+camera_observing_direction_vertical_angle = 0;
+
+camera_right_vector = [ 1, 0, 0 ];
+camera_up_vector = [ 0, -1, 0 ];
+camera_forward_vector = [ 0, 0, 1 ];
+
 // Solar System Settings
 background_star_sphere = geodesic_icosphere_create(4);
 
@@ -955,10 +963,11 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 400 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200, frustum_culling: true }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
+	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
 	
@@ -984,6 +993,8 @@ generate_default_solar_system = function()
 	
 	//
 	load_solar_system("grandmom");
+	
+	camera_observing_instance = instance_find(oPlanet_Mom, 0);
 }
 
 // DEBUG

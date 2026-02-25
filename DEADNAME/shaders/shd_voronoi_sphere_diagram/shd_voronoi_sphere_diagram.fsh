@@ -2,9 +2,6 @@
 // Voronoi Sphere Diagram fragment shader that Inno made for her Projects
 //
 
-// Precision Settings
-precision highp float;
-
 // Interpolated UV
 varying vec2 v_vTexcoord;
 
@@ -68,7 +65,7 @@ float haversine(float first_longitude, float first_latitude, float second_longit
 	return 2.0 * atan2(sqrt(d), sqrt(1.0 - d));
 }
 
-
+// Voronoi Noise Function
 vec3 voronoiSphereColor(vec2 uv)
 {
 	// Convert UV Coordinates to Longitude and Latitude Coordinates
