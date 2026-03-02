@@ -48,3 +48,39 @@ function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_a
 	// Return Rotation Matrix
 	return temp_rotation_matrix;
 }
+
+/// @function euler_angles_from_rotation_matrix(rotation_matrix);
+/// @description Converts a 4x4 rotation matrix (ZXY order) into Euler Angles
+/// @param {array} rotation_matrix 16-length array (4x4 matrix)
+/// @return {array} [x, y, z] Euler angles in degrees
+function euler_angles_from_rotation_matrix(rotation_matrix)
+{
+	// Add Code to Compiler
+	gml_pragma("forceinline");
+	
+	//
+	var temp_pitch;
+	var temp_yaw;
+	
+	// Extract Roll
+	var temp_sr = clamp(rotation_matrix[6], -1, 1);
+	var temp_roll = arcsin(temp_sr);
+	
+	// Check for gimbal lock
+	var temp_cr = cos(temp_roll);
+	
+	if (abs(temp_cr) > 0.00001)
+	{
+		// Standard case
+		temp_pitch = arctan2(-rotation_matrix[2], rotation_matrix[10]);
+		temp_yaw   = arctan2(-rotation_matrix[4], rotation_matrix[5]);
+	}
+	else
+	{
+		// Gimbal lock case
+		temp_pitch = 0;
+		temp_yaw = arctan2(rotation_matrix[1], rotation_matrix[0]);
+	}
+	
+	return [ radtodeg(temp_roll), radtodeg(temp_pitch), radtodeg(temp_yaw) ];
+}

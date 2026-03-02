@@ -40,14 +40,15 @@ camera_rotation_x = 0;
 camera_rotation_y = 0;
 camera_rotation_z = 0;
 
-camera_rotation_matrix = rotation_matrix_from_euler_angles(0, 0, 0);
-
 camera_fov = 60;
 
 camera_z_near = 1;
 camera_z_far = 32000;
 
-camera_z_near_depth_overpass = -801;
+camera_z_near_depth_overpass = -(800 + camera_z_near);
+
+camera_rotation_matrix = rotation_matrix_from_euler_angles(0, 0, 0);
+camera_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, 640 / 360, camera_z_near, camera_z_far);
 
 camera_observing_instance = noone;
 camera_observing_direction_horizontal_angle = 0;
@@ -963,10 +964,12 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3 }));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200, frustum_culling: true }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
+	CelestialSimulator.sun_thing = instance_create_depth(0, 0, 0, oSun, { celestial_id: "hi", image_blend: c_red, radius: 8 });
+	add_celestial_object("grandmom", CelestialSimulator.sun_thing);
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
@@ -983,6 +986,8 @@ generate_default_solar_system = function()
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 300, orbit_speed: 2  } );
 	//temp_grandmom_solar_system[3] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 500, orbit_speed: -0.5 } );
 	//temp_grandmom_solar_system[4] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 800, orbit_speed: -1 } );
+	
+	
 	
 	//
 	for (var q = 0; q < array_length(CelestialSimulator.solar_systems_ids); q++)

@@ -448,7 +448,7 @@ if (pathfinding_enabled)
 		temp_pathfinding_unique_edges_index++;
 	}
 	
-	//
+	/*
 	var temp_goals = [ 1, 1, 1, 1, 1, 1, 1, 1 ];
 	show_debug_message(temp_goals);
 	
@@ -479,6 +479,7 @@ if (pathfinding_enabled)
 			show_debug_message($"     node[{p}]:{temp_nodes_array[p]}");
 		}
 	}
+	*/
 }
 
 // Check if Heightmap Buffer Exists
@@ -504,6 +505,9 @@ if (temp_microclimatemap_buffer_exists)
 	buffer_delete(temp_microclimatemap_buffer);
 	temp_microclimatemap_buffer = -1;
 }
+
+// Initialize Identity Matrix
+identity_matrix = matrix_build_identity();
 
 // Initialize Solar System Variables
 solar_system_id = "null";

@@ -98,6 +98,10 @@ surface_reset_target();
 draw_set_alpha(1);
 draw_set_color(c_white);
 
+// Reset Camera Orientation
+camera_set_proj_mat(camera_get_default(), array_create(16));
+camera_apply(camera_get_default());
+
 // Check if Solar System exists and is being viewed
 if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[solar_system_index] != -1)
 {

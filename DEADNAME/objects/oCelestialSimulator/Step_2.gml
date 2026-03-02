@@ -195,7 +195,7 @@ repeat (array_length(temp_solar_system))
 				ds_list_clear(temp_celestial_object_instance.clouds_render_absorption_list);
 				
 				// Create Planet's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
-				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
+				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.rotation_x, temp_celestial_object_instance.rotation_y, temp_celestial_object_instance.rotation_z);
 				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
 				
 				// Iterate through Planet's Clouds

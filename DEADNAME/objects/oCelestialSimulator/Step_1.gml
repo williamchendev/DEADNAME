@@ -56,8 +56,8 @@ repeat (array_length(solar_systems))
 		with (temp_celestial_object)
 		{
 			// Update Celestial Object's Rotation around Y Axis
-			euler_angle_y += rotation_speed * frame_delta;
-			euler_angle_y = euler_angle_y mod 360;
+			rotation_y += rotation_speed * frame_delta;
+			rotation_y = rotation_y mod 360;
 			
 			// Update Orbital Rotation around Solar System's Origin
 			orbit_rotation += orbit_speed * frame_delta;
@@ -123,6 +123,9 @@ repeat (array_length(solar_systems))
 					// Empty Celestial Object Type - Skip Behaviour
 					break;
 			}
+			
+			// Build Identity Matrix of Celestial Object
+			identity_matrix = matrix_build(x, y, z, rotation_x, rotation_y, rotation_z, scale_x, scale_y, scale_z);
 		}
 		
 		// Increment the Celestial Object Index

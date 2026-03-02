@@ -83,6 +83,9 @@ draw_clear_alpha(c_black, 0);
 draw_surface(final_render_surface, 0, 0);
 //draw_surface(celestial_body_atmosphere_depth_mask_surface, 0, 0);
 
+// Draw Interaction Cursor
+draw_sprite(sUI_CursorMenu, 0, GameManager.cursor_x, GameManager.cursor_y);
+
 surface_reset_target();
 
 // DEBUG DEBUG DEBUG NOISE TEST HERE

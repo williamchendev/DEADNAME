@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"raycast_sphere",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"raycast_sphere",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
