@@ -50,6 +50,8 @@ camera_z_near_depth_overpass = -(800 + camera_z_near);
 camera_rotation_matrix = rotation_matrix_from_euler_angles(0, 0, 0);
 camera_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, 640 / 360, camera_z_near, camera_z_far);
 
+camera_instance = camera_create();
+
 camera_observing_instance = noone;
 camera_observing_direction_horizontal_angle = 0;
 camera_observing_direction_vertical_angle = 0;
@@ -964,12 +966,10 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3 }));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200, frustum_culling: true }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, ocean: false, sky: false }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
-	CelestialSimulator.sun_thing = instance_create_depth(0, 0, 0, oSun, { celestial_id: "hi", image_blend: c_red, radius: 8 });
-	add_celestial_object("grandmom", CelestialSimulator.sun_thing);
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
@@ -999,7 +999,7 @@ generate_default_solar_system = function()
 	//
 	load_solar_system("grandmom");
 	
-	camera_observing_instance = instance_find(oPlanet_Mom, 0);
+	//camera_observing_instance = instance_find(oPlanet_Mom, 0);
 }
 
 // DEBUG
@@ -1008,3 +1008,48 @@ generate_default_solar_system = function()
 generate_default_solar_system();
 
 //cloud_noise(2048, 256);
+
+// DEBUG DEBUG DEBUG
+look_dir = 0;
+look_pitch = 0;
+
+// Vertex format: data must go into vertex buffers in the order defined by this
+vertex_format_begin();
+vertex_format_add_position_3d();
+vertex_format_add_normal();
+vertex_format_add_texcoord();
+vertex_format_add_color();
+new_vertex_format = vertex_format_end();
+
+vbuffer = vertex_create_buffer();
+vertex_begin(vbuffer, new_vertex_format);
+
+debug_vertex_add_point = function(buffer, xx, yy, zz, nx, ny, nz, utex, vtex, color, alpha)
+{
+	vertex_position_3d(buffer, xx, yy, zz);
+	vertex_normal(buffer, nx, ny, nz);
+	vertex_texcoord(buffer, utex, vtex);
+	vertex_color(buffer, color, alpha);
+}
+
+// Create a checkerboard pattern on the floor
+var s = 128;
+for (var i = 0; i < room_width; i += s) {
+    for (var j = 0; j < room_height; j += s) {
+        if ((i % (s * 2) == 0 && j % (s * 2) == 0) || (i % (s * 2) > 0 && j % (s * 2) > 0)) {
+            var color = c_aqua;
+        } else {
+            var color = c_white;
+        }
+        
+        debug_vertex_add_point(vbuffer, i, 0, j,                  0, 0, 1,        0, 0,       color, 1);
+        debug_vertex_add_point(vbuffer, i + s, 0, j,              0, 0, 1,        1, 0,       color, 1);
+        debug_vertex_add_point(vbuffer, i + s, 0, j + s,          0, 0, 1,        1, 1,       color, 1);
+
+        debug_vertex_add_point(vbuffer, i + s, 0, j + s,          0, 0, 1,        1, 1,       color, 1);
+        debug_vertex_add_point(vbuffer, i, 0, j + s,              0, 0, 1,        0, 1,       color, 1);
+        debug_vertex_add_point(vbuffer, i, 0, j,                  0, 0, 1,        0, 0,       color, 1);
+    }
+}
+
+vertex_end(vbuffer);

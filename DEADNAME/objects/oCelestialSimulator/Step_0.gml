@@ -159,13 +159,40 @@ else
 	camera_observing_direction_horizontal_angle = 0;
 	camera_observing_direction_vertical_angle = 0;
 	
+	//
+	
+	
 	// Build Camera Rotation Matrix from Camera's Euler Angle Rotation
-	camera_rotation_matrix = rotation_matrix_from_euler_angles(camera_rotation_x mod 360, camera_rotation_y mod 360, camera_rotation_z mod 360);
+	//camera_rotation_matrix = matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_position_x + 64 * dcos(camera_rotation_x), camera_position_y + 64 * dcos(camera_rotation_y), camera_position_z + 64 * dsin(camera_rotation_z), 0, 1, 0);
+	
+	//
+	look_dir -= (window_mouse_get_x() - window_get_width() / 2) / 10;
+    look_pitch -= (window_mouse_get_y() - window_get_height() / 2) / 10;
+    look_pitch = clamp(look_pitch, 10, 80);
+
+    window_mouse_set(window_get_width() / 2, window_get_height() / 2);
+	
+	var camera_distance = 160;
+	var xto = camera_position_x;
+	var yto = camera_position_y + 64;
+	var zto = camera_position_z;
+	var xfrom = xto - camera_distance * dsin(look_dir);
+	var yfrom = yto + camera_distance * dsin(look_pitch);
+	var zfrom = zto + camera_distance * dcos(look_dir);
+	
+	camera_rotation_matrix = matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0);
+}
+
+if (keyboard_check(vk_escape))
+{
+	game_end();
 }
 
 // Create Perspective Camera Projection Matrix
-camera_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
-camera_set_proj_mat(camera_get_default(), camera_projection_matrix); // THIS WORKS!!!
+camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
+//camera_set_proj_mat(camera_get_default(), camera_projection_matrix); // THIS WORKS!!!
+
+/*
 
 // Calculate Inverse of Camera's Projection Matrix
 var temp_inverse_projection_matrix = matrix_inverse(camera_projection_matrix);
@@ -290,3 +317,4 @@ if (temp_click_behaviour or temp_action_behaviour)
 	show_debug_message(is_undefined(temp_selection_position) ? "undefined" : $"celestial_id:{temp_selection_inst.celestial_id} {temp_selection_position}");
 	show_debug_message($"[{temp_camera_cursor_raycast_vector_x}, {temp_camera_cursor_raycast_vector_y}, {temp_camera_cursor_raycast_vector_z}]");
 }
+*/

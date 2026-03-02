@@ -26,8 +26,15 @@ if (array_length(solar_system_render_depth_sorting_index_array) == 0)
 }
 
 // Set Perspective Camera Projection Matrix
+camera_set_view_mat(camera_get_default(), camera_rotation_matrix);
 camera_set_proj_mat(camera_get_default(), camera_projection_matrix);
 camera_apply(camera_get_default());
+
+// DEBUG DEBUG DEBUG
+surface_set_target(CelestialSimulator.post_processing_surface);
+//surface_set_target(CelestialSimulator.post_processing_surface);
+vertex_submit(vbuffer, pr_trianglelist, sprite_get_texture(sSystem_PerlinNoise, 0));
+surface_reset_target();
 
 // Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
@@ -511,9 +518,11 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 	temp_celestial_object_depth_render_index++;
 }
 
-// Reset Camera Orientation
-camera_set_proj_mat(camera_get_default(), array_create(16));
-camera_apply(camera_get_default());
-
 // Reset Matrix World Identity
 matrix_set(matrix_world, matrix_build_identity());
+
+// Reset Camera Orientation
+camera_set_proj_mat(camera_get_default(), array_create(16));
+camera_set_view_mat(camera_get_default(), array_create(16));
+camera_apply(camera_get_default());
+
