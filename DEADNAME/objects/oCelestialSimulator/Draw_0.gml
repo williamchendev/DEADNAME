@@ -30,12 +30,6 @@ camera_set_view_mat(camera_get_default(), camera_rotation_matrix);
 camera_set_proj_mat(camera_get_default(), camera_projection_matrix);
 camera_apply(camera_get_default());
 
-// DEBUG DEBUG DEBUG
-surface_set_target(CelestialSimulator.post_processing_surface);
-//surface_set_target(CelestialSimulator.post_processing_surface);
-vertex_submit(vbuffer, pr_trianglelist, sprite_get_texture(sSystem_PerlinNoise, 0));
-surface_reset_target();
-
 // Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
 
@@ -82,7 +76,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_radius_index, radius);
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_elevation_index, elevation);
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_position_index, x, y, z);
-				//shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
+				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
 				// Draw Sun from Icosphere Vertex Buffer
 				vertex_submit(icosphere_vertex_buffer, pr_trianglelist, diffuse_texture);
@@ -167,7 +161,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_radius_index, radius);
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_elevation_index, elevation);
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_position_index, x, y, z);
-				//shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
+				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
 				// Set Planet Atmosphere Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
@@ -235,7 +229,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_planet_elevation_index, elevation);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_planet_elevation_index, elevation);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_position_index, x, y, z);
-					//shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 					
 					// Set Planet Hydrosphere Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_planet_ocean_elevation_index, ocean_elevation);
@@ -339,7 +333,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_planet_radius_index, radius);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_planet_position_index, x, y, z);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_planet_position_index, x, y, z);
-						//shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 						
 						// Set Cloud Color
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_color_index, color_get_red(clouds_color) / 255, color_get_green(clouds_color) / 255, color_get_blue(clouds_color) / 255);

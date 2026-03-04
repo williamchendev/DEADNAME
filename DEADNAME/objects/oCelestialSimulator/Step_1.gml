@@ -56,12 +56,12 @@ repeat (array_length(solar_systems))
 		with (temp_celestial_object)
 		{
 			// Update Celestial Object's Rotation around Y Axis
-			rotation_y += rotation_speed * frame_delta;
-			rotation_y = rotation_y mod 360;
+			euler_angle_y += rotation_speed * frame_delta;
+			euler_angle_y = ((euler_angle_y mod 360) + 360) mod 360;
 			
 			// Update Orbital Rotation around Solar System's Origin
 			orbit_rotation += orbit_speed * frame_delta;
-			orbit_rotation = orbit_rotation mod 360;
+			orbit_rotation = ((orbit_rotation mod 360) + 360) mod 360;
 			
 			// Calculate Local Orbit Position Offset from Orbit Parent
 			var temp_orbit_x = lengthdir_x(orbit_size, orbit_rotation);
@@ -69,7 +69,7 @@ repeat (array_length(solar_systems))
 			var temp_orbit_z = lengthdir_y(orbit_size, orbit_rotation);
 			
 			// Create Celestial Object's Orbit Rotation Matrix its Orbit Rotation Euler Angles
-			var temp_orbit_rotation_matrix = rotation_matrix_from_euler_angles(orbit_angle_x, orbit_angle_y, orbit_angle_z);
+			var temp_orbit_rotation_matrix = rotation_matrix_from_euler_angles(orbit_euler_angle_x, orbit_euler_angle_y, orbit_euler_angle_z);
 			
 			// Update Position within Solar System's Space based on Orbital Rotation
 			x = orbit_offset_x + (temp_orbit_x * temp_orbit_rotation_matrix[0] + temp_orbit_y * temp_orbit_rotation_matrix[1] + temp_orbit_z * temp_orbit_rotation_matrix[2]);
@@ -125,7 +125,7 @@ repeat (array_length(solar_systems))
 			}
 			
 			// Build Identity Matrix of Celestial Object
-			identity_matrix = matrix_build(x, y, z, rotation_x, rotation_y, rotation_z, scale_x, scale_y, scale_z);
+			identity_matrix = matrix_build(x, y, z, euler_angle_x, euler_angle_y, euler_angle_z, scale_x, scale_y, scale_z);
 		}
 		
 		// Increment the Celestial Object Index
