@@ -72,20 +72,20 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	float cy = cos(yaw);
 	float sy = sin(yaw);
 	
-	// Build rotation matrix (ZXY order - roll, yaw, pitch)
+	// Build rotation matrix (YZX order - pitch, yaw, roll)
 	mat3 rotMatrix;
 	
-	rotMatrix[0][0] = cy * cp - sr * sy * sp;
-	rotMatrix[0][1] = sy * cp + sr * sp * cy;
-	rotMatrix[0][2] = -sp * cr;
+	rotMatrix[0][0] =  cp * cy;
+	rotMatrix[0][1] =  cp * sy;
+	rotMatrix[0][2] = -sp;
 	
-	rotMatrix[1][0] = -sy * cr;
-	rotMatrix[1][1] = cr * cy;
-	rotMatrix[1][2] = sr;
+	rotMatrix[1][0] =  sr * sp * cr - cr * sy;
+	rotMatrix[1][1] =  sr * sp * sr + cr * cy;
+	rotMatrix[1][2] =  sr * cp;
 	
-	rotMatrix[2][0] = sp * cy + sr * sy * cp;
-	rotMatrix[2][1] = sp * sy - sr * cy * cp;
-	rotMatrix[2][2] = cr * cp;
+	rotMatrix[2][0] =  cr * sp * cy + sr * sy;
+	rotMatrix[2][1] =  cr * sp * sy - sr * cy;
+	rotMatrix[2][2] =  cr * cp;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
