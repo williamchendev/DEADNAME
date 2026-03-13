@@ -117,6 +117,7 @@ if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[so
 	
 	// Set Background Stars Unlit Shader Camera Properties
 	shader_set_uniform_f(CelestialSimulator.background_stars_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+	shader_set_uniform_matrix_array(CelestialSimulator.background_stars_unlit_shader_camera_rotation_index, matrix_inverse(CelestialSimulator.camera_view_matrix));
 	shader_set_uniform_f(CelestialSimulator.background_stars_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 	
 	// Draw Background Stars from Solar System's Combined Background Star Icospheres Vertex Buffer
