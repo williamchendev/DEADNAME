@@ -96,19 +96,6 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	mat3 rotMatrix;
 	
 	/*
-	rotMatrix[0][0] =  cp * cy;
-	rotMatrix[0][1] =  cp * sy;
-	rotMatrix[0][2] = -sp;
-
-	rotMatrix[1][0] =  sr * sp * cr - cr * sy;
-	rotMatrix[1][1] =  sr * sp * sr + cr * cy;
-	rotMatrix[1][2] =  sr * cp;
-
-	rotMatrix[2][0] =  cr * sp * cy + sr * sy;
-	rotMatrix[2][1] =  cr * sp * sy - sr * cy;
-	rotMatrix[2][2] =  cr * cp;
-	*/
-	
 	rotMatrix[0][0] = cp * cy;
 	rotMatrix[0][1] = sp * sr - cp * cr * sy;
 	rotMatrix[0][2] = cr * sp + cp * sy * sr;
@@ -120,6 +107,19 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	rotMatrix[2][0] = -cy * sp;
 	rotMatrix[2][1] = cp * sr + cr * sp * sy;
 	rotMatrix[2][2] = cp * cr - sp * sy * sr;
+	*/
+	
+	rotMatrix[0][0] =  cp * cy;
+    rotMatrix[0][1] =  sy;
+    rotMatrix[0][2] = -cy * sp;
+
+    rotMatrix[1][0] =  sp * sr - cp * cr * sy;
+    rotMatrix[1][1] =  cy * cr;
+    rotMatrix[1][2] =  cp * sr + cr * sp * sy;
+
+    rotMatrix[2][0] =  cr * sp + cp * sy * sr;
+    rotMatrix[2][1] = -cy * sr;
+    rotMatrix[2][2] =  cp * cr - sp * sy * sr;
 	
 	// Return Rotation Matrix
 	return rotMatrix;

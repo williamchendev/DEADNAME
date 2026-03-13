@@ -72,9 +72,9 @@ repeat (array_length(solar_systems))
 			var temp_orbit_rotation_matrix = rotation_matrix_from_euler_angles(orbit_euler_angle_x, orbit_euler_angle_y, orbit_euler_angle_z);
 			
 			// Update Position within Solar System's Space based on Orbital Rotation
-			x = orbit_offset_x + (temp_orbit_x * temp_orbit_rotation_matrix[0] + temp_orbit_y * temp_orbit_rotation_matrix[1] + temp_orbit_z * temp_orbit_rotation_matrix[2]);
-			y = orbit_offset_y + (temp_orbit_x * temp_orbit_rotation_matrix[4] + temp_orbit_y * temp_orbit_rotation_matrix[5] + temp_orbit_z * temp_orbit_rotation_matrix[6]);
-			z = orbit_offset_z + (temp_orbit_x * temp_orbit_rotation_matrix[8] + temp_orbit_y * temp_orbit_rotation_matrix[9] + temp_orbit_z * temp_orbit_rotation_matrix[10]);
+			x = orbit_offset_x + (temp_orbit_x * temp_orbit_rotation_matrix[0] + temp_orbit_y * temp_orbit_rotation_matrix[4] + temp_orbit_z * temp_orbit_rotation_matrix[8]);
+			y = orbit_offset_y + (temp_orbit_x * temp_orbit_rotation_matrix[1] + temp_orbit_y * temp_orbit_rotation_matrix[5] + temp_orbit_z * temp_orbit_rotation_matrix[9]);
+			z = orbit_offset_z + (temp_orbit_x * temp_orbit_rotation_matrix[2] + temp_orbit_y * temp_orbit_rotation_matrix[6] + temp_orbit_z * temp_orbit_rotation_matrix[10]);
 			
 			// Check if Orbit Parent Exists
 			if (instance_exists(orbit_parent_instance))
