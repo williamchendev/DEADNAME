@@ -7,9 +7,8 @@
 #define MAX_SHADOWS 8
 
 // Camera Properties
-uniform vec3 in_fsh_CameraPosition;
-uniform mat4 in_fsh_CameraRotation;
-uniform vec2 in_fsh_CameraDimensions;
+uniform vec3 in_CameraPosition;
+uniform vec2 in_CameraDimensions;
 
 // Temporal Properties
 uniform float u_NoiseTime;
@@ -57,14 +56,12 @@ uniform sampler2D gm_AtmospherePlanetDepthMask;
 uniform sampler2D gm_CelestialBodyDiffuseSurface;
 uniform sampler2D gm_CelestialBodyEmissiveSurface;
 
-// Interpolated Square UV, Surface Mask UV, and World Position
-varying vec2 v_vSquareUV;
-varying vec4 v_vSurfaceUV;
+// Interpolated Surface Mask UV, and World Position
+varying vec2 v_vSurfaceUV;
 varying vec3 v_vWorldPosition;
+varying vec3 v_ViewVector;
 
 // Constants
-const vec2 center = vec2(0.5, 0.5);
-
 const float Pi = 3.14159265359;
 
 const float epsilon = 0.0001;
@@ -80,6 +77,8 @@ const float blue_noise_ditering_strength = 0.005;
 
 const float light_source_intensity_multiplier = 3.0;
 const float light_source_direction_multiplier = 100.0;
+
+const float view_ray_optical_depth_multiplier = 0.001;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -262,51 +261,47 @@ float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size
 // Fragment Shader
 void main()
 {
-	// Atmosphere Radius
-	float radius = distance(v_vSquareUV, center);
+	// Calculate Camera View Vector from Camera's Rotation Matrix
+	vec3 camera_view_vector = normalize(v_vWorldPosition - in_CameraPosition);
 	
-	// Circle Cut-Out Early Return
-	if (radius > 0.5)
+	// Calculate Atmosphere Depth based on Sphere Raycast from Camera View Vector through Planet's Atmosphere
+	vec2 atmosphere_raycast = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_CameraPosition, camera_view_vector);
+	
+	// Check if Fragment Pixel is not Rendering Atmosphere for Early Return
+	if (atmosphere_raycast.y <= 0.0)
 	{
 		return;
 	}
 	
-	// Calculate Camera Forward Vector from Camera's Rotation Matrix
-	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
-	
-	// Calculate UV Position of Surface
-	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
-	
 	// Calculate Temporal Blue Noise at UV position and Time
-	float blue_noise = blueNoiseTemporal(uv * blue_noise_ditering_scale * vec2(1.0, in_fsh_CameraDimensions.y / in_fsh_CameraDimensions.x), u_NoiseTime) * blue_noise_ditering_strength;
+	float blue_noise = blueNoiseTemporal(v_vSurfaceUV * blue_noise_ditering_scale * vec2(1.0, in_CameraDimensions.y / in_CameraDimensions.x), u_NoiseTime) * blue_noise_ditering_strength;
 	
 	// Retreive Celestial Body's Combined Planet & Clouds Diffuse Color
-	vec4 planet_diffuse_color = texture2D(gm_BaseTexture, uv);
-	vec4 clouds_diffuse_color = texture2D(gm_AtmosphereCloudsSurface, uv);
+	vec4 planet_diffuse_color = texture2D(gm_BaseTexture, v_vSurfaceUV);
+	vec4 clouds_diffuse_color = texture2D(gm_AtmosphereCloudsSurface, v_vSurfaceUV);
 	
 	float cloud_blend_alpha = pow(clouds_diffuse_color.a, u_CloudsAlphaBlendingPower);
 	vec4 diffuse_color = (1.0 - cloud_blend_alpha) * planet_diffuse_color + vec4(clouds_diffuse_color.rgb, cloud_blend_alpha);
 	
 	// Retreive Celestial Body's Bloom Diffuse & Emissive Surface Values
-	vec3 planet_bloom_diffuse = texture2D(gm_CelestialBodyDiffuseSurface, uv).rgb;
-	float planet_bloom_emissive = cloud_blend_alpha > 0.005 ? 0.0 : texture2D(gm_CelestialBodyEmissiveSurface, uv).r;
+	vec3 planet_bloom_diffuse = texture2D(gm_CelestialBodyDiffuseSurface, v_vSurfaceUV).rgb;
+	float planet_bloom_emissive = cloud_blend_alpha > 0.005 ? 0.0 : texture2D(gm_CelestialBodyEmissiveSurface, v_vSurfaceUV).r;
 	
 	// Retreive Atmosphere's Planet Mask and Create Combined Planet & Clouds Surface Depth Mask from Cloud Alpha Blending
-	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
-	float surface_mask = (cloud_blend_alpha > cloud_alpha_minimum ? max(u_fsh_AtmosphereRadius * cloud_surface_mask_cutout_depth, planet_mask) : planet_mask) / u_fsh_AtmosphereRadius;
+	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, v_vSurfaceUV).r;
+	float surface_mask = cloud_blend_alpha > cloud_alpha_minimum ? max(u_fsh_AtmosphereRadius * cloud_surface_mask_cutout_depth, planet_mask) : planet_mask;
 	
-	// Calculate Atmosphere Depth based on Radial Distance from Center of the Atmosphere
-	float atmosphere_depth = cos(radius * Pi);
-	float atmosphere_depth_mask_adjusted = surface_mask == 0.0 ? atmosphere_depth * 2.0 : 1.0 - surface_mask;
+	// Create Adjusted Gestalt Atmosphere Depth Mask by combining Planet's Lithosphere, Hydrosphere, and Atmosphere Depth Masks
+	float atmosphere_depth = surface_mask == 0.0 ? atmosphere_raycast.y : surface_mask * 0.5;
 	
 	// Calculate Atmosphere Surface Position
-	vec3 atmosphere_surface_position = v_vWorldPosition - (atmosphere_depth * u_fsh_AtmosphereRadius * camera_forward);
+	vec3 atmosphere_surface_position = in_CameraPosition + (camera_view_vector * atmosphere_raycast.x);
 	
 	// Calculate Point within Atmosphere by incrementing a distance of Epsilon to intersect the Surface of the Sphere
-	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_forward);
+	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_view_vector);
 	
 	// Calculate Distance through Atmosphere & Scatter Point Sampling Step Size
-	float distance_through_atmosphere = atmosphere_depth_mask_adjusted * u_fsh_AtmosphereRadius;
+	float distance_through_atmosphere = atmosphere_depth;
 	float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
 	
 	// Establish Cumulative Atmosphere Light Color Value
@@ -369,7 +364,7 @@ void main()
 			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction * light_source_direction_multiplier, light_source_ray_length);
 			
 			// Calculate View Ray's Optical Depth at Scattering Sample Point
-			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_forward, step_size * i);
+			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_view_vector, step_size * i) * view_ray_optical_depth_multiplier;
 			
 			// Find Atmosphere's Local Density at Scattering Sample Point
 			float local_density = densityAtPoint(in_scatter_point);
@@ -381,7 +376,7 @@ void main()
 			in_scattered_light += local_density * transmittance * light_source_fade;
 			
 			// Increment Scattering Sample Point by Ray Marching Step Size in Direction of View Vector
-			in_scatter_point += camera_forward * step_size;
+			in_scatter_point += camera_view_vector * step_size;
 		}
 		
 		// Normalize Total Atmosphere Light Visible at the given Pixel
@@ -403,7 +398,7 @@ void main()
 	vec3 light = diffuse_color.rgb + atmosphere_light + blue_noise;
 	
 	// Calculate Atmosphere Alpha
-	float atmosphere_alpha = min(atmosphere_depth + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
+	float atmosphere_alpha = min(atmosphere_raycast.y / (u_fsh_AtmosphereRadius * 2.0) + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere, Diffuse, and Emissive Fragment Color Value
 	gl_FragData[0] = vec4(light, atmosphere_alpha);

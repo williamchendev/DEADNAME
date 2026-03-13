@@ -125,6 +125,7 @@ repeat (array_length(solar_systems))
 			}
 			
 			// Build Identity Matrix of Celestial Object
+			// PLEASE REPLACE THIS LINE WITH "matrix_build(x, y, z, euler_angle_x, euler_angle_y, euler_angle_z, scale_x, scale_y, scale_z, identity_matrix);" AS IT CONSUMES LESS MEMORY
 			identity_matrix = matrix_build(x, y, z, euler_angle_x, euler_angle_y, euler_angle_z, scale_x, scale_y, scale_z);
 		}
 		

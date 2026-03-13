@@ -91,7 +91,7 @@ if (instance_exists(camera_observing_instance))
 	camera_position_z = camera_observing_instance.z + temp_observing_rotated_vector_z * (temp_camera_observing_instance_radius + temp_camera_observing_vector_length_offset);
 	
 	// Build Camera Rotation Matrix from Observation Direction and Up Direction relative to the Camera Observing Instance as that the Camera is vertically aligned with the Camera Observing Instance's Poles and will horizontally wrap around the Camera Observing Instance
-	camera_rotation_matrix = matrix_inverse(matrix_build_lookat(0, 0, 0, -temp_observing_rotated_vector_x, temp_observing_rotated_vector_y, -temp_observing_rotated_vector_z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]));
+	camera_view_matrix = matrix_inverse(matrix_build_lookat(0, 0, 0, -temp_observing_rotated_vector_x, temp_observing_rotated_vector_y, -temp_observing_rotated_vector_z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]));
 }
 else
 {
@@ -163,7 +163,7 @@ else
 	
 	
 	// Build Camera Rotation Matrix from Camera's Euler Angle Rotation
-	//camera_rotation_matrix = matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_position_x + 64 * dcos(camera_rotation_x), camera_position_y + 64 * dcos(camera_rotation_y), camera_position_z + 64 * dsin(camera_rotation_z), 0, 1, 0);
+	//camera_view_matrix = matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_position_x + 64 * dcos(camera_rotation_x), camera_position_y + 64 * dcos(camera_rotation_y), camera_position_z + 64 * dsin(camera_rotation_z), 0, 1, 0);
 	
 	//
 	look_dir -= (window_mouse_get_x() - window_get_width() / 2) / 10;
@@ -180,7 +180,7 @@ else
 	var yfrom = yto + camera_distance * dsin(look_pitch);
 	var zfrom = zto + camera_distance * dcos(look_dir);
 	
-	camera_rotation_matrix = matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0);
+	camera_view_matrix = matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0);
 }
 
 if (keyboard_check(vk_escape))
@@ -198,10 +198,10 @@ camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, 
 var temp_inverse_projection_matrix = matrix_inverse(camera_projection_matrix);
 
 //
-//var temp_camera_rotation_matrix_euler_angles = euler_angles_from_rotation_matrix(camera_rotation_matrix)
-//var temp_camera_raycast_rotation_matrix = matrix_inverse(rotation_matrix_from_euler_angles(-temp_camera_rotation_matrix_euler_angles[0], temp_camera_rotation_matrix_euler_angles[1], -temp_camera_rotation_matrix_euler_angles[2])); // THIS WORKS
-//var temp_camera_raycast_rotation_matrix = matrix_inverse(rotation_matrix_from_euler_angles(-temp_camera_rotation_matrix_euler_angles[0], temp_camera_rotation_matrix_euler_angles[1], -temp_camera_rotation_matrix_euler_angles[2]));
-var temp_camera_raycast_rotation_matrix = matrix_inverse(camera_rotation_matrix);
+//var temp_camera_view_matrix_euler_angles = euler_angles_from_rotation_matrix(camera_view_matrix)
+//var temp_camera_raycast_rotation_matrix = matrix_inverse(rotation_matrix_from_euler_angles(-temp_camera_view_matrix_euler_angles[0], temp_camera_view_matrix_euler_angles[1], -temp_camera_view_matrix_euler_angles[2])); // THIS WORKS
+//var temp_camera_raycast_rotation_matrix = matrix_inverse(rotation_matrix_from_euler_angles(-temp_camera_view_matrix_euler_angles[0], temp_camera_view_matrix_euler_angles[1], -temp_camera_view_matrix_euler_angles[2]));
+var temp_camera_raycast_rotation_matrix = matrix_inverse(camera_view_matrix);
 //var temp_camera_raycast_rotation_matrix = matrix_inverse(matrix_build_lookat(0, 0, 0, temp_observing_rotated_vector_x, -temp_observing_rotated_vector_y, temp_observing_rotated_vector_z, -temp_observing_rotation_matrix[4], -temp_observing_rotation_matrix[5], -temp_observing_rotation_matrix[6]));
 
 // Calculate Horizontal & Vertical Normalized Device Coordinates of Cursor

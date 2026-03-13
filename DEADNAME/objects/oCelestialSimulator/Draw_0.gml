@@ -25,11 +25,6 @@ if (array_length(solar_system_render_depth_sorting_index_array) == 0)
 	return;
 }
 
-// Set Perspective Camera Projection Matrix
-camera_set_view_mat(camera_get_default(), camera_rotation_matrix);
-camera_set_proj_mat(camera_get_default(), camera_projection_matrix);
-camera_apply(camera_get_default());
-
 // Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
 
@@ -39,9 +34,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 	var temp_celestial_object_index = solar_system_render_depth_sorting_index_array[temp_celestial_object_depth_render_index];
 	var temp_celestial_object_depth = solar_system_render_depth_sorting_depth_array[temp_celestial_object_index];
 	var temp_celestial_object_instance = temp_solar_system[temp_celestial_object_index];
-	
-	// Set Celestial Object's Identity Matrix as Matrix World Identity
-	matrix_set(matrix_world, temp_celestial_object_instance.identity_matrix);
 	
 	// Compare Celestial Object's Type to determine Celestial Object's Render Behaviour
 	switch (temp_celestial_object_instance.celestial_object_type)
@@ -67,9 +59,17 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Enable Sun Unlit Shader
 				shader_set(shd_sun_unlit);
 				
+				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+				camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+				camera_apply(CelestialSimulator.camera_instance);
+				
+				// Set Celestial Object's Identity Matrix as Matrix World Identity
+				matrix_set(matrix_world, identity_matrix);
+				
 				// Set Sun Unlit Shader Camera Properties
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-				shader_set_uniform_matrix_array(CelestialSimulator.sun_unlit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+				shader_set_uniform_matrix_array(CelestialSimulator.sun_unlit_shader_camera_rotation_index, CelestialSimulator.camera_view_matrix);
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 				
 				// Set Sun Physical Properties
@@ -124,11 +124,17 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Enable Planet Lithosphere Shader
 				shader_set(shd_planet_lithosphere_lit);
 				
+				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+				camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+				camera_apply(CelestialSimulator.camera_instance);
+				
+				// Set Celestial Object's Identity Matrix as Matrix World Identity
+				matrix_set(matrix_world, identity_matrix);
+				
 				// Set Planet Lithosphere Shader Camera Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-				shader_set_uniform_matrix_array(CelestialSimulator.planet_lithosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 				
 				// Set Planet Lithosphere Time Clock for Spatiotemporal Blue Noise
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
@@ -190,9 +196,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Set Planet Hydrosphere Shader Camera Properties
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// Set Planet Hydrosphere Time Clock for Spatiotemporal Blue Noise
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
@@ -249,7 +252,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_emissive_index, ocean_emissive);
 					
 					// Set Planet Atmosphere Properties
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_atmosphere_radius_index, radius + elevation + sky_radius);
 					
 					// Draw Planet from Icosphere Vertex Buffer
 					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
@@ -283,10 +287,18 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						// Enable SDF Sphere Volumetric Cloud Lit Shader for Rendering Planet's Clouds within Atmosphere
 						shader_set(shd_sdf_sphere_volumetric_cloud_lit);
 						
+						// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+						camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+						camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+						camera_apply(CelestialSimulator.camera_instance);
+						
+						// Set Celestial Object's Identity Matrix as Matrix World Identity
+						matrix_set(matrix_world, identity_matrix);
+						
 						// Set Atmosphere Cloud Rendering Shader Camera Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
-						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_rotation_matrix);
+						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation, CelestialSimulator.camera_view_matrix);
+						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_view_matrix);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);
 						
 						// Set Atmosphere Cloud Noise Texture Sampling Properties
@@ -399,13 +411,17 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Enable Planet Atmosphere Shader
 					shader_set(shd_planet_atmosphere_lit);
 					
+					// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+					camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+					camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+					camera_apply(CelestialSimulator.camera_instance);
+					
+					// Set Celestial Object's Identity Matrix as Matrix World Identity
+					matrix_set(matrix_world, identity_matrix);
+					
 					// Set Planet Atmosphere Shader Camera Properties
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 					
 					// Set Atmosphere Time Clock for Spatiotemporal Blue Noise
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_noise_time_index, CelestialSimulator.global_noise_time);
@@ -479,10 +495,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Enable Planet Render without Atmosphere Shader
 					shader_set(shd_planet_no_atmosphere_lit);
 					
-					// Set Planet Render Shader Camera Properties
-					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-					shader_set_uniform_matrix_array(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
-					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
+					// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+					camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+					camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+					camera_apply(CelestialSimulator.camera_instance);
 					
 					// Set Planet Render Properties
 					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius + elevation + 32);
@@ -516,7 +532,4 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 matrix_set(matrix_world, matrix_build_identity());
 
 // Reset Camera Orientation
-camera_set_proj_mat(camera_get_default(), array_create(16));
-camera_set_view_mat(camera_get_default(), array_create(16));
 camera_apply(camera_get_default());
-

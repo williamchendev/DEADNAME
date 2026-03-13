@@ -8,7 +8,6 @@
 
 // Camera Properties
 uniform vec3 in_fsh_CameraPosition;
-uniform mat4 in_fsh_CameraRotation;
 
 // Temporal Properties
 uniform float u_NoiseTime;
@@ -23,6 +22,9 @@ uniform vec4 u_PlanetOceanColor;
 
 uniform float u_PlanetOceanFoamSize;
 uniform vec4 u_PlanetOceanFoamColor;
+
+// Atmosphere Properties
+uniform float u_fsh_AtmosphereRadius;
 
 // Lighting Properties
 uniform float u_SpecularIntensity;
@@ -214,11 +216,8 @@ float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size
 // Fragment Shader
 void main() 
 {
-	// Calculate Camera Forward Vector from Camera's Rotation Matrix
-	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
-	
-	// Check if Sphere Fragment is facing Camera's Forward Vector
-	if (dot(camera_forward, v_vNormal) >= 0.0)
+	// Skip rendering back-facing Sphere Fragments
+	if (v_vDepth > u_fsh_AtmosphereRadius)
 	{
 		return;
 	}

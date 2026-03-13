@@ -47,8 +47,8 @@ camera_z_far = 32000;
 
 camera_z_near_depth_overpass = -(800 + camera_z_near);
 
-camera_rotation_matrix = rotation_matrix_from_euler_angles(0, 0, 0);
-camera_projection_matrix = matrix_build_projection_perspective_fov(camera_fov, 640 / 360, camera_z_near, camera_z_far);
+camera_view_matrix = matrix_build_lookat(0, 0, 0, 0, 0, 1, 0, 1, 0);
+camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -640 / 360, camera_z_near, camera_z_far);
 
 camera_instance = camera_create();
 
@@ -166,8 +166,6 @@ background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_b
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
 planet_lithosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_fsh_CameraPosition");
-planet_lithosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_CameraRotation");
-planet_lithosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_CameraDimensions");
 
 planet_lithosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_lithosphere_lit, "u_NoiseTime");
 
@@ -207,9 +205,6 @@ planet_lithosphere_lit_shader_planet_texture_index = shader_get_sampler_index(sh
 // MRT (Forward Rendered Lighting) Planet Hydrosphere Lit Rendering Shader Indexes
 planet_hydrosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraPosition");
 planet_hydrosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraPosition");
-planet_hydrosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_vsh_CameraRotation");
-planet_hydrosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_fsh_CameraRotation");
-planet_hydrosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_hydrosphere_lit, "in_CameraDimensions");
 
 planet_hydrosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_NoiseTime");
 
@@ -233,7 +228,8 @@ planet_hydrosphere_lit_shader_planet_ocean_color_index = shader_get_uniform(shd_
 planet_hydrosphere_lit_shader_planet_ocean_foam_color_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetOceanFoamColor");
 planet_hydrosphere_lit_shader_planet_ocean_foam_size_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_PlanetOceanFoamSize");
 
-planet_hydrosphere_lit_shader_atmosphere_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_AtmosphereRadius");
+planet_hydrosphere_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_vsh_AtmosphereRadius");
+planet_hydrosphere_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_fsh_AtmosphereRadius");
 
 planet_hydrosphere_lit_shader_specular_intensity_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_SpecularIntensity");
 
@@ -262,10 +258,6 @@ planet_hydrosphere_lit_shader_shadow_position_z_index = shader_get_uniform(shd_p
 planet_hydrosphere_lit_shader_emissive_index = shader_get_uniform(shd_planet_hydrosphere_lit, "u_Emissive");
 
 // (Forward Rendered Lighting) Planet without Atmosphere Lit Rendering Shader Indexes
-planet_no_atmosphere_lit_shader_camera_position_index = shader_get_uniform(shd_planet_no_atmosphere_lit, "in_CameraPosition");
-planet_no_atmosphere_lit_shader_camera_rotation_index = shader_get_uniform(shd_planet_no_atmosphere_lit, "in_CameraRotation");
-planet_no_atmosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_no_atmosphere_lit, "in_CameraDimensions");
-
 planet_no_atmosphere_lit_shader_planet_radius_index = shader_get_uniform(shd_planet_no_atmosphere_lit, "u_PlanetRadius");
 planet_no_atmosphere_lit_shader_planet_position_index = shader_get_uniform(shd_planet_no_atmosphere_lit, "u_PlanetPosition");
 
@@ -273,12 +265,8 @@ planet_no_atmosphere_lit_shader_celestial_body_diffuse_surface_texture_index = s
 planet_no_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index = shader_get_sampler_index(shd_planet_no_atmosphere_lit, "gm_CelestialBodyEmissiveSurface");
 
 // (Forward Rendered Lighting) Planet Atmosphere Lit Rendering Shader Indexes
-planet_atmosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraPosition");
-planet_atmosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraPosition");
-planet_atmosphere_lit_shader_vsh_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraRotation");
-planet_atmosphere_lit_shader_fsh_camera_rotation_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraRotation");
-planet_atmosphere_lit_shader_vsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_vsh_CameraDimensions");
-planet_atmosphere_lit_shader_fsh_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_fsh_CameraDimensions");
+planet_atmosphere_lit_shader_camera_position_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_CameraPosition");
+planet_atmosphere_lit_shader_camera_dimensions_index = shader_get_uniform(shd_planet_atmosphere_lit, "in_CameraDimensions");
 
 planet_atmosphere_lit_shader_noise_time_index = shader_get_uniform(shd_planet_atmosphere_lit, "u_NoiseTime");
 
@@ -966,7 +954,7 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, ocean: false, sky: false }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: false, sky: true }));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));

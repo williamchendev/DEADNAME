@@ -20,6 +20,12 @@ draw_clear_alpha(c_black, 0);
 // Set Bloom Effect Shader
 shader_set(shd_celestial_bloom_effect_render);
 
+// Reset Camera Orientation
+var temp_camera_default = camera_get_default();
+camera_set_view_mat(temp_camera_default, matrix_build_lookat(GameManager.game_width / 2, GameManager.game_height / 2, 0, GameManager.game_width / 2, GameManager.game_height / 2, 1, 0, 1, 0));
+camera_set_proj_mat(temp_camera_default, matrix_build_projection_ortho(GameManager.game_width, GameManager.game_height, 0, 32000));
+camera_apply(temp_camera_default);
+
 // Set Bloom Textures
 texture_set_stage(bloom_effect_render_shader_diffusemap_index, surface_get_texture(diffuse_surface));
 texture_set_stage(bloom_effect_render_shader_emissivemap_index, surface_get_texture(emissive_surface));
@@ -41,6 +47,12 @@ shader_reset();
 
 // Render Bloom Surface over Celestial Simulator's Final Render Surface
 surface_set_target(final_render_surface);
+
+// Reset Camera Orientation
+var temp_camera_default = camera_get_default();
+camera_set_view_mat(temp_camera_default, matrix_build_lookat(GameManager.game_width / 2, GameManager.game_height / 2, 0, GameManager.game_width / 2, GameManager.game_height / 2, 1, 0, 1, 0));
+camera_set_proj_mat(temp_camera_default, matrix_build_projection_ortho(GameManager.game_width, GameManager.game_height, 0, 32000));
+camera_apply(temp_camera_default);
 
 // Reset Celestial Simulator's Final Render Surface
 draw_clear_alpha(c_black, 1);
@@ -78,6 +90,13 @@ gpu_set_blendmode(bm_normal);
 
 // DEBUG Draw Final Render Surface to UI Surface (this is incorrect but I'll do it for now)
 surface_set_target(LightingEngine.ui_surface);
+
+// Reset Camera Orientation
+var temp_camera_default = camera_get_default();
+camera_set_view_mat(temp_camera_default, matrix_build_lookat(GameManager.game_width / 2, GameManager.game_height / 2, 0, GameManager.game_width / 2, GameManager.game_height / 2, 1, 0, 1, 0));
+camera_set_proj_mat(temp_camera_default, matrix_build_projection_ortho(GameManager.game_width, GameManager.game_height, 0, 32000));
+camera_apply(temp_camera_default);
+
 //surface_set_target(LightingEngine.final_render_surface);
 draw_clear_alpha(c_black, 0);
 draw_surface(final_render_surface, 0, 0);

@@ -12,8 +12,6 @@ attribute vec2 in_Elevation; // (u, v)
 
 // Camera Properties
 uniform vec3 in_vsh_CameraPosition;
-uniform mat4 in_vsh_CameraRotation;
-uniform vec2 in_CameraDimensions;
 
 // Planet Properties
 uniform float u_PlanetRadius;
@@ -31,9 +29,9 @@ uniform float u_PlanetOcean_WaveLength[MAX_WAVES];
 uniform float u_PlanetOcean_WaveSpeed[MAX_WAVES];
 
 // Atmosphere Properties
-uniform float u_AtmosphereRadius;
+uniform float u_vsh_AtmosphereRadius;
 
-// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Planet Elevation, and Depth
+// Interpolated Color, Normal, Ocean Normal, Position, Sphere Texture, Camera View Vector, Planet Elevation, and Depth
 varying vec4 v_vColour;
 varying vec3 v_vNormal;
 varying vec3 v_vOceanNormal;
@@ -100,11 +98,11 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	rotMatrix[0][0] =  cp * cy;
 	rotMatrix[0][1] =  cp * sy;
 	rotMatrix[0][2] = -sp;
-	
+
 	rotMatrix[1][0] =  sr * sp * cr - cr * sy;
 	rotMatrix[1][1] =  sr * sp * sr + cr * cy;
 	rotMatrix[1][2] =  sr * cp;
-	
+
 	rotMatrix[2][0] =  cr * sp * cy + sr * sy;
 	rotMatrix[2][1] =  cr * sp * sy - sr * cy;
 	rotMatrix[2][2] =  cr * cp;
@@ -147,28 +145,28 @@ void main()
 	// Calculate Ocean Height with Wave Displacement
 	float ocean_height = (ocean_wave_displacement / u_vsh_PlanetElevation) + u_vsh_PlanetOceanElevation;
 	
-	// Calculate Planet's Local Vertex Vector and Vertex Position relative to Origin
-	vec3 planet_rotated_local_vector = planet_rotation_matrix * in_Position;
-	vec3 planet_rotated_local_vertex_position = planet_rotated_local_vector * (u_PlanetRadius + (ocean_height * u_vsh_PlanetElevation));
+	// Calculate Planet's Local Vector, Rotated Local Vector, and Local Elevation Vector relative to Origin
+	vec3 planet_local_vector = in_Position * inverse_vertical_vector;
+	vec3 planet_rotated_local_vector = planet_local_vector * planet_rotation_matrix;
+	vec3 planet_rotated_local_vector_elevation = planet_rotated_local_vector * (u_PlanetRadius + (ocean_height * u_vsh_PlanetElevation));
 	
-	// Calculate Vertex Render Position relative to Camera Perspective
-	vec4 render_position = vec4(planet_rotated_local_vertex_position + u_PlanetPosition - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
+	// Calculate Planet's Object Space Vertex Position
+	vec4 planet_object_space_position = vec4(planet_local_vector * (u_PlanetRadius + (ocean_height * u_vsh_PlanetElevation)), 1.0);
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
 	v_vNormal = planet_rotated_local_vector;
 	v_vOceanNormal = normalize(planet_rotated_local_vector + vec3(ocean_wave_displacement * ocean_waves_normal_strength));
-	v_vPosition = planet_rotated_local_vertex_position + u_PlanetPosition;
+	v_vPosition = planet_rotated_local_vector_elevation + u_PlanetPosition;
 	v_vTexVector = in_Position;
 	
 	// Interpolated Planet Elevation
 	v_vPlanetElevation = in_Elevation.x * u_vsh_PlanetElevation;
 	
-	// Interpolated Depth of Elevated Vertex Position relative to Camera's Orientation and the Radius of Atmosphere
-	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);
-	v_vDepth = (dot(-camera_forward, planet_rotated_local_vertex_position.xyz / u_AtmosphereRadius) * 0.5 + 0.5) * u_AtmosphereRadius;
+	// Interpolated Depth of Elevated Vertex Position relative to Camera's Viewing Orientation and the Radius of Atmosphere
+	vec3 camera_view_direction = normalize(v_vPosition - in_vsh_CameraPosition);
+	v_vDepth = (dot(camera_view_direction, planet_rotated_local_vector_elevation / u_vsh_AtmosphereRadius) * 0.5 + 0.5) * u_vsh_AtmosphereRadius;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_CameraDimensions * 0.5, 0.0), 1.0);
-	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
+	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * planet_object_space_position;
 }

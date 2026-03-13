@@ -37,14 +37,14 @@ var temp_camera_half_v = tan(temp_camera_fov_radians / 2);
 var temp_camera_half_h = temp_camera_half_v * temp_camera_aspect;
 
 // Establish Camera Vectors from Camera's Rotation Matrix
-var temp_camera_right_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2], camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2]));
-var temp_camera_right_vector_normalized = [ camera_rotation_matrix[0] / temp_camera_right_vector_magnitude, camera_rotation_matrix[1] / temp_camera_right_vector_magnitude, camera_rotation_matrix[2] / temp_camera_right_vector_magnitude ];
+var temp_camera_right_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[0], camera_view_matrix[1], camera_view_matrix[2], camera_view_matrix[0], camera_view_matrix[1], camera_view_matrix[2]));
+var temp_camera_right_vector_normalized = [ camera_view_matrix[0] / temp_camera_right_vector_magnitude, camera_view_matrix[1] / temp_camera_right_vector_magnitude, camera_view_matrix[2] / temp_camera_right_vector_magnitude ];
 
-var temp_camera_up_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6], camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6]));
-var temp_camera_up_vector_normalized = [ camera_rotation_matrix[4] / temp_camera_up_vector_magnitude, camera_rotation_matrix[5] / temp_camera_up_vector_magnitude, camera_rotation_matrix[6] / temp_camera_up_vector_magnitude ];
+var temp_camera_up_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[4], camera_view_matrix[5], camera_view_matrix[6], camera_view_matrix[4], camera_view_matrix[5], camera_view_matrix[6]));
+var temp_camera_up_vector_normalized = [ camera_view_matrix[4] / temp_camera_up_vector_magnitude, camera_view_matrix[5] / temp_camera_up_vector_magnitude, camera_view_matrix[6] / temp_camera_up_vector_magnitude ];
 
-var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
-var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
+var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[8], camera_view_matrix[9], camera_view_matrix[10], camera_view_matrix[8], camera_view_matrix[9], camera_view_matrix[10]));
+var temp_camera_forward_vector_normalized = [ camera_view_matrix[8] / temp_camera_forward_vector_magnitude, camera_view_matrix[9] / temp_camera_forward_vector_magnitude, camera_view_matrix[10] / temp_camera_forward_vector_magnitude ];
 
 // Create Camera Render Near and Far Positions
 var temp_render_start_x = camera_position_x + temp_camera_forward_vector_normalized[0] * (camera_z_near + camera_z_near_depth_overpass);
