@@ -51,7 +51,7 @@ if (instance_exists(camera_observing_instance))
 	
 	//
 	var temp_camera_observing_instance_radius = 0;
-	var temp_camera_observing_vector_length_offset = 100;
+	var temp_camera_observing_vector_length_offset = 300;
 	
 	//
 	switch (camera_observing_instance.celestial_object_type)
@@ -75,15 +75,15 @@ if (instance_exists(camera_observing_instance))
 	var temp_observing_vector_z = dcos(camera_observing_direction_vertical_angle) * dsin(camera_observing_direction_horizontal_angle);
 	
 	// Calculate Camera Observing Instance's Rotation Matrices
-	var temp_observing_rotation_matrix = rotation_matrix_from_euler_angles(camera_observing_instance.rotation_x, camera_observing_instance.rotation_y, camera_observing_instance.rotation_z);
+	var temp_observing_rotation_matrix = matrix_inverse(rotation_matrix_from_euler_angles(camera_observing_instance.euler_angle_z, camera_observing_instance.euler_angle_y, camera_observing_instance.euler_angle_x));
 	
-	var temp_observing_inst_rotation_matrix = rotation_matrix_from_euler_angles(-camera_observing_instance.rotation_x, camera_observing_instance.rotation_y, -camera_observing_instance.rotation_z);
-	var temp_observing_inst_inverse_rotation_matrix = matrix_inverse(temp_observing_inst_rotation_matrix);
+	//var temp_observing_inst_rotation_matrix = rotation_matrix_from_euler_angles(-camera_observing_instance.euler_angle_x, camera_observing_instance.euler_angle_y, -camera_observing_instance.euler_angle_z);
+	//var temp_observing_inst_inverse_rotation_matrix = matrix_inverse(temp_observing_inst_rotation_matrix);
 	
 	// Rotate Camera Observation Vector by the Camera Observing Instance's Rotation Matrices
-	var temp_observing_rotated_vector_x = temp_observing_vector_x * temp_observing_inst_inverse_rotation_matrix[0] + temp_observing_vector_y * temp_observing_inst_inverse_rotation_matrix[1] + temp_observing_vector_z * temp_observing_inst_inverse_rotation_matrix[2];
-	var temp_observing_rotated_vector_y = temp_observing_vector_x * temp_observing_inst_inverse_rotation_matrix[4] + temp_observing_vector_y * temp_observing_inst_inverse_rotation_matrix[5] + temp_observing_vector_z * temp_observing_inst_inverse_rotation_matrix[6];
-	var temp_observing_rotated_vector_z = temp_observing_vector_x * temp_observing_inst_inverse_rotation_matrix[8] + temp_observing_vector_y * temp_observing_inst_inverse_rotation_matrix[9] + temp_observing_vector_z * temp_observing_inst_inverse_rotation_matrix[10];
+	var temp_observing_rotated_vector_x = temp_observing_vector_x * temp_observing_rotation_matrix[0] + temp_observing_vector_y * temp_observing_rotation_matrix[1] + temp_observing_vector_z * temp_observing_rotation_matrix[2];
+	var temp_observing_rotated_vector_y = temp_observing_vector_x * temp_observing_rotation_matrix[4] + temp_observing_vector_y * temp_observing_rotation_matrix[5] + temp_observing_vector_z * temp_observing_rotation_matrix[6];
+	var temp_observing_rotated_vector_z = temp_observing_vector_x * temp_observing_rotation_matrix[8] + temp_observing_vector_y * temp_observing_rotation_matrix[9] + temp_observing_vector_z * temp_observing_rotation_matrix[10];
 	
 	// Set Camera Position relative to Camera's Observing Instance
 	camera_position_x = camera_observing_instance.x + temp_observing_rotated_vector_x * (temp_camera_observing_instance_radius + temp_camera_observing_vector_length_offset);
@@ -91,7 +91,8 @@ if (instance_exists(camera_observing_instance))
 	camera_position_z = camera_observing_instance.z + temp_observing_rotated_vector_z * (temp_camera_observing_instance_radius + temp_camera_observing_vector_length_offset);
 	
 	// Build Camera Rotation Matrix from Observation Direction and Up Direction relative to the Camera Observing Instance as that the Camera is vertically aligned with the Camera Observing Instance's Poles and will horizontally wrap around the Camera Observing Instance
-	camera_view_matrix = matrix_inverse(matrix_build_lookat(0, 0, 0, -temp_observing_rotated_vector_x, temp_observing_rotated_vector_y, -temp_observing_rotated_vector_z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]));
+	camera_view_matrix = matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_observing_instance.x, camera_observing_instance.y, camera_observing_instance.z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]);
+	//camera_view_matrix = matrix_inverse(matrix_build_lookat(0, 0, 0, -temp_observing_rotated_vector_x, temp_observing_rotated_vector_y, -temp_observing_rotated_vector_z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]));
 }
 else
 {
@@ -174,7 +175,7 @@ else
 	
 	var camera_distance = 160;
 	var xto = camera_position_x;
-	var yto = camera_position_y + 64;
+	var yto = camera_position_y;
 	var zto = camera_position_z;
 	var xfrom = xto - camera_distance * dsin(look_dir);
 	var yfrom = yto + camera_distance * dsin(look_pitch);

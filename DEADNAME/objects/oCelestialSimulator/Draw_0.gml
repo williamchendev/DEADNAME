@@ -52,13 +52,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Set Celestial Body Depth Render Surface as Surface Target
 				surface_set_target(CelestialSimulator.celestial_body_render_surface);
 				
-				// Reset Celestial Body Depth Render Surface
-				draw_clear_alpha(c_black, 0);
-				draw_clear_depth(1);
-				
-				// Enable Sun Unlit Shader
-				shader_set(shd_sun_unlit);
-				
 				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
 				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
 				camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
@@ -66,6 +59,13 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				// Set Celestial Object's Identity Matrix as Matrix World Identity
 				matrix_set(matrix_world, identity_matrix);
+				
+				// Reset Celestial Body Depth Render Surface
+				draw_clear_alpha(c_black, 0);
+				draw_clear_depth(1);
+				
+				// Enable Sun Unlit Shader
+				shader_set(shd_sun_unlit);
 				
 				// Set Sun Unlit Shader Camera Properties
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
@@ -117,13 +117,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
 				surface_set_target_ext(3, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
 				
-				// Reset Celestial Body Depth Render Surface
-				draw_clear_alpha(c_black, 0);
-				draw_clear_depth(1);
-				
-				// Enable Planet Lithosphere Shader
-				shader_set(shd_planet_lithosphere_lit);
-				
 				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
 				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
 				camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
@@ -131,6 +124,13 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				// Set Celestial Object's Identity Matrix as Matrix World Identity
 				matrix_set(matrix_world, identity_matrix);
+				
+				// Reset Celestial Body Depth Render Surface
+				draw_clear_alpha(c_black, 0);
+				draw_clear_depth(1);
+				
+				// Enable Planet Lithosphere Shader
+				shader_set(shd_planet_lithosphere_lit);
 				
 				// Set Planet Lithosphere Shader Camera Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_vsh_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
@@ -278,6 +278,14 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					// Set Clouds Depth Render Surface as Surface Target
 					surface_set_target(CelestialSimulator.clouds_render_surface);
 					
+					// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+					camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+					camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+					camera_apply(CelestialSimulator.camera_instance);
+					
+					// Set Celestial Object's Identity Matrix as Matrix World Identity
+					matrix_set(matrix_world, identity_matrix);
+					
 					// Reset Clouds Depth Render Surface
 					draw_clear_alpha(c_black, 0);
 					
@@ -286,14 +294,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					{
 						// Enable SDF Sphere Volumetric Cloud Lit Shader for Rendering Planet's Clouds within Atmosphere
 						shader_set(shd_sdf_sphere_volumetric_cloud_lit);
-						
-						// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
-						camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
-						camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
-						camera_apply(CelestialSimulator.camera_instance);
-						
-						// Set Celestial Object's Identity Matrix as Matrix World Identity
-						matrix_set(matrix_world, identity_matrix);
 						
 						// Set Atmosphere Cloud Rendering Shader Camera Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
@@ -408,9 +408,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					surface_set_target_ext(1, CelestialSimulator.diffuse_surface);
 					surface_set_target_ext(2, CelestialSimulator.emissive_surface);
 					
-					// Enable Planet Atmosphere Shader
-					shader_set(shd_planet_atmosphere_lit);
-					
 					// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
 					camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
 					camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
@@ -418,6 +415,9 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					
 					// Set Celestial Object's Identity Matrix as Matrix World Identity
 					matrix_set(matrix_world, identity_matrix);
+					
+					// Enable Planet Atmosphere Shader
+					shader_set(shd_planet_atmosphere_lit);
 					
 					// Set Planet Atmosphere Shader Camera Properties
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);

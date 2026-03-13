@@ -75,9 +75,9 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
 
-const float light_source_intensity_multiplier = 3.0;
-const float light_source_direction_multiplier = 100.0;
+const float light_source_intensity_multiplier = 0.25;
 
+const float light_source_ray_optical_depth_multiplier = 0.001;
 const float view_ray_optical_depth_multiplier = 0.001;
 
 const float brightness_adaption_strength = 0.15;
@@ -292,7 +292,7 @@ void main()
 	float surface_mask = cloud_blend_alpha > cloud_alpha_minimum ? max(u_fsh_AtmosphereRadius * cloud_surface_mask_cutout_depth, planet_mask) : planet_mask;
 	
 	// Create Adjusted Gestalt Atmosphere Depth Mask by combining Planet's Lithosphere, Hydrosphere, and Atmosphere Depth Masks
-	float atmosphere_depth = surface_mask == 0.0 ? atmosphere_raycast.y : surface_mask * 0.5;
+	float atmosphere_depth = surface_mask == 0.0 ? atmosphere_raycast.y : surface_mask;
 	
 	// Calculate Atmosphere Surface Position
 	vec3 atmosphere_surface_position = in_CameraPosition + (camera_view_vector * atmosphere_raycast.x);
@@ -360,8 +360,8 @@ void main()
 			}
 			
 			// Calculate Light Source Ray's Optical Depth at Scattering Sample Point
-			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction * light_source_direction_multiplier).y;
-			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction * light_source_direction_multiplier, light_source_ray_length);
+			float light_source_ray_length = raySphere(u_fsh_PlanetPosition, u_fsh_AtmosphereRadius, in_scatter_point, -light_direction).y;
+			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction, light_source_ray_length) * light_source_ray_optical_depth_multiplier;
 			
 			// Calculate View Ray's Optical Depth at Scattering Sample Point
 			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_view_vector, step_size * i) * view_ray_optical_depth_multiplier;
@@ -401,7 +401,8 @@ void main()
 	float atmosphere_alpha = min(atmosphere_raycast.y / (u_fsh_AtmosphereRadius * 2.0) + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere, Diffuse, and Emissive Fragment Color Value
-	gl_FragData[0] = vec4(light, atmosphere_alpha);
+	gl_FragData[0] = vec4(vec3(atmosphere_depth / (u_fsh_AtmosphereRadius * 2.0)), 1.0);
+	//gl_FragData[0] = vec4(light, atmosphere_alpha);
 	gl_FragData[1] = vec4(planet_bloom_diffuse, diffuse_color.a);
 	gl_FragData[2] = vec4(vec3(planet_bloom_emissive), diffuse_color.a);
 }

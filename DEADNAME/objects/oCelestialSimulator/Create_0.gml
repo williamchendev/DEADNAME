@@ -160,7 +160,6 @@ vertex_freeze(square_uv_vertex_buffer);
 
 // Solar System Background Stars Unlit Rendering Shader Indexes
 background_stars_unlit_shader_camera_position_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraPosition");
-background_stars_unlit_shader_camera_rotation_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraRotation");
 background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraDimensions");
 
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
@@ -954,7 +953,7 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: false, sky: true }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: false, sky: false }));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
@@ -987,7 +986,7 @@ generate_default_solar_system = function()
 	//
 	load_solar_system("grandmom");
 	
-	//camera_observing_instance = instance_find(oPlanet_Mom, 0);
+	camera_observing_instance = instance_find(oPlanet_Mom, 0);
 }
 
 // DEBUG

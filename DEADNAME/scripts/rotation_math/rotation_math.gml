@@ -25,6 +25,27 @@ function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_a
 	// Build rotation matrix (YZX order - pitch, yaw, roll)
 	var temp_rotation_matrix = array_create(16);
 	
+	temp_rotation_matrix[0] = temp_cp * temp_cy;
+	temp_rotation_matrix[1] = temp_sp * temp_sr - temp_cp * temp_cr * temp_sy;
+	temp_rotation_matrix[2] = temp_cr * temp_sp + temp_cp * temp_sy * temp_sr;
+	temp_rotation_matrix[3] = 0;
+	
+	temp_rotation_matrix[4] = temp_sy;
+	temp_rotation_matrix[5] = temp_cy * temp_cr;
+	temp_rotation_matrix[6] = -temp_cy * temp_sr;
+	temp_rotation_matrix[7] = 0;
+	
+	temp_rotation_matrix[8] = -temp_cy * temp_sp;
+	temp_rotation_matrix[9] = temp_cp * temp_sr + temp_cr * temp_sp * temp_sy;
+	temp_rotation_matrix[10] = temp_cp * temp_cr - temp_sp * temp_sy * temp_sr;
+	temp_rotation_matrix[11] = 0;
+    
+    temp_rotation_matrix[12] = 0;
+    temp_rotation_matrix[13] = 0;
+    temp_rotation_matrix[14] = 0;
+    temp_rotation_matrix[15] = 1;
+	
+	/*
 	temp_rotation_matrix[0] =  temp_cp * temp_cy;
 	temp_rotation_matrix[1] =  temp_cp * temp_sy;
 	temp_rotation_matrix[2] = -temp_sp;
@@ -44,6 +65,7 @@ function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_a
     temp_rotation_matrix[13] = 0;
     temp_rotation_matrix[14] = 0;
     temp_rotation_matrix[15] = 1;
+    */
 	
 	// Return Rotation Matrix
 	return temp_rotation_matrix;
