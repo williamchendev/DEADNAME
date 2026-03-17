@@ -1,5 +1,5 @@
 /// @function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_angle_z);
-/// @description Converts a set of Euler angles to the corresponding rotation matrix
+/// @description Converts a set of Tait–Bryan Euler angles to the corresponding rotation matrix
 /// @param {real} euler_angle_x The x-axis euler rotation angle in degrees
 /// @param {real} euler_angle_y The y-axis euler rotation angle in degrees
 /// @param {real} euler_angle_z The z-axis euler rotation angle in degrees
@@ -22,10 +22,9 @@ function rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_a
 	var temp_cy = cos(temp_yaw);
 	var temp_sy = sin(temp_yaw);
 	
-	// Build rotation matrix (YZX order - pitch, yaw, roll)
+	// Build rotation matrix (Tait–Bryan YZX order - pitch, yaw, roll)
 	var temp_rotation_matrix = array_create(16);
 	
-	// THIS IS FROM WIKIPEDIA
 	temp_rotation_matrix[0] = temp_cp * temp_cy;
 	temp_rotation_matrix[1] = temp_sp * temp_sr - temp_cp * temp_cr * temp_sy;
 	temp_rotation_matrix[2] = temp_cr * temp_sp + temp_cp * temp_sy * temp_sr;

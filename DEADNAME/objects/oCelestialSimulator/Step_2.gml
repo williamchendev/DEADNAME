@@ -255,9 +255,9 @@ repeat (array_length(temp_solar_system))
 							// Find Individual Cloud's Position in World Space
 							var temp_cloud_adjusted_height = temp_celestial_object_instance.radius + temp_cloud_individual_height;
 							
-							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[2]) + temp_celestial_object_instance.x;
-							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[6]) + temp_celestial_object_instance.y;
-							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[8] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[9] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
+							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[8]) + temp_celestial_object_instance.x;
+							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[9]) + temp_celestial_object_instance.y;
+							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[2] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[6] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
 							
 							// Find Individual Cloud's Depth from Render Camera
 							var temp_cloud_vx = temp_cloud_x - temp_render_start_x;

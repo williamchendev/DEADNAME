@@ -75,7 +75,7 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
 
-const float light_source_intensity_multiplier = 0.2;
+const float light_source_intensity_multiplier = 0.25;
 
 const float light_source_ray_optical_depth_multiplier = 0.001;
 const float view_ray_optical_depth_multiplier = 0.001;
@@ -300,9 +300,8 @@ void main()
 	// Calculate Point within Atmosphere by incrementing a distance of Epsilon to intersect the Surface of the Sphere
 	vec3 point_in_atmosphere = atmosphere_surface_position + (epsilon * camera_view_vector);
 	
-	// Calculate Distance through Atmosphere & Scatter Point Sampling Step Size
-	float distance_through_atmosphere = atmosphere_depth;
-	float step_size = (distance_through_atmosphere - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
+	// Calculate Scatter Point Sampling Step Size based on Pixel's Projected Distance through Atmosphere Depth
+	float step_size = (atmosphere_depth - epsilon * 2.0) / (u_ScatterPointSamplesCount - 1.0);
 	
 	// Establish Cumulative Atmosphere Light Color Value
 	vec3 atmosphere_light = vec3(0.0);
@@ -355,7 +354,7 @@ void main()
 				}
 				
 				// Calculate Cumulative Shadow at World Position
-				float sha = shadow(in_scatter_point, normalize(light_source_direction), in_Light_Emitter_Size[l] * 1.5, light_source_distance, shadow_sphere_position, in_Shadow_Radius[n]);
+				float sha = shadow(in_scatter_point, normalize(light_source_direction), in_Light_Emitter_Size[l], light_source_distance, shadow_sphere_position, in_Shadow_Radius[n]);
 				shadows = max(shadows, sha);
 			}
 			
@@ -383,18 +382,15 @@ void main()
 		in_scattered_light *= u_AtmosphereScatteringCoefficients * light_source_intensity_multiplier * in_Light_Intensity[l] * (step_size / u_PlanetRadius);
 		
 		// Attenuate brightness of light reflected from Celestial Body's Surface
-		/*
 		float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;
 		float brightness_sum = view_ray_optical_depth * light_source_intensity_multiplier * in_Light_Intensity[l] * reflected_light_out_scatter_strength + brightness_adaption;
 		float reflected_light_strength = exp(-brightness_sum);
 		float hdr_strength = max(min((dot(diffuse_color.rgb, vec3(1.0)) / 3.0) - 1.0, 1.0), 0.0);
 		reflected_light_strength = mix(reflected_light_strength, 1.0, hdr_strength);
 		vec3 reflected_light = diffuse_color.rgb * reflected_light_strength;
-		*/
 		
 		// Add Light Visible from Surface of Atmosphere
-		//atmosphere_light += in_scattered_light + reflected_light;
-		atmosphere_light += in_scattered_light;
+		atmosphere_light += in_scattered_light + reflected_light;
 	}
 	
 	// Calculate Light
@@ -404,7 +400,6 @@ void main()
 	float atmosphere_alpha = min(atmosphere_raycast.y / (u_fsh_AtmosphereRadius * 2.0) + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere, Diffuse, and Emissive Fragment Color Value
-	//gl_FragData[0] = vec4(vec3(atmosphere_depth / (u_fsh_AtmosphereRadius * 2.0)), 1.0);
 	gl_FragData[0] = vec4(light, atmosphere_alpha);
 	gl_FragData[1] = vec4(planet_bloom_diffuse, diffuse_color.a);
 	gl_FragData[2] = vec4(vec3(planet_bloom_emissive), diffuse_color.a);

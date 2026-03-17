@@ -415,6 +415,7 @@
     {"name":"rotation_math","order":5,"path":"scripts/rotation_math/rotation_math.yy",},
     {"name":"round_to","order":5,"path":"scripts/round_to/round_to.yy",},
     {"name":"SceneBehaviours","order":9,"path":"scripts/SceneBehaviours/SceneBehaviours.yy",},
+    {"name":"screen_position_to_world_vector","order":10,"path":"scripts/screen_position_to_world_vector/screen_position_to_world_vector.yy",},
     {"name":"sprite_get_speed_","order":1,"path":"scripts/sprite_get_speed_/sprite_get_speed_.yy",},
     {"name":"spritepack_get_uvs_transformed","order":1,"path":"scripts/spritepack_get_uvs_transformed/spritepack_get_uvs_transformed.yy",},
     {"name":"string_implode","order":1,"path":"scripts/string_implode/string_implode.yy",},

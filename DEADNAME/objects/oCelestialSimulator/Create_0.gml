@@ -32,14 +32,7 @@ sprite_index = -1;
 // Celestial Simulator Settings
 active = true;
 
-camera_position_x = 0;
-camera_position_y = 0;
-camera_position_z = 0;
-
-camera_rotation_x = 0;
-camera_rotation_y = 0;
-camera_rotation_z = 0;
-
+// Camera Settings
 camera_fov = 60;
 
 camera_z_near = 1;
@@ -47,18 +40,7 @@ camera_z_far = 32000;
 
 camera_z_near_depth_overpass = -(800 + camera_z_near);
 
-camera_view_matrix = matrix_build_lookat(0, 0, 0, 0, 0, 1, 0, 1, 0);
-camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -640 / 360, camera_z_near, camera_z_far);
-
-camera_instance = camera_create();
-
-camera_observing_instance = noone;
-camera_observing_direction_horizontal_angle = 0;
-camera_observing_direction_vertical_angle = 0;
-
-camera_right_vector = [ 1, 0, 0 ];
-camera_up_vector = [ 0, -1, 0 ];
-camera_forward_vector = [ 0, 0, 1 ];
+camera_observing_instance_zoom_spd = 0.15;
 
 // Solar System Settings
 background_star_sphere = geodesic_icosphere_create(4);
@@ -86,6 +68,22 @@ global_atmosphere_optical_depth_samples_count = 10;
 bloom_global_size = 3;
 bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
+
+// Camera Variables
+camera_instance = camera_create();
+
+camera_position_x = 0;
+camera_position_y = 0;
+camera_position_z = 0;
+
+camera_view_matrix = matrix_build_lookat(0, 0, 0, 0, 0, 1, 0, 1, 0);
+camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -640 / 360, camera_z_near, camera_z_far);
+
+camera_observing_instance = noone;
+camera_observing_instance_radius_offset_value = 0;
+
+camera_observing_polar_horizontal_angle = 0;
+camera_observing_polar_vertical_angle = 0;
 
 // Solar System Variables
 solar_system_index = -1;
