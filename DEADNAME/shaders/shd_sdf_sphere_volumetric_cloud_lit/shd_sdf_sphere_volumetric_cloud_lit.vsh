@@ -72,7 +72,7 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	float cy = cos(yaw);
 	float sy = sin(yaw);
 	
-	// Build rotation matrix (YZX order - pitch, yaw, roll)
+	// Build rotation matrix (Tait–Bryan YZX order - pitch, yaw, roll)
 	mat3 rotMatrix;
 	
 	/*

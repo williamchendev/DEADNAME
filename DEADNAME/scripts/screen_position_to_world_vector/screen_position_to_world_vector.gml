@@ -1,47 +1,10 @@
-/*
-function screen_position_to_world_vector(screen_position_x, screen_position_y, view_matrix, projection_matrix) 
-{
-	// Establish Ray Variables
-	var temp_ray_vector_x, temp_ray_vector_y, temp_ray_vector_z, temp_ray_origin_x, temp_ray_origin_y, temp_ray_origin_z;
-	
-	// Calculate Clip Space Position from Screen Position
-	var temp_clip_space_x = 2 * ((screen_position_x / GameManager.game_width) - 0.5) / projection_matrix[0];
-	var temp_clip_space_y = 2 * ((screen_position_x / GameManager.game_height) - 0.5) / projection_matrix[5];
-	var temp_camera_x = -(view_matrix[12] * view_matrix[0] + view_matrix[13] * view_matrix[1] + view_matrix[14] * view_matrix[2]);
-	var temp_camera_y = -(view_matrix[12] * view_matrix[4] + view_matrix[13] * view_matrix[5] + view_matrix[14] * view_matrix[6]);
-	var temp_camera_z = -(view_matrix[12] * view_matrix[8] + view_matrix[13] * view_matrix[9] + view_matrix[14] * view_matrix[10]);
-	
-	// Check if Projection Matrix is an Orthographic Projection or a Perspective Projection
-	if (projection_matrix[15] == 0)
-	{
-		// Calculate Perspective Ray Direction Vector
-		temp_ray_vector_x = view_matrix[2]  + temp_clip_space_x * view_matrix[0] + temp_clip_space_y * view_matrix[1];
-		temp_ray_vector_y = view_matrix[6]  + temp_clip_space_x * view_matrix[4] + temp_clip_space_y * view_matrix[5];
-		temp_ray_vector_z = view_matrix[10] + temp_clip_space_x * view_matrix[8] + temp_clip_space_y * view_matrix[9];
-		
-		// Calculate Perspective Ray Origin Position
-		temp_ray_origin_x = temp_camera_x;
-		temp_ray_origin_y = temp_camera_y;
-		temp_ray_origin_z = temp_camera_z;
-	}
-	else
-	{
-		// Calculate Orthographic Ray Direction Vector
-		temp_ray_vector_x = view_matrix[2];
-		temp_ray_vector_y = view_matrix[6];
-		temp_ray_vector_z = view_matrix[10];
-		
-		// Calculate Orthographic Ray Origin Position
-		temp_ray_origin_x = temp_camera_x + temp_clip_space_x * view_matrix[0] + temp_clip_space_y * view_matrix[1];
-		temp_ray_origin_y = temp_camera_y + temp_clip_space_x * view_matrix[4] + temp_clip_space_y * view_matrix[5];
-		temp_ray_origin_z = temp_camera_z + temp_clip_space_x * view_matrix[8] + temp_clip_space_y * view_matrix[9];
-	}
-	
-	// Return Ray Direction Vector and Ray Origin Position
-	return [ temp_ray_vector_x, temp_ray_vector_y, temp_ray_vector_z, temp_ray_origin_x, temp_ray_origin_y, temp_ray_origin_z ];
-}
-*/
-
+/// @function screen_position_to_world_vector(screen_position_x, screen_position_y, view_matrix, projection_matrix);
+/// @description Converts the given screen position into a normalized world vector of its direction from the view and projection matrix applied to the Camera
+/// @param {real} screen_position_x The screen position's horizontal coordinate to grab the world vector from
+/// @param {real} screen_position_y The screen position's vertical coordinate to grab the world vector from
+/// @param {array<real>} view_matrix The View Matrix of the Camera to convert the screen position to a world vector from
+/// @param {array<real>} projection_matrix The Projection Matrix of the Camera to convert the screen position to a world vector from
+/// @return {array<real>} Returns an array 3 indexes long of the screen position's normalized world direction vector
 function screen_position_to_world_vector(screen_position_x, screen_position_y, view_matrix, projection_matrix) 
 {
 	// Calculate Inverse of View and Projection Matrix

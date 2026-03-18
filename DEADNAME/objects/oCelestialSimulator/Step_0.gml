@@ -263,22 +263,21 @@ if (temp_click_behaviour or temp_action_behaviour)
 		// Create Selection Instance's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
 		var temp_selection_rotation_matrix = rotation_matrix_from_euler_angles(temp_selection_inst.euler_angle_x, temp_selection_inst.euler_angle_y, temp_selection_inst.euler_angle_z);
 		var temp_selection_rotation_matrix_inverse = matrix_inverse(temp_selection_rotation_matrix);
-		//var temp_selection_rotation_matrix_inverse = temp_selection_rotation_matrix;
 		
-		//
+		// Find Selection Position's Radial Offset from Selection Instance's Origin Position
 		var temp_selection_offset_x = temp_selection_position[0] - temp_selection_inst.x;
 		var temp_selection_offset_y = temp_selection_position[1] - temp_selection_inst.y;
 		var temp_selection_offset_z = temp_selection_position[2] - temp_selection_inst.z;
 		
-		//
+		// Rotate Selection Position's Radial Offset Vector by the Inverse of the Selection Instance's Rotation Matrix to find the Localized Selection Position
 		var temp_selection_x = temp_selection_offset_x * temp_selection_rotation_matrix_inverse[0] + temp_selection_offset_y * temp_selection_rotation_matrix_inverse[4] + temp_selection_offset_z * temp_selection_rotation_matrix_inverse[8];
 		var temp_selection_y = temp_selection_offset_x * temp_selection_rotation_matrix_inverse[1] + temp_selection_offset_y * temp_selection_rotation_matrix_inverse[5] + temp_selection_offset_z * temp_selection_rotation_matrix_inverse[9];
 		var temp_selection_z = temp_selection_offset_x * temp_selection_rotation_matrix_inverse[2] + temp_selection_offset_y * temp_selection_rotation_matrix_inverse[6] + temp_selection_offset_z * temp_selection_rotation_matrix_inverse[10];
 		
-		// Calculate Selection Vector's Magnitude
+		// Calculate Localized Selection Position Vector's Magnitude
 		var temp_selection_magnitude = sqrt(dot_product_3d(temp_selection_x, temp_selection_y, temp_selection_z, temp_selection_x, temp_selection_y, temp_selection_z));
 		
-		// Normalize Selection Vector with Selection Vector's Magnitude
+		// Normalize Localized Selection Position Vector with Localized Selection Position Vector's Magnitude
 		temp_selection_x /= temp_selection_magnitude;
 		temp_selection_y /= temp_selection_magnitude;
 		temp_selection_z /= temp_selection_magnitude;
@@ -286,8 +285,8 @@ if (temp_click_behaviour or temp_action_behaviour)
 		//
 		show_debug_message($"[{temp_selection_x}, {temp_selection_y}, {temp_selection_z}]");
 		
-		//
-		var temp_selection_u = 0.5 - arctan2(temp_selection_z, temp_selection_x) / (2 * pi);
+		// Find the Selection's UV Coordinates of the Localized Selection Position
+		var temp_selection_u = 0.5 - arctan2(-temp_selection_x, -temp_selection_z) / (2 * pi);
 		var temp_selection_v = 0.5 - arcsin(temp_selection_y) / pi;
 		
 		//
