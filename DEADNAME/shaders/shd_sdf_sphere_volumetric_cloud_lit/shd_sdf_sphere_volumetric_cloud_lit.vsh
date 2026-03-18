@@ -25,7 +25,7 @@ uniform float u_CloudHeight;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
-varying vec4 v_vSurfaceUV;
+varying vec2 v_vSurfaceUV;
 varying vec3 v_vCloudPosition;
 varying vec3 v_vLocalPosition;
 varying vec3 v_vSampleForward;
@@ -35,8 +35,6 @@ varying mat3 v_vPlanetRotation;
 // Constants
 const float Pi = 3.14159265359;
 
-const vec3 right_vector = vec3(1.0, 0.0, 0.0);
-const vec3 up_vector = vec3(0.0, 1.0, 0.0);
 const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // UV Functions
@@ -123,10 +121,10 @@ mat3 inverse(mat3 m)
 // Vertex Shader
 void main() 
 {
-	// Calculate Camera Right, Up, and Forward Vectors from Camera's Rotation Matrix
-	vec3 camera_right = normalize(in_vsh_CameraRotation[0].xyz);
-	vec3 camera_up = normalize(in_vsh_CameraRotation[1].xyz);
-	vec3 camera_forward = normalize(in_vsh_CameraRotation[2].xyz);
+	// Calculate Camera Right, Up, and Forward Vectors from Camera's View Matrix
+	vec3 camera_right = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][0], gm_Matrices[MATRIX_VIEW][1][0], gm_Matrices[MATRIX_VIEW][2][0]));
+	vec3 camera_up = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][1], gm_Matrices[MATRIX_VIEW][1][1], gm_Matrices[MATRIX_VIEW][2][1]));
+	vec3 camera_forward = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][2], gm_Matrices[MATRIX_VIEW][1][2], gm_Matrices[MATRIX_VIEW][2][2]));
 	
 	// Calculate Planet Rotation Matrix from Planet's Euler Angles
 	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
@@ -135,6 +133,80 @@ void main()
 	// Convert Cloud UV into Normalized Position Vector Relative to Planet Center
 	vec3 cloud_sphere_vector = sphereVectorFromUV(u_CloudUV);
 	
+	// Calculate Cloud Offset from Planet Center
+	//vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_planet_rotation_matrix;
+	
+	// Calculate Render Cloud Vertex Position with Camera Rotation Matrix
+	//vec4 cloud_world_position = vec4(u_vsh_PlanetPosition + cloud_planet_center_offset, 1.0);
+	//vec4 cloud_vertex_position = cloud_world_position + vec4(in_Position * u_vsh_CloudRadius, 0.0, 0.0);
+	
+	// Translate Square UV into Square Offset matching Camera's Orientation
+	vec3 camera_quad_offset = (camera_right * in_Position.x + camera_up * in_Position.y) * u_vsh_CloudRadius * 2.0;
+	
+	// Calculate Imposter Sphere's Quad Vertex World Positions
+	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * planet_rotation_matrix;
+	vec3 vertex_local_position = cloud_planet_center_offset + camera_quad_offset;
+	vec4 vertex_world_position = vec4(vertex_local_position + u_vsh_PlanetPosition, 1.0);
+	
+	// Interpolated Local Position
+	vec3 planet_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius;
+	vec3 planet_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius;
+	v_vLocalPosition = vertex_local_position;
+	v_vCloudPosition = u_vsh_PlanetPosition + cloud_planet_center_offset;
+	
+	// Interpolated Sample Position
+	vec3 sample_position = camera_quad_offset * planet_rotation_matrix;
+	v_vSampleForward = normalize(vertex_world_position.xyz - in_vsh_CameraPosition) * planet_rotation_matrix;
+	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + camera_quad_offset;
+	v_vPlanetRotation = planet_rotation_matrix;
+	
+	
+	//
+	gl_Position = gm_Matrices[MATRIX_PROJECTION] * gm_Matrices[MATRIX_VIEW] * vertex_world_position;
+	
+	// Update Surface Mask UV from Clip Space Position
+	v_vSurfaceUV = (vec2(gl_Position.x, -gl_Position.y) / gl_Position.w) * 0.5 + 0.5;
+	
+	/*
+	// ATTEMPT #1
+	// Calculate Camera Right, Up, and Forward Vectors from Camera's Rotation Matrix
+	vec3 camera_right = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][0], gm_Matrices[MATRIX_VIEW][1][0], gm_Matrices[MATRIX_VIEW][2][0]));
+	vec3 camera_up = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][1], gm_Matrices[MATRIX_VIEW][1][1], gm_Matrices[MATRIX_VIEW][2][1]));
+	
+	// Calculate Planet Rotation Matrix from Planet's Euler Angles
+	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
+	mat3 inverse_planet_rotation_matrix = inverse(planet_rotation_matrix);
+	
+	// Convert Cloud UV into Normalized Position Vector Relative to Planet Center
+	vec3 cloud_sphere_vector = sphereVectorFromUV(u_CloudUV);
+	
+	// Translate Square UV into Square Offset matching Camera's Orientation
+	vec3 camera_quad_offset = camera_right * in_Position.x + camera_up * in_Position.y;
+	
+	// Calculate Cloud Offset from Planet Center
+	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_vertical_vector * inverse_planet_rotation_matrix;
+	
+	// Calculate Imposter Sphere's Quad Vertex World Positions
+	vec3 vertex_local_position = camera_quad_offset * u_vsh_CloudRadius * 2.0;
+	vec4 vertex_world_position = vec4(vertex_local_position + u_vsh_PlanetPosition, 1.0);
+	
+	// Interpolated Local Position
+	v_vLocalPosition = vertex_local_position;
+	v_vCloudPosition = cloud_planet_center_offset + u_vsh_PlanetPosition;
+	
+	// Interpolated Sample Position
+	vec3 sample_position = camera_quad_offset * u_vsh_CloudRadius * 2.0 * planet_rotation_matrix;
+	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position;
+	v_vPlanetRotation = planet_rotation_matrix;
+	
+	// Translate Imposter Sphere's Quad Vertex World Positions to Clip Space Position
+	gl_Position = gm_Matrices[MATRIX_PROJECTION] * gm_Matrices[MATRIX_VIEW] * vertex_world_position;
+	
+	// Update Surface Mask UV from Clip Space Position
+	v_vSurfaceUV = (vec2(gl_Position.x, -gl_Position.y) / gl_Position.w) * 0.5 + 0.5;
+	*/
+	
+	/*
 	// Calculate Cloud Offset from Planet Center
 	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_planet_rotation_matrix;
 	
@@ -162,4 +234,5 @@ void main()
 	// Set Vertex Positions
 	vec4 object_space_pos = vec4(cloud_vertex_position.xyz + vec3(in_vsh_CameraDimensions * 0.5, 0.0), 1.0);
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
+	*/
 }

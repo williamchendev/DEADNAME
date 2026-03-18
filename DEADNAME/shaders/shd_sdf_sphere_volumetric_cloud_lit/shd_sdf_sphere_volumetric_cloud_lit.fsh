@@ -68,7 +68,7 @@ uniform sampler2D gm_AtmospherePlanetDepthMask;
 
 // Interpolated Square UV, Surface Mask UV, and World Position
 varying vec2 v_vSquareUV;
-varying vec4 v_vSurfaceUV;
+varying vec2 v_vSurfaceUV;
 varying vec3 v_vCloudPosition;
 varying vec3 v_vLocalPosition;
 varying vec3 v_vSampleForward;
@@ -265,31 +265,33 @@ float shadow(vec3 shadow_direction, vec3 light_direction, float light_emitter_si
 // Fragment Shader
 void main() 
 {
-	// Find Pixel's Cloud Radius
-	float radius = distance(v_vSquareUV, center);
+	// Calculate Camera View Vector from Camera's Rotation Matrix
+	vec3 camera_view_vector = normalize(v_vLocalPosition + u_fsh_PlanetPosition - in_fsh_CameraPosition);
 	
-	// Circle Cut-Out - Early Return
-	if (radius > 0.5)
+	// Calculate Cloud Depth based on Sphere Raycast from Camera View Vector through Cloud
+	vec2 cloud_raycast = raySphere(v_vCloudPosition, u_fsh_CloudRadius, in_fsh_CameraPosition, camera_view_vector);
+	
+	// Check if Fragment Pixel is not Rendering Cloud for Early Return
+	if (cloud_raycast.y <= 0.0)
 	{
 		return;
 	}
 	
-	// Calculate Camera Forward Vector from Camera's Rotation Matrix
-	vec3 camera_forward = normalize(in_fsh_CameraRotation[2].xyz);
-	
 	// Calculate Cloud Depth, Position within Cloud, and Depth relative to the Planet's Atmosphere
-	float sphere_depth = cos(radius * Pi);
-	vec3 point_in_cloud = u_fsh_PlanetPosition + v_vLocalPosition - (sphere_depth - epsilon) * camera_forward;
-	float atmosphere_depth = (dot(-camera_forward, (v_vLocalPosition - (u_fsh_CloudRadius * sphere_depth - epsilon) * camera_forward) / u_fsh_AtmosphereRadius) * 0.5 + 0.5) * u_fsh_AtmosphereRadius;
+	float sphere_depth = cloud_raycast.y;
+	//vec3 point_in_cloud = (cloud_raycast.x + epsilon) * camera_view_vector;
+	vec3 point_in_cloud = u_fsh_PlanetPosition + v_vLocalPosition - (sphere_depth - epsilon) * camera_view_vector;
+	float atmosphere_depth = dot(camera_view_vector, (v_vLocalPosition - (cloud_raycast.y - epsilon) * camera_view_vector) / u_fsh_AtmosphereRadius) * u_fsh_AtmosphereRadius;
 	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
-	vec2 uv = (v_vSurfaceUV.xy / v_vSurfaceUV.w) * 0.5 + 0.5;
+	vec2 uv = v_vSurfaceUV;
 	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, uv).r;
 	
 	// Check if Cloud Pixel Render's Depth is behind Planet - Early Return
+	//if (planet_mask > atmosphere_depth)
 	if (planet_mask > atmosphere_depth)
 	{
-		return;
+		//return;
 	}
 	
 	// Generate Blue Noise
@@ -297,7 +299,7 @@ void main()
 	
 	// Establish Cloud Noise Sampling Variables
 	vec3 cloud_sample_position = v_vSamplePosition - v_vSampleForward * (u_fsh_CloudRadius - epsilon);
-	float cloud_sample_ray_length = (u_fsh_CloudRadius * sphere_depth - epsilon) * 2.0;
+	float cloud_sample_ray_length = sphere_depth - epsilon * 2.0;
 	float cloud_sample_step_size = cloud_sample_ray_length / (u_ScatterPointSamplesCount - 1.0);
 	
 	// Establish Cloud's Light, Alpha, and Transmittance
@@ -368,7 +370,7 @@ void main()
 			}
 			
 			// Calculate Light Source's Directional Scattering Phase
-			float light_cos_theta = dot(camera_forward, light_direction);
+			float light_cos_theta = dot(camera_view_vector, light_direction);
 			float light_scattering_phase = doubleHenyeyGreenstein(light_cos_theta, 0.6, -0.3, 0.75) * u_CloudAnisotropicLightScattering + (1.0 - u_CloudAnisotropicLightScattering);
 			
 			// Calculate Cloud's Powder Effect with Sample's Local Density
@@ -406,7 +408,7 @@ void main()
 		
 		// Increment Cloud Sampling Positions
 		cloud_sample_position += v_vSampleForward * cloud_sample_step_size;
-		point_in_cloud += camera_forward * cloud_sample_step_size;
+		point_in_cloud += camera_view_vector * cloud_sample_step_size;
 	}
 	
 	// Render Lit Cloud Fragment Color Value

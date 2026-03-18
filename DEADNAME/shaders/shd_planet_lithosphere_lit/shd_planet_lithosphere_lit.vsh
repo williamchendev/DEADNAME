@@ -103,7 +103,7 @@ void main()
 	
 	// Interpolated Depth of Elevated Vertex Position relative to Camera's Viewing Orientation and the Radius of Atmosphere
 	vec3 camera_view_direction = normalize(v_vPosition - in_vsh_CameraPosition);
-	v_vDepth = (dot(camera_view_direction, planet_rotated_local_vector_elevation / u_AtmosphereRadius) * 0.5 + 0.5) * u_AtmosphereRadius;
+	v_vDepth = dot(camera_view_direction, planet_rotated_local_vector_elevation / u_AtmosphereRadius) * u_AtmosphereRadius;
 	
 	// Set Vertex Positions
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * planet_object_space_position;

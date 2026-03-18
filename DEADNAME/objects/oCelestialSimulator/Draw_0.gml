@@ -297,6 +297,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						
 						// Set Atmosphere Cloud Rendering Shader Camera Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation, CelestialSimulator.camera_view_matrix);
 						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_view_matrix);
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);

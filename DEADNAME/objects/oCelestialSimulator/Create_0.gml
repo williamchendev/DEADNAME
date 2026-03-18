@@ -308,6 +308,7 @@ planet_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index = sha
 
 // MRT (Forward Rendered Lighting) Signed Distance Field Sphere-Shaped Volumetric Clouds Lit Rendering Shader Indexes
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraPosition");
+sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraPosition");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraRotation");
 sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraDimensions");
@@ -952,7 +953,7 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: false, sky: true}));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
