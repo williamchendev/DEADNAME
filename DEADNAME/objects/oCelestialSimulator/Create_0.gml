@@ -986,7 +986,7 @@ generate_default_solar_system = function()
 	//
 	load_solar_system("grandmom");
 	
-	camera_observing_instance = instance_find(oPlanet_Mom, 0);
+	//camera_observing_instance = instance_find(oPlanet_Mom, 0);
 }
 
 // DEBUG

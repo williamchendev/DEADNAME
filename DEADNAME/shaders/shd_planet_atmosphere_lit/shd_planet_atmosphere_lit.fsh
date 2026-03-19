@@ -75,7 +75,7 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
 
-const float light_source_intensity_multiplier = 100.0;
+const float light_source_intensity_multiplier = 80.0;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -360,7 +360,7 @@ void main()
 			float light_source_ray_optical_depth = opticalDepth(in_scatter_point, -light_direction, light_source_ray_length);
 			
 			// Calculate View Ray's Optical Depth at Scattering Sample Point
-			view_ray_optical_depth = opticalDepth(in_scatter_point, -camera_view_vector, step_size * i);
+			view_ray_optical_depth = opticalDepth(point_in_atmosphere, camera_view_vector, step_size * i);
 			
 			// Find Atmosphere's Local Density at Scattering Sample Point
 			float local_density = densityAtPoint(in_scatter_point);

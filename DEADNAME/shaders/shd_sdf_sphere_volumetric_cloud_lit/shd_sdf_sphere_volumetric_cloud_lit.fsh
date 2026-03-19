@@ -281,7 +281,7 @@ void main()
 	float sphere_depth = cloud_raycast.y;
 	//vec3 point_in_cloud = (cloud_raycast.x + epsilon) * camera_view_vector;
 	vec3 point_in_cloud = u_fsh_PlanetPosition + v_vLocalPosition - (sphere_depth - epsilon) * camera_view_vector;
-	float atmosphere_depth = dot(camera_view_vector, (v_vLocalPosition - (cloud_raycast.y - epsilon) * camera_view_vector) / u_fsh_AtmosphereRadius) * u_fsh_AtmosphereRadius;
+	float atmosphere_depth = dot(camera_view_vector, (v_vLocalPosition - (cloud_raycast.y * 0.5 - epsilon) * camera_view_vector) / u_fsh_AtmosphereRadius) * u_fsh_AtmosphereRadius;
 	
 	// Calculate UV Position of Surface and Retreive Atmosphere's Planet Depth Mask
 	vec2 uv = v_vSurfaceUV;
@@ -289,9 +289,9 @@ void main()
 	
 	// Check if Cloud Pixel Render's Depth is behind Planet - Early Return
 	//if (planet_mask > atmosphere_depth)
-	if (planet_mask > atmosphere_depth)
+	if (atmosphere_depth > planet_mask && planet_mask < 0.0)
 	{
-		//return;
+		return;
 	}
 	
 	// Generate Blue Noise

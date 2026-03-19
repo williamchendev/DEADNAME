@@ -155,9 +155,9 @@ void main()
 	v_vCloudPosition = u_vsh_PlanetPosition + cloud_planet_center_offset;
 	
 	// Interpolated Sample Position
-	vec3 sample_position = camera_quad_offset * planet_rotation_matrix;
-	v_vSampleForward = normalize(vertex_world_position.xyz - in_vsh_CameraPosition) * planet_rotation_matrix;
-	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + camera_quad_offset;
+	vec3 sample_position = camera_quad_offset * inverse_planet_rotation_matrix;
+	v_vSampleForward = normalize(vertex_world_position.xyz - in_vsh_CameraPosition) * inverse_planet_rotation_matrix;
+	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position;
 	v_vPlanetRotation = planet_rotation_matrix;
 	
 	

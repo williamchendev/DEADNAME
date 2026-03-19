@@ -196,7 +196,6 @@ repeat (array_length(temp_solar_system))
 				
 				// Create Planet's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
 				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
-				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
 				
 				// Iterate through Planet's Clouds
 				var temp_cloud_count = 0;
@@ -255,9 +254,9 @@ repeat (array_length(temp_solar_system))
 							// Find Individual Cloud's Position in World Space
 							var temp_cloud_adjusted_height = temp_celestial_object_instance.radius + temp_cloud_individual_height;
 							
-							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[8]) + temp_celestial_object_instance.x;
-							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[9]) + temp_celestial_object_instance.y;
-							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[2] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[6] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
+							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[0] + temp_cloud_y_value * temp_planet_rotation_matrix[4] + temp_cloud_z_value * temp_planet_rotation_matrix[8]) + temp_celestial_object_instance.x;
+							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[1] + temp_cloud_y_value * temp_planet_rotation_matrix[5] + temp_cloud_z_value * temp_planet_rotation_matrix[9]) + temp_celestial_object_instance.y;
+							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[2] + temp_cloud_y_value * temp_planet_rotation_matrix[6] + temp_cloud_z_value * temp_planet_rotation_matrix[10]) + temp_celestial_object_instance.z;
 							
 							// Find Individual Cloud's Depth from Render Camera
 							var temp_cloud_vx = temp_cloud_x - temp_render_start_x;
