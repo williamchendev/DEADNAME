@@ -1,3 +1,16 @@
+/// @function raycast_sphere(ray_origin_x, ray_origin_y, ray_origin_z, ray_direction_x, ray_direction_y, ray_direction_z, sphere_x, sphere_y, sphere_z, sphere_radius);
+/// @description Raycasts whether or not there was an intersection with the given ray and the given sphere and returns an array containing the intersection's properties or undefined if no intersection was made
+/// @param {real} ray_origin_x The x position of the Raycast's origin
+/// @param {real} ray_origin_y The y position of the Raycast's origin
+/// @param {real} ray_origin_z The z position of the Raycast's origin
+/// @param {real} ray_direction_x The x value of the Raycast's direction vector
+/// @param {real} ray_direction_y The y value of the Raycast's direction vector
+/// @param {real} ray_direction_z The z value of the Raycast's direction vector
+/// @param {real} sphere_x The x position of the Sphere's origin
+/// @param {real} sphere_y The y position of the Sphere's origin
+/// @param {real} sphere_z The z position of the Sphere's origin
+/// @param {real} sphere_radius The radius of the Sphere
+/// @return {?array<real>} Returns an array 4 indexes long, containing the position of the raycast's intersection with the sphere and the distance of the intersection's position from the raycast's origin, or returns undefined if there was no intersection
 function raycast_sphere(ray_origin_x, ray_origin_y, ray_origin_z, ray_direction_x, ray_direction_y, ray_direction_z, sphere_x, sphere_y, sphere_z, sphere_radius) 
 {
 	// Offset vector from sphere center to ray origin
@@ -41,54 +54,4 @@ function raycast_sphere(ray_origin_x, ray_origin_y, ray_origin_z, ray_direction_
 	
 	// Return Intersection's Position & Distance to Origin Array
 	return [ temp_interection_x, temp_interection_y, temp_interection_z, temp_t ];
-}
-
-/// @description convert_2d_to_3d(x, y, view_mat, proj_mat)
-/// @param x
-/// @param y
-/// @param view_mat
-/// @param proj_mat
-function screen_to_world(x, y, view_mat, proj_mat) {
-	/*
-	Transforms a 2D coordinate (in window space) to a 3D vector.
-	Returns an array of the following format:
-	[dx, dy, dz, ox, oy, oz]
-	where [dx, dy, dz] is the direction vector and [ox, oy, oz] is the origin of the ray.
-
-	Works for both orthographic and perspective projections.
-
-	Script created by TheSnidr
-	(slightly modified by @dragonitespam)
-	*/
-	var _x = x;
-	var _y = y;
-	var V = view_mat;
-	var P = proj_mat;
-
-	var mx = 2 * (_x / window_get_width() - .5) / P[0];
-	var my = 2 * (_y / window_get_height() - .5) / P[5];
-	var camX = - (V[12] * V[0] + V[13] * V[1] + V[14] * V[2]);
-	var camY = - (V[12] * V[4] + V[13] * V[5] + V[14] * V[6]);
-	var camZ = - (V[12] * V[8] + V[13] * V[9] + V[14] * V[10]);
-
-	if (P[15] == 0)
-	{    //This is a perspective projection
-	    return [V[2]  + mx * V[0] + my * V[1],
-	            V[6]  + mx * V[4] + my * V[5],
-	            V[10] + mx * V[8] + my * V[9],
-	            camX,
-	            camY,
-	            camZ];
-	}
-	else
-	{    //This is an ortho projection
-	    return [V[2],
-	            V[6],
-	            V[10],
-	            camX + mx * V[0] + my * V[1],
-	            camY + mx * V[4] + my * V[5],
-	            camZ + mx * V[8] + my * V[9]];
-	}
-
-
 }

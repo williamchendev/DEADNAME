@@ -98,10 +98,6 @@ surface_reset_target();
 draw_set_alpha(1);
 draw_set_color(c_white);
 
-// Reset Camera Orientation
-camera_set_proj_mat(camera_get_default(), array_create(16));
-camera_apply(camera_get_default());
-
 // Check if Solar System exists and is being viewed
 if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[solar_system_index] != -1)
 {
@@ -110,12 +106,18 @@ if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[so
 	surface_set_target_ext(1, diffuse_surface);
 	surface_set_target_ext(2, emissive_surface);
 	
+	// Reset Camera Orientation
+	var temp_camera_default = camera_get_default();
+	camera_set_view_mat(temp_camera_default, matrix_build_lookat(GameManager.game_width / 2, GameManager.game_height / 2, 0, GameManager.game_width / 2, GameManager.game_height / 2, 1, 0, 1, 0));
+	camera_set_proj_mat(temp_camera_default, matrix_build_projection_ortho(GameManager.game_width, GameManager.game_height, 0, 32000));
+	camera_apply(temp_camera_default);
+	
 	// Enable Background Stars Unlit Shader
 	shader_set(shd_background_stars_unlit);
 	
 	// Set Background Stars Unlit Shader Camera Properties
 	shader_set_uniform_f(CelestialSimulator.background_stars_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-	shader_set_uniform_matrix_array(CelestialSimulator.background_stars_unlit_shader_camera_rotation_index, CelestialSimulator.camera_rotation_matrix);
+	shader_set_uniform_matrix_array(CelestialSimulator.background_stars_unlit_shader_camera_rotation_index, matrix_inverse(CelestialSimulator.camera_view_matrix));
 	shader_set_uniform_f(CelestialSimulator.background_stars_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 	
 	// Draw Background Stars from Solar System's Combined Background Star Icospheres Vertex Buffer

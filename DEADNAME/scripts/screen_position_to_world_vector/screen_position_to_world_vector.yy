@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"screen_position_to_world_vector",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"screen_position_to_world_vector",
+  "parent":{
+    "name":"InnoSoft",
+    "path":"folders/Scripts/Plugins/InnoSoft.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -37,14 +37,14 @@ var temp_camera_half_v = tan(temp_camera_fov_radians / 2);
 var temp_camera_half_h = temp_camera_half_v * temp_camera_aspect;
 
 // Establish Camera Vectors from Camera's Rotation Matrix
-var temp_camera_right_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2], camera_rotation_matrix[0], camera_rotation_matrix[1], camera_rotation_matrix[2]));
-var temp_camera_right_vector_normalized = [ camera_rotation_matrix[0] / temp_camera_right_vector_magnitude, camera_rotation_matrix[1] / temp_camera_right_vector_magnitude, camera_rotation_matrix[2] / temp_camera_right_vector_magnitude ];
+var temp_camera_right_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[0], camera_view_matrix[4], camera_view_matrix[8], camera_view_matrix[0], camera_view_matrix[4], camera_view_matrix[8]));
+var temp_camera_right_vector_normalized = [ camera_view_matrix[0] / temp_camera_right_vector_magnitude, camera_view_matrix[4] / temp_camera_right_vector_magnitude, camera_view_matrix[8] / temp_camera_right_vector_magnitude ];
 
-var temp_camera_up_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6], camera_rotation_matrix[4], camera_rotation_matrix[5], camera_rotation_matrix[6]));
-var temp_camera_up_vector_normalized = [ camera_rotation_matrix[4] / temp_camera_up_vector_magnitude, camera_rotation_matrix[5] / temp_camera_up_vector_magnitude, camera_rotation_matrix[6] / temp_camera_up_vector_magnitude ];
+var temp_camera_up_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[1], camera_view_matrix[5], camera_view_matrix[9], camera_view_matrix[1], camera_view_matrix[5], camera_view_matrix[9]));
+var temp_camera_up_vector_normalized = [ camera_view_matrix[1] / temp_camera_up_vector_magnitude, camera_view_matrix[5] / temp_camera_up_vector_magnitude, camera_view_matrix[9] / temp_camera_up_vector_magnitude ];
 
-var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10], camera_rotation_matrix[8], camera_rotation_matrix[9], camera_rotation_matrix[10]));
-var temp_camera_forward_vector_normalized = [ camera_rotation_matrix[8] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[9] / temp_camera_forward_vector_magnitude, camera_rotation_matrix[10] / temp_camera_forward_vector_magnitude ];
+var temp_camera_forward_vector_magnitude = sqrt(dot_product_3d(camera_view_matrix[2], camera_view_matrix[6], camera_view_matrix[10], camera_view_matrix[2], camera_view_matrix[6], camera_view_matrix[10]));
+var temp_camera_forward_vector_normalized = [ camera_view_matrix[2] / temp_camera_forward_vector_magnitude, camera_view_matrix[6] / temp_camera_forward_vector_magnitude, camera_view_matrix[10] / temp_camera_forward_vector_magnitude ];
 
 // Create Camera Render Near and Far Positions
 var temp_render_start_x = camera_position_x + temp_camera_forward_vector_normalized[0] * (camera_z_near + camera_z_near_depth_overpass);
@@ -195,8 +195,7 @@ repeat (array_length(temp_solar_system))
 				ds_list_clear(temp_celestial_object_instance.clouds_render_absorption_list);
 				
 				// Create Planet's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
-				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.rotation_x, temp_celestial_object_instance.rotation_y, temp_celestial_object_instance.rotation_z);
-				var temp_planet_rotation_matrix_inverse = matrix_inverse(temp_planet_rotation_matrix);
+				var temp_planet_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
 				
 				// Iterate through Planet's Clouds
 				var temp_cloud_count = 0;
@@ -255,9 +254,9 @@ repeat (array_length(temp_solar_system))
 							// Find Individual Cloud's Position in World Space
 							var temp_cloud_adjusted_height = temp_celestial_object_instance.radius + temp_cloud_individual_height;
 							
-							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[0] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[1] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[2]) + temp_celestial_object_instance.x;
-							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[4] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[5] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[6]) + temp_celestial_object_instance.y;
-							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix_inverse[8] + temp_cloud_y_value * temp_planet_rotation_matrix_inverse[9] + temp_cloud_z_value * temp_planet_rotation_matrix_inverse[10]) + temp_celestial_object_instance.z;
+							var temp_cloud_x = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[0] + temp_cloud_y_value * temp_planet_rotation_matrix[4] + temp_cloud_z_value * temp_planet_rotation_matrix[8]) + temp_celestial_object_instance.x;
+							var temp_cloud_y = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[1] + temp_cloud_y_value * temp_planet_rotation_matrix[5] + temp_cloud_z_value * temp_planet_rotation_matrix[9]) + temp_celestial_object_instance.y;
+							var temp_cloud_z = temp_cloud_adjusted_height * (temp_cloud_x_value * temp_planet_rotation_matrix[2] + temp_cloud_y_value * temp_planet_rotation_matrix[6] + temp_cloud_z_value * temp_planet_rotation_matrix[10]) + temp_celestial_object_instance.z;
 							
 							// Find Individual Cloud's Depth from Render Camera
 							var temp_cloud_vx = temp_cloud_x - temp_render_start_x;
