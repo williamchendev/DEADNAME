@@ -285,7 +285,7 @@ void main()
 	float planet_bloom_emissive = cloud_blend_alpha > 0.005 ? 0.0 : texture2D(gm_CelestialBodyEmissiveSurface, v_vSurfaceUV).r;
 	
 	// Retreive Atmosphere's Planet Mask and Create Combined Planet & Clouds Surface Depth Mask from Cloud Alpha Blending
-	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, v_vSurfaceUV).r + u_fsh_AtmosphereRadius;
+	float planet_mask = texture2D(gm_AtmospherePlanetDepthMask, v_vSurfaceUV).r;
 	float surface_mask = cloud_blend_alpha > cloud_alpha_minimum ? max(u_fsh_AtmosphereRadius * cloud_surface_mask_cutout_depth, planet_mask) : planet_mask;
 	
 	// Create Adjusted Gestalt Atmosphere Depth Mask by combining Planet's Lithosphere, Hydrosphere, and Atmosphere Depth Masks

@@ -48,7 +48,21 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	// Build rotation matrix (Tait–Bryan YZX order - pitch, yaw, roll)
 	mat3 rotMatrix;
 	
+	rotMatrix[0][0] =  cp * cy;
+	rotMatrix[0][1] =  sy;
+	rotMatrix[0][2] = -cy * sp;
+	
+	rotMatrix[1][0] =  sp * sr - cp * cr * sy;
+	rotMatrix[1][1] =  cy * cr;
+	rotMatrix[1][2] =  cp * sr + cr * sp * sy;
+	
+	rotMatrix[2][0] =  cr * sp + cp * sy * sr;
+	rotMatrix[2][1] = -cy * sr;
+	rotMatrix[2][2] =  cp * cr - sp * sy * sr;
+	
 	/*
+	// Inverse Rotation Matrix ^^^
+	
 	rotMatrix[0][0] = cp * cy;
 	rotMatrix[0][1] = sp * sr - cp * cr * sy;
 	rotMatrix[0][2] = cr * sp + cp * sy * sr;
@@ -61,18 +75,6 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	rotMatrix[2][1] = cp * sr + cr * sp * sy;
 	rotMatrix[2][2] = cp * cr - sp * sy * sr;
 	*/
-	
-	rotMatrix[0][0] =  cp * cy;
-    rotMatrix[0][1] =  sy;
-    rotMatrix[0][2] = -cy * sp;
-
-    rotMatrix[1][0] =  sp * sr - cp * cr * sy;
-    rotMatrix[1][1] =  cy * cr;
-    rotMatrix[1][2] =  cp * sr + cr * sp * sy;
-
-    rotMatrix[2][0] =  cr * sp + cp * sy * sr;
-    rotMatrix[2][1] = -cy * sr;
-    rotMatrix[2][2] =  cp * cr - sp * sy * sr;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
@@ -103,7 +105,7 @@ void main()
 	
 	// Interpolated Depth of Elevated Vertex Position relative to Camera's Viewing Orientation and the Radius of Atmosphere
 	vec3 camera_view_direction = normalize(v_vPosition - in_vsh_CameraPosition);
-	v_vDepth = dot(camera_view_direction, planet_rotated_local_vector_elevation / u_AtmosphereRadius) * u_AtmosphereRadius;
+	v_vDepth = dot(camera_view_direction, planet_rotated_local_vector_elevation / u_AtmosphereRadius) * u_AtmosphereRadius + u_AtmosphereRadius;
 	
 	// Set Vertex Positions
 	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * planet_object_space_position;

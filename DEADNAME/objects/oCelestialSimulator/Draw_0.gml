@@ -296,11 +296,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						shader_set(shd_sdf_sphere_volumetric_cloud_lit);
 						
 						// Set Atmosphere Cloud Rendering Shader Camera Properties
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation, CelestialSimulator.camera_view_matrix);
-						shader_set_uniform_matrix_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation, CelestialSimulator.camera_view_matrix);
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions, GameManager.game_width, GameManager.game_height);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_camera_position, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
 						
 						// Set Atmosphere Cloud Noise Texture Sampling Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_cloud_noise_square_size_index, 2048);
@@ -338,8 +334,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_shadow_position_z_index, sphere_shadow_position_z);
 						
 						// Set Planet Atmosphere Properties
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index, radius + elevation + sky_radius);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
 						
 						// Set Planet Physical Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_planet_radius_index, radius);

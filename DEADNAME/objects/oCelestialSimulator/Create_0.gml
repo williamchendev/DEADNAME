@@ -307,11 +307,7 @@ planet_atmosphere_lit_shader_celestial_body_diffuse_surface_texture_index = shad
 planet_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index = shader_get_sampler_index(shd_planet_atmosphere_lit, "gm_CelestialBodyEmissiveSurface");
 
 // MRT (Forward Rendered Lighting) Signed Distance Field Sphere-Shaped Volumetric Clouds Lit Rendering Shader Indexes
-sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraPosition");
-sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraPosition");
-sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraRotation");
-sdf_sphere_volumetric_clouds_lit_shader_fsh_camera_rotation = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_fsh_CameraRotation");
-sdf_sphere_volumetric_clouds_lit_shader_vsh_camera_dimensions = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_vsh_CameraDimensions");
+sdf_sphere_volumetric_clouds_lit_shader_camera_position = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_CameraPosition");
 
 sdf_sphere_volumetric_clouds_lit_shader_noise_time_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_NoiseTime");
 
@@ -344,8 +340,7 @@ sdf_sphere_volumetric_clouds_lit_shader_shadow_position_x_index = shader_get_uni
 sdf_sphere_volumetric_clouds_lit_shader_shadow_position_y_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Position_Y");
 sdf_sphere_volumetric_clouds_lit_shader_shadow_position_z_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "in_Shadow_Position_Z");
 
-sdf_sphere_volumetric_clouds_lit_shader_vsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_AtmosphereRadius");
-sdf_sphere_volumetric_clouds_lit_shader_fsh_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_AtmosphereRadius");
+sdf_sphere_volumetric_clouds_lit_shader_atmosphere_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_AtmosphereRadius");
 
 sdf_sphere_volumetric_clouds_lit_shader_vsh_planet_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_vsh_PlanetRadius");
 sdf_sphere_volumetric_clouds_lit_shader_fsh_planet_radius_index = shader_get_uniform(shd_sdf_sphere_volumetric_cloud_lit, "u_fsh_PlanetRadius");
@@ -986,7 +981,7 @@ generate_default_solar_system = function()
 	//
 	load_solar_system("grandmom");
 	
-	//camera_observing_instance = instance_find(oPlanet_Mom, 0);
+	camera_observing_instance = instance_find(oPlanet_Mom, 0);
 }
 
 // DEBUG

@@ -114,6 +114,13 @@ if (instance_exists(camera_observing_instance))
 }
 else
 {
+	// Reset Camera Observation Settings
+	camera_observing_instance = noone;
+	
+	camera_observing_polar_horizontal_angle = 0;
+	camera_observing_polar_vertical_angle = 0;
+	
+	// DEBUG KEYBOARD CONTROLS
 	var temp_camera_move_spd = 2;
 	
 	if (keyboard_check(ord("A")))
@@ -143,10 +150,7 @@ else
 		camera_position_y -= temp_camera_move_spd * frame_delta;
 	}
 	
-	// Reset Camera Observation Settings
-	camera_observing_instance = noone;
-	camera_observing_polar_horizontal_angle = 0;
-	camera_observing_polar_vertical_angle = 0;
+	
 	
 	//
 	look_dir -= (window_mouse_get_x() - window_get_width() / 2) / 10;
@@ -178,7 +182,7 @@ var temp_cursor_raycast = screen_position_to_world_vector(GameManager.cursor_x, 
 var temp_click_behaviour = mouse_check_button(mb_left);
 var temp_action_behaviour = mouse_check_button(mb_right);
 
-//
+// Check if Celestial Simulator's Selection Actions have been performed
 if (temp_click_behaviour or temp_action_behaviour)
 {
 	// Establish Empty Selection Variables

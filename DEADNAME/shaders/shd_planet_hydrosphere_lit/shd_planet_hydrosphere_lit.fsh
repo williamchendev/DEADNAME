@@ -217,7 +217,7 @@ float shadow(vec3 world_position, vec3 light_direction, float light_emitter_size
 void main() 
 {
 	// Skip rendering back-facing Sphere Fragments
-	if (v_vDepth > 0.0)
+	if (v_vDepth > u_fsh_AtmosphereRadius)
 	{
 		return;
 	}

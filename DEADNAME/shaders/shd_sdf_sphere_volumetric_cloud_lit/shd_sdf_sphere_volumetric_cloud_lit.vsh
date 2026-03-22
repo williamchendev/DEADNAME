@@ -5,14 +5,6 @@
 // Vertex Buffer Properties
 attribute vec2 in_Position; // (x, y)
 
-// Camera Properties
-uniform vec3 in_vsh_CameraPosition;
-uniform mat4 in_vsh_CameraRotation;
-uniform vec2 in_vsh_CameraDimensions;
-
-// Atmosphere Properties
-uniform float u_vsh_AtmosphereRadius;
-
 // Planet Properties
 uniform float u_vsh_PlanetRadius;
 uniform vec3 u_vsh_PlanetPosition;
@@ -23,19 +15,15 @@ uniform vec2 u_CloudUV;
 uniform float u_vsh_CloudRadius;
 uniform float u_CloudHeight;
 
-// Interpolated Square UV, Surface Mask UV, and World Position
-varying vec2 v_vSquareUV;
+// Interpolated Surface Mask UV, Cloud Position, Local Position, Sample Position, and Inverse Planet Rotation Matrix
 varying vec2 v_vSurfaceUV;
 varying vec3 v_vCloudPosition;
 varying vec3 v_vLocalPosition;
-varying vec3 v_vSampleForward;
 varying vec3 v_vSamplePosition;
-varying mat3 v_vPlanetRotation;
+varying mat3 v_vInvPlanetRotation;
 
 // Constants
 const float Pi = 3.14159265359;
-
-const vec3 inverse_vertical_vector = vec3(1.0, -1.0, 1.0);
 
 // UV Functions
 vec3 sphereVectorFromUV(vec2 uv)
@@ -73,7 +61,21 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	// Build rotation matrix (Tait–Bryan YZX order - pitch, yaw, roll)
 	mat3 rotMatrix;
 	
+	rotMatrix[0][0] =  cp * cy;
+	rotMatrix[0][1] =  sy;
+	rotMatrix[0][2] = -cy * sp;
+	
+	rotMatrix[1][0] =  sp * sr - cp * cr * sy;
+	rotMatrix[1][1] =  cy * cr;
+	rotMatrix[1][2] =  cp * sr + cr * sp * sy;
+	
+	rotMatrix[2][0] =  cr * sp + cp * sy * sr;
+	rotMatrix[2][1] = -cy * sr;
+	rotMatrix[2][2] =  cp * cr - sp * sy * sr;
+	
 	/*
+	// Inverse Rotation Matrix ^^^
+	
 	rotMatrix[0][0] = cp * cy;
 	rotMatrix[0][1] = sp * sr - cp * cr * sy;
 	rotMatrix[0][2] = cr * sp + cp * sy * sr;
@@ -86,18 +88,6 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	rotMatrix[2][1] = cp * sr + cr * sp * sy;
 	rotMatrix[2][2] = cp * cr - sp * sy * sr;
 	*/
-	
-	rotMatrix[0][0] =  cp * cy;
-    rotMatrix[0][1] =  sy;
-    rotMatrix[0][2] = -cy * sp;
-
-    rotMatrix[1][0] =  sp * sr - cp * cr * sy;
-    rotMatrix[1][1] =  cy * cr;
-    rotMatrix[1][2] =  cp * sr + cr * sp * sy;
-
-    rotMatrix[2][0] =  cr * sp + cp * sy * sr;
-    rotMatrix[2][1] = -cy * sr;
-    rotMatrix[2][2] =  cp * cr - sp * sy * sr;
 	
 	// Return Rotation Matrix
 	return rotMatrix;
@@ -124,54 +114,6 @@ void main()
 	// Calculate Camera Right, Up, and Forward Vectors from Camera's View Matrix
 	vec3 camera_right = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][0], gm_Matrices[MATRIX_VIEW][1][0], gm_Matrices[MATRIX_VIEW][2][0]));
 	vec3 camera_up = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][1], gm_Matrices[MATRIX_VIEW][1][1], gm_Matrices[MATRIX_VIEW][2][1]));
-	vec3 camera_forward = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][2], gm_Matrices[MATRIX_VIEW][1][2], gm_Matrices[MATRIX_VIEW][2][2]));
-	
-	// Calculate Planet Rotation Matrix from Planet's Euler Angles
-	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
-	mat3 inverse_planet_rotation_matrix = inverse(planet_rotation_matrix);
-	
-	// Convert Cloud UV into Normalized Position Vector Relative to Planet Center
-	vec3 cloud_sphere_vector = sphereVectorFromUV(u_CloudUV);
-	
-	// Calculate Cloud Offset from Planet Center
-	//vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_planet_rotation_matrix;
-	
-	// Calculate Render Cloud Vertex Position with Camera Rotation Matrix
-	//vec4 cloud_world_position = vec4(u_vsh_PlanetPosition + cloud_planet_center_offset, 1.0);
-	//vec4 cloud_vertex_position = cloud_world_position + vec4(in_Position * u_vsh_CloudRadius, 0.0, 0.0);
-	
-	// Translate Square UV into Square Offset matching Camera's Orientation
-	vec3 camera_quad_offset = (camera_right * in_Position.x + camera_up * in_Position.y) * u_vsh_CloudRadius * 2.0;
-	
-	// Calculate Imposter Sphere's Quad Vertex World Positions
-	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * planet_rotation_matrix;
-	vec3 vertex_local_position = cloud_planet_center_offset + camera_quad_offset;
-	vec4 vertex_world_position = vec4(vertex_local_position + u_vsh_PlanetPosition, 1.0);
-	
-	// Interpolated Local Position
-	vec3 planet_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius;
-	vec3 planet_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius;
-	v_vLocalPosition = vertex_local_position;
-	v_vCloudPosition = u_vsh_PlanetPosition + cloud_planet_center_offset;
-	
-	// Interpolated Sample Position
-	vec3 sample_position = camera_quad_offset * inverse_planet_rotation_matrix;
-	v_vSampleForward = normalize(vertex_world_position.xyz - in_vsh_CameraPosition) * inverse_planet_rotation_matrix;
-	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position;
-	v_vPlanetRotation = planet_rotation_matrix;
-	
-	
-	//
-	gl_Position = gm_Matrices[MATRIX_PROJECTION] * gm_Matrices[MATRIX_VIEW] * vertex_world_position;
-	
-	// Update Surface Mask UV from Clip Space Position
-	v_vSurfaceUV = (vec2(gl_Position.x, -gl_Position.y) / gl_Position.w) * 0.5 + 0.5;
-	
-	/*
-	// ATTEMPT #1
-	// Calculate Camera Right, Up, and Forward Vectors from Camera's Rotation Matrix
-	vec3 camera_right = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][0], gm_Matrices[MATRIX_VIEW][1][0], gm_Matrices[MATRIX_VIEW][2][0]));
-	vec3 camera_up = normalize(vec3(gm_Matrices[MATRIX_VIEW][0][1], gm_Matrices[MATRIX_VIEW][1][1], gm_Matrices[MATRIX_VIEW][2][1]));
 	
 	// Calculate Planet Rotation Matrix from Planet's Euler Angles
 	mat3 planet_rotation_matrix = eulerRotationMatrix(u_PlanetEulerAngles);
@@ -183,56 +125,26 @@ void main()
 	// Translate Square UV into Square Offset matching Camera's Orientation
 	vec3 camera_quad_offset = camera_right * in_Position.x + camera_up * in_Position.y;
 	
-	// Calculate Cloud Offset from Planet Center
-	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_vertical_vector * inverse_planet_rotation_matrix;
+	// Calculate Cloud's Offset from Planet's Center Pivot Position
+	vec3 cloud_to_planet_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector;
 	
 	// Calculate Imposter Sphere's Quad Vertex World Positions
-	vec3 vertex_local_position = camera_quad_offset * u_vsh_CloudRadius * 2.0;
+	vec3 vertex_local_position = cloud_to_planet_offset * planet_rotation_matrix + (camera_quad_offset * u_vsh_CloudRadius * 2.0);
 	vec4 vertex_world_position = vec4(vertex_local_position + u_vsh_PlanetPosition, 1.0);
 	
 	// Interpolated Local Position
 	v_vLocalPosition = vertex_local_position;
-	v_vCloudPosition = cloud_planet_center_offset + u_vsh_PlanetPosition;
+	v_vCloudPosition = u_vsh_PlanetPosition + cloud_to_planet_offset * planet_rotation_matrix;
 	
 	// Interpolated Sample Position
-	vec3 sample_position = camera_quad_offset * u_vsh_CloudRadius * 2.0 * planet_rotation_matrix;
-	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position;
-	v_vPlanetRotation = planet_rotation_matrix;
+	v_vSamplePosition = cloud_to_planet_offset + (camera_quad_offset * u_vsh_CloudRadius * 2.0) * inverse_planet_rotation_matrix;
+	
+	// Interpolated Inverse Planet Rotation Matrix
+	v_vInvPlanetRotation = inverse_planet_rotation_matrix;
 	
 	// Translate Imposter Sphere's Quad Vertex World Positions to Clip Space Position
 	gl_Position = gm_Matrices[MATRIX_PROJECTION] * gm_Matrices[MATRIX_VIEW] * vertex_world_position;
 	
 	// Update Surface Mask UV from Clip Space Position
 	v_vSurfaceUV = (vec2(gl_Position.x, -gl_Position.y) / gl_Position.w) * 0.5 + 0.5;
-	*/
-	
-	/*
-	// Calculate Cloud Offset from Planet Center
-	vec3 cloud_planet_center_offset = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector * inverse_planet_rotation_matrix;
-	
-	// Calculate Render Cloud Vertex Position with Camera Rotation Matrix
-	vec4 cloud_world_position = vec4(u_vsh_PlanetPosition + cloud_planet_center_offset - in_vsh_CameraPosition * inverse_vertical_vector, 1.0) * in_vsh_CameraRotation;
-	vec4 cloud_vertex_position = cloud_world_position + vec4(in_Position * u_vsh_CloudRadius, 0.0, 0.0);
-	
-	// Interpolated Square UV and Surface UV
-	v_vSquareUV = (in_Position * 0.5) + 0.5;
-	v_vSurfaceUV = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * vec4(cloud_vertex_position.xyz * inverse_vertical_vector + vec3(in_vsh_CameraDimensions * 0.5, 0.0), 1.0);
-	
-	// Interpolated Local Position
-	vec3 planet_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius;
-	vec3 planet_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius;
-	v_vLocalPosition = cloud_planet_center_offset + planet_position_horizontal + planet_position_vertical;
-	v_vCloudPosition = u_vsh_PlanetPosition + cloud_planet_center_offset;
-	
-	// Interpolated Sample Position
-	vec3 sample_position_horizontal = camera_right * in_Position.x * u_vsh_CloudRadius * planet_rotation_matrix;
-	vec3 sample_position_vertical = camera_up * in_Position.y * u_vsh_CloudRadius * planet_rotation_matrix;
-	v_vSampleForward = camera_forward * planet_rotation_matrix;
-	v_vSamplePosition = (u_vsh_PlanetRadius + u_CloudHeight) * cloud_sphere_vector + sample_position_horizontal + sample_position_vertical;
-	v_vPlanetRotation = planet_rotation_matrix;
-	
-	// Set Vertex Positions
-	vec4 object_space_pos = vec4(cloud_vertex_position.xyz + vec3(in_vsh_CameraDimensions * 0.5, 0.0), 1.0);
-	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
-	*/
 }
