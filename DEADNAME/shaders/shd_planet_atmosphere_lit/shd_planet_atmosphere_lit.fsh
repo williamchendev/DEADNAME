@@ -56,14 +56,11 @@ uniform sampler2D gm_AtmospherePlanetDepthMask;
 uniform sampler2D gm_CelestialBodyDiffuseSurface;
 uniform sampler2D gm_CelestialBodyEmissiveSurface;
 
-// Interpolated Surface Mask UV, and World Position
+// Interpolated Surface Mask UV and World Position
 varying vec2 v_vSurfaceUV;
 varying vec3 v_vWorldPosition;
-varying vec3 v_ViewVector;
 
 // Constants
-const float Pi = 3.14159265359;
-
 const float epsilon = 0.0001;
 const float pseudo_infinity = 1.0 / 0.0;
 
