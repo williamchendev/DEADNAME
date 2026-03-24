@@ -41,6 +41,8 @@ camera_z_far = 32000;
 camera_z_near_depth_overpass = -(800 + camera_z_near);
 
 camera_observing_instance_zoom_spd = 0.15;
+camera_observing_instance_drag_spd_min = 0.2;
+camera_observing_instance_drag_spd_max = 0.75;
 
 // Solar System Settings
 background_star_sphere = geodesic_icosphere_create(4);
@@ -84,6 +86,12 @@ camera_observing_instance_radius_offset_value = 0.5;
 
 camera_observing_polar_horizontal_angle = 0;
 camera_observing_polar_vertical_angle = 0;
+
+camera_observing_drag = false;
+camera_observing_drag_start_x = 0;
+camera_observing_drag_start_y = 0;
+camera_observing_drag_polar_horizontal_angle = 0;
+camera_observing_drag_polar_vertical_angle = 0;
 
 // Solar System Variables
 solar_system_index = -1;
@@ -371,10 +379,6 @@ bloom_effect_render_shader_diffusemap_index  = shader_get_sampler_index(shd_cele
 bloom_effect_render_shader_emissivemap_index  = shader_get_sampler_index(shd_celestial_bloom_effect_render, "in_EmissiveMap");
 
 // Sun Unlit Rendering Shader Indexes
-sun_unlit_shader_camera_position_index = shader_get_uniform(shd_sun_unlit, "in_camera_position");
-sun_unlit_shader_camera_rotation_index = shader_get_uniform(shd_sun_unlit, "in_camera_rotation");
-sun_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_sun_unlit, "in_camera_dimensions");
-
 sun_unlit_shader_radius_index = shader_get_uniform(shd_sun_unlit, "u_Radius");
 sun_unlit_shader_elevation_index = shader_get_uniform(shd_sun_unlit, "u_Elevation");
 sun_unlit_shader_position_index = shader_get_uniform(shd_sun_unlit, "u_Position");
@@ -948,10 +952,10 @@ generate_default_solar_system = function()
 	
 	//
 	add_solar_system("grandmom", "Grandmother");
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 400, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 5000, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 800, orbit_size: 5000, orbit_speed: 0, orbit_rotation: 90 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_white, radius: 800, orbit_size: 0, orbit_speed: 0, orbit_rotation: 90 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);

@@ -111,7 +111,7 @@ repeat (array_length(temp_solar_system))
 		var temp_camera_forward_to_object_dot_product = dot_product_3d(temp_camera_to_object_vector_x, temp_camera_to_object_vector_y, temp_camera_to_object_vector_z, temp_camera_forward_vector_normalized[0], temp_camera_forward_vector_normalized[1], temp_camera_forward_vector_normalized[2]);
 		
 		// Check if Celestial Object can be Horizontally Frustum Culled
-		var temp_camera_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_object_dot_product;
+		var temp_camera_frustum_half_width = temp_camera_half_h * temp_camera_forward_to_object_dot_product * 2;
 		
 		if (temp_camera_right_to_object_dot_product < -temp_camera_frustum_half_width - temp_frustum_culling_radius or temp_camera_right_to_object_dot_product > temp_camera_frustum_half_width + temp_frustum_culling_radius) 
 		{
@@ -123,7 +123,7 @@ repeat (array_length(temp_solar_system))
 		}
 		
 		// Check if Celestial Object can be Vertically Frustum Culled
-		var temp_camera_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_object_dot_product;
+		var temp_camera_frustum_half_height = temp_camera_half_v * temp_camera_forward_to_object_dot_product * 2;
 		
 		if (temp_camera_up_to_object_dot_product < -temp_camera_frustum_half_height - temp_frustum_culling_radius or temp_camera_up_to_object_dot_product > temp_camera_frustum_half_height + temp_frustum_culling_radius) 
 		{

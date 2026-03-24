@@ -28,28 +28,7 @@ var temp_solar_system = solar_systems[solar_system_index];
 // Solar System's Camera Observation Behaviour - Establish Camera Position, Rotation, & View Matrix
 if (instance_exists(camera_observing_instance))
 {
-	// DEBUG MOVEMENT SETTINGS
-	var temp_camera_move_spd = 2;
-	
-	// DEBUG KEYBOARD CONTROLS
-	if (keyboard_check(ord("A")))
-	{
-		camera_observing_polar_horizontal_angle -= temp_camera_move_spd * frame_delta;
-	}
-	else if (keyboard_check(ord("D")))
-	{
-		camera_observing_polar_horizontal_angle += temp_camera_move_spd * frame_delta;
-	}
-	
-	if (keyboard_check(ord("W")))
-	{
-		camera_observing_polar_vertical_angle += temp_camera_move_spd * frame_delta;
-	}
-	else if (keyboard_check(ord("S")))
-	{
-		camera_observing_polar_vertical_angle -= temp_camera_move_spd * frame_delta;
-	}
-	
+	// Perform Camera Observing Instance's Zoom In & Zoom Out Behaviour
 	if (mouse_wheel_up())
 	{
 		// Zoom In Effect
@@ -61,6 +40,14 @@ if (instance_exists(camera_observing_instance))
 		// Zoom Out Effect
 		camera_observing_instance_radius_offset_value += camera_observing_instance_zoom_spd * frame_delta;
 		camera_observing_instance_radius_offset_value = clamp(camera_observing_instance_radius_offset_value, 0, 1);
+	}
+	
+	// Perform Camera Observing Instance's Click Drag Behaviour
+	if (camera_observing_drag)
+	{
+		var temp_camera_observing_instance_drag_spd = lerp(camera_observing_instance_drag_spd_min, camera_observing_instance_drag_spd_max, camera_observing_instance_radius_offset_value);
+		camera_observing_polar_horizontal_angle = camera_observing_drag_polar_horizontal_angle + (camera_observing_drag_start_x - GameManager.cursor_x) * temp_camera_observing_instance_drag_spd;
+		camera_observing_polar_vertical_angle = camera_observing_drag_polar_vertical_angle + (GameManager.cursor_y - camera_observing_drag_start_y) * temp_camera_observing_instance_drag_spd;
 	}
 	
 	// Establish Camera Observing Instance Default Observation Behaviour Variables
@@ -182,8 +169,16 @@ var temp_cursor_raycast = screen_position_to_world_vector(GameManager.cursor_x, 
 var temp_click_behaviour = mouse_check_button(mb_left);
 var temp_action_behaviour = mouse_check_button(mb_right);
 
-// Check if Celestial Simulator's Selection Actions have been performed
-if (temp_click_behaviour or temp_action_behaviour)
+// Celestial Simulator Selection & Action Behaviour
+if (camera_observing_drag)
+{
+	// Check if Click Drag Behaviour has Finished
+	if (!temp_click_behaviour)
+	{
+		camera_observing_drag = false;
+	}
+}
+else if (temp_click_behaviour or temp_action_behaviour)
 {
 	// Establish Empty Selection Variables
 	var temp_selection_inst = noone;
@@ -321,8 +316,21 @@ if (temp_click_behaviour or temp_action_behaviour)
 			// Check if Selection Node Index Exists
 			if (temp_selection_node_index != -1)
 			{
-				show_debug_message($"[{temp_selection_inst.pathfinding_node_region_array[temp_selection_node_index]}]");
+				//
+				
+				//show_debug_message($"[{temp_selection_inst.pathfinding_node_region_array[temp_selection_node_index]}]");
 			}
+		}
+		
+		// Check for Camera Observing Instance Click Drag Behaviour
+		if (instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance and temp_click_behaviour)
+		{
+			// Enable Click Drag Behaviour
+			camera_observing_drag = true;
+			camera_observing_drag_start_x = GameManager.cursor_x;
+			camera_observing_drag_start_y = GameManager.cursor_y;
+			camera_observing_drag_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
+			camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;
 		}
 	}
 }

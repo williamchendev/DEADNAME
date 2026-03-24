@@ -387,15 +387,14 @@ void main()
 		atmosphere_light += in_scattered_light + reflected_light;
 	}
 	
-	// Calculate Light
-	vec3 light = diffuse_color.rgb + atmosphere_light + blue_noise;
+	// Calculate Light Color
+	vec3 light_color = diffuse_color.rgb + atmosphere_light + blue_noise;
 	
-	// Calculate Atmosphere Alpha
-	float atmosphere_alpha = min(atmosphere_raycast.y / (u_fsh_AtmosphereRadius * 2.0) + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
+	// Calculate Light Alpha
+	float light_alpha = min(pow(atmosphere_raycast.y / (2.0 * u_fsh_AtmosphereRadius), 6.0) * 5.0 + (surface_mask == 0.0 ? 0.0 : 1.0), 1.0);
 	
 	// Render Lit Atmosphere, Diffuse, and Emissive Fragment Color Value
-	//gl_FragData[0] = vec4(vec3(surface_mask / (u_fsh_AtmosphereRadius * 2.0)), atmosphere_alpha);
-	gl_FragData[0] = vec4(light, atmosphere_alpha);
+	gl_FragData[0] = vec4(light_color, light_alpha);
 	gl_FragData[1] = vec4(planet_bloom_diffuse, diffuse_color.a);
 	gl_FragData[2] = vec4(vec3(planet_bloom_emissive), diffuse_color.a);
 }

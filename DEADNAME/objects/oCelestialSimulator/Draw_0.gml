@@ -49,8 +49,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(true);
 				gpu_set_ztestenable(true);
 				
-				// Set Celestial Body Depth Render Surface as Surface Target
-				surface_set_target(CelestialSimulator.celestial_body_render_surface);
+				// (Multiple Render Targets) Set Celestial Body Render, Diffuse & Emissive
+				surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+				surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+				surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
 				
 				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
 				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
@@ -67,11 +69,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Enable Sun Unlit Shader
 				shader_set(shd_sun_unlit);
 				
-				// Set Sun Unlit Shader Camera Properties
-				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-				shader_set_uniform_matrix_array(CelestialSimulator.sun_unlit_shader_camera_rotation_index, CelestialSimulator.camera_view_matrix);
-				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
-				
 				// Set Sun Physical Properties
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_radius_index, radius);
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_elevation_index, elevation);
@@ -79,7 +76,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				shader_set_uniform_f(CelestialSimulator.sun_unlit_shader_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
 				// Draw Sun from Icosphere Vertex Buffer
-				//vertex_submit(icosphere_vertex_buffer, pr_trianglelist, diffuse_texture);
+				vertex_submit(icosphere_vertex_buffer, pr_trianglelist, diffuse_texture);
 				
 				// Reset Shader
 				shader_reset();
@@ -93,12 +90,37 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+				
+				// (Multiple Render Targets) Set Post Processing, Diffuse, & Emissive Surfaces as Surface Targets
+				surface_set_target_ext(0, CelestialSimulator.post_processing_surface);
+				surface_set_target_ext(1, CelestialSimulator.diffuse_surface);
+				surface_set_target_ext(2, CelestialSimulator.emissive_surface);
+				
+				// Enable Planet Render without Atmosphere Shader
+				shader_set(shd_planet_no_atmosphere_lit);
+				
+				// Set Celestial Simulator's Perspective View Matrix, Projection Matrix, and Camera Active for current Surface Render
+				camera_set_view_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_view_matrix);
+				camera_set_proj_mat(CelestialSimulator.camera_instance, CelestialSimulator.camera_projection_matrix);
+				camera_apply(CelestialSimulator.camera_instance);
+				
+				// Set Sun Render Properties
+				shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius);
+				shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_position_index, x, y, z);
+				
+				// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect
+				texture_set_stage(CelestialSimulator.planet_no_atmosphere_lit_shader_celestial_body_diffuse_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_diffuse_surface));
+				texture_set_stage(CelestialSimulator.planet_no_atmosphere_lit_shader_celestial_body_emissive_surface_texture_index, surface_get_texture(CelestialSimulator.celestial_body_emissive_surface));
+				
+				// Draw Final Sun Render with Atmosphere from Square UV Vertex Buffer
+				vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, surface_get_texture(CelestialSimulator.celestial_body_render_surface));
+				
+				// Reset Shader
+				shader_reset();
+				
+				// Reset Surface Target
+				surface_reset_target();
 			}
-			
-			// Render Celestial Object to Post Processing Surface
-			surface_set_target(post_processing_surface);
-			draw_surface_ext(celestial_body_render_surface, 0, 0, 1, 1, 0, c_white, 1);
-			surface_reset_target();
 			break;
 		case CelestialObjectType.Planet:
 			// Render Planet (Lithosphere, Hydrosphere, Atmosphere)

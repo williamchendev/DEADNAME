@@ -1,5 +1,5 @@
 //
-// Forward Rendered Lit Planet Lithosphere fragment shader meant for Inno's Solar System Overworld
+// Forward Rendered Sun fragment shader meant for Inno's Solar System Overworld
 //
 
 // Interpolated Color, Normal, Position, and Sphere Texture Vector
@@ -49,6 +49,8 @@ void main()
 	// Establish Diffuse Texture Color at Sphere UV
 	vec4 diffuse_color = texture2D(gm_BaseTexture, sphere_uv);
 	
-	// Render Lit Sphere Fragment Value
-	gl_FragColor = v_vColour;
+	// (Multiple Render Targets) Render Lit Sphere, Diffuse, and Emissive
+	gl_FragData[0] = v_vColour;
+	gl_FragData[1] = v_vColour;
+	gl_FragData[2] = vec4(vec3(1.0), v_vColour.a);
 }

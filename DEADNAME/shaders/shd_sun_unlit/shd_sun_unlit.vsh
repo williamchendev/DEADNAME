@@ -1,16 +1,11 @@
 //
-// Forward Rendered Lit Planet Lithosphere vertex shader meant for Inno's Solar System Overworld
+// Forward Rendered Sun vertex shader meant for Inno's Solar System Overworld
 //
 
 // Vertex Buffer Properties
 attribute vec3 in_Position; // (x, y, z)
 attribute vec4 in_Colour; // (r, g, b, a)
 attribute vec2 in_Elevation; // (u, v)
-
-// Camera Properties
-uniform vec3 in_camera_position;
-uniform mat4 in_camera_rotation;
-uniform vec2 in_camera_dimensions;
 
 // Planet Properties
 uniform float u_Radius;
@@ -43,20 +38,36 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 	float cy = cos(yaw);
 	float sy = sin(yaw);
 	
-	// Build rotation matrix (ZXY order - roll, yaw, pitch)
+	// Build rotation matrix (Tait–Bryan YZX order - pitch, yaw, roll)
 	mat3 rotMatrix;
-    
-    rotMatrix[0][0] = cy * cp - sr * sy * sp;
-    rotMatrix[0][1] = sy * cp + sr * sp * cy;
-    rotMatrix[0][2] = -sp * cr;
-    
-    rotMatrix[1][0] = -sy * cr;
-    rotMatrix[1][1] = cr * cy;
-    rotMatrix[1][2] = sr;
-    
-    rotMatrix[2][0] = sp * cy + sr * sy * cp;
-    rotMatrix[2][1] = sp * sy - sr * cy * cp;
-    rotMatrix[2][2] = cr * cp;
+	
+	rotMatrix[0][0] =  cp * cy;
+	rotMatrix[0][1] =  sy;
+	rotMatrix[0][2] = -cy * sp;
+	
+	rotMatrix[1][0] =  sp * sr - cp * cr * sy;
+	rotMatrix[1][1] =  cy * cr;
+	rotMatrix[1][2] =  cp * sr + cr * sp * sy;
+	
+	rotMatrix[2][0] =  cr * sp + cp * sy * sr;
+	rotMatrix[2][1] = -cy * sr;
+	rotMatrix[2][2] =  cp * cr - sp * sy * sr;
+	
+	/*
+	// Inverse Rotation Matrix ^^^
+	
+	rotMatrix[0][0] = cp * cy;
+	rotMatrix[0][1] = sp * sr - cp * cr * sy;
+	rotMatrix[0][2] = cr * sp + cp * sy * sr;
+	
+	rotMatrix[1][0] = sy;
+	rotMatrix[1][1] = cy * cr;
+	rotMatrix[1][2] = -cy * sr;
+	
+	rotMatrix[2][0] = -cy * sp;
+	rotMatrix[2][1] = cp * sr + cr * sp * sy;
+	rotMatrix[2][2] = cp * cr - sp * sy * sr;
+	*/
 	
 	// Return Rotation Matrix
 	return rotMatrix;
@@ -65,25 +76,26 @@ mat3 eulerRotationMatrix(vec3 euler_angles)
 // Vertex Shader
 void main() 
 {
-	// Create Rotation Matrix from Euler Angles
+	// Create Rotation Matrix of Sun from Sun's Euler Angle Rotation
 	mat3 rotation_matrix = eulerRotationMatrix(u_EulerAngles);
 	
-	// Apply Rotation Matrix to the Position Vector
-	vec3 rotated_vector = rotation_matrix * in_Position;
+	// Calculate Sun's Vertex Elevation based on Sun's Radius and Elevation
+	float vertex_elevation = u_Radius + (in_Elevation.x * u_Elevation);
 	
-	// Calculate Vertex Position relative to Origin
-	vec3 vertex_position = rotated_vector * u_Radius;
+	// Calculate Sun's Local Vector, Rotated Local Vector, and Local Elevation Vector relative to Origin
+	vec3 local_vector = in_Position * inverse_vertical_vector;
+	vec3 rotated_local_vector = local_vector * rotation_matrix;
+	vec3 rotated_local_vector_elevation = rotated_local_vector * vertex_elevation;
 	
-	// Calculate Render Vertex Position with Camera Rotation Matrix
-	vec4 render_position = vec4(vertex_position + u_Position - in_camera_position * inverse_vertical_vector, 1.0) * in_camera_rotation;
+	// Calculate Sun's Object Space Vertex Position
+	vec4 object_space_position = vec4(local_vector * vertex_elevation, 1.0);
 	
 	// Interpolated Color, Normal, Position, and Sphere Texture Vector
 	v_vColour = in_Colour;
-	v_vNormal = rotated_vector;
-	v_vPosition = vertex_position + u_Position;
+	v_vNormal = rotated_local_vector;
+	v_vPosition = rotated_local_vector_elevation + u_Position;
 	v_vTexVector = in_Position;
 	
 	// Set Vertex Positions
-	vec4 object_space_pos = vec4(render_position.xyz + vec3(in_camera_dimensions * 0.5, 0.0), 1.0);
-	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_pos;
+	gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * object_space_position;
 }
