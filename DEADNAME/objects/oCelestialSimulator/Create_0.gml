@@ -169,6 +169,19 @@ background_stars_unlit_shader_camera_position_index = shader_get_uniform(shd_bac
 background_stars_unlit_shader_camera_rotation_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraRotation");
 background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraDimensions");
 
+// MRT (Unlit) Celestial Offset Sprite Rendering Shader Indexes
+celestial_offset_sprite_unlit_shader_camera_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraPosition");
+celestial_offset_sprite_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraDimensions");
+
+celestial_offset_sprite_unlit_shader_celestial_object_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialObjectPosition");
+celestial_offset_sprite_unlit_shader_celestial_offset_vector_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialOffsetVector");
+celestial_offset_sprite_unlit_shader_celestial_offset_distance_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialOffsetDistance");
+
+celestial_offset_sprite_unlit_shader_sprite_uv_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_SpriteUV");
+celestial_offset_sprite_unlit_shader_sprite_offset_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_SpriteOffset");
+
+celestial_offset_sprite_unlit_shader_color_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_Color");
+
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
 planet_lithosphere_lit_shader_fsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_fsh_CameraPosition");
@@ -955,7 +968,7 @@ generate_default_solar_system = function()
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 5000, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_white, radius: 800, orbit_size: 0, orbit_speed: 0, orbit_rotation: 90 }));
+	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_white, radius: 800 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
 	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
@@ -972,8 +985,6 @@ generate_default_solar_system = function()
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 300, orbit_speed: 2  } );
 	//temp_grandmom_solar_system[3] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 500, orbit_speed: -0.5 } );
 	//temp_grandmom_solar_system[4] = instance_create_depth(0, 0, 0, oPlanet_Mom, { image_blend: make_color_rgb(50, 50, 50), orbit_size: 800, orbit_speed: -1 } );
-	
-	
 	
 	//
 	for (var q = 0; q < array_length(CelestialSimulator.solar_systems_ids); q++)

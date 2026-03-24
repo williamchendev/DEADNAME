@@ -134,8 +134,6 @@ else
 		camera_position_y -= temp_camera_move_spd * frame_delta;
 	}
 	
-	
-	
 	//
 	look_dir -= (window_mouse_get_x() - window_get_width() / 2) / 10;
     look_pitch -= (window_mouse_get_y() - window_get_height() / 2) / 10;
@@ -165,7 +163,7 @@ camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, 
 // Calculate Cursor's Screen to World Raycast Vector
 var temp_cursor_raycast = screen_position_to_world_vector(GameManager.cursor_x, GameManager.cursor_y, camera_view_matrix, camera_projection_matrix);
 
-//
+// Check for Celestial Simulator Selection & Action Input
 var temp_click_behaviour = mouse_check_button(mb_left);
 var temp_action_behaviour = mouse_check_button(mb_right);
 
