@@ -76,6 +76,7 @@ surface_reset_target();
 // Set Default Blendmode
 gpu_set_blendmode(bm_normal);
 
+/*
 // DEBUG Draw Final Render Surface to UI Surface (this is incorrect but I'll do it for now)
 surface_set_target(LightingEngine.ui_surface);
 
@@ -88,6 +89,7 @@ draw_surface(final_render_surface, 0, 0);
 draw_sprite(sUI_CursorMenu, 0, GameManager.cursor_x, GameManager.cursor_y);
 
 surface_reset_target();
+*/
 
 // DEBUG DEBUG DEBUG NOISE TEST HERE
 /*

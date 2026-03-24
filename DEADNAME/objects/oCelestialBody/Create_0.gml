@@ -17,12 +17,15 @@ icosphere.vertex_elevations = array_create(array_length(icosphere.vertices));
 var temp_heightmap_buffer = undefined;
 var temp_heightmap_buffer_exists = false;
 
+var temp_heightmap_buffer_width = -1;
+var temp_heightmap_buffer_height = -1;
+
 // Establish Heightmap Texture & Heightmap Displacement Buffer for Celestial Body's Icosphere
 if (height_map != noone)
 {
 	// Establish Heightmap Texture Dimensions
-	var temp_heightmap_buffer_width = sprite_get_width(height_map);
-	var temp_heightmap_buffer_height = sprite_get_height(height_map);
+	temp_heightmap_buffer_width = sprite_get_width(height_map);
+	temp_heightmap_buffer_height = sprite_get_height(height_map);
 	
 	// Establish Heightmap Surface from Heightmap Texture Dimensions
 	var temp_heightmap_surface = surface_create(temp_heightmap_buffer_width, temp_heightmap_buffer_height, surface_rgba8unorm);
@@ -69,12 +72,15 @@ if (height_map != noone)
 var temp_regionmap_buffer = undefined;
 var temp_regionmap_buffer_exists = false;
 
+var temp_regionmap_buffer_width = -1;
+var temp_regionmap_buffer_height = -1;
+
 // Establish Regionmap Texture & Regionmap Buffer for Celestial Body's Icosphere
 if (region_map != noone)
 {
 	// Establish Regionmap Texture Dimensions
-	var temp_regionmap_buffer_width = sprite_get_width(region_map);
-	var temp_regionmap_buffer_height = sprite_get_height(region_map);
+	temp_regionmap_buffer_width = sprite_get_width(region_map);
+	temp_regionmap_buffer_height = sprite_get_height(region_map);
 	
 	// Establish Regionmap Surface from Regionmap Texture Dimensions
 	var temp_regionmap_surface = surface_create(temp_regionmap_buffer_width, temp_regionmap_buffer_height, surface_rgba8unorm);
@@ -99,12 +105,15 @@ if (region_map != noone)
 var temp_microclimatemap_buffer = undefined;
 var temp_microclimatemap_buffer_exists = false;
 
+var temp_microclimatemap_buffer_width = -1;
+var temp_microclimatemap_buffer_height = -1;
+
 // Establish Microclimatemap Texture & Microclimatemap Buffer for Celestial Body's Icosphere
 if (microclimate_map != noone)
 {
 	// Establish Microclimatemap Texture Dimensions
-	var temp_microclimatemap_buffer_width = sprite_get_width(microclimate_map);
-	var temp_microclimatemap_buffer_height = sprite_get_height(microclimate_map);
+	temp_microclimatemap_buffer_width = sprite_get_width(microclimate_map);
+	temp_microclimatemap_buffer_height = sprite_get_height(microclimate_map);
 	
 	// Establish Microclimatemap Surface from Microclimatemap Texture Dimensions
 	var temp_microclimatemap_surface = surface_create(temp_microclimatemap_buffer_width, temp_microclimatemap_buffer_height, surface_rgba8unorm);
@@ -307,19 +316,32 @@ if (pathfinding_enabled)
 		// Get Vertex's UV Position
 		var temp_vertex_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_vertex_index];
 		
-		// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
-		var temp_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
-		var temp_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
+		var temp_vertex_elevation = 0;
+		
+		if (temp_heightmap_buffer_exists)
+		{
+			// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
+			var temp_heightmap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+			var temp_heightmap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			
+			// Find Vertex's Elevation from Heightmap's Red Channel Value
+			temp_vertex_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_vertex_u, temp_heightmap_clamped_vertex_v) / 255;
+		}
 		
 		// Retreive Vertex's Region from Regionmap using the Vertex's UV Position
 		var temp_vertex_region = -1;
 		
 		if (temp_regionmap_buffer_exists)
 		{
+			// Clamp Texture Positions to prevent Regionmap Clipping and Seam Issues
+			var temp_regionmap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_regionmap_buffer_width, 1, temp_regionmap_buffer_width - 1);
+			var temp_regionmap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_regionmap_buffer_height, 1, temp_regionmap_buffer_height - 1);
+			
 			// Find Vertex's Region Color Red, Green, and Blue Values
-			var temp_vertex_region_color_r = buffer_getpixel_r(temp_regionmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
-			var temp_vertex_region_color_g = buffer_getpixel_g(temp_regionmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
-			var temp_vertex_region_color_b = buffer_getpixel_b(temp_regionmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
+			var temp_vertex_region_color_r = buffer_getpixel_r(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
+			var temp_vertex_region_color_g = buffer_getpixel_g(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
+			var temp_vertex_region_color_b = buffer_getpixel_b(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
 			
 			// Create Vertex's Region Color Hexadecimal Code from Red, Green, and Blue Values
 			var temp_vertex_region_color_hex = color_get_hex(make_color_rgb(temp_vertex_region_color_r, temp_vertex_region_color_g, temp_vertex_region_color_b));
@@ -343,18 +365,19 @@ if (pathfinding_enabled)
 			}
 		}
 		
-		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
-		var temp_vertex_elevation = temp_heightmap_buffer_exists ? buffer_getpixel_r(temp_heightmap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v) / 255 : 0;
-		
 		// Retreive Vertex's Microclimate from Microclimatemap using the Vertex's UV Position
 		var temp_vertex_microclimate = -1;
 		
 		if (temp_microclimatemap_buffer_exists)
 		{
+			// Clamp Texture Positions to prevent Microclimatemap Clipping and Seam Issues
+			var temp_microclimatemap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_microclimatemap_buffer_width, 1, temp_microclimatemap_buffer_width - 1);
+			var temp_microclimatemap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_microclimatemap_buffer_height, 1, temp_microclimatemap_buffer_height - 1);
+			
 			// Find Vertex's Microclimate Color Red, Green, and Blue Values
-			var temp_vertex_microclimate_color_r = buffer_getpixel_r(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
-			var temp_vertex_microclimate_color_g = buffer_getpixel_g(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
-			var temp_vertex_microclimate_color_b = buffer_getpixel_b(temp_microclimatemap_buffer, temp_clamped_vertex_u, temp_clamped_vertex_v);
+			var temp_vertex_microclimate_color_r = buffer_getpixel_r(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
+			var temp_vertex_microclimate_color_g = buffer_getpixel_g(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
+			var temp_vertex_microclimate_color_b = buffer_getpixel_b(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
 			
 			// Create Vertex's Microclimate Color Hexadecimal Code from Red, Green, and Blue Values
 			var temp_vertex_microclimate_color_hex = color_get_hex(make_color_rgb(temp_vertex_microclimate_color_r, temp_vertex_microclimate_color_g, temp_vertex_microclimate_color_b));
@@ -385,8 +408,8 @@ if (pathfinding_enabled)
 		pathfinding_node_y_array[temp_pathfinding_vertex_index] = temp_vertex_pos[1];
 		pathfinding_node_z_array[temp_pathfinding_vertex_index] = temp_vertex_pos[2];
 		
-		pathfinding_node_u_array[temp_pathfinding_vertex_index] = temp_clamped_vertex_u;
-		pathfinding_node_v_array[temp_pathfinding_vertex_index] = temp_clamped_vertex_v;
+		pathfinding_node_u_array[temp_pathfinding_vertex_index] = temp_vertex_uvs[0];
+		pathfinding_node_v_array[temp_pathfinding_vertex_index] = temp_vertex_uvs[1];
 		
 		// Set Pathfinding Node's Region from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_region_array[temp_pathfinding_vertex_index] = temp_vertex_region;

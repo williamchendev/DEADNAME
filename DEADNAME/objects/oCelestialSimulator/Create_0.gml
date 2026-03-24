@@ -30,7 +30,7 @@ global.celestial_simulator = id;
 sprite_index = -1;
 
 // Celestial Simulator Settings
-active = true;
+active = false;
 
 // Camera Settings
 camera_fov = 60;
@@ -80,7 +80,7 @@ camera_view_matrix = matrix_build_lookat(0, 0, 0, 0, 0, 1, 0, 1, 0);
 camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -640 / 360, camera_z_near, camera_z_far);
 
 camera_observing_instance = noone;
-camera_observing_instance_radius_offset_value = 0;
+camera_observing_instance_radius_offset_value = 0.5;
 
 camera_observing_polar_horizontal_angle = 0;
 camera_observing_polar_vertical_angle = 0;

@@ -8,7 +8,7 @@ switch (scene_get_type())
 		// Ignore Self-Destruct - Scene is a Platformer Level & needs Squad Director
 		break;
 	case SceneType.Title:
-	case SceneType.WorldMap:
+	case SceneType.Celestial:
 	default:
 		// Destroy Instance and Exit Behaviour
 		instance_destroy();

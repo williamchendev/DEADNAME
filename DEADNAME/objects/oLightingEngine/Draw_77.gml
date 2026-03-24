@@ -6,6 +6,12 @@ gpu_set_blendenable(false);
 draw_surface_ext(final_render_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
 gpu_set_blendenable(true);
 
+// Celestial Simulator Settings
+if (CelestialSimulator.active)
+{
+	draw_surface_ext(CelestialSimulator.final_render_surface, 0, 0, GameManager.game_scale, GameManager.game_scale, 0, c_white, 1);
+}
+
 // Draw Debug Surface
 if (global.debug_surface_enabled and global.debug)
 {

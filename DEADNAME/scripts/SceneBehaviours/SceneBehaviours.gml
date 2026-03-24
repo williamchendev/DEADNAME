@@ -2,7 +2,7 @@
 enum SceneType
 {
     Title,
-    WorldMap,
+    Celestial,
     Platformer
 }
 
@@ -21,6 +21,10 @@ function scene_get_type()
         case "_TitleScreen":
             // Title Screen
             temp_scene_type = SceneType.Title;
+            break;
+        case "_Celestial":
+            // Celestial World Map
+            temp_scene_type = SceneType.Celestial;
             break;
         default:
             // Platformer Level

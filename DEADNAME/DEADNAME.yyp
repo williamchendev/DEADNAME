@@ -426,6 +426,7 @@
     {"id":{"name":"oUnitPlayer","path":"objects/oUnitPlayer/oUnitPlayer.yy",},},
     {"id":{"name":"FireSmokeParticle","path":"particles/FireSmokeParticle/FireSmokeParticle.yy",},},
     {"id":{"name":"RainParticle","path":"particles/RainParticle/RainParticle.yy",},},
+    {"id":{"name":"_Celestial","path":"rooms/_Celestial/_Celestial.yy",},},
     {"id":{"name":"_TitleScreen","path":"rooms/_TitleScreen/_TitleScreen.yy",},},
     {"id":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
     {"id":{"name":"DebugAdobeHouse","path":"rooms/DebugAdobeHouse/DebugAdobeHouse.yy",},},
@@ -1155,6 +1156,7 @@
     {"roomId":{"name":"AdobeHouse","path":"rooms/AdobeHouse/AdobeHouse.yy",},},
     {"roomId":{"name":"DebugAdobeHouse","path":"rooms/DebugAdobeHouse/DebugAdobeHouse.yy",},},
     {"roomId":{"name":"rAdobeHouse_House","path":"rooms/rAdobeHouse_House/rAdobeHouse_House.yy",},},
+    {"roomId":{"name":"_Celestial","path":"rooms/_Celestial/_Celestial.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

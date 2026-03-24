@@ -25,10 +25,7 @@ if (solar_system_index == -1)
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
-// Create Perspective Camera Projection Matrix
-camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
-
-// Solar System's Camera Observation Behaviour
+// Solar System's Camera Observation Behaviour - Establish Camera Position, Rotation, & View Matrix
 if (instance_exists(camera_observing_instance))
 {
 	// DEBUG MOVEMENT SETTINGS
@@ -168,12 +165,15 @@ else
 	var zfrom = zto + camera_distance * dcos(look_dir);
 	
 	camera_view_matrix = matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0);
+	
+	if (keyboard_check(vk_escape))
+	{
+		game_end();
+	}
 }
 
-if (keyboard_check(vk_escape))
-{
-	game_end();
-}
+// Establish Perspective Camera Projection Matrix
+camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
 
 // Calculate Cursor's Screen to World Raycast Vector
 var temp_cursor_raycast = screen_position_to_world_vector(GameManager.cursor_x, GameManager.cursor_y, camera_view_matrix, camera_projection_matrix);
@@ -237,7 +237,7 @@ if (temp_click_behaviour or temp_action_behaviour)
 			temp_celestial_object_instance.x, 
 			temp_celestial_object_instance.y, 
 			temp_celestial_object_instance.z, 
-			temp_celestial_object_instance.radius
+			temp_celestial_object_radius
 		);
 		
 		// Check if Cursor's Raycast Vector intersected with the Celestial Object's Spherical Selection Mask
@@ -257,11 +257,7 @@ if (temp_click_behaviour or temp_action_behaviour)
 		temp_celestial_object_index++;
 	}
 	
-	//
-	//show_debug_message(is_undefined(temp_selection_position) ? "undefined" : $"celestial_id:{temp_selection_inst.celestial_id} {temp_selection_position}");
-	show_debug_message($"[{temp_cursor_raycast[0]}, {temp_cursor_raycast[1]}, {temp_cursor_raycast[2]}]");
-	
-	//
+	// Check if Selection Position is Valid
 	if (!is_undefined(temp_selection_position))
 	{
 		// Create Selection Instance's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
@@ -283,17 +279,50 @@ if (temp_click_behaviour or temp_action_behaviour)
 		
 		// Normalize Localized Selection Position Vector with Localized Selection Position Vector's Magnitude
 		temp_selection_x /= temp_selection_magnitude;
-		temp_selection_y /= temp_selection_magnitude;
+		temp_selection_y /= -temp_selection_magnitude;
 		temp_selection_z /= temp_selection_magnitude;
 		
-		//
-		show_debug_message($"[{temp_selection_x}, {temp_selection_y}, {temp_selection_z}]");
-		
 		// Find the Selection's UV Coordinates of the Localized Selection Position
-		var temp_selection_u = 0.5 - arctan2(-temp_selection_x, -temp_selection_z) / (2 * pi);
-		var temp_selection_v = 0.5 - arcsin(temp_selection_y) / pi;
+		//var temp_selection_u = 0.5 - arctan2(-temp_selection_x, -temp_selection_z) / (2 * pi);
+		//var temp_selection_v = 0.5 - arcsin(-temp_selection_y) / pi;
 		
-		//
-		show_debug_message($"[{temp_selection_u}, {temp_selection_v}]");
+		// Check if Selected Celestial Object has Pathfinding Enabled
+		if (temp_selection_inst.pathfinding_enabled)
+		{
+			// Establish Default Pathfinding Node Selection
+			var temp_selection_node_index = -1;
+			var temp_selection_node_dot_product = -1;
+			
+			// Iterate through all Pathfinding Nodes to find closest Pathfinding Node to Selection Position on Celestial Object
+			var temp_pathfinding_node_index = 0;
+			
+			repeat (temp_selection_inst.pathfinding_nodes_count)
+			{
+				// Establish Pathfinding Node's Normalized Sphere Vector
+				var temp_node_vector_x = temp_selection_inst.pathfinding_node_x_array[temp_pathfinding_node_index];
+				var temp_node_vector_y = temp_selection_inst.pathfinding_node_y_array[temp_pathfinding_node_index];
+				var temp_node_vector_z = temp_selection_inst.pathfinding_node_z_array[temp_pathfinding_node_index];
+				
+				// Calculate Dot Product of Pathfinding Node's Normalized Sphere Vector and the Selection Position's Normalized Sphere Vector
+				var temp_comparison_dot_product = dot_product_3d(temp_selection_x, temp_selection_y, temp_selection_z, temp_node_vector_x, temp_node_vector_y, temp_node_vector_z);
+				
+				// Compare the new Dot Product of the Pathfinding Node to the Selection Pathfinding Node's Dot Product
+				if (temp_comparison_dot_product > temp_selection_node_dot_product)
+				{
+					// Update Selection Node Index and Dot Product
+					temp_selection_node_index = temp_pathfinding_node_index;
+					temp_selection_node_dot_product = temp_comparison_dot_product;
+				}
+				
+				// Increment Pathfinding Node Index
+				temp_pathfinding_node_index++;
+			}
+			
+			// Check if Selection Node Index Exists
+			if (temp_selection_node_index != -1)
+			{
+				show_debug_message($"[{temp_selection_inst.pathfinding_node_region_array[temp_selection_node_index]}]");
+			}
+		}
 	}
 }
