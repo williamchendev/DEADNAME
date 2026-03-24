@@ -528,4 +528,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 matrix_set(matrix_world, matrix_build_identity());
 
 // Reset Camera Orientation
-camera_apply(camera_get_default());
+camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
+camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
+camera_apply(GameManager.camera_instance);

@@ -112,6 +112,11 @@ game_width = 640;
 game_height = 360;
 game_scale = max(1, round(display_get_width() / game_width) - 1);
 
+// Camera Variables
+camera_instance = camera_get_default();
+view_matrix = matrix_build_lookat(game_width / 2, game_height / 2, 0, game_width / 2, game_height / 2, 1, 0, 1, 0);
+projection_matrix = matrix_build_projection_ortho(game_width, game_height, 0, 32000);
+
 // Player Unit Variables
 player_unit = noone;
 
@@ -160,6 +165,10 @@ set_game_resolution_mode = function(resolution_mode)
 			game_scale = max(1, round(display_get_width() / game_width) - 1);
 			break;
 	}
+	
+	// Reset Camera Matrix Variables
+	view_matrix = matrix_build_lookat(game_width / 2, game_height / 2, 0, game_width / 2, game_height / 2, 1, 0, 1, 0);
+	projection_matrix = matrix_build_projection_ortho(game_width, game_height, 0, 32000);
 	
 	// Reset Viewport Variables
 	view_set_xport(view_current, 0);

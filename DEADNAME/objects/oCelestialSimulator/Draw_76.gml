@@ -107,10 +107,9 @@ if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[so
 	surface_set_target_ext(2, emissive_surface);
 	
 	// Reset Camera Orientation
-	var temp_camera_default = camera_get_default();
-	camera_set_view_mat(temp_camera_default, matrix_build_lookat(GameManager.game_width / 2, GameManager.game_height / 2, 0, GameManager.game_width / 2, GameManager.game_height / 2, 1, 0, 1, 0));
-	camera_set_proj_mat(temp_camera_default, matrix_build_projection_ortho(GameManager.game_width, GameManager.game_height, 0, 32000));
-	camera_apply(temp_camera_default);
+	camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
+	camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
+	camera_apply(GameManager.camera_instance);
 	
 	// Enable Background Stars Unlit Shader
 	shader_set(shd_background_stars_unlit);

@@ -72,7 +72,7 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
 
-const float light_source_intensity_multiplier = 80.0;
+const float light_source_intensity_multiplier = 100.0;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
