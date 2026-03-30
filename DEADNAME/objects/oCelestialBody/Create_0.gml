@@ -529,6 +529,9 @@ if (temp_microclimatemap_buffer_exists)
 	temp_microclimatemap_buffer = -1;
 }
 
+// Initialize Unit Arrays
+units = array_create(0);
+
 // Initialize Identity Matrix
 identity_matrix = matrix_build_identity();
 

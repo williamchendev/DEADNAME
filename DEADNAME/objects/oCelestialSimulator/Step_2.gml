@@ -170,6 +170,9 @@ repeat (array_length(temp_solar_system))
 				temp_planet_shadow_index++;
 			}
 			
+			// Planet Unit Depth Sorting Behaviour
+			
+			
 			// Planet Cloud Depth Sorting Behaviour
 			if (temp_celestial_object_instance.clouds)
 			{
