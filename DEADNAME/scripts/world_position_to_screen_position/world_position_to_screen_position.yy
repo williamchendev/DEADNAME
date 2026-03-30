@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"raycast_sphere",
+  "%Name":"world_position_to_screen_position",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"raycast_sphere",
+  "name":"world_position_to_screen_position",
   "parent":{
     "name":"Physics & Collisions",
     "path":"folders/Scripts/Physics & Collisions.yy",

@@ -295,6 +295,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				//
 				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
+				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_fov_index, CelestialSimulator.camera_fov);
 				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
 				
 				//

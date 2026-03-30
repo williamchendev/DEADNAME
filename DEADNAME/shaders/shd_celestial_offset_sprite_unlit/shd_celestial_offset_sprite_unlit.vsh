@@ -7,6 +7,7 @@ attribute vec2 in_Position;                  // (x, y)
 
 // Camera Properties
 uniform vec3 in_CameraPosition;
+uniform float in_CameraFOV;
 uniform vec2 in_CameraDimensions;
 
 // Celestial Object Properties
@@ -22,7 +23,6 @@ uniform vec4 u_SpriteOffset;
 varying vec2 v_vTexcoord;
 
 // Constants
-const float fov = 60.0;
 const float Pi = 3.14159265359;
 
 // Vertex Shader
@@ -42,7 +42,7 @@ void main()
 	
 	
 	//
-	float fov_radians = fov * (Pi / 180.0);
+	float fov_radians = in_CameraFOV * (Pi / 180.0);
 	float camera_distance = distance(in_CameraPosition, celestial_world_position);
 	float world_size = (2.0 * tan(fov_radians / 2.0)) * camera_distance;
 	

@@ -536,6 +536,7 @@
     {"id":{"name":"wait","path":"scripts/wait/wait.yy",},},
     {"id":{"name":"window_get_cursor_sprite","path":"scripts/window_get_cursor_sprite/window_get_cursor_sprite.yy",},},
     {"id":{"name":"window_set_cursor_sprite","path":"scripts/window_set_cursor_sprite/window_set_cursor_sprite.yy",},},
+    {"id":{"name":"world_position_to_screen_position","path":"scripts/world_position_to_screen_position/world_position_to_screen_position.yy",},},
     {"id":{"name":"shd_ambient_occlusion_light_blend","path":"shaders/shd_ambient_occlusion_light_blend/shd_ambient_occlusion_light_blend.yy",},},
     {"id":{"name":"shd_background_mrt_render","path":"shaders/shd_background_mrt_render/shd_background_mrt_render.yy",},},
     {"id":{"name":"shd_background_stars_unlit","path":"shaders/shd_background_stars_unlit/shd_background_stars_unlit.yy",},},

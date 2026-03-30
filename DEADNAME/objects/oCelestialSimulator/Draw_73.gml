@@ -70,6 +70,10 @@ for (var i = bloom_global_size; i > 0; i--)
 
 draw_surface(bloom_premult_surface, 0, 0);
 
+//
+var temp_position = world_position_to_screen_position(oSun.x, oSun.y, oSun.z, camera_view_matrix, camera_projection_matrix);
+draw_point_color(temp_position[0], temp_position[1], c_red);
+
 // Reset Surface Target
 surface_reset_target();
 

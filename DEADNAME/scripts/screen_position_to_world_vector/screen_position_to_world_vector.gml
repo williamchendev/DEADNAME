@@ -1,5 +1,5 @@
 /// @function screen_position_to_world_vector(screen_position_x, screen_position_y, view_matrix, projection_matrix);
-/// @description Converts the given screen position into a normalized world vector of its direction from the view and projection matrix applied to the Camera
+/// @description Converts the given screen position into a normalized world vector of its direction from the view and projection matrix applied to the Camera (warning: only works with a perspective projection matrix)
 /// @param {real} screen_position_x The screen position's horizontal coordinate to grab the world vector from
 /// @param {real} screen_position_y The screen position's vertical coordinate to grab the world vector from
 /// @param {array<real>} view_matrix The View Matrix of the Camera to convert the screen position to a world vector from

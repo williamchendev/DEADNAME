@@ -171,6 +171,7 @@ background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_b
 
 // MRT (Unlit) Celestial Offset Sprite Rendering Shader Indexes
 celestial_offset_sprite_unlit_shader_camera_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraPosition");
+celestial_offset_sprite_unlit_shader_camera_fov_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraFOV");
 celestial_offset_sprite_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraDimensions");
 
 celestial_offset_sprite_unlit_shader_celestial_object_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialObjectPosition");
