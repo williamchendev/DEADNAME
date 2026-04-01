@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"oCelestialUnit",
+  "%Name":"oCelestialCity",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oCelestialUnit",
+  "name":"oCelestialCity",
   "overriddenProperties":[],
   "parent":{
     "name":"Instances",
@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Unit_Tank_Medium",
-    "path":"sprites/sOverworld_Unit_Tank_Medium/sOverworld_Unit_Tank_Medium.yy",
+    "name":"sOverworld_Unit_Ship_Carrier",
+    "path":"sprites/sOverworld_Unit_Ship_Carrier/sOverworld_Unit_Ship_Carrier.yy",
   },
   "spriteMaskId":null,
   "visible":false,

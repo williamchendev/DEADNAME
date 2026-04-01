@@ -1,15 +1,13 @@
-//
+/// @description Default Celestial Unit Initialization
+// Initializes the Celestial Unit for Celestial Simulator Behaviour and Rendering
 
-// Solar System Variables
-solar_system_id = -1;
+// Inherited Celestial Render Object Initialization Behaviour
+event_inherited();
 
-// Celestial Body Variables
-celestial_body_instance = noone;
+// Initialize Unit Celestial Render Object Type
+celestial_render_object_type = CelestialRenderObjectType.Unit;
 
-celestial_body_pathfinding_node = -1;
-
-celestial_body_pathfinding_lerp_node_a = -1;
-celestial_body_pathfinding_lerp_node_b = -1;
+// Celestial Body Pathfinding Variables
+celestial_body_pathfinding_lerp_node_index_a = -1;
+celestial_body_pathfinding_lerp_node_index_b = -1;
 celestial_body_pathfinding_lerp_node_value = 0;
-
-// Faction Properties

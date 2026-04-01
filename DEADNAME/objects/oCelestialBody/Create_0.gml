@@ -190,15 +190,7 @@ vertex_freeze(icosphere_vertex_buffer);
 
 // Initialize Region Arrays
 region_name_array = array_create(0);
-region_cities_array = array_create(0);
 region_color_hex_array = array_create(0);
-
-// Initialize Cities Arrays
-city_name_array = array_create(0);
-city_buildings_array = array_create(0);
-city_infrastructure_array = array_create(0);
-city_region_array = array_create(0);
-city_pathfinding_node_array = array_create(0);
 
 // Initialize Microclimates Arrays
 microclimate_name_array = array_create(0);
@@ -360,7 +352,6 @@ if (pathfinding_enabled)
 				// Region Hexadecimal Code is not Indexed - Create new Region Index
 				temp_vertex_region = array_length(region_color_hex_array);
 				array_push(region_name_array, $"region_{temp_vertex_region}");
-				array_push(region_cities_array, array_create(0));
 				array_push(region_color_hex_array, temp_vertex_region_color_hex);
 			}
 		}
@@ -531,6 +522,20 @@ if (temp_microclimatemap_buffer_exists)
 
 // Initialize Unit Arrays
 units = array_create(0);
+
+// Initialize Cities Arrays
+cities = array_create(0);
+
+array_push(cities, instance_create_depth(0, 0, 0, oCelestialCity));
+
+// Initialize Render Objects Arrays
+render_objects_enabled = false;
+
+render_objects_back_layer_index_array = array_create(0);
+render_objects_back_layer_instance_array = array_create(0);
+
+render_objects_front_layer_index_array = array_create(0);
+render_objects_front_layer_instance_array = array_create(0);
 
 // Initialize Identity Matrix
 identity_matrix = matrix_build_identity();

@@ -18,6 +18,13 @@ enum CelestialObjectType
 	Planet
 }
 
+enum CelestialRenderObjectType
+{
+	None,
+	Unit,
+	City
+}
+
 // Delete to prevent multiple Celestial Simulator Instances
 if (instance_number(object_index) > 1) 
 {
@@ -111,6 +118,12 @@ solar_system_render_depth_sorting_depth_array = array_create(0);
 clouds_render_depth_sorting_index_array = array_create(0);
 clouds_render_depth_sorting_depth_array = array_create(0);
 
+render_objects_back_render_depth_sorting_index_array = array_create(0);
+render_objects_back_render_depth_sorting_depth_array = array_create(0);
+
+render_objects_front_render_depth_sorting_index_array = array_create(0);
+render_objects_front_render_depth_sorting_depth_array = array_create(0);
+
 // Surfaces
 background_surface = -1;
 
@@ -168,20 +181,6 @@ vertex_freeze(square_uv_vertex_buffer);
 background_stars_unlit_shader_camera_position_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraPosition");
 background_stars_unlit_shader_camera_rotation_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraRotation");
 background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraDimensions");
-
-// MRT (Unlit) Celestial Offset Sprite Rendering Shader Indexes
-celestial_offset_sprite_unlit_shader_camera_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraPosition");
-celestial_offset_sprite_unlit_shader_camera_fov_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraFOV");
-celestial_offset_sprite_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "in_CameraDimensions");
-
-celestial_offset_sprite_unlit_shader_celestial_object_position_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialObjectPosition");
-celestial_offset_sprite_unlit_shader_celestial_offset_vector_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialOffsetVector");
-celestial_offset_sprite_unlit_shader_celestial_offset_distance_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_CelestialOffsetDistance");
-
-celestial_offset_sprite_unlit_shader_sprite_uv_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_SpriteUV");
-celestial_offset_sprite_unlit_shader_sprite_offset_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_SpriteOffset");
-
-celestial_offset_sprite_unlit_shader_color_index = shader_get_uniform(shd_celestial_offset_sprite_unlit, "u_Color");
 
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
@@ -415,6 +414,16 @@ light_source_intensity = array_create(CelestialSimMaxLights);
 light_source_emitter_size = array_create(CelestialSimMaxLights);
 
 // Render Depth Sort Type Functions
+render_objects_back_render_depth_sort = function(current, next) 
+{
+	return CelestialSimulator.render_objects_back_render_depth_sorting_depth_array[next] < CelestialSimulator.render_objects_back_render_depth_sorting_depth_array[current] ? -1 : 1;
+}
+
+render_objects_front_render_depth_sort = function(current, next) 
+{
+	return CelestialSimulator.render_objects_front_render_depth_sorting_depth_array[next] < CelestialSimulator.render_objects_front_render_depth_sorting_depth_array[current] ? -1 : 1;
+}
+
 clouds_render_depth_sort = function(current, next) 
 {
 	return CelestialSimulator.clouds_render_depth_sorting_depth_array[next] < CelestialSimulator.clouds_render_depth_sorting_depth_array[current] ? -1 : 1;
@@ -905,6 +914,63 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 	
 	// Index Background Stars Vertex Buffer within Celestial Simulator's Solar Systems Array
 	CelestialSimulator.solar_systems_background_stars_vertex_buffer[temp_solar_system_index] = temp_background_stars_vertex_buffer;
+}
+
+// Rendering Methods
+render_celestial_object_render_object_layer = function(celestial_object, front_layer = true)
+{
+	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
+	surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+	surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+	surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
+	surface_set_target_ext(3, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
+	
+	// Reset Camera Orientation
+	camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
+	camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
+	camera_apply(GameManager.camera_instance);
+	
+	// Reset Matrix World Identity
+	matrix_set(matrix_world, matrix_build_identity());
+	
+	// Enable Celestial Sprite Unlit Rendering Shader
+	shader_set(shd_celestial_sprite_unlit);
+	
+	// Establish Render Objects Arrays based on if Rendering the Front or Back Layer of the Celestial Object
+	var temp_render_objects_index_array = front_layer ? celestial_object.render_objects_front_layer_index_array : celestial_object.render_objects_back_layer_index_array;
+	var temp_render_objects_instance_array = front_layer ? celestial_object.render_objects_front_layer_instance_array : celestial_object.render_objects_back_layer_instance_array;
+	
+	// Iterate through Celestial Object's Depth Sorted Celestial Render Objects
+	var temp_render_object_index = 0;
+	
+	repeat (array_length(temp_render_objects_index_array))
+	{
+		// Find Celestial Object's Render Object Instance
+		var temp_instance = temp_render_objects_instance_array[temp_render_object_index];
+		
+		// Check Celestial Render Object's Render Object Type to perform appropriate Render Behaviour
+		switch (temp_instance.celestial_render_object_type)
+		{
+			case CelestialRenderObjectType.Unit:
+			case CelestialRenderObjectType.City:
+			default:
+				// Default Render Object Draw Sprite Behaviour
+				draw_sprite_ext(temp_instance.sprite_index, temp_instance.image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_instance.image_alpha);
+				break;
+			case CelestialRenderObjectType.None:
+				// Render Object Instance is Invalid - Skip Render
+				break;
+		}
+		
+		// Increment Celestial Object's Render Object Index
+		temp_render_object_index++;
+	}
+	
+	// Reset Shader
+	shader_reset();
+	
+	// Reset Surface Target
+	surface_reset_target();
 }
 
 // Universe Campaign Generation

@@ -111,6 +111,9 @@ if (solar_system_index != -1 and solar_systems_background_stars_vertex_buffer[so
 	camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
 	camera_apply(GameManager.camera_instance);
 	
+	// Reset Matrix World Identity
+	matrix_set(matrix_world, matrix_build_identity());
+	
 	// Enable Background Stars Unlit Shader
 	shader_set(shd_background_stars_unlit);
 	

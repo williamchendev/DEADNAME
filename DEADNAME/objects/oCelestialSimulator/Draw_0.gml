@@ -284,50 +284,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_reset();
 				}
 				
-				// TEST TEST TEST )(UFOIHAF(*SH)AVSHOIVNKJADVNKVASNAVSNKLNVKBVDSBVDKBNVDKLBNKLVSDBNJKVSD
-				
-				// Disable Z-Depth Rendering
-				gpu_set_zwriteenable(false);
-				gpu_set_ztestenable(false);
-				
-				// Enable Planet Lithosphere Shader
-				shader_set(shd_celestial_offset_sprite_unlit);
-				
-				//
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_position_index, CelestialSimulator.camera_position_x, CelestialSimulator.camera_position_y, CelestialSimulator.camera_position_z);
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_fov_index, CelestialSimulator.camera_fov);
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_camera_dimensions_index, GameManager.game_width, GameManager.game_height);
-				
-				//
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_celestial_object_position_index, x, y, z);
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_celestial_offset_vector_index, 0, 0, -1);
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_celestial_offset_distance_index, radius + elevation + sky_radius * 0.5);
-				
-				//
-				var temp_sprite = sCathIdle;
-				var temp_sprite_uvs = sprite_get_uvs(temp_sprite, 0);
-				
-				var temp_sprite_left = sprite_get_xoffset(temp_sprite);
-				var temp_sprite_right = sprite_get_width(temp_sprite) - sprite_get_xoffset(temp_sprite);
-				
-				var temp_sprite_up = sprite_get_yoffset(temp_sprite);
-				var temp_sprite_down = sprite_get_height(temp_sprite) - sprite_get_yoffset(temp_sprite);
-				
-				//
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_sprite_uv_index, temp_sprite_uvs[0], temp_sprite_uvs[1], temp_sprite_uvs[2], temp_sprite_uvs[3]);
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_sprite_offset_index, -20, -40, 20, 0);
-				
-				//
-				shader_set_uniform_f(CelestialSimulator.celestial_offset_sprite_unlit_shader_color_index, 1, 1, 1, 1);
-				
-				// 
-				vertex_submit(CelestialSimulator.square_uv_vertex_buffer, pr_trianglelist, sprite_get_texture(temp_sprite, 0));
-				
-				// Reset Shader
-				shader_reset();
-				
-				// TEST TEST TEST ASL:HJAOIVDSUJ(){ ASU)VNANCVAJKNJVAJVOASJVNAKNKLVANLSANVASNOICWASJOSADJOISD
-				
 				// Reset Surface Target
 				surface_reset_target();
 				
@@ -337,6 +293,16 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+				
+				// TEST TEST TEST )(UFOIHAF(*SH)AVSHOIVNKJADVNKVASNAVSNKLNVKBVDSBVDKBNVDKLBNKLVSDBNJKVSD
+				
+				// Render Celestial Object's Render Object Front Layer
+				if (render_objects_enabled)
+				{
+					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, true);
+				}
+				
+				// TEST TEST TEST ASL:HJAOIVDSUJ(){ ASU)VNANCVAJKNJVAJVOASJVNAKNKLVANLSANVASNOICWASJOSADJOISD
 				
 				// Check if Planet's Atmosphere is Enabled and should be Rendered
 				if (sky)
@@ -590,10 +556,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 	temp_celestial_object_depth_render_index++;
 }
 
-// Reset Matrix World Identity
-matrix_set(matrix_world, matrix_build_identity());
-
 // Reset Camera Orientation
 camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
 camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
 camera_apply(GameManager.camera_instance);
+
+// Reset Matrix World Identity
+matrix_set(matrix_world, matrix_build_identity());

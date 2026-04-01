@@ -7,29 +7,29 @@
 // Squad Enums
 enum SquadType
 {
-    Infantry
+	Infantry
 }
 
 enum SquadBehaviour
 {
-    Idle,
-    Hunting,
-    Patrol,
-    Sentry,
-    Action
+	Idle,
+	Hunting,
+	Patrol,
+	Sentry,
+	Action
 }
 
 enum SquadSubBehaviour
 {
-    Default,
-    Regroup
+	Default,
+	Regroup
 }
 
 enum SquadMovement
 {
-    None,
-    Moving,
-    Finished
+	None,
+	Moving,
+	Finished
 }
 
 // Faction Enums
@@ -90,58 +90,58 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
         // Create new index for Squad ID in Squad IDs DS Map
         ds_map_add(GameManager.squad_behaviour_director.squad_ids_map, squad_id, GameManager.squad_behaviour_director.squad_count);
     }
-    
-    // Create Squad Faction in case it has not been added
-    create_faction(squad_faction);
-    
-    // Check if Faction Exists in the Squads Factions DS Map
-    if (is_undefined(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction)))
-    {
-        // Create new List within Squad Factions Map to index all Squads within that faction
-        ds_map_add_list(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction, ds_list_create());
-    }
-    
-    // Check if Squad ID Exists in the Squads Factions DS Map Nested List
-    if (ds_list_find_index(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction), squad_id) == -1)
-    {
-    	// Add Squad ID to Squads Factions DS Map Nested List
-    	ds_list_add(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction), squad_id);
-    }
-    
-    // Add Default Squad Properties to Squad Property DS Lists
-    ds_list_add(GameManager.squad_behaviour_director.squad_exists_list, false);
-    ds_list_add(GameManager.squad_behaviour_director.squad_id_list, squad_id);
-    ds_list_add(GameManager.squad_behaviour_director.squad_type_list, squad_type);
-    ds_list_add(GameManager.squad_behaviour_director.squad_faction_list, squad_faction);
-    ds_list_add(GameManager.squad_behaviour_director.squad_behaviour_list, SquadBehaviour.Idle);
-    ds_list_add(GameManager.squad_behaviour_director.squad_sub_behaviour_list, SquadSubBehaviour.Default);
-    ds_list_add(GameManager.squad_behaviour_director.squad_movement_list, SquadMovement.None);
-    ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_x_list, 0);
-    ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_y_list, 0);
-    ds_list_add(GameManager.squad_behaviour_director.squad_sight_active_list, true);
-    ds_list_add(GameManager.squad_behaviour_director.squad_sight_value_list, 0);
-    ds_list_add(GameManager.squad_behaviour_director.squad_sight_calculation_delay_list, irandom_range(0, GameManager.sight_collision_calculation_frame_delay));
-    ds_list_add(GameManager.squad_behaviour_director.squad_luck_list, 1.0);
-    ds_list_add(GameManager.squad_behaviour_director.squad_leader_list, undefined);
-    ds_list_add_list(GameManager.squad_behaviour_director.squad_units_list, ds_list_create());
-    
+	
+	// Create Squad Faction in case it has not been added
+	create_faction(squad_faction);
+	
+	// Check if Faction Exists in the Squads Factions DS Map
+	if (is_undefined(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction)))
+	{
+		// Create new List within Squad Factions Map to index all Squads within that faction
+		ds_map_add_list(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction, ds_list_create());
+	}
+	
+	// Check if Squad ID Exists in the Squads Factions DS Map Nested List
+	if (ds_list_find_index(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction), squad_id) == -1)
+	{
+		// Add Squad ID to Squads Factions DS Map Nested List
+		ds_list_add(ds_map_find_value(GameManager.squad_behaviour_director.factions_squad_ids_map, squad_faction), squad_id);
+	}
+	
+	// Add Default Squad Properties to Squad Property DS Lists
+	ds_list_add(GameManager.squad_behaviour_director.squad_exists_list, false);
+	ds_list_add(GameManager.squad_behaviour_director.squad_id_list, squad_id);
+	ds_list_add(GameManager.squad_behaviour_director.squad_type_list, squad_type);
+	ds_list_add(GameManager.squad_behaviour_director.squad_faction_list, squad_faction);
+	ds_list_add(GameManager.squad_behaviour_director.squad_behaviour_list, SquadBehaviour.Idle);
+	ds_list_add(GameManager.squad_behaviour_director.squad_sub_behaviour_list, SquadSubBehaviour.Default);
+	ds_list_add(GameManager.squad_behaviour_director.squad_movement_list, SquadMovement.None);
+	ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_x_list, 0);
+	ds_list_add(GameManager.squad_behaviour_director.squad_movement_target_y_list, 0);
+	ds_list_add(GameManager.squad_behaviour_director.squad_sight_active_list, true);
+	ds_list_add(GameManager.squad_behaviour_director.squad_sight_value_list, 0);
+	ds_list_add(GameManager.squad_behaviour_director.squad_sight_calculation_delay_list, irandom_range(0, GameManager.sight_collision_calculation_frame_delay));
+	ds_list_add(GameManager.squad_behaviour_director.squad_luck_list, 1.0);
+	ds_list_add(GameManager.squad_behaviour_director.squad_leader_list, undefined);
+	ds_list_add_list(GameManager.squad_behaviour_director.squad_units_list, ds_list_create());
+	
     // Add Squad Properties Struct to Squad DS Lists
     ds_list_add
     (
-    	GameManager.squad_behaviour_director.squad_properties_list, 
-    	{
-    		sight_min_radius: 420,
-    		sight_max_radius: 720,
-    		sight_ignore_radius: 820,
-    		sight_value_increment: 0.05,
-    		sight_value_decrement: 0.002,
-    		close_combat_radius: 100,
-    		following_range_horizontal_distance: 84,
-    		following_range_vertical_distance: 64,
-    		squad_unit_spacing: 24,
-    		squad_random_spacing: 8,
-    		facing_direction: random(1.0) > 0.5 ? 1 : -1
-    	}
+		GameManager.squad_behaviour_director.squad_properties_list, 
+		{
+			sight_min_radius: 420,
+			sight_max_radius: 720,
+			sight_ignore_radius: 820,
+			sight_value_increment: 0.05,
+			sight_value_decrement: 0.002,
+			close_combat_radius: 100,
+			following_range_horizontal_distance: 84,
+			following_range_vertical_distance: 64,
+			squad_unit_spacing: 24,
+			squad_random_spacing: 8,
+			facing_direction: random(1.0) > 0.5 ? 1 : -1
+		}
     );
     
     // Index all Squad Units to Squad
@@ -183,27 +183,27 @@ create_squad = function(squad_id, squad_type, squad_faction, squad_units = undef
             ds_list_set(GameManager.squad_behaviour_director.squad_exists_list, GameManager.squad_behaviour_director.squad_count, true);
         }
     }
-    
-    // Increment Squad Count
-    GameManager.squad_behaviour_director.squad_count++;
+	
+	// Increment Squad Count
+	GameManager.squad_behaviour_director.squad_count++;
 }
 
 add_unit_to_squad = function(squad_id, squad_unit)
 {
-    // Find Squad Index from Squad IDs DS Map
-    var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
-    
-    // Check if Squad Index Exists
-    if (is_undefined(temp_squad_index))
-    {
+	// Find Squad Index from Squad IDs DS Map
+	var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
+	
+	// Check if Squad Index Exists
+	if (is_undefined(temp_squad_index))
+	{
         // Squad does not exists, unable to add Unit to Squad - Early Return
         return;
     }
     else
     {
-    	// Find Squad Faction
-    	var squad_faction = ds_list_find_value(GameManager.squad_behaviour_director.squad_faction_list, temp_squad_index);
-    	
+		// Find Squad Faction
+		var squad_faction = ds_list_find_value(GameManager.squad_behaviour_director.squad_faction_list, temp_squad_index);
+		
         // Find Squad Unit List
         var temp_squad_units_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
         
@@ -246,9 +246,9 @@ add_unit_to_squad = function(squad_id, squad_unit)
 
 remove_unit_from_squad = function(squad_id, squad_unit)
 {
-    // Find Squad Index from Squad IDs DS Map
-    var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
-    
+	// Find Squad Index from Squad IDs DS Map
+	var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
+	
     // Check if Squad Index Exists
     if (is_undefined(temp_squad_index))
     {
@@ -343,100 +343,99 @@ remove_unit_from_squad = function(squad_id, squad_unit)
 
 set_unit_as_squad_leader = function(squad_id, squad_unit)
 {
-    // Find Squad Index from Squad IDs DS Map
-    var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
-    
-    // Check if Squad Index Exists
-    if (!is_undefined(temp_squad_index))
-    {
-        // Squad does not exists, unable to set Unit as Squad Leader - Early Return
-        return;
-    }
-    else
-    {
-        // Find Squad Unit List
-        var temp_squad_units_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
-        
-        // Find Squad Unit Index in Squad Units List
-        var temp_squad_unit_in_units_list_index = ds_map_find_value(temp_squad_units_list, squad_unit);
-        
-        // Check if Squad Unit exists in Squad Units List
-        if (is_undefined(temp_squad_unit_in_units_list_index))
-        {
-            // Squad Unit is not in Squad with Squad ID - Early Return
-            return;
-        }
-        else
-        {
-        	// Reset Previous Squad Leader
-        	var temp_current_squad_leader = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
-        	temp_current_squad_leader.squad_leader = false;
-        	
-            // Set Squad Unit as Squad Leader
-            ds_list_set(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index, squad_unit);
-            squad_unit.squad_leader = true;
-            
-        }
-    }
+	// Find Squad Index from Squad IDs DS Map
+	var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
+	
+	// Check if Squad Index Exists
+	if (!is_undefined(temp_squad_index))
+	{
+		// Squad does not exists, unable to set Unit as Squad Leader - Early Return
+		return;
+	}
+	else
+	{
+		// Find Squad Unit List
+		var temp_squad_units_list = ds_list_find_value(GameManager.squad_behaviour_director.squad_units_list, temp_squad_index);
+		
+		// Find Squad Unit Index in Squad Units List
+		var temp_squad_unit_in_units_list_index = ds_map_find_value(temp_squad_units_list, squad_unit);
+		
+		// Check if Squad Unit exists in Squad Units List
+		if (is_undefined(temp_squad_unit_in_units_list_index))
+		{
+			// Squad Unit is not in Squad with Squad ID - Early Return
+			return;
+		}
+		else
+		{
+			// Reset Previous Squad Leader
+			var temp_current_squad_leader = ds_list_find_value(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index);
+			temp_current_squad_leader.squad_leader = false;
+			
+			// Set Squad Unit as Squad Leader
+			ds_list_set(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index, squad_unit);
+			squad_unit.squad_leader = true;
+		}
+	}
 }
 
 // Faction Functions
 create_faction = function(faction_id)
 {
 	if (is_undefined(ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, faction_id)))
-    {
-    	// Create new index for Faction ID in Faction IDs DS Map
-    	ds_map_add(GameManager.squad_behaviour_director.faction_ids_map, faction_id, GameManager.squad_behaviour_director.faction_count);
-    	ds_list_add(GameManager.squad_behaviour_director.faction_id_list, faction_id);
-    	ds_list_add_list(GameManager.squad_behaviour_director.faction_allies_list, ds_list_create());
-    	ds_list_add_list(GameManager.squad_behaviour_director.faction_enemies_list, ds_list_create());
-    	GameManager.squad_behaviour_director.faction_count++;
-    }
+	{
+		// Create new index for Faction ID in Faction IDs DS Map
+		ds_map_add(GameManager.squad_behaviour_director.faction_ids_map, faction_id, GameManager.squad_behaviour_director.faction_count);
+		ds_list_add(GameManager.squad_behaviour_director.faction_id_list, faction_id);
+		ds_list_add_list(GameManager.squad_behaviour_director.faction_allies_list, ds_list_create());
+		ds_list_add_list(GameManager.squad_behaviour_director.faction_enemies_list, ds_list_create());
+		GameManager.squad_behaviour_director.faction_count++;
+	}
 }
 
-faction_set_realtionship = function(first_faction_id, second_faction_id, faction_relationship_type)
+faction_set_relationship = function(first_faction_id, second_faction_id, faction_relationship_type)
 {
 	// Create Factions in case they have not been added
-    create_faction(first_faction_id);
-    create_faction(second_faction_id);
-    
-    // Establish Faction Indexes
-    var temp_first_faction_index = ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, first_faction_id);
-    var temp_second_faction_index = ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, second_faction_id);
-    
-    // Reset Faction Relationships for Both Factions
-    var temp_first_faction_allies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_allies_list, temp_first_faction_index);
-    var temp_first_faction_enemies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_enemies_list, temp_first_faction_index);
-    
-    var temp_second_faction_allies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_allies_list, temp_second_faction_index);
-    var temp_second_faction_enemies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_enemies_list, temp_second_faction_index);
-    
-    var temp_second_faction_index_in_first_faction_allies_list = ds_list_find_index(temp_first_faction_allies_list, second_faction_id);
-    var temp_second_faction_index_in_first_faction_enemies_list = ds_list_find_index(temp_first_faction_enemies_list, second_faction_id);
-    
-    var temp_first_faction_index_in_second_faction_allies_list = ds_list_find_index(temp_second_faction_allies_list, first_faction_id);
-    var temp_first_faction_index_in_second_faction_enemies_list = ds_list_find_index(temp_second_faction_enemies_list, first_faction_id);
-    
-    if (temp_second_faction_index_in_first_faction_allies_list != -1)
-    {
-    	ds_list_delete(temp_first_faction_allies_list, temp_second_faction_index_in_first_faction_allies_list);
-    }
-    
-    if (temp_second_faction_index_in_first_faction_enemies_list != -1)
-    {
-    	ds_list_delete(temp_first_faction_enemies_list, temp_second_faction_index_in_first_faction_enemies_list);
-    }
-    
-    if (temp_first_faction_index_in_second_faction_allies_list != -1)
-    {
-    	ds_list_delete(temp_second_faction_allies_list, temp_first_faction_index_in_second_faction_allies_list);
-    }
-    
-    if (temp_first_faction_index_in_second_faction_enemies_list != -1)
-    {
-    	ds_list_delete(temp_second_faction_enemies_list, temp_first_faction_index_in_second_faction_enemies_list);
-    }
-    
+	create_faction(first_faction_id);
+	create_faction(second_faction_id);
+	
+	// Establish Faction Indexes
+	var temp_first_faction_index = ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, first_faction_id);
+	var temp_second_faction_index = ds_map_find_value(GameManager.squad_behaviour_director.faction_ids_map, second_faction_id);
+	
+	// Reset Faction Relationships for Both Factions
+	var temp_first_faction_allies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_allies_list, temp_first_faction_index);
+	var temp_first_faction_enemies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_enemies_list, temp_first_faction_index);
+	
+	var temp_second_faction_allies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_allies_list, temp_second_faction_index);
+	var temp_second_faction_enemies_list = ds_list_find_value(GameManager.squad_behaviour_director.faction_enemies_list, temp_second_faction_index);
+	
+	var temp_second_faction_index_in_first_faction_allies_list = ds_list_find_index(temp_first_faction_allies_list, second_faction_id);
+	var temp_second_faction_index_in_first_faction_enemies_list = ds_list_find_index(temp_first_faction_enemies_list, second_faction_id);
+	
+	var temp_first_faction_index_in_second_faction_allies_list = ds_list_find_index(temp_second_faction_allies_list, first_faction_id);
+	var temp_first_faction_index_in_second_faction_enemies_list = ds_list_find_index(temp_second_faction_enemies_list, first_faction_id);
+	
+	if (temp_second_faction_index_in_first_faction_allies_list != -1)
+	{
+		ds_list_delete(temp_first_faction_allies_list, temp_second_faction_index_in_first_faction_allies_list);
+	}
+	
+	if (temp_second_faction_index_in_first_faction_enemies_list != -1)
+	{
+		ds_list_delete(temp_first_faction_enemies_list, temp_second_faction_index_in_first_faction_enemies_list);
+	}
+	
+	if (temp_first_faction_index_in_second_faction_allies_list != -1)
+	{
+		ds_list_delete(temp_second_faction_allies_list, temp_first_faction_index_in_second_faction_allies_list);
+	}
+	
+	if (temp_first_faction_index_in_second_faction_enemies_list != -1)
+	{
+		ds_list_delete(temp_second_faction_enemies_list, temp_first_faction_index_in_second_faction_enemies_list);
+	}
+	
     // Set Faction Relationship
     switch (faction_relationship_type)
     {
@@ -454,7 +453,7 @@ faction_set_realtionship = function(first_faction_id, second_faction_id, faction
     }
 }
 
-faction_get_realtionship = function(first_faction_id, second_faction_id)
+faction_get_relationship = function(first_faction_id, second_faction_id)
 {
 	// Create Factions in case they have not been added
 	create_faction(first_faction_id);
