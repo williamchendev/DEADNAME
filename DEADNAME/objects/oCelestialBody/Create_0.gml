@@ -532,9 +532,11 @@ array_push(cities, instance_create_depth(0, 0, 0, oCelestialCity));
 render_objects_enabled = false;
 
 render_objects_back_layer_index_array = array_create(0);
+render_objects_back_layer_depth_array = array_create(0);
 render_objects_back_layer_instance_array = array_create(0);
 
 render_objects_front_layer_index_array = array_create(0);
+render_objects_front_layer_depth_array = array_create(0);
 render_objects_front_layer_instance_array = array_create(0);
 
 // Initialize Identity Matrix

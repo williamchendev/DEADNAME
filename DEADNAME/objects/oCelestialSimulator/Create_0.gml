@@ -73,6 +73,8 @@ global_clouds_temporal_blue_noise_offset = 0.03;
 global_atmosphere_scatter_point_samples_count = 10;
 global_atmosphere_optical_depth_samples_count = 10;
 
+global_no_atmosphere_radius_padding = 32;
+
 // Bloom Settings
 bloom_global_size = 3;
 bloom_global_color = c_white;
@@ -181,6 +183,10 @@ vertex_freeze(square_uv_vertex_buffer);
 background_stars_unlit_shader_camera_position_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraPosition");
 background_stars_unlit_shader_camera_rotation_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraRotation");
 background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraDimensions");
+
+// MRT (Unlit) Celestial Sprite Rendering Shader Indexes
+celestial_sprite_unlit_shader_emissive_index = shader_get_uniform(shd_celestial_sprite_unlit, "u_Emissive");
+celestial_sprite_unlit_shader_depth_index = shader_get_uniform(shd_celestial_sprite_unlit, "u_Depth");
 
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
@@ -938,6 +944,7 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	
 	// Establish Render Objects Arrays based on if Rendering the Front or Back Layer of the Celestial Object
 	var temp_render_objects_index_array = front_layer ? celestial_object.render_objects_front_layer_index_array : celestial_object.render_objects_back_layer_index_array;
+	var temp_render_objects_depth_array = front_layer ? celestial_object.render_objects_front_layer_depth_array : celestial_object.render_objects_back_layer_depth_array;
 	var temp_render_objects_instance_array = front_layer ? celestial_object.render_objects_front_layer_instance_array : celestial_object.render_objects_back_layer_instance_array;
 	
 	// Iterate through Celestial Object's Depth Sorted Celestial Render Objects
@@ -948,12 +955,19 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 		// Find Celestial Object's Render Object Instance
 		var temp_instance = temp_render_objects_instance_array[temp_render_object_index];
 		
+		// Find Celestial Object's Render Object Depth
+		var temp_depth = temp_render_objects_depth_array[temp_render_object_index];
+		
 		// Check Celestial Render Object's Render Object Type to perform appropriate Render Behaviour
 		switch (temp_instance.celestial_render_object_type)
 		{
 			case CelestialRenderObjectType.Unit:
 			case CelestialRenderObjectType.City:
 			default:
+				// Establish Render Object's Unlit Sprite Shader Rendering Properties
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, temp_instance.emissive * temp_instance.emissive_multiplier);
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, temp_depth);
+				
 				// Default Render Object Draw Sprite Behaviour
 				draw_sprite_ext(temp_instance.sprite_index, temp_instance.image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_instance.image_alpha);
 				break;

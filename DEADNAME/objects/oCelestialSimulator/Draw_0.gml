@@ -529,7 +529,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					camera_apply(CelestialSimulator.camera_instance);
 					
 					// Set Planet Render Properties
-					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius + elevation + 32);
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius + elevation + CelestialSimulator.global_no_atmosphere_radius_padding);
 					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_position_index, x, y, z);
 					
 					// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect

@@ -302,19 +302,7 @@ repeat (array_length(temp_solar_system))
 	// Perform Celestial Object's Render Objects Depth Sorting Behaviour
 	if (temp_celestial_object_instance.render_objects_enabled)
 	{
-		// Reset Celestial Object and Celestial Simulator Render Objects Render Depth Sorting Arrays
-		if (array_length(temp_celestial_object_instance.render_objects_back_layer_index_array) > 0)
-		{
-			array_clear(temp_celestial_object_instance.render_objects_back_layer_index_array);
-			array_clear(temp_celestial_object_instance.render_objects_back_layer_instance_array);
-		}
-		
-		if (array_length(temp_celestial_object_instance.render_objects_front_layer_index_array) > 0)
-		{
-			array_clear(temp_celestial_object_instance.render_objects_front_layer_index_array);
-			array_clear(temp_celestial_object_instance.render_objects_front_layer_instance_array);
-		}
-		
+		// Reset Celestial Simulator Render Depth Sorting Arrays
 		if (array_length(CelestialSimulator.render_objects_back_render_depth_sorting_index_array) > 0)
 		{
 			array_clear(CelestialSimulator.render_objects_back_render_depth_sorting_index_array);
@@ -325,6 +313,30 @@ repeat (array_length(temp_solar_system))
 		{
 			array_clear(CelestialSimulator.render_objects_front_render_depth_sorting_index_array);
 			array_clear(CelestialSimulator.render_objects_front_render_depth_sorting_depth_array);
+		}
+		
+		// Reset Celestial Object Render Depth Sorting Arrays
+		if (array_length(temp_celestial_object_instance.render_objects_back_layer_index_array) > 0)
+		{
+			array_clear(temp_celestial_object_instance.render_objects_back_layer_index_array);
+			array_clear(temp_celestial_object_instance.render_objects_back_layer_depth_array);
+			array_clear(temp_celestial_object_instance.render_objects_back_layer_instance_array);
+		}
+		
+		if (array_length(temp_celestial_object_instance.render_objects_front_layer_index_array) > 0)
+		{
+			array_clear(temp_celestial_object_instance.render_objects_front_layer_index_array);
+			array_clear(temp_celestial_object_instance.render_objects_front_layer_depth_array);
+			array_clear(temp_celestial_object_instance.render_objects_front_layer_instance_array);
+		}
+		
+		// Establish Celestial Object's Render Depth Radius
+		var temp_celestial_object_render_depth_radius = temp_celestial_object_instance.radius + temp_celestial_object_instance.elevation;
+		
+		if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
+		{
+			// During Planet Rendering, the Celestial Object's Render Depth Radius is either the Sky Radius when the Planet Atmosphere is being Rendered, or the Global Non-Atmosphere Radius Padding if disabled
+			temp_celestial_object_render_depth_radius += temp_celestial_object_instance.sky ? temp_celestial_object_instance.sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding;
 		}
 		
 		// Establish Empty Render Object Count
@@ -395,8 +407,9 @@ repeat (array_length(temp_solar_system))
 				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
 				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_depth_array, temp_unit_depth);
 				
-				// Index Celestial Unit's Instance into Celestial Object's Render Object Front Layer Instance Array
+				// Index Celestial Unit's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_unit_instance);
+				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_unit_depth + temp_celestial_object_render_depth_radius);
 				
 				// Increment Render Object Front Layer Count Index
 				temp_render_object_front_layer_count++;
@@ -407,8 +420,9 @@ repeat (array_length(temp_solar_system))
 				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_index_array, temp_render_object_back_layer_count);
 				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_depth_array, temp_unit_depth);
 				
-				// Index Celestial Unit's Instance into Celestial Object's Render Object Back Layer Instance Array
+				// Index Celestial Unit's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_unit_instance);
+				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_unit_depth + temp_celestial_object_render_depth_radius);
 				
 				// Increment Render Object Back Layer Count Index
 				temp_render_object_back_layer_count++;
@@ -482,8 +496,9 @@ repeat (array_length(temp_solar_system))
 				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
 				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_depth_array, temp_city_depth);
 				
-				// Index Celestial City's Instance into Celestial Object's Render Object Front Layer Instance Array
+				// Index Celestial City's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_city_instance);
+				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_city_depth + temp_celestial_object_render_depth_radius);
 				
 				// Increment Render Object Front Layer Count Index
 				temp_render_object_front_layer_count++;
@@ -494,8 +509,9 @@ repeat (array_length(temp_solar_system))
 				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_index_array, temp_render_object_back_layer_count);
 				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_depth_array, temp_city_depth);
 				
-				// Index Celestial City's Instance into Celestial Object's Render Object Back Layer Instance Array
+				// Index Celestial City's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_city_instance);
+				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_city_depth + temp_celestial_object_render_depth_radius);
 				
 				// Increment Render Object Back Layer Count Index
 				temp_render_object_back_layer_count++;
