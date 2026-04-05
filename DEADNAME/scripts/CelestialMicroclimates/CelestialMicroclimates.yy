@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CelestialMicroclimates",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CelestialMicroclimates",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Scripts/Celestial.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

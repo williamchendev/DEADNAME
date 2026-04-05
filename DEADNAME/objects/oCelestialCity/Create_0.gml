@@ -8,4 +8,4 @@ event_inherited();
 celestial_render_object_type = CelestialRenderObjectType.City;
 
 // DEBUG
-celestial_body_pathfinding_node_index = 0;
+pathfinding_node_index = irandom_range(0, 4000);

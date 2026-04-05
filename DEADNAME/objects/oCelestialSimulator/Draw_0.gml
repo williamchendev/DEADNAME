@@ -105,7 +105,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				camera_apply(CelestialSimulator.camera_instance);
 				
 				// Set Sun Render Properties
-				shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius);
+				shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, render_depth_radius);
 				shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_position_index, x, y, z);
 				
 				// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect
@@ -126,6 +126,32 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 			// Render Planet (Lithosphere, Hydrosphere, Atmosphere)
 			with (temp_celestial_object_instance)
 			{
+				// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
+				surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+				surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+				surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
+				surface_set_target_ext(3, CelestialSimulator.celestial_body_atmosphere_depth_mask_surface);
+				
+				// Reset Celestial Body Depth Render Surface
+				draw_clear_alpha(c_black, 0);
+				draw_clear_depth(1);
+				
+				// Reset Surface Target
+				surface_reset_target();
+				
+				// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
+				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+				
+				// Disable Z-Depth Rendering
+				gpu_set_zwriteenable(false);
+				gpu_set_ztestenable(false);
+				
+				// Render Celestial Object's Render Object Back Layer
+				if (render_objects_enabled)
+				{
+					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, false);
+				}
+				
 				// Set Default Blendmode
 				gpu_set_blendmode(bm_normal);
 				
@@ -146,10 +172,6 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				
 				// Set Celestial Object's Identity Matrix as Matrix World Identity
 				matrix_set(matrix_world, identity_matrix);
-				
-				// Reset Celestial Body Depth Render Surface
-				draw_clear_alpha(c_black, 0);
-				draw_clear_depth(1);
 				
 				// Enable Planet Lithosphere Shader
 				shader_set(shd_planet_lithosphere_lit);
@@ -192,7 +214,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_planet_euler_angles_index, euler_angle_x, euler_angle_y, euler_angle_z);
 				
 				// Set Planet Atmosphere Properties
-				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
+				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_atmosphere_radius_index, render_depth_radius);
 				
 				// Set Planet Emissive Properties
 				shader_set_uniform_f(CelestialSimulator.planet_lithosphere_lit_shader_emissive_index, surface_emissive);
@@ -206,12 +228,12 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				// Reset Shader
 				shader_reset();
 				
+				// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
+				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
+				
 				// Check if Planet's Ocean is Enabled and should be Rendered
 				if (ocean)
 				{
-					// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
-					gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-					
 					// Enable Planet Hydrosphere Shader
 					shader_set(shd_planet_hydrosphere_lit);
 					
@@ -274,8 +296,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_emissive_index, ocean_emissive);
 					
 					// Set Planet Atmosphere Properties
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
-					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_atmosphere_radius_index, radius + elevation + sky_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_vsh_atmosphere_radius_index, render_depth_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_hydrosphere_lit_shader_fsh_atmosphere_radius_index, render_depth_radius);
 					
 					// Draw Planet from Icosphere Vertex Buffer
 					vertex_submit(icosphere_vertex_buffer, pr_trianglelist, -1);
@@ -291,18 +313,11 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(false);
 				gpu_set_ztestenable(false);
 				
-				// Set Alpha Layering Blendmode - Correctly Layers Transparent Images over each other on Surfaces
-				gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
-				
-				// TEST TEST TEST )(UFOIHAF(*SH)AVSHOIVNKJADVNKVASNAVSNKLNVKBVDSBVDKBNVDKLBNKLVSDBNJKVSD
-				
 				// Render Celestial Object's Render Object Front Layer
 				if (render_objects_enabled)
 				{
 					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, true);
 				}
-				
-				// TEST TEST TEST ASL:HJAOIVDSUJ(){ ASU)VNANCVAJKNJVAJVOASJVNAKNKLVANLSANVASNOICWASJOSADJOISD
 				
 				// Check if Planet's Atmosphere is Enabled and should be Rendered
 				if (sky)
@@ -366,7 +381,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						shader_set_uniform_f_array(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_shadow_position_z_index, sphere_shadow_position_z);
 						
 						// Set Planet Atmosphere Properties
-						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_atmosphere_radius_index, radius + elevation + sky_radius);
+						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_atmosphere_radius_index, render_depth_radius);
 						
 						// Set Planet Physical Properties
 						shader_set_uniform_f(CelestialSimulator.sdf_sphere_volumetric_clouds_lit_shader_vsh_planet_radius_index, radius);
@@ -486,8 +501,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					var temp_planet_atmosphere_scatter_g = power(400 / sky_light_wavelength_g, 4) * sky_light_scattering_strength;
 					var temp_planet_atmosphere_scatter_b = power(400 / sky_light_wavelength_b, 4) * sky_light_scattering_strength;
 					
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_atmosphere_radius_index, radius + elevation + sky_radius);
-					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_atmosphere_radius_index, radius + elevation + sky_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_vsh_atmosphere_radius_index, render_depth_radius);
+					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_fsh_atmosphere_radius_index, render_depth_radius);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_density_falloff_index, sky_density_falloff);
 					shader_set_uniform_f(CelestialSimulator.planet_atmosphere_lit_shader_atmosphere_scattering_coefficients_index, temp_planet_atmosphere_scatter_r, temp_planet_atmosphere_scatter_g, temp_planet_atmosphere_scatter_b);
 					
@@ -529,7 +544,7 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 					camera_apply(CelestialSimulator.camera_instance);
 					
 					// Set Planet Render Properties
-					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, radius + elevation + CelestialSimulator.global_no_atmosphere_radius_padding);
+					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_radius_index, render_depth_radius);
 					shader_set_uniform_f(CelestialSimulator.planet_no_atmosphere_lit_shader_planet_position_index, x, y, z);
 					
 					// Set the Diffuse and Emissive Surfaces used for calculating the Post Processing Bloom Effect

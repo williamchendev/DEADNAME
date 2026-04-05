@@ -1,13 +1,6 @@
 /// @description Camera & Depth Sorting Event
 // Calculates the Camera Matricies used for 3D Object View and Projection while performing the Celestial Simulator's Object Depth Sorting Behaviour for the Rendering Pipeline in the active Solar System being viewed
 
-// Increment Celestial Simulator's Global Clocks
-global_noise_time += global_noise_time_spd * frame_delta;
-global_noise_time = global_noise_time mod 1;
-
-global_hydrosphere_time += global_hydrosphere_time_spd * frame_delta;
-global_hydrosphere_time = global_hydrosphere_time mod 9999999; // please don't overflow
-
 // Check if Celestial Simulator is Active
 if (!active)
 {
@@ -330,15 +323,6 @@ repeat (array_length(temp_solar_system))
 			array_clear(temp_celestial_object_instance.render_objects_front_layer_instance_array);
 		}
 		
-		// Establish Celestial Object's Render Depth Radius
-		var temp_celestial_object_render_depth_radius = temp_celestial_object_instance.radius + temp_celestial_object_instance.elevation;
-		
-		if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
-		{
-			// During Planet Rendering, the Celestial Object's Render Depth Radius is either the Sky Radius when the Planet Atmosphere is being Rendered, or the Global Non-Atmosphere Radius Padding if disabled
-			temp_celestial_object_render_depth_radius += temp_celestial_object_instance.sky ? temp_celestial_object_instance.sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding;
-		}
-		
 		// Establish Empty Render Object Count
 		var temp_render_object_back_layer_count = 0;
 		var temp_render_object_front_layer_count = 0;
@@ -355,11 +339,11 @@ repeat (array_length(temp_solar_system))
 			var temp_unit_local_x, temp_unit_local_y, temp_unit_local_z, temp_unit_elevation;
 			
 			// Check if Pathfinding is Enabled or Unit's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled or temp_unit_instance.celestial_body_pathfinding_node_index < 0 or temp_unit_instance.celestial_body_pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			if (!temp_celestial_object_instance.pathfinding_enabled or temp_unit_instance.pathfinding_node_index < 0 or temp_unit_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
 			{
 				// Find Vertical Sphere Vector
-				var temp_unit_atan_value = (0.5 - temp_unit_instance.celestial_body_u_position) * 2 * pi;
-				var temp_unit_asin_value = (0.5 - temp_unit_instance.celestial_body_v_position) * pi;
+				var temp_unit_atan_value = (0.5 - temp_unit_instance.local_position_u) * 2 * pi;
+				var temp_unit_asin_value = (0.5 - temp_unit_instance.local_position_v) * pi;
 				temp_unit_local_y = -sin(temp_unit_asin_value);
 				
 				// Find Horizontal and Forwards Sphere Vectors
@@ -372,13 +356,46 @@ repeat (array_length(temp_solar_system))
 			}
 			else
 			{
-				// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center
-				temp_unit_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_unit_instance.celestial_body_pathfinding_node_index];
-				temp_unit_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_unit_instance.celestial_body_pathfinding_node_index];
-				temp_unit_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_unit_instance.celestial_body_pathfinding_node_index];
+				// Establish Empty Unit Elevation
+				var temp_unit_elevation = 0;
+				
+				// Check if Unit is currently Pathfinding
+				if (is_undefined(temp_unit_instance.pathfinding_path))
+				{
+					// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center with their Pathfinding Node Index
+					temp_unit_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_unit_instance.pathfinding_node_index];
+					temp_unit_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_unit_instance.pathfinding_node_index];
+					temp_unit_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_unit_instance.pathfinding_node_index];
+					
+					// Find Celestial Unit's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Index
+					temp_unit_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_unit_instance.pathfinding_node_index];
+				}
+				else
+				{
+					// Establish Unit Pathfinding Node Positions
+					var temp_unit_pathfinding_node_a_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_unit_instance.pathfinding_path_node_index_a];
+					var temp_unit_pathfinding_node_a_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_unit_instance.pathfinding_path_node_index_a];
+					var temp_unit_pathfinding_node_a_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_unit_instance.pathfinding_path_node_index_a];
+					
+					var temp_unit_pathfinding_node_b_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_unit_instance.pathfinding_path_node_index_b];
+					var temp_unit_pathfinding_node_b_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_unit_instance.pathfinding_path_node_index_b];
+					var temp_unit_pathfinding_node_b_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_unit_instance.pathfinding_path_node_index_b];
+					
+					// Establish Unit Pathfinding Node Elevations
+					var temp_unit_pathfinding_node_a_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_unit_instance.pathfinding_path_node_index_a];
+					var temp_unit_pathfinding_node_b_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_unit_instance.pathfinding_path_node_index_b];
+					
+					// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
+					temp_unit_local_x = lerp(temp_unit_pathfinding_node_a_local_x, temp_unit_pathfinding_node_b_local_x, temp_unit_instance.pathfinding_path_node_progress);
+					temp_unit_local_y = lerp(temp_unit_pathfinding_node_a_local_y, temp_unit_pathfinding_node_b_local_y, temp_unit_instance.pathfinding_path_node_progress);
+					temp_unit_local_z = lerp(temp_unit_pathfinding_node_a_local_z, temp_unit_pathfinding_node_b_local_z, temp_unit_instance.pathfinding_path_node_progress);
+					
+					// Find Celestial Unit's Elevation from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
+					temp_unit_elevation = lerp(temp_unit_pathfinding_node_a_elevation, temp_unit_pathfinding_node_b_elevation, temp_unit_instance.pathfinding_path_node_progress);
+				}
 				
 				// Find Celestial Unit's Elevation from Celestial Body's Sphere Center
-				temp_unit_elevation = temp_celestial_object_instance.radius + (temp_celestial_object_instance.pathfinding_node_elevation_array[temp_unit_instance.celestial_body_pathfinding_node_index] * temp_celestial_object_instance.elevation);
+				temp_unit_elevation = temp_celestial_object_instance.radius + (temp_unit_elevation * temp_celestial_object_instance.elevation);
 			}
 			
 			// Find Celestial Unit's World Position
@@ -409,23 +426,10 @@ repeat (array_length(temp_solar_system))
 				
 				// Index Celestial Unit's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_unit_instance);
-				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_unit_depth + temp_celestial_object_render_depth_radius);
+				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_unit_depth);
 				
 				// Increment Render Object Front Layer Count Index
 				temp_render_object_front_layer_count++;
-			}
-			else
-			{
-				// Index Celestial Unit's Index and Depth into Celestial Object's Render Object Back Layer Render Depth Sorting Arrays
-				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_index_array, temp_render_object_back_layer_count);
-				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_depth_array, temp_unit_depth);
-				
-				// Index Celestial Unit's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_unit_instance);
-				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_unit_depth + temp_celestial_object_render_depth_radius);
-				
-				// Increment Render Object Back Layer Count Index
-				temp_render_object_back_layer_count++;
 			}
 			
 			// Increment Celestial Unit Index
@@ -444,11 +448,11 @@ repeat (array_length(temp_solar_system))
 			var temp_city_local_x, temp_city_local_y, temp_city_local_z, temp_city_elevation;
 			
 			// Check if Pathfinding is Enabled or City's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled or temp_city_instance.celestial_body_pathfinding_node_index < 0 or temp_city_instance.celestial_body_pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			if (!temp_celestial_object_instance.pathfinding_enabled or temp_city_instance.pathfinding_node_index < 0 or temp_city_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
 			{
 				// Find Vertical Sphere Vector
-				var temp_city_atan_value = (0.5 - temp_city_instance.celestial_body_u_position) * 2 * pi;
-				var temp_city_asin_value = (0.5 - temp_city_instance.celestial_body_v_position) * pi;
+				var temp_city_atan_value = (0.5 - temp_city_instance.local_position_u) * 2 * pi;
+				var temp_city_asin_value = (0.5 - temp_city_instance.local_position_v) * pi;
 				temp_city_local_y = -sin(temp_city_asin_value);
 				
 				// Find Horizontal and Forwards Sphere Vectors
@@ -462,12 +466,12 @@ repeat (array_length(temp_solar_system))
 			else
 			{
 				// Find Celestial City's Normalized Local Vector from Celestial Body's Sphere Center
-				temp_city_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_city_instance.celestial_body_pathfinding_node_index];
-				temp_city_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_city_instance.celestial_body_pathfinding_node_index];
-				temp_city_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_city_instance.celestial_body_pathfinding_node_index];
+				temp_city_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_city_instance.pathfinding_node_index];
+				temp_city_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_city_instance.pathfinding_node_index];
+				temp_city_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_city_instance.pathfinding_node_index];
 				
 				// Find Celestial City's Elevation from Celestial Body's Sphere Center
-				temp_city_elevation = temp_celestial_object_instance.radius + (temp_celestial_object_instance.pathfinding_node_elevation_array[temp_city_instance.celestial_body_pathfinding_node_index] * temp_celestial_object_instance.elevation);
+				temp_city_elevation = temp_celestial_object_instance.radius + (temp_celestial_object_instance.pathfinding_node_elevation_array[temp_city_instance.pathfinding_node_index] * temp_celestial_object_instance.elevation);
 			}
 			
 			// Find Celestial City's World Position
@@ -498,27 +502,108 @@ repeat (array_length(temp_solar_system))
 				
 				// Index Celestial City's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
 				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_city_instance);
-				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_city_depth + temp_celestial_object_render_depth_radius);
+				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_city_depth);
+				
+				// Increment Render Object Front Layer Count Index
+				temp_render_object_front_layer_count++;
+			}
+			
+			// Increment Celestial City Index
+			temp_city_index++;
+		}
+		
+		// Celestial Object's Satellite Depth Sorting Behaviour
+		var temp_satellite_index = 0;
+		
+		repeat (array_length(temp_celestial_object_instance.satellites))
+		{
+			// Find Celestial Satellite's Instance
+			var temp_satellite_instance = temp_celestial_object_instance.satellites[temp_satellite_index];
+			
+			// Establish Satellite Local Vector and Elevation Variables
+			var temp_satellite_local_x, temp_satellite_local_y, temp_satellite_local_z, temp_satellite_elevation;
+			
+			// Check if Pathfinding is Enabled or Satellite's Celestial Body Pathfinding Node Index is Valid
+			if (!temp_celestial_object_instance.pathfinding_enabled or temp_satellite_instance.pathfinding_node_index < 0 or temp_satellite_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			{
+				// Find Vertical Sphere Vector
+				var temp_satellite_atan_value = (0.5 - temp_satellite_instance.local_position_u) * 2 * pi;
+				var temp_satellite_asin_value = (0.5 - temp_satellite_instance.local_position_v) * pi;
+				temp_satellite_local_y = -sin(temp_satellite_asin_value);
+				
+				// Find Horizontal and Forwards Sphere Vectors
+				var temp_satellite_sphere_horizontal_radius = sqrt(1.0 - temp_satellite_local_y * temp_satellite_local_y);
+				temp_satellite_local_x = temp_satellite_sphere_horizontal_radius * -sin(temp_satellite_atan_value);
+				temp_satellite_local_z = temp_satellite_sphere_horizontal_radius * -cos(temp_satellite_atan_value);
+				
+				// Find Celestial Satellite's Elevation from Celestial Body's Sphere Center
+				temp_satellite_elevation = temp_celestial_object_instance.radius + temp_celestial_object_instance.elevation;
+			}
+			else
+			{
+				// Find Celestial Satellite's Normalized Local Vector from Celestial Body's Sphere Center
+				temp_satellite_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_satellite_instance.pathfinding_node_index];
+				temp_satellite_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_satellite_instance.pathfinding_node_index];
+				temp_satellite_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_satellite_instance.pathfinding_node_index];
+				
+				// Find Celestial Satellite's Elevation from Celestial Body's Sphere Center
+				temp_satellite_elevation = temp_celestial_object_instance.radius + (temp_celestial_object_instance.pathfinding_node_elevation_array[temp_satellite_instance.pathfinding_node_index] * temp_celestial_object_instance.elevation);
+			}
+			
+			// Find Celestial Satellite's Local Position
+			var temp_satellite_local_position_x = temp_satellite_local_x * temp_celestial_obj_rotation_matrix[0] + temp_satellite_local_y * temp_celestial_obj_rotation_matrix[4] + temp_satellite_local_z * temp_celestial_obj_rotation_matrix[8];
+			var temp_satellite_local_position_y = temp_satellite_local_x * temp_celestial_obj_rotation_matrix[1] + temp_satellite_local_y * temp_celestial_obj_rotation_matrix[5] + temp_satellite_local_z * temp_celestial_obj_rotation_matrix[9];
+			var temp_satellite_local_position_z = temp_satellite_local_x * temp_celestial_obj_rotation_matrix[2] + temp_satellite_local_y * temp_celestial_obj_rotation_matrix[6] + temp_satellite_local_z * temp_celestial_obj_rotation_matrix[10];
+			
+			// Find Celestial Satellite's World Position
+			temp_satellite_instance.world_position_x = (temp_satellite_elevation + temp_satellite_instance.satellite_elevation) * temp_satellite_local_position_x + temp_celestial_object_instance.x;
+			temp_satellite_instance.world_position_y = (temp_satellite_elevation + temp_satellite_instance.satellite_elevation) * temp_satellite_local_position_y + temp_celestial_object_instance.y;
+			temp_satellite_instance.world_position_z = (temp_satellite_elevation + temp_satellite_instance.satellite_elevation) * temp_satellite_local_position_z + temp_celestial_object_instance.z;
+			
+			// Find Celestial Satellite's Screen Position and set the Celestial Satellite Instance's Position to their Converted World Position to Screen Coordinates
+			var temp_satellite_screen_position = world_position_to_screen_position(temp_satellite_instance.world_position_x, temp_satellite_instance.world_position_y, temp_satellite_instance.world_position_z, camera_view_matrix, camera_projection_matrix);
+			
+			temp_satellite_instance.x = temp_satellite_screen_position[0];
+			temp_satellite_instance.y = temp_satellite_screen_position[1];
+			
+			// Find Celestial Satellite's Depth from Render Camera
+			var temp_satellite_vx = temp_satellite_instance.world_position_x - temp_render_start_x;
+			var temp_satellite_vy = temp_satellite_instance.world_position_y - temp_render_start_y;
+			var temp_satellite_vz = temp_satellite_instance.world_position_z - temp_render_start_z;
+			
+			var temp_satellite_projection_scalar = dot_product_3d(temp_satellite_vx, temp_satellite_vy, temp_satellite_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
+			var temp_satellite_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_satellite_projection_scalar) - temp_celestial_object_depth;
+			
+			// Check if Satellite's Depth is in front of the Celestial Body or behind the Celestial Body
+			if (temp_satellite_depth < temp_celestial_object_instance.render_depth_radius * -0.25)
+			{
+				// Index Celestial Satellite's Index and Depth into Celestial Object's Render Object Front Layer Render Depth Sorting Arrays
+				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
+				array_push(CelestialSimulator.render_objects_front_render_depth_sorting_depth_array, temp_satellite_depth);
+				
+				// Index Celestial Satellite's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_satellite_instance);
+				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_satellite_depth);
 				
 				// Increment Render Object Front Layer Count Index
 				temp_render_object_front_layer_count++;
 			}
 			else
 			{
-				// Index Celestial City's Index and Depth into Celestial Object's Render Object Back Layer Render Depth Sorting Arrays
+				// Index Celestial Satellite's Index and Depth into Celestial Object's Render Object Back Layer Render Depth Sorting Arrays
 				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_index_array, temp_render_object_back_layer_count);
-				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_depth_array, temp_city_depth);
+				array_push(CelestialSimulator.render_objects_back_render_depth_sorting_depth_array, temp_satellite_depth);
 				
-				// Index Celestial City's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_city_instance);
-				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_city_depth + temp_celestial_object_render_depth_radius);
+				// Index Celestial Satellite's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_satellite_instance);
+				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_satellite_depth);
 				
 				// Increment Render Object Back Layer Count Index
 				temp_render_object_back_layer_count++;
 			}
 			
-			// Increment Celestial City Index
-			temp_city_index++;
+			// Increment Celestial Satellite Index
+			temp_satellite_index++;
 		}
 		
 		// Sort Celestial Simulator's Render Objects Back and Front Render Depth Sorting Arrays

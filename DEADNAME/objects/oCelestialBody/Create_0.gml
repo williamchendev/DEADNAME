@@ -195,6 +195,7 @@ region_color_hex_array = array_create(0);
 // Initialize Microclimates Arrays
 microclimate_name_array = array_create(0);
 microclimate_color_hex_array = array_create(0);
+microclimate_biome_type_array = array_create(0);
 microclimate_sample_index_array = array_create(0);
 microclimate_pathfinding_nodes_array = array_create(0);
 
@@ -389,6 +390,7 @@ if (pathfinding_enabled)
 				temp_vertex_microclimate = array_length(microclimate_color_hex_array);
 				array_push(microclimate_name_array, $"microclimate_{temp_vertex_microclimate}");
 				array_push(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+				array_push(microclimate_biome_type_array, CelestialMicroclimateBiomeType.None); // DEBUG FOR NOW BUT LATER WE GOTTA HAVE A BETTER WAY OF DOING THIS
 				array_push(microclimate_sample_index_array, 0);
 				array_push(microclimate_pathfinding_nodes_array, [ temp_pathfinding_vertex_index ]);
 			}
@@ -523,10 +525,26 @@ if (temp_microclimatemap_buffer_exists)
 // Initialize Unit Arrays
 units = array_create(0);
 
-// Initialize Cities Arrays
+repeat(5)
+{
+	array_push(units, instance_create_depth(0, 0, 0, oCelestialUnit));
+}
+
+// Initialize City Arrays
 cities = array_create(0);
 
-array_push(cities, instance_create_depth(0, 0, 0, oCelestialCity));
+repeat(25)
+{
+	array_push(cities, instance_create_depth(0, 0, 0, oCelestialCity));
+}
+
+// Initialize Satellite Arrays
+satellites = array_create(0);
+
+repeat(25)
+{
+	array_push(satellites, instance_create_depth(0, 0, 0, oCelestialSatellite));
+}
 
 // Initialize Render Objects Arrays
 render_objects_enabled = false;
@@ -546,5 +564,6 @@ identity_matrix = matrix_build_identity();
 solar_system_id = "null";
 orbit_parent_instance = noone;
 
-// Initialize Empty Frustum Culling Radius
+// Initialize Empty Render Depth Radius and Frustum Culling Radius
+render_depth_radius = 0;
 frustum_culling_radius = -1;

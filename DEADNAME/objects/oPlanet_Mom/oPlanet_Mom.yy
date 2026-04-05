@@ -27,6 +27,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"microclimate_map","path":"objects/oCelestialBody/oCelestialBody.yy",},"resource":{"name":"sDebug_Mother_MicroclimatesMap","path":"sprites/sDebug_Mother_MicroclimatesMap/sDebug_Mother_MicroclimatesMap.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sDebug_Mother_MicroclimatesMap",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"orbit_size","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"900",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"orbit_speed","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"pathfinding_enabled","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"pathfinding_resolution","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"24",},
   ],
   "parent":{
     "name":"Grandmom",

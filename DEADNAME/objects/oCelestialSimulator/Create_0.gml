@@ -22,7 +22,8 @@ enum CelestialRenderObjectType
 {
 	None,
 	Unit,
-	City
+	City,
+	Satellite
 }
 
 // Delete to prevent multiple Celestial Simulator Instances
@@ -51,14 +52,26 @@ camera_observing_instance_zoom_spd = 0.15;
 camera_observing_instance_drag_spd_min = 0.2;
 camera_observing_instance_drag_spd_max = 0.75;
 
+camera_observing_instance_radius_offset_zoom_in_threshold = 0.1;
+
 // Solar System Settings
 background_star_sphere = geodesic_icosphere_create(4);
+
+// Clock Settings
+global_clock_delta_time = 0;
+global_clock_delta_time_multiplier = 0.2;
+
+global_clock_hydrosphere_delta_time_multiplier = 0.0037;
 
 // Rendering Settings
 global_noise_time_spd = 0.03;
 
-global_hydrosphere_time_spd = 0.0037;
 global_hydrosphere_specular_intensity = 0.5;
+
+global_render_objects_default_depth_transparent_start = -0.4;
+global_render_objects_default_depth_transparent_end = -0.2;
+global_render_objects_satellite_depth_transparent_start = -0.3;
+global_render_objects_satellite_depth_transparent_end = 0.5;
 
 global_clouds_scatter_point_samples_count = 8;
 global_clouds_light_depth_samples_count = 8;
@@ -79,6 +92,21 @@ global_no_atmosphere_radius_padding = 32;
 bloom_global_size = 3;
 bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
+
+// Render Object Settings
+render_object_city_name_vertical_offset = -8;
+
+// Triangle Settings
+triangle_angle = -115;
+triangle_radius = 4;
+triangle_offset = 6;
+
+triangle_breath_padding = 5;
+
+triangle_rotate_range = 30;
+triangle_rotate_spd = 2;
+
+triangle_animation_speed = 0.01;
 
 // Camera Variables
 camera_instance = camera_create();
@@ -125,6 +153,21 @@ render_objects_back_render_depth_sorting_depth_array = array_create(0);
 
 render_objects_front_render_depth_sorting_index_array = array_create(0);
 render_objects_front_render_depth_sorting_depth_array = array_create(0);
+
+// Selection Variables
+render_object_selected_instance = noone;
+
+// Triangle Variables
+triangle_animation_value = 0;
+triangle_breath_value = 0;
+triangle_draw_angle = 0;
+
+tri_x_1 = 0;
+tri_y_1 = 0;
+tri_x_2 = 0;
+tri_y_2 = 0;
+tri_x_3 = 0;
+tri_y_3 = 0;
 
 // Surfaces
 background_surface = -1;
@@ -942,6 +985,13 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	// Enable Celestial Sprite Unlit Rendering Shader
 	shader_set(shd_celestial_sprite_unlit);
 	
+	// Set Draw Text Alignment
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	
+	// Check if Celestial Simulator should Render the Miniature Version of the Render Object's Sprite
+	var temp_render_object_miniature_icon = CelestialSimulator.camera_observing_instance_radius_offset_value > CelestialSimulator.camera_observing_instance_radius_offset_zoom_in_threshold or CelestialSimulator.camera_observing_instance != celestial_object;
+	
 	// Establish Render Objects Arrays based on if Rendering the Front or Back Layer of the Celestial Object
 	var temp_render_objects_index_array = front_layer ? celestial_object.render_objects_front_layer_index_array : celestial_object.render_objects_back_layer_index_array;
 	var temp_render_objects_depth_array = front_layer ? celestial_object.render_objects_front_layer_depth_array : celestial_object.render_objects_back_layer_depth_array;
@@ -952,29 +1002,74 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	
 	repeat (array_length(temp_render_objects_index_array))
 	{
-		// Find Celestial Object's Render Object Instance
-		var temp_instance = temp_render_objects_instance_array[temp_render_object_index];
+		// Find Celestial Object's Render Object Index
+		var temp_index = temp_render_objects_index_array[temp_render_object_index];
 		
-		// Find Celestial Object's Render Object Depth
-		var temp_depth = temp_render_objects_depth_array[temp_render_object_index];
+		// Find Celestial Object's Render Object Depth & Instance from Render Object Index
+		var temp_depth = temp_render_objects_depth_array[temp_index];
+		var temp_instance = temp_render_objects_instance_array[temp_index];
+		
+		// Establish Render Object's Unlit Sprite Index and Image Index
+		var temp_sprite_index = temp_render_object_miniature_icon and temp_instance != CelestialSimulator.render_object_selected_instance ? temp_instance.miniature_sprite_index : temp_instance.sprite_index;
+		var temp_image_index = temp_render_object_miniature_icon and temp_instance != CelestialSimulator.render_object_selected_instance ? 0 : temp_instance.image_index;
+		
+		// Establish Render Object's Unlit Sprite Alpha
+		var temp_alpha = temp_instance.image_alpha;
 		
 		// Check Celestial Render Object's Render Object Type to perform appropriate Render Behaviour
 		switch (temp_instance.celestial_render_object_type)
 		{
 			case CelestialRenderObjectType.Unit:
-			case CelestialRenderObjectType.City:
-			default:
-				// Establish Render Object's Unlit Sprite Shader Rendering Properties
-				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, temp_instance.emissive * temp_instance.emissive_multiplier);
-				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, temp_depth);
+				// Establish Render Object's Unlit Sprite Alpha Transparency
+				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_start, temp_depth);
+				temp_alpha *= power(temp_default_depth_alpha, 3);
 				
-				// Default Render Object Draw Sprite Behaviour
-				draw_sprite_ext(temp_instance.sprite_index, temp_instance.image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_instance.image_alpha);
+				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius, temp_depth + celestial_object.render_depth_radius, temp_alpha));
+				break;
+			case CelestialRenderObjectType.City:
+				// Establish Render Object's Unlit Sprite Alpha Transparency
+				var temp_city_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_start, temp_depth);
+				temp_alpha *= power(temp_city_depth_alpha, 3);
+				
+				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius * 2, temp_depth + celestial_object.render_depth_radius, temp_alpha));
+				
+				// Check if City Name should be Rendered when Celestial Simulator's Observation Zoom is not Toggled
+				if (!temp_render_object_miniature_icon)
+				{
+					// Establish Render Object's Unlit Sprite Shader Emissive Rendering Properties
+					shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, 0);
+					
+					// Establish Render Object City Name Position Variables
+					var temp_city_name_x = temp_instance.x;
+					var temp_city_name_y = temp_instance.y - (sprite_get_yoffset(temp_sprite_index) - sprite_get_bbox_top(temp_sprite_index)) + CelestialSimulator.render_object_city_name_vertical_offset;
+					
+					// Draw City Name Text above City Sprite
+					draw_set_alpha(temp_alpha * temp_alpha * temp_alpha);
+					draw_text_outline(temp_city_name_x, temp_city_name_y, temp_instance.city_name, c_white, c_black);
+					draw_set_alpha(1);
+				}
+				break;
+			case CelestialRenderObjectType.Satellite:
+				// Establish Render Object's Unlit Sprite Alpha Transparency
+				var temp_satellite_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_satellite_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_satellite_depth_transparent_start, temp_depth);
+				temp_alpha *= power(temp_satellite_depth_alpha, 3);
+				
+				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius * 2, temp_depth + celestial_object.render_depth_radius, temp_alpha));
 				break;
 			case CelestialRenderObjectType.None:
+			default:
 				// Render Object Instance is Invalid - Skip Render
 				break;
 		}
+		
+		// Establish Render Object's Unlit Sprite Shader Emissive Rendering Properties
+		shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, temp_instance.emissive * temp_instance.emissive_multiplier);
+		
+		// Render Object Draw Sprite Behaviour
+		draw_sprite_ext(temp_sprite_index, temp_image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_alpha);
 		
 		// Increment Celestial Object's Render Object Index
 		temp_render_object_index++;
