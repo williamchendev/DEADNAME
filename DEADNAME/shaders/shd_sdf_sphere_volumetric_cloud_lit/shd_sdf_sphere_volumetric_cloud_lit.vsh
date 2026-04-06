@@ -137,7 +137,7 @@ void main()
 	v_vCloudPosition = u_vsh_PlanetPosition + cloud_to_planet_offset * planet_rotation_matrix;
 	
 	// Interpolated Sample Position
-	v_vSamplePosition = cloud_to_planet_offset + (camera_quad_offset * u_vsh_CloudRadius * 2.0) * inverse_planet_rotation_matrix;
+	v_vSamplePosition = cloud_to_planet_offset - (camera_quad_offset * u_vsh_CloudRadius * 2.0) * inverse_planet_rotation_matrix;
 	
 	// Interpolated Inverse Planet Rotation Matrix
 	v_vInvPlanetRotation = inverse_planet_rotation_matrix;

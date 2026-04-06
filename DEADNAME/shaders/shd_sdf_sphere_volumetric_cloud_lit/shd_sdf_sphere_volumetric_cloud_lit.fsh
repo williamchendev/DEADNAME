@@ -288,7 +288,7 @@ void main()
 	float blue_noise = blueNoiseTemporal(point_in_cloud, u_NoiseTime);
 	
 	// Calculate Sample Forward Vector from Camera View Vector transformed by the Inverse of the Planet's Rotation Matrix
-	vec3 sample_forward = camera_view_vector * v_vInvPlanetRotation;
+	vec3 sample_forward = -camera_view_vector * v_vInvPlanetRotation;
 	
 	// Establish Cloud Noise Sampling Variables
 	vec3 cloud_sample_position = v_vSamplePosition - sample_forward * (u_fsh_CloudRadius - epsilon);

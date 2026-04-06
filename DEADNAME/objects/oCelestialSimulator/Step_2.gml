@@ -19,7 +19,7 @@ if (solar_system_index == -1)
 var temp_solar_system = solar_systems[solar_system_index];
 
 // Calculate Cursor's Screen to World Raycast Vector
-var temp_cursor_raycast = screen_position_to_world_vector(GameManager.cursor_x, GameManager.cursor_y, camera_view_matrix, camera_projection_matrix);
+var temp_cursor_raycast = screen_position_to_world_vector(clamp(GameManager.cursor_x, 0, GameManager.game_width), clamp(GameManager.cursor_y, 0, GameManager.game_height), camera_view_matrix, camera_projection_matrix);
 
 // Check for Celestial Simulator Selection & Action Input
 var temp_click_behaviour = mouse_check_button(mb_left);
@@ -209,6 +209,11 @@ else if (temp_click_behaviour or temp_action_behaviour)
 				if (temp_action_behaviour and instance_exists(render_object_selected_instance) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
 				{
 					var temp_path = celestial_pathfinding(camera_observing_instance, render_object_selected_instance.pathfinding_node_index, temp_selection_node_index);
+					show_debug_message($"{render_object_selected_instance.pathfinding_node_index} : {temp_selection_node_index}");
+					for (var i = 0; i < ds_list_size(temp_path); i++)
+					{
+						show_debug_message($"        {ds_list_find_value(temp_path, i)}");
+					}
 					render_object_selected_instance.unit_pathfinding_set_path(temp_path);
 				}
 				

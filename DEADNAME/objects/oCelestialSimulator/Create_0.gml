@@ -78,9 +78,9 @@ global_clouds_light_depth_samples_count = 8;
 global_clouds_sample_scale = 0.008;
 global_clouds_absorption = 0.25;
 global_clouds_density = 1;
-global_clouds_density_falloff = 5;
+global_clouds_density_falloff = 4.5;
 global_clouds_anisotropic_light_scattering_strength = 0.4;
-global_clouds_alpha_blending_power = 2;
+global_clouds_alpha_blending_power = 1.5;
 global_clouds_temporal_blue_noise_offset = 0.03;
 
 global_atmosphere_scatter_point_samples_count = 10;

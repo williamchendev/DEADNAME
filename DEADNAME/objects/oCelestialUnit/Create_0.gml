@@ -42,14 +42,14 @@ unit_pathfinding_set_path = function(path)
 	if (is_undefined(pathfinding_path))
 	{
 		// Reset Path Index
-		pathfinding_path_index = -1;
+		pathfinding_path_index = 0;
 		
 		// Reset Pathfinding Path Progress
 		pathfinding_path_node_progress = 0;
 		
 		// Reset Pathfinding Node Indexes
-		pathfinding_path_node_index_a = pathfinding_node_index;
-		pathfinding_path_node_index_b = ds_list_find_value(path, 0);
+		pathfinding_path_node_index_a = ds_list_find_value(path, 0);
+		pathfinding_path_node_index_b = ds_list_find_value(path, 1);
 		
 		// Check if Pathfinding Node Indexes are the Same
 		/*
@@ -74,6 +74,7 @@ unit_pathfinding_set_path = function(path)
 		}
 		*/
 	}
+	/*
 	else if (pathfinding_path_node_index_a == ds_list_find_value(path, 0))
 	{
 		// Reset Path Index
@@ -87,6 +88,7 @@ unit_pathfinding_set_path = function(path)
 		pathfinding_path_node_index_a = pathfinding_path_node_index_b;
 		pathfinding_path_node_index_b = temp_pathfinding_path_node_index;
 	}
+	*/
 	else
 	{
 		// Reset Path Index
