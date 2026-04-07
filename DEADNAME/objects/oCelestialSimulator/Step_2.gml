@@ -18,12 +18,45 @@ if (solar_system_index == -1)
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
+// Render Object Selection Behaviour
+if (mouse_check_button_released(mb_left))
+{
+	// Establish Empty Render Object Selection Variables
+	var temp_render_object_selected_inst = noone;
+	
+	// Check if Celestial Simulator is Observing a Celestial Body Instance with Render Objects Enabled and is Zoomed In
+	if (instance_exists(camera_observing_instance) and camera_observing_instance.render_objects_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
+	{
+		// Iterate through all Celestial Render Object Instances in Observing Instance's Render Object Front Layer for Cursor Collisions
+		var temp_render_object_index = 0;
+		
+		repeat (array_length(camera_observing_instance.render_objects_front_layer_index_array))
+		{
+			// Find Render Object Index and Instance
+			var temp_render_object_sorted_index = camera_observing_instance.render_objects_front_layer_index_array[temp_render_object_index];
+			var temp_render_object_sorted_instance = camera_observing_instance.render_objects_front_layer_instance_array[temp_render_object_sorted_index];
+			
+			// Check for Render Object Instance's Collision with Cursor
+			if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_render_object_sorted_instance))
+			{
+				temp_render_object_selected_inst = temp_render_object_sorted_instance;
+			}
+			
+			// Increment Render Object Index
+			temp_render_object_index++;
+		}
+	}
+	
+	// Update Celestial Simulator's Render Object Selected Instance with the possible Selection
+	render_object_selected_instance = temp_render_object_selected_inst;
+}
+
 // Calculate Cursor's Screen to World Raycast Vector
 var temp_cursor_raycast = screen_position_to_world_vector(clamp(GameManager.cursor_x, 0, GameManager.game_width), clamp(GameManager.cursor_y, 0, GameManager.game_height), camera_view_matrix, camera_projection_matrix);
 
 // Check for Celestial Simulator Selection & Action Input
 var temp_click_behaviour = mouse_check_button(mb_left);
-var temp_action_behaviour = mouse_check_button(mb_right);
+var temp_action_behaviour = mouse_check_button_pressed(mb_right);
 
 // Celestial Simulator Selection & Action Behaviour
 if (camera_observing_drag)
@@ -36,39 +69,6 @@ if (camera_observing_drag)
 }
 else if (temp_click_behaviour or temp_action_behaviour)
 {
-	// Render Object Selection Behaviour
-	if (temp_click_behaviour)
-	{
-		// Establish Empty Render Object Selection Variables
-		var temp_render_object_selected_inst = noone;
-		
-		// Check if Celestial Simulator is Observing a Celestial Body Instance with Render Objects Enabled and is Zoomed In
-		if (instance_exists(camera_observing_instance) and camera_observing_instance.render_objects_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
-		{
-			// Iterate through all Celestial Render Object Instances in Observing Instance's Render Object Front Layer for Cursor Collisions
-			var temp_render_object_index = 0;
-			
-			repeat (array_length(camera_observing_instance.render_objects_front_layer_index_array))
-			{
-				// Find Render Object Index and Instance
-				var temp_render_object_sorted_index = camera_observing_instance.render_objects_front_layer_index_array[temp_render_object_index];
-				var temp_render_object_sorted_instance = camera_observing_instance.render_objects_front_layer_instance_array[temp_render_object_sorted_index];
-				
-				// Check for Render Object Instance's Collision with Cursor
-				if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_render_object_sorted_instance))
-				{
-					temp_render_object_selected_inst = temp_render_object_sorted_instance;
-				}
-				
-				// Increment Render Object Index
-				temp_render_object_index++;
-			}
-		}
-		
-		// Update Celestial Simulator's Render Object Selected Instance with the possible Selection
-		render_object_selected_instance = temp_render_object_selected_inst;
-	}
-	
 	// Establish Empty Selection Variables
 	var temp_selection_inst = noone;
 	var temp_selection_radius = 1;
@@ -205,7 +205,7 @@ else if (temp_click_behaviour or temp_action_behaviour)
 			// Check if Selection Node Index Exists
 			if (temp_selection_node_index != -1)
 			{
-				//
+				// DEBUG DEBUG DEBUG
 				if (temp_action_behaviour and instance_exists(render_object_selected_instance) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
 				{
 					var temp_path = celestial_pathfinding(camera_observing_instance, render_object_selected_instance.pathfinding_node_index, temp_selection_node_index);
@@ -236,17 +236,17 @@ else if (temp_click_behaviour or temp_action_behaviour)
 	}
 }
 
-// DEBUG DEBUG DEBUG
-if (instance_exists(render_object_selected_instance))
+// Calculate Triangle UI Animation Behaviour
+if (selected_unit_movement_path_entries > 0)
 {
-	// Update Animation Behaviour
+	// Update Triangle UI Animation Timers and Values
 	triangle_animation_value += triangle_animation_speed * frame_delta;
 	triangle_animation_value = triangle_animation_value mod 1;
 	
 	triangle_breath_value = triangle_breath_padding * ((sin(triangle_animation_value * 2 * pi) * 0.5) + 0.5);
 	triangle_draw_angle = triangle_angle + (triangle_rotate_range * ((sin(triangle_animation_value * 2 * pi * triangle_rotate_spd) * 0.5) + 0.5));
 	
-	// Dialogue Box Triangle Behaviour
+	// Update Triangle UI Animation Geometry Behaviour
 	tri_x_1 = rot_dist_x(triangle_radius, triangle_draw_angle);
 	tri_y_1 = rot_dist_y(triangle_radius);
 	tri_x_2 = rot_dist_x(triangle_radius, triangle_draw_angle - 130);

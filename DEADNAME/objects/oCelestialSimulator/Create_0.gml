@@ -72,6 +72,8 @@ global_render_objects_default_depth_transparent_start = -0.4;
 global_render_objects_default_depth_transparent_end = -0.2;
 global_render_objects_satellite_depth_transparent_start = -0.3;
 global_render_objects_satellite_depth_transparent_end = 0.5;
+global_render_path_depth_transparent_start = -0.4;
+global_render_path_depth_transparent_end = -0.25;
 
 global_clouds_scatter_point_samples_count = 8;
 global_clouds_light_depth_samples_count = 8;
@@ -99,7 +101,7 @@ render_object_city_name_vertical_offset = -8;
 // Triangle Settings
 triangle_angle = -115;
 triangle_radius = 4;
-triangle_offset = 6;
+triangle_offset = -5;
 
 triangle_breath_padding = 5;
 
@@ -156,6 +158,17 @@ render_objects_front_render_depth_sorting_depth_array = array_create(0);
 
 // Selection Variables
 render_object_selected_instance = noone;
+
+selected_unit_movement_path_ui = false;
+selected_unit_movement_path_entries = 0;
+selected_unit_movement_path_depth_sorting_index_array = array_create(0);
+selected_unit_movement_path_depth_sorting_depth_array = array_create(0);
+selected_unit_movement_path_point_a_position_x_array = array_create(0);
+selected_unit_movement_path_point_a_position_y_array = array_create(0);
+selected_unit_movement_path_point_a_alpha_array = array_create(0);
+selected_unit_movement_path_point_b_position_x_array = array_create(0);
+selected_unit_movement_path_point_b_position_y_array = array_create(0);
+selected_unit_movement_path_point_b_alpha_array = array_create(0);
 
 // Triangle Variables
 triangle_animation_value = 0;
@@ -476,6 +489,11 @@ render_objects_front_render_depth_sort = function(current, next)
 clouds_render_depth_sort = function(current, next) 
 {
 	return CelestialSimulator.clouds_render_depth_sorting_depth_array[next] < CelestialSimulator.clouds_render_depth_sorting_depth_array[current] ? -1 : 1;
+}
+
+selected_unit_movement_path_render_depth_sort = function(current, next) 
+{
+	return CelestialSimulator.selected_unit_movement_path_depth_sorting_depth_array[next] < CelestialSimulator.selected_unit_movement_path_depth_sorting_depth_array[current] ? -1 : 1;
 }
 
 solar_system_render_depth_sort = function(current, next) 
@@ -1077,6 +1095,101 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	
 	// Reset Shader
 	shader_reset();
+	
+	// Reset Surface Target
+	surface_reset_target();
+}
+
+render_selected_unit_movement_path_ui = function()
+{
+	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
+	surface_set_target(CelestialSimulator.celestial_body_render_surface);
+	
+	// Reset Camera Orientation
+	camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
+	camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
+	camera_apply(GameManager.camera_instance);
+	
+	// Reset Matrix World Identity
+	matrix_set(matrix_world, matrix_build_identity());
+	
+	// Iterate through and Draw all Selected Unit Movement Path Entries
+	var temp_selected_unit_movement_path_entry_index = 0;
+	
+	repeat (CelestialSimulator.selected_unit_movement_path_entries)
+	{
+		// Find Selected Unit Movement Path Entry's Sorted Index
+		var temp_selected_unit_movement_path_entry_sorted_index = CelestialSimulator.selected_unit_movement_path_depth_sorting_index_array[temp_selected_unit_movement_path_entry_index];
+		
+		// Find Selected Unit Movement Path Point Positions and Alphas
+		var temp_movement_path_point_a_position_x = CelestialSimulator.selected_unit_movement_path_point_a_position_x_array[temp_selected_unit_movement_path_entry_sorted_index];
+		var temp_movement_path_point_a_position_y = CelestialSimulator.selected_unit_movement_path_point_a_position_y_array[temp_selected_unit_movement_path_entry_sorted_index];
+		var temp_movement_path_point_a_alpha = CelestialSimulator.selected_unit_movement_path_point_a_alpha_array[temp_selected_unit_movement_path_entry_sorted_index];
+		
+		var temp_movement_path_point_b_position_x = CelestialSimulator.selected_unit_movement_path_point_b_position_x_array[temp_selected_unit_movement_path_entry_sorted_index];
+		var temp_movement_path_point_b_position_y = CelestialSimulator.selected_unit_movement_path_point_b_position_y_array[temp_selected_unit_movement_path_entry_sorted_index];
+		var temp_movement_path_point_b_alpha = CelestialSimulator.selected_unit_movement_path_point_b_alpha_array[temp_selected_unit_movement_path_entry_sorted_index];
+		
+		//
+		draw_line_width_color(temp_movement_path_point_a_position_x, temp_movement_path_point_a_position_y, temp_movement_path_point_b_position_x, temp_movement_path_point_b_position_y, 2, c_white, c_white);
+		
+		// Draw Selection Triangle over Render Object if Render Object is the Celestial Simulator's Selected Render Object Instance
+		if (temp_selected_unit_movement_path_entry_sorted_index == CelestialSimulator.selected_unit_movement_path_entries - 1)
+		{
+			//
+			draw_circle_color(temp_movement_path_point_b_position_x, temp_movement_path_point_b_position_y, 4, c_white, c_white, false);
+			
+			// Triangle Pivot and Draw Position Variables
+			var temp_pivot_x = temp_movement_path_point_b_position_x - 1;
+			var temp_pivot_y = temp_movement_path_point_b_position_y + CelestialSimulator.triangle_offset - CelestialSimulator.triangle_breath_value;
+			
+			var temp_tri_x = temp_pivot_x;
+			var temp_tri_y = temp_pivot_y;
+			
+			// Set Triangle's Alpha
+			draw_set_alpha(1);
+			
+			// Draw Triangle's Black Outline
+			draw_set_color(c_black);
+			
+			temp_tri_x = temp_pivot_x + 2;
+			temp_tri_y = temp_pivot_y + 1;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			temp_tri_x = temp_pivot_x + 1;
+			temp_tri_y = temp_pivot_y + 2;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			
+			temp_tri_x = temp_pivot_x - 1;
+			temp_tri_y = temp_pivot_y;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			temp_tri_x = temp_pivot_x + 1;
+			temp_tri_y = temp_pivot_y;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			temp_tri_x = temp_pivot_x;
+			temp_tri_y = temp_pivot_y - 1;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			temp_tri_x = temp_pivot_x;
+			temp_tri_y = temp_pivot_y + 1;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			
+			// Draw Triangle's Contrast Drop Shadow
+			draw_set_color(c_gray);
+			
+			temp_tri_x = temp_pivot_x + 1;
+			temp_tri_y = temp_pivot_y + 1;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			
+			// Draw Triangle
+			draw_set_color(c_white);
+			
+			temp_tri_x = temp_pivot_x;
+			temp_tri_y = temp_pivot_y;
+			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+		}
+		
+		//
+		temp_selected_unit_movement_path_entry_index++;
+	}
 	
 	// Reset Surface Target
 	surface_reset_target();

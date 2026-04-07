@@ -150,50 +150,62 @@ repeat (array_length(solar_systems))
 					// Establish Unit Movement Power
 					var temp_movement_power = temp_unit_instance.unit_movement_power * CelestialSimulator.global_clock_delta_time;
 					
-					// Perform Unit Movement
+					// Check if Unit Movement Behaviour is driven by the Celestial Object's Pathfinding Grid Movement or by an Alternative Movement Ruleset
 					if (pathfinding_enabled)
 					{
-						// Perform Unit Pathfinding Movement
-						while (temp_movement_power > 0)
+						// Check if Unit's Pathfinding Path Index is Valid
+						if (temp_unit_instance.pathfinding_path_index < 0 or temp_unit_instance.pathfinding_path_index >= ds_list_size(temp_unit_instance.pathfinding_path) - 1)
 						{
-							// Find Unit Pathfinding Node Microbiomes
-							var temp_unit_pathfinding_node_a_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_instance.pathfinding_path_node_index_a]];
-							var temp_unit_pathfinding_node_b_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_instance.pathfinding_path_node_index_b]];
+							// Destroy Unit's Pathfinding Path DS List
+							ds_list_destroy(temp_unit_instance.pathfinding_path);
 							
-							// Find Unit Pathfinding Nodes Combined Microbiome Movement Cost
-							var temp_unit_pathfinding_combined_microbiome_movement_cost = celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_a_microbiome_type) * 0.5 + celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_b_microbiome_type) * 0.5;
-							
-							// Find Unit Pathfinding Remaining Movement Cost
-							var temp_unit_pathfinding_remaining_movement_cost = (1 - temp_unit_instance.pathfinding_path_node_progress) * temp_unit_pathfinding_combined_microbiome_movement_cost;
-							
-							// Find Unit Pathfinding Movement Spend
-							var temp_unit_pathfinding_movement_power_spend = min(temp_movement_power, temp_unit_pathfinding_remaining_movement_cost);
-							
-							// Decrement Unit Movement Power
-							temp_movement_power -= temp_unit_pathfinding_movement_power_spend;
-							
-							// Increment Pathfinding Path Progress
-							temp_unit_instance.pathfinding_path_node_progress += temp_unit_pathfinding_movement_power_spend / temp_unit_pathfinding_combined_microbiome_movement_cost;
-							
-							// Check if Unit's has made enough Path Progress to elapse to the next Pathfinding Node
-							if (temp_unit_instance.pathfinding_path_node_progress >= 1)
+							// Reset Unit's Pathfinding Path
+							temp_unit_instance.pathfinding_path = undefined;
+						}
+						else
+						{
+							// Perform Unit Pathfinding Movement
+							while (temp_movement_power > 0)
 							{
-								// Increment Unit's Pathfinding Path Index
-								temp_unit_instance.pathfinding_path_index++;
+								// Find Unit Pathfinding Node Indexes
+								var temp_unit_pathfinding_node_a_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
+								var temp_unit_pathfinding_node_b_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index + 1);
 								
-								// Update Unit's Pathfinding Node Index
-								temp_unit_instance.pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
+								// Find Unit Pathfinding Node Microbiomes
+								var temp_unit_pathfinding_node_a_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_pathfinding_node_a_index]];
+								var temp_unit_pathfinding_node_b_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_pathfinding_node_b_index]];
 								
-								// Reset Unit's Pathfinding Path Progress
-								temp_unit_instance.pathfinding_path_node_progress = 0;
+								// Find Unit Pathfinding Nodes Combined Microbiome Movement Cost
+								var temp_unit_pathfinding_combined_microbiome_movement_cost = celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_a_microbiome_type) * 0.5 + celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_b_microbiome_type) * 0.5;
+								
+								// Find Unit Pathfinding Remaining Movement Cost
+								var temp_unit_pathfinding_remaining_movement_cost = (1 - temp_unit_instance.pathfinding_path_node_progress) * temp_unit_pathfinding_combined_microbiome_movement_cost;
+								
+								// Find Unit Pathfinding Movement Spend
+								var temp_unit_pathfinding_movement_power_spend = min(temp_movement_power, temp_unit_pathfinding_remaining_movement_cost);
+								
+								// Decrement Unit Movement Power
+								temp_movement_power -= temp_unit_pathfinding_movement_power_spend;
+								
+								// Increment Pathfinding Path Progress
+								temp_unit_instance.pathfinding_path_node_progress += temp_unit_pathfinding_movement_power_spend / temp_unit_pathfinding_combined_microbiome_movement_cost;
+								
+								// Check if Unit's has made enough Path Progress to elapse to the next Pathfinding Node
+								if (temp_unit_instance.pathfinding_path_node_progress >= 1)
+								{
+									// Increment Unit's Pathfinding Path Index
+									temp_unit_instance.pathfinding_path_index++;
+									
+									// Update Unit's Pathfinding Node Index
+									temp_unit_instance.pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
+									
+									// Reset Unit's Pathfinding Path Progress
+									temp_unit_instance.pathfinding_path_node_progress = 0;
+								}
 								
 								// Check if Unit has finished moving through their Pathfinding Path
 								if (temp_unit_instance.pathfinding_path_index >= ds_list_size(temp_unit_instance.pathfinding_path) - 1)
 								{
-									// Reset Unit's Pathfinding Node Indexes
-									temp_unit_instance.pathfinding_path_node_index_a = -1;
-									temp_unit_instance.pathfinding_path_node_index_b = -1;
-									
 									// Destroy Unit's Pathfinding Path DS List
 									ds_list_destroy(temp_unit_instance.pathfinding_path);
 									
@@ -203,18 +215,41 @@ repeat (array_length(solar_systems))
 									// Break from Movement Behaviour Loop
 									break;
 								}
-								else
-								{
-									// Update Unit's Pathfinding Node Indexes
-									temp_unit_instance.pathfinding_path_node_index_a = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
-									temp_unit_instance.pathfinding_path_node_index_b = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index + 1);
-								}
+							}
+							
+							// Update Unit Position based on Pathfinding Progress
+							if (!is_undefined(temp_unit_instance.pathfinding_path))
+							{
+								// Establish Unit Pathfinding Node Indexes
+								var temp_unit_position_pathfinding_node_index_a = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
+								var temp_unit_position_pathfinding_node_index_b = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index + 1);
+								
+								// Establish Unit Pathfinding Node Positions
+								var temp_unit_position_pathfinding_node_a_local_x = pathfinding_node_x_array[temp_unit_position_pathfinding_node_index_a];
+								var temp_unit_position_pathfinding_node_a_local_y = pathfinding_node_y_array[temp_unit_position_pathfinding_node_index_a];
+								var temp_unit_position_pathfinding_node_a_local_z = pathfinding_node_z_array[temp_unit_position_pathfinding_node_index_a];
+								
+								var temp_unit_position_pathfinding_node_b_local_x = pathfinding_node_x_array[temp_unit_position_pathfinding_node_index_b];
+								var temp_unit_position_pathfinding_node_b_local_y = pathfinding_node_y_array[temp_unit_position_pathfinding_node_index_b];
+								var temp_unit_position_pathfinding_node_b_local_z = pathfinding_node_z_array[temp_unit_position_pathfinding_node_index_b];
+								
+								// Establish Unit Pathfinding Node Elevations
+								var temp_unit_position_pathfinding_node_a_elevation = pathfinding_node_elevation_array[temp_unit_position_pathfinding_node_index_a];
+								var temp_unit_position_pathfinding_node_b_elevation = pathfinding_node_elevation_array[temp_unit_position_pathfinding_node_index_b];
+								
+								// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
+								temp_unit_instance.pathfinding_position_x = lerp(temp_unit_position_pathfinding_node_a_local_x, temp_unit_position_pathfinding_node_b_local_x, temp_unit_instance.pathfinding_path_node_progress);
+								temp_unit_instance.pathfinding_position_y = lerp(temp_unit_position_pathfinding_node_a_local_y, temp_unit_position_pathfinding_node_b_local_y, temp_unit_instance.pathfinding_path_node_progress);
+								temp_unit_instance.pathfinding_position_z = lerp(temp_unit_position_pathfinding_node_a_local_z, temp_unit_position_pathfinding_node_b_local_z, temp_unit_instance.pathfinding_path_node_progress);
+								
+								// Find Celestial Unit's Elevation from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
+								temp_unit_instance.pathfinding_position_elevation = lerp(temp_unit_position_pathfinding_node_a_elevation, temp_unit_position_pathfinding_node_b_elevation, temp_unit_instance.pathfinding_path_node_progress);
 							}
 						}
 					}
 					else
 					{
-						//
+						// Unit Movement based on the Celestial Object's Alternative Movement Ruleset
 					}
 				}
 				
@@ -233,3 +268,6 @@ repeat (array_length(solar_systems))
 	// Increment the Solar System Index
 	temp_solar_systems_index++;
 }
+
+// Reset Celestial Simulator's UI Behaviours
+selected_unit_movement_path_ui = false;

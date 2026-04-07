@@ -313,9 +313,21 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(false);
 				gpu_set_ztestenable(false);
 				
-				// Render Celestial Object's Render Object Front Layer
+				// Check if Celestial Object's UI Rendering is Enabled
 				if (render_objects_enabled)
 				{
+					// Check if Celestial Object is the Celestial Simulator's Observed Instance and Celestial Simulator Observation UI should be Rendered
+					if (temp_celestial_object_instance == CelestialSimulator.camera_observing_instance)
+					{
+						// Selected Unit Movement Path UI Behaviour
+						if (CelestialSimulator.selected_unit_movement_path_ui)
+						{
+							// Render Selected Unit's Pathfinding Movement over Celestial Object
+							CelestialSimulator.render_selected_unit_movement_path_ui();
+						}
+					}
+					
+					// Render Celestial Object's Render Object Front Layer
 					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, true);
 				}
 				

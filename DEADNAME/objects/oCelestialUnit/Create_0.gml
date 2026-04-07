@@ -10,10 +10,12 @@ celestial_render_object_type = CelestialRenderObjectType.Unit;
 // Pathfinding Variables
 pathfinding_path = undefined;
 pathfinding_path_index = -1;
-
-pathfinding_path_node_index_a = -1;
-pathfinding_path_node_index_b = -1;
 pathfinding_path_node_progress = 0;
+
+pathfinding_position_x = 0;
+pathfinding_position_y = 0;
+pathfinding_position_z = 0;
+pathfinding_position_elevation = 0;
 
 // DEBUG
 pathfinding_node_index = irandom_range(0, 4000);
@@ -38,63 +40,6 @@ unit_pathfinding_set_path = function(path)
 		return
 	}
 	
-	// Set Up Pathfinding Path Node Indexes
-	if (is_undefined(pathfinding_path))
-	{
-		// Reset Path Index
-		pathfinding_path_index = 0;
-		
-		// Reset Pathfinding Path Progress
-		pathfinding_path_node_progress = 0;
-		
-		// Reset Pathfinding Node Indexes
-		pathfinding_path_node_index_a = ds_list_find_value(path, 0);
-		pathfinding_path_node_index_b = ds_list_find_value(path, 1);
-		
-		// Check if Pathfinding Node Indexes are the Same
-		/*
-		if (pathfinding_path_node_index_a == pathfinding_path_node_index_b)
-		{
-			// Destroy Pathfinding Paths
-			ds_list_destroy(path);
-			
-			if (!is_undefined(pathfinding_path))
-			{
-				ds_list_destroy(pathfinding_path);
-			}
-			
-			// Set Pathfinding Path
-			pathfinding_path = undefined;
-			
-			// Reset Path Index
-			pathfinding_path_index = 0;
-			
-			// Early Return
-			return
-		}
-		*/
-	}
-	/*
-	else if (pathfinding_path_node_index_a == ds_list_find_value(path, 0))
-	{
-		// Reset Path Index
-		pathfinding_path_index = -1;
-		
-		// Flip Pathfinding Path Progress
-		pathfinding_path_node_progress = 1 - pathfinding_path_node_progress;
-		
-		// Flip Pathfinding Node Indexes
-		var temp_pathfinding_path_node_index = pathfinding_path_node_index_a;
-		pathfinding_path_node_index_a = pathfinding_path_node_index_b;
-		pathfinding_path_node_index_b = temp_pathfinding_path_node_index;
-	}
-	*/
-	else
-	{
-		// Reset Path Index
-		pathfinding_path_index = 0;
-	}
-	
 	// Destroy Pathfinding Path
 	if (!is_undefined(pathfinding_path))
 	{
@@ -103,4 +48,10 @@ unit_pathfinding_set_path = function(path)
 	
 	// Set Pathfinding Path
 	pathfinding_path = path;
+	
+	// Reset Path Index
+	pathfinding_path_index = 0;
+	
+	// Reset Pathfinding Path Progress
+	pathfinding_path_node_progress = 0;
 }
