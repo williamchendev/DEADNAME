@@ -31,3 +31,4 @@ function celestial_body_remove_celestial_unit(celestial_body, celestial_unit)
 		array_delete(celestial_body.units, temp_celestial_unit_index, 1);
 	}
 }
+

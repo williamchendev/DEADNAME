@@ -5,6 +5,9 @@
 surface_free(background_surface);
 background_surface = -1;
 
+surface_free(temp_surface);
+temp_surface = -1;
+
 surface_free(celestial_body_render_surface);
 celestial_body_render_surface = -1;
 

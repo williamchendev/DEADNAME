@@ -54,6 +54,8 @@ const float Pi = 3.14159265359;
 
 const float color_range = 256.0;
 
+const float light_source_intensity_multiplier = 1.25;
+
 // Trigonometry Functions
 // returns the angle in the plane (in radians) between the positive x-axis and the ray from (0, 0) to the point (x, y)
 float atan2(float y, float x)
@@ -300,7 +302,7 @@ void main()
 		l = clamp(l_a + l_b, 0.0, 1.0); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1.
 		
 		// Add Calculated Light to Cumulative Light Value
-		light += l * light_fade * in_Light_Intensity[i] * shadows;
+		light += l * light_fade * in_Light_Intensity[i] * light_source_intensity_multiplier * shadows;
 	}
 	
 	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding

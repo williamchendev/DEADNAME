@@ -73,6 +73,8 @@ const float pseudo_infinity = 1.0 / 0.0;
 
 const float color_range = 256.0;
 
+const float light_source_intensity_multiplier = 1.25;
+
 const float dielectric_material_light_reflection_coefficient = 0.04;
 
 // Trigonometry Functions
@@ -363,7 +365,7 @@ void main()
 		o_l = clamp(l_a + l_b, 0.0, 1.0) * (vec3(1.0) - frenel_schlick); // Clamped between 0 and 1 to prevent lighting values from going negative or exceeding 1
 		
 		// Add Calculated Light to Cumulative Light Value
-		light += (o_l + s_l * u_SpecularIntensity) * light_fade * in_Light_Intensity[i] * shadows;
+		light += (o_l + s_l * u_SpecularIntensity) * light_fade * in_Light_Intensity[i] * light_source_intensity_multiplier * shadows;
 	}
 	
 	// Apply Spatiotemporal Blue Noise Dither Corrected Quantization to Light Color to prevent Color Banding

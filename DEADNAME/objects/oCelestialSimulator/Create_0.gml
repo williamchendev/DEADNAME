@@ -68,6 +68,9 @@ global_noise_time_spd = 0.03;
 
 global_hydrosphere_specular_intensity = 0.5;
 
+global_render_objects_unit_depth_offset = 5;
+global_render_objects_city_depth_offset = 10;
+
 global_render_objects_default_depth_transparent_start = -0.4;
 global_render_objects_default_depth_transparent_end = -0.2;
 global_render_objects_satellite_depth_transparent_start = -0.3;
@@ -80,7 +83,7 @@ global_clouds_light_depth_samples_count = 8;
 global_clouds_sample_scale = 0.008;
 global_clouds_absorption = 0.25;
 global_clouds_density = 1;
-global_clouds_density_falloff = 4.5;
+global_clouds_density_falloff = 5;
 global_clouds_anisotropic_light_scattering_strength = 0.4;
 global_clouds_alpha_blending_power = 1.5;
 global_clouds_temporal_blue_noise_offset = 0.03;
@@ -99,7 +102,7 @@ bloom_global_intensity = 1.0;
 render_object_city_name_vertical_offset = -8;
 
 // Triangle Settings
-triangle_angle = -115;
+triangle_angle = -105;
 triangle_radius = 4;
 triangle_offset = -5;
 
@@ -156,6 +159,10 @@ render_objects_back_render_depth_sorting_depth_array = array_create(0);
 render_objects_front_render_depth_sorting_index_array = array_create(0);
 render_objects_front_render_depth_sorting_depth_array = array_create(0);
 
+// Input Variables
+input_select = false;
+input_action = false;
+
 // Selection Variables
 render_object_selected_instance = noone;
 
@@ -184,6 +191,8 @@ tri_y_3 = 0;
 
 // Surfaces
 background_surface = -1;
+
+temp_surface = -1;
 
 celestial_body_render_surface = -1;
 celestial_body_diffuse_surface = -1;
@@ -243,6 +252,9 @@ background_stars_unlit_shader_camera_dimensions_index = shader_get_uniform(shd_b
 // MRT (Unlit) Celestial Sprite Rendering Shader Indexes
 celestial_sprite_unlit_shader_emissive_index = shader_get_uniform(shd_celestial_sprite_unlit, "u_Emissive");
 celestial_sprite_unlit_shader_depth_index = shader_get_uniform(shd_celestial_sprite_unlit, "u_Depth");
+
+// MRT (Unlit) Celestial Pathfinding Path Rendering Shader Indexes
+celestial_path_unlit_shader_depth_index = shader_get_uniform(shd_celestial_path_unlit, "u_Depth");
 
 // MRT (Forward Rendered Lighting) Planet Lithosphere Lit Rendering Shader Indexes
 planet_lithosphere_lit_shader_vsh_camera_position_index = shader_get_uniform(shd_planet_lithosphere_lit, "in_vsh_CameraPosition");
@@ -1003,10 +1015,6 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	// Enable Celestial Sprite Unlit Rendering Shader
 	shader_set(shd_celestial_sprite_unlit);
 	
-	// Set Draw Text Alignment
-	draw_set_halign(fa_center);
-	draw_set_valign(fa_middle);
-	
 	// Check if Celestial Simulator should Render the Miniature Version of the Render Object's Sprite
 	var temp_render_object_miniature_icon = CelestialSimulator.camera_observing_instance_radius_offset_value > CelestialSimulator.camera_observing_instance_radius_offset_zoom_in_threshold or CelestialSimulator.camera_observing_instance != celestial_object;
 	
@@ -1038,36 +1046,13 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 		switch (temp_instance.celestial_render_object_type)
 		{
 			case CelestialRenderObjectType.Unit:
+			case CelestialRenderObjectType.City:
 				// Establish Render Object's Unlit Sprite Alpha Transparency
 				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_start, temp_depth);
 				temp_alpha *= power(temp_default_depth_alpha, 3);
 				
 				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
-				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius, temp_depth + celestial_object.render_depth_radius, temp_alpha));
-				break;
-			case CelestialRenderObjectType.City:
-				// Establish Render Object's Unlit Sprite Alpha Transparency
-				var temp_city_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_start, temp_depth);
-				temp_alpha *= power(temp_city_depth_alpha, 3);
-				
-				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
-				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius * 2, temp_depth + celestial_object.render_depth_radius, temp_alpha));
-				
-				// Check if City Name should be Rendered when Celestial Simulator's Observation Zoom is not Toggled
-				if (!temp_render_object_miniature_icon)
-				{
-					// Establish Render Object's Unlit Sprite Shader Emissive Rendering Properties
-					shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, 0);
-					
-					// Establish Render Object City Name Position Variables
-					var temp_city_name_x = temp_instance.x;
-					var temp_city_name_y = temp_instance.y - (sprite_get_yoffset(temp_sprite_index) - sprite_get_bbox_top(temp_sprite_index)) + CelestialSimulator.render_object_city_name_vertical_offset;
-					
-					// Draw City Name Text above City Sprite
-					draw_set_alpha(temp_alpha * temp_alpha * temp_alpha);
-					draw_text_outline(temp_city_name_x, temp_city_name_y, temp_instance.city_name, c_white, c_black);
-					draw_set_alpha(1);
-				}
+				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius, temp_depth + celestial_object.render_depth_radius, temp_alpha) + 50);
 				break;
 			case CelestialRenderObjectType.Satellite:
 				// Establish Render Object's Unlit Sprite Alpha Transparency
@@ -1102,8 +1087,11 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 
 render_selected_unit_movement_path_ui = function()
 {
-	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
-	surface_set_target(CelestialSimulator.celestial_body_render_surface);
+	// Set Celestial Temporary Render Surface as Surface Targets
+	surface_set_target(CelestialSimulator.temp_surface);
+	
+	// Reset Celestial Temporary Render Surface
+	draw_clear_alpha(c_black, 0);
 	
 	// Reset Camera Orientation
 	camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
@@ -1130,69 +1118,90 @@ render_selected_unit_movement_path_ui = function()
 		var temp_movement_path_point_b_position_y = CelestialSimulator.selected_unit_movement_path_point_b_position_y_array[temp_selected_unit_movement_path_entry_sorted_index];
 		var temp_movement_path_point_b_alpha = CelestialSimulator.selected_unit_movement_path_point_b_alpha_array[temp_selected_unit_movement_path_entry_sorted_index];
 		
-		//
-		draw_line_width_color(temp_movement_path_point_a_position_x, temp_movement_path_point_a_position_y, temp_movement_path_point_b_position_x, temp_movement_path_point_b_position_y, 2, c_white, c_white);
+		// Create Selected Unit Movement Path Point's Render Color based on the Point Alphas
+		var temp_movement_path_color_a = make_color_rgb(temp_movement_path_point_a_alpha * 255, 0, 0);
+		var temp_movement_path_color_b = make_color_rgb(temp_movement_path_point_b_alpha * 255, 0, 0);
 		
-		// Draw Selection Triangle over Render Object if Render Object is the Celestial Simulator's Selected Render Object Instance
+		// Draw Line Width of the given Path Points
+		draw_line_width_color(temp_movement_path_point_a_position_x, temp_movement_path_point_a_position_y, temp_movement_path_point_b_position_x, temp_movement_path_point_b_position_y, 2, temp_movement_path_color_a, temp_movement_path_color_b);
+		
+		// Check if Path Entry is the Last Index in the Selected Unit's Movement Path Array
 		if (temp_selected_unit_movement_path_entry_sorted_index == CelestialSimulator.selected_unit_movement_path_entries - 1)
 		{
-			//
-			draw_circle_color(temp_movement_path_point_b_position_x, temp_movement_path_point_b_position_y, 4, c_white, c_white, false);
+			// Establish Breathing Ellipse Horizontal and Vertical Radius Variables
+			var temp_ellipse_horizontal_radius = CelestialSimulator.triangle_breath_value * 0.4 + 4;
+			var temp_ellipse_vertical_radius = CelestialSimulator.triangle_breath_value * 0.3 + 2;
 			
-			// Triangle Pivot and Draw Position Variables
-			var temp_pivot_x = temp_movement_path_point_b_position_x - 1;
-			var temp_pivot_y = temp_movement_path_point_b_position_y + CelestialSimulator.triangle_offset - CelestialSimulator.triangle_breath_value;
+			// Establish Ellipse Rectangular Dimension Variables
+			var temp_ellipse_left = temp_movement_path_point_b_position_x - temp_ellipse_horizontal_radius;
+			var temp_ellipse_top = temp_movement_path_point_b_position_y - temp_ellipse_vertical_radius;
+			var temp_ellipse_right = temp_movement_path_point_b_position_x + temp_ellipse_horizontal_radius;
+			var temp_ellipse_bottom = temp_movement_path_point_b_position_y + temp_ellipse_vertical_radius;
 			
-			var temp_tri_x = temp_pivot_x;
-			var temp_tri_y = temp_pivot_y;
-			
-			// Set Triangle's Alpha
-			draw_set_alpha(1);
-			
-			// Draw Triangle's Black Outline
-			draw_set_color(c_black);
-			
-			temp_tri_x = temp_pivot_x + 2;
-			temp_tri_y = temp_pivot_y + 1;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			temp_tri_x = temp_pivot_x + 1;
-			temp_tri_y = temp_pivot_y + 2;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			
-			temp_tri_x = temp_pivot_x - 1;
-			temp_tri_y = temp_pivot_y;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			temp_tri_x = temp_pivot_x + 1;
-			temp_tri_y = temp_pivot_y;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			temp_tri_x = temp_pivot_x;
-			temp_tri_y = temp_pivot_y - 1;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			temp_tri_x = temp_pivot_x;
-			temp_tri_y = temp_pivot_y + 1;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			
-			// Draw Triangle's Contrast Drop Shadow
-			draw_set_color(c_gray);
-			
-			temp_tri_x = temp_pivot_x + 1;
-			temp_tri_y = temp_pivot_y + 1;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
-			
-			// Draw Triangle
-			draw_set_color(c_white);
-			
-			temp_tri_x = temp_pivot_x;
-			temp_tri_y = temp_pivot_y;
-			draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+			// Draw a "Shadowed" Ellipse at the end of the Movement Path
+			draw_ellipse_color(temp_ellipse_left, temp_ellipse_top, temp_ellipse_right, temp_ellipse_bottom, temp_movement_path_color_b, temp_movement_path_color_b, false);
 		}
 		
-		//
+		// Increment Movement Path Entry Index
 		temp_selected_unit_movement_path_entry_index++;
 	}
 	
 	// Reset Surface Target
 	surface_reset_target();
+	
+	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, & Emissive Surfaces as Surface Targets
+	surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+	surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+	surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
+	
+	// Enable Celestial Path Unlit Rendering Shader
+	shader_set(shd_celestial_path_unlit);
+	
+	// Establish Unlit Pathfinding Path Shader Depth Rendering Properties
+	shader_set_uniform_f(CelestialSimulator.celestial_path_unlit_shader_depth_index, CelestialSimulator.camera_observing_instance.render_depth_radius);
+	
+	// Draw Celestial Temporary Render Surface to Observing Celestial Object Render
+	draw_surface_ext(CelestialSimulator.temp_surface, 0, 0, 1, 1, 0, c_white, 1);
+	
+	// Reset Shader
+	shader_reset();
+	
+	// Reset Surface Target
+	surface_reset_target();
+}
+
+render_triangle_ui = function(triangle_x, triangle_y, triangle_alpha)
+{
+	// Establish Triangle Draw Position Variables
+	var temp_tri_x = triangle_x - 1;
+	var temp_tri_y = triangle_y + CelestialSimulator.triangle_offset - CelestialSimulator.triangle_breath_value;
+	
+	// Set Draw Transparency to Triangle's Alpha
+	draw_set_alpha(triangle_alpha);
+	
+	// Draw Triangle's Black Outline
+	draw_set_color(c_black);
+	
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1 + 2, temp_tri_y + CelestialSimulator.tri_y_1 + 1, temp_tri_x + CelestialSimulator.tri_x_2 + 2, temp_tri_y + CelestialSimulator.tri_y_2 + 1, temp_tri_x + CelestialSimulator.tri_x_3 + 2, temp_tri_y + CelestialSimulator.tri_y_3 + 1, false);
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1 + 1, temp_tri_y + CelestialSimulator.tri_y_1 + 2, temp_tri_x + CelestialSimulator.tri_x_2 + 1, temp_tri_y + CelestialSimulator.tri_y_2 + 2, temp_tri_x + CelestialSimulator.tri_x_3 + 1, temp_tri_y + CelestialSimulator.tri_y_3 + 2, false);
+	
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1 - 1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2 - 1, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3 - 1, temp_tri_y + CelestialSimulator.tri_y_3, false);
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1 + 1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2 + 1, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3 + 1, temp_tri_y + CelestialSimulator.tri_y_3, false);
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1 - 1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2 - 1, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3 - 1, false);
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1 + 1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2 + 1, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3 + 1, false);
+	
+	// Draw Triangle's Contrast Drop Shadow
+	draw_set_color(c_gray);
+	
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1 + 1, temp_tri_y + CelestialSimulator.tri_y_1 + 1, temp_tri_x + CelestialSimulator.tri_x_2 + 1, temp_tri_y + CelestialSimulator.tri_y_2 + 1, temp_tri_x + CelestialSimulator.tri_x_3 + 1, temp_tri_y + CelestialSimulator.tri_y_3 + 1, false);
+	
+	// Draw Triangle's Main Shape
+	draw_set_color(c_white);
+	
+	draw_triangle(temp_tri_x + CelestialSimulator.tri_x_1, temp_tri_y + CelestialSimulator.tri_y_1, temp_tri_x + CelestialSimulator.tri_x_2, temp_tri_y + CelestialSimulator.tri_y_2, temp_tri_x + CelestialSimulator.tri_x_3, temp_tri_y + CelestialSimulator.tri_y_3, false);
+	
+	// Reset Draw Alpha
+	draw_set_alpha(1);
 }
 
 // Universe Campaign Generation

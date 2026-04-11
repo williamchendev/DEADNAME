@@ -106,7 +106,7 @@ if (clouds)
 		for (var temp_cloud_cluster_spawn_index = 0; temp_cloud_cluster_spawn_index < temp_cloud_group_spawn_num; temp_cloud_cluster_spawn_index++)
 		{
 			// Initialize Cloud Cluster Individual's Behavioural Properties within Cloud Group
-			var temp_cloud_individual_radius = random_range(20, 28);
+			var temp_cloud_individual_radius = random_range(16, 30);
 			var temp_cloud_individual_height = random_range(-3, 3);
 			var temp_cloud_individual_bearing = random(360);
 			var temp_cloud_individual_distance = random_range(3, 10);

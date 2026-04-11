@@ -72,7 +72,7 @@ const float cloud_surface_mask_cutout_depth = 0.65;
 const float blue_noise_ditering_scale = 2.0;
 const float blue_noise_ditering_strength = 0.005;
 
-const float light_source_intensity_multiplier = 100.0;
+const float light_source_intensity_multiplier = 200.0;
 
 const float brightness_adaption_strength = 0.15;
 const float reflected_light_out_scatter_strength = 3.0;
@@ -373,7 +373,7 @@ void main()
 		}
 		
 		// Normalize Total Atmosphere Light Visible at the given Pixel
-		in_scattered_light *= u_AtmosphereScatteringCoefficients * light_source_intensity_multiplier * in_Light_Intensity[l] * (step_size / u_PlanetRadius);
+		in_scattered_light *= u_AtmosphereScatteringCoefficients * light_source_intensity_multiplier * in_Light_Intensity[l] * (step_size / u_fsh_AtmosphereRadius);
 		
 		// Attenuate brightness of light reflected from Celestial Body's Surface
 		float brightness_adaption = dot(in_scattered_light, vec3(1.0)) * brightness_adaption_strength;

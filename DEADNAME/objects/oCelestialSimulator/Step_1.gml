@@ -244,6 +244,14 @@ repeat (array_length(solar_systems))
 								
 								// Find Celestial Unit's Elevation from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
 								temp_unit_instance.pathfinding_position_elevation = lerp(temp_unit_position_pathfinding_node_a_elevation, temp_unit_position_pathfinding_node_b_elevation, temp_unit_instance.pathfinding_path_node_progress);
+								
+								// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
+								var temp_unit_position_pathfinding_node_a_u_angle = pathfinding_node_u_array[temp_unit_position_pathfinding_node_index_a] * 360;
+								var temp_unit_position_pathfinding_node_b_u_angle = pathfinding_node_u_array[temp_unit_position_pathfinding_node_index_b] * 360;
+								
+								// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
+								var temp_unit_position_pathfinding_horizontal_angle_difference = angle_difference(temp_unit_position_pathfinding_node_b_u_angle, temp_unit_position_pathfinding_node_a_u_angle);
+								temp_unit_instance.image_xscale = temp_unit_position_pathfinding_horizontal_angle_difference != 0 ? sign(temp_unit_position_pathfinding_horizontal_angle_difference) : temp_unit_instance.image_xscale;
 							}
 						}
 					}

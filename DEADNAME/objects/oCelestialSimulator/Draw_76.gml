@@ -49,6 +49,11 @@ if (!surface_exists(background_surface))
     background_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
 }
 
+if (!surface_exists(temp_surface))
+{
+    temp_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);
+}
+
 if (!surface_exists(post_processing_surface))
 {
     post_processing_surface = surface_create(GameManager.game_width, GameManager.game_height, surface_rgba8unorm);

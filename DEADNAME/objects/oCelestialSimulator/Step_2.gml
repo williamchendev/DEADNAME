@@ -4,6 +4,10 @@
 // Check if Celestial Simulator is Active
 if (!active)
 {
+	// Reset Input Behaviour
+	input_select = false;
+	input_action = false;
+	
 	// Inactive - Early Return
 	return;
 }
@@ -18,12 +22,16 @@ if (solar_system_index == -1)
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
+// Celestial Simulator Input Behaviour
+var temp_input_select = mouse_check_button(mb_left);
+var temp_input_action = mouse_check_button(mb_right);
+
+// Establish Empty Render Object Selection Variables
+var temp_render_object_selected_inst = noone;
+
 // Render Object Selection Behaviour
-if (mouse_check_button_released(mb_left))
+if (!temp_input_select and input_select and !camera_observing_drag)
 {
-	// Establish Empty Render Object Selection Variables
-	var temp_render_object_selected_inst = noone;
-	
 	// Check if Celestial Simulator is Observing a Celestial Body Instance with Render Objects Enabled and is Zoomed In
 	if (instance_exists(camera_observing_instance) and camera_observing_instance.render_objects_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
 	{
@@ -54,20 +62,16 @@ if (mouse_check_button_released(mb_left))
 // Calculate Cursor's Screen to World Raycast Vector
 var temp_cursor_raycast = screen_position_to_world_vector(clamp(GameManager.cursor_x, 0, GameManager.game_width), clamp(GameManager.cursor_y, 0, GameManager.game_height), camera_view_matrix, camera_projection_matrix);
 
-// Check for Celestial Simulator Selection & Action Input
-var temp_click_behaviour = mouse_check_button(mb_left);
-var temp_action_behaviour = mouse_check_button_pressed(mb_right);
-
 // Celestial Simulator Selection & Action Behaviour
 if (camera_observing_drag)
 {
 	// Check if Click Drag Behaviour has Finished
-	if (!temp_click_behaviour)
+	if (!temp_input_select)
 	{
 		camera_observing_drag = false;
 	}
 }
-else if (temp_click_behaviour or temp_action_behaviour)
+else if (temp_input_select or temp_input_action)
 {
 	// Establish Empty Selection Variables
 	var temp_selection_inst = noone;
@@ -205,33 +209,63 @@ else if (temp_click_behaviour or temp_action_behaviour)
 			// Check if Selection Node Index Exists
 			if (temp_selection_node_index != -1)
 			{
-				// DEBUG DEBUG DEBUG
-				if (temp_action_behaviour and instance_exists(render_object_selected_instance) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
+				// Check if Celestial Object is being Observed and Celestial Simulator's Render Object Selected Instance Exists
+				if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
 				{
-					var temp_path = celestial_pathfinding(camera_observing_instance, render_object_selected_instance.pathfinding_node_index, temp_selection_node_index);
-					show_debug_message($"{render_object_selected_instance.pathfinding_node_index} : {temp_selection_node_index}");
-					for (var i = 0; i < ds_list_size(temp_path); i++)
+					// Perform Render Object Selected Instance's Input Behaviour Tree
+					if (temp_input_action and !input_action)
 					{
-						show_debug_message($"        {ds_list_find_value(temp_path, i)}");
+						// Action Input Behaviour
+						switch (render_object_selected_instance.celestial_render_object_type)
+						{
+							case CelestialRenderObjectType.Unit:
+								// Unit Action Behaviour - Pathfinding
+								if (temp_selection_inst == camera_observing_instance)
+								{
+									var temp_path = celestial_pathfinding(camera_observing_instance, render_object_selected_instance.pathfinding_node_index, temp_selection_node_index);
+									render_object_selected_instance.unit_pathfinding_set_path(temp_path);
+								}
+								break;
+							case CelestialRenderObjectType.City:
+							case CelestialRenderObjectType.Satellite:
+							default:
+								break;
+						}
 					}
-					render_object_selected_instance.unit_pathfinding_set_path(temp_path);
+					else if (temp_input_select and !input_select)
+					{
+						// Select Input Behaviour
+						switch (render_object_selected_instance.celestial_render_object_type)
+						{
+							case CelestialRenderObjectType.Unit:
+							case CelestialRenderObjectType.City:
+							case CelestialRenderObjectType.Satellite:
+							default:
+								break;
+						}
+					}
 				}
-				
-				//
-				
-				//show_debug_message($"[{temp_selection_inst.pathfinding_node_region_array[temp_selection_node_index]}]");
 			}
 		}
 		
 		// Check for Camera Observing Instance Click Drag Behaviour
-		if (temp_click_behaviour and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
+		if (temp_input_select and !instance_exists(temp_render_object_selected_inst) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
 		{
-			// Enable Click Drag Behaviour
-			camera_observing_drag = true;
-			camera_observing_drag_start_x = GameManager.cursor_x;
-			camera_observing_drag_start_y = GameManager.cursor_y;
-			camera_observing_drag_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
-			camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;
+			// Determine if Input is New or if Input Drag has occured
+			if (!input_select)
+			{
+				// Input is New - Set Camera Observing Instance Click Drag Position Variables
+				camera_observing_drag_start_x = GameManager.cursor_x;
+				camera_observing_drag_start_y = GameManager.cursor_y;
+			}
+			else if (camera_observing_drag_start_x != GameManager.cursor_x or camera_observing_drag_start_y != GameManager.cursor_y)
+			{
+				// Input is Drag Movement - Enable Click Drag Behaviour & Set Camera Observing Instance Click Drag Angle Variables
+				camera_observing_drag = true;
+				
+				camera_observing_drag_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
+				camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;
+			}
 		}
 	}
 }
@@ -254,3 +288,7 @@ if (selected_unit_movement_path_entries > 0)
 	tri_x_3 = rot_dist_x(triangle_radius, triangle_draw_angle + 130);
 	tri_y_3 = rot_dist_y(triangle_radius);
 }
+
+// Update Celestial Simulator's Input Variables
+input_select = temp_input_select;
+input_action = temp_input_action;

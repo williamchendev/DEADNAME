@@ -33,6 +33,10 @@ if (credits_active)
 	return;
 }
 
+// Reset Text Alignment
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+
 // Draw Title Screen to UI Surface
 surface_set_target(LightingEngine.ui_surface);
 
