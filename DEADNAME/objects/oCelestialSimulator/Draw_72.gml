@@ -103,6 +103,15 @@ if (instance_exists(camera_observing_instance))
 	// Draw Selection Render Object if Celestial Simulator has a Selected Render Object Instance
 	if (instance_exists(render_object_selected_instance))
 	{
+		// Reset Surface Target
+		surface_reset_target();
+		
+		// Set Celestial Temporary Render Surface as Surface Targets
+		surface_set_target(CelestialSimulator.temp_surface);
+		
+		// Reset Celestial Temporary Render Surface
+		draw_clear_alpha(c_black, 0);
+		
 		// Draw Selected Render Object Instance
 		with (render_object_selected_instance)
 		{
@@ -110,17 +119,26 @@ if (instance_exists(camera_observing_instance))
 			shader_set(shd_white_pixel_binary);
 			
 			// Draw Selected Render Object's White Outline
-			draw_sprite_ext(sprite_index, image_index, x - 1, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha * temp_render_object_selected_alpha);
-			draw_sprite_ext(sprite_index, image_index, x, y - 1, image_xscale, image_yscale, image_angle, image_blend, image_alpha * temp_render_object_selected_alpha);
-			draw_sprite_ext(sprite_index, image_index, x + 1, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha * temp_render_object_selected_alpha);
-			draw_sprite_ext(sprite_index, image_index, x, y + 1, image_xscale, image_yscale, image_angle, image_blend, image_alpha * temp_render_object_selected_alpha);
+			draw_sprite_ext(sprite_index, image_index, x - 1, y, image_xscale, image_yscale, image_angle, image_blend, 1);
+			draw_sprite_ext(sprite_index, image_index, x, y - 1, image_xscale, image_yscale, image_angle, image_blend, 1);
+			draw_sprite_ext(sprite_index, image_index, x + 1, y, image_xscale, image_yscale, image_angle, image_blend, 1);
+			draw_sprite_ext(sprite_index, image_index, x, y + 1, image_xscale, image_yscale, image_angle, image_blend, 1);
 			
 			// Reset Shader
 			shader_reset();
 			
 			// Draw Selected Render Object Instance
-			draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha * temp_render_object_selected_alpha * temp_render_object_selected_alpha);
+			draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, 1);
 		}
+		
+		// Reset Surface Target
+		surface_reset_target();
+		
+		// Set Celestial Simulator's UI Surface as Render Target
+		surface_set_target(LightingEngine.ui_surface);
+		
+		// Draw Outlined Selected Render Object Instance with correct Alpha
+		draw_surface_ext(CelestialSimulator.temp_surface, 0, 0, 1, 1, 0, c_white, image_alpha * temp_render_object_selected_alpha * temp_render_object_selected_alpha);
 		
 		// Check if Unit Pathfinding Movement Path UI rendering is toggled
 		if (selected_unit_movement_path_ui)
