@@ -260,8 +260,11 @@ else if (temp_input_select or temp_input_action)
 			}
 			else if (camera_observing_drag_start_x != GameManager.cursor_x or camera_observing_drag_start_y != GameManager.cursor_y)
 			{
-				// Input is Drag Movement - Enable Click Drag Behaviour & Set Camera Observing Instance Click Drag Angle Variables
+				// Input is Drag Movement - Enable Click Drag Behaviour & Set Camera Observing Instance Click Drag Position and Angle Variables
 				camera_observing_drag = true;
+				
+				camera_observing_drag_start_x = GameManager.cursor_x;
+				camera_observing_drag_start_y = GameManager.cursor_y;
 				
 				camera_observing_drag_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
 				camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;

@@ -256,6 +256,7 @@
     {"name":"UI","order":8,"path":"folders/Sprites/UI.yy",},
     {"name":"Cursor","order":1,"path":"folders/Sprites/UI/Cursor.yy",},
     {"name":"Dialogue","order":2,"path":"folders/Sprites/UI/Dialogue.yy",},
+    {"name":"Overworld","order":3,"path":"folders/Sprites/UI/Overworld.yy",},
     {"name":"Timelines","order":8,"path":"folders/Timelines.yy",},
   ],
   "ResourceOrderSettings":[
