@@ -4,9 +4,6 @@
 /// @return {struct} Struct containing the geometric data for rendering a Geodesic Icosphere: Vertices, Triangles, and Vertex_UVs
 function geodesic_icosphere_create(resolution) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Initialize Icosphere Strip Data
 	var strips = [ geodesic_icosphere_create_strip(0), geodesic_icosphere_create_strip(1), geodesic_icosphere_create_strip(2), geodesic_icosphere_create_strip(3), geodesic_icosphere_create_strip(4) ];
 	
@@ -134,8 +131,8 @@ function geodesic_icosphere_create(resolution)
 			vertex_uvs[vi] = [ 0.5 - arctan2(-pos[0], -pos[2]) / (2 * pi), 0.5 - arcsin(-pos[1]) / pi ];
 			
 			// Index Quad's Triangles into Triangle Array
-			triangles[ti + 0] = [ quad_a, quad_d, quad_b ];
-			triangles[ti + 1] = [ quad_d, quad_b, quad_c ];
+			triangles[ti + 0] = [ quad_a, quad_b, quad_c ];
+			triangles[ti + 1] = [ quad_a, quad_c, quad_d ];
 			
 			// Increment Quad's Triangle Vertex Indexes
 			quad_b = quad_c;
@@ -158,119 +155,98 @@ function geodesic_icosphere_create(resolution)
 		quad_d = (u < resolution) ? quad_c + 1 : 1;
 		
 		// Index last Quad's Triangles into Triangle Array
-		triangles[ti + 0] = [ quad_a, quad_d, quad_b ];
-		triangles[ti + 1] = [ quad_d, quad_b, quad_c ];
+		triangles[ti + 0] = [ quad_a, quad_b, quad_c ];
+		triangles[ti + 1] = [ quad_a, quad_c, quad_d ];
 		
 		// Increment Column
 		i++;
     }
     
-    // Return Icosphere Struct Data
-    return 
-    {
+	// Return Icosphere Struct Data
+	return 
+	{
 		vertices: vertices,
 		triangles: triangles,
 		vertex_uvs: vertex_uvs
-    };
+	};
 }
 
 function geodesic_icosphere_create_strip(id) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Creates the Orientation of one of the Five Rhombuses used to create the Icosphere
-    var low_left = geodesic_icosphere_get_corner(2 * id, -1);
-    var low_right = geodesic_icosphere_get_corner(id == 4 ? 0 : 2 * id + 2, -1);
-    var high_left = geodesic_icosphere_get_corner(id == 0 ? 9 : 2 * id - 1, 1);
-    var high_right = geodesic_icosphere_get_corner(2 * id + 1, 1);
-    
-    var down_vec = [0, -1, 0];
-    var up_vec = [0, 1, 0];
-    
-    // Calculate the Rhombus Corner and Axis Orientation and package them into a struct to return
-    return 
-    {
-        low_left_corner: low_left,
-        low_right_corner: low_right,
-        high_left_corner: high_left,
-        high_right_corner: high_right,
-        bottom_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(down_vec, low_left)),
-        bottom_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(down_vec, low_right)),
-        mid_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_left, high_left)),
-        mid_center_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_left, high_right)),
-        mid_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_right, high_right)),
-        top_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(high_left, up_vec)),
-        top_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(high_right, up_vec))
-    };
+	var low_left = geodesic_icosphere_get_corner(2 * id, -1);
+	var low_right = geodesic_icosphere_get_corner(id == 4 ? 0 : 2 * id + 2, -1);
+	var high_left = geodesic_icosphere_get_corner(id == 0 ? 9 : 2 * id - 1, 1);
+	var high_right = geodesic_icosphere_get_corner(2 * id + 1, 1);
+	
+	var down_vec = [0, -1, 0];
+	var up_vec = [0, 1, 0];
+	
+	// Calculate the Rhombus Corner and Axis Orientation and package them into a struct to return
+	return 
+	{
+		low_left_corner: low_left,
+		low_right_corner: low_right,
+		high_left_corner: high_left,
+		high_right_corner: high_right,
+		bottom_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(down_vec, low_left)),
+		bottom_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(down_vec, low_right)),
+		mid_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_left, high_left)),
+		mid_center_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_left, high_right)),
+		mid_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(low_right, high_right)),
+		top_left_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(high_left, up_vec)),
+		top_right_axis: geodesic_icosphere_vec3_normalize(geodesic_icosphere_vec3_cross(high_right, up_vec))
+	};
 }
 
 function geodesic_icosphere_get_corner(id, y_sign) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Obtains the Orientation of one of the Five Rhombuses used to create the Icosphere
-    var sqrt5 = sqrt(5.0);
-    
-    // Return Corner Orientation
-    return 
-    [
-        0.4 * sqrt5 * sin(0.2 * pi * id),
-        y_sign * 0.2 * sqrt5,
-        -0.4 * sqrt5 * cos(0.2 * pi * id)
-    ];
+	var sqrt5 = sqrt(5.0);
+	
+	// Return Corner Orientation
+	return 
+	[
+		0.4 * sqrt5 * sin(0.2 * pi * id),
+		y_sign * 0.2 * sqrt5,
+		-0.4 * sqrt5 * cos(0.2 * pi * id)
+	];
 }
 
 // Geodesic Icosphere Vector Math Functions
 function geodesic_icosphere_vec3_dot(a, b) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Return Dot Product
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
 function geodesic_icosphere_vec3_cross(a, b) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Return Cross Product
-    return 
-    [
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0]
-    ];
+	return 
+	[
+		a[1] * b[2] - a[2] * b[1],
+		a[2] * b[0] - a[0] * b[2],
+		a[0] * b[1] - a[1] * b[0]
+	];
 }
 
 function geodesic_icosphere_vec3_length(v) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Return Vector's Length
 	return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
 function geodesic_icosphere_vec3_normalize(v) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Return Normalized Vector
 	var len = geodesic_icosphere_vec3_length(v);
-	return len == 0 ? [0, 0, 0] : [v[0] / len, v[1] / len, v[2] / len];
+	return (len == 0) ? [0, 0, 0] : [v[0] / len, v[1] / len, v[2] / len];
 }
 
 // Geodesic Icosphere Quaternion Math Functions
 function geodesic_icosphere_quaternion_axis_angle(axis, angle) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Calculate Axis Angle
 	var half_angle = angle * 0.5;
 	var s = sin(half_angle);
@@ -286,20 +262,17 @@ function geodesic_icosphere_quaternion_axis_angle(axis, angle)
 
 function geodesic_icosphere_quaternion_mul_vec3(q, v) 
 {
-	// Add Code to Compiler
-	gml_pragma("forceinline");
-	
 	// Extract quaternion components (x, y, z, w)
 	var qx = q[0], qy = q[1], qz = q[2], qw = q[3];
 	var vx = v[0], vy = v[1], vz = v[2];
 	
-	// Calculate quat * vec
+	// Calculate quaternion * vector
 	var ix = qw * vx + qy * vz - qz * vy;
 	var iy = qw * vy + qz * vx - qx * vz;
 	var iz = qw * vz + qx * vy - qy * vx;
 	var iw = -qx * vx - qy * vy - qz * vz;
 	
-	// Calculate result * quat_conjugate
+	// Calculate result * quaternion_conjugate
 	return 
 	[
 		ix * qw + iw * -qx + iy * -qz - iz * -qy,
@@ -307,3 +280,4 @@ function geodesic_icosphere_quaternion_mul_vec3(q, v)
 		iz * qw + iw * -qz + ix * -qy - iy * -qx
 	];
 }
+
