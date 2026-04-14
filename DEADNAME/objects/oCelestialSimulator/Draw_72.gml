@@ -11,6 +11,15 @@ if (!active)
 // Set Celestial Simulator's UI Surface as Render Target
 surface_set_target(LightingEngine.ui_surface);
 
+// Celestial Simulator Debug UI Behaviour
+if (global.debug)
+{
+	if (instance_exists(camera_observing_instance))
+	{
+		render_debug_camera_observing_celestial_body_navmesh(camera_observing_instance);
+	}
+}
+
 // Celestial Simulator Observing Celestial Object UI Behaviour
 if (instance_exists(camera_observing_instance))
 {

@@ -116,6 +116,7 @@ game_scale = max(1, round(display_get_width() / game_width) - 1);
 camera_instance = camera_get_default();
 view_matrix = matrix_build_lookat(game_width / 2, game_height / 2, 0, game_width / 2, game_height / 2, 1, 0, 1, 0);
 projection_matrix = matrix_build_projection_ortho(game_width, game_height, 0, 32000);
+identity_matrix = matrix_build_identity();
 
 // Player Unit Variables
 player_unit = noone;

@@ -9,15 +9,8 @@ if (!active)
 }
 
 // Clear Celestial Simulator Solar System Depth Sorting Arrays
-if (array_length(solar_system_render_depth_sorting_index_array) > 0)
-{
-	array_clear(solar_system_render_depth_sorting_index_array);
-}
-
-if (array_length(solar_system_render_depth_sorting_depth_array) > 0)
-{
-	array_clear(solar_system_render_depth_sorting_depth_array);
-}
+array_resize(solar_system_render_depth_sorting_index_array, 0);
+array_resize(solar_system_render_depth_sorting_depth_array, 0);
 
 // Check if Solar System exists and is being viewed
 if (solar_system_index == -1)
@@ -98,7 +91,10 @@ if (instance_exists(camera_observing_instance))
 	camera_position_z = camera_observing_instance.z + temp_observing_rotated_vector_z * (temp_camera_observing_instance_radius + temp_camera_observing_vector_length_offset);
 	
 	// Build Camera Rotation Matrix from Observation Direction and Up Direction relative to the Camera Observing Instance as that the Camera is vertically aligned with the Camera Observing Instance's Poles and will horizontally wrap around the Camera Observing Instance
-	camera_view_matrix = matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_observing_instance.x, camera_observing_instance.y, camera_observing_instance.z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6]);
+	matrix_build_lookat(camera_position_x, camera_position_y, camera_position_z, camera_observing_instance.x, camera_observing_instance.y, camera_observing_instance.z, temp_observing_rotation_matrix[4], temp_observing_rotation_matrix[5], temp_observing_rotation_matrix[6], camera_view_matrix);
+	
+	// Delete Unused Array
+	array_resize(temp_observing_rotation_matrix, 0);
 }
 else
 {
@@ -153,7 +149,7 @@ else
 	var yfrom = yto + camera_distance * dsin(look_pitch);
 	var zfrom = zto + camera_distance * dcos(look_dir);
 	
-	camera_view_matrix = matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0);
+	matrix_build_lookat(xfrom, yfrom, zfrom, xto, yto, zto, 0, 1, 0, camera_view_matrix);
 	
 	if (keyboard_check(vk_escape))
 	{
@@ -162,7 +158,7 @@ else
 }
 
 // Establish Perspective Camera Projection Matrix
-camera_projection_matrix = matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far);
+matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far, camera_projection_matrix);
 
 // Establish Camera Aspect & Perspective FOV Variables for Frustum Culling Behaviour
 var temp_camera_aspect = GameManager.game_width / GameManager.game_height;
@@ -295,14 +291,14 @@ repeat (array_length(temp_solar_system))
 						// Clear Selected Unit Movement Path UI Arrays
 						if (selected_unit_movement_path_entries > 0)
 						{
-							array_clear(selected_unit_movement_path_depth_sorting_index_array);
-							array_clear(selected_unit_movement_path_depth_sorting_depth_array);
-							array_clear(selected_unit_movement_path_point_a_position_x_array);
-							array_clear(selected_unit_movement_path_point_a_position_y_array);
-							array_clear(selected_unit_movement_path_point_a_alpha_array);
-							array_clear(selected_unit_movement_path_point_b_position_x_array);
-							array_clear(selected_unit_movement_path_point_b_position_y_array);
-							array_clear(selected_unit_movement_path_point_b_alpha_array);
+							array_resize(selected_unit_movement_path_depth_sorting_index_array, 0);
+							array_resize(selected_unit_movement_path_depth_sorting_depth_array, 0);
+							array_resize(selected_unit_movement_path_point_a_position_x_array, 0);
+							array_resize(selected_unit_movement_path_point_a_position_y_array, 0);
+							array_resize(selected_unit_movement_path_point_a_alpha_array, 0);
+							array_resize(selected_unit_movement_path_point_b_position_x_array, 0);
+							array_resize(selected_unit_movement_path_point_b_position_y_array, 0);
+							array_resize(selected_unit_movement_path_point_b_alpha_array, 0);
 						}
 						
 						// Reset Selected Unit Movement Path UI Entries Count
@@ -413,6 +409,10 @@ repeat (array_length(temp_solar_system))
 							array_push(selected_unit_movement_path_point_a_alpha_array, temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha);
 							array_push(selected_unit_movement_path_point_b_alpha_array, temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha);
 							
+							// Delete Unused Arrays
+							array_resize(temp_ui_path_a_screen_position, 0);
+							array_resize(temp_ui_path_b_screen_position, 0);
+							
 							// Increment Selected Unit's Movement Path Entries Count
 							selected_unit_movement_path_entries++;
 							
@@ -449,32 +449,20 @@ repeat (array_length(temp_solar_system))
 	if (temp_celestial_object_instance.render_objects_enabled)
 	{
 		// Reset Celestial Simulator Render Depth Sorting Arrays
-		if (array_length(render_objects_back_render_depth_sorting_index_array) > 0)
-		{
-			array_clear(render_objects_back_render_depth_sorting_index_array);
-			array_clear(render_objects_back_render_depth_sorting_depth_array);
-		}
+		array_resize(render_objects_back_render_depth_sorting_index_array, 0);
+		array_resize(render_objects_back_render_depth_sorting_depth_array, 0);
 		
-		if (array_length(render_objects_front_render_depth_sorting_index_array) > 0)
-		{
-			array_clear(render_objects_front_render_depth_sorting_index_array);
-			array_clear(render_objects_front_render_depth_sorting_depth_array);
-		}
+		array_resize(render_objects_front_render_depth_sorting_index_array, 0);
+		array_resize(render_objects_front_render_depth_sorting_depth_array, 0);
 		
 		// Reset Celestial Object Render Depth Sorting Arrays
-		if (array_length(temp_celestial_object_instance.render_objects_back_layer_index_array) > 0)
-		{
-			array_clear(temp_celestial_object_instance.render_objects_back_layer_index_array);
-			array_clear(temp_celestial_object_instance.render_objects_back_layer_depth_array);
-			array_clear(temp_celestial_object_instance.render_objects_back_layer_instance_array);
-		}
-		
-		if (array_length(temp_celestial_object_instance.render_objects_front_layer_index_array) > 0)
-		{
-			array_clear(temp_celestial_object_instance.render_objects_front_layer_index_array);
-			array_clear(temp_celestial_object_instance.render_objects_front_layer_depth_array);
-			array_clear(temp_celestial_object_instance.render_objects_front_layer_instance_array);
-		}
+		array_resize(temp_celestial_object_instance.render_objects_back_layer_index_array, 0);
+		array_resize(temp_celestial_object_instance.render_objects_back_layer_depth_array, 0);
+		array_resize(temp_celestial_object_instance.render_objects_back_layer_instance_array, 0);
+	
+		array_resize(temp_celestial_object_instance.render_objects_front_layer_index_array, 0);
+		array_resize(temp_celestial_object_instance.render_objects_front_layer_depth_array, 0);
+		array_resize(temp_celestial_object_instance.render_objects_front_layer_instance_array, 0);
 		
 		// Establish Empty Render Object Count
 		var temp_render_object_back_layer_count = 0;
@@ -576,6 +564,9 @@ repeat (array_length(temp_solar_system))
 				temp_render_object_front_layer_count++;
 			}
 			
+			// Delete Unused Array
+			array_resize(temp_unit_screen_position, 0);
+			
 			// Increment Celestial Unit Index
 			temp_unit_index++;
 		}
@@ -660,6 +651,9 @@ repeat (array_length(temp_solar_system))
 				// Increment Render Object Front Layer Count Index
 				temp_render_object_front_layer_count++;
 			}
+			
+			// Delete Unused Array
+			array_resize(temp_city_screen_position, 0);
 			
 			// Increment Celestial City Index
 			temp_city_index++;
@@ -764,6 +758,9 @@ repeat (array_length(temp_solar_system))
 				temp_render_object_back_layer_count++;
 			}
 			
+			// Delete Unused Array
+			array_resize(temp_satellite_screen_position, 0);
+			
 			// Increment Celestial Satellite Index
 			temp_satellite_index++;
 		}
@@ -816,17 +813,11 @@ repeat (array_length(temp_solar_system))
 			if (temp_celestial_object_instance.clouds)
 			{
 				// Reset Celestial Simulator Clouds Render Depth Sorting Arrays
-				if (array_length(clouds_render_depth_sorting_index_array) > 0)
-				{
-					array_clear(clouds_render_depth_sorting_index_array);
-					array_clear(clouds_render_depth_sorting_depth_array);
-				}
+				array_resize(clouds_render_depth_sorting_index_array, 0);
+				array_resize(clouds_render_depth_sorting_depth_array, 0);
 				
 				// Reset Planet Cloud Depth Sorted Index Array
-				if (array_length(temp_celestial_object_instance.clouds_index_array) > 0)
-				{
-					array_clear(temp_celestial_object_instance.clouds_index_array);
-				}
+				array_resize(temp_celestial_object_instance.clouds_index_array, 0);
 				
 				// Reset Planet Cloud Rendering Lists
 				ds_list_clear(temp_celestial_object_instance.clouds_render_u_list);
@@ -939,6 +930,9 @@ repeat (array_length(temp_solar_system))
 			// Skip Celestial Object Depth Sorting Behaviour
 			break;
 	}
+	
+	// Delete Unused Array
+	array_resize(temp_celestial_obj_rotation_matrix, 0);
 	
 	// Index Celestial Object's Index into Celestial Simulator's Render Depth Sorting Arrays
 	array_push(solar_system_render_depth_sorting_index_array, temp_celestial_object_index);

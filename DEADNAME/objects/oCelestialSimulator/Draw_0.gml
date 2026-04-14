@@ -589,4 +589,4 @@ camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
 camera_apply(GameManager.camera_instance);
 
 // Reset Matrix World Identity
-matrix_set(matrix_world, matrix_build_identity());
+matrix_set(matrix_world, GameManager.identity_matrix);

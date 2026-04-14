@@ -211,6 +211,14 @@ pathfinding_node_city_array = -1;
 pathfinding_node_elevation_array = -1;
 pathfinding_node_microclimate_array = -1;
 pathfinding_node_edges_array = -1;
+pathfinding_node_edges_portal_left_array = -1;
+pathfinding_node_edges_portal_right_array = -1;
+
+pathfinding_portal_count = 0;
+pathfinding_portal_x_array = -1;
+pathfinding_portal_y_array = -1;
+pathfinding_portal_z_array = -1;
+pathfinding_portal_elevation_array = -1;
 
 /// @function celestial_pathfinding_heuristic(celestial_object, first_node_index, second_node_index);
 /// @description Finds the distance heuristic between two Pathfinding Node Indexes on the Celestial Object
@@ -284,9 +292,9 @@ if (pathfinding_enabled)
 	var temp_pathfinding_geodesic_icosphere = geodesic_icosphere_create(pathfinding_resolution);
 	
 	// Initialize Pathfinding Nodes Count
-	pathfinding_nodes_count = array_length(temp_pathfinding_geodesic_icosphere.vertices);
+	pathfinding_nodes_count = array_length(temp_pathfinding_geodesic_icosphere.triangles);
 	
-	// Initialize Pathfinding Node Arrays to Size of Pathfinding Icosphere's Vertices Count
+	// Initialize Pathfinding Node Arrays to Size of Pathfinding Icosphere's Triangles Count
 	pathfinding_node_x_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_y_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_z_array = array_create(pathfinding_nodes_count);
@@ -297,172 +305,300 @@ if (pathfinding_enabled)
 	pathfinding_node_elevation_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_microclimate_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_edges_array = array_create(pathfinding_nodes_count, -1);
+	pathfinding_node_edges_portal_left_array = array_create(pathfinding_nodes_count, -1);
+	pathfinding_node_edges_portal_right_array = array_create(pathfinding_nodes_count, -1);
 	
 	// Establish Pathfinding Icosphere's Pathfinding Node Data
-	var temp_pathfinding_vertex_index = 0;
+	var temp_pathfinding_node_index = 0;
 	
 	repeat (pathfinding_nodes_count)
 	{
-		// Get Vertex's Position
-		var temp_vertex_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_vertex_index];
+		// Get Node Triangle Data
+		var temp_pathfinding_triangle = temp_pathfinding_geodesic_icosphere.triangles[temp_pathfinding_node_index];
 		
-		// Get Vertex's UV Position
-		var temp_vertex_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_vertex_index];
+		// Get Node Triangle Vertices
+		var temp_pathfinding_triangle_vertex_a_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_triangle[0]];
+		var temp_pathfinding_triangle_vertex_b_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_triangle[1]];
+		var temp_pathfinding_triangle_vertex_c_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_triangle[2]];
 		
-		// Retreive Vertex's Elevation from Heightmap using the Vertex's UV Position
-		var temp_vertex_elevation = 0;
+		// Get Node Triangle Vertex's Position
+		var temp_node_pos = [ 0, 0, 0 ];
+		
+		temp_node_pos[0] = (temp_pathfinding_triangle_vertex_a_pos[0] + temp_pathfinding_triangle_vertex_b_pos[0] + temp_pathfinding_triangle_vertex_c_pos[0]) / 3;
+		temp_node_pos[1] = (temp_pathfinding_triangle_vertex_a_pos[1] + temp_pathfinding_triangle_vertex_b_pos[1] + temp_pathfinding_triangle_vertex_c_pos[1]) / 3;
+		temp_node_pos[2] = (temp_pathfinding_triangle_vertex_a_pos[2] + temp_pathfinding_triangle_vertex_b_pos[2] + temp_pathfinding_triangle_vertex_c_pos[2]) / 3;
+		
+		// Get Node Triangle Vertex's UV Position
+		var temp_node_uvs = [ 0.5, 0.5 ];
+		
+		temp_node_uvs[0] = 0.5 - arctan2(-temp_node_pos[0], -temp_node_pos[2]) / (2 * pi);
+		temp_node_uvs[1] = 0.5 - arcsin(temp_node_pos[1]) / pi;
+		
+		// Retreive Node's Elevation from Heightmap using the Triangle Vertex's UV Position
+		var temp_node_elevation = 0;
 		
 		if (temp_heightmap_buffer_exists)
 		{
-			// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
-			var temp_heightmap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
-			var temp_heightmap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			// Get Node Triangle Vertex UVs
+			var temp_pathfinding_triangle_vertex_a_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_triangle[0]];
+			var temp_pathfinding_triangle_vertex_b_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_triangle[1]];
+			var temp_pathfinding_triangle_vertex_c_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_triangle[2]];
 			
-			// Find Vertex's Elevation from Heightmap's Red Channel Value
-			temp_vertex_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_vertex_u, temp_heightmap_clamped_vertex_v) / 255;
+			// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
+			var temp_heightmap_clamped_node_a_u = clamp(temp_pathfinding_triangle_vertex_a_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+			var temp_heightmap_clamped_node_a_v = clamp((1 - temp_pathfinding_triangle_vertex_a_uvs[1]) * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			
+			var temp_heightmap_clamped_node_b_u = clamp(temp_pathfinding_triangle_vertex_b_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+			var temp_heightmap_clamped_node_b_v = clamp((1 - temp_pathfinding_triangle_vertex_b_uvs[1]) * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			
+			var temp_heightmap_clamped_node_c_u = clamp(temp_pathfinding_triangle_vertex_c_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+			var temp_heightmap_clamped_node_c_v = clamp((1 - temp_pathfinding_triangle_vertex_c_uvs[1]) * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			
+			// Find the Triangle Vertices' Elevation from Heightmap's Red Channel Value
+			var temp_node_a_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_node_a_u, temp_heightmap_clamped_node_a_v) / 255;
+			var temp_node_b_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_node_b_u, temp_heightmap_clamped_node_b_v) / 255;
+			var temp_node_c_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_node_c_u, temp_heightmap_clamped_node_c_v) / 255;
+			
+			// Find Node's Elevation from the average of all the Elevation Values
+			temp_node_elevation = (temp_node_a_elevation + temp_node_b_elevation + temp_node_c_elevation) / 3;
 		}
 		
-		// Retreive Vertex's Region from Regionmap using the Vertex's UV Position
-		var temp_vertex_region = -1;
+		// Retreive Node's Region from Regionmap using the Triangle Vertex's UV Position
+		var temp_node_region = -1;
 		
 		if (temp_regionmap_buffer_exists)
 		{
 			// Clamp Texture Positions to prevent Regionmap Clipping and Seam Issues
-			var temp_regionmap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_regionmap_buffer_width, 1, temp_regionmap_buffer_width - 1);
-			var temp_regionmap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_regionmap_buffer_height, 1, temp_regionmap_buffer_height - 1);
+			var temp_regionmap_clamped_node_u = clamp(temp_node_uvs[0] * temp_regionmap_buffer_width, 1, temp_regionmap_buffer_width - 1);
+			var temp_regionmap_clamped_node_v = clamp(temp_node_uvs[1] * temp_regionmap_buffer_height, 1, temp_regionmap_buffer_height - 1);
 			
-			// Find Vertex's Region Color Red, Green, and Blue Values
-			var temp_vertex_region_color_r = buffer_getpixel_r(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
-			var temp_vertex_region_color_g = buffer_getpixel_g(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
-			var temp_vertex_region_color_b = buffer_getpixel_b(temp_regionmap_buffer, temp_regionmap_clamped_vertex_u, temp_regionmap_clamped_vertex_v);
+			// Find Node's Region Color Red, Green, and Blue Values
+			var temp_node_region_color_r = buffer_getpixel_r(temp_regionmap_buffer, temp_regionmap_clamped_node_u, temp_regionmap_clamped_node_v);
+			var temp_node_region_color_g = buffer_getpixel_g(temp_regionmap_buffer, temp_regionmap_clamped_node_u, temp_regionmap_clamped_node_v);
+			var temp_node_region_color_b = buffer_getpixel_b(temp_regionmap_buffer, temp_regionmap_clamped_node_u, temp_regionmap_clamped_node_v);
 			
-			// Create Vertex's Region Color Hexadecimal Code from Red, Green, and Blue Values
-			var temp_vertex_region_color_hex = color_get_hex(make_color_rgb(temp_vertex_region_color_r, temp_vertex_region_color_g, temp_vertex_region_color_b));
+			// Create Node's Region Color Hexadecimal Code from Red, Green, and Blue Values
+			var temp_node_region_color_hex = color_get_hex(make_color_rgb(temp_node_region_color_r, temp_node_region_color_g, temp_node_region_color_b));
 			
-			// Find Index of Vertex's Region Color Hexadecimal Code in Regions Color Hexadecimal Array
-			var temp_vertex_region_index = array_get_index(region_color_hex_array, temp_vertex_region_color_hex);
+			// Find Index of Node's Region Color Hexadecimal Code in Regions Color Hexadecimal Array
+			var temp_node_region_index = array_get_index(region_color_hex_array, temp_node_region_color_hex);
 			
-			// Check if Vertex's Region Color Hexadecimal Code corresponds to a indexed Region
-			if (temp_vertex_region_index != -1)
+			// Check if Node's Region Color Hexadecimal Code corresponds to a indexed Region
+			if (temp_node_region_index != -1)
 			{
 				// Region Hexadecimal Code is Indexed - Use Region Index
-				temp_vertex_region = temp_vertex_region_index;
+				temp_node_region = temp_node_region_index;
 			}
 			else
 			{
 				// Region Hexadecimal Code is not Indexed - Create new Region Index
-				temp_vertex_region = array_length(region_color_hex_array);
-				array_push(region_name_array, $"region_{temp_vertex_region}");
-				array_push(region_color_hex_array, temp_vertex_region_color_hex);
+				temp_node_region = array_length(region_color_hex_array);
+				array_push(region_name_array, $"region_{temp_node_region}");
+				array_push(region_color_hex_array, temp_node_region_color_hex);
 			}
 		}
 		
-		// Retreive Vertex's Microclimate from Microclimatemap using the Vertex's UV Position
-		var temp_vertex_microclimate = -1;
+		// Retreive Node's Microclimate from Microclimatemap using the Vertex's UV Position
+		var temp_node_microclimate = -1;
 		
 		if (temp_microclimatemap_buffer_exists)
 		{
 			// Clamp Texture Positions to prevent Microclimatemap Clipping and Seam Issues
-			var temp_microclimatemap_clamped_vertex_u = clamp(temp_vertex_uvs[0] * temp_microclimatemap_buffer_width, 1, temp_microclimatemap_buffer_width - 1);
-			var temp_microclimatemap_clamped_vertex_v = clamp(temp_vertex_uvs[1] * temp_microclimatemap_buffer_height, 1, temp_microclimatemap_buffer_height - 1);
+			var temp_microclimatemap_clamped_node_u = clamp(temp_node_uvs[0] * temp_microclimatemap_buffer_width, 1, temp_microclimatemap_buffer_width - 1);
+			var temp_microclimatemap_clamped_node_v = clamp(temp_node_uvs[1] * temp_microclimatemap_buffer_height, 1, temp_microclimatemap_buffer_height - 1);
 			
-			// Find Vertex's Microclimate Color Red, Green, and Blue Values
-			var temp_vertex_microclimate_color_r = buffer_getpixel_r(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
-			var temp_vertex_microclimate_color_g = buffer_getpixel_g(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
-			var temp_vertex_microclimate_color_b = buffer_getpixel_b(temp_microclimatemap_buffer, temp_microclimatemap_clamped_vertex_u, temp_microclimatemap_clamped_vertex_v);
+			// Find Node's Microclimate Color Red, Green, and Blue Values
+			var temp_node_microclimate_color_r = buffer_getpixel_r(temp_microclimatemap_buffer, temp_microclimatemap_clamped_node_u, temp_microclimatemap_clamped_node_v);
+			var temp_node_microclimate_color_g = buffer_getpixel_g(temp_microclimatemap_buffer, temp_microclimatemap_clamped_node_u, temp_microclimatemap_clamped_node_v);
+			var temp_node_microclimate_color_b = buffer_getpixel_b(temp_microclimatemap_buffer, temp_microclimatemap_clamped_node_u, temp_microclimatemap_clamped_node_v);
 			
-			// Create Vertex's Microclimate Color Hexadecimal Code from Red, Green, and Blue Values
-			var temp_vertex_microclimate_color_hex = color_get_hex(make_color_rgb(temp_vertex_microclimate_color_r, temp_vertex_microclimate_color_g, temp_vertex_microclimate_color_b));
+			// Create Node's Microclimate Color Hexadecimal Code from Red, Green, and Blue Values
+			var temp_node_microclimate_color_hex = color_get_hex(make_color_rgb(temp_node_microclimate_color_r, temp_node_microclimate_color_g, temp_node_microclimate_color_b));
 			
-			// Find Index of Vertex's Microclimate Color Hexadecimal Code in Microclimates Color Hexadecimal Array
-			var temp_vertex_microclimate_index = array_get_index(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+			// Find Index of Node's Microclimate Color Hexadecimal Code in Microclimates Color Hexadecimal Array
+			var temp_node_microclimate_index = array_get_index(microclimate_color_hex_array, temp_node_microclimate_color_hex);
 			
-			// Check if Vertex's Microclimate Color Hexadecimal Code corresponds to a indexed Microclimate
-			if (temp_vertex_microclimate_index != -1)
+			// Check if Node's Microclimate Color Hexadecimal Code corresponds to a indexed Microclimate
+			if (temp_node_microclimate_index != -1)
 			{
 				// Microclimate Hexadecimal Code is Indexed - Use Microclimate Index
-				temp_vertex_microclimate = temp_vertex_microclimate_index;
-				array_push(microclimate_pathfinding_nodes_array[temp_vertex_microclimate], temp_pathfinding_vertex_index);
+				temp_node_microclimate = temp_node_microclimate_index;
+				array_push(microclimate_pathfinding_nodes_array[temp_node_microclimate], temp_pathfinding_node_index);
 			}
 			else
 			{
 				// Microclimate Hexadecimal Code is not Indexed - Create new Microclimate Index
-				temp_vertex_microclimate = array_length(microclimate_color_hex_array);
-				array_push(microclimate_name_array, $"microclimate_{temp_vertex_microclimate}");
-				array_push(microclimate_color_hex_array, temp_vertex_microclimate_color_hex);
+				temp_node_microclimate = array_length(microclimate_color_hex_array);
+				array_push(microclimate_name_array, $"microclimate_{temp_node_microclimate}");
+				array_push(microclimate_color_hex_array, temp_node_microclimate_color_hex);
 				array_push(microclimate_biome_type_array, CelestialMicroclimateBiomeType.None); // DEBUG FOR NOW BUT LATER WE GOTTA HAVE A BETTER WAY OF DOING THIS
 				array_push(microclimate_sample_index_array, 0);
-				array_push(microclimate_pathfinding_nodes_array, [ temp_pathfinding_vertex_index ]);
+				array_push(microclimate_pathfinding_nodes_array, [ temp_pathfinding_node_index ]);
 			}
 		}
 		
-		// Set Pathfinding Node's Position from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_x_array[temp_pathfinding_vertex_index] = temp_vertex_pos[0];
-		pathfinding_node_y_array[temp_pathfinding_vertex_index] = temp_vertex_pos[1];
-		pathfinding_node_z_array[temp_pathfinding_vertex_index] = temp_vertex_pos[2];
+		// Set Pathfinding Node's Position and UV from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_x_array[temp_pathfinding_node_index] = temp_node_pos[0];
+		pathfinding_node_y_array[temp_pathfinding_node_index] = temp_node_pos[1];
+		pathfinding_node_z_array[temp_pathfinding_node_index] = temp_node_pos[2];
 		
-		pathfinding_node_u_array[temp_pathfinding_vertex_index] = temp_vertex_uvs[0];
-		pathfinding_node_v_array[temp_pathfinding_vertex_index] = temp_vertex_uvs[1];
+		pathfinding_node_u_array[temp_pathfinding_node_index] = temp_node_uvs[0];
+		pathfinding_node_v_array[temp_pathfinding_node_index] = temp_node_uvs[1];
 		
-		// Set Pathfinding Node's Region from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_region_array[temp_pathfinding_vertex_index] = temp_vertex_region;
+		// Set Pathfinding Node's Region from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_region_array[temp_pathfinding_node_index] = temp_node_region;
 		
 		// Set Pathfinding Node's City as Empty to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_city_array[temp_pathfinding_vertex_index] = -1;
+		pathfinding_node_city_array[temp_pathfinding_node_index] = -1;
 		
-		// Set Pathfinding Node's Elevation from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_elevation_array[temp_pathfinding_vertex_index] = temp_vertex_elevation;
+		// Set Pathfinding Node's Elevation from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_elevation_array[temp_pathfinding_node_index] = temp_node_elevation;
 		
-		// Set Pathfinding Node's Microclimate from Vertex Data to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_microclimate_array[temp_pathfinding_vertex_index] = temp_vertex_microclimate;
+		// Set Pathfinding Node's Microclimate from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_microclimate_array[temp_pathfinding_node_index] = temp_node_microclimate;
 		
-		// Create empty Pathfinding Node Edges Array for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_edges_array[temp_pathfinding_vertex_index] = array_create(0);
+		// Create empty Pathfinding Node Edges Arrays for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_edges_array[temp_pathfinding_node_index] = array_create(0);
+		pathfinding_node_edges_portal_left_array[temp_pathfinding_node_index] = array_create(0);
+		pathfinding_node_edges_portal_right_array[temp_pathfinding_node_index] = array_create(0);
 		
-		// Increment Vertex Index
-		temp_pathfinding_vertex_index++;
+		// Increment Node Index
+		temp_pathfinding_node_index++;
 	}
 	
-	// Initialize Pathfinding Arrays
-	var temp_pathfinding_edges = array_create(0);
+	// Initialize Pathfinding Portal Count
+	pathfinding_portal_count = array_length(temp_pathfinding_geodesic_icosphere.vertices)
 	
-	// Iterate through Pathfinding Icosphere Triangles and assemble Pathfinding Grid
-	var temp_pathfinding_triangle_index = 0;
+	// Initialize Pathfinding Portal Arrays to Size of Pathfinding Icosphere's Vertices Count
+	pathfinding_portal_x_array = array_create(pathfinding_portal_count);
+	pathfinding_portal_y_array = array_create(pathfinding_portal_count);
+	pathfinding_portal_z_array = array_create(pathfinding_portal_count);
+	pathfinding_portal_elevation_array = array_create(pathfinding_portal_count);
+	
+	// Establish Pathfinding Icosphere's Pathfinding Portal Data
+	var temp_pathfinding_portal_index = 0;
+	
+	repeat (pathfinding_portal_count)
+	{
+		// Get Portal Vertex Position
+		var temp_portal_pos = temp_pathfinding_geodesic_icosphere.vertices[temp_pathfinding_portal_index];
+		
+		// Get Portal Vertex's UV Position
+		var temp_portal_uvs = temp_pathfinding_geodesic_icosphere.vertex_uvs[temp_pathfinding_portal_index];
+		
+		// Retreive Portal's Elevation from Heightmap using the Vertex's UV Position
+		var temp_portal_elevation = 0;
+		
+		if (temp_heightmap_buffer_exists)
+		{
+			// Clamp Texture Positions to prevent Heightmap Clipping and Seam Issues
+			var temp_heightmap_clamped_portal_u = clamp(temp_portal_uvs[0] * temp_heightmap_buffer_width, 1, temp_heightmap_buffer_width - 1);
+			var temp_heightmap_clamped_portal_v = clamp((1 - temp_portal_uvs[1]) * temp_heightmap_buffer_height, 1, temp_heightmap_buffer_height - 1);
+			
+			// Find Portal's Elevation from Heightmap's Red Channel Value
+			temp_portal_elevation = buffer_getpixel_r(temp_heightmap_buffer, temp_heightmap_clamped_portal_u, temp_heightmap_clamped_portal_v) / 255;
+		}
+		
+		// Set Pathfinding Portal's Position from Vertex Data to Celestial Body's Pathfinding Portal Data Arrays
+		pathfinding_portal_x_array[temp_pathfinding_portal_index] = temp_portal_pos[0];
+		pathfinding_portal_y_array[temp_pathfinding_portal_index] = temp_portal_pos[1];
+		pathfinding_portal_z_array[temp_pathfinding_portal_index] = temp_portal_pos[2];
+		
+		// Set Pathfinding Portal's Elevation from Vertex Data to Celestial Body's Pathfinding Portal Data Arrays
+		pathfinding_portal_elevation_array[temp_pathfinding_portal_index] = temp_portal_elevation;
+		
+		// Increment Portal Index
+		temp_pathfinding_portal_index++;
+	}
+	
+	// Initialize Pathfinding Edges DS Map
+	var temp_pathfinding_edges_map = ds_map_create();
+	
+	// Iterate through Pathfinding Icosphere Triangles and assemble Pathfinding Grid's Edges
+	var temp_pathfinding_geodesic_icosphere_triangle_index = 0;
 	
 	repeat (array_length(temp_pathfinding_geodesic_icosphere.triangles))
 	{
 		// Retreive Triangle Data
-		var temp_pathfinding_triangle = temp_pathfinding_geodesic_icosphere.triangles[temp_pathfinding_triangle_index];
+		var temp_pathfinding_triangle = temp_pathfinding_geodesic_icosphere.triangles[temp_pathfinding_geodesic_icosphere_triangle_index];
 		
-		// Index Triangle Edges in Pathfinding Edge Array
-		array_push(temp_pathfinding_edges, $"{min(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}:{max(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}");
-		array_push(temp_pathfinding_edges, $"{min(temp_pathfinding_triangle[1], temp_pathfinding_triangle[2])}:{max(temp_pathfinding_triangle[1], temp_pathfinding_triangle[2])}");
-		array_push(temp_pathfinding_edges, $"{min(temp_pathfinding_triangle[2], temp_pathfinding_triangle[0])}:{max(temp_pathfinding_triangle[2], temp_pathfinding_triangle[0])}");
+		// Create Edge IDs from Triangle Edge Data
+		var temp_pathfinding_triangle_edge_id_a = $"{min(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}:{max(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}";
+		var temp_pathfinding_triangle_edge_id_b = $"{min(temp_pathfinding_triangle[1], temp_pathfinding_triangle[2])}:{max(temp_pathfinding_triangle[1], temp_pathfinding_triangle[2])}";
+		var temp_pathfinding_triangle_edge_id_c = $"{min(temp_pathfinding_triangle[2], temp_pathfinding_triangle[0])}:{max(temp_pathfinding_triangle[2], temp_pathfinding_triangle[0])}";
+		
+		// Retreive Triangle Edge Indexes from Pathfinding Edges DS Map with Edge IDs
+		var temp_pathfinding_triangle_edge_connected_triangle_index_a = ds_map_find_value(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_a);
+		var temp_pathfinding_triangle_edge_connected_triangle_index_b = ds_map_find_value(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_b);
+		var temp_pathfinding_triangle_edge_connected_triangle_index_c = ds_map_find_value(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_c);
+		
+		// Check if First Triangle Index Exists
+		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_a))
+		{
+			// Index Triangle and Edge Data in Pathfinding Edges DS Map
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_a, temp_pathfinding_geodesic_icosphere_triangle_index);
+		}
+		else
+		{
+			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_a);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_geodesic_icosphere_triangle_index);
+			
+			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[1]);
+			
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_triangle[1]);
+		}
+		
+		// Check if Second Triangle Index Exists
+		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_b))
+		{
+			// Index Triangle and Edge Data in Pathfinding Edges DS Map
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_b, temp_pathfinding_geodesic_icosphere_triangle_index);
+		}
+		else
+		{
+			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_b);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_geodesic_icosphere_triangle_index);
+			
+			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[2]);
+			
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_triangle[2]);
+		}
+		
+		// Check if Third Triangle Index Exists
+		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_c))
+		{
+			// Index Triangle and Edge Data in Pathfinding Edges DS Map
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_c, temp_pathfinding_geodesic_icosphere_triangle_index);
+		}
+		else
+		{
+			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_c);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_geodesic_icosphere_triangle_index);
+			
+			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[0]);
+			
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_triangle[0]);
+		}
 		
 		// Increment Triangle Index
-		temp_pathfinding_triangle_index++;
+		temp_pathfinding_geodesic_icosphere_triangle_index++;
 	}
 	
-	// Eliminate Duplicate Triangle Edges and Iterate through all Unique Pathfinding Edges
-	var temp_pathfinding_unique_edges = array_unique(temp_pathfinding_edges);
-	var temp_pathfinding_unique_edges_index = 0;
-	
-	repeat (array_length(temp_pathfinding_unique_edges))
-	{
-		// Find Pathfinding Edge Nodes
-		var temp_pathfinding_edge_nodes = string_split(temp_pathfinding_unique_edges[temp_pathfinding_unique_edges_index], ":");
-		
-		// Cast Pathfinding Edge Node Index Strings to Index Integers
-		var temp_pathfinding_edge_node_a_index = real(temp_pathfinding_edge_nodes[0]);
-		var temp_pathfinding_edge_node_b_index = real(temp_pathfinding_edge_nodes[1]);
-		
-		// Index Pathfinding Edge in Pathfinding Node Edges Arrays
-		array_push(pathfinding_node_edges_array[temp_pathfinding_edge_node_a_index], temp_pathfinding_edge_node_b_index);
-		array_push(pathfinding_node_edges_array[temp_pathfinding_edge_node_b_index], temp_pathfinding_edge_node_a_index);
-		
-		// Increment Pathfinding Unique Edge Index
-		temp_pathfinding_unique_edges_index++;
-	}
+	// Destroy Pathfinding Edges DS Map
+	ds_map_destroy(temp_pathfinding_edges_map);
+	temp_pathfinding_edges_map = -1;
 	
 	/*
 	var temp_goals = [ 1, 1, 1, 1, 1, 1, 1, 1 ];

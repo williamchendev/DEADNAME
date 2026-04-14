@@ -419,7 +419,7 @@ function unit_inventory_remove_all_slots(unit)
 	}
 	
 	// Clear and Destroy all Unit's Inventory Slots
-	array_clear(unit.inventory_slots);
+	array_resize(unit.inventory_slots, 0);
 	
 	// Set Unit's Inventory as Undefined
 	unit.inventory_slots = undefined;

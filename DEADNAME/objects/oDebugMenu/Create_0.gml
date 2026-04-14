@@ -23,8 +23,8 @@ color_pale_dogwood = make_color_rgb(223, 187, 177);
 color_rose_taupe = make_color_rgb(150, 97, 107);
 
 // Info & Version Settings
-debug_menu_info_text = "DEADNAME Debug Menu - Capy Crucible";
-debug_menu_version_text = "0.23b";
+debug_menu_info_text = "Inno Spelman's DEADNAME Debug Menu";
+debug_menu_version_text = "0.32";
 
 debug_menu_info_and_version_horizontal_offset = 6;
 debug_menu_info_and_version_vertical_offset = 6;

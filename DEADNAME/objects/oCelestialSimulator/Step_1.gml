@@ -267,6 +267,9 @@ repeat (array_length(solar_systems))
 			
 			// Build Identity Matrix of Celestial Object
 			matrix_build(x, y, z, euler_angle_x, euler_angle_y, euler_angle_z, scale_x, scale_y, scale_z, identity_matrix);
+			
+			// Delete Unused Array
+			array_resize(temp_orbit_rotation_matrix, 0);
 		}
 		
 		// Increment the Celestial Object Index

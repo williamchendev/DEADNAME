@@ -23,7 +23,7 @@ if (array_length(units) > 0)
 		temp_unit_index--;
 	}
 	
-	array_clear(units);
+	array_resize(units, 0);
 }
 
 units = -1;
@@ -46,7 +46,7 @@ if (array_length(cities) > 0)
 		temp_city_index--;
 	}
 	
-	array_clear(cities);
+	array_resize(cities, 0);
 }
 
 cities = -1;
@@ -69,7 +69,7 @@ if (array_length(satellites) > 0)
 		temp_satellite_index--;
 	}
 	
-	array_clear(satellites);
+	array_resize(satellites, 0);
 }
 
 satellites = -1;

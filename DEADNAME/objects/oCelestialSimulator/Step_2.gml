@@ -270,6 +270,10 @@ else if (temp_input_select or temp_input_action)
 				camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;
 			}
 		}
+		
+		// Delete Unused Array
+		array_resize(temp_selection_rotation_matrix, 0);
+		array_resize(temp_selection_rotation_matrix_inverse, 0);
 	}
 }
 
