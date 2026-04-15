@@ -16,7 +16,7 @@ if (global.debug)
 {
 	if (instance_exists(camera_observing_instance))
 	{
-		//celestial_pathfinding_draw_navigation_mesh_gizmos(camera_observing_instance);
+		celestial_pathfinding_draw_navigation_mesh_gizmos(camera_observing_instance);
 	}
 	
 	if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
