@@ -515,12 +515,12 @@ if (pathfinding_enabled)
 	var temp_pathfinding_edges_map = ds_map_create();
 	
 	// Iterate through Pathfinding Icosphere Triangles and assemble Pathfinding Grid's Edges
-	var temp_pathfinding_geodesic_icosphere_triangle_index = 0;
+	var temp_node_triangle_index = 0;
 	
 	repeat (array_length(temp_pathfinding_geodesic_icosphere.triangles))
 	{
 		// Retreive Triangle Data
-		var temp_pathfinding_triangle = temp_pathfinding_geodesic_icosphere.triangles[temp_pathfinding_geodesic_icosphere_triangle_index];
+		var temp_pathfinding_triangle = temp_pathfinding_geodesic_icosphere.triangles[temp_node_triangle_index];
 		
 		// Create Edge IDs from Triangle Edge Data
 		var temp_pathfinding_triangle_edge_id_a = $"{min(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}:{max(temp_pathfinding_triangle[0], temp_pathfinding_triangle[1])}";
@@ -536,64 +536,109 @@ if (pathfinding_enabled)
 		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_a))
 		{
 			// Index Triangle and Edge Data in Pathfinding Edges DS Map
-			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_a, temp_pathfinding_geodesic_icosphere_triangle_index);
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_a, temp_node_triangle_index);
 		}
 		else
 		{
 			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_a);
-			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_geodesic_icosphere_triangle_index);
+			array_push(pathfinding_node_edges_array[temp_node_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_a);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_node_triangle_index);
+			
+			// Determine Portal Left/Right Orientation
+			var temp_triangle_a_forward_vector_x = lerp(pathfinding_portal_x_array[temp_pathfinding_triangle[0]], pathfinding_portal_x_array[temp_pathfinding_triangle[1]], 0.5) - pathfinding_node_x_array[temp_node_triangle_index];
+			var temp_triangle_a_forward_vector_y = lerp(pathfinding_portal_y_array[temp_pathfinding_triangle[0]], pathfinding_portal_y_array[temp_pathfinding_triangle[1]], 0.5) - pathfinding_node_y_array[temp_node_triangle_index];
+			var temp_triangle_a_forward_vector_z = lerp(pathfinding_portal_z_array[temp_pathfinding_triangle[0]], pathfinding_portal_z_array[temp_pathfinding_triangle[1]], 0.5) - pathfinding_node_z_array[temp_node_triangle_index];
+			
+			var temp_triangle_a_edge_vector_x = pathfinding_portal_x_array[temp_pathfinding_triangle[1]] - pathfinding_portal_x_array[temp_pathfinding_triangle[0]];
+			var temp_triangle_a_edge_vector_y = pathfinding_portal_y_array[temp_pathfinding_triangle[1]] - pathfinding_portal_y_array[temp_pathfinding_triangle[0]];
+			var temp_triangle_a_edge_vector_z = pathfinding_portal_z_array[temp_pathfinding_triangle[1]] - pathfinding_portal_z_array[temp_pathfinding_triangle[0]];
+			
+			var temp_triangle_a_cross_x = temp_triangle_a_forward_vector_y * temp_triangle_a_edge_vector_z - temp_triangle_a_forward_vector_z * temp_triangle_a_edge_vector_y;
+            var temp_triangle_a_cross_y = temp_triangle_a_forward_vector_z * temp_triangle_a_edge_vector_x - temp_triangle_a_forward_vector_x * temp_triangle_a_edge_vector_z;
+            var temp_triangle_a_cross_z = temp_triangle_a_forward_vector_x * temp_triangle_a_edge_vector_y - temp_triangle_a_forward_vector_y * temp_triangle_a_edge_vector_x;
+            
+            var temp_triangle_a_side_dot_product = dot_product_3d(temp_triangle_a_cross_x, temp_triangle_a_cross_y, temp_triangle_a_cross_z, pathfinding_node_x_array[temp_node_triangle_index], pathfinding_node_y_array[temp_node_triangle_index], pathfinding_node_z_array[temp_node_triangle_index]);
 			
 			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[0]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_node_triangle_index], temp_triangle_a_side_dot_product > 0 ? temp_pathfinding_triangle[0] : temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_node_triangle_index], temp_triangle_a_side_dot_product > 0 ? temp_pathfinding_triangle[1] : temp_pathfinding_triangle[0]);
 			
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_triangle[0]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_triangle_a_side_dot_product > 0 ? temp_pathfinding_triangle[1] : temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_a], temp_triangle_a_side_dot_product > 0 ? temp_pathfinding_triangle[0] : temp_pathfinding_triangle[1]);
 		}
 		
 		// Check if Second Triangle Index Exists
 		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_b))
 		{
 			// Index Triangle and Edge Data in Pathfinding Edges DS Map
-			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_b, temp_pathfinding_geodesic_icosphere_triangle_index);
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_b, temp_node_triangle_index);
 		}
 		else
 		{
 			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_b);
-			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_geodesic_icosphere_triangle_index);
+			array_push(pathfinding_node_edges_array[temp_node_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_b);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_node_triangle_index);
+			
+			// Determine Portal Left/Right Orientation
+			var temp_triangle_b_forward_vector_x = lerp(pathfinding_portal_x_array[temp_pathfinding_triangle[1]], pathfinding_portal_x_array[temp_pathfinding_triangle[2]], 0.5) - pathfinding_node_x_array[temp_node_triangle_index];
+			var temp_triangle_b_forward_vector_y = lerp(pathfinding_portal_y_array[temp_pathfinding_triangle[1]], pathfinding_portal_y_array[temp_pathfinding_triangle[2]], 0.5) - pathfinding_node_y_array[temp_node_triangle_index];
+			var temp_triangle_b_forward_vector_z = lerp(pathfinding_portal_z_array[temp_pathfinding_triangle[1]], pathfinding_portal_z_array[temp_pathfinding_triangle[2]], 0.5) - pathfinding_node_z_array[temp_node_triangle_index];
+			
+			var temp_triangle_b_edge_vector_x = pathfinding_portal_x_array[temp_pathfinding_triangle[2]] - pathfinding_portal_x_array[temp_pathfinding_triangle[1]];
+			var temp_triangle_b_edge_vector_y = pathfinding_portal_y_array[temp_pathfinding_triangle[2]] - pathfinding_portal_y_array[temp_pathfinding_triangle[1]];
+			var temp_triangle_b_edge_vector_z = pathfinding_portal_z_array[temp_pathfinding_triangle[2]] - pathfinding_portal_z_array[temp_pathfinding_triangle[1]];
+			
+			var temp_triangle_b_cross_x = temp_triangle_b_forward_vector_y * temp_triangle_b_edge_vector_z - temp_triangle_b_forward_vector_z * temp_triangle_b_edge_vector_y;
+            var temp_triangle_b_cross_y = temp_triangle_b_forward_vector_z * temp_triangle_b_edge_vector_x - temp_triangle_b_forward_vector_x * temp_triangle_b_edge_vector_z;
+            var temp_triangle_b_cross_z = temp_triangle_b_forward_vector_x * temp_triangle_b_edge_vector_y - temp_triangle_b_forward_vector_y * temp_triangle_b_edge_vector_x;
+            
+            var temp_triangle_b_side_dot_product = dot_product_3d(temp_triangle_b_cross_x, temp_triangle_b_cross_y, temp_triangle_b_cross_z, pathfinding_node_x_array[temp_node_triangle_index], pathfinding_node_y_array[temp_node_triangle_index], pathfinding_node_z_array[temp_node_triangle_index]);
 			
 			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[1]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_node_triangle_index], temp_triangle_b_side_dot_product > 0 ? temp_pathfinding_triangle[1] : temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_node_triangle_index], temp_triangle_b_side_dot_product > 0 ? temp_pathfinding_triangle[2] : temp_pathfinding_triangle[1]);
 			
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_triangle[1]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_triangle_b_side_dot_product > 0 ? temp_pathfinding_triangle[2] : temp_pathfinding_triangle[1]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_b], temp_triangle_b_side_dot_product > 0 ? temp_pathfinding_triangle[1] : temp_pathfinding_triangle[2]);
 		}
 		
 		// Check if Third Triangle Index Exists
 		if (is_undefined(temp_pathfinding_triangle_edge_connected_triangle_index_c))
 		{
 			// Index Triangle and Edge Data in Pathfinding Edges DS Map
-			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_c, temp_pathfinding_geodesic_icosphere_triangle_index);
+			ds_map_add(temp_pathfinding_edges_map, temp_pathfinding_triangle_edge_id_c, temp_node_triangle_index);
 		}
 		else
 		{
 			// Index Pathfinding Edge in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_c);
-			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_geodesic_icosphere_triangle_index);
+			array_push(pathfinding_node_edges_array[temp_node_triangle_index], temp_pathfinding_triangle_edge_connected_triangle_index_c);
+			array_push(pathfinding_node_edges_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_node_triangle_index);
+			
+			// Determine Portal Left/Right Orientation
+			var temp_triangle_c_forward_vector_x = lerp(pathfinding_portal_x_array[temp_pathfinding_triangle[2]], pathfinding_portal_x_array[temp_pathfinding_triangle[0]], 0.5) - pathfinding_node_x_array[temp_node_triangle_index];
+			var temp_triangle_c_forward_vector_y = lerp(pathfinding_portal_y_array[temp_pathfinding_triangle[2]], pathfinding_portal_y_array[temp_pathfinding_triangle[0]], 0.5) - pathfinding_node_y_array[temp_node_triangle_index];
+			var temp_triangle_c_forward_vector_z = lerp(pathfinding_portal_z_array[temp_pathfinding_triangle[2]], pathfinding_portal_z_array[temp_pathfinding_triangle[0]], 0.5) - pathfinding_node_z_array[temp_node_triangle_index];
+			
+			var temp_triangle_c_edge_vector_x = pathfinding_portal_x_array[temp_pathfinding_triangle[0]] - pathfinding_portal_x_array[temp_pathfinding_triangle[2]];
+			var temp_triangle_c_edge_vector_y = pathfinding_portal_y_array[temp_pathfinding_triangle[0]] - pathfinding_portal_y_array[temp_pathfinding_triangle[2]];
+			var temp_triangle_c_edge_vector_z = pathfinding_portal_z_array[temp_pathfinding_triangle[0]] - pathfinding_portal_z_array[temp_pathfinding_triangle[2]];
+			
+			var temp_triangle_c_cross_x = temp_triangle_c_forward_vector_y * temp_triangle_c_edge_vector_z - temp_triangle_c_forward_vector_z * temp_triangle_c_edge_vector_y;
+            var temp_triangle_c_cross_y = temp_triangle_c_forward_vector_z * temp_triangle_c_edge_vector_x - temp_triangle_c_forward_vector_x * temp_triangle_c_edge_vector_z;
+            var temp_triangle_c_cross_z = temp_triangle_c_forward_vector_x * temp_triangle_c_edge_vector_y - temp_triangle_c_forward_vector_y * temp_triangle_c_edge_vector_x;
+            
+            var temp_triangle_c_side_dot_product = dot_product_3d(temp_triangle_c_cross_x, temp_triangle_c_cross_y, temp_triangle_c_cross_z, pathfinding_node_x_array[temp_node_triangle_index], pathfinding_node_y_array[temp_node_triangle_index], pathfinding_node_z_array[temp_node_triangle_index]);
 			
 			// Index Pathfinding Edge Portals in Pathfinding Node Edges Arrays
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[2]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_geodesic_icosphere_triangle_index], temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_node_triangle_index], temp_triangle_c_side_dot_product > 0 ? temp_pathfinding_triangle[2] : temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_node_triangle_index], temp_triangle_c_side_dot_product > 0 ? temp_pathfinding_triangle[0] : temp_pathfinding_triangle[2]);
 			
-			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_triangle[2]);
-			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_pathfinding_triangle[0]);
+			array_push(pathfinding_node_edges_portal_left_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_triangle_c_side_dot_product > 0 ? temp_pathfinding_triangle[0] : temp_pathfinding_triangle[2]);
+			array_push(pathfinding_node_edges_portal_right_array[temp_pathfinding_triangle_edge_connected_triangle_index_c], temp_triangle_c_side_dot_product > 0 ? temp_pathfinding_triangle[2] : temp_pathfinding_triangle[0]);
 		}
 		
 		// Increment Triangle Index
-		temp_pathfinding_geodesic_icosphere_triangle_index++;
+		temp_node_triangle_index++;
 	}
 	
 	// Destroy Pathfinding Edges DS Map
@@ -658,30 +703,6 @@ if (temp_microclimatemap_buffer_exists)
 	temp_microclimatemap_buffer = -1;
 }
 
-// Initialize Unit Arrays
-units = array_create(0);
-
-repeat(5)
-{
-	array_push(units, instance_create_depth(0, 0, 0, oCelestialUnit));
-}
-
-// Initialize City Arrays
-cities = array_create(0);
-
-repeat(25)
-{
-	array_push(cities, instance_create_depth(0, 0, 0, oCelestialCity));
-}
-
-// Initialize Satellite Arrays
-satellites = array_create(0);
-
-repeat(25)
-{
-	array_push(satellites, instance_create_depth(0, 0, 0, oCelestialSatellite));
-}
-
 // Initialize Render Objects Arrays
 render_objects_enabled = false;
 
@@ -703,3 +724,85 @@ orbit_parent_instance = noone;
 // Initialize Empty Render Depth Radius and Frustum Culling Radius
 render_depth_radius = 0;
 frustum_culling_radius = -1;
+
+// Initialize Unit Arrays
+units = array_create(0);
+
+// Initialize City Arrays
+cities = array_create(0);
+
+// Initialize Satellite Arrays
+satellites = array_create(0);
+
+// Celestial Body Functions
+add_unit_node = function(unit_instance, node_index)
+{
+	// Update Unit's Pathfinding Node Index
+	unit_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+	
+	// Update Unit's Pathfinding Position & Elevation with their Pathfinding Node Index
+	unit_instance.pathfinding_position_x = pathfinding_node_x_array[unit_instance.pathfinding_node_index];
+	unit_instance.pathfinding_position_y = pathfinding_node_y_array[unit_instance.pathfinding_node_index];
+	unit_instance.pathfinding_position_z = pathfinding_node_z_array[unit_instance.pathfinding_node_index];
+	unit_instance.pathfinding_position_elevation = pathfinding_node_elevation_array[unit_instance.pathfinding_node_index];
+	
+	// Index Unit Instance into Celestial Body Units Array
+	array_push(units, unit_instance);
+}
+
+add_unit_uv = function(unit_instance, unit_u, unit_v)
+{
+	// Update Unit's UV Position
+	unit_instance.local_position_u = unit_u;
+	unit_instance.local_position_v = unit_v;
+	
+	// Index Unit Instance into Celestial Body Units Array
+	array_push(units, unit_instance);
+}
+
+add_city_node = function(city_instance, node_index)
+{
+	// Update City's Pathfinding Node Index
+	city_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+	
+	// Index City Instance into Celestial Body Cities Array
+	array_push(cities, city_instance);
+}
+
+add_city_uv = function(city_instance, city_u, city_v)
+{
+	// Update City's UV Position
+	city_instance.local_position_u = city_u;
+	city_instance.local_position_v = city_v;
+	
+	// Index City Instance into Celestial Body Cities Array
+	array_push(cities, city_instance);
+}
+
+add_satellite_node = function(satellite_instance, node_index)
+{
+	// Update Satellite's Pathfinding Node Index
+	satellite_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+	
+	// Index Satellite Instance into Celestial Body Satellites Array
+	array_push(satellites, satellite_instance);
+}
+
+add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)
+{
+	// Update Satellite's UV Position
+	satellite_instance.local_position_u = satellite_u;
+	satellite_instance.local_position_v = satellite_v;
+	
+	// Index Satellite Instance into Celestial Body Satellites Array
+	array_push(satellites, satellite_instance);
+}
+
+// DEBUG
+if (pathfinding_enabled)
+{
+	repeat(5)
+	{
+		add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
+	}
+}

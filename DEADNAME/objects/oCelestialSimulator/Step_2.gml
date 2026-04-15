@@ -222,8 +222,15 @@ else if (temp_input_select or temp_input_action)
 								// Unit Action Behaviour - Pathfinding
 								if (temp_selection_inst == camera_observing_instance)
 								{
-									var temp_path = celestial_pathfinding(camera_observing_instance, render_object_selected_instance.pathfinding_node_index, temp_selection_node_index);
-									render_object_selected_instance.unit_pathfinding_set_path(temp_path);
+									// Establish Pathfinding Goal Variables
+									var temp_pathfinding_goal_node_index = temp_selection_node_index;
+									var temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_selection_node_index];
+									var temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_selection_node_index];
+									var temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_selection_node_index];
+									var temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_selection_node_index];
+									
+									// Initiate Unit Pathfinding Behaviour
+									celestial_pathfinding(camera_observing_instance, render_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
 								}
 								break;
 							case CelestialRenderObjectType.City:

@@ -307,7 +307,7 @@ repeat (array_length(temp_solar_system))
 						// Iterate through Selected Render Object Unit's Pathfinding Path Array to create Path UI
 						var temp_selected_unit_pathfinding_path_index = 0;
 						
-						repeat (ds_list_size(render_object_selected_instance.pathfinding_path) - 1)
+						repeat (render_object_selected_instance.pathfinding_path.path_size)
 						{
 							// Check if Selected Unit has progressed past the given Pathfinding Path Index
 							if (render_object_selected_instance.pathfinding_path_index > temp_selected_unit_pathfinding_path_index)
@@ -317,31 +317,33 @@ repeat (array_length(temp_solar_system))
 								continue;
 							}
 							
-							// Find Selected Unit's Pathfinding Path Node Indexes
-							var temp_selected_unit_path_node_a_index = ds_list_find_value(render_object_selected_instance.pathfinding_path, temp_selected_unit_pathfinding_path_index);
-							var temp_selected_unit_path_node_b_index = ds_list_find_value(render_object_selected_instance.pathfinding_path, temp_selected_unit_pathfinding_path_index + 1);
-							
 							// Find Selected Unit's Pathfinding Path Node Positions & Elevations
-							var temp_ui_path_a_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_selected_unit_path_node_a_index];
-							var temp_ui_path_a_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_selected_unit_path_node_a_index];
-							var temp_ui_path_a_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_selected_unit_path_node_a_index];
+							var temp_ui_path_a_local_x, temp_ui_path_a_local_y, temp_ui_path_a_local_z, temp_ui_path_a_local_elevation;
 							
-							var temp_ui_path_a_local_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_selected_unit_path_node_a_index];
+							var temp_ui_path_b_local_x = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_y = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_z = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index);
 							
-							var temp_ui_path_b_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_selected_unit_path_node_b_index];
-							var temp_ui_path_b_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_selected_unit_path_node_b_index];
-							var temp_ui_path_b_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_selected_unit_path_node_b_index];
+							var temp_ui_path_b_local_elevation = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index);
 							
-							var temp_ui_path_b_local_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_selected_unit_path_node_b_index];
-							
-							// Check if Selected Unit is currently traversing the given Pathfinding Path Index
-							if (render_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
+							// Check if Pathfinding Path Index is the First Path Index or Selected Unit is currently traversing the given Pathfinding Path Index
+							if (temp_selected_unit_pathfinding_path_index == 0 or render_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
 							{
 								// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their precalculated positioning variables from their Pathfinding Behaviour
 								temp_ui_path_a_local_x = render_object_selected_instance.pathfinding_position_x;
 								temp_ui_path_a_local_y = render_object_selected_instance.pathfinding_position_y;
 								temp_ui_path_a_local_z = render_object_selected_instance.pathfinding_position_z;
+								
 								temp_ui_path_a_local_elevation = render_object_selected_instance.pathfinding_position_elevation;
+							}
+							else
+							{
+								// Use Previous Pathfinding Path Index Position and Elevation Values
+								temp_ui_path_a_local_x = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_y = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_z = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index - 1);
+								
+								temp_ui_path_a_local_elevation = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index - 1);
 							}
 							
 							// Find Selected Unit's Pathfinding Path World Positions
@@ -480,7 +482,7 @@ repeat (array_length(temp_solar_system))
 			var temp_unit_local_x, temp_unit_local_y, temp_unit_local_z, temp_unit_elevation;
 			
 			// Check if Pathfinding is Enabled or Unit's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled or temp_unit_instance.pathfinding_node_index < 0 or temp_unit_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			if (!temp_celestial_object_instance.pathfinding_enabled)
 			{
 				// Find Vertical Sphere Vector
 				var temp_unit_atan_value = (0.5 - temp_unit_instance.local_position_u) * 2 * pi;
@@ -497,28 +499,11 @@ repeat (array_length(temp_solar_system))
 			}
 			else
 			{
-				// Establish Empty Unit Elevation
-				var temp_unit_elevation = 0;
-				
-				// Check if Unit is currently Pathfinding
-				if (is_undefined(temp_unit_instance.pathfinding_path))
-				{
-					// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center with their Pathfinding Node Index
-					temp_unit_local_x = temp_celestial_object_instance.pathfinding_node_x_array[temp_unit_instance.pathfinding_node_index];
-					temp_unit_local_y = temp_celestial_object_instance.pathfinding_node_y_array[temp_unit_instance.pathfinding_node_index];
-					temp_unit_local_z = temp_celestial_object_instance.pathfinding_node_z_array[temp_unit_instance.pathfinding_node_index];
-					
-					// Find Celestial Unit's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Index
-					temp_unit_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_unit_instance.pathfinding_node_index];
-				}
-				else
-				{
-					// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their precalculated positioning variables from their Pathfinding Behaviour
-					temp_unit_local_x = temp_unit_instance.pathfinding_position_x;
-					temp_unit_local_y = temp_unit_instance.pathfinding_position_y;
-					temp_unit_local_z = temp_unit_instance.pathfinding_position_z;
-					temp_unit_elevation = temp_unit_instance.pathfinding_position_elevation;
-				}
+				// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their Pathfinding positioning variables
+				temp_unit_local_x = temp_unit_instance.pathfinding_position_x;
+				temp_unit_local_y = temp_unit_instance.pathfinding_position_y;
+				temp_unit_local_z = temp_unit_instance.pathfinding_position_z;
+				temp_unit_elevation = temp_unit_instance.pathfinding_position_elevation;
 			}
 			
 			// Find Celestial Unit's Elevation from Celestial Body's Sphere Center
@@ -583,7 +568,7 @@ repeat (array_length(temp_solar_system))
 			var temp_city_local_x, temp_city_local_y, temp_city_local_z, temp_city_elevation;
 			
 			// Check if Pathfinding is Enabled or City's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled or temp_city_instance.pathfinding_node_index < 0 or temp_city_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			if (!temp_celestial_object_instance.pathfinding_enabled)
 			{
 				// Find Vertical Sphere Vector
 				var temp_city_atan_value = (0.5 - temp_city_instance.local_position_u) * 2 * pi;
@@ -671,7 +656,7 @@ repeat (array_length(temp_solar_system))
 			var temp_satellite_local_x, temp_satellite_local_y, temp_satellite_local_z, temp_satellite_elevation;
 			
 			// Check if Pathfinding is Enabled or Satellite's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled or temp_satellite_instance.pathfinding_node_index < 0 or temp_satellite_instance.pathfinding_node_index >= temp_celestial_object_instance.pathfinding_nodes_count)
+			if (!temp_celestial_object_instance.pathfinding_enabled)
 			{
 				// Find Vertical Sphere Vector
 				var temp_satellite_atan_value = (0.5 - temp_satellite_instance.local_position_u) * 2 * pi;

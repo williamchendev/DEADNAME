@@ -94,6 +94,9 @@ repeat (array_length(solar_systems))
 				z += orbit_parent_instance.z;
 			}
 			
+			// Establish Minimum Elevation
+			var temp_celestial_object_minimum_elevation = 0;
+			
 			// Celestial Object Type Behaviour
 			switch (celestial_object_type)
 			{
@@ -101,6 +104,7 @@ repeat (array_length(solar_systems))
 					// Planet Simulation Behaviour
 					render_depth_radius = radius + elevation + (sky ? sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding);
 					frustum_culling_radius = radius + elevation + (sky ? sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding);
+					temp_celestial_object_minimum_elevation = ocean_elevation;
 					break;
 				case CelestialObjectType.Sun:
 					// Sun Simulation Behaviour
@@ -154,10 +158,10 @@ repeat (array_length(solar_systems))
 					if (pathfinding_enabled)
 					{
 						// Check if Unit's Pathfinding Path Index is Valid
-						if (temp_unit_instance.pathfinding_path_index < 0 or temp_unit_instance.pathfinding_path_index >= ds_list_size(temp_unit_instance.pathfinding_path) - 1)
+						if (temp_unit_instance.pathfinding_path_index < 0 or temp_unit_instance.pathfinding_path_index >= temp_unit_instance.pathfinding_path.path_size)
 						{
-							// Destroy Unit's Pathfinding Path DS List
-							ds_list_destroy(temp_unit_instance.pathfinding_path);
+							// Destroy Unit's Pathfinding Path Struct
+							celestial_pathfinding_destroy_path(temp_unit_instance.pathfinding_path);
 							
 							// Reset Unit's Pathfinding Path
 							temp_unit_instance.pathfinding_path = undefined;
@@ -167,91 +171,92 @@ repeat (array_length(solar_systems))
 							// Perform Unit Pathfinding Movement
 							while (temp_movement_power > 0)
 							{
-								// Find Unit Pathfinding Node Indexes
-								var temp_unit_pathfinding_node_a_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
-								var temp_unit_pathfinding_node_b_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index + 1);
+								// Find Unit Pathfinding Path Node Index
+								var temp_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, temp_unit_instance.pathfinding_path_index);
 								
-								// Find Unit Pathfinding Node Microbiomes
-								var temp_unit_pathfinding_node_a_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_pathfinding_node_a_index]];
-								var temp_unit_pathfinding_node_b_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_unit_pathfinding_node_b_index]];
+								// Find Unit Pathfinding Path Current Elevation
+								var temp_pathfinding_unit_elevation = temp_unit_instance.pathfinding_position_elevation;
+								var temp_pathfinding_unit_position_elevation = radius + elevation * max(temp_pathfinding_unit_elevation, temp_celestial_object_minimum_elevation);
 								
-								// Find Unit Pathfinding Nodes Combined Microbiome Movement Cost
-								var temp_unit_pathfinding_combined_microbiome_movement_cost = celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_a_microbiome_type) * 0.5 + celestial_microclimate_biome_get_movement_cost(temp_unit_pathfinding_node_b_microbiome_type) * 0.5;
+								// Find Unit Pathfinding Path Current Position
+								var temp_pathfinding_unit_x = temp_unit_instance.pathfinding_position_x;
+								var temp_pathfinding_unit_y = temp_unit_instance.pathfinding_position_y;
+								var temp_pathfinding_unit_z = temp_unit_instance.pathfinding_position_z;
+								
+								var temp_pathfinding_unit_position_x = temp_pathfinding_unit_x * temp_pathfinding_unit_position_elevation;
+								var temp_pathfinding_unit_position_y = temp_pathfinding_unit_y * temp_pathfinding_unit_position_elevation;
+								var temp_pathfinding_unit_position_z = temp_pathfinding_unit_z * temp_pathfinding_unit_position_elevation;
+								
+								// Find Unit Pathfinding Path Target Elevation
+								var temp_pathfinding_target_elevation = ds_list_find_value(temp_unit_instance.pathfinding_path.position_elevation, temp_unit_instance.pathfinding_path_index);
+								var temp_pathfinding_target_position_elevation = radius + elevation * max(temp_pathfinding_target_elevation, temp_celestial_object_minimum_elevation);
+								
+								// Find Unit Pathfinding Path Target Position
+								var temp_pathfinding_target_x = ds_list_find_value(temp_unit_instance.pathfinding_path.position_x, temp_unit_instance.pathfinding_path_index);
+								var temp_pathfinding_target_y = ds_list_find_value(temp_unit_instance.pathfinding_path.position_y, temp_unit_instance.pathfinding_path_index);
+								var temp_pathfinding_target_z = ds_list_find_value(temp_unit_instance.pathfinding_path.position_z, temp_unit_instance.pathfinding_path_index);
+								
+								var temp_pathfinding_target_position_x = temp_pathfinding_target_x * temp_pathfinding_target_position_elevation;
+								var temp_pathfinding_target_position_y = temp_pathfinding_target_y * temp_pathfinding_target_position_elevation;
+								var temp_pathfinding_target_position_z = temp_pathfinding_target_z * temp_pathfinding_target_position_elevation;
+								
+								// Find Unit Pathfinding Node Microbiome
+								var temp_pathfinding_node_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_pathfinding_node_index]];
+								
+								// Find Unit Pathfinding Node Microbiome Movement Cost Modifier
+								var temp_pathfinding_microbiome_movement_cost_modifier = celestial_microclimate_biome_get_movement_cost_modifier(temp_pathfinding_node_microbiome_type);
+								
+								// Find Unit Pathfinding Remaining Distance
+								var temp_pathfinding_remaining_distance = point_distance_3d(temp_pathfinding_unit_position_x, temp_pathfinding_unit_position_y, temp_pathfinding_unit_position_z, temp_pathfinding_target_position_x, temp_pathfinding_target_position_y, temp_pathfinding_target_position_z);
 								
 								// Find Unit Pathfinding Remaining Movement Cost
-								var temp_unit_pathfinding_remaining_movement_cost = (1 - temp_unit_instance.pathfinding_path_node_progress) * temp_unit_pathfinding_combined_microbiome_movement_cost;
+								var temp_pathfinding_remaining_movement_cost = temp_pathfinding_remaining_distance * temp_pathfinding_microbiome_movement_cost_modifier;
 								
 								// Find Unit Pathfinding Movement Spend
-								var temp_unit_pathfinding_movement_power_spend = min(temp_movement_power, temp_unit_pathfinding_remaining_movement_cost);
+								var temp_pathfinding_movement_power_spend = min(temp_movement_power, temp_pathfinding_remaining_movement_cost);
 								
 								// Decrement Unit Movement Power
-								temp_movement_power -= temp_unit_pathfinding_movement_power_spend;
+								temp_movement_power -= temp_pathfinding_remaining_movement_cost;
 								
-								// Increment Pathfinding Path Progress
-								temp_unit_instance.pathfinding_path_node_progress += temp_unit_pathfinding_movement_power_spend / temp_unit_pathfinding_combined_microbiome_movement_cost;
+								// Calculate Pathfinding Path Progress Lerp Value
+								var temp_pathfinding_path_lerp_value = temp_pathfinding_remaining_movement_cost <= 0 ? 1 : temp_pathfinding_movement_power_spend / temp_pathfinding_remaining_movement_cost;
+								
+								// Update Unit's Pathfinding Position & Elevation based on Pathfinding Path Progress
+								temp_unit_instance.pathfinding_position_x = lerp(temp_pathfinding_unit_x, temp_pathfinding_target_x, temp_pathfinding_path_lerp_value);
+								temp_unit_instance.pathfinding_position_y = lerp(temp_pathfinding_unit_y, temp_pathfinding_target_y, temp_pathfinding_path_lerp_value);
+								temp_unit_instance.pathfinding_position_z = lerp(temp_pathfinding_unit_z, temp_pathfinding_target_z, temp_pathfinding_path_lerp_value);
+								temp_unit_instance.pathfinding_position_elevation = lerp(temp_pathfinding_unit_elevation, temp_pathfinding_target_elevation, temp_pathfinding_path_lerp_value);
+								
+								// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
+								var temp_pathfinding_unit_position_u_angle = (0.5 - arctan2(-temp_pathfinding_unit_x, -temp_pathfinding_unit_z) / (2 * pi)) * 360;
+								var temp_pathfinding_target_position_u_angle = (0.5 - arctan2(-temp_pathfinding_target_x, -temp_pathfinding_target_z) / (2 * pi)) * 360;
+								
+								// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
+								var temp_pathfinding_horizontal_angle_difference = angle_difference(temp_pathfinding_target_position_u_angle, temp_pathfinding_unit_position_u_angle);
+								temp_unit_instance.image_xscale = temp_pathfinding_horizontal_angle_difference != 0 ? sign(temp_pathfinding_horizontal_angle_difference) : temp_unit_instance.image_xscale;
 								
 								// Check if Unit's has made enough Path Progress to elapse to the next Pathfinding Node
-								if (temp_unit_instance.pathfinding_path_node_progress >= 1)
+								if (temp_pathfinding_path_lerp_value >= 1)
 								{
 									// Increment Unit's Pathfinding Path Index
 									temp_unit_instance.pathfinding_path_index++;
 									
+									// Check if Unit has finished moving through their Pathfinding Path
+									if (temp_unit_instance.pathfinding_path_index >= temp_unit_instance.pathfinding_path.path_size)
+									{
+										// Destroy Unit's Pathfinding Path Struct
+										celestial_pathfinding_destroy_path(temp_unit_instance.pathfinding_path);
+										
+										// Reset Unit's Pathfinding Path
+										temp_unit_instance.pathfinding_path = undefined;
+										
+										// Break from Movement Behaviour Loop
+										break;
+									}
+									
 									// Update Unit's Pathfinding Node Index
-									temp_unit_instance.pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
-									
-									// Reset Unit's Pathfinding Path Progress
-									temp_unit_instance.pathfinding_path_node_progress = 0;
+									temp_unit_instance.pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, temp_unit_instance.pathfinding_path_index);
 								}
-								
-								// Check if Unit has finished moving through their Pathfinding Path
-								if (temp_unit_instance.pathfinding_path_index >= ds_list_size(temp_unit_instance.pathfinding_path) - 1)
-								{
-									// Destroy Unit's Pathfinding Path DS List
-									ds_list_destroy(temp_unit_instance.pathfinding_path);
-									
-									// Reset Unit's Pathfinding Path
-									temp_unit_instance.pathfinding_path = undefined;
-									
-									// Break from Movement Behaviour Loop
-									break;
-								}
-							}
-							
-							// Update Unit Position based on Pathfinding Progress
-							if (!is_undefined(temp_unit_instance.pathfinding_path))
-							{
-								// Establish Unit Pathfinding Node Indexes
-								var temp_unit_position_pathfinding_node_index_a = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index);
-								var temp_unit_position_pathfinding_node_index_b = ds_list_find_value(temp_unit_instance.pathfinding_path, temp_unit_instance.pathfinding_path_index + 1);
-								
-								// Establish Unit Pathfinding Node Positions
-								var temp_unit_position_pathfinding_node_a_local_x = pathfinding_node_x_array[temp_unit_position_pathfinding_node_index_a];
-								var temp_unit_position_pathfinding_node_a_local_y = pathfinding_node_y_array[temp_unit_position_pathfinding_node_index_a];
-								var temp_unit_position_pathfinding_node_a_local_z = pathfinding_node_z_array[temp_unit_position_pathfinding_node_index_a];
-								
-								var temp_unit_position_pathfinding_node_b_local_x = pathfinding_node_x_array[temp_unit_position_pathfinding_node_index_b];
-								var temp_unit_position_pathfinding_node_b_local_y = pathfinding_node_y_array[temp_unit_position_pathfinding_node_index_b];
-								var temp_unit_position_pathfinding_node_b_local_z = pathfinding_node_z_array[temp_unit_position_pathfinding_node_index_b];
-								
-								// Establish Unit Pathfinding Node Elevations
-								var temp_unit_position_pathfinding_node_a_elevation = pathfinding_node_elevation_array[temp_unit_position_pathfinding_node_index_a];
-								var temp_unit_position_pathfinding_node_b_elevation = pathfinding_node_elevation_array[temp_unit_position_pathfinding_node_index_b];
-								
-								// Find Celestial Unit's Normalized Local Vector from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
-								temp_unit_instance.pathfinding_position_x = lerp(temp_unit_position_pathfinding_node_a_local_x, temp_unit_position_pathfinding_node_b_local_x, temp_unit_instance.pathfinding_path_node_progress);
-								temp_unit_instance.pathfinding_position_y = lerp(temp_unit_position_pathfinding_node_a_local_y, temp_unit_position_pathfinding_node_b_local_y, temp_unit_instance.pathfinding_path_node_progress);
-								temp_unit_instance.pathfinding_position_z = lerp(temp_unit_position_pathfinding_node_a_local_z, temp_unit_position_pathfinding_node_b_local_z, temp_unit_instance.pathfinding_path_node_progress);
-								
-								// Find Celestial Unit's Elevation from Celestial Body's Sphere Center by lerping their position between both their Pathfinding Node Indexes
-								temp_unit_instance.pathfinding_position_elevation = lerp(temp_unit_position_pathfinding_node_a_elevation, temp_unit_position_pathfinding_node_b_elevation, temp_unit_instance.pathfinding_path_node_progress);
-								
-								// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
-								var temp_unit_position_pathfinding_node_a_u_angle = pathfinding_node_u_array[temp_unit_position_pathfinding_node_index_a] * 360;
-								var temp_unit_position_pathfinding_node_b_u_angle = pathfinding_node_u_array[temp_unit_position_pathfinding_node_index_b] * 360;
-								
-								// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
-								var temp_unit_position_pathfinding_horizontal_angle_difference = angle_difference(temp_unit_position_pathfinding_node_b_u_angle, temp_unit_position_pathfinding_node_a_u_angle);
-								temp_unit_instance.image_xscale = temp_unit_position_pathfinding_horizontal_angle_difference != 0 ? sign(temp_unit_position_pathfinding_horizontal_angle_difference) : temp_unit_instance.image_xscale;
 							}
 						}
 					}
