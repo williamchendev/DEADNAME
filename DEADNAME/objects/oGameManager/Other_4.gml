@@ -11,6 +11,9 @@ switch (scene_get_type())
 	case SceneType.Celestial:
 		// Set Celestial Simulator Active
 		CelestialSimulator.active = true;
+		
+		// Initialize Garbage Collection Service Callback - (Prevents Garbage Collection Frametime Bandwidth Issues)
+		call_later(1, time_source_units_frames, gc_collect, false);
 		break;
 	case SceneType.Title:
 	default:
