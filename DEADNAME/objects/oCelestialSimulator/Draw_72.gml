@@ -16,7 +16,15 @@ if (global.debug)
 {
 	if (instance_exists(camera_observing_instance))
 	{
-		render_debug_camera_observing_celestial_body_navmesh(camera_observing_instance);
+		//celestial_pathfinding_draw_navigation_mesh_gizmos(camera_observing_instance);
+	}
+	
+	if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
+	{
+		if (render_object_selected_instance.celestial_render_object_type == CelestialRenderObjectType.Unit and !is_undefined(render_object_selected_instance.pathfinding_path))
+		{
+			celestial_pathfinding_draw_path_gizmos(camera_observing_instance, render_object_selected_instance);
+		}
 	}
 }
 

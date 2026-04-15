@@ -551,8 +551,301 @@ function celestial_pathfinding_destroy_path(path_struct)
 	delete(path_struct);
 }
 
+function celestial_pathfinding_draw_path_gizmos(celestial_object, unit_object)
+{
+	// Calculate Celestial Object's Rotation Matrix
+	var temp_rotation_matrix = rotation_matrix_from_euler_angles(celestial_object.euler_angle_x, celestial_object.euler_angle_y, celestial_object.euler_angle_z);
+	
+	// Iterate Through Path Nodes to draw all Path Node Triangles
+	var temp_path_node_index = 0;
+	
+	repeat (unit_object.pathfinding_path.path_size)
+	{
+		// Find Node Index
+		var temp_node_index = ds_list_find_value(unit_object.pathfinding_path.node_index, temp_path_node_index);
+		
+		// Iterate through Node's Edges
+		var temp_node_edge_index = 0;
+		
+		repeat (array_length(celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index]))
+		{
+			// Find Edge Indexes
+			var temp_edge_left_index = array_get(celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index], temp_node_edge_index);
+			var temp_edge_right_index = array_get(celestial_object.pathfinding_node_edges_portal_right_array[temp_node_index], temp_node_edge_index);
+			
+			// Find Edge Vectors
+			var temp_edge_left_x = celestial_object.pathfinding_portal_x_array[temp_edge_left_index];
+			var temp_edge_left_y = celestial_object.pathfinding_portal_y_array[temp_edge_left_index];
+			var temp_edge_left_z = celestial_object.pathfinding_portal_z_array[temp_edge_left_index];
+			
+			var temp_edge_right_x = celestial_object.pathfinding_portal_x_array[temp_edge_right_index];
+			var temp_edge_right_y = celestial_object.pathfinding_portal_y_array[temp_edge_right_index];
+			var temp_edge_right_z = celestial_object.pathfinding_portal_z_array[temp_edge_right_index];
+			
+			// Find Edge Elevations
+			var temp_edge_left_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_edge_left_index], celestial_object.ocean_elevation);
+			var temp_edge_right_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_edge_right_index], celestial_object.ocean_elevation);
+			
+			temp_edge_left_elevation = celestial_object.radius + (temp_edge_left_elevation * celestial_object.elevation);
+			temp_edge_right_elevation = celestial_object.radius + (temp_edge_right_elevation * celestial_object.elevation);
+			
+			// Calculate Edge Positions
+			var temp_edge_left_position_x = temp_edge_left_elevation * (temp_edge_left_x * temp_rotation_matrix[0] + temp_edge_left_y * temp_rotation_matrix[4] + temp_edge_left_z * temp_rotation_matrix[8]);
+			var temp_edge_left_position_y = temp_edge_left_elevation * (temp_edge_left_x * temp_rotation_matrix[1] + temp_edge_left_y * temp_rotation_matrix[5] + temp_edge_left_z * temp_rotation_matrix[9]);
+			var temp_edge_left_position_z = temp_edge_left_elevation * (temp_edge_left_x * temp_rotation_matrix[2] + temp_edge_left_y * temp_rotation_matrix[6] + temp_edge_left_z * temp_rotation_matrix[10]);
+			
+			temp_edge_left_position_x += celestial_object.x;
+			temp_edge_left_position_y += celestial_object.y;
+			temp_edge_left_position_z += celestial_object.z;
+			
+			var temp_edge_right_position_x = temp_edge_right_elevation * (temp_edge_right_x * temp_rotation_matrix[0] + temp_edge_right_y * temp_rotation_matrix[4] + temp_edge_right_z * temp_rotation_matrix[8]);
+			var temp_edge_right_position_y = temp_edge_right_elevation * (temp_edge_right_x * temp_rotation_matrix[1] + temp_edge_right_y * temp_rotation_matrix[5] + temp_edge_right_z * temp_rotation_matrix[9]);
+			var temp_edge_right_position_z = temp_edge_right_elevation * (temp_edge_right_x * temp_rotation_matrix[2] + temp_edge_right_y * temp_rotation_matrix[6] + temp_edge_right_z * temp_rotation_matrix[10]);
+			
+			temp_edge_right_position_x += celestial_object.x;
+			temp_edge_right_position_y += celestial_object.y;
+			temp_edge_right_position_z += celestial_object.z;
+			
+			// Draw Edge to Screen
+			var temp_edge_left_screen_position = world_position_to_screen_position(temp_edge_left_position_x, temp_edge_left_position_y, temp_edge_left_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+			var temp_edge_right_screen_position = world_position_to_screen_position(temp_edge_right_position_x, temp_edge_right_position_y, temp_edge_right_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+			
+			draw_line_color(temp_edge_left_screen_position[0], temp_edge_left_screen_position[1], temp_edge_right_screen_position[0], temp_edge_right_screen_position[1], c_white, c_white);
+			
+			// Delete Unused Arrays
+			array_resize(temp_edge_left_screen_position, 0);
+			array_resize(temp_edge_right_screen_position, 0);
+			
+			// Increment Edge Index
+			temp_node_edge_index++;
+		}
+		
+		// Increment Path's Node Index
+		temp_path_node_index++;
+	}
+	
+	// Iterate Through Path Portals to draw all Path Portal Positions
+	var temp_path_index = 0;
+	
+	repeat (unit_object.pathfinding_path.path_size - 1)
+	{
+		// Find Node Indexes
+		var temp_node_index_a = ds_list_find_value(unit_object.pathfinding_path.node_index, temp_path_index);
+		var temp_node_index_b = ds_list_find_value(unit_object.pathfinding_path.node_index, temp_path_index + 1);
+		
+		// Find Edge Index
+		var temp_edge_index = array_get_index(celestial_object.pathfinding_node_edges_array[temp_node_index_a], temp_node_index_b);
+		
+		// Find Portal Indexes
+		var temp_portal_left_index = array_get(celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index_a], temp_edge_index);
+		var temp_portal_right_index = array_get(celestial_object.pathfinding_node_edges_portal_right_array[temp_node_index_a], temp_edge_index);
+		
+		// Find Portal Vectors
+		var temp_portal_left_x = celestial_object.pathfinding_portal_x_array[temp_portal_left_index];
+		var temp_portal_left_y = celestial_object.pathfinding_portal_y_array[temp_portal_left_index];
+		var temp_portal_left_z = celestial_object.pathfinding_portal_z_array[temp_portal_left_index];
+		
+		var temp_portal_right_x = celestial_object.pathfinding_portal_x_array[temp_portal_right_index];
+		var temp_portal_right_y = celestial_object.pathfinding_portal_y_array[temp_portal_right_index];
+		var temp_portal_right_z = celestial_object.pathfinding_portal_z_array[temp_portal_right_index];
+		
+		// Find Path Portal Elevations
+		var temp_portal_left_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_portal_left_index], celestial_object.ocean_elevation);
+		var temp_portal_right_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_portal_right_index], celestial_object.ocean_elevation);
+		
+		temp_portal_left_elevation = celestial_object.radius + (temp_portal_left_elevation * celestial_object.elevation);
+		temp_portal_right_elevation = celestial_object.radius + (temp_portal_right_elevation * celestial_object.elevation);
+		
+		// Find Portal Positions
+		var temp_portal_left_position_x = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[0] + temp_portal_left_y * temp_rotation_matrix[4] + temp_portal_left_z * temp_rotation_matrix[8]);
+		var temp_portal_left_position_y = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[1] + temp_portal_left_y * temp_rotation_matrix[5] + temp_portal_left_z * temp_rotation_matrix[9]);
+		var temp_portal_left_position_z = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[2] + temp_portal_left_y * temp_rotation_matrix[6] + temp_portal_left_z * temp_rotation_matrix[10]);
+		
+		temp_portal_left_position_x += celestial_object.x;
+		temp_portal_left_position_y += celestial_object.y;
+		temp_portal_left_position_z += celestial_object.z;
+		
+		var temp_portal_right_position_x = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[0] + temp_portal_right_y * temp_rotation_matrix[4] + temp_portal_right_z * temp_rotation_matrix[8]);
+		var temp_portal_right_position_y = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[1] + temp_portal_right_y * temp_rotation_matrix[5] + temp_portal_right_z * temp_rotation_matrix[9]);
+		var temp_portal_right_position_z = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[2] + temp_portal_right_y * temp_rotation_matrix[6] + temp_portal_right_z * temp_rotation_matrix[10]);
+		
+		temp_portal_right_position_x += celestial_object.x;
+		temp_portal_right_position_y += celestial_object.y;
+		temp_portal_right_position_z += celestial_object.z;
+		
+		// Draw Left & Right Portals to Screen
+		var temp_portal_left_screen_position = world_position_to_screen_position(temp_portal_left_position_x, temp_portal_left_position_y, temp_portal_left_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+		var temp_portal_right_screen_position = world_position_to_screen_position(temp_portal_right_position_x, temp_portal_right_position_y, temp_portal_right_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+		
+		draw_point_color(temp_portal_left_screen_position[0], temp_portal_left_screen_position[1], c_blue);
+		draw_point_color(temp_portal_right_screen_position[0], temp_portal_right_screen_position[1], c_red);
+		
+		// Delete Unused Arrays
+		array_resize(temp_portal_left_screen_position, 0);
+		array_resize(temp_portal_right_screen_position, 0);
+		
+		// Increment Path Index
+		temp_path_index++;
+	}
+	
+	// Delete Unused Rotation Matrix
+	array_resize(temp_rotation_matrix, 0);
+}
 
-
+function celestial_pathfinding_draw_navigation_mesh_gizmos(celestial_object)
+{
+	//
+	if (!celestial_object.pathfinding_enabled)
+	{
+		return;
+	}
+	
+	//
+	var temp_celestial_minimum_elevation = 0;
+	
+	if (celestial_object.celestial_object_type == CelestialObjectType.Planet)
+	{
+		// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
+		temp_celestial_minimum_elevation = celestial_object.ocean_elevation;
+	}
+	
+	//
+	var temp_rotation_matrix = rotation_matrix_from_euler_angles(celestial_object.euler_angle_x, celestial_object.euler_angle_y, celestial_object.euler_angle_z);
+	
+	/*
+	// Interpolated Depth of Elevated Vertex Position relative to Camera's Viewing Orientation and the Radius of Atmosphere
+	vec3 camera_view_direction = normalize(v_vPosition - in_vsh_CameraPosition);
+	v_vDepth = dot(camera_view_direction, planet_rotated_local_vector_elevation / u_AtmosphereRadius) * u_AtmosphereRadius + u_AtmosphereRadius;
+	*/
+	
+	//
+	var temp_camera_vector_x = celestial_object.x - CelestialSimulator.camera_position_x;
+	var temp_camera_vector_y = celestial_object.y - CelestialSimulator.camera_position_y;
+	var temp_camera_vector_z = celestial_object.z - CelestialSimulator.camera_position_z;
+	
+	//
+	var temp_camera_vector_magnitude = sqrt(dot_product_3d(temp_camera_vector_x, temp_camera_vector_y, temp_camera_vector_z, temp_camera_vector_x, temp_camera_vector_y, temp_camera_vector_z));
+	
+	//
+	var temp_camera_normalized_vector_x = temp_camera_vector_x / temp_camera_vector_magnitude;
+	var temp_camera_normalized_vector_y = temp_camera_vector_y / temp_camera_vector_magnitude;
+	var temp_camera_normalized_vector_z = temp_camera_vector_z / temp_camera_vector_magnitude;
+	
+	// Iterate through all Nodes to Render Edges
+	var temp_node_index = 0;
+	
+	repeat (celestial_object.pathfinding_nodes_count)
+	{
+		//
+		var temp_node_x = celestial_object.pathfinding_node_x_array[temp_node_index];
+		var temp_node_y = celestial_object.pathfinding_node_y_array[temp_node_index];
+		var temp_node_z = celestial_object.pathfinding_node_z_array[temp_node_index];
+		var temp_node_elevation = max(celestial_object.pathfinding_node_elevation_array[temp_node_index], temp_celestial_minimum_elevation);
+		
+		//
+		temp_node_elevation = celestial_object.radius + (temp_node_elevation * celestial_object.elevation);
+		
+		// Find Celestial Unit's World Position
+		var temp_node_position_x = temp_node_elevation * (temp_node_x * temp_rotation_matrix[0] + temp_node_y * temp_rotation_matrix[4] + temp_node_z * temp_rotation_matrix[8]);
+		var temp_node_position_y = temp_node_elevation * (temp_node_x * temp_rotation_matrix[1] + temp_node_y * temp_rotation_matrix[5] + temp_node_z * temp_rotation_matrix[9]);
+		var temp_node_position_z = temp_node_elevation * (temp_node_x * temp_rotation_matrix[2] + temp_node_y * temp_rotation_matrix[6] + temp_node_z * temp_rotation_matrix[10]);
+		
+		//
+		var temp_node_render_depth_vector_x = temp_node_position_x / celestial_object.render_depth_radius;
+		var temp_node_render_depth_vector_y = temp_node_position_y / celestial_object.render_depth_radius;
+		var temp_node_render_depth_vector_z = temp_node_position_z / celestial_object.render_depth_radius;
+		
+		//
+		var temp_node_render_depth_dot = dot_product_3d(temp_camera_normalized_vector_x, temp_camera_normalized_vector_y, temp_camera_normalized_vector_z, temp_node_render_depth_vector_x, temp_node_render_depth_vector_y, temp_node_render_depth_vector_z);
+		
+		//
+		if (temp_node_render_depth_dot > -0.25)
+		{
+			// Increment Pathfinding Node Index
+			temp_node_index++;
+			
+			//
+			continue;
+		}
+		
+		//
+		var temp_node_world_position_x = temp_node_position_x + celestial_object.x;
+		var temp_node_world_position_y = temp_node_position_y + celestial_object.y;
+		var temp_node_world_position_z = temp_node_position_z + celestial_object.z;
+		
+		// Find Celestial Unit's Screen Position and set the Celestial Unit Instance's Position to their Converted World Position to Screen Coordinates
+		var temp_node_screen_position = world_position_to_screen_position(temp_node_world_position_x, temp_node_world_position_y, temp_node_world_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+		
+		//
+		var temp_node_edges_node_index_array = celestial_object.pathfinding_node_edges_array[temp_node_index];
+		var temp_node_edges_portal_left_index_array = celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index];
+		var temp_node_edges_portal_right_index_array = celestial_object.pathfinding_node_edges_portal_right_array[temp_node_index];
+		
+		//
+		for (var i = 0; i < array_length(temp_node_edges_node_index_array); i++)
+		{
+			//
+			var temp_portal_left_index = temp_node_edges_portal_left_index_array[i];
+			var temp_portal_right_index = temp_node_edges_portal_right_index_array[i];
+			
+			//
+			var temp_portal_left_x = celestial_object.pathfinding_portal_x_array[temp_portal_left_index];
+			var temp_portal_left_y = celestial_object.pathfinding_portal_y_array[temp_portal_left_index];
+			var temp_portal_left_z = celestial_object.pathfinding_portal_z_array[temp_portal_left_index];
+			var temp_portal_left_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_portal_left_index], temp_celestial_minimum_elevation);
+			
+			//
+			var temp_portal_right_x = celestial_object.pathfinding_portal_x_array[temp_portal_right_index];
+			var temp_portal_right_y = celestial_object.pathfinding_portal_y_array[temp_portal_right_index];
+			var temp_portal_right_z = celestial_object.pathfinding_portal_z_array[temp_portal_right_index];
+			var temp_portal_right_elevation = max(celestial_object.pathfinding_portal_elevation_array[temp_portal_right_index], temp_celestial_minimum_elevation);
+			
+			//
+			temp_portal_left_elevation = celestial_object.radius + (temp_portal_left_elevation * celestial_object.elevation);
+			temp_portal_right_elevation = celestial_object.radius + (temp_portal_right_elevation * celestial_object.elevation);
+			
+			//
+			var temp_portal_left_position_x = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[0] + temp_portal_left_y * temp_rotation_matrix[4] + temp_portal_left_z * temp_rotation_matrix[8]);
+			var temp_portal_left_position_y = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[1] + temp_portal_left_y * temp_rotation_matrix[5] + temp_portal_left_z * temp_rotation_matrix[9]);
+			var temp_portal_left_position_z = temp_portal_left_elevation * (temp_portal_left_x * temp_rotation_matrix[2] + temp_portal_left_y * temp_rotation_matrix[6] + temp_portal_left_z * temp_rotation_matrix[10]);
+			
+			temp_portal_left_position_x += celestial_object.x;
+			temp_portal_left_position_y += celestial_object.y;
+			temp_portal_left_position_z += celestial_object.z;
+			
+			var temp_portal_right_position_x = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[0] + temp_portal_right_y * temp_rotation_matrix[4] + temp_portal_right_z * temp_rotation_matrix[8]);
+			var temp_portal_right_position_y = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[1] + temp_portal_right_y * temp_rotation_matrix[5] + temp_portal_right_z * temp_rotation_matrix[9]);
+			var temp_portal_right_position_z = temp_portal_right_elevation * (temp_portal_right_x * temp_rotation_matrix[2] + temp_portal_right_y * temp_rotation_matrix[6] + temp_portal_right_z * temp_rotation_matrix[10]);
+			
+			temp_portal_right_position_x += celestial_object.x;
+			temp_portal_right_position_y += celestial_object.y;
+			temp_portal_right_position_z += celestial_object.z;
+			
+			//
+			var temp_portal_left_screen_position = world_position_to_screen_position(temp_portal_left_position_x, temp_portal_left_position_y, temp_portal_left_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+			var temp_portal_right_screen_position = world_position_to_screen_position(temp_portal_right_position_x, temp_portal_right_position_y, temp_portal_right_position_z, CelestialSimulator.camera_view_matrix, CelestialSimulator.camera_projection_matrix);
+			
+			//
+			draw_line_color(temp_portal_left_screen_position[0], temp_portal_left_screen_position[1], temp_portal_right_screen_position[0], temp_portal_right_screen_position[1], c_white, c_white);
+			
+			// Delete Unused Arrays
+			array_resize(temp_portal_left_screen_position, 0);
+			array_resize(temp_portal_right_screen_position, 0);
+		}
+		
+		//
+		draw_point_color(temp_node_screen_position[0], temp_node_screen_position[1], c_red);
+		
+		// Delete Unused Array
+		array_resize(temp_node_screen_position, 0);
+		
+		// Increment Pathfinding Node Index
+		temp_node_index++;
+	}
+	
+	// Delete Unused Array
+	array_resize(temp_rotation_matrix, 0)
+}
 
 
 
