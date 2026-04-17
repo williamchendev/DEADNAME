@@ -16,6 +16,12 @@ switch (scene_get_type())
 		call_later(1, time_source_units_frames, gc_collect, false);
 		break;
 	case SceneType.Title:
+		// Set Celestial Simulator Inactive
+		CelestialSimulator.active = false;
+		
+		// Initialize Garbage Collection Service Callback
+		call_later(1, time_source_units_frames, gc_collect, false);
+		break;
 	default:
 		break;
 }
