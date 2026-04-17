@@ -265,7 +265,7 @@ else if (temp_input_select or temp_input_action)
 				camera_observing_drag_start_x = GameManager.cursor_x;
 				camera_observing_drag_start_y = GameManager.cursor_y;
 			}
-			else if (camera_observing_drag_start_x != GameManager.cursor_x or camera_observing_drag_start_y != GameManager.cursor_y)
+			else if (point_distance(camera_observing_drag_start_x, camera_observing_drag_start_y, GameManager.cursor_x, GameManager.cursor_y) > 2)
 			{
 				// Input is Drag Movement - Enable Click Drag Behaviour & Set Camera Observing Instance Click Drag Position and Angle Variables
 				camera_observing_drag = true;

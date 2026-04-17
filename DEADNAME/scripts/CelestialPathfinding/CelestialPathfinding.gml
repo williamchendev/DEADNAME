@@ -242,8 +242,8 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 		return clamp(-dot_product_3d(temp_normal_x, temp_normal_y, temp_normal_z, portal_ax, portal_ay, portal_az) / temp_denominator, 0, 1);
 	}
 	
-	// Invalid Line Plane Intersection - Return Lerp Value based on Portal Distance Comparison
-	return point_distance_3d(portal_ax, portal_ay, portal_az, funnel_bx, funnel_by, funnel_bz) < point_distance_3d(portal_bx, portal_by, portal_bz, funnel_bx, funnel_by, funnel_bz) ? 0 : 1;
+	// Invalid Line Plane Intersection - Return Undefined
+	return undefined;
 }
 
 /// @function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation)
@@ -365,6 +365,7 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 	var temp_funnel_position_x_list = ds_list_create();
 	var temp_funnel_position_y_list = ds_list_create();
 	var temp_funnel_position_z_list = ds_list_create();
+	var temp_funnel_portal_lerp_list = ds_list_create();
 	
 	// Iterate through Path to perform Funnel Walk Behaviour
 	var temp_index = 0;
@@ -396,6 +397,7 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 				ds_list_add(temp_funnel_position_x_list, temp_left_x);
 				ds_list_add(temp_funnel_position_y_list, temp_left_y);
 				ds_list_add(temp_funnel_position_z_list, temp_left_z);
+				ds_list_add(temp_funnel_portal_lerp_list, 0);
 				
 				// Apex must advance to Left Funnel Vertex
 				temp_apex_x = temp_left_x;
@@ -442,6 +444,7 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 				ds_list_add(temp_funnel_position_x_list, temp_right_x);
 				ds_list_add(temp_funnel_position_y_list, temp_right_y);
 				ds_list_add(temp_funnel_position_z_list, temp_right_z);
+				ds_list_add(temp_funnel_portal_lerp_list, 1);
 				
 				// Apex must advance to Right Funnel Vertex
 				temp_apex_x = temp_right_x;
@@ -481,12 +484,14 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 	ds_list_insert(temp_funnel_position_x_list, 0, celestial_object.pathfinding_node_x_array[ds_list_find_value(path_list, 0)]);
 	ds_list_insert(temp_funnel_position_y_list, 0, celestial_object.pathfinding_node_y_array[ds_list_find_value(path_list, 0)]);
 	ds_list_insert(temp_funnel_position_z_list, 0, celestial_object.pathfinding_node_z_array[ds_list_find_value(path_list, 0)]);
+	ds_list_insert(temp_funnel_portal_lerp_list, 0, 0.5);
 	
 	// Add Funnel List End Waypoint
 	ds_list_add(temp_funnel_node_index_list, ds_list_find_value(path_list, ds_list_size(path_list) - 1));
 	ds_list_add(temp_funnel_position_x_list, end_x);
 	ds_list_add(temp_funnel_position_y_list, end_y);
 	ds_list_add(temp_funnel_position_z_list, end_z);
+	ds_list_add(temp_funnel_portal_lerp_list, 0.5);
 	
 	// Iterate through Path and Funnel Lists to populate the Path Struct with the final Smoothed Path
 	var temp_smoothing_path_index = 0;
@@ -538,7 +543,11 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 		var temp_funnel_by = ds_list_find_value(temp_funnel_position_y_list, temp_smoothing_funnel_index);
 		var temp_funnel_bz = ds_list_find_value(temp_funnel_position_z_list, temp_smoothing_funnel_index);
 		
+		// Calculate Portal Lerp based on Funnel Direction and Portal Edge Intersection
 		var temp_portal_lerp_value = celestial_pathfinding_funnel_portal_edge_closest_point(temp_portal_ax, temp_portal_ay, temp_portal_az, temp_portal_bx, temp_portal_by, temp_portal_bz, temp_funnel_ax, temp_funnel_ay, temp_funnel_az, temp_funnel_bx, temp_funnel_by, temp_funnel_bz);
+		
+		//
+		temp_portal_lerp_value = !is_undefined(temp_portal_lerp_value) ? temp_portal_lerp_value : ds_list_find_value(temp_funnel_portal_lerp_list, temp_smoothing_funnel_index);
 		
 		// Populate Path Struct with new Smoothed Waypoint
 		temp_path_struct.path_size++;
@@ -582,11 +591,13 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 	ds_list_destroy(temp_funnel_position_x_list);
 	ds_list_destroy(temp_funnel_position_y_list);
 	ds_list_destroy(temp_funnel_position_z_list);
+	ds_list_destroy(temp_funnel_portal_lerp_list);
 	
 	temp_funnel_node_index_list = -1;
 	temp_funnel_position_x_list = -1;
 	temp_funnel_position_y_list = -1;
 	temp_funnel_position_z_list = -1;
+	temp_funnel_portal_lerp_list = -1;
 	
 	// Destroy Unused Path DS List
 	ds_list_destroy(path_list);
