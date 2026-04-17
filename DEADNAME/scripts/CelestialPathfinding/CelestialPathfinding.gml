@@ -469,6 +469,17 @@ function celestial_pathfinding_funnel(celestial_object, path_list, end_x, end_y,
 	
 	repeat (ds_list_size(path_list) - 1)
 	{
+		// 
+		var temp_funnel_node_index = ds_list_find_value(temp_funnel_node_index_list, temp_smoothing_funnel_index);
+		var temp_funnel_path_index = ds_list_find_index(path_list, temp_funnel_node_index);
+		
+		// Check to Increment Funnel Index
+		if (temp_smoothing_path_index > temp_funnel_path_index)
+		{
+			// Increment Funnel Index
+			temp_smoothing_funnel_index = clamp(temp_funnel_path_index + 1, 1, ds_list_size(temp_funnel_node_index_list) - 1);
+		}
+		
 		// Find Path Node Indexes
 		var temp_path_node_index_a = ds_list_find_value(path_list, temp_smoothing_path_index);
 		var temp_path_node_index_b = ds_list_find_value(path_list, temp_smoothing_path_index + 1);
@@ -502,13 +513,6 @@ function celestial_pathfinding_funnel(celestial_object, path_list, end_x, end_y,
 		var temp_funnel_direction_vector_y = ds_list_find_value(temp_funnel_position_y_list, temp_smoothing_funnel_index) - temp_funnel_start_y;
 		var temp_funnel_direction_vector_z = ds_list_find_value(temp_funnel_position_z_list, temp_smoothing_funnel_index) - temp_funnel_start_z;
 		
-		// Check to Increment Funnel Index
-		if (temp_path_node_index_a == ds_list_find_value(temp_funnel_node_index_list, temp_smoothing_funnel_index))
-		{
-			// Increment Funnel Index
-			temp_smoothing_funnel_index++;
-		}
-		
 		// Find Closest Point on Portal Edge to Funnel Line
 		var temp_portal_edge_direction_vector_x = temp_path_portal_right_x - temp_path_portal_left_x;
 		var temp_portal_edge_direction_vector_y = temp_path_portal_right_y - temp_path_portal_left_y;
@@ -526,6 +530,7 @@ function celestial_pathfinding_funnel(celestial_object, path_list, end_x, end_y,
 		
 		var temp_denominator = temp_dp_a * temp_dp_c - temp_dp_b * temp_dp_b;
 		var temp_path_portal_lerp_value = clamp(abs(temp_denominator) < 0.00001 ? (-temp_dp_d * temp_dp_a) : (temp_dp_b * temp_dp_e - temp_dp_c * temp_dp_d) / temp_denominator, 0, 1);
+		temp_path_portal_lerp_value = lerp(temp_path_portal_lerp_value, 0.5, 0.25);
 		
 		// Populate Path Struct with new Smoothed Waypoint
 		temp_path_struct.path_size++;
