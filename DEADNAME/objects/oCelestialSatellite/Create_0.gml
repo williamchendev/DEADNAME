@@ -6,6 +6,3 @@ event_inherited();
 
 // Initialize Satellite Celestial Render Object Type
 celestial_render_object_type = CelestialRenderObjectType.Satellite;
-
-// DEBUG
-pathfinding_node_index = irandom_range(0, 4000);

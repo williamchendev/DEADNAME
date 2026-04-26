@@ -1,4 +1,59 @@
 //
+enum PlanetBiome
+{
+	Terrestrial_Rainforest,
+	Terrestrial_Forest,
+	Terrestrial_Woodland,
+	Terrestrial_Shrubland,
+	Terrestrial_Savannah,
+	Terrestrial_Grassland,
+	Terrestrial_Wetlands,
+	Terrestrial_SaltMarsh,
+	Terrestrial_Bog,
+	Terrestrial_Tundra,
+	Terrestrial_Desert,
+	Terrestrial_Arcology,
+	Marine_ShallowOcean,
+	Marine_Estuary,
+	Marine_Reef,
+	Marine_DeepOcean,
+	Marine_Abyssal
+}
+
+enum PlanetTemperature
+{
+	CosmicCold,
+	InhospitablyCold,
+	ExtremeCold,
+	BrutalCold,
+	UncomfortablyCold,
+	Chilly,
+	WilliamIdeal,
+	Warm,
+	UncomfortablyHot,
+	BrutalHot,
+	ExtremeHot,
+	InhospitablyHot,
+	CosmicHot
+}
+
+//
+function geodesic_icosphere_biome_is_marine(biome)
+{
+	switch (biome)
+	{ 
+		case PlanetBiome.Marine_ShallowOcean:
+		case PlanetBiome.Marine_Estuary:
+		case PlanetBiome.Marine_Reef:
+		case PlanetBiome.Marine_DeepOcean:
+		case PlanetBiome.Marine_Abyssal:
+			return true;
+		default:
+			return false;
+	}
+}
+
+//
 enum CelestialMicroclimateBiomeType
 {
 	None

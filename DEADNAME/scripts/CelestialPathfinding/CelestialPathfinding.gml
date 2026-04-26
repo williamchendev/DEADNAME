@@ -1,58 +1,3 @@
-//
-enum PlanetBiome
-{
-	Terrestrial_Rainforest,
-	Terrestrial_Forest,
-	Terrestrial_Woodland,
-	Terrestrial_Shrubland,
-	Terrestrial_Savannah,
-	Terrestrial_Grassland,
-	Terrestrial_Wetlands,
-	Terrestrial_SaltMarsh,
-	Terrestrial_Bog,
-	Terrestrial_Tundra,
-	Terrestrial_Desert,
-	Terrestrial_Arcology,
-	Marine_ShallowOcean,
-	Marine_Estuary,
-	Marine_Reef,
-	Marine_DeepOcean,
-	Marine_Abyssal
-}
-
-enum PlanetTemperature
-{
-	CosmicCold,
-	InhospitablyCold,
-	ExtremeCold,
-	BrutalCold,
-	UncomfortablyCold,
-	Chilly,
-	WilliamIdeal,
-	Warm,
-	UncomfortablyHot,
-	BrutalHot,
-	ExtremeHot,
-	InhospitablyHot,
-	CosmicHot
-}
-
-//
-function geodesic_icosphere_biome_is_marine(biome)
-{
-	switch (biome)
-	{ 
-		case PlanetBiome.Marine_ShallowOcean:
-		case PlanetBiome.Marine_Estuary:
-		case PlanetBiome.Marine_Reef:
-		case PlanetBiome.Marine_DeepOcean:
-		case PlanetBiome.Marine_Abyssal:
-			return true;
-		default:
-			return false;
-	}
-}
-
 /// @function celestial_pathfinding_find_edge_weight(celestial_object, first_node_index, second_node_index);
 /// @description Finds the weight of the Pathfinding Edge between two Pathfinding Node Indexes on the given Celestial Object and returns it as a real value or returns Undefined if the edge does not exist
 /// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
@@ -205,6 +150,18 @@ function celestial_pathfinding_a_star(celestial_object, start_node_index, end_no
 	return undefined;
 }
 
+/// @function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz);
+/// @description Returns the Signed Orientation of the Three Points using the Triangle's Triple Product, this is meant to be used in a Funnel Algorithm to find if the second given point is clockwise or counter-clockwise compared to the third given point as relative to the first given point
+/// @param {real} vector_ax The first Vector's X Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_ay The first Vector's Y Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_az The first Vector's Z Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_bx The second Vector's X Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_by The second Vector's Y Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_bz The second Vector's Z Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_cx The third Vector's X Value as the Triangle's Third Vertex in 3D World Space
+/// @param {real} vector_cy The third Vector's Y Value as the Triangle's Third Vertex in 3D World Space
+/// @param {real} vector_cz The third Vector's Z Value as the Triangle's Third Vertex in 3D World Space
+/// @return {real} Returns the Signed Orientation of the Three Points using the given Triangle's Triple Product
 function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz)
 {
 	// Calculate Signed Orientation of the Three Points using the Triangle's Triple Product
@@ -214,6 +171,21 @@ function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector
 	return vector_ax * temp_cross_x + vector_ay * temp_cross_y + vector_az * temp_cross_z;
 }
 
+/// @function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, portal_ay, portal_az, portal_bx, portal_by, portal_bz, funnel_ax, funnel_ay, funnel_az, funnel_bx, funnel_by, funnel_bz);
+/// @description Finds the Closest Point on a Pathfinding Node's Portal Edge Line Segment to the Funnel Algorithm's Shortest Great-Circle Distance Path Segment by finding the intersection between the Funnel's Great-Circle Distance Path's Plane Normal and the Portal Edge Line Segment
+/// @param {real} portal_ax The X position of the first point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} portal_ay The Y position of the first point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} portal_az The Z position of the first point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} portal_bx The X position of the second point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} portal_by The Y position of the second point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} portal_bz The Z position of the second point in the Pathfinding Node's Portal Edge Line Segment
+/// @param {real} funnel_ax The X position of the first point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @param {real} funnel_ay The Y position of the first point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @param {real} funnel_az The Z position of the first point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @param {real} funnel_bx The X position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @param {real} funnel_by The Y position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @param {real} funnel_bz The Z position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
+/// @return {?real} Returns a value between 0 and 1 corresponding to the Lerp Value between the Pathfinding Node's Portal Edge Line Segment Position A and B, but will return "Undefined" if no intersection is made between the Plane Normal and the Line Segment
 function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, portal_ay, portal_az, portal_bx, portal_by, portal_bz, funnel_ax, funnel_ay, funnel_az, funnel_bx, funnel_by, funnel_bz)
 {
 	// Find Great Circle Funnel Line Segment's Plane Normal

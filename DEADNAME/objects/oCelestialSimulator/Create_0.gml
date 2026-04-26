@@ -55,7 +55,7 @@ camera_observing_instance_drag_spd_max = 0.75;
 camera_observing_instance_radius_offset_zoom_in_threshold = 0.1;
 
 // Solar System Settings
-background_star_sphere = geodesic_icosphere_create(4);
+background_star_sphere = geodesic_icosphere_create(2);
 
 // Clock Settings
 global_clock_delta_time = 0;

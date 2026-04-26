@@ -515,7 +515,7 @@ function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type
 			var temp_second_node = ds_list_find_value(GameManager.pathfinding_node_struct_list, temp_second_node_index);
 			
 			// Find Closest Point on Edge
-			var temp_closest_point_on_edge = point_closest_on_line(x_position, y_position, temp_first_node.anchor_position_x, temp_first_node.anchor_position_y, temp_second_node.anchor_position_x, temp_second_node.anchor_position_y);
+			var temp_closest_point_on_edge = closest_point_on_line(x_position, y_position, temp_first_node.anchor_position_x, temp_first_node.anchor_position_y, temp_second_node.anchor_position_x, temp_second_node.anchor_position_y);
 			var temp_closest_point_on_edge_distance = point_distance(x_position, y_position, temp_closest_point_on_edge.return_x, temp_closest_point_on_edge.return_y);
 			
 			// Compare Closest Point on Old Edge to Closest Point on New Edge 
@@ -526,6 +526,9 @@ function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type
 				temp_distance = temp_closest_point_on_edge_distance;
 				temp_position_edge = pathfinding_generate_edge_id(temp_edge_nodes.first_node_id, temp_edge_nodes.second_node_id);
 			}
+			
+			// Delete Unused Struct
+			delete(temp_closest_point_on_edge);
 		}
 	}
 	

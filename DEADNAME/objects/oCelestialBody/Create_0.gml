@@ -201,6 +201,10 @@ microclimate_pathfinding_nodes_array = array_create(0);
 
 // Initialize Celestial Body's Pathfinding System
 pathfinding_nodes_count = 0;
+
+pathfinding_group_direction_array = -1;
+pathfinding_group_node_index_array = -1;
+
 pathfinding_node_x_array = -1;
 pathfinding_node_y_array = -1;
 pathfinding_node_z_array = -1;
@@ -293,6 +297,23 @@ if (pathfinding_enabled)
 	
 	// Initialize Pathfinding Nodes Count
 	pathfinding_nodes_count = array_length(temp_pathfinding_geodesic_icosphere.triangles);
+	
+	// Initialize Pathfinding Groups
+	pathfinding_group_direction_array = array_create(0);
+	pathfinding_group_node_index_array = array_create(0);
+	
+	array_push(pathfinding_group_direction_array, [-1, 0, 0]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
+	array_push(pathfinding_group_direction_array, [1, 0, 0]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
+	array_push(pathfinding_group_direction_array, [0, -1, 0]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
+	array_push(pathfinding_group_direction_array, [0, 1, 0]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
+	array_push(pathfinding_group_direction_array, [0, 0, -1]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
+	array_push(pathfinding_group_direction_array, [0, 0, 1]);
+	array_push(pathfinding_group_node_index_array, array_create(0));
 	
 	// Initialize Pathfinding Node Arrays to Size of Pathfinding Icosphere's Triangles Count
 	pathfinding_node_x_array = array_create(pathfinding_nodes_count);
@@ -461,6 +482,39 @@ if (pathfinding_enabled)
 		pathfinding_node_edges_array[temp_pathfinding_node_index] = array_create(0);
 		pathfinding_node_edges_portal_left_array[temp_pathfinding_node_index] = array_create(0);
 		pathfinding_node_edges_portal_right_array[temp_pathfinding_node_index] = array_create(0);
+		
+		// Index Pathfinding Node into Pathfinding Group based on Node Vertex Position
+		var temp_pathfinding_group_index = 0;
+		var temp_pathfinding_group_best = -1;
+		var temp_pathfinding_group_dot_product = -1;
+		
+		repeat (array_length(pathfinding_group_direction_array))
+		{
+			// Find Group Direction
+			var temp_group_direction_x = array_get(pathfinding_group_direction_array[temp_pathfinding_group_index], 0);
+			var temp_group_direction_y = array_get(pathfinding_group_direction_array[temp_pathfinding_group_index], 1);
+			var temp_group_direction_z = array_get(pathfinding_group_direction_array[temp_pathfinding_group_index], 2);
+			
+			// Calculate Dot Product of Pathfinding Node's Normalized Sphere Vector and the Pathfinding Group's Normalized Sphere Vector
+			var temp_group_comparison_dot_product = dot_product_3d(temp_node_pos[0], temp_node_pos[1], temp_node_pos[2], temp_group_direction_x, temp_group_direction_y, temp_group_direction_z);
+			
+			// Compare the new Dot Product of the Pathfinding Node
+			if (temp_group_comparison_dot_product > temp_pathfinding_group_dot_product)
+			{
+				// Update Pathfinding Group Index and Dot Product
+				temp_pathfinding_group_best = temp_pathfinding_group_index;
+				temp_pathfinding_group_dot_product = temp_group_comparison_dot_product;
+			}
+			
+			// Increment Pathfinding Group
+			temp_pathfinding_group_index++;
+		}
+		
+		// Index Pathfinding Node into Pathfinding Group
+		if (temp_pathfinding_group_best != -1)
+		{
+			array_push(pathfinding_group_node_index_array[temp_pathfinding_group_best], temp_pathfinding_node_index);
+		}
 		
 		// Increment Node Index
 		temp_pathfinding_node_index++;
@@ -737,6 +791,9 @@ satellites = array_create(0);
 // Celestial Body Functions
 add_unit_node = function(unit_instance, node_index)
 {
+	// Set Unit's Celestial Body Instance
+	unit_instance.celestial_body_instance = id;
+	
 	// Update Unit's Pathfinding Node Index
 	unit_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
 	
@@ -752,6 +809,9 @@ add_unit_node = function(unit_instance, node_index)
 
 add_unit_uv = function(unit_instance, unit_u, unit_v)
 {
+	// Set Unit's Celestial Body Instance
+	unit_instance.celestial_body_instance = id;
+	
 	// Update Unit's UV Position
 	unit_instance.local_position_u = unit_u;
 	unit_instance.local_position_v = unit_v;
@@ -762,6 +822,9 @@ add_unit_uv = function(unit_instance, unit_u, unit_v)
 
 add_city_node = function(city_instance, node_index)
 {
+	// Set City's Celestial Body Instance
+	city_instance.celestial_body_instance = id;
+	
 	// Update City's Pathfinding Node Index
 	city_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
 	
@@ -771,6 +834,9 @@ add_city_node = function(city_instance, node_index)
 
 add_city_uv = function(city_instance, city_u, city_v)
 {
+	// Set City's Celestial Body Instance
+	city_instance.celestial_body_instance = id;
+	
 	// Update City's UV Position
 	city_instance.local_position_u = city_u;
 	city_instance.local_position_v = city_v;
@@ -781,6 +847,9 @@ add_city_uv = function(city_instance, city_u, city_v)
 
 add_satellite_node = function(satellite_instance, node_index)
 {
+	// Set Satellite's Celestial Body Instance
+	satellite_instance.celestial_body_instance = id;
+	
 	// Update Satellite's Pathfinding Node Index
 	satellite_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
 	
@@ -790,6 +859,9 @@ add_satellite_node = function(satellite_instance, node_index)
 
 add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)
 {
+	// Set Satellite's Celestial Body Instance
+	satellite_instance.celestial_body_instance = id;
+	
 	// Update Satellite's UV Position
 	satellite_instance.local_position_u = satellite_u;
 	satellite_instance.local_position_v = satellite_v;

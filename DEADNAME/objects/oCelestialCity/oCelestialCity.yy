@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialCity",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialRenderObject","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"resource":{"name":"sOverworld_City_Miniature","path":"sprites/sOverworld_City_Miniature/sOverworld_City_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_City_Miniature",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialRenderObject","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"resource":{"name":"sOverworld_City_Miniature","path":"sprites/sOverworld_City_Miniature/sOverworld_City_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"sOverworld_City_Miniature",},
   ],
   "parent":{
     "name":"Instances",
@@ -31,7 +31,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"city_name","filters":[],"listItems":[],"multiselect":false,"name":"city_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Baklava","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"city_name","filters":[],"listItems":[],"multiselect":false,"name":"city_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Baklava","varType":2,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

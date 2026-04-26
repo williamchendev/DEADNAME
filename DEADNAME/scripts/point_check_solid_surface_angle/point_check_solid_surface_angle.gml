@@ -63,27 +63,32 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 	{
 	    case SolidSide.AB:
 	        temp_return_value.return_angle = solid_inst.side_angle_ab;
-	        temp_closest_point = point_closest_on_line(pos_x, pos_y, solid_inst.corner_xpos_a, solid_inst.corner_ypos_a, solid_inst.corner_xpos_b, solid_inst.corner_ypos_b);
+	        temp_closest_point = closest_point_on_line(pos_x, pos_y, solid_inst.corner_xpos_a, solid_inst.corner_ypos_a, solid_inst.corner_xpos_b, solid_inst.corner_ypos_b);
 	        break;
 	    case SolidSide.BC:
 	        temp_return_value.return_angle = solid_inst.side_angle_bc;
-	        temp_closest_point = point_closest_on_line(pos_x, pos_y, solid_inst.corner_xpos_b, solid_inst.corner_ypos_b, solid_inst.corner_xpos_c, solid_inst.corner_ypos_c);
+	        temp_closest_point = closest_point_on_line(pos_x, pos_y, solid_inst.corner_xpos_b, solid_inst.corner_ypos_b, solid_inst.corner_xpos_c, solid_inst.corner_ypos_c);
 	        break;
 	    case SolidSide.CD:
 	        temp_return_value.return_angle = solid_inst.side_angle_cd;
-	        temp_closest_point = point_closest_on_line(pos_x, pos_y, solid_inst.corner_xpos_c, solid_inst.corner_ypos_c, solid_inst.corner_xpos_d, solid_inst.corner_ypos_d);
+	        temp_closest_point = closest_point_on_line(pos_x, pos_y, solid_inst.corner_xpos_c, solid_inst.corner_ypos_c, solid_inst.corner_xpos_d, solid_inst.corner_ypos_d);
 	        break;
 	    case SolidSide.DA:
 	    default:
 	        temp_return_value.return_angle = solid_inst.side_angle_da;
-	        temp_closest_point = point_closest_on_line(pos_x, pos_y, solid_inst.corner_xpos_d, solid_inst.corner_ypos_d, solid_inst.corner_xpos_a, solid_inst.corner_ypos_a);
+	        temp_closest_point = closest_point_on_line(pos_x, pos_y, solid_inst.corner_xpos_d, solid_inst.corner_ypos_d, solid_inst.corner_xpos_a, solid_inst.corner_ypos_a);
 	        break;
 	}
 	
-	// Return Angle & Closest Point
+	// Establish Return Angle & Closest Point
 	temp_return_value.return_angle = (temp_return_value.return_angle - 90) mod 360;
 	temp_return_value.return_x = temp_closest_point.return_x;
 	temp_return_value.return_y = temp_closest_point.return_y;
+	
+	// Delete Unused Struct
+	delete(temp_closest_point);
+	
+	// Return Angle & Closest Point Struct
 	return temp_return_value;
 }
 
@@ -200,3 +205,4 @@ enum SolidSide
     CD,
     DA
 }
+

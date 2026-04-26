@@ -171,6 +171,7 @@ function geodesic_icosphere_create(resolution)
 	};
 }
 
+// Geodesic Icosphere Orientation Functions
 function geodesic_icosphere_create_strip(id) 
 {
 	// Creates the Orientation of one of the Five Rhombuses used to create the Icosphere

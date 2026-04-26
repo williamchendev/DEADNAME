@@ -1,4 +1,4 @@
-/// @function point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y);
+/// @function closest_point_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y);
 /// @description Finds the closest coordinate on a line segment created from the given coordinates from the given position
 /// @param {number} x_position The X position to check for the closest coordinate to
 /// @param {number} y_position The Y position to check for the closest coordinate to
@@ -7,7 +7,7 @@
 /// @param {number} second_point_x The X position of the second coordinate in a line segment to find the closest coordinate to
 /// @param {number} second_point_y The Y position of the second coordinate in a line segment to find the closest coordinate to
 /// @returns {struct} A struct with the X coordinate [struct.return_x] and Y coordinate [struct.return_y]
-function point_closest_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y) 
+function closest_point_on_line(x_position, y_position, first_point_x, first_point_y, second_point_x, second_point_y) 
 {
 	// Add to Compiler
 	gml_pragma("forceinline");
@@ -34,7 +34,7 @@ function point_closest_on_line(x_position, y_position, first_point_x, first_poin
 	return temp_return;
 }
 
-/// @function point_closest_on_line_3d(x_position, y_position, z_position, first_point_x, first_point_y, first_point_z, second_point_x, second_point_y, second_point_z);
+/// @function closest_point_on_line_3d(x_position, y_position, z_position, first_point_x, first_point_y, first_point_z, second_point_x, second_point_y, second_point_z);
 /// @description Finds the closest coordinate on a line segment created from the given coordinates from the given position
 /// @param {number} x_position The X position to check for the closest coordinate to
 /// @param {number} y_position The Y position to check for the closest coordinate to
@@ -46,7 +46,7 @@ function point_closest_on_line(x_position, y_position, first_point_x, first_poin
 /// @param {number} second_point_y The Y position of the second coordinate in a line segment to find the closest coordinate to
 /// @param {number} second_point_z The Z position of the second coordinate in a line segment to find the closest coordinate to
 /// @returns {struct} A struct with the X coordinate [struct.return_x], Y coordinate [struct.return_y], and Z coordinate [struct.return_z]
-function point_closest_on_line_3d(x_position, y_position, z_position, first_point_x, first_point_y, first_point_z, second_point_x, second_point_y, second_point_z) 
+function closest_point_on_line_3d(x_position, y_position, z_position, first_point_x, first_point_y, first_point_z, second_point_x, second_point_y, second_point_z) 
 {
 	// Add to Compiler
 	gml_pragma("forceinline");

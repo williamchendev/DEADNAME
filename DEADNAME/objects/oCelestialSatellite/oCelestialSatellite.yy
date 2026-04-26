@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialSatellite",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialRenderObject","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"resource":{"name":"sOverworld_Satellite_Miniature","path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_Satellite_Miniature",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialRenderObject","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"resource":{"name":"sOverworld_Satellite_Miniature","path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"sOverworld_Satellite_Miniature",},
   ],
   "parent":{
     "name":"Instances",
@@ -31,7 +31,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"satellite_elevation","filters":[],"listItems":[],"multiselect":false,"name":"satellite_elevation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"satellite_elevation","filters":[],"listItems":[],"multiselect":false,"name":"satellite_elevation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

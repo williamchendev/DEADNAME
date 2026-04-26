@@ -27,10 +27,12 @@ var temp_input_select = mouse_check_button(mb_left);
 var temp_input_action = mouse_check_button(mb_right);
 
 // Establish Empty Render Object Selection Variables
+var temp_render_object_click_inst = noone;
+var temp_render_object_action_inst = noone;
 var temp_render_object_selected_inst = noone;
 
 // Render Object Selection Behaviour
-if (!temp_input_select and input_select and !camera_observing_drag)
+if (((!temp_input_select and input_select) or (temp_input_action and !input_action)) and !camera_observing_drag)
 {
 	// Check if Celestial Simulator is Observing a Celestial Body Instance with Render Objects Enabled and is Zoomed In
 	if (instance_exists(camera_observing_instance) and camera_observing_instance.render_objects_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
@@ -47,7 +49,7 @@ if (!temp_input_select and input_select and !camera_observing_drag)
 			// Check for Render Object Instance's Collision with Cursor
 			if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_render_object_sorted_instance))
 			{
-				temp_render_object_selected_inst = temp_render_object_sorted_instance;
+				temp_render_object_click_inst = temp_render_object_sorted_instance;
 			}
 			
 			// Increment Render Object Index
@@ -56,7 +58,15 @@ if (!temp_input_select and input_select and !camera_observing_drag)
 	}
 	
 	// Update Celestial Simulator's Render Object Selected Instance with the possible Selection
-	render_object_selected_instance = temp_render_object_selected_inst;
+	if (temp_input_action and !input_action)
+	{
+		temp_render_object_action_inst = temp_render_object_click_inst;
+	}
+	else if (!temp_input_select and input_select)
+	{
+		render_object_selected_instance = temp_render_object_click_inst;
+		temp_render_object_selected_inst = temp_render_object_click_inst;
+	}
 }
 
 // Calculate Cursor's Screen to World Raycast Vector
@@ -148,6 +158,15 @@ else if (temp_input_select or temp_input_action)
 	// Check if Selection Position is Valid
 	if (!is_undefined(temp_selection_position))
 	{
+		// Establish Selection Instance's Minimum Elevation
+		var temp_selection_inst_minimum_elevation = 0;
+		
+		if (temp_selection_inst.celestial_object_type == CelestialObjectType.Planet)
+		{
+			// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
+			temp_selection_inst_minimum_elevation = temp_selection_inst.ocean_elevation;
+		}
+		
 		// Create Selection Instance's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
 		var temp_selection_rotation_matrix = rotation_matrix_from_euler_angles(temp_selection_inst.euler_angle_x, temp_selection_inst.euler_angle_y, temp_selection_inst.euler_angle_z);
 		var temp_selection_rotation_matrix_inverse = matrix_inverse(temp_selection_rotation_matrix);
@@ -177,38 +196,143 @@ else if (temp_input_select or temp_input_action)
 		// Check if Selected Celestial Object has Pathfinding Enabled
 		if (temp_selection_inst.pathfinding_enabled)
 		{
-			// Establish Default Pathfinding Node Selection
+			// Establish Default Pathfinding Group & Node Selection
+			var temp_selection_group_index = -1;
+			var temp_selection_group_dot_product = -1;
+			
 			var temp_selection_node_index = -1;
 			var temp_selection_node_dot_product = -1;
 			
-			// Iterate through all Pathfinding Nodes to find closest Pathfinding Node to Selection Position on Celestial Object
-			var temp_pathfinding_node_index = 0;
+			// Iterate through all Pathfinding Groups to find closest Pathfinding Group to Selection Position on Celestial Object
+			var temp_pathfinding_group_index = 0;
 			
-			repeat (temp_selection_inst.pathfinding_nodes_count)
+			repeat (array_length(temp_selection_inst.pathfinding_group_direction_array))
 			{
-				// Establish Pathfinding Node's Normalized Sphere Vector
-				var temp_node_vector_x = temp_selection_inst.pathfinding_node_x_array[temp_pathfinding_node_index];
-				var temp_node_vector_y = temp_selection_inst.pathfinding_node_y_array[temp_pathfinding_node_index];
-				var temp_node_vector_z = temp_selection_inst.pathfinding_node_z_array[temp_pathfinding_node_index];
+				// Establish Pathfinding Group's Normalized Sphere Vector
+				var temp_group_vector_x = array_get(temp_selection_inst.pathfinding_group_direction_array[temp_pathfinding_group_index], 0);
+				var temp_group_vector_y = array_get(temp_selection_inst.pathfinding_group_direction_array[temp_pathfinding_group_index], 1);
+				var temp_group_vector_z = array_get(temp_selection_inst.pathfinding_group_direction_array[temp_pathfinding_group_index], 2);
 				
-				// Calculate Dot Product of Pathfinding Node's Normalized Sphere Vector and the Selection Position's Normalized Sphere Vector
-				var temp_comparison_dot_product = dot_product_3d(temp_selection_x, temp_selection_y, temp_selection_z, temp_node_vector_x, temp_node_vector_y, temp_node_vector_z);
+				// Calculate Dot Product of Pathfinding Group's Normalized Sphere Vector and the Selection Position's Normalized Sphere Vector
+				var temp_group_comparison_dot_product = dot_product_3d(temp_selection_x, temp_selection_y, temp_selection_z, temp_group_vector_x, temp_group_vector_y, temp_group_vector_z);
 				
-				// Compare the new Dot Product of the Pathfinding Node to the Selection Pathfinding Node's Dot Product
-				if (temp_comparison_dot_product > temp_selection_node_dot_product)
+				// Compare the new Dot Product of the Pathfinding Group to the Selection Pathfinding Group's Dot Product
+				if (temp_group_comparison_dot_product > temp_selection_group_dot_product)
 				{
-					// Update Selection Node Index and Dot Product
-					temp_selection_node_index = temp_pathfinding_node_index;
-					temp_selection_node_dot_product = temp_comparison_dot_product;
+					// Update Selection Group Index and Dot Product
+					temp_selection_group_index = temp_pathfinding_group_index;
+					temp_selection_group_dot_product = temp_group_comparison_dot_product;
 				}
 				
-				// Increment Pathfinding Node Index
-				temp_pathfinding_node_index++;
+				// Increment Pathfinding Group Index
+				temp_pathfinding_group_index++;
+			}
+			
+			// Iterate through all Pathfinding Nodes to find closest Pathfinding Node to Selection Position on Celestial Object
+			if (temp_selection_group_index != -1)
+			{
+				var temp_pathfinding_node_index = 0;
+				
+				repeat (array_length(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index]))
+				{
+					// Establish Node Index from Pathfinding Group
+					var temp_group_node_index = array_get(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index], temp_pathfinding_node_index);
+					
+					// Establish Pathfinding Node's Normalized Sphere Vector
+					var temp_node_vector_x = temp_selection_inst.pathfinding_node_x_array[temp_group_node_index];
+					var temp_node_vector_y = temp_selection_inst.pathfinding_node_y_array[temp_group_node_index];
+					var temp_node_vector_z = temp_selection_inst.pathfinding_node_z_array[temp_group_node_index];
+					
+					// Calculate Dot Product of Pathfinding Node's Normalized Sphere Vector and the Selection Position's Normalized Sphere Vector
+					var temp_node_comparison_dot_product = dot_product_3d(temp_selection_x, temp_selection_y, temp_selection_z, temp_node_vector_x, temp_node_vector_y, temp_node_vector_z);
+					
+					// Compare the new Dot Product of the Pathfinding Node to the Selection Pathfinding Node's Dot Product
+					if (temp_node_comparison_dot_product > temp_selection_node_dot_product)
+					{
+						// Update Selection Node Index and Dot Product
+						temp_selection_node_index = temp_group_node_index;
+						temp_selection_node_dot_product = temp_node_comparison_dot_product;
+					}
+					
+					// Increment Pathfinding Node Index
+					temp_pathfinding_node_index++;
+				}
 			}
 			
 			// Check if Selection Node Index Exists
 			if (temp_selection_node_index != -1)
 			{
+				// Set Default Selection Triangle Position & Elevation as Pathfinding Node's Position and Elevation
+				var temp_selection_tri_x = temp_selection_inst.pathfinding_node_x_array[temp_selection_node_index];
+				var temp_selection_tri_y = temp_selection_inst.pathfinding_node_y_array[temp_selection_node_index];
+				var temp_selection_tri_z = temp_selection_inst.pathfinding_node_z_array[temp_selection_node_index];
+				var temp_selection_tri_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_selection_node_index];
+				
+				// Find Pathfinding Node Triangle Portal Vertex Indexes and Positions
+				var temp_selection_a_portal_index = array_get(temp_selection_inst.pathfinding_node_edges_portal_left_array[temp_selection_node_index], 0);
+				var temp_selection_b_portal_index = array_get(temp_selection_inst.pathfinding_node_edges_portal_left_array[temp_selection_node_index], 1);
+				var temp_selection_c_portal_index = array_get(temp_selection_inst.pathfinding_node_edges_portal_left_array[temp_selection_node_index], 2);
+				
+				var temp_selection_tri_ax = temp_selection_inst.pathfinding_portal_x_array[temp_selection_a_portal_index];
+				var temp_selection_tri_ay = temp_selection_inst.pathfinding_portal_y_array[temp_selection_a_portal_index];
+				var temp_selection_tri_az = temp_selection_inst.pathfinding_portal_z_array[temp_selection_a_portal_index];
+				var temp_selection_tri_ae = temp_selection_inst.pathfinding_portal_elevation_array[temp_selection_a_portal_index];
+				
+				var temp_selection_tri_bx = temp_selection_inst.pathfinding_portal_x_array[temp_selection_b_portal_index];
+				var temp_selection_tri_by = temp_selection_inst.pathfinding_portal_y_array[temp_selection_b_portal_index];
+				var temp_selection_tri_bz = temp_selection_inst.pathfinding_portal_z_array[temp_selection_b_portal_index];
+				var temp_selection_tri_be = temp_selection_inst.pathfinding_portal_elevation_array[temp_selection_b_portal_index];
+				
+				var temp_selection_tri_cx = temp_selection_inst.pathfinding_portal_x_array[temp_selection_c_portal_index];
+				var temp_selection_tri_cy = temp_selection_inst.pathfinding_portal_y_array[temp_selection_c_portal_index];
+				var temp_selection_tri_cz = temp_selection_inst.pathfinding_portal_z_array[temp_selection_c_portal_index];
+				var temp_selection_tri_ce = temp_selection_inst.pathfinding_portal_elevation_array[temp_selection_c_portal_index];
+				
+				// Find Pathfinding Node Triangle Portal Vertices Elevation Values
+				var temp_selection_tri_a_elevation = temp_selection_inst.radius + temp_selection_inst.elevation * max(temp_selection_tri_ae, temp_selection_inst_minimum_elevation);
+				var temp_selection_tri_b_elevation = temp_selection_inst.radius + temp_selection_inst.elevation * max(temp_selection_tri_be, temp_selection_inst_minimum_elevation);
+				var temp_selection_tri_c_elevation = temp_selection_inst.radius + temp_selection_inst.elevation * max(temp_selection_tri_ce, temp_selection_inst_minimum_elevation);
+				
+				// Find Pathfinding Node Triangle Portal Vertices World Positions
+				var temp_selection_tri_a_world_position_x = temp_selection_tri_a_elevation * (temp_selection_tri_ax * temp_selection_rotation_matrix[0] + temp_selection_tri_ay * temp_selection_rotation_matrix[4] + temp_selection_tri_az * temp_selection_rotation_matrix[8]) + temp_selection_inst.x;
+				var temp_selection_tri_a_world_position_y = temp_selection_tri_a_elevation * (temp_selection_tri_ax * temp_selection_rotation_matrix[1] + temp_selection_tri_ay * temp_selection_rotation_matrix[5] + temp_selection_tri_az * temp_selection_rotation_matrix[9]) + temp_selection_inst.y;
+				var temp_selection_tri_a_world_position_z = temp_selection_tri_a_elevation * (temp_selection_tri_ax * temp_selection_rotation_matrix[2] + temp_selection_tri_ay * temp_selection_rotation_matrix[6] + temp_selection_tri_az * temp_selection_rotation_matrix[10]) + temp_selection_inst.z;
+				
+				var temp_selection_tri_b_world_position_x = temp_selection_tri_b_elevation * (temp_selection_tri_bx * temp_selection_rotation_matrix[0] + temp_selection_tri_by * temp_selection_rotation_matrix[4] + temp_selection_tri_bz * temp_selection_rotation_matrix[8]) + temp_selection_inst.x;
+				var temp_selection_tri_b_world_position_y = temp_selection_tri_b_elevation * (temp_selection_tri_bx * temp_selection_rotation_matrix[1] + temp_selection_tri_by * temp_selection_rotation_matrix[5] + temp_selection_tri_bz * temp_selection_rotation_matrix[9]) + temp_selection_inst.y;
+				var temp_selection_tri_b_world_position_z = temp_selection_tri_b_elevation * (temp_selection_tri_bx * temp_selection_rotation_matrix[2] + temp_selection_tri_by * temp_selection_rotation_matrix[6] + temp_selection_tri_bz * temp_selection_rotation_matrix[10]) + temp_selection_inst.z;
+				
+				var temp_selection_tri_c_world_position_x = temp_selection_tri_c_elevation * (temp_selection_tri_cx * temp_selection_rotation_matrix[0] + temp_selection_tri_cy * temp_selection_rotation_matrix[4] + temp_selection_tri_cz * temp_selection_rotation_matrix[8]) + temp_selection_inst.x;
+				var temp_selection_tri_c_world_position_y = temp_selection_tri_c_elevation * (temp_selection_tri_cx * temp_selection_rotation_matrix[1] + temp_selection_tri_cy * temp_selection_rotation_matrix[5] + temp_selection_tri_cz * temp_selection_rotation_matrix[9]) + temp_selection_inst.y;
+				var temp_selection_tri_c_world_position_z = temp_selection_tri_c_elevation * (temp_selection_tri_cx * temp_selection_rotation_matrix[2] + temp_selection_tri_cy * temp_selection_rotation_matrix[6] + temp_selection_tri_cz * temp_selection_rotation_matrix[10]) + temp_selection_inst.z;
+				
+				// Find Pathfinding Node Triangle Portal Vertices Screen Positions
+				var temp_selection_tri_a_screen_position = world_position_to_screen_position(temp_selection_tri_a_world_position_x, temp_selection_tri_a_world_position_y, temp_selection_tri_a_world_position_z, camera_view_matrix, camera_projection_matrix);
+				var temp_selection_tri_b_screen_position = world_position_to_screen_position(temp_selection_tri_b_world_position_x, temp_selection_tri_b_world_position_y, temp_selection_tri_b_world_position_z, camera_view_matrix, camera_projection_matrix);
+				var temp_selection_tri_c_screen_position = world_position_to_screen_position(temp_selection_tri_c_world_position_x, temp_selection_tri_c_world_position_y, temp_selection_tri_c_world_position_z, camera_view_matrix, camera_projection_matrix);
+				
+				// Find Barycentric Coordinate Values of the (Closest Point to the) Cursor Position within Selection Node's World Triangle Transposed as a Screen Position Triangle
+				var temp_selection_tri_barycentric_values = closest_point_in_triangle_barycentric
+				(
+					temp_selection_tri_a_screen_position[0], 
+					temp_selection_tri_a_screen_position[1],
+					temp_selection_tri_b_screen_position[0], 
+					temp_selection_tri_b_screen_position[1],
+					temp_selection_tri_c_screen_position[0], 
+					temp_selection_tri_c_screen_position[1],
+					GameManager.cursor_x,
+					GameManager.cursor_y
+				);
+				
+				// Set Selection Triangle's Position and Elevation as the Cursor Position's Barycentric Coordinates using the Selection Node's World Position Triangle Values
+				temp_selection_tri_x = temp_selection_tri_ax * temp_selection_tri_barycentric_values[0] + temp_selection_tri_bx * temp_selection_tri_barycentric_values[1] + temp_selection_tri_cx * temp_selection_tri_barycentric_values[2];
+				temp_selection_tri_y = temp_selection_tri_ay * temp_selection_tri_barycentric_values[0] + temp_selection_tri_by * temp_selection_tri_barycentric_values[1] + temp_selection_tri_cy * temp_selection_tri_barycentric_values[2];
+				temp_selection_tri_z = temp_selection_tri_az * temp_selection_tri_barycentric_values[0] + temp_selection_tri_bz * temp_selection_tri_barycentric_values[1] + temp_selection_tri_cz * temp_selection_tri_barycentric_values[2];
+				temp_selection_tri_elevation = temp_selection_tri_ae * temp_selection_tri_barycentric_values[0] + temp_selection_tri_be * temp_selection_tri_barycentric_values[1] + temp_selection_tri_ce * temp_selection_tri_barycentric_values[2];
+				
+				// Delete Unused Array
+				array_resize(temp_selection_tri_barycentric_values, 0);
+				
 				// Check if Celestial Object is being Observed and Celestial Simulator's Render Object Selected Instance Exists
 				if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
 				{
@@ -220,17 +344,61 @@ else if (temp_input_select or temp_input_action)
 						{
 							case CelestialRenderObjectType.Unit:
 								// Unit Action Behaviour - Pathfinding
-								if (temp_selection_inst == camera_observing_instance)
+								if (temp_selection_inst == render_object_selected_instance.celestial_body_instance)
 								{
 									// Establish Pathfinding Goal Variables
 									var temp_pathfinding_goal_node_index = temp_selection_node_index;
-									var temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_selection_node_index];
-									var temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_selection_node_index];
-									var temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_selection_node_index];
-									var temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_selection_node_index];
+									var temp_pathfinding_goal_x = temp_selection_tri_x;
+									var temp_pathfinding_goal_y = temp_selection_tri_y;
+									var temp_pathfinding_goal_z = temp_selection_tri_z;
+									var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
+									
+									// Check if Action Render Object was selected as an Action and is on the same Celestial Body Instance as the Selected Render Object Instance
+									if (instance_exists(temp_render_object_action_inst) and temp_render_object_action_inst.celestial_body_instance == render_object_selected_instance.celestial_body_instance)
+									{
+										// Set new Pathfinding Goal Behaviour based on Action Render Object Type
+										switch (temp_render_object_action_inst.celestial_render_object_type)
+										{
+											case CelestialRenderObjectType.Unit:
+												// Check if Action Unit is Pathfinding
+												if (is_undefined(temp_render_object_action_inst.pathfinding_path))
+												{
+													// Set Pathfinding Goal as Action Unit's Position
+													temp_pathfinding_goal_node_index = temp_render_object_action_inst.pathfinding_node_index;
+													temp_pathfinding_goal_x = temp_render_object_action_inst.pathfinding_position_x;
+													temp_pathfinding_goal_y = temp_render_object_action_inst.pathfinding_position_y;
+													temp_pathfinding_goal_z = temp_render_object_action_inst.pathfinding_position_z;
+													temp_pathfinding_goal_elevation = temp_render_object_action_inst.pathfinding_position_elevation;
+												}
+												else
+												{
+													// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
+													temp_pathfinding_goal_node_index = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.node_index, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_x = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_x, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_y = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_y, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_z = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_z, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_elevation = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_elevation, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+												}
+												break;
+											case CelestialRenderObjectType.City:
+												// Set Pathfinding Goal as Action City's Position
+												temp_pathfinding_goal_node_index = temp_render_object_action_inst.pathfinding_node_index;
+												temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_render_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_render_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_render_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_render_object_action_inst.pathfinding_node_index];
+												break;
+											default:
+												break;
+										}
+									}
 									
 									// Initiate Unit Pathfinding Behaviour
 									celestial_pathfinding(camera_observing_instance, render_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
+								}
+								else
+								{
+									// Behaviour for Pathfinding to Location that the Unit is not currently on
 								}
 								break;
 							case CelestialRenderObjectType.City:
@@ -306,3 +474,6 @@ if (selected_unit_movement_path_entries > 0)
 // Update Celestial Simulator's Input Variables
 input_select = temp_input_select;
 input_action = temp_input_action;
+
+// Delete Unused Array
+array_resize(temp_cursor_raycast, 0);
