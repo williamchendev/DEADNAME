@@ -86,7 +86,7 @@ function point_check_solid_surface_angle_and_closest_point(pos_x, pos_y, solid_i
 	temp_return_value.return_y = temp_closest_point.return_y;
 	
 	// Delete Unused Struct
-	delete(temp_closest_point);
+	delete temp_closest_point;
 	
 	// Return Angle & Closest Point Struct
 	return temp_return_value;

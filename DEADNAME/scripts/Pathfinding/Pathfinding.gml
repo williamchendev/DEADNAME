@@ -528,7 +528,7 @@ function pathfinding_get_closest_point_on_edge(x_position, y_position, edge_type
 			}
 			
 			// Delete Unused Struct
-			delete(temp_closest_point_on_edge);
+			delete temp_closest_point_on_edge;
 		}
 	}
 	

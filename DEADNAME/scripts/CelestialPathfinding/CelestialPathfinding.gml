@@ -1,3 +1,69 @@
+/// @function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation, path_smoothing);
+/// @description Generates a Pathfinding Path with the given Celestial Object's Navigation Mesh and the Pathfinding Path Goal and assigns it to the given Unit Instance
+/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
+/// @param {real:Id.Instance} unit_object The Celestial Unit Object Instance that the generated Pathfinding Path will belong to
+/// @param {int} goal_node_index The Path Goal Endpoint's Pathfinding Node Index on the Celestial Object's Navigation Mesh 
+/// @param {real} goal_position_x The Path Goal Endpoint's X value of the normalized vector from the Celestial Object's Origin 
+/// @param {real} goal_position_y The Path Goal Endpoint's Y value of the normalized vector from the Celestial Object's Origin
+/// @param {real} goal_position_z The Path Goal Endpoint's Z value of the normalized vector from the Celestial Object's Origin
+/// @param {real} goal_position_elevation The Path Goal Endpoint's Elevation value of the vector from the Celestial Object's Origin
+/// @param {bool} funnel_smoothing Whether or not the final Pathfinding Path Struct should be smoothed using a Funnel Algorithm or if the path should use the Navigation Mesh's Portal Midpoints by default
+function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation, funnel_smoothing = true)
+{
+	// Destroy Unit's Pathfinding Path
+	celestial_pathfinding_destroy_path(unit_object.pathfinding_path);
+	
+	// Create Path Node List using A* Pathfinding
+	var temp_path_node_list = celestial_pathfinding_a_star(celestial_object, unit_object.pathfinding_node_index, goal_node_index);
+	
+	// Check if Path is Valid
+	if (is_undefined(temp_path_node_list))
+	{
+		// There is no Path that can exist between the Unit's Position and the Goal Position - Set Unit's Path to undefined
+		unit_object.pathfinding_path = undefined;
+		
+		// Early Return
+		return;
+	}
+	
+	// Set the Final Path based on the Path Smoothing Behaviour
+	if (funnel_smoothing)
+	{
+		// Create and set the Unit's Pathfinding Path Struct by smoothing the Path Node List using a Funnel Algorithm
+		unit_object.pathfinding_path = celestial_pathfinding_funnel_smooth(celestial_object, temp_path_node_list, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
+	}
+	else
+	{
+		// Create and set the Unit's Pathfinding Path Struct by iterating through the Path Node List, plotting the Final Path based on every Pathfinding Node Portal's Midpoint
+		unit_object.pathfinding_path = celestial_pathfinding_midpoint_smooth(celestial_object, temp_path_node_list, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
+	}
+	
+	// Reset Unit's Path Index
+	unit_object.pathfinding_path_index = 0;
+}
+
+/// @function celestial_pathfinding_destroy_path(path);
+/// @description Destroys the Struct and Data Structure DS Lists of the given Pathfinding Path
+/// @param {Struct} path_struct The Pathfinding Path Struct to Destroy
+function celestial_pathfinding_destroy_path(path_struct)
+{
+	// Check if Pathfinding Struct Exists
+	if (is_undefined(path_struct))
+	{
+		return;
+	}
+	
+	// Destroy Pathfinding Path's DS Lists
+	ds_list_destroy(path_struct.node_index);
+	ds_list_destroy(path_struct.position_x);
+	ds_list_destroy(path_struct.position_y);
+	ds_list_destroy(path_struct.position_z);
+	ds_list_destroy(path_struct.position_elevation);
+	
+	// Delete Unused Struct from Memory
+	delete path_struct;
+}
+
 /// @function celestial_pathfinding_find_edge_weight(celestial_object, first_node_index, second_node_index);
 /// @description Finds the weight of the Pathfinding Edge between two Pathfinding Node Indexes on the given Celestial Object and returns it as a real value or returns Undefined if the edge does not exist
 /// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
@@ -218,8 +284,15 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 	return undefined;
 }
 
-/// @function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation)
-/// @description 
+/// @function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation);
+/// @description Uses a funnel algorithm to create a smoothed final path by iterating through the list of pathfinding nodes to create (hopefully) the most direct path on the Celestial Object's navigation mesh
+/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Navigation Mesh belong to
+/// @param {Id.DsList<int>} path_list A DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index
+/// @param {real} end_x The X value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_y The Y value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_z The Z value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_elevation The Elevation value of the vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @return {struct} Returns a Struct of the of the final Pathfinding Path containing the path's size, pathfinding node indexes, and target positions within each pathfinding node
 function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation)
 {
 	// Initialize Empty Path Struct
@@ -518,7 +591,7 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 		// Calculate Portal Lerp based on Funnel Direction and Portal Edge Intersection
 		var temp_portal_lerp_value = celestial_pathfinding_funnel_portal_edge_closest_point(temp_portal_ax, temp_portal_ay, temp_portal_az, temp_portal_bx, temp_portal_by, temp_portal_bz, temp_funnel_ax, temp_funnel_ay, temp_funnel_az, temp_funnel_bx, temp_funnel_by, temp_funnel_bz);
 		
-		//
+		// Check if Funnel Direction and Portal Edge Intersection Exists, if Intersection does not exist Default to "hugging" the Portal Edge of the next Funnel Smoothing Position by using their Funnel Portal Lerp Value
 		temp_portal_lerp_value = !is_undefined(temp_portal_lerp_value) ? temp_portal_lerp_value : ds_list_find_value(temp_funnel_portal_lerp_list, temp_smoothing_funnel_index);
 		
 		// Populate Path Struct with new Smoothed Waypoint
@@ -579,6 +652,15 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 	return temp_path_struct;
 }
 
+/// @function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation);
+/// @description Creates a "smoothed" (inferior lmao) final path by iterating through the list of pathfinding nodes and uses the Portal Midpoints between pathfinding nodes on the Celestial Object's navigation mesh as the target for each destination in the final path
+/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Navigation Mesh belong to
+/// @param {Id.DsList<int>} path_list A DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index
+/// @param {real} end_x The X value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_y The Y value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_z The Z value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @param {real} end_elevation The Elevation value of the vector from the Celestial Object's Origin representing the end position of the pathfinding path
+/// @return {struct} Returns a Struct of the of the final Pathfinding Path containing the path's size, pathfinding node indexes, and target positions within each pathfinding node
 function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation)
 {
 	// Initialize Empty Path Struct
@@ -659,54 +741,14 @@ function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_
 	ds_list_destroy(path_list);
 	path_list = -1;
 	
-	//
+	// Return Final Path Struct
 	return temp_path_struct;
 }
 
-/// @function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
-/// @description 
-function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation, path_smoothing = true)
-{
-	// Destroy Unit's Pathfinding Path
-	celestial_pathfinding_destroy_path(unit_object.pathfinding_path);
-	
-	// Create Path Node List using A* Pathfinding
-	var temp_path_node_list = celestial_pathfinding_a_star(celestial_object, unit_object.pathfinding_node_index, goal_node_index);
-	
-	if (path_smoothing)
-	{
-		// Create and set the Unit's Pathfinding Path Struct by smoothing the Path Node List using a Funnel Algorithm
-		unit_object.pathfinding_path = celestial_pathfinding_funnel_smooth(celestial_object, temp_path_node_list, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
-	}
-	else
-	{
-		//
-		unit_object.pathfinding_path = celestial_pathfinding_midpoint_smooth(celestial_object, temp_path_node_list, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
-	}
-	
-	// Reset Unit's Path Index
-	unit_object.pathfinding_path_index = 0;
-}
-
-function celestial_pathfinding_destroy_path(path_struct)
-{
-	//
-	if (is_undefined(path_struct))
-	{
-		return;
-	}
-	
-	//
-	ds_list_destroy(path_struct.node_index);
-	ds_list_destroy(path_struct.position_x);
-	ds_list_destroy(path_struct.position_y);
-	ds_list_destroy(path_struct.position_z);
-	ds_list_destroy(path_struct.position_elevation);
-	
-	//
-	delete(path_struct);
-}
-
+/// @function celestial_pathfinding_draw_path_gizmos(celestial_object, unit_object);
+/// @description Renders the Debug Gizmos of the given Unit Object's Pathfinding Path on the given Celestial Object's Navigation Mesh
+/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
+/// @param {real:Id.Instance} unit_object The Celestial Unit Object Instance that the rendered Pathfinding Path belongs to
 function celestial_pathfinding_draw_path_gizmos(celestial_object, unit_object)
 {
 	// Calculate Celestial Object's Rotation Matrix
@@ -947,6 +989,9 @@ function celestial_pathfinding_draw_path_gizmos(celestial_object, unit_object)
 	array_resize(temp_rotation_matrix, 0);
 }
 
+/// @function celestial_pathfinding_draw_navigation_mesh_gizmos(celestial_object);
+/// @description Renders the Debug Gizmos of the given Celestial Object's Navigation Mesh Geometry
+/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
 function celestial_pathfinding_draw_navigation_mesh_gizmos(celestial_object)
 {
 	//

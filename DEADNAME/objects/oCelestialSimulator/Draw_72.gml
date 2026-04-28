@@ -19,7 +19,7 @@ if (global.debug)
 		celestial_pathfinding_draw_navigation_mesh_gizmos(camera_observing_instance);
 	}
 	
-	if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
+	if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance) and render_object_selected_instance.celestial_body_instance == camera_observing_instance)
 	{
 		if (render_object_selected_instance.celestial_render_object_type == CelestialRenderObjectType.Unit and !is_undefined(render_object_selected_instance.pathfinding_path))
 		{
@@ -118,7 +118,7 @@ if (instance_exists(camera_observing_instance))
 	}
 	
 	// Draw Selection Render Object if Celestial Simulator has a Selected Render Object Instance
-	if (instance_exists(render_object_selected_instance))
+	if (instance_exists(render_object_selected_instance) and render_object_selected_instance.celestial_body_instance == camera_observing_instance)
 	{
 		// Reset Surface Target
 		surface_reset_target();
