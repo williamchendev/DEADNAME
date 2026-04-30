@@ -63,3 +63,7 @@ repeat (array_length(solar_systems_background_stars_vertex_buffer))
 
 vertex_delete_buffer(square_uv_vertex_buffer);
 square_uv_vertex_buffer = -1;
+
+// Destroy DS Lists
+ds_list_destroy(pathfinding_queue_list);
+pathfinding_queue_list = -1;

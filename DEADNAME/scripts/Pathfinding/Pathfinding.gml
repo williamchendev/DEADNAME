@@ -90,6 +90,9 @@ function pathfinding_add_node(position_x, position_y, node_id = undefined, node_
 		ds_list_add(GameManager.pathfinding_node_name_list, node_name);
 		ds_list_add_list(GameManager.pathfinding_node_edges_list, ds_list_create());
 	}
+	
+	// Delete Unused Struct
+	delete temp_raycast;
 }
 
 /// @function pathfinding_remove_node(node_id);

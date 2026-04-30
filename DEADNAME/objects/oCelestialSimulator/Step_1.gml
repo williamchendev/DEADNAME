@@ -285,5 +285,222 @@ repeat (array_length(solar_systems))
 	temp_solar_systems_index++;
 }
 
+// Pathfinding Queue Behaviour
+if (ds_list_size(pathfinding_queue_list) > 0)
+{
+	// Establish Pathfinding Queue Variables
+	var temp_pathfinding_queue_calculations = global_pathfinding_queue_calculations_max;
+	
+	// Iterate through Pathfinding Queue for Valid Pathfinding Calculations
+	while (temp_pathfinding_queue_calculations > 0 and ds_list_size(pathfinding_queue_list) > 0)
+	{
+		// Find Unit Instance from Pathfinding Queue
+		var temp_pathfinding_queue_unit_inst = ds_list_find_value(pathfinding_queue_list, 0);
+		
+		// Check if Unit Instance Exists
+		if (instance_exists(temp_pathfinding_queue_unit_inst))
+		{
+			// Implement Pathfinding Behaviour based on Unit's Pathfinding/Movement Scenario (If the Celestial Body Instance the Unit is on exists or if it even has a Pathfinding Navigation Mesh)
+			if (instance_exists(temp_pathfinding_queue_unit_inst.celestial_body_instance) and temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_enabled)
+			{
+				// Perform Pathfinding Calculation based on Unit's Behaviour
+				switch (temp_pathfinding_queue_unit_inst.unit_behaviour)
+				{
+					case CelestialUnitBehaviour.Regroup:
+					case CelestialUnitBehaviour.Hunt:
+					case CelestialUnitBehaviour.Garrison:
+						// Check if Unit Instance's Pathfinding Target Instance Exists or if Unit Instance's Pathfinding Target Instance does not share the same Celestial Body Instance
+						if (!instance_exists(temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance) or temp_pathfinding_queue_unit_inst.celestial_body_instance != temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.celestial_body_instance)
+						{
+							// Unit Instance's Pathfinding Target Instance does not exist - Remove Unit Instance from Pathfinding Queue
+							ds_list_delete(pathfinding_queue_list, 0);
+							
+							// Reset Unit Instance's Behaviour
+							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviour.None;
+							
+							// Reset Unit Instance's Behaviour Target Instance & Node Index
+							temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance = noone;
+							temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index = -1;
+							
+							// Skip to next available Unit Instance in Pathfinding Queue
+							continue;
+						}
+						
+						// Establish Pathfinding Path's Target Variables as the Target Instance Pathfinding Node's Index and Position
+						var temp_unit_target_inst_node_index = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index;
+						var temp_unit_target_inst_x = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_x_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index];
+						var temp_unit_target_inst_y = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_y_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index];
+						var temp_unit_target_inst_z = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_z_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index];
+						var temp_unit_target_inst_elevation = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_elevation_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index];
+						
+						// Check if Target Instance is a Celestial Unit Instance
+						if (temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.celestial_render_object_type == CelestialRenderObjectType.Unit)
+						{
+							// Update Pathfinding Path's Target Variables as the Pathfinding Node Index and Position of the Target Unit Instance
+							temp_unit_target_inst_node_index = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index;
+							temp_unit_target_inst_x = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_position_x;
+							temp_unit_target_inst_y = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_position_y;
+							temp_unit_target_inst_z = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_position_z;
+							temp_unit_target_inst_elevation = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_position_elevation;
+						}
+						
+						// Check if Unit Instance's Pathfinding Path Struct exists
+						if (!is_undefined(temp_pathfinding_queue_unit_inst.pathfinding_path))
+						{
+							// Check if Unit Instance is already Pathfinding to the current Target Pathfinding Node Index
+							if (temp_unit_target_inst_node_index == ds_list_find_value(temp_pathfinding_queue_unit_inst.pathfinding_path.node_index, temp_pathfinding_queue_unit_inst.pathfinding_path.path_size - 1))
+							{
+								// Unit already has a Path heading towards the Target Pathfinding Node Index and does not need a new Pathfinding Path to be calculated - Remove Unit Instance from Pathfinding Queue
+								ds_list_delete(pathfinding_queue_list, 0);
+								
+								// Skip to next available Unit Instance in Pathfinding Queue
+								continue;
+							}
+							
+							// Destroy Unit Instance's current Pathfinding Path Struct
+							celestial_pathfinding_destroy_path(temp_pathfinding_queue_unit_inst.pathfinding_path);
+						}
+						
+						// Check if Unit Instance shares its Pathfinding Node Index with its Target Instance
+						if (temp_pathfinding_queue_unit_inst.pathfinding_node_index == temp_unit_target_inst_node_index)
+						{
+							// Initialize Empty Path Struct
+							temp_pathfinding_queue_unit_inst.pathfinding_path = 
+							{
+								path_size: 0,
+								node_index: ds_list_create(),
+								position_x: ds_list_create(),
+								position_y: ds_list_create(),
+								position_z: ds_list_create(),
+								position_elevation: ds_list_create(),
+							}
+							
+							// Populate Path Struct with Final Destination (The Pathfinding Node Index and Position of the Target Instance)
+							temp_pathfinding_queue_unit_inst.pathfinding_path.path_size = 1;
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.node_index, temp_unit_target_inst_node_index);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_x, temp_unit_target_inst_x);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_y, temp_unit_target_inst_y);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_z, temp_unit_target_inst_z);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_elevation, temp_unit_target_inst_elevation);
+							
+							// Remove Unit Instance from Pathfinding Queue
+							ds_list_delete(pathfinding_queue_list, 0);
+							
+							// Skip to next available Unit Instance in Pathfinding Queue
+							continue;
+						}
+						
+						// Initiate Unit Pathfinding Behaviour
+						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_unit_target_inst_node_index, temp_unit_target_inst_x, temp_unit_target_inst_y, temp_unit_target_inst_z, temp_unit_target_inst_elevation);
+						break;
+					case CelestialUnitBehaviour.Patrol:
+						// Check if Unit Instance's Pathfinding Target Node Index is a valid Pathfinding Node Index
+						if (temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index < 0 or temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index >= temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_nodes_count)
+						{
+							// Unit Instance's Pathfinding Target Node Index does not exist - Remove Unit Instance from Pathfinding Queue
+							ds_list_delete(pathfinding_queue_list, 0);
+							
+							// Reset Unit Instance's Behaviour
+							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviour.None;
+							
+							// Reset Unit Instance's Behaviour Target Instance & Node Index
+							temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance = noone;
+							temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index = -1;
+							
+							// Skip to next available Unit Instance in Pathfinding Queue
+							continue;
+						}
+						
+						// Establish Pathfinding Path's Target Variables as the Unit Instance Pathfinding Target Node's Index and Position
+						var temp_node_target_node_index = temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index;
+						var temp_node_target_x = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_x_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index];
+						var temp_node_target_y = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_y_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index];
+						var temp_node_target_z = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_z_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index];
+						var temp_node_target_elevation = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_elevation_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index];
+						
+						// Check if Unit Instance's Pathfinding Path Struct exists
+						if (!is_undefined(temp_pathfinding_queue_unit_inst.pathfinding_path))
+						{
+							// Check if Unit Instance is already Pathfinding to the current Target Pathfinding Node Index
+							if (temp_node_target_node_index == ds_list_find_value(temp_pathfinding_queue_unit_inst.pathfinding_path.node_index, temp_pathfinding_queue_unit_inst.pathfinding_path.path_size - 1))
+							{
+								// Unit already has a Path heading towards the Target Pathfinding Node Index and does not need a new Pathfinding Path to be calculated - Remove Unit Instance from Pathfinding Queue
+								ds_list_delete(pathfinding_queue_list, 0);
+								
+								// Skip to next available Unit Instance in Pathfinding Queue
+								continue;
+							}
+							
+							// Destroy Unit Instance's current Pathfinding Path Struct
+							celestial_pathfinding_destroy_path(temp_pathfinding_queue_unit_inst.pathfinding_path);
+						}
+						
+						// Check if Unit Instance shares its Pathfinding Node Index with its Target Node Index
+						if (temp_pathfinding_queue_unit_inst.pathfinding_node_index == temp_node_target_node_index)
+						{
+							// Initialize Empty Path Struct
+							temp_pathfinding_queue_unit_inst.pathfinding_path = 
+							{
+								path_size: 0,
+								node_index: ds_list_create(),
+								position_x: ds_list_create(),
+								position_y: ds_list_create(),
+								position_z: ds_list_create(),
+								position_elevation: ds_list_create(),
+							}
+							
+							// Populate Path Struct with Final Destination (The Pathfinding Node's Index and Position)
+							temp_pathfinding_queue_unit_inst.pathfinding_path.path_size = 1;
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.node_index, temp_node_target_node_index);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_x, temp_node_target_x);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_y, temp_node_target_y);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_z, temp_node_target_z);
+							ds_list_add(temp_pathfinding_queue_unit_inst.pathfinding_path.position_elevation, temp_node_target_elevation);
+							
+							// Remove Unit Instance from Pathfinding Queue
+							ds_list_delete(pathfinding_queue_list, 0);
+							
+							// Skip to next available Unit Instance in Pathfinding Queue
+							continue;
+						}
+						
+						// Initiate Unit Pathfinding Behaviour
+						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_node_target_node_index, temp_node_target_x, temp_node_target_y, temp_node_target_z, temp_node_target_elevation);
+						break;
+					case CelestialUnitBehaviour.None:
+					default:
+						// Remove Unit Instance from Pathfinding Queue
+						ds_list_delete(pathfinding_queue_list, 0);
+						
+						// Skip to next available Unit Instance in Pathfinding Queue
+						continue;
+				}
+			}
+			else if (instance_exists(temp_pathfinding_queue_unit_inst.celestial_body_instance))
+			{
+				// Pathfinding Unit Instance belongs to a Celestial Body without a Pathfinding Navigation Mesh
+			}
+			else
+			{
+				// Pathfinding Unit Instance does not belong to a Celestial Body
+			}
+			
+			// Finished Pathfinding Queue Unit Instance's Pathfinding Behaviour - Remove Unit Instance from Pathfinding Queue
+			ds_list_delete(pathfinding_queue_list, 0);
+		}
+		else
+		{
+			// Unit Instance does not exist - Remove Unit Instance from Pathfinding Queue
+			ds_list_delete(pathfinding_queue_list, 0);
+			
+			// Skip to next available Unit Instance in Pathfinding Queue
+			continue;
+		}
+		
+		// Decrement Pathfinding Queue Calculations Remaining
+		temp_pathfinding_queue_calculations--;
+	}
+}
+
 // Reset Celestial Simulator's UI Behaviours
 selected_unit_movement_path_ui = false;

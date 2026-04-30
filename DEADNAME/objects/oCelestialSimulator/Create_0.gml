@@ -58,10 +58,12 @@ camera_observing_instance_radius_offset_zoom_in_threshold = 0.1;
 background_star_sphere = geodesic_icosphere_create(2);
 
 // Clock Settings
-global_clock_delta_time = 0;
 global_clock_delta_time_multiplier = 0.2;
 
 global_clock_hydrosphere_delta_time_multiplier = 0.0037;
+
+// Pathfinding Settings
+global_pathfinding_queue_calculations_max = 5;
 
 // Rendering Settings
 global_noise_time_spd = 0.03;
@@ -142,6 +144,12 @@ solar_systems_ids = array_create(0);
 solar_systems_names = array_create(0);
 solar_systems_orbit_update_order = array_create(0);
 solar_systems_background_stars_vertex_buffer = array_create(0);
+
+// Clock Variables
+global_clock_delta_time = 0;
+
+// Pathfinding Variables
+pathfinding_queue_list = ds_list_create();
 
 // Rendering Variables
 global_noise_time = 0;

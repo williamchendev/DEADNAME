@@ -394,7 +394,7 @@ else if (temp_input_select or temp_input_action)
 									}
 									
 									// Initiate Unit Pathfinding Behaviour
-									celestial_pathfinding(camera_observing_instance, render_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
+									celestial_pathfinding(render_object_selected_instance.celestial_body_instance, render_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
 								}
 								else
 								{

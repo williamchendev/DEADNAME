@@ -15,3 +15,9 @@ pathfinding_position_x = 0;
 pathfinding_position_y = 0;
 pathfinding_position_z = 0;
 pathfinding_position_elevation = 0;
+
+// Behaviour Variables
+unit_behaviour = CelestialUnitBehaviour.None;
+
+unit_behaviour_target_instance = noone;
+unit_behaviour_target_node_index = -1;
