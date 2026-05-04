@@ -17,6 +17,20 @@ if (instance_exists(celestial_body_instance))
 				// Remove Unit Instance from Celestial Body Instance's Render Object Unit Array
 				array_delete(celestial_body_instance.units, temp_celestial_body_inst_unit_index, 1);
 			}
+			
+			// Check if Celestial Body's Pathfinding Grid exists and Render Object's Pathfinding Node Index is valid
+			if (celestial_body_instance.pathfinding_enabled and pathfinding_node_index >= 0 and pathfinding_node_index < celestial_body_instance.pathfinding_nodes_count)
+			{
+				// Find Index of Unit Instance within Celestial Body's Pathfinding Node Unit Arrays
+				var temp_celestial_body_pathfinding_node_unit_array_index = array_get_index(celestial_body_instance.pathfinding_node_units_array[pathfinding_node_index], id);
+				
+				// Check if Unit Instance's Index within Celestial Body's Pathfinding Node Unit Array is valid
+				if (temp_celestial_body_pathfinding_node_unit_array_index != -1)
+				{
+					// Delete Unit Instance from Celestial Body's Pathfinding Node Unit Array
+					array_delete(celestial_body_instance.pathfinding_node_units_array[pathfinding_node_index], temp_celestial_body_pathfinding_node_unit_array_index, 1);
+				}
+			}
 			break;
 		case CelestialRenderObjectType.City:
 			// Find Index of City Instance within Celestial Body Instance's Render Object City Array
@@ -27,6 +41,16 @@ if (instance_exists(celestial_body_instance))
 			{
 				// Remove City Instance from Celestial Body Instance's Render Object City Array
 				array_delete(celestial_body_instance.cities, temp_celestial_body_inst_city_index, 1);
+			}
+			
+			// Check if Celestial Body's Pathfinding Grid exists and Render Object's Pathfinding Node Index is valid
+			if (celestial_body_instance.pathfinding_enabled and pathfinding_node_index >= 0 and pathfinding_node_index < celestial_body_instance.pathfinding_nodes_count)
+			{
+				// Remove City Instance from the Pathfinding Node Index's City Array
+				if (celestial_body_instance.pathfinding_node_city_array[pathfinding_node_index] == id)
+				{
+					celestial_body_instance.pathfinding_node_city_array[pathfinding_node_index] = noone;
+				}
 			}
 			break;
 		case CelestialRenderObjectType.Satellite:

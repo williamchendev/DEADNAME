@@ -212,6 +212,7 @@ pathfinding_node_u_array = -1;
 pathfinding_node_v_array = -1;
 pathfinding_node_region_array = -1;
 pathfinding_node_city_array = -1;
+pathfinding_node_units_array = -1;
 pathfinding_node_elevation_array = -1;
 pathfinding_node_microclimate_array = -1;
 pathfinding_node_edges_array = -1;
@@ -323,6 +324,7 @@ if (pathfinding_enabled)
 	pathfinding_node_v_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_region_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_city_array = array_create(pathfinding_nodes_count);
+	pathfinding_node_units_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_elevation_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_microclimate_array = array_create(pathfinding_nodes_count);
 	pathfinding_node_edges_array = array_create(pathfinding_nodes_count, -1);
@@ -470,7 +472,10 @@ if (pathfinding_enabled)
 		pathfinding_node_region_array[temp_pathfinding_node_index] = temp_node_region;
 		
 		// Set Pathfinding Node's City as Empty to Celestial Body's Pathfinding Node Data Arrays
-		pathfinding_node_city_array[temp_pathfinding_node_index] = -1;
+		pathfinding_node_city_array[temp_pathfinding_node_index] = noone;
+		
+		// Create Empty Pathfinding Node Units Arrays for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
+		pathfinding_node_units_array[temp_pathfinding_node_index] = array_create(0);
 		
 		// Set Pathfinding Node's Elevation from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_elevation_array[temp_pathfinding_node_index] = temp_node_elevation;
@@ -478,7 +483,7 @@ if (pathfinding_enabled)
 		// Set Pathfinding Node's Microclimate from Triangle Data to Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_microclimate_array[temp_pathfinding_node_index] = temp_node_microclimate;
 		
-		// Create empty Pathfinding Node Edges Arrays for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
+		// Create Empty Pathfinding Node Edges Arrays for the new Pathfinding Node within the Celestial Body's Pathfinding Node Data Arrays
 		pathfinding_node_edges_array[temp_pathfinding_node_index] = array_create(0);
 		pathfinding_node_edges_portal_left_array[temp_pathfinding_node_index] = array_create(0);
 		pathfinding_node_edges_portal_right_array[temp_pathfinding_node_index] = array_create(0);
@@ -794,17 +799,24 @@ add_unit_node = function(unit_instance, node_index)
 	// Set Unit's Celestial Body Instance
 	unit_instance.celestial_body_instance = id;
 	
-	// Update Unit's Pathfinding Node Index
-	unit_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
-	
-	// Update Unit's Pathfinding Position & Elevation with their Pathfinding Node Index
-	unit_instance.pathfinding_position_x = pathfinding_node_x_array[unit_instance.pathfinding_node_index];
-	unit_instance.pathfinding_position_y = pathfinding_node_y_array[unit_instance.pathfinding_node_index];
-	unit_instance.pathfinding_position_z = pathfinding_node_z_array[unit_instance.pathfinding_node_index];
-	unit_instance.pathfinding_position_elevation = pathfinding_node_elevation_array[unit_instance.pathfinding_node_index];
-	
 	// Index Unit Instance into Celestial Body Units Array
 	array_push(units, unit_instance);
+	
+	// Check if Celestial Body has Pathfinding Enabled
+	if (pathfinding_enabled)
+	{
+		// Update Unit's Pathfinding Node Index
+		unit_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+		
+		// Update Unit's Pathfinding Position & Elevation with their Pathfinding Node Index
+		unit_instance.pathfinding_position_x = pathfinding_node_x_array[unit_instance.pathfinding_node_index];
+		unit_instance.pathfinding_position_y = pathfinding_node_y_array[unit_instance.pathfinding_node_index];
+		unit_instance.pathfinding_position_z = pathfinding_node_z_array[unit_instance.pathfinding_node_index];
+		unit_instance.pathfinding_position_elevation = pathfinding_node_elevation_array[unit_instance.pathfinding_node_index];
+		
+		// Update Pathfinding Node Units Instance Array
+		array_push(pathfinding_node_units_array[unit_instance.pathfinding_node_index], unit_instance);
+	}
 }
 
 add_unit_uv = function(unit_instance, unit_u, unit_v)
@@ -825,11 +837,18 @@ add_city_node = function(city_instance, node_index)
 	// Set City's Celestial Body Instance
 	city_instance.celestial_body_instance = id;
 	
-	// Update City's Pathfinding Node Index
-	city_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
-	
 	// Index City Instance into Celestial Body Cities Array
 	array_push(cities, city_instance);
+	
+	// Check if Celestial Body has Pathfinding Enabled
+	if (pathfinding_enabled)
+	{
+		// Update City's Pathfinding Node Index
+		city_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+		
+		// Update Pathfinding Node City Instance Array
+		pathfinding_node_city_array[city_instance.pathfinding_node_index] = city_instance;
+	}
 }
 
 add_city_uv = function(city_instance, city_u, city_v)
@@ -850,11 +869,15 @@ add_satellite_node = function(satellite_instance, node_index)
 	// Set Satellite's Celestial Body Instance
 	satellite_instance.celestial_body_instance = id;
 	
-	// Update Satellite's Pathfinding Node Index
-	satellite_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
-	
 	// Index Satellite Instance into Celestial Body Satellites Array
 	array_push(satellites, satellite_instance);
+	
+	// Check if Celestial Body has Pathfinding Enabled
+	if (pathfinding_enabled)
+	{
+		// Update Satellite's Pathfinding Node Index
+		satellite_instance.pathfinding_node_index = clamp(node_index, 0, pathfinding_nodes_count - 1);
+	}
 }
 
 add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)

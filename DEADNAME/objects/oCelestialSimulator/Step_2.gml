@@ -353,6 +353,11 @@ else if (temp_input_select or temp_input_action)
 									var temp_pathfinding_goal_z = temp_selection_tri_z;
 									var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
 									
+									// Reset Selected Unit's Behaviour to None
+									render_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.None;
+									render_object_selected_instance.unit_behaviour_target_instance = noone;
+									render_object_selected_instance.unit_behaviour_target_node_index = -1;
+									
 									// Check if Action Render Object was selected as an Action and is on the same Celestial Body Instance as the Selected Render Object Instance
 									if (instance_exists(temp_render_object_action_inst) and temp_render_object_action_inst.celestial_body_instance == render_object_selected_instance.celestial_body_instance)
 									{
@@ -378,6 +383,10 @@ else if (temp_input_select or temp_input_action)
 													temp_pathfinding_goal_y = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_y, temp_render_object_action_inst.pathfinding_path.path_size - 1);
 													temp_pathfinding_goal_z = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_z, temp_render_object_action_inst.pathfinding_path.path_size - 1);
 													temp_pathfinding_goal_elevation = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_elevation, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													
+													// Set Selected Unit's Behaviour to Regroup
+													render_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.Regroup;
+													render_object_selected_instance.unit_behaviour_target_instance = temp_render_object_action_inst;
 												}
 												break;
 											case CelestialRenderObjectType.City:

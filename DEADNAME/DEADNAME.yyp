@@ -904,6 +904,7 @@
     {"id":{"name":"sOverworld_City_Chinese","path":"sprites/sOverworld_City_Chinese/sOverworld_City_Chinese.yy",},},
     {"id":{"name":"sOverworld_City_Default","path":"sprites/sOverworld_City_Default/sOverworld_City_Default.yy",},},
     {"id":{"name":"sOverworld_City_Miniature","path":"sprites/sOverworld_City_Miniature/sOverworld_City_Miniature.yy",},},
+    {"id":{"name":"sOverworld_Conflict_Icon","path":"sprites/sOverworld_Conflict_Icon/sOverworld_Conflict_Icon.yy",},},
     {"id":{"name":"sOverworld_Satellite_Default","path":"sprites/sOverworld_Satellite_Default/sOverworld_Satellite_Default.yy",},},
     {"id":{"name":"sOverworld_Satellite_Miniature","path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},},
     {"id":{"name":"sOverworld_Selection_Border","path":"sprites/sOverworld_Selection_Border/sOverworld_Selection_Border.yy",},},
