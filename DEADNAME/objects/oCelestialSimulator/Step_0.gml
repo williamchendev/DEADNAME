@@ -269,24 +269,24 @@ repeat (array_length(temp_solar_system))
 	// Create Celestial Object's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
 	var temp_celestial_obj_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
 	
-	// Reset Celestial Object's Render Object Layers Toggle
-	temp_celestial_object_instance.render_objects_enabled = false;
+	// Reset Celestial Object's Sub Object Layers Toggle
+	temp_celestial_object_instance.sub_objects_render_enabled = false;
 	
-	// Check if Celestial Object is eligible to have its Render Object Layers Enabled
+	// Check if Celestial Object is eligible to Render its Sub Object Layers
 	if (temp_celestial_object_instance == camera_observing_instance)
 	{
-		// Celestial Object is being Inspected - Render Object Layers Enabled
-		temp_celestial_object_instance.render_objects_enabled = true;
+		// Celestial Object is being Inspected - Render Sub Object Layers
+		temp_celestial_object_instance.sub_objects_render_enabled = true;
 		
 		// Celestial Object Inspection UI Precalculation Behaviour
-		if (instance_exists(render_object_selected_instance))
+		if (instance_exists(sub_object_selected_instance))
 		{
-			// Perform Selected Render Object's UI Precalculation Behaviour based on Selected Render Object's Type
-			switch (render_object_selected_instance.celestial_render_object_type)
+			// Perform Selected Sub Object's UI Precalculation Behaviour based on Selected Sub Object's Type
+			switch (sub_object_selected_instance.celestial_sub_object_type)
 			{
-				case CelestialRenderObjectType.Unit:
+				case CelestialSubObjectType.Unit:
 					// Unit Pathfinding UI Precalculation Behaviour
-					if (temp_celestial_object_instance.pathfinding_enabled and !is_undefined(render_object_selected_instance.pathfinding_path))
+					if (temp_celestial_object_instance.pathfinding_enabled and !is_undefined(sub_object_selected_instance.pathfinding_path))
 					{
 						// Clear Selected Unit Movement Path UI Arrays
 						if (selected_unit_movement_path_entries > 0)
@@ -304,13 +304,13 @@ repeat (array_length(temp_solar_system))
 						// Reset Selected Unit Movement Path UI Entries Count
 						selected_unit_movement_path_entries = 0;
 						
-						// Iterate through Selected Render Object Unit's Pathfinding Path Array to create Path UI
+						// Iterate through Selected Sub Object Unit's Pathfinding Path Array to create Path UI
 						var temp_selected_unit_pathfinding_path_index = 0;
 						
-						repeat (render_object_selected_instance.pathfinding_path.path_size)
+						repeat (sub_object_selected_instance.pathfinding_path.path_size)
 						{
 							// Check if Selected Unit has progressed past the given Pathfinding Path Index
-							if (render_object_selected_instance.pathfinding_path_index > temp_selected_unit_pathfinding_path_index)
+							if (sub_object_selected_instance.pathfinding_path_index > temp_selected_unit_pathfinding_path_index)
 							{
 								// Increment Selected Unit's Pathfinding Path Index
 								temp_selected_unit_pathfinding_path_index++;
@@ -320,30 +320,30 @@ repeat (array_length(temp_solar_system))
 							// Find Selected Unit's Pathfinding Path Node Positions & Elevations
 							var temp_ui_path_a_local_x, temp_ui_path_a_local_y, temp_ui_path_a_local_z, temp_ui_path_a_local_elevation;
 							
-							var temp_ui_path_b_local_x = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index);
-							var temp_ui_path_b_local_y = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index);
-							var temp_ui_path_b_local_z = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index);
 							
-							var temp_ui_path_b_local_elevation = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index);
+							var temp_ui_path_b_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index);
 							
 							// Check if Pathfinding Path Index is the First Path Index or Selected Unit is currently traversing the given Pathfinding Path Index
-							if (temp_selected_unit_pathfinding_path_index == 0 or render_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
+							if (temp_selected_unit_pathfinding_path_index == 0 or sub_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
 							{
 								// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their precalculated positioning variables from their Pathfinding Behaviour
-								temp_ui_path_a_local_x = render_object_selected_instance.pathfinding_position_x;
-								temp_ui_path_a_local_y = render_object_selected_instance.pathfinding_position_y;
-								temp_ui_path_a_local_z = render_object_selected_instance.pathfinding_position_z;
+								temp_ui_path_a_local_x = sub_object_selected_instance.pathfinding_position_x;
+								temp_ui_path_a_local_y = sub_object_selected_instance.pathfinding_position_y;
+								temp_ui_path_a_local_z = sub_object_selected_instance.pathfinding_position_z;
 								
-								temp_ui_path_a_local_elevation = render_object_selected_instance.pathfinding_position_elevation;
+								temp_ui_path_a_local_elevation = sub_object_selected_instance.pathfinding_position_elevation;
 							}
 							else
 							{
 								// Use Previous Pathfinding Path Index Position and Elevation Values
-								temp_ui_path_a_local_x = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index - 1);
-								temp_ui_path_a_local_y = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index - 1);
-								temp_ui_path_a_local_z = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index - 1);
 								
-								temp_ui_path_a_local_elevation = ds_list_find_value(render_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index - 1);
+								temp_ui_path_a_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index - 1);
 							}
 							
 							// Find Selected Unit's Pathfinding Path World Positions
@@ -442,33 +442,33 @@ repeat (array_length(temp_solar_system))
 		// Celestial Object is in orbit of a Celestial Object being Inspected
 		if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet and temp_celestial_object_instance.orbit_parent_instance.celestial_object_type == CelestialObjectType.Planet)
 		{
-			// Both the Celestial Object and the Orbit Parent Celestial Object being Inspected are Planets - Render Object Layers Enabled
-			temp_celestial_object_instance.render_objects_enabled = true;
+			// Both the Celestial Object and the Orbit Parent Celestial Object being Inspected are Planets - Render Sub Object Layers
+			temp_celestial_object_instance.sub_objects_render_enabled = true;
 		}
 	}
 	
-	// Perform Celestial Object's Render Objects Depth Sorting Behaviour
-	if (temp_celestial_object_instance.render_objects_enabled)
+	// Perform Celestial Object's Sub Objects Depth Sorting Behaviour
+	if (temp_celestial_object_instance.sub_objects_render_enabled)
 	{
 		// Reset Celestial Simulator Render Depth Sorting Arrays
-		array_resize(render_objects_back_render_depth_sorting_index_array, 0);
-		array_resize(render_objects_back_render_depth_sorting_depth_array, 0);
+		array_resize(sub_objects_back_render_depth_sorting_index_array, 0);
+		array_resize(sub_objects_back_render_depth_sorting_depth_array, 0);
 		
-		array_resize(render_objects_front_render_depth_sorting_index_array, 0);
-		array_resize(render_objects_front_render_depth_sorting_depth_array, 0);
+		array_resize(sub_objects_front_render_depth_sorting_index_array, 0);
+		array_resize(sub_objects_front_render_depth_sorting_depth_array, 0);
 		
 		// Reset Celestial Object Render Depth Sorting Arrays
-		array_resize(temp_celestial_object_instance.render_objects_back_layer_index_array, 0);
-		array_resize(temp_celestial_object_instance.render_objects_back_layer_depth_array, 0);
-		array_resize(temp_celestial_object_instance.render_objects_back_layer_instance_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_back_layer_index_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_back_layer_depth_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_back_layer_instance_array, 0);
 	
-		array_resize(temp_celestial_object_instance.render_objects_front_layer_index_array, 0);
-		array_resize(temp_celestial_object_instance.render_objects_front_layer_depth_array, 0);
-		array_resize(temp_celestial_object_instance.render_objects_front_layer_instance_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_front_layer_index_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_front_layer_depth_array, 0);
+		array_resize(temp_celestial_object_instance.sub_objects_front_layer_instance_array, 0);
 		
-		// Establish Empty Render Object Count
-		var temp_render_object_back_layer_count = 0;
-		var temp_render_object_front_layer_count = 0;
+		// Establish Empty Sub Object Count
+		var temp_sub_object_back_layer_count = 0;
+		var temp_sub_object_front_layer_count = 0;
 		
 		// Celestial Object's Unit Depth Sorting Behaviour
 		var temp_unit_index = 0;
@@ -537,16 +537,16 @@ repeat (array_length(temp_solar_system))
 			// Check if Unit's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_unit_depth < 0)
 			{
-				// Index Celestial Unit's Index and Depth into Celestial Object's Render Object Front Layer Render Depth Sorting Arrays
-				array_push(render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
-				array_push(render_objects_front_render_depth_sorting_depth_array, temp_unit_depth + global_render_objects_unit_depth_offset);
+				// Index Celestial Unit's Index and Depth into Celestial Object's Sub Object Front Layer Render Depth Sorting Arrays
+				array_push(sub_objects_front_render_depth_sorting_index_array, temp_sub_object_front_layer_count);
+				array_push(sub_objects_front_render_depth_sorting_depth_array, temp_unit_depth + global_sub_objects_unit_depth_offset);
 				
-				// Index Celestial Unit's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_unit_instance);
-				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_unit_depth + global_render_objects_unit_depth_offset);
+				// Index Celestial Unit's Instance and Depth into Celestial Object's Sub Object Front Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_instance_array, temp_unit_instance);
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_depth_array, temp_unit_depth + global_sub_objects_unit_depth_offset);
 				
-				// Increment Render Object Front Layer Count Index
-				temp_render_object_front_layer_count++;
+				// Increment Sub Object Front Layer Count Index
+				temp_sub_object_front_layer_count++;
 			}
 			
 			// Delete Unused Array
@@ -625,16 +625,16 @@ repeat (array_length(temp_solar_system))
 			// Check if City's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_city_depth < 0)
 			{
-				// Index Celestial City's Index and Depth into Celestial Object's Render Object Front Layer Render Depth Sorting Arrays
-				array_push(render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
-				array_push(render_objects_front_render_depth_sorting_depth_array, temp_city_depth + global_render_objects_city_depth_offset);
+				// Index Celestial City's Index and Depth into Celestial Object's Sub Object Front Layer Render Depth Sorting Arrays
+				array_push(sub_objects_front_render_depth_sorting_index_array, temp_sub_object_front_layer_count);
+				array_push(sub_objects_front_render_depth_sorting_depth_array, temp_city_depth + global_sub_objects_city_depth_offset);
 				
-				// Index Celestial City's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_city_instance);
-				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_city_depth + global_render_objects_city_depth_offset);
+				// Index Celestial City's Instance and Depth into Celestial Object's Sub Object Front Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_instance_array, temp_city_instance);
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_depth_array, temp_city_depth + global_sub_objects_city_depth_offset);
 				
-				// Increment Render Object Front Layer Count Index
-				temp_render_object_front_layer_count++;
+				// Increment Sub Object Front Layer Count Index
+				temp_sub_object_front_layer_count++;
 			}
 			
 			// Delete Unused Array
@@ -718,29 +718,29 @@ repeat (array_length(temp_solar_system))
 			// Check if Satellite's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_satellite_depth < temp_celestial_object_instance.render_depth_radius * -0.25)
 			{
-				// Index Celestial Satellite's Index and Depth into Celestial Object's Render Object Front Layer Render Depth Sorting Arrays
-				array_push(render_objects_front_render_depth_sorting_index_array, temp_render_object_front_layer_count);
-				array_push(render_objects_front_render_depth_sorting_depth_array, temp_satellite_depth);
+				// Index Celestial Satellite's Index and Depth into Celestial Object's Sub Object Front Layer Render Depth Sorting Arrays
+				array_push(sub_objects_front_render_depth_sorting_index_array, temp_sub_object_front_layer_count);
+				array_push(sub_objects_front_render_depth_sorting_depth_array, temp_satellite_depth);
 				
-				// Index Celestial Satellite's Instance and Depth into Celestial Object's Render Object Front Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_front_layer_instance_array, temp_satellite_instance);
-				array_push(temp_celestial_object_instance.render_objects_front_layer_depth_array, temp_satellite_depth);
+				// Index Celestial Satellite's Instance and Depth into Celestial Object's Sub Object Front Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_instance_array, temp_satellite_instance);
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_depth_array, temp_satellite_depth);
 				
-				// Increment Render Object Front Layer Count Index
-				temp_render_object_front_layer_count++;
+				// Increment Sub Object Front Layer Count Index
+				temp_sub_object_front_layer_count++;
 			}
 			else
 			{
-				// Index Celestial Satellite's Index and Depth into Celestial Object's Render Object Back Layer Render Depth Sorting Arrays
-				array_push(render_objects_back_render_depth_sorting_index_array, temp_render_object_back_layer_count);
-				array_push(render_objects_back_render_depth_sorting_depth_array, temp_satellite_depth);
+				// Index Celestial Satellite's Index and Depth into Celestial Object's Sub Object Back Layer Render Depth Sorting Arrays
+				array_push(sub_objects_back_render_depth_sorting_index_array, temp_sub_object_back_layer_count);
+				array_push(sub_objects_back_render_depth_sorting_depth_array, temp_satellite_depth);
 				
-				// Index Celestial Satellite's Instance and Depth into Celestial Object's Render Object Back Layer Instance and Depth Arrays
-				array_push(temp_celestial_object_instance.render_objects_back_layer_instance_array, temp_satellite_instance);
-				array_push(temp_celestial_object_instance.render_objects_back_layer_depth_array, temp_satellite_depth);
+				// Index Celestial Satellite's Instance and Depth into Celestial Object's Sub Object Back Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.sub_objects_back_layer_instance_array, temp_satellite_instance);
+				array_push(temp_celestial_object_instance.sub_objects_back_layer_depth_array, temp_satellite_depth);
 				
-				// Increment Render Object Back Layer Count Index
-				temp_render_object_back_layer_count++;
+				// Increment Sub Object Back Layer Count Index
+				temp_sub_object_back_layer_count++;
 			}
 			
 			// Delete Unused Array
@@ -750,13 +750,13 @@ repeat (array_length(temp_solar_system))
 			temp_satellite_index++;
 		}
 		
-		// Sort Celestial Simulator's Render Objects Back and Front Render Depth Sorting Arrays
-		array_sort(render_objects_back_render_depth_sorting_index_array, render_objects_back_render_depth_sort);
-		array_sort(render_objects_front_render_depth_sorting_index_array, render_objects_front_render_depth_sort);
+		// Sort Celestial Simulator's Sub Objects Back and Front Render Depth Sorting Arrays
+		array_sort(sub_objects_back_render_depth_sorting_index_array, sub_objects_back_render_depth_sort);
+		array_sort(sub_objects_front_render_depth_sorting_index_array, sub_objects_front_render_depth_sort);
 		
-		// Copy Depth Sorted Render Objects Index Order to Celestial Object's Back and Front Render Objects Index Arrays
-		array_copy(temp_celestial_object_instance.render_objects_back_layer_index_array, 0, render_objects_back_render_depth_sorting_index_array, 0, temp_render_object_back_layer_count);
-		array_copy(temp_celestial_object_instance.render_objects_front_layer_index_array, 0, render_objects_front_render_depth_sorting_index_array, 0, temp_render_object_front_layer_count);
+		// Copy Depth Sorted Sub Objects Index Order to Celestial Object's Back and Front Sub Objects Index Arrays
+		array_copy(temp_celestial_object_instance.sub_objects_back_layer_index_array, 0, sub_objects_back_render_depth_sorting_index_array, 0, temp_sub_object_back_layer_count);
+		array_copy(temp_celestial_object_instance.sub_objects_front_layer_index_array, 0, sub_objects_front_render_depth_sorting_index_array, 0, temp_sub_object_front_layer_count);
 	}
 	
 	// Celestial Object Type Depth Sorting Behaviour

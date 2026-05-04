@@ -1,11 +1,11 @@
 /// @description Default Celestial Unit Initialization
 // Initializes the Celestial Unit for Celestial Simulator Behaviour and Rendering
 
-// Inherited Celestial Render Object Initialization Behaviour
+// Inherited Celestial Sub Object Initialization Behaviour
 event_inherited();
 
-// Initialize Unit Celestial Render Object Type
-celestial_render_object_type = CelestialRenderObjectType.Unit;
+// Initialize Unit Celestial Sub Object Type
+celestial_sub_object_type = CelestialSubObjectType.Unit;
 
 // Pathfinding Variables
 pathfinding_path = undefined;

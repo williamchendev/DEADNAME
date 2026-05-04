@@ -189,7 +189,7 @@ repeat (array_length(solar_systems))
 							// Schedule Unit to recalculate thier Pathfinding Path to the Unit's Behaviour Target Instance
 							ds_list_add(CelestialSimulator.pathfinding_queue_list, temp_unit_instance);
 						}
-						else if (temp_unit_instance.unit_behaviour_target_instance.celestial_render_object_type == CelestialRenderObjectType.Unit)
+						else if (temp_unit_instance.unit_behaviour_target_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 						{
 							// Update Pathfinding Path to end at the Target Instance's Position & Elevation
 							ds_list_set(temp_unit_instance.pathfinding_path.position_x, temp_unit_instance.pathfinding_path.path_size - 1, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_x);
@@ -266,8 +266,8 @@ repeat (array_length(solar_systems))
 										// Check if Target Instance exists and shares the current Node 
 										if (instance_exists(temp_unit_instance.unit_behaviour_target_instance) and temp_pathfinding_node_index == temp_unit_instance.unit_behaviour_target_instance.pathfinding_node_index)
 										{
-											// Check if Target Instance is a Unit or another kind of Render Object Instance
-											if (temp_unit_instance.unit_behaviour_target_instance.celestial_render_object_type == CelestialRenderObjectType.Unit)
+											// Check if Target Instance is a Unit or another kind of Sub Object Instance
+											if (temp_unit_instance.unit_behaviour_target_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 											{
 												temp_pathfinding_target_elevation = temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_elevation;
 												temp_pathfinding_target_position_elevation = radius + elevation * max(temp_pathfinding_target_elevation, temp_celestial_object_minimum_elevation);
@@ -453,7 +453,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						var temp_unit_target_inst_elevation = temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_node_elevation_array[temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index];
 						
 						// Check if Target Instance is a Celestial Unit Instance
-						if (temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.celestial_render_object_type == CelestialRenderObjectType.Unit)
+						if (temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 						{
 							// Update Pathfinding Path's Target Variables as the Pathfinding Node Index and Position of the Target Unit Instance
 							temp_unit_target_inst_node_index = temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.pathfinding_node_index;

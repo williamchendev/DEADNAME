@@ -762,16 +762,16 @@ if (temp_microclimatemap_buffer_exists)
 	temp_microclimatemap_buffer = -1;
 }
 
-// Initialize Render Objects Arrays
-render_objects_enabled = false;
+// Initialize Sub Objects Arrays
+sub_objects_render_enabled = false;
 
-render_objects_back_layer_index_array = array_create(0);
-render_objects_back_layer_depth_array = array_create(0);
-render_objects_back_layer_instance_array = array_create(0);
+sub_objects_back_layer_index_array = array_create(0);
+sub_objects_back_layer_depth_array = array_create(0);
+sub_objects_back_layer_instance_array = array_create(0);
 
-render_objects_front_layer_index_array = array_create(0);
-render_objects_front_layer_depth_array = array_create(0);
-render_objects_front_layer_instance_array = array_create(0);
+sub_objects_front_layer_index_array = array_create(0);
+sub_objects_front_layer_depth_array = array_create(0);
+sub_objects_front_layer_instance_array = array_create(0);
 
 // Initialize Identity Matrix
 identity_matrix = matrix_build_identity();

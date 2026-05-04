@@ -26,46 +26,46 @@ var temp_solar_system = solar_systems[solar_system_index];
 var temp_input_select = mouse_check_button(mb_left);
 var temp_input_action = mouse_check_button(mb_right);
 
-// Establish Empty Render Object Selection Variables
-var temp_render_object_click_inst = noone;
-var temp_render_object_action_inst = noone;
-var temp_render_object_selected_inst = noone;
+// Establish Empty Sub Object Selection Variables
+var temp_sub_object_click_inst = noone;
+var temp_sub_object_action_inst = noone;
+var temp_sub_object_selected_inst = noone;
 
-// Render Object Selection Behaviour
+// Sub Object Selection Behaviour
 if (((!temp_input_select and input_select) or (temp_input_action and !input_action)) and !camera_observing_drag)
 {
-	// Check if Celestial Simulator is Observing a Celestial Body Instance with Render Objects Enabled and is Zoomed In
-	if (instance_exists(camera_observing_instance) and camera_observing_instance.render_objects_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
+	// Check if Celestial Simulator is Observing a Celestial Body Instance with Sub Objects Enabled and is Zoomed In
+	if (instance_exists(camera_observing_instance) and camera_observing_instance.sub_objects_render_enabled and camera_observing_instance_radius_offset_value <= camera_observing_instance_radius_offset_zoom_in_threshold)
 	{
-		// Iterate through all Celestial Render Object Instances in Observing Instance's Render Object Front Layer for Cursor Collisions
-		var temp_render_object_index = 0;
+		// Iterate through all Celestial Sub Object Instances in Observing Instance's Sub Object Front Layer for Cursor Collisions
+		var temp_sub_object_index = 0;
 		
-		repeat (array_length(camera_observing_instance.render_objects_front_layer_index_array))
+		repeat (array_length(camera_observing_instance.sub_objects_front_layer_index_array))
 		{
-			// Find Render Object Index and Instance
-			var temp_render_object_sorted_index = camera_observing_instance.render_objects_front_layer_index_array[temp_render_object_index];
-			var temp_render_object_sorted_instance = camera_observing_instance.render_objects_front_layer_instance_array[temp_render_object_sorted_index];
+			// Find Sub Object Index and Instance
+			var temp_sub_object_sorted_index = camera_observing_instance.sub_objects_front_layer_index_array[temp_sub_object_index];
+			var temp_sub_object_sorted_instance = camera_observing_instance.sub_objects_front_layer_instance_array[temp_sub_object_sorted_index];
 			
-			// Check for Render Object Instance's Collision with Cursor
-			if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_render_object_sorted_instance))
+			// Check for Sub Object Instance's Collision with Cursor
+			if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_sub_object_sorted_instance))
 			{
-				temp_render_object_click_inst = temp_render_object_sorted_instance;
+				temp_sub_object_click_inst = temp_sub_object_sorted_instance;
 			}
 			
-			// Increment Render Object Index
-			temp_render_object_index++;
+			// Increment Sub Object Index
+			temp_sub_object_index++;
 		}
 	}
 	
-	// Update Celestial Simulator's Render Object Selected Instance with the possible Selection
+	// Update Celestial Simulator's Sub Object Selected Instance with the possible Selection
 	if (temp_input_action and !input_action)
 	{
-		temp_render_object_action_inst = temp_render_object_click_inst;
+		temp_sub_object_action_inst = temp_sub_object_click_inst;
 	}
 	else if (!temp_input_select and input_select)
 	{
-		render_object_selected_instance = temp_render_object_click_inst;
-		temp_render_object_selected_inst = temp_render_object_click_inst;
+		sub_object_selected_instance = temp_sub_object_click_inst;
+		temp_sub_object_selected_inst = temp_sub_object_click_inst;
 	}
 }
 
@@ -333,18 +333,18 @@ else if (temp_input_select or temp_input_action)
 				// Delete Unused Array
 				array_resize(temp_selection_tri_barycentric_values, 0);
 				
-				// Check if Celestial Object is being Observed and Celestial Simulator's Render Object Selected Instance Exists
-				if (instance_exists(camera_observing_instance) and instance_exists(render_object_selected_instance))
+				// Check if Celestial Object is being Observed and Celestial Simulator's Sub Object Selected Instance Exists
+				if (instance_exists(camera_observing_instance) and instance_exists(sub_object_selected_instance))
 				{
-					// Perform Render Object Selected Instance's Input Behaviour Tree
+					// Perform Sub Object Selected Instance's Input Behaviour Tree
 					if (temp_input_action and !input_action)
 					{
 						// Action Input Behaviour
-						switch (render_object_selected_instance.celestial_render_object_type)
+						switch (sub_object_selected_instance.celestial_sub_object_type)
 						{
-							case CelestialRenderObjectType.Unit:
+							case CelestialSubObjectType.Unit:
 								// Unit Action Behaviour - Pathfinding
-								if (temp_selection_inst == render_object_selected_instance.celestial_body_instance)
+								if (temp_selection_inst == sub_object_selected_instance.celestial_body_instance)
 								{
 									// Establish Pathfinding Goal Variables
 									var temp_pathfinding_goal_node_index = temp_selection_node_index;
@@ -354,48 +354,48 @@ else if (temp_input_select or temp_input_action)
 									var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
 									
 									// Reset Selected Unit's Behaviour to None
-									render_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.None;
-									render_object_selected_instance.unit_behaviour_target_instance = noone;
-									render_object_selected_instance.unit_behaviour_target_node_index = -1;
+									sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.None;
+									sub_object_selected_instance.unit_behaviour_target_instance = noone;
+									sub_object_selected_instance.unit_behaviour_target_node_index = -1;
 									
-									// Check if Action Render Object was selected as an Action and is on the same Celestial Body Instance as the Selected Render Object Instance
-									if (instance_exists(temp_render_object_action_inst) and temp_render_object_action_inst.celestial_body_instance == render_object_selected_instance.celestial_body_instance)
+									// Check if Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance
+									if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
 									{
-										// Set new Pathfinding Goal Behaviour based on Action Render Object Type
-										switch (temp_render_object_action_inst.celestial_render_object_type)
+										// Set new Pathfinding Goal Behaviour based on Action Sub Object Type
+										switch (temp_sub_object_action_inst.celestial_sub_object_type)
 										{
-											case CelestialRenderObjectType.Unit:
+											case CelestialSubObjectType.Unit:
 												// Check if Action Unit is Pathfinding
-												if (is_undefined(temp_render_object_action_inst.pathfinding_path))
+												if (is_undefined(temp_sub_object_action_inst.pathfinding_path))
 												{
 													// Set Pathfinding Goal as Action Unit's Position
-													temp_pathfinding_goal_node_index = temp_render_object_action_inst.pathfinding_node_index;
-													temp_pathfinding_goal_x = temp_render_object_action_inst.pathfinding_position_x;
-													temp_pathfinding_goal_y = temp_render_object_action_inst.pathfinding_position_y;
-													temp_pathfinding_goal_z = temp_render_object_action_inst.pathfinding_position_z;
-													temp_pathfinding_goal_elevation = temp_render_object_action_inst.pathfinding_position_elevation;
+													temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
+													temp_pathfinding_goal_x = temp_sub_object_action_inst.pathfinding_position_x;
+													temp_pathfinding_goal_y = temp_sub_object_action_inst.pathfinding_position_y;
+													temp_pathfinding_goal_z = temp_sub_object_action_inst.pathfinding_position_z;
+													temp_pathfinding_goal_elevation = temp_sub_object_action_inst.pathfinding_position_elevation;
 												}
 												else
 												{
 													// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
-													temp_pathfinding_goal_node_index = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.node_index, temp_render_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_x = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_x, temp_render_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_y = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_y, temp_render_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_z = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_z, temp_render_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_elevation = ds_list_find_value(temp_render_object_action_inst.pathfinding_path.position_elevation, temp_render_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_node_index = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.node_index, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_x = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_x, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_y = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_y, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_z = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_z, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
 													
 													// Set Selected Unit's Behaviour to Regroup
-													render_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.Regroup;
-													render_object_selected_instance.unit_behaviour_target_instance = temp_render_object_action_inst;
+													sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.Regroup;
+													sub_object_selected_instance.unit_behaviour_target_instance = temp_sub_object_action_inst;
 												}
 												break;
-											case CelestialRenderObjectType.City:
+											case CelestialSubObjectType.City:
 												// Set Pathfinding Goal as Action City's Position
-												temp_pathfinding_goal_node_index = temp_render_object_action_inst.pathfinding_node_index;
-												temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_render_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_render_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_render_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_render_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
+												temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_sub_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_sub_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_sub_object_action_inst.pathfinding_node_index];
+												temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_sub_object_action_inst.pathfinding_node_index];
 												break;
 											default:
 												break;
@@ -403,15 +403,15 @@ else if (temp_input_select or temp_input_action)
 									}
 									
 									// Initiate Unit Pathfinding Behaviour
-									celestial_pathfinding(render_object_selected_instance.celestial_body_instance, render_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
+									celestial_pathfinding(sub_object_selected_instance.celestial_body_instance, sub_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
 								}
 								else
 								{
 									// Behaviour for Pathfinding to Location that the Unit is not currently on
 								}
 								break;
-							case CelestialRenderObjectType.City:
-							case CelestialRenderObjectType.Satellite:
+							case CelestialSubObjectType.City:
+							case CelestialSubObjectType.Satellite:
 							default:
 								break;
 						}
@@ -419,11 +419,11 @@ else if (temp_input_select or temp_input_action)
 					else if (temp_input_select and !input_select)
 					{
 						// Select Input Behaviour
-						switch (render_object_selected_instance.celestial_render_object_type)
+						switch (sub_object_selected_instance.celestial_sub_object_type)
 						{
-							case CelestialRenderObjectType.Unit:
-							case CelestialRenderObjectType.City:
-							case CelestialRenderObjectType.Satellite:
+							case CelestialSubObjectType.Unit:
+							case CelestialSubObjectType.City:
+							case CelestialSubObjectType.Satellite:
 							default:
 								break;
 						}
@@ -433,7 +433,7 @@ else if (temp_input_select or temp_input_action)
 		}
 		
 		// Check for Camera Observing Instance Click Drag Behaviour
-		if (temp_input_select and !instance_exists(temp_render_object_selected_inst) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
+		if (temp_input_select and !instance_exists(temp_sub_object_selected_inst) and instance_exists(camera_observing_instance) and temp_selection_inst == camera_observing_instance)
 		{
 			// Determine if Input is New or if Input Drag has occured
 			if (!input_select)

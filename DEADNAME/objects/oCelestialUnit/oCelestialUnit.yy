@@ -8,15 +8,15 @@
   "managed":true,
   "name":"oCelestialUnit",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialRenderObject","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",},"resource":{"name":"sOverworld_Unit_Miniature","path":"sprites/sOverworld_Unit_Miniature/sOverworld_Unit_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_Unit_Miniature",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialSubObject","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"resource":{"name":"sOverworld_Unit_Miniature","path":"sprites/sOverworld_Unit_Miniature/sOverworld_Unit_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_Unit_Miniature",},
   ],
   "parent":{
     "name":"Instances",
     "path":"folders/Objects/Celestial/Instances.yy",
   },
   "parentObjectId":{
-    "name":"oCelestialRenderObject",
-    "path":"objects/oCelestialRenderObject/oCelestialRenderObject.yy",
+    "name":"oCelestialSubObject",
+    "path":"objects/oCelestialSubObject/oCelestialSubObject.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

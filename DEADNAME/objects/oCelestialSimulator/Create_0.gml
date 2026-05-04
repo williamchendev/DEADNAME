@@ -18,7 +18,7 @@ enum CelestialObjectType
 	Planet
 }
 
-enum CelestialRenderObjectType
+enum CelestialSubObjectType
 {
 	None,
 	Unit,
@@ -70,16 +70,6 @@ global_noise_time_spd = 0.03;
 
 global_hydrosphere_specular_intensity = 0.5;
 
-global_render_objects_unit_depth_offset = 5;
-global_render_objects_city_depth_offset = 10;
-
-global_render_objects_default_depth_transparent_start = -0.4;
-global_render_objects_default_depth_transparent_end = -0.2;
-global_render_objects_satellite_depth_transparent_start = -0.3;
-global_render_objects_satellite_depth_transparent_end = 0.5;
-global_render_path_depth_transparent_start = -0.4;
-global_render_path_depth_transparent_end = -0.25;
-
 global_clouds_scatter_point_samples_count = 8;
 global_clouds_light_depth_samples_count = 8;
 global_clouds_sample_scale = 0.008;
@@ -95,13 +85,23 @@ global_atmosphere_optical_depth_samples_count = 10;
 
 global_no_atmosphere_radius_padding = 32;
 
+global_sub_objects_unit_depth_offset = 5;
+global_sub_objects_city_depth_offset = 10;
+global_sub_objects_default_depth_transparent_start = -0.4;
+global_sub_objects_default_depth_transparent_end = -0.2;
+global_sub_objects_satellite_depth_transparent_start = -0.3;
+global_sub_objects_satellite_depth_transparent_end = 0.5;
+
+global_render_path_depth_transparent_start = -0.4;
+global_render_path_depth_transparent_end = -0.25;
+
 // Bloom Settings
 bloom_global_size = 3;
 bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
 
-// Render Object Settings
-render_object_city_name_vertical_offset = -8;
+// Sub Object Settings
+sub_object_city_name_vertical_offset = -8;
 
 // Triangle Settings
 triangle_angle = -105;
@@ -161,18 +161,18 @@ solar_system_render_depth_sorting_depth_array = array_create(0);
 clouds_render_depth_sorting_index_array = array_create(0);
 clouds_render_depth_sorting_depth_array = array_create(0);
 
-render_objects_back_render_depth_sorting_index_array = array_create(0);
-render_objects_back_render_depth_sorting_depth_array = array_create(0);
+sub_objects_back_render_depth_sorting_index_array = array_create(0);
+sub_objects_back_render_depth_sorting_depth_array = array_create(0);
 
-render_objects_front_render_depth_sorting_index_array = array_create(0);
-render_objects_front_render_depth_sorting_depth_array = array_create(0);
+sub_objects_front_render_depth_sorting_index_array = array_create(0);
+sub_objects_front_render_depth_sorting_depth_array = array_create(0);
 
 // Input Variables
 input_select = false;
 input_action = false;
 
 // Selection Variables
-render_object_selected_instance = noone;
+sub_object_selected_instance = noone;
 
 selected_unit_movement_path_ui = false;
 selected_unit_movement_path_entries = 0;
@@ -496,14 +496,14 @@ light_source_intensity = array_create(CelestialSimMaxLights);
 light_source_emitter_size = array_create(CelestialSimMaxLights);
 
 // Render Depth Sort Type Functions
-render_objects_back_render_depth_sort = function(current, next) 
+sub_objects_back_render_depth_sort = function(current, next) 
 {
-	return CelestialSimulator.render_objects_back_render_depth_sorting_depth_array[next] < CelestialSimulator.render_objects_back_render_depth_sorting_depth_array[current] ? -1 : 1;
+	return CelestialSimulator.sub_objects_back_render_depth_sorting_depth_array[next] < CelestialSimulator.sub_objects_back_render_depth_sorting_depth_array[current] ? -1 : 1;
 }
 
-render_objects_front_render_depth_sort = function(current, next) 
+sub_objects_front_render_depth_sort = function(current, next) 
 {
-	return CelestialSimulator.render_objects_front_render_depth_sorting_depth_array[next] < CelestialSimulator.render_objects_front_render_depth_sorting_depth_array[current] ? -1 : 1;
+	return CelestialSimulator.sub_objects_front_render_depth_sorting_depth_array[next] < CelestialSimulator.sub_objects_front_render_depth_sorting_depth_array[current] ? -1 : 1;
 }
 
 clouds_render_depth_sort = function(current, next) 
@@ -1004,7 +1004,7 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 }
 
 // Rendering Methods
-render_celestial_object_render_object_layer = function(celestial_object, front_layer = true)
+render_celestial_object_sub_object_layer = function(celestial_object, front_layer = true)
 {
 	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
 	surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
@@ -1023,67 +1023,67 @@ render_celestial_object_render_object_layer = function(celestial_object, front_l
 	// Enable Celestial Sprite Unlit Rendering Shader
 	shader_set(shd_celestial_sprite_unlit);
 	
-	// Check if Celestial Simulator should Render the Miniature Version of the Render Object's Sprite
-	var temp_render_object_miniature_icon = CelestialSimulator.camera_observing_instance_radius_offset_value > CelestialSimulator.camera_observing_instance_radius_offset_zoom_in_threshold or CelestialSimulator.camera_observing_instance != celestial_object;
+	// Check if Celestial Simulator should Render the Miniature Version of the Sub Object's Sprite
+	var temp_sub_object_miniature_icon = CelestialSimulator.camera_observing_instance_radius_offset_value > CelestialSimulator.camera_observing_instance_radius_offset_zoom_in_threshold or CelestialSimulator.camera_observing_instance != celestial_object;
 	
-	// Establish Render Objects Arrays based on if Rendering the Front or Back Layer of the Celestial Object
-	var temp_render_objects_index_array = front_layer ? celestial_object.render_objects_front_layer_index_array : celestial_object.render_objects_back_layer_index_array;
-	var temp_render_objects_depth_array = front_layer ? celestial_object.render_objects_front_layer_depth_array : celestial_object.render_objects_back_layer_depth_array;
-	var temp_render_objects_instance_array = front_layer ? celestial_object.render_objects_front_layer_instance_array : celestial_object.render_objects_back_layer_instance_array;
+	// Establish Sub Objects Arrays based on if Rendering the Front or Back Layer of the Celestial Object
+	var temp_sub_objects_index_array = front_layer ? celestial_object.sub_objects_front_layer_index_array : celestial_object.sub_objects_back_layer_index_array;
+	var temp_sub_objects_depth_array = front_layer ? celestial_object.sub_objects_front_layer_depth_array : celestial_object.sub_objects_back_layer_depth_array;
+	var temp_sub_objects_instance_array = front_layer ? celestial_object.sub_objects_front_layer_instance_array : celestial_object.sub_objects_back_layer_instance_array;
 	
-	// Iterate through Celestial Object's Depth Sorted Celestial Render Objects
-	var temp_render_object_index = 0;
+	// Iterate through Celestial Object's Depth Sorted Celestial Sub Objects
+	var temp_sub_object_index = 0;
 	
-	repeat (array_length(temp_render_objects_index_array))
+	repeat (array_length(temp_sub_objects_index_array))
 	{
-		// Find Celestial Object's Render Object Index
-		var temp_index = temp_render_objects_index_array[temp_render_object_index];
+		// Find Celestial Object's Sub Object Index
+		var temp_index = temp_sub_objects_index_array[temp_sub_object_index];
 		
-		// Find Celestial Object's Render Object Depth & Instance from Render Object Index
-		var temp_depth = temp_render_objects_depth_array[temp_index];
-		var temp_instance = temp_render_objects_instance_array[temp_index];
+		// Find Celestial Object's Sub Object Depth & Instance from Sub Object Index
+		var temp_depth = temp_sub_objects_depth_array[temp_index];
+		var temp_instance = temp_sub_objects_instance_array[temp_index];
 		
-		// Establish Render Object's Unlit Sprite Index and Image Index
-		var temp_sprite_index = temp_render_object_miniature_icon and temp_instance != CelestialSimulator.render_object_selected_instance ? temp_instance.miniature_sprite_index : temp_instance.sprite_index;
-		var temp_image_index = temp_render_object_miniature_icon and temp_instance != CelestialSimulator.render_object_selected_instance ? 0 : temp_instance.image_index;
+		// Establish Sub Object's Unlit Sprite Index and Image Index
+		var temp_sprite_index = temp_sub_object_miniature_icon and temp_instance != CelestialSimulator.sub_object_selected_instance ? temp_instance.miniature_sprite_index : temp_instance.sprite_index;
+		var temp_image_index = temp_sub_object_miniature_icon and temp_instance != CelestialSimulator.sub_object_selected_instance ? 0 : temp_instance.image_index;
 		
-		// Establish Render Object's Unlit Sprite Alpha
+		// Establish Sub Object's Unlit Sprite Alpha
 		var temp_alpha = temp_instance.image_alpha;
 		
-		// Check Celestial Render Object's Render Object Type to perform appropriate Render Behaviour
-		switch (temp_instance.celestial_render_object_type)
+		// Check Celestial Sub Object's Sub Object Type to perform appropriate Render Behaviour
+		switch (temp_instance.celestial_sub_object_type)
 		{
-			case CelestialRenderObjectType.Unit:
-			case CelestialRenderObjectType.City:
-				// Establish Render Object's Unlit Sprite Alpha Transparency
-				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_default_depth_transparent_start, temp_depth);
+			case CelestialSubObjectType.Unit:
+			case CelestialSubObjectType.City:
+				// Establish Sub Object's Unlit Sprite Alpha Transparency
+				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_start, temp_depth);
 				temp_alpha *= power(temp_default_depth_alpha, 3);
 				
-				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
+				// Establish Sub Object's Unlit Sprite Shader Depth Rendering Properties
 				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius, temp_depth + celestial_object.render_depth_radius, temp_alpha) + 50);
 				break;
-			case CelestialRenderObjectType.Satellite:
-				// Establish Render Object's Unlit Sprite Alpha Transparency
-				var temp_satellite_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_satellite_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_render_objects_satellite_depth_transparent_start, temp_depth);
+			case CelestialSubObjectType.Satellite:
+				// Establish Sub Object's Unlit Sprite Alpha Transparency
+				var temp_satellite_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_satellite_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_satellite_depth_transparent_start, temp_depth);
 				temp_alpha *= power(temp_satellite_depth_alpha, 3);
 				
-				// Establish Render Object's Unlit Sprite Shader Depth Rendering Properties
+				// Establish Sub Object's Unlit Sprite Shader Depth Rendering Properties
 				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius * 2, temp_depth + celestial_object.render_depth_radius, temp_alpha));
 				break;
-			case CelestialRenderObjectType.None:
+			case CelestialSubObjectType.None:
 			default:
-				// Render Object Instance is Invalid - Skip Render
+				// Sub Object Instance is Invalid - Skip Render
 				break;
 		}
 		
-		// Establish Render Object's Unlit Sprite Shader Emissive Rendering Properties
+		// Establish Sub Object's Unlit Sprite Shader Emissive Rendering Properties
 		shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_emissive_index, temp_instance.emissive * temp_instance.emissive_multiplier);
 		
-		// Render Object Draw Sprite Behaviour
+		// Sub Object Draw Sprite Behaviour
 		draw_sprite_ext(temp_sprite_index, temp_image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_alpha);
 		
-		// Increment Celestial Object's Render Object Index
-		temp_render_object_index++;
+		// Increment Celestial Object's Sub Object Index
+		temp_sub_object_index++;
 	}
 	
 	// Reset Shader

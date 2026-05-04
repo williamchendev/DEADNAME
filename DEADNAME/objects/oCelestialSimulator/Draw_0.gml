@@ -146,10 +146,10 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(false);
 				gpu_set_ztestenable(false);
 				
-				// Render Celestial Object's Render Object Back Layer
-				if (render_objects_enabled)
+				// Render Celestial Object's Sub Object Back Layer
+				if (sub_objects_render_enabled)
 				{
-					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, false);
+					CelestialSimulator.render_celestial_object_sub_object_layer(temp_celestial_object_instance, false);
 				}
 				
 				// Set Default Blendmode
@@ -313,8 +313,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 				gpu_set_zwriteenable(false);
 				gpu_set_ztestenable(false);
 				
-				// Check if Celestial Object's UI Rendering is Enabled
-				if (render_objects_enabled)
+				// Check if Celestial Object's Sub Object Rendering is Enabled
+				if (sub_objects_render_enabled)
 				{
 					// Check if Celestial Object is the Celestial Simulator's Observed Instance and Celestial Simulator Observation UI should be Rendered
 					if (temp_celestial_object_instance == CelestialSimulator.camera_observing_instance)
@@ -327,8 +327,8 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						}
 					}
 					
-					// Render Celestial Object's Render Object Front Layer
-					CelestialSimulator.render_celestial_object_render_object_layer(temp_celestial_object_instance, true);
+					// Render Celestial Object's Sub Object Front Layer
+					CelestialSimulator.render_celestial_object_sub_object_layer(temp_celestial_object_instance, true);
 				}
 				
 				// Check if Planet's Atmosphere is Enabled and should be Rendered
