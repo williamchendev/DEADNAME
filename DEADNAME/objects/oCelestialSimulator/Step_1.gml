@@ -229,6 +229,103 @@ repeat (array_length(solar_systems))
 							{
 								// Find Unit Pathfinding Path Node Index
 								var temp_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, temp_unit_instance.pathfinding_path_index);
+								var temp_next_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, min(temp_unit_instance.pathfinding_path_index + 1, temp_unit_instance.pathfinding_path.path_size - 1));
+								
+								// Establish Enemy Unit Variables
+								var temp_enemy_unit_instance = noone;
+								var temp_enemy_unit_distance = infinity;
+								
+								// Check for Hostile Unit at Current & Next Pathfinding Node Indexes
+								if (instance_exists(temp_unit_instance.unit_faction))
+								{
+									// Iterate through Pathfinding Node Units Array to find Hostile Enemy Unit
+									var temp_pathfinding_node_units_array_index = 0;
+									
+									repeat (array_length(pathfinding_node_units_array[temp_pathfinding_node_index]))
+									{
+										// Find Unit Instance from Pathfinding Node Units Array
+										var temp_pathfinding_node_units_array_unit_instance = array_get(pathfinding_node_units_array[temp_pathfinding_node_index], temp_pathfinding_node_units_array_index);
+										
+										// Check if Unit Faction Exists and Unit Faction Relationship Exists
+										if (instance_exists(temp_pathfinding_node_units_array_unit_instance.unit_faction) and ds_map_exists(temp_unit_instance.unit_faction.relationships, temp_pathfinding_node_units_array_unit_instance.unit_faction))
+										{
+											// Find Relationship Status between Pathfinding Unit Faction and Pathfinding Node Unit Instance Faction
+											var temp_pathfinding_node_unit_instance_faction_relationship = ds_map_find_value(temp_unit_instance.unit_faction.relationships, temp_pathfinding_node_units_array_unit_instance.unit_faction);
+											
+											// Check if Relationship Status is Hostile
+											if (temp_pathfinding_node_unit_instance_faction_relationship == CelestialFactionRelationshipType.Hostile)
+											{
+												// Calculate Distance between Pathfinding Unit Instance and Pathfinding Node Unit Instance
+												var temp_enemy_unit_comparison_distance = point_distance_3d
+												(
+													temp_unit_instance.pathfinding_position_x, 
+													temp_unit_instance.pathfinding_position_y, 
+													temp_unit_instance.pathfinding_position_z,
+													temp_pathfinding_node_units_array_unit_instance.pathfinding_position_x,
+													temp_pathfinding_node_units_array_unit_instance.pathfinding_position_y,
+													temp_pathfinding_node_units_array_unit_instance.pathfinding_position_z,
+												);
+												
+												// Compare Distance to Pathfinding Node Unit Instance with Enemy Unit Distance Variable
+												if (temp_enemy_unit_comparison_distance < temp_enemy_unit_distance)
+												{
+													// Update Enemy Unit Variable with new closer Enemy Unit Instance
+													temp_enemy_unit_instance = temp_pathfinding_node_units_array_unit_instance;
+													temp_enemy_unit_distance = temp_enemy_unit_comparison_distance;
+												}
+											}
+										}
+										
+										// Increment Pathfinding Node Units Array Index
+										temp_pathfinding_node_units_array_index++;
+									}
+									
+									// Check if Next Pathfinding Node Index is different from the Current Pathfinding Node Index
+									if (temp_pathfinding_node_index != temp_next_pathfinding_node_index)
+									{
+										// Iterate through Pathfinding Node Units Array to find Hostile Enemy Unit
+										var temp_next_pathfinding_node_units_array_index = 0;
+										
+										repeat (array_length(pathfinding_node_units_array[temp_next_pathfinding_node_index]))
+										{
+											// Find Unit Instance from Pathfinding Node Units Array
+											var temp_next_pathfinding_node_units_array_unit_instance = array_get(pathfinding_node_units_array[temp_next_pathfinding_node_index], temp_next_pathfinding_node_units_array_index);
+											
+											// Check if Unit Faction Exists and Unit Faction Relationship Exists
+											if (instance_exists(temp_next_pathfinding_node_units_array_unit_instance.unit_faction) and ds_map_exists(temp_unit_instance.unit_faction.relationships, temp_next_pathfinding_node_units_array_unit_instance.unit_faction))
+											{
+												// Find Relationship Status between Pathfinding Unit Faction and Pathfinding Node Unit Instance Faction
+												var temp_next_pathfinding_node_unit_instance_faction_relationship = ds_map_find_value(temp_unit_instance.unit_faction.relationships, temp_next_pathfinding_node_units_array_unit_instance.unit_faction);
+												
+												// Check if Relationship Status is Hostile
+												if (temp_next_pathfinding_node_unit_instance_faction_relationship == CelestialFactionRelationshipType.Hostile)
+												{
+													// Calculate Distance between Pathfinding Unit Instance and Pathfinding Node Unit Instance
+													var temp_next_enemy_unit_comparison_distance = point_distance_3d
+													(
+														temp_unit_instance.pathfinding_position_x, 
+														temp_unit_instance.pathfinding_position_y, 
+														temp_unit_instance.pathfinding_position_z,
+														temp_next_pathfinding_node_units_array_unit_instance.pathfinding_position_x,
+														temp_next_pathfinding_node_units_array_unit_instance.pathfinding_position_y,
+														temp_next_pathfinding_node_units_array_unit_instance.pathfinding_position_z,
+													);
+													
+													// Compare Distance to Pathfinding Node Unit Instance with Enemy Unit Distance Variable
+													if (temp_next_enemy_unit_comparison_distance < temp_enemy_unit_distance)
+													{
+														// Update Enemy Unit Variable with new closer Enemy Unit Instance
+														temp_enemy_unit_instance = temp_next_pathfinding_node_units_array_unit_instance;
+														temp_enemy_unit_distance = temp_next_enemy_unit_comparison_distance;
+													}
+												}
+											}
+											
+											// Increment Pathfinding Node Units Array Index
+											temp_next_pathfinding_node_units_array_index++;
+										}
+									}
+								}
 								
 								// Find Unit Pathfinding Path Current Elevation
 								var temp_pathfinding_unit_elevation = temp_unit_instance.pathfinding_position_elevation;
@@ -306,17 +403,14 @@ repeat (array_length(solar_systems))
 								// Find Unit Pathfinding Movement Spend
 								var temp_pathfinding_movement_power_spend = min(temp_movement_power, temp_pathfinding_remaining_movement_cost);
 								
-								// Decrement Unit Movement Power
-								temp_movement_power -= temp_pathfinding_remaining_movement_cost;
-								
 								// Calculate Pathfinding Path Progress Lerp Value
 								var temp_pathfinding_path_lerp_value = temp_pathfinding_remaining_movement_cost <= 0 ? 1 : temp_pathfinding_movement_power_spend / temp_pathfinding_remaining_movement_cost;
 								
-								// Update Unit's Pathfinding Position & Elevation based on Pathfinding Path Progress
-								temp_unit_instance.pathfinding_position_x = lerp(temp_pathfinding_unit_x, temp_pathfinding_target_x, temp_pathfinding_path_lerp_value);
-								temp_unit_instance.pathfinding_position_y = lerp(temp_pathfinding_unit_y, temp_pathfinding_target_y, temp_pathfinding_path_lerp_value);
-								temp_unit_instance.pathfinding_position_z = lerp(temp_pathfinding_unit_z, temp_pathfinding_target_z, temp_pathfinding_path_lerp_value);
-								temp_unit_instance.pathfinding_position_elevation = lerp(temp_pathfinding_unit_elevation, temp_pathfinding_target_elevation, temp_pathfinding_path_lerp_value);
+								// Calculate Unit's Pathfinding Position & Elevation based on Pathfinding Path Progress
+								var temp_pathfinding_movement_position_x = lerp(temp_pathfinding_unit_x, temp_pathfinding_target_x, temp_pathfinding_path_lerp_value);
+								var temp_pathfinding_movement_position_y = lerp(temp_pathfinding_unit_y, temp_pathfinding_target_y, temp_pathfinding_path_lerp_value);
+								var temp_pathfinding_movement_position_z = lerp(temp_pathfinding_unit_z, temp_pathfinding_target_z, temp_pathfinding_path_lerp_value);
+								var temp_pathfinding_movement_position_elevation = lerp(temp_pathfinding_unit_elevation, temp_pathfinding_target_elevation, temp_pathfinding_path_lerp_value);
 								
 								// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
 								var temp_pathfinding_unit_position_u_angle = (0.5 - arctan2(-temp_pathfinding_unit_x, -temp_pathfinding_unit_z) / (2 * pi)) * 360;
@@ -325,6 +419,28 @@ repeat (array_length(solar_systems))
 								// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
 								var temp_pathfinding_horizontal_angle_difference = angle_difference(temp_pathfinding_target_position_u_angle, temp_pathfinding_unit_position_u_angle);
 								temp_unit_instance.image_xscale = temp_pathfinding_horizontal_angle_difference != 0 ? sign(temp_pathfinding_horizontal_angle_difference) : temp_unit_instance.image_xscale;
+								
+								// Check if Enemy Unit Instance exists in Pathfinding Path Direction
+								if (instance_exists(temp_enemy_unit_instance))
+								{
+									// Calculate Normalized Value of Pathfinding Distance Traveled
+									var temp_pathfinding_normalized_distance = point_distance_3d(temp_pathfinding_unit_x, temp_pathfinding_unit_y, temp_pathfinding_unit_z, temp_pathfinding_target_x, temp_pathfinding_target_y, temp_pathfinding_target_z) * temp_pathfinding_path_lerp_value;
+									
+									// Check if Distance Traveled would put Unit within Combat Range of Enemy Unit
+									if (temp_enemy_unit_distance - temp_pathfinding_normalized_distance < pathfinding_node_distance)
+									{
+										// Initiate Combat Behaviour
+									}
+								}
+								
+								// Update Unit's Pathfinding Position & Elevation
+								temp_unit_instance.pathfinding_position_x = temp_pathfinding_movement_position_x;
+								temp_unit_instance.pathfinding_position_y = temp_pathfinding_movement_position_y;
+								temp_unit_instance.pathfinding_position_z = temp_pathfinding_movement_position_z;
+								temp_unit_instance.pathfinding_position_elevation = temp_pathfinding_movement_position_elevation;
+								
+								// Decrement Unit Movement Power
+								temp_movement_power -= temp_pathfinding_remaining_movement_cost;
 								
 								// Check if Unit's has made enough Path Progress to elapse to the next Pathfinding Node
 								if (temp_pathfinding_path_lerp_value >= 1)

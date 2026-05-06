@@ -70,7 +70,7 @@ repeat (squad_count)
 			if (!is_undefined(temp_squad_sight_collision_instance_squad_index) and ds_list_find_value(squad_exists_list, temp_squad_sight_collision_instance_squad_index))
 			{
 				// Check Relationship between Collision Unit's Faction to Squad Leader's Faction
-				var temp_squad_sight_collision_instance_squad_faction_relationship = faction_get_relationship(temp_squad_faction, temp_squad_sight_collision_instance.faction_id);
+				var temp_squad_sight_collision_instance_squad_faction_relationship = id.faction_get_relationship(temp_squad_faction, temp_squad_sight_collision_instance.faction_id);
 				
 				// Hostile Collision Unit Squad Faction Behaviour
 				if (temp_squad_sight_collision_instance_squad_faction_relationship == FactionRelationship.Hostile)

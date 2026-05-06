@@ -7,6 +7,9 @@ event_inherited();
 // Initialize Unit Celestial Sub Object Type
 celestial_sub_object_type = CelestialSubObjectType.Unit;
 
+// Initialize Unit Faction
+unit_faction = noone;
+
 // Pathfinding Variables
 pathfinding_path = undefined;
 pathfinding_path_index = 0;

@@ -74,3 +74,33 @@ if (array_length(satellites) > 0)
 
 satellites = -1;
 
+// Destroy all Battle Instances indexed in Celestial Body's Battle Array
+if (array_length(battles) > 0)
+{
+	var temp_battle_index = array_length(battles) - 1;
+	
+	repeat (array_length(battles))
+	{
+		// Check if Battle Instance Exists
+		if (instance_exists(battles[temp_battle_index]))
+		{
+			// Destroy Battle Instance
+			instance_destroy(battles[temp_battle_index]);
+		}
+		
+		// Decrement Battle Index
+		temp_battle_index--;
+	}
+	
+	array_resize(battles, 0);
+}
+
+battles = -1;
+
+// Destroy Pathfinding Node Battles Map
+if (!is_undefined(pathfinding_node_battles_map))
+{
+	ds_map_destroy(pathfinding_node_battles_map);
+	pathfinding_node_battles_map = -1;
+}
+

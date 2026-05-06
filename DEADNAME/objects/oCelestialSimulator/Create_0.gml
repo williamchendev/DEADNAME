@@ -151,6 +151,9 @@ global_clock_delta_time = 0;
 // Pathfinding Variables
 pathfinding_queue_list = ds_list_create();
 
+// Faction Variables
+factions = array_create(0);
+
 // Rendering Variables
 global_noise_time = 0;
 global_hydrosphere_time = 0;
@@ -560,12 +563,21 @@ clear_celestial_sim = function()
 		temp_solar_system_index--;
 	}
 	
-	// Clear all Celestial Simulator's Arrays
+	// Clear all Celestial Simulator's Solar System Arrays
 	array_resize(CelestialSimulator.solar_systems, 0);
 	array_resize(CelestialSimulator.solar_systems_ids, 0);
 	array_resize(CelestialSimulator.solar_systems_names, 0);
 	array_resize(CelestialSimulator.solar_systems_orbit_update_order, 0);
 	array_resize(CelestialSimulator.solar_systems_background_stars_vertex_buffer, 0);
+	
+	// Clear Celestial Simulator's Faction Array
+	array_resize(CelestialSimulator.factions, 0);
+	
+	// Destroy Celestial Faction Instances
+	with (oCelestialFaction)
+	{
+		instance_destroy();
+	}
 }
 
 add_solar_system = function(solar_system_id, solar_system_name)

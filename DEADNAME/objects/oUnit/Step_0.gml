@@ -28,6 +28,9 @@ if (unit_health <= 0)
 #region Unit Behaviour
 if (!player_input)
 {
+	// Establish Squad Index
+	var temp_squad_index = squad_id != SquadIDNull ? ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id) : undefined;
+	
 	// Establish Behaviour Variables
 	var temp_squad_properties = undefined;
 	var temp_squad_leader_instance = undefined;
@@ -37,11 +40,8 @@ if (!player_input)
     var temp_follow_behaviour_squad_movement_position_y = y;
 	
 	// Unit Squad Behaviour
-	if (squad_id != SquadIDNull)
+	if (!is_undefined(temp_squad_index))
 	{
-		// Establish Squad Index
-		var temp_squad_index = ds_map_find_value(GameManager.squad_behaviour_director.squad_ids_map, squad_id);
-		
 		// Establish Squad Properties
 		temp_squad_properties = ds_list_find_value(GameManager.squad_behaviour_director.squad_properties_list, temp_squad_index);
 		

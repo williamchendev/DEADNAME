@@ -225,6 +225,10 @@ pathfinding_portal_y_array = -1;
 pathfinding_portal_z_array = -1;
 pathfinding_portal_elevation_array = -1;
 
+pathfinding_node_distance = -1;
+
+pathfinding_node_battles_map = undefined;
+
 /// @function celestial_pathfinding_heuristic(celestial_object, first_node_index, second_node_index);
 /// @description Finds the distance heuristic between two Pathfinding Node Indexes on the Celestial Object
 /// @param {int} first_node_index The first Pathfinding Node's Index to find the distance heuristic relative to the second Pathfinding Node Index
@@ -704,6 +708,22 @@ if (pathfinding_enabled)
 	ds_map_destroy(temp_pathfinding_edges_map);
 	temp_pathfinding_edges_map = -1;
 	
+	// Initialize Pathfinding Node Distance
+	var temp_second_pathfinding_node_index = array_get(pathfinding_node_edges_portal_left_array[0], 0);
+	
+	var temp_first_pathfinding_node_x = pathfinding_portal_x_array[0];
+	var temp_first_pathfinding_node_y = pathfinding_portal_y_array[0];
+	var temp_first_pathfinding_node_z = pathfinding_portal_z_array[0];
+	
+	var temp_second_pathfinding_node_x = pathfinding_portal_x_array[temp_second_pathfinding_node_index];
+	var temp_second_pathfinding_node_y = pathfinding_portal_y_array[temp_second_pathfinding_node_index];
+	var temp_second_pathfinding_node_z = pathfinding_portal_z_array[temp_second_pathfinding_node_index];
+	
+	pathfinding_node_distance = point_distance_3d(temp_first_pathfinding_node_x, temp_first_pathfinding_node_y, temp_first_pathfinding_node_z, temp_second_pathfinding_node_x, temp_second_pathfinding_node_y, temp_second_pathfinding_node_z);
+	
+	// Initialize Pathfinding Node Battles Map
+	pathfinding_node_battles_map = ds_map_create();
+	
 	/*
 	var temp_goals = [ 1, 1, 1, 1, 1, 1, 1, 1 ];
 	show_debug_message(temp_goals);
@@ -792,6 +812,9 @@ cities = array_create(0);
 
 // Initialize Satellite Arrays
 satellites = array_create(0);
+
+// Initialize Battles Array
+battles = array_create(0);
 
 // Celestial Body Functions
 add_unit_node = function(unit_instance, node_index)

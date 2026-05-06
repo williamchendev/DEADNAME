@@ -325,16 +325,16 @@ remove_unit_from_squad = function(squad_id, squad_unit)
                 //
                 if (is_undefined(temp_new_squad_leader))
                 {
-                    temp_squad_unit_instance = ds_list_find_value(temp_squad_units_list, 0);
+                    temp_new_squad_leader = ds_list_find_value(temp_squad_units_list, 0);
                 }
                 
                 //
-                ds_list_set(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index, temp_squad_unit_instance);
+                ds_list_set(GameManager.squad_behaviour_director.squad_leader_list, temp_squad_index, temp_new_squad_leader);
                 
                 //
-                if (!temp_squad_unit_instance.player_input)
+                if (!temp_new_squad_leader.player_input)
                 {
-                	temp_squad_unit_instance.squad_leader = true;
+                	temp_new_squad_leader.squad_leader = true;
                 }
             }
         }
