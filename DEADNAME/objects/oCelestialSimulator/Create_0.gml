@@ -573,8 +573,23 @@ clear_celestial_sim = function()
 	// Clear Celestial Simulator's Faction Array
 	array_resize(CelestialSimulator.factions, 0);
 	
-	// Destroy Celestial Faction Instances
+	// Destroy Remaining Celestial Instances
 	with (oCelestialFaction)
+	{
+		instance_destroy();
+	}
+	
+	with (oCelestialBody)
+	{
+		instance_destroy();
+	}
+	
+	with (oCelestialSubObject)
+	{
+		instance_destroy();
+	}
+	
+	with (oCelestialBattle)
 	{
 		instance_destroy();
 	}

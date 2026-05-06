@@ -231,6 +231,56 @@ repeat (array_length(solar_systems))
 								var temp_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, temp_unit_instance.pathfinding_path_index);
 								var temp_next_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, min(temp_unit_instance.pathfinding_path_index + 1, temp_unit_instance.pathfinding_path.path_size - 1));
 								
+								// Check if Celestial Battle exists at the given Pathfinding Nodes
+								if (ds_map_exists(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}"))
+								{
+									// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
+									var temp_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}");
+									
+									// Check Unit Faction Index within Battle Instance
+									var temp_pathfinding_node_unit_faction_index = array_get_index(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+									
+									// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
+									if (temp_pathfinding_node_unit_faction_index == -1)
+									{
+										// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
+										temp_pathfinding_node_unit_faction_index = array_length(temp_pathfinding_node_battle_instance.battle_factions);
+										
+										// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
+										array_push(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+									}
+									
+									// Index the Unit Instance within the Celestial Battle's Units Array
+									array_push(temp_pathfinding_node_battle_instance.battle_units[temp_pathfinding_node_unit_faction_index], temp_unit_instance);
+									
+									// Break from Movement Behaviour Loop
+									break;
+								}
+								else if (ds_map_exists(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}"))
+								{
+									// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
+									var temp_next_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}");
+									
+									// Check Unit Faction Index within Battle Instance
+									var temp_next_pathfinding_node_unit_faction_index = array_get_index(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+									
+									// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
+									if (temp_next_pathfinding_node_unit_faction_index == -1)
+									{
+										// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
+										temp_next_pathfinding_node_unit_faction_index = array_length(temp_next_pathfinding_node_battle_instance.battle_factions);
+										
+										// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
+										array_push(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+									}
+									
+									// Index the Unit Instance within the Celestial Battle's Units Array
+									array_push(temp_next_pathfinding_node_battle_instance.battle_units[temp_next_pathfinding_node_unit_faction_index], temp_unit_instance);
+									
+									// Break from Movement Behaviour Loop
+									break;
+								}
+								
 								// Establish Enemy Unit Variables
 								var temp_enemy_unit_instance = noone;
 								var temp_enemy_unit_distance = infinity;
@@ -430,6 +480,7 @@ repeat (array_length(solar_systems))
 									if (temp_enemy_unit_distance - temp_pathfinding_normalized_distance < pathfinding_node_distance)
 									{
 										// Initiate Combat Behaviour
+										celestial_battle_create_from_pathfinding_node(id, temp_unit_instance.pathfinding_node_index, temp_enemy_unit_instance.pathfinding_node_index);
 									}
 								}
 								
