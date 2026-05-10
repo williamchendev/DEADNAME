@@ -266,8 +266,8 @@ repeat (array_length(temp_solar_system))
 		}
 	}
 	
-	// Create Celestial Object's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
-	var temp_celestial_obj_rotation_matrix = rotation_matrix_from_euler_angles(temp_celestial_object_instance.euler_angle_x, temp_celestial_object_instance.euler_angle_y, temp_celestial_object_instance.euler_angle_z);
+	// Establish Celestial Object's Rotation Matrix 
+	var temp_celestial_obj_rotation_matrix = temp_celestial_object_instance.rotation_matrix;
 	
 	// Reset Celestial Object's Sub Object Layers Toggle
 	temp_celestial_object_instance.sub_objects_render_enabled = false;
@@ -915,9 +915,6 @@ repeat (array_length(temp_solar_system))
 			// Skip Celestial Object Depth Sorting Behaviour
 			break;
 	}
-	
-	// Delete Unused Array
-	array_resize(temp_celestial_obj_rotation_matrix, 0);
 	
 	// Index Celestial Object's Index into Celestial Simulator's Render Depth Sorting Arrays
 	array_push(solar_system_render_depth_sorting_index_array, temp_celestial_object_index);

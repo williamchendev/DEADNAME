@@ -22,6 +22,10 @@ function celestial_battle_create_from_pathfinding_node(celestial_object, pathfin
 	// Create new Celestial Battle Instance
 	var temp_celestial_battle_instance = instance_create_depth(0, 0, 0, oCelestialBattle);
 	
+	// Update Celestial Battle Pathfinding Node Indexes
+	temp_celestial_battle_instance.pathfinding_node_a_index = pathfinding_node_a_index;
+	temp_celestial_battle_instance.pathfinding_node_b_index = pathfinding_node_b_index;
+	
 	// Index Celestial Battle Instance in Celestial Object Battle Array
 	array_push(celestial_object.battles, temp_celestial_battle_instance);
 	

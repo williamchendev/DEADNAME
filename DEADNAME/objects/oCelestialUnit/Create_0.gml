@@ -10,6 +10,9 @@ celestial_sub_object_type = CelestialSubObjectType.Unit;
 // Initialize Unit Faction
 unit_faction = noone;
 
+// Solar Variables
+unit_solar = CelestialUnitSolarType.Twilight;
+
 // Pathfinding Variables
 pathfinding_path = undefined;
 pathfinding_path_index = 0;
@@ -19,8 +22,11 @@ pathfinding_position_y = 0;
 pathfinding_position_z = 0;
 pathfinding_position_elevation = 0;
 
+// Combat Variables
+engaged_in_battle = false;
+
 // Behaviour Variables
-unit_behaviour = CelestialUnitBehaviour.None;
+unit_behaviour = CelestialUnitBehaviourType.None;
 
 unit_behaviour_target_instance = noone;
 unit_behaviour_target_node_index = -1;

@@ -142,6 +142,7 @@ solar_system_index = -1;
 solar_systems = array_create(0);
 solar_systems_ids = array_create(0);
 solar_systems_names = array_create(0);
+solar_systems_suns = array_create(0);
 solar_systems_orbit_update_order = array_create(0);
 solar_systems_background_stars_vertex_buffer = array_create(0);
 
@@ -567,6 +568,7 @@ clear_celestial_sim = function()
 	array_resize(CelestialSimulator.solar_systems, 0);
 	array_resize(CelestialSimulator.solar_systems_ids, 0);
 	array_resize(CelestialSimulator.solar_systems_names, 0);
+	array_resize(CelestialSimulator.solar_systems_suns, 0);
 	array_resize(CelestialSimulator.solar_systems_orbit_update_order, 0);
 	array_resize(CelestialSimulator.solar_systems_background_stars_vertex_buffer, 0);
 	
@@ -610,6 +612,7 @@ add_solar_system = function(solar_system_id, solar_system_name)
 	array_push(CelestialSimulator.solar_systems, array_create(0));
 	array_push(CelestialSimulator.solar_systems_ids, solar_system_id);
 	array_push(CelestialSimulator.solar_systems_names, solar_system_name);
+	array_push(CelestialSimulator.solar_systems_suns, noone);
 	array_push(CelestialSimulator.solar_systems_orbit_update_order, array_create(0));
 	array_push(CelestialSimulator.solar_systems_background_stars_vertex_buffer, -1);
 }
@@ -640,9 +643,10 @@ remove_solar_system = function(solar_system_id)
 		array_resize(temp_solar_system, 0);
 		array_delete(CelestialSimulator.solar_systems, temp_solar_system_index, 1);
 		
-		// Delete Solar System's ID and Name from Celestial Simulator's Arrays
+		// Delete Solar System's ID, Name, and Sun Instance from Celestial Simulator's Arrays
 		array_delete(CelestialSimulator.solar_systems_ids, temp_solar_system_index, 1);
 		array_delete(CelestialSimulator.solar_systems_names, temp_solar_system_index, 1);
+		array_delete(CelestialSimulator.solar_systems_suns, temp_solar_system_index, 1);
 		
 		// Delete Solar System's Update Order Array from Celestial Simulator's Arrays
 		var temp_solar_system_update_order = CelestialSimulator.solar_systems_orbit_update_order[temp_solar_system_index];
@@ -692,6 +696,12 @@ add_celestial_object = function(solar_system_id, celestial_object)
 				temp_solar_system[n].orbit_parent_instance = celestial_object;
 			}
 		}
+		
+		// Update Solar System Sun Instance if Sun
+		if (celestial_object.celestial_object_type == CelestialObjectType.Sun and !instance_exists(CelestialSimulator.solar_systems_suns[temp_solar_system_index]))
+		{
+			CelestialSimulator.solar_systems_suns[temp_solar_system_index] = celestial_object;
+		}
 	}
 }
 
@@ -726,6 +736,12 @@ remove_celestial_object = function(solar_system_id, celestial_object)
 				{
 					temp_solar_system[n].orbit_parent_instance = noone;
 				}
+			}
+			
+			// Remove Celestial Object as Solar System Sun Instance if it was the active Sun in the Solar System
+			if (CelestialSimulator.solar_systems_suns[temp_solar_system_index] == celestial_object)
+			{
+				CelestialSimulator.solar_systems_suns[temp_solar_system_index] = noone;
 			}
 		}
 	}
@@ -1248,12 +1264,22 @@ generate_default_solar_system = function()
 	//
 	add_solar_system("grandmom", "Grandmother");
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 5000, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
-	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
+	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60}));
 	add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oSun, { image_blend: c_white, radius: 800 }));
 	//add_celestial_object("grandmom", instance_create_depth(0, 0, 0, oPlanet, {  sprite_index: sDebug_Mother_MicroclimatesMap, clouds: false, ocean:false, sky: false, orbit_size: 200, orbit_speed: 0, orbit_rotation: 270, rotation_speed: 0.3 }));
-	create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
+	//create_celestial_shadows("grandmom", [ "planet_mom", "moon_dad" ]);
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
+	
+	for (var i = 0; i < 23; i++)
+	{
+		add_solar_system($"grandmom_{i}", $"Grandmother_{i}");
+		add_celestial_object($"grandmom_{i}", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 5000, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));
+		add_celestial_object($"grandmom_{i}", instance_create_depth(0, 0, 0, oMoon_Dad, {  image_blend: make_color_rgb(8, 0, 15), orbit_size: 2200 }));
+		add_celestial_object($"grandmom_{i}", instance_create_depth(0, 0, 0, oSun, { image_blend: c_white, radius: 800 }));
+		create_celestial_shadows($"grandmom_{i}", [ "planet_mom", "moon_dad" ]);
+		generate_solar_system_background_stars_vertex_buffer($"grandmom_{i}", 3000);
+	}
 	
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_speed: 0 });
 	//temp_grandmom_solar_system[2] = instance_create_depth(0, 0, 0, oSun, { image_blend: c_red, radius: 60, orbit_size: 8000, orbit_speed: 0, orbit_angle: 270 });

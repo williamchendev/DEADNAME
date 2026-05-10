@@ -43,6 +43,13 @@ repeat (CelestialSimMaxLights)
 	light_source_emitter_size[temp_light_source_index] = 0;
 }
 
+// Reset Celestial Unit Behaviours
+with (oCelestialUnit)
+{
+	// Reset Celestial Unit Combat Behaviour
+	engaged_in_battle = false;
+}
+
 // Iterate through all Solar Systems within the Celestial Simulation
 var temp_solar_systems_index = 0;
 	
@@ -50,6 +57,9 @@ repeat (array_length(solar_systems))
 {
 	// Find the Solar System at the given Solar System Index
 	var temp_solar_system = solar_systems[temp_solar_systems_index];
+	
+	// Check if Solar System Sun Instance exists
+	var temp_solar_system_sun_exists = instance_exists(solar_systems_suns[temp_solar_systems_index]);
 	
 	// Find the Solar System's Orbit Update Order Array at the given Solar System Index
 	var temp_solar_system_orbit_update_order = solar_systems_orbit_update_order[temp_solar_systems_index];
@@ -93,6 +103,25 @@ repeat (array_length(solar_systems))
 				y += orbit_parent_instance.y;
 				z += orbit_parent_instance.z;
 			}
+			
+			// Delete the previous Celestial Object's Rotation Matrix
+			array_resize(rotation_matrix, 0);
+			rotation_matrix = -1;
+			
+			// Create Celestial Object's Rotation Matrix its local Euler Angles
+			rotation_matrix = rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_angle_z);
+			
+			// Calculate Celestial Body Sun Vector
+			var temp_sun_vector_x = temp_solar_system_sun_exists ? CelestialSimulator.solar_systems_suns[temp_solar_systems_index].x - x : 0;
+			var temp_sun_vector_y = temp_solar_system_sun_exists ? CelestialSimulator.solar_systems_suns[temp_solar_systems_index].y - y : 0;
+			var temp_sun_vector_z = temp_solar_system_sun_exists ? CelestialSimulator.solar_systems_suns[temp_solar_systems_index].z - z : 0;
+			
+			// Normalize Celestial Body Sun Vector
+			var temp_sun_vector_magnitude = sqrt(dot_product_3d(temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z, temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z));
+			
+			temp_sun_vector_x /= temp_sun_vector_magnitude;
+			temp_sun_vector_y /= temp_sun_vector_magnitude;
+			temp_sun_vector_z /= temp_sun_vector_magnitude;
 			
 			// Establish Minimum Elevation
 			var temp_celestial_object_minimum_elevation = 0;
@@ -140,6 +169,81 @@ repeat (array_length(solar_systems))
 					break;
 			}
 			
+			// Iterate through Celestial Object Battle Behaviours
+			var temp_battle_index = 0;
+			
+			if (pathfinding_enabled)
+			{
+				// Navigation Mesh enabled Battle Behaviour
+				repeat (array_length(battles))
+				{
+					// Find Battle Instance
+					var temp_battle_instance = battles[temp_battle_index];
+					
+					// Find Battle Factions Size
+					var temp_battle_factions_count = array_length(temp_battle_instance.battle_factions);
+					
+					// Iterate through Battle Faction Unit Arrays
+					var temp_battle_faction_index = temp_battle_factions_count - 1;
+					
+					repeat (temp_battle_factions_count)
+					{
+						// Find Battle Unit Array Size
+						var temp_battle_unit_array_size = array_length(temp_battle_instance.battle_units[temp_battle_faction_index]);
+						
+						// Iterate through Battle Units
+						var temp_battle_unit_index = temp_battle_unit_array_size - 1;
+						
+						repeat (temp_battle_unit_array_size)
+						{
+							// Find Battle Unit Instance
+							var temp_battle_unit_instance = array_get(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index);
+							
+							// Check if Unit is still in the Active Combat Pathfinding Node
+							if (temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_a_index and temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_b_index)
+							{
+								// Remove Battle Unit from Battle Faction Unit Array
+								array_delete(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index, 1);
+								
+								// Check if Battle Faction Unit Array is empty
+								if (array_length(temp_battle_instance.battle_units[temp_battle_faction_index]) <= 0)
+								{
+									// Delete Battle Faction and Battle Faction Units Array from Battle Instance
+									array_delete(temp_battle_instance.battle_factions, temp_battle_faction_index, 1);
+									array_delete(temp_battle_instance.battle_units, temp_battle_faction_index, 1);
+									break;
+								}
+							}
+							else
+							{
+								// Set Unit is Engaged in Battle
+								temp_battle_unit_instance.engaged_in_battle = true;
+							}
+							
+							// Decrement Battle Unit Index
+							temp_battle_unit_index--;
+						}
+						
+						// Decrement Battle Faction Index
+						temp_battle_faction_index--;
+					}
+					
+					// Increment Battle Index
+					temp_battle_index++;
+				}
+			}
+			else
+			{
+				repeat (array_length(battles))
+				{
+					// Find Battle Instance
+					var temp_battle_instance = battles[temp_battle_index];
+					
+					// Increment Battle Index
+					temp_battle_index++;
+				}
+			}
+			
 			// Iterate through Celestial Object Unit Behaviours
 			var temp_unit_index = 0;
 			
@@ -151,10 +255,10 @@ repeat (array_length(solar_systems))
 				// Performm Action Behaviour
 				switch (temp_unit_instance.unit_behaviour)
 				{
-					case CelestialUnitBehaviour.Attack:
-					case CelestialUnitBehaviour.Regroup:
-					case CelestialUnitBehaviour.Hunt:
-					case CelestialUnitBehaviour.Garrison:
+					case CelestialUnitBehaviourType.Attack:
+					case CelestialUnitBehaviourType.Regroup:
+					case CelestialUnitBehaviourType.Hunt:
+					case CelestialUnitBehaviourType.Garrison:
 						// Check if Unit is already indexed in the Celestial Simulator's Pathfinding Queue
 						if (ds_list_find_index(CelestialSimulator.pathfinding_queue_list, temp_unit_instance) != -1)
 						{
@@ -166,7 +270,7 @@ repeat (array_length(solar_systems))
 						if (!instance_exists(temp_unit_instance.unit_behaviour_target_instance) or temp_unit_instance.celestial_body_instance != temp_unit_instance.unit_behaviour_target_instance.celestial_body_instance)
 						{
 							// Unit's Behaviour Target Instance is no longer valid - Reset Unit's Behaviour
-							temp_unit_instance.unit_behaviour = CelestialUnitBehaviour.None;
+							temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 							
 							// Destroy Unit's Pathfinding Path Struct
 							celestial_pathfinding_destroy_path(temp_unit_instance.pathfinding_path);
@@ -198,8 +302,8 @@ repeat (array_length(solar_systems))
 							ds_list_set(temp_unit_instance.pathfinding_path.position_elevation, temp_unit_instance.pathfinding_path.path_size - 1, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_elevation);
 						}
 						break;
-					case CelestialUnitBehaviour.Patrol:
-					case CelestialUnitBehaviour.None:
+					case CelestialUnitBehaviourType.Patrol:
+					case CelestialUnitBehaviourType.None:
 					default:
 						break;
 				}
@@ -231,54 +335,97 @@ repeat (array_length(solar_systems))
 								var temp_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, temp_unit_instance.pathfinding_path_index);
 								var temp_next_pathfinding_node_index = ds_list_find_value(temp_unit_instance.pathfinding_path.node_index, min(temp_unit_instance.pathfinding_path_index + 1, temp_unit_instance.pathfinding_path.path_size - 1));
 								
-								// Check if Celestial Battle exists at the given Pathfinding Nodes
-								if (ds_map_exists(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}"))
+								// Check if Unit is currently engaged in a Battle
+								if (!temp_unit_instance.engaged_in_battle)
 								{
-									// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
-									var temp_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}");
-									
-									// Check Unit Faction Index within Battle Instance
-									var temp_pathfinding_node_unit_faction_index = array_get_index(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
-									
-									// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
-									if (temp_pathfinding_node_unit_faction_index == -1)
+									// Check if Celestial Battle exists at the given Pathfinding Nodes
+									if (ds_map_exists(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}"))
 									{
-										// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
-										temp_pathfinding_node_unit_faction_index = array_length(temp_pathfinding_node_battle_instance.battle_factions);
+										// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
+										var temp_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}");
 										
-										// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
-										array_push(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										// Check Unit Faction Index within Battle Instance
+										var temp_pathfinding_node_unit_faction_index = array_get_index(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										
+										// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
+										if (temp_pathfinding_node_unit_faction_index == -1)
+										{
+											// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
+											temp_pathfinding_node_unit_faction_index = array_length(temp_pathfinding_node_battle_instance.battle_factions);
+											
+											// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
+											array_push(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										}
+										
+										// Index the Unit Instance within the Celestial Battle's Units Array
+										array_push(temp_pathfinding_node_battle_instance.battle_units[temp_pathfinding_node_unit_faction_index], temp_unit_instance);
+										
+										// Break from Movement Behaviour Loop
+										break;
 									}
-									
-									// Index the Unit Instance within the Celestial Battle's Units Array
-									array_push(temp_pathfinding_node_battle_instance.battle_units[temp_pathfinding_node_unit_faction_index], temp_unit_instance);
-									
-									// Break from Movement Behaviour Loop
-									break;
+									else if (ds_map_exists(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}"))
+									{
+										// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
+										var temp_next_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}");
+										
+										// Check Unit Faction Index within Battle Instance
+										var temp_next_pathfinding_node_unit_faction_index = array_get_index(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										
+										// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
+										if (temp_next_pathfinding_node_unit_faction_index == -1)
+										{
+											// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
+											temp_next_pathfinding_node_unit_faction_index = array_length(temp_next_pathfinding_node_battle_instance.battle_factions);
+											
+											// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
+											array_push(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										}
+										
+										// Index the Unit Instance within the Celestial Battle's Units Array
+										array_push(temp_next_pathfinding_node_battle_instance.battle_units[temp_next_pathfinding_node_unit_faction_index], temp_unit_instance);
+										
+										// Break from Movement Behaviour Loop
+										break;
+									}
 								}
-								else if (ds_map_exists(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}"))
+								else
 								{
-									// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
-									var temp_next_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}");
+									// Establish Retreating Behaviour Hostile Unit Check Variables
+									var temp_retreating_next_pathfinding_node_contains_hostile_units = false;
 									
-									// Check Unit Faction Index within Battle Instance
-									var temp_next_pathfinding_node_unit_faction_index = array_get_index(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+									// Iterate through Pathfinding Node Units Array to find Hostile Enemy Unit
+									var temp_retreat_units_array_index = 0;
 									
-									// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
-									if (temp_next_pathfinding_node_unit_faction_index == -1)
+									repeat (array_length(pathfinding_node_units_array[temp_next_pathfinding_node_index]))
 									{
-										// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
-										temp_next_pathfinding_node_unit_faction_index = array_length(temp_next_pathfinding_node_battle_instance.battle_factions);
+										// Find Unit Instance from Pathfinding Node Units Array
+										var temp_retreat_unit_instance = array_get(pathfinding_node_units_array[temp_next_pathfinding_node_index], temp_retreat_units_array_index);
 										
-										// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
-										array_push(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
+										// Check if Unit Faction Exists and Unit Faction Relationship Exists
+										if (instance_exists(temp_retreat_unit_instance.unit_faction) and ds_map_exists(temp_retreat_unit_instance.unit_faction.relationships, temp_unit_instance.unit_faction))
+										{
+											// Find Relationship Status between Pathfinding Unit Faction and Pathfinding Node Unit Instance Faction
+											var temp_retreat_unit_instance_faction_relationship = ds_map_find_value(temp_retreat_unit_instance.unit_faction.relationships, temp_unit_instance.unit_faction);
+											
+											// Check if Relationship Status is Hostile
+											if (temp_retreat_unit_instance_faction_relationship == CelestialFactionRelationshipType.Hostile)
+											{
+												// Cannot retreat into the next Pathfinding Node because Hostile Unit is blocking movement
+												temp_retreating_next_pathfinding_node_contains_hostile_units = true;
+												break;
+											}
+										}
+										
+										// Increment Pathfinding Node Units Array Index
+										temp_retreat_units_array_index++;
 									}
 									
-									// Index the Unit Instance within the Celestial Battle's Units Array
-									array_push(temp_next_pathfinding_node_battle_instance.battle_units[temp_next_pathfinding_node_unit_faction_index], temp_unit_instance);
-									
-									// Break from Movement Behaviour Loop
-									break;
+									// Check if Hostile Units exist at the Pathfinding Node the Unit is heading towards
+									if (temp_retreating_next_pathfinding_node_contains_hostile_units)
+									{
+										// Break from Movement Behaviour Loop
+										break;
+									}
 								}
 								
 								// Establish Enemy Unit Variables
@@ -406,10 +553,10 @@ repeat (array_length(solar_systems))
 								// Update Unit Pathfinding Path Target if Pathing to Instance
 								switch (temp_unit_instance.unit_behaviour)
 								{
-									case CelestialUnitBehaviour.Attack:
-									case CelestialUnitBehaviour.Regroup:
-									case CelestialUnitBehaviour.Hunt:
-									case CelestialUnitBehaviour.Garrison:
+									case CelestialUnitBehaviourType.Attack:
+									case CelestialUnitBehaviourType.Regroup:
+									case CelestialUnitBehaviourType.Hunt:
+									case CelestialUnitBehaviourType.Garrison:
 										// Check if Target Instance exists and shares the current Node 
 										if (instance_exists(temp_unit_instance.unit_behaviour_target_instance) and temp_pathfinding_node_index == temp_unit_instance.unit_behaviour_target_instance.pathfinding_node_index)
 										{
@@ -432,8 +579,8 @@ repeat (array_length(solar_systems))
 											temp_unit_instance.pathfinding_path.path_size = temp_unit_instance.pathfinding_path_index;
 										}
 										break;
-									case CelestialUnitBehaviour.Patrol:
-									case CelestialUnitBehaviour.None:
+									case CelestialUnitBehaviourType.Patrol:
+									case CelestialUnitBehaviourType.None:
 									default:
 										break;
 								}
@@ -505,14 +652,14 @@ repeat (array_length(solar_systems))
 										// Perform Unit's End Pathfinding Behaviour
 										switch (temp_unit_instance.unit_behaviour)
 										{
-											case CelestialUnitBehaviour.Attack:
-											case CelestialUnitBehaviour.Regroup:
-											case CelestialUnitBehaviour.Hunt:
-											case CelestialUnitBehaviour.Garrison:
-											case CelestialUnitBehaviour.Patrol:
-											case CelestialUnitBehaviour.None:
+											case CelestialUnitBehaviourType.Attack:
+											case CelestialUnitBehaviourType.Regroup:
+											case CelestialUnitBehaviourType.Hunt:
+											case CelestialUnitBehaviourType.Garrison:
+											case CelestialUnitBehaviourType.Patrol:
+											case CelestialUnitBehaviourType.None:
 											default:
-												temp_unit_instance.unit_behaviour = CelestialUnitBehaviour.None;
+												temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 												break;
 										}
 										
@@ -549,6 +696,30 @@ repeat (array_length(solar_systems))
 					{
 						// Unit Movement based on the Celestial Object's Alternative Movement Ruleset
 					}
+				}
+				
+				// Calculate Unit Solar Value & Unit Solar Type
+				var temp_unit_local_x = pathfinding_enabled ? pathfinding_node_x_array[temp_unit_instance.pathfinding_node_index] : 0;
+				var temp_unit_local_y = pathfinding_enabled ? pathfinding_node_y_array[temp_unit_instance.pathfinding_node_index] : 0;
+				var temp_unit_local_z = pathfinding_enabled ? pathfinding_node_z_array[temp_unit_instance.pathfinding_node_index] : 1;
+				
+				var temp_unit_solar_x = temp_unit_local_x * rotation_matrix[0] + temp_unit_local_y * rotation_matrix[4] + temp_unit_local_z * rotation_matrix[8];
+				var temp_unit_solar_y = temp_unit_local_x * rotation_matrix[1] + temp_unit_local_y * rotation_matrix[5] + temp_unit_local_z * rotation_matrix[9];
+				var temp_unit_solar_z = temp_unit_local_x * rotation_matrix[2] + temp_unit_local_y * rotation_matrix[6] + temp_unit_local_z * rotation_matrix[10];
+				
+				var temp_unit_solar_value = dot_product_3d_normalised(temp_unit_solar_x, temp_unit_solar_y, temp_unit_solar_z, temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z);
+				
+				if (temp_unit_solar_value > 0.333)
+				{
+					temp_unit_instance.unit_solar = CelestialUnitSolarType.Day;
+				}
+				else if (temp_unit_solar_value > -0.333)
+				{
+					temp_unit_instance.unit_solar = CelestialUnitSolarType.Twilight;
+				}
+				else
+				{
+					temp_unit_instance.unit_solar = CelestialUnitSolarType.Night;
 				}
 				
 				// Increment Unit Index
@@ -591,10 +762,10 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 				// Perform Pathfinding Calculation based on Unit's Behaviour
 				switch (temp_pathfinding_queue_unit_inst.unit_behaviour)
 				{
-					case CelestialUnitBehaviour.Attack:
-					case CelestialUnitBehaviour.Regroup:
-					case CelestialUnitBehaviour.Hunt:
-					case CelestialUnitBehaviour.Garrison:
+					case CelestialUnitBehaviourType.Attack:
+					case CelestialUnitBehaviourType.Regroup:
+					case CelestialUnitBehaviourType.Hunt:
+					case CelestialUnitBehaviourType.Garrison:
 						// Check if Unit Instance's Pathfinding Target Instance Exists or if Unit Instance's Pathfinding Target Instance does not share the same Celestial Body Instance
 						if (!instance_exists(temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance) or temp_pathfinding_queue_unit_inst.celestial_body_instance != temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance.celestial_body_instance)
 						{
@@ -602,7 +773,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 							ds_list_delete(pathfinding_queue_list, 0);
 							
 							// Reset Unit Instance's Behaviour
-							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviour.None;
+							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviourType.None;
 							
 							// Reset Unit Instance's Behaviour Target Instance & Node Index
 							temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance = noone;
@@ -679,7 +850,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						// Initiate Unit Pathfinding Behaviour
 						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_unit_target_inst_node_index, temp_unit_target_inst_x, temp_unit_target_inst_y, temp_unit_target_inst_z, temp_unit_target_inst_elevation);
 						break;
-					case CelestialUnitBehaviour.Patrol:
+					case CelestialUnitBehaviourType.Patrol:
 						// Check if Unit Instance's Pathfinding Target Node Index is a valid Pathfinding Node Index
 						if (temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index < 0 or temp_pathfinding_queue_unit_inst.unit_behaviour_target_node_index >= temp_pathfinding_queue_unit_inst.celestial_body_instance.pathfinding_nodes_count)
 						{
@@ -687,7 +858,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 							ds_list_delete(pathfinding_queue_list, 0);
 							
 							// Reset Unit Instance's Behaviour
-							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviour.None;
+							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviourType.None;
 							
 							// Reset Unit Instance's Behaviour Target Instance & Node Index
 							temp_pathfinding_queue_unit_inst.unit_behaviour_target_instance = noone;
@@ -753,7 +924,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						// Initiate Unit Pathfinding Behaviour
 						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_node_target_node_index, temp_node_target_x, temp_node_target_y, temp_node_target_z, temp_node_target_elevation);
 						break;
-					case CelestialUnitBehaviour.None:
+					case CelestialUnitBehaviourType.None:
 					default:
 						// Remove Unit Instance from Pathfinding Queue
 						ds_list_delete(pathfinding_queue_list, 0);

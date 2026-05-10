@@ -1,5 +1,5 @@
 
-enum CelestialUnitBehaviour
+enum CelestialUnitBehaviourType
 {
 	None,
 	Attack,
@@ -9,3 +9,9 @@ enum CelestialUnitBehaviour
 	Garrison
 }
 
+enum CelestialUnitSolarType
+{
+	Day,
+	Twilight,
+	Night
+}

@@ -168,7 +168,7 @@ else if (temp_input_select or temp_input_action)
 		}
 		
 		// Create Selection Instance's Rotation Matrix and Inverse Rotation Matrix from its local Euler Angle Rotation
-		var temp_selection_rotation_matrix = rotation_matrix_from_euler_angles(temp_selection_inst.euler_angle_x, temp_selection_inst.euler_angle_y, temp_selection_inst.euler_angle_z);
+		var temp_selection_rotation_matrix = temp_selection_inst.rotation_matrix;
 		var temp_selection_rotation_matrix_inverse = matrix_inverse(temp_selection_rotation_matrix);
 		
 		// Find Selection Position's Radial Offset from Selection Instance's Origin Position
@@ -354,7 +354,7 @@ else if (temp_input_select or temp_input_action)
 									var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
 									
 									// Reset Selected Unit's Behaviour to None
-									sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.None;
+									sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 									sub_object_selected_instance.unit_behaviour_target_instance = noone;
 									sub_object_selected_instance.unit_behaviour_target_node_index = -1;
 									
@@ -385,7 +385,7 @@ else if (temp_input_select or temp_input_action)
 													temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
 													
 													// Set Selected Unit's Behaviour to Regroup
-													sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviour.Regroup;
+													sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Regroup;
 													sub_object_selected_instance.unit_behaviour_target_instance = temp_sub_object_action_inst;
 												}
 												break;
@@ -456,7 +456,6 @@ else if (temp_input_select or temp_input_action)
 		}
 		
 		// Delete Unused Array
-		array_resize(temp_selection_rotation_matrix, 0);
 		array_resize(temp_selection_rotation_matrix_inverse, 0);
 	}
 }

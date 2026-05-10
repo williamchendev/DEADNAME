@@ -796,6 +796,9 @@ sub_objects_front_layer_instance_array = array_create(0);
 // Initialize Identity Matrix
 identity_matrix = matrix_build_identity();
 
+// Initialize Rotation Matrix
+rotation_matrix = rotation_matrix_from_euler_angles(euler_angle_x, euler_angle_y, euler_angle_z);
+
 // Initialize Solar System Variables
 solar_system_id = "null";
 orbit_parent_instance = noone;
@@ -919,8 +922,20 @@ add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)
 // DEBUG
 if (pathfinding_enabled)
 {
-	repeat(5)
+	//add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
+	
+	repeat(200)
 	{
 		add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
+	}
+	
+	repeat(50)
+	{
+		add_satellite_node(instance_create_depth(0, 0, 0, oCelestialSatellite), irandom_range(0, pathfinding_nodes_count - 1));
+	}
+	
+	repeat(50)
+	{
+		add_city_node(instance_create_depth(0, 0, 0, oCelestialCity), irandom_range(0, pathfinding_nodes_count - 1));
 	}
 }
