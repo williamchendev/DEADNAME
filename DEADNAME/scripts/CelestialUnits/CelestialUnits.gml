@@ -11,7 +11,7 @@ enum CelestialUnitBehaviourType
 
 enum CelestialUnitSolarType
 {
-	Day,
-	Twilight,
-	Night
+	Day = 0,
+	Twilight = 1,
+	Night = 2
 }

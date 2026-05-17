@@ -171,5 +171,62 @@ if (instance_exists(camera_observing_instance))
 	draw_set_valign(fa_top);
 }
 
+// Draw Selected Celestial Unit UI
+if (instance_exists(sub_object_selected_instance) and sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
+{
+	//
+	var temp_unit_ui_x = 0;
+	var temp_unit_ui_y = GameManager.game_height;
+	
+	//
+	draw_sprite(sUI_Overworld_UnitSelect_Background, 0, temp_unit_ui_x, temp_unit_ui_y);
+	draw_sprite(sUI_Overworld_UnitSelect_DebugUnit, 0, temp_unit_ui_x, temp_unit_ui_y);
+	
+	//
+	draw_sprite(sUI_Overworld_Solar_Icon, sub_object_selected_instance.unit_solar, temp_unit_ui_x + 152, temp_unit_ui_y - 64);
+	
+	//
+	var temp_willpower_horizontal_offset = 152;
+	var temp_willpower_vertical_offset = -28;
+	
+	//
+	var temp_willpower_sun = sub_object_selected_instance.willpower_sun;
+	var temp_willpower_moon = sub_object_selected_instance.willpower_moon;
+	
+	//
+	var temp_willpower_index = 0;
+	var temp_willpower_total = temp_willpower_sun + temp_willpower_moon;
+	
+	//
+	while (temp_willpower_total > 0)
+	{
+		//
+		var temp_willpower_index_h_offset = temp_willpower_index * 20;
+		
+		if (temp_willpower_sun > 0)
+		{
+			//
+			draw_sprite(sUI_Overworld_Willpower, 0, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+			
+			//
+			temp_willpower_sun--;
+		}
+		else if (temp_willpower_moon > 0)
+		{
+			//
+			draw_sprite(sUI_Overworld_Willpower, 1, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+			
+			//
+			temp_willpower_moon--;
+		}
+		
+		//
+		temp_willpower_index++;
+		
+		//
+		temp_willpower_total--;
+	}
+}
+
 // Reset Surface Target
 surface_reset_target();

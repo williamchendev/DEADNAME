@@ -1,6 +1,9 @@
 /// @description Faction Init Event
 // Celestial Faction Init Behaviour Event
 
+// Initialize as Persistent Object
+persistent = true;
+
 // Index Faction within Celestial Simulator
 array_push(CelestialSimulator.factions, id);
 

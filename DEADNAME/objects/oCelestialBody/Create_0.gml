@@ -922,7 +922,7 @@ add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)
 // DEBUG
 if (pathfinding_enabled)
 {
-	//add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
+	add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
 	
 	repeat(200)
 	{

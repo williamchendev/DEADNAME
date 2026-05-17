@@ -228,6 +228,33 @@ repeat (array_length(solar_systems))
 						temp_battle_faction_index--;
 					}
 					
+					// Update Battle Clock
+					temp_battle_instance.battle_total_time += CelestialSimulator.global_clock_delta_time;
+					temp_battle_instance.battle_round_timer -= CelestialSimulator.global_clock_delta_time;
+					
+					// Perform Battle Round & Shuffle Behaviours
+					if (temp_battle_instance.battle_round_timer <= 0)
+					{
+						// Decrement Battle Round
+						temp_battle_instance.battle_round--;
+						
+						// Check if Battle should be Shuffled
+						if (temp_battle_instance.battle_round <= 0)
+						{
+							// Battle Shuffle Round Behaviour
+							celestial_battle_shuffle_round(temp_battle_instance);
+							
+							// Reset Battle Round Count
+							temp_battle_instance.battle_round = temp_battle_instance.battle_rounds_per_shuffle;
+						}
+						
+						// Battle Perform Round Behaviour
+						celestial_battle_perform_round(temp_battle_instance);
+						
+						// Reset Battle Round Timer
+						temp_battle_instance.battle_round_timer = temp_battle_instance.battle_rounds_time_duration;
+					}
+					
 					// Increment Battle Index
 					temp_battle_index++;
 				}

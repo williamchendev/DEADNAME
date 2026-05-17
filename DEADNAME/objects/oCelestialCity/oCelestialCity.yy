@@ -10,14 +10,14 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialSubObject","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"resource":{"name":"sOverworld_City_Miniature","path":"sprites/sOverworld_City_Miniature/sOverworld_City_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_City_Miniature",},
   ],
   "parent":{
-    "name":"Instances",
-    "path":"folders/Objects/Celestial/Instances.yy",
+    "name":"SubObjects",
+    "path":"folders/Objects/Celestial/SubObjects.yy",
   },
   "parentObjectId":{
     "name":"oCelestialSubObject",
     "path":"objects/oCelestialSubObject/oCelestialSubObject.yy",
   },
-  "persistent":false,
+  "persistent":true,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
   "physicsFriction":0.2,

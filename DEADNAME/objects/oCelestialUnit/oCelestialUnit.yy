@@ -8,17 +8,17 @@
   "managed":true,
   "name":"oCelestialUnit",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialSubObject","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"resource":{"name":"sOverworld_Unit_Miniature","path":"sprites/sOverworld_Unit_Miniature/sOverworld_Unit_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"sOverworld_Unit_Miniature",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialSubObject","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"propertyId":{"name":"miniature_sprite_index","path":"objects/oCelestialSubObject/oCelestialSubObject.yy",},"resource":{"name":"sOverworld_Unit_Miniature","path":"sprites/sOverworld_Unit_Miniature/sOverworld_Unit_Miniature.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sOverworld_Unit_Miniature",},
   ],
   "parent":{
-    "name":"Instances",
-    "path":"folders/Objects/Celestial/Instances.yy",
+    "name":"Units",
+    "path":"folders/Objects/Celestial/Units.yy",
   },
   "parentObjectId":{
     "name":"oCelestialSubObject",
     "path":"objects/oCelestialSubObject/oCelestialSubObject.yy",
   },
-  "persistent":false,
+  "persistent":true,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
   "physicsFriction":0.2,
@@ -32,8 +32,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"unit_name","filters":[],"listItems":[],"multiselect":false,"name":"unit_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Unit","varType":2,},
-    {"$GMObjectProperty":"v1","%Name":"unit_movement_power","filters":[],"listItems":[],"multiselect":false,"name":"unit_movement_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"unit_name","filters":[],"listItems":[],"multiselect":false,"name":"unit_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Unit","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"unit_movement_power","filters":[],"listItems":[],"multiselect":false,"name":"unit_movement_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
