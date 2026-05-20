@@ -79,7 +79,43 @@ function celestial_microclimate_biome_get_movement_cost_modifier(celestial_micro
 }
 
 //
-function celestial_microclimate_biome_get_combat_size(celestial_microclimate_biome_type)
+function celestial_microclimate_biome_get_land_combat_size(celestial_microclimate_biome_type)
+{
+	// Establish Default Microclimate Biome Combat Size
+	var temp_combat_size = 30;
+	
+	// Find Microclimate Biome Combat Size
+	switch (celestial_microclimate_biome_type)
+	{
+		case CelestialMicroclimateBiomeType.None:
+		default:
+			temp_combat_size = 30;
+			break;
+	}
+	
+	// Return Combat Size
+	return temp_combat_size;
+}
+
+function celestial_microclimate_biome_get_sea_combat_size(celestial_microclimate_biome_type)
+{
+	// Establish Default Microclimate Biome Combat Size
+	var temp_combat_size = 30;
+	
+	// Find Microclimate Biome Combat Size
+	switch (celestial_microclimate_biome_type)
+	{
+		case CelestialMicroclimateBiomeType.None:
+		default:
+			temp_combat_size = 30;
+			break;
+	}
+	
+	// Return Combat Size
+	return temp_combat_size;
+}
+
+function celestial_microclimate_biome_get_air_combat_size(celestial_microclimate_biome_type)
 {
 	// Establish Default Microclimate Biome Combat Size
 	var temp_combat_size = 30;

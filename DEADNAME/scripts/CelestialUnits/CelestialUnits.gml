@@ -1,4 +1,4 @@
-
+//
 enum CelestialUnitBehaviourType
 {
 	None,
@@ -15,3 +15,14 @@ enum CelestialUnitSolarType
 	Twilight = 1,
 	Night = 2
 }
+
+enum CelestialUnitTerrainType
+{
+	Land,
+	Air,
+	Sea
+}
+
+//
+
+

@@ -4,5 +4,8 @@
 // Initialize as Persistent Object
 persistent = true;
 
+// 
+unit_instance = noone;
+
 // Unit Variables
 unit_health_value = unit_health;

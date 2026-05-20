@@ -24,21 +24,4 @@ if (instance_exists(celestial_body_instance))
 			ds_map_delete(celestial_body_instance.pathfinding_node_battles_map, temp_battle_pathfinding_nodes_key);
 		}
 	}
-	
-	// Delete Unused Arrays
-	var temp_factions_count = array_length(battle_factions);
-	var temp_factions_index = temp_factions_count - 1;
-	
-	repeat (temp_factions_count)
-	{
-		// Resize and Delete Faction Units Array
-		array_resize(battle_units[temp_factions_index], 0);
-		array_delete(battle_units, temp_factions_index, 1);
-		
-		// Decrement Factions Index
-		temp_factions_index--;
-	}
-	
-	array_resize(battle_factions, 0);
-	array_resize(battle_units, 0);
 }

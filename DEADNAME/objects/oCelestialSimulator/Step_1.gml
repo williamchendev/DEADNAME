@@ -371,21 +371,8 @@ repeat (array_length(solar_systems))
 										// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
 										var temp_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{temp_pathfinding_node_index}:{temp_pathfinding_node_index}");
 										
-										// Check Unit Faction Index within Battle Instance
-										var temp_pathfinding_node_unit_faction_index = array_get_index(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
-										
-										// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
-										if (temp_pathfinding_node_unit_faction_index == -1)
-										{
-											// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
-											temp_pathfinding_node_unit_faction_index = array_length(temp_pathfinding_node_battle_instance.battle_factions);
-											
-											// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
-											array_push(temp_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
-										}
-										
-										// Index the Unit Instance within the Celestial Battle's Units Array
-										array_push(temp_pathfinding_node_battle_instance.battle_units[temp_pathfinding_node_unit_faction_index], temp_unit_instance);
+										// Add Unit Instance to Battle
+										celestial_battle_add_unit(temp_pathfinding_node_battle_instance, temp_unit_instance);
 										
 										// Break from Movement Behaviour Loop
 										break;
@@ -395,21 +382,8 @@ repeat (array_length(solar_systems))
 										// Establish Celestial Battle Instance from Pathfinding Node Battles DS Map
 										var temp_next_pathfinding_node_battle_instance = ds_map_find_value(pathfinding_node_battles_map, $"{min(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}:{max(temp_pathfinding_node_index, temp_next_pathfinding_node_index)}");
 										
-										// Check Unit Faction Index within Battle Instance
-										var temp_next_pathfinding_node_unit_faction_index = array_get_index(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
-										
-										// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
-										if (temp_next_pathfinding_node_unit_faction_index == -1)
-										{
-											// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
-											temp_next_pathfinding_node_unit_faction_index = array_length(temp_next_pathfinding_node_battle_instance.battle_factions);
-											
-											// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
-											array_push(temp_next_pathfinding_node_battle_instance.battle_factions, temp_unit_instance.unit_faction);
-										}
-										
-										// Index the Unit Instance within the Celestial Battle's Units Array
-										array_push(temp_next_pathfinding_node_battle_instance.battle_units[temp_next_pathfinding_node_unit_faction_index], temp_unit_instance);
+										// Add Unit Instance to Battle
+										celestial_battle_add_unit(temp_next_pathfinding_node_battle_instance, temp_unit_instance);
 										
 										// Break from Movement Behaviour Loop
 										break;
