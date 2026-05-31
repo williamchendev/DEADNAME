@@ -750,6 +750,94 @@ repeat (array_length(temp_solar_system))
 			temp_satellite_index++;
 		}
 		
+		// Celestial Object's Battle Depth Sorting Behaviour
+		var temp_battle_index = 0;
+		
+		repeat (array_length(temp_celestial_object_instance.battles))
+		{
+			// Find Celestial Battle's Instance
+			var temp_battle_instance = temp_celestial_object_instance.battles[temp_battle_index];
+			
+			// Establish Battle Local Vector and Elevation Variables
+			var temp_battle_local_x, temp_battle_local_y, temp_battle_local_z, temp_battle_elevation;
+			
+			// Check if Pathfinding is Enabled or Battle's Celestial Body Pathfinding Node Index is Valid
+			if (!temp_celestial_object_instance.pathfinding_enabled)
+			{
+				// Find Vertical Sphere Vector
+				var temp_battle_atan_value = (0.5 - temp_battle_instance.local_position_u) * 2 * pi;
+				var temp_battle_asin_value = (0.5 - temp_battle_instance.local_position_v) * pi;
+				temp_battle_local_y = -sin(temp_battle_asin_value);
+				
+				// Find Horizontal and Forwards Sphere Vectors
+				var temp_battle_sphere_horizontal_radius = sqrt(1.0 - temp_battle_local_y * temp_battle_local_y);
+				temp_battle_local_x = temp_battle_sphere_horizontal_radius * -sin(temp_battle_atan_value);
+				temp_battle_local_z = temp_battle_sphere_horizontal_radius * -cos(temp_battle_atan_value);
+				
+				// Set Default Sphere Elevation
+				temp_battle_elevation = 1.0;
+			}
+			else
+			{
+				// Find Celestial Battle's Normalized Local Vector from Celestial Body's Sphere Center with their Pathfinding Node Indexes
+				temp_battle_local_x = lerp(temp_celestial_object_instance.pathfinding_node_x_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_x_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+				temp_battle_local_y = lerp(temp_celestial_object_instance.pathfinding_node_y_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_y_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+				temp_battle_local_z = lerp(temp_celestial_object_instance.pathfinding_node_z_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_z_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+				
+				// Find Celestial Battle's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Indexes
+				temp_battle_elevation = lerp(temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+			}
+			
+			// Find Celestial Battle's Elevation from Celestial Body's Sphere Center
+			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
+			{
+				// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
+				temp_battle_elevation = max(temp_battle_elevation, temp_celestial_object_instance.ocean_elevation);
+			}
+			
+			temp_battle_elevation = temp_celestial_object_instance.radius + (temp_battle_elevation * temp_celestial_object_instance.elevation);
+			
+			// Find Celestial Battle's World Position
+			temp_battle_instance.world_position_x = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[0] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[4] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[8]) + temp_celestial_object_instance.x;
+			temp_battle_instance.world_position_y = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[1] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[5] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[9]) + temp_celestial_object_instance.y;
+			temp_battle_instance.world_position_z = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[2] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[6] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[10]) + temp_celestial_object_instance.z;
+			
+			// Find Celestial Battle's Screen Position and set the Celestial Battle Instance's Position to their Converted World Position to Screen Coordinates
+			var temp_battle_screen_position = world_position_to_screen_position(temp_battle_instance.world_position_x, temp_battle_instance.world_position_y, temp_battle_instance.world_position_z, camera_view_matrix, camera_projection_matrix);
+			
+			temp_battle_instance.x = temp_battle_screen_position[0];
+			temp_battle_instance.y = temp_battle_screen_position[1];
+			
+			// Find Celestial Battle's Depth from Render Camera
+			var temp_battle_vx = temp_battle_instance.world_position_x - temp_render_start_x;
+			var temp_battle_vy = temp_battle_instance.world_position_y - temp_render_start_y;
+			var temp_battle_vz = temp_battle_instance.world_position_z - temp_render_start_z;
+			
+			var temp_battle_projection_scalar = dot_product_3d(temp_battle_vx, temp_battle_vy, temp_battle_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
+			var temp_battle_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_battle_projection_scalar) - temp_celestial_object_depth;
+			
+			// Check if Battle's Depth is in front of the Celestial Body or behind the Celestial Body
+			if (temp_battle_depth < 0)
+			{
+				// Index Celestial Battle's Index and Depth into Celestial Object's Sub Object Front Layer Render Depth Sorting Arrays
+				array_push(sub_objects_front_render_depth_sorting_index_array, temp_sub_object_front_layer_count);
+				array_push(sub_objects_front_render_depth_sorting_depth_array, temp_battle_depth + global_sub_objects_battle_depth_offset);
+				
+				// Index Celestial Battle's Instance and Depth into Celestial Object's Sub Object Front Layer Instance and Depth Arrays
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_instance_array, temp_battle_instance);
+				array_push(temp_celestial_object_instance.sub_objects_front_layer_depth_array, temp_battle_depth + global_sub_objects_battle_depth_offset);
+				
+				// Increment Sub Object Front Layer Count Index
+				temp_sub_object_front_layer_count++;
+			}
+			
+			// Delete Unused Array
+			array_resize(temp_battle_screen_position, 0);
+			
+			// Increment Celestial Battle Index
+			temp_battle_index++;
+		}
+		
 		// Sort Celestial Simulator's Sub Objects Back and Front Render Depth Sorting Arrays
 		array_sort(sub_objects_back_render_depth_sorting_index_array, sub_objects_back_render_depth_sort);
 		array_sort(sub_objects_front_render_depth_sorting_index_array, sub_objects_front_render_depth_sort);
@@ -830,6 +918,9 @@ repeat (array_length(temp_solar_system))
 						// Find Cloud Height
 						var temp_cloud_height = ds_list_find_value(temp_celestial_object_instance.clouds_position_height_list, temp_cloud_index);
 						
+						// Find Cloud Rotation
+						var temp_cloud_rotation = ds_list_find_value(temp_celestial_object_instance.clouds_rotation_list, temp_cloud_index);
+						
 						// Find Cloud Sphere UV
 						var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_position_u_list, temp_cloud_index);
 						var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_position_v_list, temp_cloud_index);
@@ -848,7 +939,7 @@ repeat (array_length(temp_solar_system))
 							// Find Individual Cloud's Properties from nested DS Lists
 							var temp_cloud_individual_radius = ds_list_find_value(temp_cloud_group_radius_list, temp_cloud_individual_index);
 							var temp_cloud_individual_height = temp_cloud_height + ds_list_find_value(temp_cloud_group_height_list, temp_cloud_individual_index);
-							var temp_cloud_individual_bearing = ds_list_find_value(temp_cloud_group_bearing_list, temp_cloud_individual_index);
+							var temp_cloud_individual_bearing = ds_list_find_value(temp_cloud_group_bearing_list, temp_cloud_individual_index) + temp_cloud_rotation;
 							var temp_cloud_individual_distance = ds_list_find_value(temp_cloud_group_distance_list, temp_cloud_individual_index);
 							
 							// Find Individual Cloud's UV from Cloud Group's Origin UV Position

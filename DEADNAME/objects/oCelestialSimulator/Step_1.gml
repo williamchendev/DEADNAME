@@ -134,6 +134,93 @@ repeat (array_length(solar_systems))
 					render_depth_radius = radius + elevation + (sky ? sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding);
 					frustum_culling_radius = radius + elevation + (sky ? sky_radius : CelestialSimulator.global_no_atmosphere_radius_padding);
 					temp_celestial_object_minimum_elevation = ocean_elevation;
+					
+					// Planet Cloud Movement Behaviour
+					if (clouds)
+					{
+						// Calculate Corolis Winds Speed
+						var temp_coriolis_winds_movement_speed = rotation_speed * CelestialSimulator.global_clock_delta_time * 0.00137;
+						var temp_coriolis_winds_rotation_speed = rotation_speed * CelestialSimulator.global_clock_delta_time * 3;
+						
+						// Iterate through Planet's Clouds
+						var temp_cloud_index = 0;
+						
+						repeat (ds_list_size(clouds_density_list))
+						{
+							// Find Cloud UV Position
+							var temp_cloud_u = ds_list_find_value(clouds_position_u_list, temp_cloud_index);
+							var temp_cloud_v = ds_list_find_value(clouds_position_v_list, temp_cloud_index);
+							
+							// Find Cloud Rotation
+							var temp_cloud_rotation = ds_list_find_value(clouds_rotation_list, temp_cloud_index);
+							
+							// Apply Planetary Rotation's Corolis Winds Effect to Cloud's Movement
+							if (temp_cloud_v < 0.166666666667)
+							{
+								// (Southern) Polar Easterlies
+								var temp_southern_polar_easterlies_speed_modifier = lerp(0.25, 1.0, temp_cloud_v / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u -= temp_coriolis_winds_movement_speed * temp_southern_polar_easterlies_speed_modifier;
+								temp_cloud_rotation -= temp_coriolis_winds_rotation_speed * temp_southern_polar_easterlies_speed_modifier;
+							}
+							else if (temp_cloud_v < 0.333333333334)
+							{
+								// (Southern) Westerlies
+								var temp_southern_westerlies_speed_modifier = lerp(1.0, 0.25, (temp_cloud_v - 0.166666666667) / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u += temp_coriolis_winds_movement_speed * temp_southern_westerlies_speed_modifier;
+								temp_cloud_rotation += temp_coriolis_winds_rotation_speed * temp_southern_westerlies_speed_modifier;
+							}
+							else if (temp_cloud_v < 0.5)
+							{
+								// (South-East) Trade Winds
+								var temp_south_east_trade_winds_speed_modifier = lerp(0.25, 1.0, (temp_cloud_v - 0.333333333334) / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u -= temp_coriolis_winds_movement_speed * temp_south_east_trade_winds_speed_modifier;
+								temp_cloud_rotation -= temp_coriolis_winds_rotation_speed * temp_south_east_trade_winds_speed_modifier;
+							}
+							else if (temp_cloud_v < 0.666666666668)
+							{
+								// (North-East) Trade Winds
+								var temp_north_east_trade_winds_speed_modifier = lerp(1.0, 0.25, (temp_cloud_v - 0.5) / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u -= temp_coriolis_winds_movement_speed * temp_north_east_trade_winds_speed_modifier;
+								temp_cloud_rotation -= temp_coriolis_winds_rotation_speed * temp_north_east_trade_winds_speed_modifier;
+							}
+							else if (temp_cloud_v < 0.833333333335)
+							{
+								// (Northern) Westerlies
+								var temp_northern_westerlies_speed_modifier = lerp(0.25, 1.0, (temp_cloud_v - 0.666666666668) / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u += temp_coriolis_winds_movement_speed * temp_northern_westerlies_speed_modifier;
+								temp_cloud_rotation += temp_coriolis_winds_rotation_speed * temp_northern_westerlies_speed_modifier;
+							}
+							else
+							{
+								// (Northern) Polar Easterlies
+								var temp_northern_polar_easterlies_speed_modifier = lerp(1.0, 0.25, (temp_cloud_v - 0.833333333335) / 0.166666666667);
+								
+								// Apply Corolis Winds Position & Rotation Movement
+								temp_cloud_u -= temp_coriolis_winds_movement_speed * temp_northern_polar_easterlies_speed_modifier;
+								temp_cloud_rotation -= temp_coriolis_winds_rotation_speed * temp_northern_polar_easterlies_speed_modifier;
+							}
+							
+							// Set Cloud Position Movement with Horizontal Wrap & Vertical Clamp
+							ds_list_set(clouds_position_u_list, temp_cloud_index, ((temp_cloud_u mod 1) + 1) mod 1);
+							ds_list_set(clouds_position_v_list, temp_cloud_index, clamp(temp_cloud_v, 0, 1));
+							
+							// Set Cloud Rotation Movement with Horizontal Wrap
+							ds_list_set(clouds_rotation_list, temp_cloud_index, ((temp_cloud_rotation mod 360) + 360) mod 360);
+							
+							// Increment Cloud Index
+							temp_cloud_index++;
+						}
+					}
 					break;
 				case CelestialObjectType.Sun:
 					// Sun Simulation Behaviour
@@ -242,17 +329,38 @@ repeat (array_length(solar_systems))
 						if (temp_battle_instance.battle_round <= 0)
 						{
 							// Battle Shuffle Round Behaviour
-							celestial_battle_shuffle_round(temp_battle_instance);
+							//celestial_battle_shuffle_round(temp_battle_instance);
 							
 							// Reset Battle Round Count
 							temp_battle_instance.battle_round = temp_battle_instance.battle_rounds_per_shuffle;
+							
+							// Battle Perform Round Behaviour
+							//celestial_battle_perform_round(temp_battle_instance);
 						}
-						
-						// Battle Perform Round Behaviour
-						celestial_battle_perform_round(temp_battle_instance);
+						else
+						{
+							// Cleanup Sub-Units based on Priority Pool & Matchup Participation
+							//celestial_battle_check_participation(temp_battle_instance);
+							
+							// Battle Perform Round Behaviour
+							//celestial_battle_perform_round(temp_battle_instance);
+						}
 						
 						// Reset Battle Round Timer
 						temp_battle_instance.battle_round_timer = temp_battle_instance.battle_rounds_time_duration;
+					}
+					
+					// Check to Destroy Battle Instance
+					if (!temp_battle_instance.battle_exists)
+					{
+						// Delete Battle Instance from Celestial Body's Battles Array
+						array_delete(battles, temp_battle_index, 1);
+						
+						// Destroy Battle Instance
+						instance_destroy(temp_battle_instance);
+						
+						// Skip to Next Battle Instance
+						continue;
 					}
 					
 					// Increment Battle Index

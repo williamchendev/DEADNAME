@@ -4,11 +4,37 @@
 // Initialize as Persistent Object
 persistent = true;
 
-// Initialize Battle Clock
+// Initialize Battle Celestial Sub Object Type
+celestial_sub_object_type = CelestialSubObjectType.Battle;
+
+// Initialize Celestial Sub Object Variables
+local_position_u = 0.5;
+local_position_v = 0.5;
+
+world_position_x = 0;
+world_position_y = 0;
+world_position_z = 0;
+
+emissive = 0;
+emissive_multiplier = 0;
+
+miniature_sprite_index = sOverworld_Conflict_Icon;
+
+// Clock Variables
 battle_total_time = 0;
 
 battle_round = 0;
 battle_round_timer = 0;
+
+// Battle Variables
+battle_exists = true;
+
+// Celestial Body Variables
+celestial_body_instance = noone;
+
+// Pathfinding Variables
+pathfinding_node_a_index = -1;
+pathfinding_node_b_index = -1;
 
 // Initialize Battle Arrays
 battle_factions = array_create(0);
@@ -19,13 +45,6 @@ battle_land_priority_pools = array_create(0);
 battle_air_priority_pools = array_create(0);
 battle_sea_priority_pools = array_create(0);
 battle_matchups = array_create(0);
-
-// Celestial Body Variables
-celestial_body_instance = noone;
-
-// Pathfinding Variables
-pathfinding_node_a_index = -1;
-pathfinding_node_b_index = -1;
 
 // Populate Battle Array with Default Faction
 array_push(battle_factions, noone);

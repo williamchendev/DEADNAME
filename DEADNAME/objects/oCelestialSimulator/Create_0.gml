@@ -23,7 +23,8 @@ enum CelestialSubObjectType
 	None,
 	Unit,
 	City,
-	Satellite
+	Satellite,
+	Battle
 }
 
 // Delete to prevent multiple Celestial Simulator Instances
@@ -87,6 +88,7 @@ global_no_atmosphere_radius_padding = 32;
 
 global_sub_objects_unit_depth_offset = 5;
 global_sub_objects_city_depth_offset = 10;
+global_sub_objects_battle_depth_offset = -10;
 global_sub_objects_default_depth_transparent_start = -0.4;
 global_sub_objects_default_depth_transparent_end = -0.2;
 global_sub_objects_satellite_depth_transparent_start = -0.3;
@@ -1098,6 +1100,7 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		{
 			case CelestialSubObjectType.Unit:
 			case CelestialSubObjectType.City:
+			case CelestialSubObjectType.Battle:
 				// Establish Sub Object's Unlit Sprite Alpha Transparency
 				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_start, temp_depth);
 				temp_alpha *= power(temp_default_depth_alpha, 3);

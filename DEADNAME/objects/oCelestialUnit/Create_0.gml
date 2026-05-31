@@ -13,6 +13,11 @@ unit_faction = noone;
 // Initialize Unit Sub-Units
 sub_units = array_create(0);
 
+celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit));
+celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit));
+celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit));
+celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit));
+
 // Solar Variables
 unit_solar = CelestialUnitSolarType.Twilight;
 

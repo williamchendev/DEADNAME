@@ -69,6 +69,7 @@ if (instance_exists(camera_observing_instance))
 			{
 				case CelestialSubObjectType.City:
 				case CelestialSubObjectType.Unit:
+				case CelestialSubObjectType.Battle:
 					// Establish Selected Sub Object's Sprite Alpha Transparency
 					var temp_default_depth_alpha = inverse_lerp(camera_observing_instance.render_depth_radius * global_sub_objects_default_depth_transparent_end, camera_observing_instance.render_depth_radius * global_sub_objects_default_depth_transparent_start, temp_depth);
 					temp_sub_object_selected_alpha = power(temp_default_depth_alpha, 3);
@@ -171,6 +172,7 @@ if (instance_exists(camera_observing_instance))
 	draw_set_valign(fa_top);
 }
 
+// DEBUG UNFINISHED BULLSHIT WILLPOWER UI - PLEASE FIX
 // Draw Selected Celestial Unit UI
 if (instance_exists(sub_object_selected_instance) and sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 {

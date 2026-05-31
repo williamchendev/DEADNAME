@@ -69,6 +69,7 @@ clouds_absorption_list = ds_list_create();
 clouds_position_u_list = ds_list_create();
 clouds_position_v_list = ds_list_create();
 clouds_position_height_list = ds_list_create();
+clouds_rotation_list = ds_list_create();
 
 clouds_group_radius_list = ds_list_create();
 clouds_group_height_list = ds_list_create();
@@ -93,6 +94,7 @@ if (clouds)
 		ds_list_add(clouds_position_u_list, temp_cloud_group_position_uv[0]);
 		ds_list_add(clouds_position_v_list, temp_cloud_group_position_uv[1]);
 		ds_list_add(clouds_position_height_list, temp_cloud_group_position_height);
+		ds_list_add(clouds_rotation_list, random(360));
 		
 		// Initialize Cloud Group's Cluster DS Lists
 		var temp_cloud_group_radius_list = ds_list_create();

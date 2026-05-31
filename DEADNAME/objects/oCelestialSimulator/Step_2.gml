@@ -412,6 +412,7 @@ else if (temp_input_select or temp_input_action)
 								break;
 							case CelestialSubObjectType.City:
 							case CelestialSubObjectType.Satellite:
+							case CelestialSubObjectType.Battle:
 							default:
 								break;
 						}
@@ -424,6 +425,7 @@ else if (temp_input_select or temp_input_action)
 							case CelestialSubObjectType.Unit:
 							case CelestialSubObjectType.City:
 							case CelestialSubObjectType.Satellite:
+							case CelestialSubObjectType.Battle:
 							default:
 								break;
 						}

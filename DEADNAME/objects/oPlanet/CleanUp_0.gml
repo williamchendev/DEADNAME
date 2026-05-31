@@ -39,6 +39,9 @@ clouds_position_v_list = -1;
 ds_list_destroy(clouds_position_height_list);
 clouds_position_height_list = -1;
 
+ds_list_destroy(clouds_rotation_list);
+clouds_rotation_list = -1;
+
 // Destroy Clouds Group DS Lists
 for (var temp_clouds_group_radius_index = ds_list_size(clouds_group_radius_list) - 1; temp_clouds_group_radius_index >= 0; temp_clouds_group_radius_index--)
 {

@@ -938,4 +938,16 @@ if (pathfinding_enabled)
 	{
 		add_city_node(instance_create_depth(0, 0, 0, oCelestialCity), irandom_range(0, pathfinding_nodes_count - 1));
 	}
+	
+	repeat(50)
+	{
+		var temp_battle_node_index = irandom_range(0, pathfinding_nodes_count - 1);
+		var temp_battle_inst = instance_create_depth(0, 0, 0, oCelestialBattle);
+		
+		temp_battle_inst.celestial_body_instance = id;
+		temp_battle_inst.pathfinding_node_a_index = temp_battle_node_index;
+		temp_battle_inst.pathfinding_node_b_index = temp_battle_node_index;
+		
+		array_push(battles, temp_battle_inst);
+	}
 }
