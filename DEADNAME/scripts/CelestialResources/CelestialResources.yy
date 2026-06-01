@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CelestialResources",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CelestialResources",
+  "parent":{
+    "name":"Celestial",
+    "path":"folders/Scripts/Celestial.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"1.0",
+}

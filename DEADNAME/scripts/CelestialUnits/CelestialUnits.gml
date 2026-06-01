@@ -9,13 +9,6 @@ enum CelestialUnitBehaviourType
 	Garrison
 }
 
-enum CelestialUnitSolarType
-{
-	Day = 0,
-	Twilight = 1,
-	Night = 2
-}
-
 enum CelestialUnitTerrainType
 {
 	Land,

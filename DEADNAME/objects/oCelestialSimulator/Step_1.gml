@@ -256,6 +256,172 @@ repeat (array_length(solar_systems))
 					break;
 			}
 			
+			// Iterate through Celestial Object Cities Behaviours
+			var temp_city_count = array_length(cities);
+			var temp_city_index = temp_city_count - 1;
+			
+			repeat (temp_city_count)
+			{
+				// Find City Instance
+				var temp_city_instance = cities[temp_city_index];
+				
+				// Establish City Local Vector and Elevation Variables
+				var temp_city_local_x, temp_city_local_y, temp_city_local_z;
+				
+				// Check if Pathfinding is Enabled or City's Celestial Body Pathfinding Node Index is Valid
+				if (!pathfinding_enabled)
+				{
+					// Find Vertical Sphere Vector
+					var temp_city_atan_value = (0.5 - temp_city_instance.local_position_u) * 2 * pi;
+					var temp_city_asin_value = (0.5 - temp_city_instance.local_position_v) * pi;
+					temp_city_local_y = -sin(temp_city_asin_value);
+					
+					// Find Horizontal and Forwards Sphere Vectors
+					var temp_city_sphere_horizontal_radius = sqrt(1.0 - temp_city_local_y * temp_city_local_y);
+					temp_city_local_x = temp_city_sphere_horizontal_radius * -sin(temp_city_atan_value);
+					temp_city_local_z = temp_city_sphere_horizontal_radius * -cos(temp_city_atan_value);
+				}
+				else
+				{
+					// Find Celestial City's Normalized Local Vector from Celestial Body's Sphere Center with their Pathfinding Node Index
+					temp_city_local_x = pathfinding_node_x_array[temp_city_instance.pathfinding_node_index];
+					temp_city_local_y = pathfinding_node_y_array[temp_city_instance.pathfinding_node_index];
+					temp_city_local_z = pathfinding_node_z_array[temp_city_instance.pathfinding_node_index];
+				}
+				
+				// Calculate City Solar Value & City Solar Type
+				var temp_city_solar_x = temp_city_local_x * rotation_matrix[0] + temp_city_local_y * rotation_matrix[4] + temp_city_local_z * rotation_matrix[8];
+				var temp_city_solar_y = temp_city_local_x * rotation_matrix[1] + temp_city_local_y * rotation_matrix[5] + temp_city_local_z * rotation_matrix[9];
+				var temp_city_solar_z = temp_city_local_x * rotation_matrix[2] + temp_city_local_y * rotation_matrix[6] + temp_city_local_z * rotation_matrix[10];
+				
+				var temp_city_solar_value = dot_product_3d_normalised(temp_city_solar_x, temp_city_solar_y, temp_city_solar_z, temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z);
+				
+				if (temp_city_solar_value > 0.333)
+				{
+					temp_city_instance.city_solar = CelestialSolarType.Day;
+				}
+				else if (temp_city_solar_value > -0.333)
+				{
+					temp_city_instance.city_solar = CelestialSolarType.Twilight;
+				}
+				else
+				{
+					temp_city_instance.city_solar = CelestialSolarType.Night;
+				}
+				
+				// Iterate through City Notifications
+				var temp_city_notification_count = array_length(temp_city_instance.notifications);
+				var temp_city_notification_index = temp_city_notification_count - 1;
+				
+				repeat (temp_city_notification_count)
+				{
+					// Establish City Notification Struct
+					var temp_city_notification_struct = temp_city_instance.notifications[temp_city_notification_index];
+					
+					// Decrement Notification Duration
+					temp_city_notification_struct.duration -= CelestialSimulator.global_clock_delta_time;
+					
+					// Check if Notification has elapsed its duration
+					if (temp_city_notification_struct.duration <= 0)
+					{
+						// Delete Notification from City Notifications Array
+						delete temp_city_notification_struct;
+						array_delete(temp_city_instance.notifications, temp_city_notification_index, 1);
+					}
+					
+					// Decrement City Notification Index
+					temp_city_notification_index--;
+				}
+				
+				// Iterate through City Buildings
+				var temp_city_building_count = array_length(temp_city_instance.buildings);
+				var temp_city_building_index = temp_city_building_count - 1;
+				
+				repeat (temp_city_building_count)
+				{
+					// Establish City Building Struct
+					var temp_city_building_struct = temp_city_instance.buildings[temp_city_building_index];
+					
+					// Check if City Building Produces a Resource
+					if (global.celestial_buildings[temp_city_building_struct.building].production_resource != -1)
+					{
+						// Establish City Production Resource Supply Variables
+						var temp_city_building_production_resource = global.celestial_buildings[temp_city_building_struct.building].production_resource;
+						var temp_city_building_production_resource_supply_amount = ds_map_find_value(temp_city_instance.resources_supply_amount_map, temp_city_building_production_resource);
+						var temp_city_building_production_resource_supply_limit = ds_map_find_value(temp_city_instance.resources_supply_limit_map, temp_city_building_production_resource);
+						
+						// Check if City is Eligible to Produce Resource
+						if (is_undefined(temp_city_building_production_resource_supply_amount) or temp_city_building_production_resource_supply_amount < temp_city_building_production_resource_supply_limit)
+						{
+							// Establish Production Variables
+							var temp_city_building_solar_cycle_production_enabled = false;
+							
+							// Check if City Solar Type and Production Solar Cycle allow for the Building to Produce its Resource
+							if (temp_city_instance.city_solar == CelestialSolarType.Day and global.celestial_buildings[temp_city_building_struct.building].production_cycle_day_enabled)
+							{
+								temp_city_building_solar_cycle_production_enabled = true;
+							}
+							else if (temp_city_instance.city_solar == CelestialSolarType.Day and global.celestial_buildings[temp_city_building_struct.building].production_cycle_twilight_enabled)
+							{
+								temp_city_building_solar_cycle_production_enabled = true;
+							}
+							else if (temp_city_instance.city_solar == CelestialSolarType.Day and global.celestial_buildings[temp_city_building_struct.building].production_cycle_night_enabled)
+							{
+								temp_city_building_solar_cycle_production_enabled = true;
+							}
+							
+							// Check if City Building is Producing a Resource right now
+							if (temp_city_building_solar_cycle_production_enabled)
+							{
+								// Decrement Production Cycle Timer by Delta-Time
+								temp_city_building_struct.production_cycle_timer -= CelestialSimulator.global_clock_delta_time;
+								
+								// Check how much Building Production Resource was created
+								if (temp_city_building_struct.production_cycle_timer < 0)
+								{
+									// Calculate Production Cycle Resource Creation & Production Cycle Timer
+									var temp_building_production_resources_count = 0;
+									
+									while (temp_city_building_struct.production_cycle_timer < 0)
+									{
+										temp_city_building_struct.production_cycle_timer += global.celestial_buildings[temp_city_building_struct.building].production_cycle_duration;
+										temp_building_production_resources_count += global.celestial_buildings[temp_city_building_struct.building].production_cycle_resource_count;
+									}
+									
+									// Add Production Resource to City Resource Supply
+									var temp_city_resource_amount_added = celestial_cities_add_resource(temp_city_instance, temp_city_building_production_resource, temp_building_production_resources_count);
+									
+									// Check if Production Resource Added is greater than Zero
+									if (temp_city_resource_amount_added > 0)
+									{
+										// Establish Resource Name
+										var temp_resource_name = global.celestial_resources[temp_city_building_production_resource].name;
+										
+										// Check if Supply Limit Reached
+										if (ds_map_find_value(temp_city_instance.resources_supply_amount_map, temp_city_building_production_resource) == ds_map_find_value(temp_city_instance.resources_supply_limit_map, temp_city_building_production_resource))
+										{
+											// Add Production Resource Notification to City Instance
+											celestial_cities_add_notification(temp_city_instance, $"[{temp_resource_name} Supply Limit]", 11);
+										}
+										else
+										{
+											// Add Production Resource Notification to City Instance
+											celestial_cities_add_notification(temp_city_instance, $"+{temp_city_resource_amount_added} {temp_resource_name}", 8);
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					// Decrement City Building Index
+					temp_city_building_index--;
+				}
+				
+				// Decrement City Index
+				temp_city_index--;
+			}
+			
 			// Iterate through Celestial Object Battle Behaviours
 			var temp_battle_index = 0;
 			
@@ -820,15 +986,15 @@ repeat (array_length(solar_systems))
 				
 				if (temp_unit_solar_value > 0.333)
 				{
-					temp_unit_instance.unit_solar = CelestialUnitSolarType.Day;
+					temp_unit_instance.unit_solar = CelestialSolarType.Day;
 				}
 				else if (temp_unit_solar_value > -0.333)
 				{
-					temp_unit_instance.unit_solar = CelestialUnitSolarType.Twilight;
+					temp_unit_instance.unit_solar = CelestialSolarType.Twilight;
 				}
 				else
 				{
-					temp_unit_instance.unit_solar = CelestialUnitSolarType.Night;
+					temp_unit_instance.unit_solar = CelestialSolarType.Night;
 				}
 				
 				// Increment Unit Index

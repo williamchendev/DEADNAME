@@ -19,7 +19,7 @@ celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit)
 celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestialSubUnit));
 
 // Solar Variables
-unit_solar = CelestialUnitSolarType.Twilight;
+unit_solar = CelestialSolarType.Twilight;
 
 // Pathfinding Variables
 pathfinding_path = undefined;

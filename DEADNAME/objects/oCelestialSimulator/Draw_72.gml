@@ -106,6 +106,28 @@ if (instance_exists(camera_observing_instance))
 					// Draw City Name Text above City Sprite
 					draw_set_alpha(temp_alpha * temp_alpha * temp_alpha);
 					draw_text_outline(temp_city_name_x, temp_city_name_y, temp_instance.city_name, c_white, c_black);
+					
+					// Draw City Notification Texts above City Sprite
+					var temp_city_notification_index = 0;
+					
+					repeat (array_length(temp_instance.notifications))
+					{
+						// Establish City Notification Struct
+						var temp_city_notification_struct = temp_instance.notifications[temp_city_notification_index];
+						
+						// Find City Notification Duration Value
+						var temp_city_notification_duration_value = clamp(temp_city_notification_struct.duration / 5, 0, 1);
+						
+						// DEBUG DEBUG DEBUG PLS DO NOT LET THIS BE IN THE FINAL GAME
+						// Draw Notification
+						draw_set_alpha(temp_alpha * temp_alpha * temp_alpha * temp_city_notification_duration_value);
+						draw_text_outline(temp_city_name_x, temp_city_name_y - 12 - 12 * (1 - temp_city_notification_duration_value), temp_city_notification_struct.text, c_white, c_black);
+						
+						// Increment City Notification Index
+						temp_city_notification_index++;
+					}
+					
+					// Reset Draw Alpha
 					draw_set_alpha(1);
 				}
 				break;

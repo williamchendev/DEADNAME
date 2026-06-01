@@ -27,6 +27,13 @@ enum CelestialSubObjectType
 	Battle
 }
 
+enum CelestialSolarType
+{
+	Day = 0,
+	Twilight = 1,
+	Night = 2
+}
+
 // Delete to prevent multiple Celestial Simulator Instances
 if (instance_number(object_index) > 1) 
 {
@@ -1098,8 +1105,8 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		// Check Celestial Sub Object's Sub Object Type to perform appropriate Render Behaviour
 		switch (temp_instance.celestial_sub_object_type)
 		{
-			case CelestialSubObjectType.Unit:
 			case CelestialSubObjectType.City:
+			case CelestialSubObjectType.Unit:
 			case CelestialSubObjectType.Battle:
 				// Establish Sub Object's Unlit Sprite Alpha Transparency
 				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_start, temp_depth);
