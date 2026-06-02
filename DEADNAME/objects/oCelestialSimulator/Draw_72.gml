@@ -195,60 +195,212 @@ if (instance_exists(camera_observing_instance))
 }
 
 // DEBUG UNFINISHED BULLSHIT WILLPOWER UI - PLEASE FIX
-// Draw Selected Celestial Unit UI
-if (instance_exists(sub_object_selected_instance) and sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
+// Draw Selected Celestial Sub Object UI
+if (instance_exists(sub_object_selected_instance))
 {
-	//
-	var temp_unit_ui_x = 0;
-	var temp_unit_ui_y = GameManager.game_height;
-	
-	//
-	draw_sprite(sUI_Overworld_UnitSelect_Background, 0, temp_unit_ui_x, temp_unit_ui_y);
-	draw_sprite(sUI_Overworld_UnitSelect_DebugUnit, 0, temp_unit_ui_x, temp_unit_ui_y);
-	
-	//
-	draw_sprite(sUI_Overworld_Solar_Icon, sub_object_selected_instance.unit_solar, temp_unit_ui_x + 152, temp_unit_ui_y - 64);
-	
-	//
-	var temp_willpower_horizontal_offset = 152;
-	var temp_willpower_vertical_offset = -28;
-	
-	//
-	var temp_willpower_sun = sub_object_selected_instance.willpower_sun;
-	var temp_willpower_moon = sub_object_selected_instance.willpower_moon;
-	
-	//
-	var temp_willpower_index = 0;
-	var temp_willpower_total = temp_willpower_sun + temp_willpower_moon;
-	
-	//
-	while (temp_willpower_total > 0)
+	if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 	{
 		//
-		var temp_willpower_index_h_offset = temp_willpower_index * 20;
+		var temp_unit_ui_x = 0;
+		var temp_unit_ui_y = GameManager.game_height;
 		
-		if (temp_willpower_sun > 0)
+		//
+		draw_sprite(sUI_Overworld_UnitSelect_Background, 0, temp_unit_ui_x, temp_unit_ui_y);
+		draw_sprite(sUI_Overworld_UnitSelect_DebugUnit, 0, temp_unit_ui_x, temp_unit_ui_y);
+		
+		//
+		draw_sprite(sUI_Overworld_Solar_Icon, sub_object_selected_instance.unit_solar, temp_unit_ui_x + 152, temp_unit_ui_y - 64);
+		
+		//
+		var temp_willpower_horizontal_offset = 152;
+		var temp_willpower_vertical_offset = -28;
+		
+		//
+		var temp_willpower_sun = sub_object_selected_instance.willpower_sun;
+		var temp_willpower_moon = sub_object_selected_instance.willpower_moon;
+		
+		//
+		var temp_willpower_index = 0;
+		var temp_willpower_total = temp_willpower_sun + temp_willpower_moon;
+		
+		//
+		while (temp_willpower_total > 0)
 		{
 			//
-			draw_sprite(sUI_Overworld_Willpower, 0, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+			var temp_willpower_index_h_offset = temp_willpower_index * 20;
+			
+			if (temp_willpower_sun > 0)
+			{
+				//
+				draw_sprite(sUI_Overworld_Willpower, 0, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+				
+				//
+				temp_willpower_sun--;
+			}
+			else if (temp_willpower_moon > 0)
+			{
+				//
+				draw_sprite(sUI_Overworld_Willpower, 1, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+				
+				//
+				temp_willpower_moon--;
+			}
 			
 			//
-			temp_willpower_sun--;
+			temp_willpower_index++;
+			
+			//
+			temp_willpower_total--;
 		}
-		else if (temp_willpower_moon > 0)
+	}
+	else if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Battle)
+	{
+		//
+		if (instance_exists(camera_observing_instance) and sub_object_selected_instance.celestial_body_instance == camera_observing_instance)
 		{
 			//
-			draw_sprite(sUI_Overworld_Willpower, 1, temp_unit_ui_x + temp_willpower_horizontal_offset + temp_willpower_index_h_offset, temp_unit_ui_y + temp_willpower_vertical_offset);
+			battle_camera_observing_lerp += battle_camera_observing_lerp_spd * frame_delta;
+			battle_camera_observing_lerp = clamp(battle_camera_observing_lerp, 0, 1);
 			
 			//
-			temp_willpower_moon--;
+			var temp_battle_camera_observing_lerp_value = power(battle_camera_observing_lerp, battle_camera_observing_lerp_multiplier);
+			
+			//
+			var temp_battle_target_camera_observing_polar_horizontal_angle = ((sub_object_selected_instance.local_position_u + 0.25) mod 1) * 360;
+			var temp_battle_target_camera_observing_polar_vertical_angle = lerp(89.5, -89.5, sub_object_selected_instance.local_position_v);
+			
+			//
+			camera_observing_polar_horizontal_angle = battle_camera_observing_polar_horizontal_angle + angle_difference(temp_battle_target_camera_observing_polar_horizontal_angle, battle_camera_observing_polar_horizontal_angle) * temp_battle_camera_observing_lerp_value;
+			camera_observing_polar_vertical_angle = battle_camera_observing_polar_vertical_angle + angle_difference(temp_battle_target_camera_observing_polar_vertical_angle, battle_camera_observing_polar_vertical_angle) * temp_battle_camera_observing_lerp_value;
 		}
 		
 		//
-		temp_willpower_index++;
+		var temp_battle_platform_ax = (GameManager.game_width * 0.5) - (battle_platform_top_horizontal_width * 0.5);
+		var temp_battle_platform_ay = battle_platform_top_vertical_position;
+		
+		var temp_battle_platform_bx = (GameManager.game_width * 0.5) + (battle_platform_top_horizontal_width * 0.5);
+		var temp_battle_platform_by = battle_platform_top_vertical_position;
+		
+		var temp_battle_platform_cx = (GameManager.game_width * 0.5) - (battle_platform_bottom_horizontal_width * 0.5);
+		var temp_battle_platform_cy = battle_platform_bottom_vertical_position;
+		
+		var temp_battle_platform_dx = (GameManager.game_width * 0.5) + (battle_platform_bottom_horizontal_width * 0.5);
+		var temp_battle_platform_dy = battle_platform_bottom_vertical_position;
 		
 		//
-		temp_willpower_total--;
+		if (battle_platform_animation)
+		{
+			//
+			battle_platform_animation_momentum += battle_platform_animation_spd * frame_delta;
+			battle_platform_animation_value += battle_platform_animation_momentum * frame_delta;
+			
+			//
+			var temp_battle_platform_animation_isosceles_trapezoid_lerp = battle_platform_animation_cycles >= battle_platform_animation_cycle_count ? battle_platform_animation_value : 0;
+			
+			//
+			if (battle_platform_animation_value > 1)
+			{
+				//
+				if (battle_platform_animation_cycles < battle_platform_animation_cycle_count)
+				{
+					//
+					battle_platform_animation_value -= 1;
+					
+					//
+					battle_platform_animation_cycles++;
+				}
+				else
+				{
+					//
+					battle_platform_animation_value = 1;
+					
+					//
+					temp_battle_platform_animation_isosceles_trapezoid_lerp = 1;
+					
+					//
+					battle_platform_animation = false;
+				}
+			}
+			
+			//
+			var temp_battle_platform_animation_rotation = battle_platform_animation_value * 360;
+			
+			//
+			temp_battle_platform_animation_isosceles_trapezoid_lerp = temp_battle_platform_animation_isosceles_trapezoid_lerp * temp_battle_platform_animation_isosceles_trapezoid_lerp;
+			
+			//
+			var temp_battle_platform_center_x = lerp(sub_object_selected_instance.x, GameManager.game_width * 0.5, temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			var temp_battle_platform_center_y = lerp(sub_object_selected_instance.y, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			
+			//
+			var temp_battle_platform_angle_a = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_ax, temp_battle_platform_ay);
+			var temp_battle_platform_angle_b = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_bx, temp_battle_platform_by);
+			var temp_battle_platform_angle_c = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_cx, temp_battle_platform_cy);
+			var temp_battle_platform_angle_d = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_dx, temp_battle_platform_dy);
+			
+			//
+			var temp_battle_platform_length_a = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_ax, temp_battle_platform_ay);
+			var temp_battle_platform_length_b = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_bx, temp_battle_platform_by);
+			var temp_battle_platform_length_c = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_cx, temp_battle_platform_cy);
+			var temp_battle_platform_length_d = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_dx, temp_battle_platform_dy);
+			
+			//
+			temp_battle_platform_angle_a = temp_battle_platform_animation_rotation + 135 + angle_difference(temp_battle_platform_angle_a, 135) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
+			temp_battle_platform_angle_b = temp_battle_platform_animation_rotation + 45 + angle_difference(temp_battle_platform_angle_b, 45) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
+			temp_battle_platform_angle_c = temp_battle_platform_animation_rotation + 225 + angle_difference(temp_battle_platform_angle_c, 225) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
+			temp_battle_platform_angle_d = temp_battle_platform_animation_rotation + 315 + angle_difference(temp_battle_platform_angle_d, 315) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
+			
+			//
+			var temp_battle_platform_square_value = sqr((battle_platform_animation_cycles + battle_platform_animation_value) / (battle_platform_animation_cycle_count + 1)) * (battle_platform_animation_cycle_count + 1);
+			var temp_battle_platform_square_size = temp_battle_platform_square_value * battle_platform_animation_square_size;
+			
+			//
+			temp_battle_platform_length_a = lerp(temp_battle_platform_square_size, temp_battle_platform_length_a, temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			temp_battle_platform_length_b = lerp(temp_battle_platform_square_size, temp_battle_platform_length_b, temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			temp_battle_platform_length_c = lerp(temp_battle_platform_square_size, temp_battle_platform_length_c, temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			temp_battle_platform_length_d = lerp(temp_battle_platform_square_size, temp_battle_platform_length_d, temp_battle_platform_animation_isosceles_trapezoid_lerp);
+			
+			//
+			temp_battle_platform_ax = rot_dist_x(temp_battle_platform_length_a, temp_battle_platform_angle_a) + temp_battle_platform_center_x;
+			temp_battle_platform_ay = rot_dist_y(temp_battle_platform_length_a) + temp_battle_platform_center_y;
+			
+			temp_battle_platform_bx = rot_dist_x(temp_battle_platform_length_b, temp_battle_platform_angle_b) + temp_battle_platform_center_x;
+			temp_battle_platform_by = rot_dist_y(temp_battle_platform_length_b) + temp_battle_platform_center_y;
+			
+			temp_battle_platform_cx = rot_dist_x(temp_battle_platform_length_c, temp_battle_platform_angle_c) + temp_battle_platform_center_x;
+			temp_battle_platform_cy = rot_dist_y(temp_battle_platform_length_c) + temp_battle_platform_center_y;
+			
+			temp_battle_platform_dx = rot_dist_x(temp_battle_platform_length_d, temp_battle_platform_angle_d) + temp_battle_platform_center_x;
+			temp_battle_platform_dy = rot_dist_y(temp_battle_platform_length_d) + temp_battle_platform_center_y;
+		}
+		else
+		{
+			//
+			draw_set_color(c_white);
+			
+			//
+			draw_triangle(temp_battle_platform_ax + 1, temp_battle_platform_ay, temp_battle_platform_bx + 1, temp_battle_platform_by, temp_battle_platform_cx + 1, temp_battle_platform_cy, false);
+			draw_triangle(temp_battle_platform_bx + 1, temp_battle_platform_by, temp_battle_platform_cx + 1, temp_battle_platform_cy, temp_battle_platform_dx + 1, temp_battle_platform_dy, false);
+			
+			draw_triangle(temp_battle_platform_ax - 1, temp_battle_platform_ay, temp_battle_platform_bx - 1, temp_battle_platform_by, temp_battle_platform_cx - 1, temp_battle_platform_cy, false);
+			draw_triangle(temp_battle_platform_bx - 1, temp_battle_platform_by, temp_battle_platform_cx - 1, temp_battle_platform_cy, temp_battle_platform_dx - 1, temp_battle_platform_dy, false);
+			
+			draw_triangle(temp_battle_platform_ax, temp_battle_platform_ay + 1, temp_battle_platform_bx, temp_battle_platform_by + 1, temp_battle_platform_cx, temp_battle_platform_cy + 1, false);
+			draw_triangle(temp_battle_platform_bx, temp_battle_platform_by + 1, temp_battle_platform_cx, temp_battle_platform_cy + 1, temp_battle_platform_dx, temp_battle_platform_dy + 1, false);
+			
+			draw_triangle(temp_battle_platform_ax, temp_battle_platform_ay - 1, temp_battle_platform_bx, temp_battle_platform_by - 1, temp_battle_platform_cx, temp_battle_platform_cy - 1, false);
+			draw_triangle(temp_battle_platform_bx, temp_battle_platform_by - 1, temp_battle_platform_cx, temp_battle_platform_cy - 1, temp_battle_platform_dx, temp_battle_platform_dy - 1, false);
+		}
+		
+		//
+		draw_set_color(c_black);
+		
+		//
+		draw_triangle(temp_battle_platform_ax, temp_battle_platform_ay, temp_battle_platform_bx, temp_battle_platform_by, temp_battle_platform_cx, temp_battle_platform_cy, false);
+		draw_triangle(temp_battle_platform_bx, temp_battle_platform_by, temp_battle_platform_cx, temp_battle_platform_cy, temp_battle_platform_dx, temp_battle_platform_dy, false);
+		
+		//
+		draw_set_color(c_white);
 	}
 }
 

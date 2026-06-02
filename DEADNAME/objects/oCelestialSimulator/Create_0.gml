@@ -109,10 +109,23 @@ bloom_global_size = 3;
 bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
 
-// Sub Object Settings
+// Sub Object UI Settings
 sub_object_city_name_vertical_offset = -8;
 
-// Triangle Settings
+// Battle UI Settings
+battle_platform_animation_spd = 0.03;
+battle_platform_animation_square_size = 42;
+battle_platform_animation_cycle_count = 3;
+
+battle_platform_top_horizontal_width = 420;
+battle_platform_top_vertical_position = 240;
+battle_platform_bottom_horizontal_width = 620;
+battle_platform_bottom_vertical_position = 340;
+
+battle_camera_observing_lerp_spd = 0.05;
+battle_camera_observing_lerp_multiplier = 1.8;
+
+// Triangle UI Settings
 triangle_angle = -105;
 triangle_radius = 4;
 triangle_offset = -5;
@@ -198,7 +211,17 @@ selected_unit_movement_path_point_b_position_x_array = array_create(0);
 selected_unit_movement_path_point_b_position_y_array = array_create(0);
 selected_unit_movement_path_point_b_alpha_array = array_create(0);
 
-// Triangle Variables
+// Battle UI Variables
+battle_platform_animation = false;
+battle_platform_animation_momentum = 0;
+battle_platform_animation_value = 0;
+battle_platform_animation_cycles = 0;
+
+battle_camera_observing_lerp = 0;
+battle_camera_observing_polar_horizontal_angle = 0;
+battle_camera_observing_polar_vertical_angle = 0;
+
+// Triangle UI Variables
 triangle_animation_value = 0;
 triangle_breath_value = 0;
 triangle_draw_angle = 0;

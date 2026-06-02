@@ -60,12 +60,39 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 	// Update Celestial Simulator's Sub Object Selected Instance with the possible Selection
 	if (temp_input_action and !input_action)
 	{
+		// New Action Input Sub Object
 		temp_sub_object_action_inst = temp_sub_object_click_inst;
 	}
 	else if (!temp_input_select and input_select)
 	{
+		// New Select Input Sub Object
 		sub_object_selected_instance = temp_sub_object_click_inst;
 		temp_sub_object_selected_inst = temp_sub_object_click_inst;
+		
+		// Check if New Select Input Sub Object Instance Exists
+		if (instance_exists(sub_object_selected_instance))
+		{
+			// Select Input Sub Object Behaviour
+			switch (sub_object_selected_instance.celestial_sub_object_type)
+			{
+				case CelestialSubObjectType.Battle:
+					// Reset Battle Selection Animation Variables
+					battle_platform_animation = true;
+					battle_platform_animation_momentum = 0;
+					battle_platform_animation_value = 0;
+					battle_platform_animation_cycles = 0;
+					
+					battle_camera_observing_lerp = 0;
+					battle_camera_observing_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
+					battle_camera_observing_polar_vertical_angle = camera_observing_polar_vertical_angle;
+					break;
+				case CelestialSubObjectType.Unit:
+				case CelestialSubObjectType.City:
+				case CelestialSubObjectType.Satellite:
+				default:
+					break;
+			}
+		}
 	}
 }
 
@@ -454,6 +481,24 @@ else if (temp_input_select or temp_input_action)
 				
 				camera_observing_drag_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
 				camera_observing_drag_polar_vertical_angle = camera_observing_polar_vertical_angle;
+				
+				// Check if Sub Object Selected Instance Exists
+				if (instance_exists(sub_object_selected_instance))
+				{
+					// Deselect Sub Object Behaviour
+					switch (sub_object_selected_instance.celestial_sub_object_type)
+					{
+						case CelestialSubObjectType.Battle:
+							// Deselect Battle Instance
+							sub_object_selected_instance = noone;
+							break;
+						case CelestialSubObjectType.Unit:
+						case CelestialSubObjectType.City:
+						case CelestialSubObjectType.Satellite:
+						default:
+							break;
+					}
+				}
 			}
 		}
 		

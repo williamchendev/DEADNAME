@@ -592,6 +592,10 @@ repeat (array_length(temp_solar_system))
 				
 				// Find Celestial City's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Index
 				temp_city_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_city_instance.pathfinding_node_index];
+				
+				// Update Local UV Position
+				temp_city_instance.local_position_u = temp_celestial_object_instance.pathfinding_node_u_array[temp_city_instance.pathfinding_node_index];
+				temp_city_instance.local_position_v = temp_celestial_object_instance.pathfinding_node_v_array[temp_city_instance.pathfinding_node_index];
 			}
 			
 			// Find Celestial City's Elevation from Celestial Body's Sphere Center
@@ -680,6 +684,10 @@ repeat (array_length(temp_solar_system))
 				
 				// Find Celestial Satellite's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Index
 				temp_satellite_elevation = temp_celestial_object_instance.pathfinding_node_elevation_array[temp_satellite_instance.pathfinding_node_index];
+				
+				// Update Local UV Position
+				temp_satellite_instance.local_position_u = temp_celestial_object_instance.pathfinding_node_u_array[temp_satellite_instance.pathfinding_node_index];
+				temp_satellite_instance.local_position_v = temp_celestial_object_instance.pathfinding_node_v_array[temp_satellite_instance.pathfinding_node_index];
 			}
 			
 			// Find Celestial Satellite's Elevation from Celestial Body's Sphere Center
@@ -786,6 +794,10 @@ repeat (array_length(temp_solar_system))
 				
 				// Find Celestial Battle's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Indexes
 				temp_battle_elevation = lerp(temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+				
+				// Update Local UV Position
+				temp_battle_instance.local_position_u = lerp(temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
+				temp_battle_instance.local_position_v = lerp(temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
 			}
 			
 			// Find Celestial Battle's Elevation from Celestial Body's Sphere Center
