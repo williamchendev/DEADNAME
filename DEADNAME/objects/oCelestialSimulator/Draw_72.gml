@@ -255,26 +255,26 @@ if (instance_exists(sub_object_selected_instance))
 	}
 	else if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Battle)
 	{
-		//
+		// Check if Camera is Observing a Battle on a valid Celestial Body Instance and Move Camera to face Battle
 		if (instance_exists(camera_observing_instance) and sub_object_selected_instance.celestial_body_instance == camera_observing_instance)
 		{
-			//
+			// Lerp Battle's Camera Movement Value
 			battle_camera_observing_lerp += battle_camera_observing_lerp_spd * frame_delta;
 			battle_camera_observing_lerp = clamp(battle_camera_observing_lerp, 0, 1);
 			
-			//
+			// Calculate Animation Curve for Battle's Camera Movement Value
 			var temp_battle_camera_observing_lerp_value = power(battle_camera_observing_lerp, battle_camera_observing_lerp_multiplier);
 			
-			//
+			// Calculate Camera's new Polar Horizontal & Vertical Angles
 			var temp_battle_target_camera_observing_polar_horizontal_angle = ((sub_object_selected_instance.local_position_u + 0.25) mod 1) * 360;
 			var temp_battle_target_camera_observing_polar_vertical_angle = lerp(89.5, -89.5, sub_object_selected_instance.local_position_v);
 			
-			//
+			// Adjust Camera's Observing Polar Horizontal & Vertical based on the lerped Battle's Camera Movement Value
 			camera_observing_polar_horizontal_angle = battle_camera_observing_polar_horizontal_angle + angle_difference(temp_battle_target_camera_observing_polar_horizontal_angle, battle_camera_observing_polar_horizontal_angle) * temp_battle_camera_observing_lerp_value;
 			camera_observing_polar_vertical_angle = battle_camera_observing_polar_vertical_angle + angle_difference(temp_battle_target_camera_observing_polar_vertical_angle, battle_camera_observing_polar_vertical_angle) * temp_battle_camera_observing_lerp_value;
 		}
 		
-		//
+		// Calculate Battle's Trapezoidal Shaped Platform Vertex Positions
 		var temp_battle_platform_ax = (GameManager.game_width * 0.5) - (battle_platform_top_horizontal_width * 0.5);
 		var temp_battle_platform_ay = battle_platform_top_vertical_position;
 		
@@ -287,80 +287,73 @@ if (instance_exists(sub_object_selected_instance))
 		var temp_battle_platform_dx = (GameManager.game_width * 0.5) + (battle_platform_bottom_horizontal_width * 0.5);
 		var temp_battle_platform_dy = battle_platform_bottom_vertical_position;
 		
-		//
+		// Perform Battle Platform's Inital Opening Animation
 		if (battle_platform_animation)
 		{
-			//
+			// Increment Battle Platform Animation Values
 			battle_platform_animation_momentum += battle_platform_animation_spd * frame_delta;
 			battle_platform_animation_value += battle_platform_animation_momentum * frame_delta;
 			
-			//
+			// Calculate the transformation lerp value of the Battle Platform from a Square to an Isosceles Trapezoid
 			var temp_battle_platform_animation_isosceles_trapezoid_lerp = battle_platform_animation_cycles >= battle_platform_animation_cycle_count ? battle_platform_animation_value : 0;
+			temp_battle_platform_animation_isosceles_trapezoid_lerp = temp_battle_platform_animation_isosceles_trapezoid_lerp * temp_battle_platform_animation_isosceles_trapezoid_lerp;
 			
-			//
+			// Check if the Animation has completed a Cycle
 			if (battle_platform_animation_value > 1)
 			{
-				//
+				// Check if the Cycle completed was the final Cycle in the Battle Platform's Animation 
 				if (battle_platform_animation_cycles < battle_platform_animation_cycle_count)
 				{
-					//
+					// Animation has not finished - Increment Cycle
 					battle_platform_animation_value -= 1;
-					
-					//
 					battle_platform_animation_cycles++;
 				}
 				else
 				{
-					//
+					// Animation has finished - End Animation
+					battle_platform_animation = false;
 					battle_platform_animation_value = 1;
 					
-					//
 					temp_battle_platform_animation_isosceles_trapezoid_lerp = 1;
-					
-					//
-					battle_platform_animation = false;
 				}
 			}
 			
-			//
+			// Calculate the Rotation of the Battle Platform
 			var temp_battle_platform_animation_rotation = battle_platform_animation_value * 360;
 			
-			//
-			temp_battle_platform_animation_isosceles_trapezoid_lerp = temp_battle_platform_animation_isosceles_trapezoid_lerp * temp_battle_platform_animation_isosceles_trapezoid_lerp;
-			
-			//
+			// Calculate the Center of the Battle Platform
 			var temp_battle_platform_center_x = lerp(sub_object_selected_instance.x, GameManager.game_width * 0.5, temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			var temp_battle_platform_center_y = lerp(sub_object_selected_instance.y, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			
-			//
+			// Calculate the Point Directions of each Battle Platform Vertex from the Center of the Battle Platform
 			var temp_battle_platform_angle_a = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_ax, temp_battle_platform_ay);
 			var temp_battle_platform_angle_b = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_bx, temp_battle_platform_by);
 			var temp_battle_platform_angle_c = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_cx, temp_battle_platform_cy);
 			var temp_battle_platform_angle_d = point_direction(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_dx, temp_battle_platform_dy);
 			
-			//
+			// Calculate the Point Distances of each Battle Platform Vertex from the Center of the Battle Platform
 			var temp_battle_platform_length_a = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_ax, temp_battle_platform_ay);
 			var temp_battle_platform_length_b = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_bx, temp_battle_platform_by);
 			var temp_battle_platform_length_c = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_cx, temp_battle_platform_cy);
 			var temp_battle_platform_length_d = point_distance(GameManager.game_width * 0.5, lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, 0.5), temp_battle_platform_dx, temp_battle_platform_dy);
 			
-			//
+			// Lerp the angles of the Battle Platform's Animation Square Vertex Directions into their Isosceles Trapezoid form
 			temp_battle_platform_angle_a = temp_battle_platform_animation_rotation + 135 + angle_difference(temp_battle_platform_angle_a, 135) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
 			temp_battle_platform_angle_b = temp_battle_platform_animation_rotation + 45 + angle_difference(temp_battle_platform_angle_b, 45) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
 			temp_battle_platform_angle_c = temp_battle_platform_animation_rotation + 225 + angle_difference(temp_battle_platform_angle_c, 225) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
 			temp_battle_platform_angle_d = temp_battle_platform_animation_rotation + 315 + angle_difference(temp_battle_platform_angle_d, 315) * temp_battle_platform_animation_isosceles_trapezoid_lerp;
 			
-			//
+			// Calculate the size of the Battle Platform's Animation Square Size
 			var temp_battle_platform_square_value = sqr((battle_platform_animation_cycles + battle_platform_animation_value) / (battle_platform_animation_cycle_count + 1)) * (battle_platform_animation_cycle_count + 1);
 			var temp_battle_platform_square_size = temp_battle_platform_square_value * battle_platform_animation_square_size;
 			
-			//
+			// Lerp the length of the Battle Platform's Animation Square Vertex Distances into their Isosceles Trapezoid form
 			temp_battle_platform_length_a = lerp(temp_battle_platform_square_size, temp_battle_platform_length_a, temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			temp_battle_platform_length_b = lerp(temp_battle_platform_square_size, temp_battle_platform_length_b, temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			temp_battle_platform_length_c = lerp(temp_battle_platform_square_size, temp_battle_platform_length_c, temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			temp_battle_platform_length_d = lerp(temp_battle_platform_square_size, temp_battle_platform_length_d, temp_battle_platform_animation_isosceles_trapezoid_lerp);
 			
-			//
+			// Calculate the Battle Platform's Animated Vertex Positions
 			temp_battle_platform_ax = rot_dist_x(temp_battle_platform_length_a, temp_battle_platform_angle_a) + temp_battle_platform_center_x;
 			temp_battle_platform_ay = rot_dist_y(temp_battle_platform_length_a) + temp_battle_platform_center_y;
 			
@@ -375,10 +368,10 @@ if (instance_exists(sub_object_selected_instance))
 		}
 		else
 		{
-			//
+			// Set Draw Color as White - For the Battle Platform's Outline Color
 			draw_set_color(c_white);
 			
-			//
+			// Draw the Battle Platform's White Background
 			draw_triangle(temp_battle_platform_ax + 1, temp_battle_platform_ay, temp_battle_platform_bx + 1, temp_battle_platform_by, temp_battle_platform_cx + 1, temp_battle_platform_cy, false);
 			draw_triangle(temp_battle_platform_bx + 1, temp_battle_platform_by, temp_battle_platform_cx + 1, temp_battle_platform_cy, temp_battle_platform_dx + 1, temp_battle_platform_dy, false);
 			
@@ -392,14 +385,14 @@ if (instance_exists(sub_object_selected_instance))
 			draw_triangle(temp_battle_platform_bx, temp_battle_platform_by - 1, temp_battle_platform_cx, temp_battle_platform_cy - 1, temp_battle_platform_dx, temp_battle_platform_dy - 1, false);
 		}
 		
-		//
+		// Set Draw Color as Black - For the Battle Platform's Color
 		draw_set_color(c_black);
 		
-		//
+		// Draw the Battle Platform
 		draw_triangle(temp_battle_platform_ax, temp_battle_platform_ay, temp_battle_platform_bx, temp_battle_platform_by, temp_battle_platform_cx, temp_battle_platform_cy, false);
 		draw_triangle(temp_battle_platform_bx, temp_battle_platform_by, temp_battle_platform_cx, temp_battle_platform_cy, temp_battle_platform_dx, temp_battle_platform_dy, false);
 		
-		//
+		// Reset Color
 		draw_set_color(c_white);
 	}
 }
