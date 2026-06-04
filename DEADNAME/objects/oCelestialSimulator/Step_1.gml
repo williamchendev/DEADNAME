@@ -453,19 +453,15 @@ repeat (array_length(solar_systems))
 							var temp_battle_unit_instance = array_get(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index);
 							
 							// Check if Unit is still in the Active Combat Pathfinding Node
-							if (temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_a_index and temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_b_index)
+							if (!instance_exists(temp_battle_unit_instance))
 							{
 								// Remove Battle Unit from Battle Faction Unit Array
 								array_delete(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index, 1);
-								
-								// Check if Battle Faction Unit Array is empty
-								if (array_length(temp_battle_instance.battle_units[temp_battle_faction_index]) <= 0)
-								{
-									// Delete Battle Faction and Battle Faction Units Array from Battle Instance
-									array_delete(temp_battle_instance.battle_factions, temp_battle_faction_index, 1);
-									array_delete(temp_battle_instance.battle_units, temp_battle_faction_index, 1);
-									break;
-								}
+							}
+							else if (temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_a_index and temp_battle_unit_instance.pathfinding_node_index != temp_battle_instance.pathfinding_node_b_index)
+							{
+								// Remove Battle Unit from Battle Faction Unit Array
+								array_delete(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index, 1);
 							}
 							else
 							{

@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sOverworld_Unit_William",
+  "%Name":"sOverworld_Unit_Artillery",
   "bboxMode":0,
   "bbox_bottom":23,
-  "bbox_left":8,
-  "bbox_right":15,
+  "bbox_left":2,
+  "bbox_right":21,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,16 +12,16 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"45f693a2-4afc-4bdf-a922-2e87977bed43","name":"45f693a2-4afc-4bdf-a922-2e87977bed43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":24,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9a64b8da-ca06-4e92-9086-6119ec36e0f5","blendMode":0,"displayName":"default","isLocked":false,"name":"9a64b8da-ca06-4e92-9086-6119ec36e0f5","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"956e9821-9a6d-4b7d-8e69-5a2067f3458e","blendMode":0,"displayName":"default","isLocked":false,"name":"956e9821-9a6d-4b7d-8e69-5a2067f3458e","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sOverworld_Unit_William",
+  "name":"sOverworld_Unit_Artillery",
   "nineSlice":null,
   "origin":7,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sOverworld_Unit_William",
+    "%Name":"sOverworld_Unit_Artillery",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sOverworld_Unit_William",
+    "name":"sOverworld_Unit_Artillery",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","path":"sprites/sOverworld_Unit_William/sOverworld_Unit_William.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"fd28a616-9390-43a6-81b6-2451b1e975de","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"45f693a2-4afc-4bdf-a922-2e87977bed43","path":"sprites/sOverworld_Unit_Artillery/sOverworld_Unit_Artillery.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"f73d644c-1b0f-4abc-9887-029a14015906","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

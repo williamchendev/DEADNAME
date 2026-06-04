@@ -383,6 +383,12 @@ if (instance_exists(sub_object_selected_instance))
 			
 			draw_triangle(temp_battle_platform_ax, temp_battle_platform_ay - 1, temp_battle_platform_bx, temp_battle_platform_by - 1, temp_battle_platform_cx, temp_battle_platform_cy - 1, false);
 			draw_triangle(temp_battle_platform_bx, temp_battle_platform_by - 1, temp_battle_platform_cx, temp_battle_platform_cy - 1, temp_battle_platform_dx, temp_battle_platform_dy - 1, false);
+			
+			// Draw Battle Round Clock
+			draw_set_halign(fa_center);
+			draw_text_outline(GameManager.game_width * 0.5, battle_platform_top_vertical_position - 32, $"{sub_object_selected_instance.battle_round}");
+			draw_text_outline(GameManager.game_width * 0.5, battle_platform_top_vertical_position - 18, $"{string_delete(string(sub_object_selected_instance.battle_round_timer), -1, -1)}");
+			draw_set_halign(fa_left);
 		}
 		
 		// Set Draw Color as Black - For the Battle Platform's Color
@@ -395,26 +401,31 @@ if (instance_exists(sub_object_selected_instance))
 		// Draw Battle Tiles
 		if (!battle_platform_animation)
 		{
-			// Calculate Battle Row Count
+			// Calculate Battle Row Count & Battle Tile Width
 			var temp_battle_row_count = (CelestialBattlePriorityRankMax * 2) + 1;
-			
-			// Calculate Battle Tile Width
 			var temp_battle_tile_width = 1 / ((CelestialBattlePriorityRankMax * 2) + 1);
 			
-			//
-			for (var temp_battle_platform_tile_w = 0; temp_battle_platform_tile_w < temp_battle_row_count; temp_battle_platform_tile_w++)
+			// Iterate through Battle's Choreography Actors to Draw Battle Tiles
+			var temp_battle_choreography_actors_count = array_length(sub_object_selected_instance.battle_choreography_actors);
+			var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
+			
+			repeat (temp_battle_choreography_actors_count)
 			{
-				// 
-				var temp_battle_column_size = 9;
+				// Establish Battle Choreography Actors Struct
+				var temp_battle_tile_choreography_actor = sub_object_selected_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
 				
-				// Check to Skip Battle Row
-				if (temp_battle_column_size <= 0)
-				{
-					continue;
-				}
+				// Calculate Battle Tile's Horizontal and Vertical Grid Position
+				var temp_battle_platform_tile_w = CelestialBattlePriorityRankMax - temp_battle_tile_choreography_actor.actor_priority_rank - 1;
+				temp_battle_platform_tile_w = temp_battle_tile_choreography_actor.actor_platform_side == CelestialBattlePlatformSide.Right ? CelestialBattlePriorityRankMax + temp_battle_tile_choreography_actor.actor_priority_rank + 1 : temp_battle_platform_tile_w;
+				var temp_battle_platform_tile_h = temp_battle_tile_choreography_actor.actor_vertical_tile;
 				
-				//
-				var temp_battle_tile_height = 1 / max(temp_battle_column_size, battle_default_column_size);
+				// Calculate Battle Actor's Column Index & Size
+				var temp_battle_actor_column_index = CelestialBattlePriorityRankMax - temp_battle_tile_choreography_actor.actor_priority_rank - 1;
+				temp_battle_actor_column_index = temp_battle_tile_choreography_actor.actor_platform_side == CelestialBattlePlatformSide.Right ? CelestialBattlePriorityRankMax + temp_battle_tile_choreography_actor.actor_priority_rank : temp_battle_actor_column_index;
+				var temp_battle_column_size = sub_object_selected_instance.battle_choreography_actors_battle_column_sizes[temp_battle_actor_column_index];
+				
+				// Calculate Battle Tile Height
+				var temp_battle_tile_height = 1 / temp_battle_column_size;
 				
 				// Calculate the Battle Column's Vertical Alignment
 				var temp_battle_column_start = 0;
@@ -429,6 +440,88 @@ if (instance_exists(sub_object_selected_instance))
 					// Battle Column Size is less than the Default Size - Shift vertical alignment by one tile's height up to preserve the Isosceles Trapezoid Perspective
 					temp_battle_column_start = 0.5 - (temp_battle_tile_height * temp_battle_column_size * 0.5) - temp_battle_tile_height * 0.5;
 				}
+				
+				// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Horizontal Linear Interpolation Values
+				var temp_battle_tile_wa = temp_battle_platform_tile_w * temp_battle_tile_width + battle_tile_padding_horizontal;
+				var temp_battle_tile_wb = (temp_battle_platform_tile_w * temp_battle_tile_width) + temp_battle_tile_width - battle_tile_padding_horizontal;
+				
+				// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Vertical Linear Interpolation Values
+				var temp_battle_tile_ha = temp_battle_column_start + (temp_battle_platform_tile_h * temp_battle_tile_height) + battle_tile_padding_vertical;
+				var temp_battle_tile_hb = temp_battle_column_start + (temp_battle_platform_tile_h * temp_battle_tile_height) + temp_battle_tile_height - battle_tile_padding_vertical;
+				
+				// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Horizontal Vertex Positions on the Isosceles Trapezoid's Left and Right Sides
+				var temp_battle_tile_wa_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_wa);
+				var temp_battle_tile_wa_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_wa);
+				
+				var temp_battle_tile_wb_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_wb);
+				var temp_battle_tile_wb_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_wb);
+				
+				// Calculate the Battle Tile's Vertex Positions
+				var temp_battle_tile_ax = lerp(temp_battle_tile_wa_top, temp_battle_tile_wa_bottom, temp_battle_tile_ha);
+				var temp_battle_tile_ay = lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, temp_battle_tile_ha);
+				
+				var temp_battle_tile_bx = lerp(temp_battle_tile_wb_top, temp_battle_tile_wb_bottom, temp_battle_tile_ha);
+				var temp_battle_tile_by = lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, temp_battle_tile_ha);
+				
+				var temp_battle_tile_cx = lerp(temp_battle_tile_wa_top, temp_battle_tile_wa_bottom, temp_battle_tile_hb);
+				var temp_battle_tile_cy = lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, temp_battle_tile_hb);
+				
+				var temp_battle_tile_dx = lerp(temp_battle_tile_wb_top, temp_battle_tile_wb_bottom, temp_battle_tile_hb);
+				var temp_battle_tile_dy = lerp(battle_platform_top_vertical_position, battle_platform_bottom_vertical_position, temp_battle_tile_hb);
+				
+				// Update Battle Actor's Draw Position
+				temp_battle_tile_choreography_actor.actor_draw_x = lerp(temp_battle_tile_ax, temp_battle_tile_bx, 0.5) + (temp_battle_tile_choreography_actor.actor_platform_side == CelestialBattlePlatformSide.Right ? 2 : 0);
+				temp_battle_tile_choreography_actor.actor_draw_y = lerp(temp_battle_tile_ay, temp_battle_tile_cy, 0.8);
+				
+				// If the Battle Tile's Horizontal Alignment is at the Right-Hand most side, Adjust the Battle Tile's Isosceles Trapezoid's Right Size by one pixel to the Left
+				temp_battle_tile_bx += temp_battle_platform_tile_w == temp_battle_row_count - 1 ? -1 : 0;
+				temp_battle_tile_dx += temp_battle_platform_tile_w == temp_battle_row_count - 1 ? -1 : 0;
+				
+				// Draw Set Alpha Transparent
+				draw_set_color(1.0);
+				
+				// Draw Set Color as White - For the Battle Tiles' Color
+				draw_set_color(c_white);
+				
+				// Draw the Battle Tile
+				draw_triangle(temp_battle_tile_ax, temp_battle_tile_ay, temp_battle_tile_bx, temp_battle_tile_by, temp_battle_tile_cx, temp_battle_tile_cy, false);
+				draw_triangle(temp_battle_tile_bx, temp_battle_tile_by, temp_battle_tile_cx, temp_battle_tile_cy, temp_battle_tile_dx, temp_battle_tile_dy, false);
+				
+				// Decrement Battle Choreography Actors Index
+				temp_battle_choreography_actors_index--;
+			}
+			
+			// Iterate through Battle's Choreography Actors to Draw Actor Sprites
+			temp_battle_choreography_actors_index = 0;
+			
+			repeat (temp_battle_choreography_actors_count)
+			{
+				// Establish Battle Choreography Actors Struct
+				var temp_battle_actor = sub_object_selected_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
+				
+				// Draw Battle Choreography Actor Sprite
+				draw_sprite_ext(temp_battle_actor.actor_battle_sprite, 0, temp_battle_actor.actor_draw_x, temp_battle_actor.actor_draw_y, temp_battle_actor.actor_facing_direction, 1, 0, temp_battle_actor.actor_faction.faction_color, 1);
+				
+				// Increment Battle Choreography Actors Index
+				temp_battle_choreography_actors_index++;
+			}
+			
+			/*
+			for (var temp_battle_platform_tile_w = 0; temp_battle_platform_tile_w < temp_battle_row_count; temp_battle_platform_tile_w++)
+			{
+				// 
+				var temp_battle_column_size = 9;
+				
+				// Check to Skip Battle Row
+				if (temp_battle_column_size <= 0)
+				{
+					continue;
+				}
+				
+				//
+				var temp_battle_tile_height = 1 / max(temp_battle_column_size, battle_default_column_size);
+				
+				
 				
 				//
 				for (var temp_battle_platform_tile_h = 0; temp_battle_platform_tile_h < temp_battle_column_size; temp_battle_platform_tile_h++)
@@ -476,6 +569,7 @@ if (instance_exists(sub_object_selected_instance))
 					draw_triangle(temp_battle_tile_bx, temp_battle_tile_by, temp_battle_tile_cx, temp_battle_tile_cy, temp_battle_tile_dx, temp_battle_tile_dy, false);
 				}
 			}
+			*/
 			
 			// Reset Draw Alpha
 			draw_set_color(1);

@@ -163,7 +163,13 @@ function celestial_battle_shuffle_round(battle_instance)
 	celestial_battle_clear_choreography_actors(battle_instance)
 	
 	// Reset Battle Choreography Actors Battle Column Sizes Array
-	array_resize(battle_instance.battle_choreography_actors_battle_column_sizes, CelestialBattlePriorityRankMax * 2);
+	var temp_battle_choreography_actors_battle_column_sizes_index = 0;
+	
+	repeat (CelestialBattlePriorityRankMax * 2)
+	{
+		battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_choreography_actors_battle_column_sizes_index] = 0;
+		temp_battle_choreography_actors_battle_column_sizes_index++;
+	}
 	
 	// Calculate Battle Instance's Terrain Combat Size
 	var temp_battle_land_combat_size = 70;
@@ -197,7 +203,7 @@ function celestial_battle_shuffle_round(battle_instance)
 		}
 		
 		// Check if Battle Faction exists and has Units participating in Combat - if not, delete Faction from Battle
-		if (!instance_exists(array_get(battle_instance.battle_factions, temp_battle_faction_cleanup_index)) or array_length(array_get(battle_instance.battle_units, temp_battle_faction_cleanup_index)) <= 0)
+		if (!instance_exists(battle_instance.battle_factions[temp_battle_faction_cleanup_index]) or array_length(battle_instance.battle_units[temp_battle_faction_cleanup_index]) <= 0)
 		{
 			// Find Battle Faction Arrays
 			var temp_battle_faction_cleanup_land_priority_pool = array_get(battle_instance.battle_land_priority_pools, temp_battle_faction_cleanup_index);
@@ -605,7 +611,7 @@ function celestial_battle_shuffle_round(battle_instance)
 			repeat (temp_battle_matchup_hostile_factions_count)
 			{
 				// Find Index of Randomized Hostile Faction
-				var temp_battle_hostile_faction_index = array_get(temp_battle_matchup_hostile_factions_array, temp_randomized_hostile_factions_index);
+				var temp_battle_hostile_faction_index = array_get(temp_randomized_hostile_factions_array, temp_randomized_hostile_factions_index);
 				
 				// Find Randomized Hostile Faction's Priority Pools
 				var temp_battle_hostile_faction_land_priority_pool = array_get(battle_instance.battle_land_priority_pools, temp_battle_hostile_faction_index);
@@ -698,7 +704,7 @@ function celestial_battle_shuffle_round(battle_instance)
 			}
 			
 			// Delete Unused Array
-			array_resize(temp_battle_matchup_hostile_factions_array, 0);
+			array_resize(temp_randomized_hostile_factions_array, 0);
 		}
 		
 		// Check if Matchup was Found
@@ -726,9 +732,6 @@ function celestial_battle_perform_round(battle_instance)
 	
 	// Clear Battle's Choreography Actions
 	celestial_battle_clear_choreography_actions(battle_instance);
-	
-	// Establish Battle's Combat Variables
-	var temp_battle_combat_ongoing = false;
 	
 	// Iterate through and initialize Sub-Unit Matchups
 	var temp_battle_matchup_count = array_length(battle_instance.battle_matchups);
@@ -781,7 +784,7 @@ function celestial_battle_perform_round(battle_instance)
 				repeat (temp_battle_matchup_hostile_factions_count)
 				{
 					// Find Index of Randomized Hostile Faction
-					var temp_battle_hostile_faction_index = array_get(temp_battle_matchup_hostile_factions_array, temp_randomized_hostile_factions_index);
+					var temp_battle_hostile_faction_index = array_get(temp_randomized_hostile_factions_array, temp_randomized_hostile_factions_index);
 					
 					// Find Randomized Hostile Faction's Priority Pools
 					var temp_battle_hostile_faction_land_priority_pool = array_get(battle_instance.battle_land_priority_pools, temp_battle_hostile_faction_index);
@@ -931,7 +934,7 @@ function celestial_battle_perform_round(battle_instance)
 				}
 				
 				// Delete Unused Array
-				array_resize(temp_battle_matchup_hostile_factions_array, 0);
+				array_resize(temp_randomized_hostile_factions_array, 0);
 			}
 		}
 		else
@@ -952,10 +955,7 @@ function celestial_battle_perform_round(battle_instance)
 		}
 		else
 		{
-			// Perform Matchup Combat Behaviour
-			var temp_defending_subunit_destroyed = false;
-			
-			// Calculate Sub-Unit's Accuracy Hit Percentage
+			// Calculate Matchup Combat Behaviour
 			var temp_attacking_accuracy_hit_percentage = clamp(0.5 + (temp_battle_matchup_struct.attacking_subunit.unit_accuracy - temp_battle_matchup_struct.defending_subunit.unit_evasion) * 0.05, 0, 1);
 			
 			// Calculate Damage to Micro-Units
@@ -1039,10 +1039,32 @@ function celestial_battle_perform_round(battle_instance)
 				// Check if Defending Micro-Units still Exist
 				if (temp_battle_matchup_struct.defending_subunit.micro_unit_count <= 0)
 				{
-					// Defending Sub-Unit was Destroyed
-					temp_defending_subunit_destroyed = true;
+					// Establish Sub-Unit's Unit Instance
+					var temp_defending_subunit_unit_instance = temp_battle_matchup_struct.defending_subunit.unit_instance;
+					var temp_defending_subunit_unit_instance_subunit_array_index = array_get_index(temp_defending_subunit_unit_instance.sub_units, temp_battle_matchup_struct.defending_subunit);
 					
-					// Destroy Sub-Unit Behaviour
+					// Delete Sub-Unit from Unit Instance Sub-Units Array
+					if (temp_defending_subunit_unit_instance_subunit_array_index != -1)
+					{
+						array_delete(temp_defending_subunit_unit_instance.sub_units, temp_defending_subunit_unit_instance_subunit_array_index, 1);
+					}
+					
+					// Check if Defending Unit Instance should be Destroyed
+					if (array_length(temp_defending_subunit_unit_instance.sub_units) <= 0)
+					{
+						// Remove Defending Unit Instance from Faction Units Array
+						var temp_defending_unit_instance_battle_units_array_index = array_get_index(array_get(battle_instance.battle_units, temp_battle_matchup_struct.defending_faction_index), temp_defending_subunit_unit_instance);
+						
+						if (temp_defending_unit_instance_battle_units_array_index != -1)
+						{
+							array_delete(array_get(battle_instance.battle_units, temp_battle_matchup_struct.defending_faction_index), temp_defending_unit_instance_battle_units_array_index, 1);
+						}
+						
+						// Destroy Defending Unit Instance
+						instance_destroy(temp_defending_subunit_unit_instance);
+					}
+					
+					// Destroy Defending Sub-Unit Behaviour
 					instance_destroy(temp_battle_matchup_struct.defending_subunit);
 					
 					// Set Matchup Defending Variables as Empty
@@ -1054,20 +1076,55 @@ function celestial_battle_perform_round(battle_instance)
 				// Increment Micro-Unit Index
 				temp_attacking_microunit_index++;
 			}
-			
-			// Check if Combat is still on-going
-			if (!temp_defending_subunit_destroyed)
-			{
-				temp_battle_combat_ongoing = true;
-			}
 		}
 		
 		// Decrement Battle Matchup Index
 		temp_battle_matchup_index--;
 	}
 	
+	// Establish Battle's Combat Variables
+	var temp_battle_combat_hostilities_count = 0;
+	
+	// Iterate through Battle's Active Factions
+	var temp_battle_faction_count = array_length(battle_instance.battle_factions);
+	var temp_battle_faction_index = temp_battle_faction_count - 1;
+	
+	repeat (temp_battle_faction_count)
+	{
+		// Find Battle Faction Hostilities & Units Arrays
+		var temp_battle_hostile_factions_array = array_get(battle_instance.battle_hostile_factions, temp_battle_faction_index);
+		var temp_battle_units_array = array_get(battle_instance.battle_units, temp_battle_faction_index);
+		
+		// Check if Battle Faction still has Combat Units
+		if (array_length(temp_battle_units_array) > 0)
+		{
+			// Increment through all of the Battle Faction's Hostilities
+			var temp_hostile_factions_count = array_length(temp_battle_hostile_factions_array);
+			var temp_hostile_factions_index = temp_hostile_factions_count - 1;
+			
+			repeat (temp_hostile_factions_count)
+			{
+				// Find the Hostile Faction's Battle Faction Index
+				var temp_hostile_faction_battle_faction_index = array_get(temp_battle_hostile_factions_array, temp_hostile_factions_index);
+				
+				// Check if Hostile Faction still has Units
+				if (array_length(array_get(battle_instance.battle_units, temp_hostile_faction_battle_faction_index)) > 0)
+				{
+					// Hostilities still exist - Combat is Ongoing
+					temp_battle_combat_hostilities_count++;
+				}
+				
+				// Decrement Hostile Faction Index
+				temp_hostile_factions_index--;
+			}
+		}
+		
+		// Decrement Battle Faction Index
+		temp_battle_faction_index--;
+	}
+	
 	// Check if Combat is Ongoing
-	if (!temp_battle_combat_ongoing)
+	if (temp_battle_combat_hostilities_count <= 0)
 	{
 		// End Battle Behaviour
 		battle_instance.battle_exists = false;
@@ -1076,6 +1133,12 @@ function celestial_battle_perform_round(battle_instance)
 
 function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_instance)
 {
+	// Check if Battle Exists
+	if (!battle_instance.battle_exists)
+	{
+		return;
+	}
+	
 	// Establish Actor Battle Platform Side & Faction
 	var temp_actor_platform_side = CelestialBattlePlatformSide.None;
 	var temp_actor_faction_instance = instance_exists(actor_subunit_instance.unit_instance) ? actor_subunit_instance.unit_instance.unit_faction : noone;
@@ -1136,18 +1199,19 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 			actor_vertical_depth: 0,
 			actor_battle_sprite: actor_subunit_instance.unit_battle_sprite,
 			actor_micro_unit_count: actor_subunit_instance.micro_unit_count,
+			actor_draw_x: 0,
+			actor_draw_y: 0,
+			actor_facing_direction: temp_actor_platform_side == CelestialBattlePlatformSide.Left ? 1 : -1,
 		};
 		
 		// Increment Battle's Vertical Tile Count for Choreography Actor Vertical Placement
 		if (temp_actor_platform_side == CelestialBattlePlatformSide.Left)
 		{
-			var temp_battle_choreography_actors_battle_column_size_left = array_get(battle_instance.battle_choreography_actors_battle_column_sizes, actor_subunit_instance.unit_priority_rank);
-			array_set(battle_instance.battle_choreography_actors_battle_column_sizes, actor_subunit_instance.unit_priority_rank, temp_battle_choreography_actors_battle_column_size_left + 1);
+			battle_instance.battle_choreography_actors_battle_column_sizes[CelestialBattlePriorityRankMax - temp_actor_struct.actor_priority_rank - 1] += 1;
 		}
 		else if (temp_actor_platform_side == CelestialBattlePlatformSide.Right)
 		{
-			var temp_battle_choreography_actors_battle_column_size_right = array_get(battle_instance.battle_choreography_actors_battle_column_sizes, (CelestialBattlePriorityRankMax * 2) - 1 - actor_subunit_instance.unit_priority_rank);
-			array_set(battle_instance.battle_choreography_actors_battle_column_sizes, (CelestialBattlePriorityRankMax * 2) - 1 - actor_subunit_instance.unit_priority_rank, temp_battle_choreography_actors_battle_column_size_right + 1);
+			battle_instance.battle_choreography_actors_battle_column_sizes[CelestialBattlePriorityRankMax + temp_actor_struct.actor_priority_rank] += 1;
 		}
 		
 		// Index Actor Struct into Battle's Choreography Actors Array
@@ -1157,6 +1221,12 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 
 function celestial_battle_depth_sort_choreography_actors(battle_instance)
 {
+	// Check if Battle Exists
+	if (!battle_instance.battle_exists)
+	{
+		return;
+	}
+	
 	// Check if Celestial Battle should perform Depth Sort for the Battle's Choreography Actors Arrays and Data Structures
 	if (!instance_exists(CelestialSimulator.player_faction) or array_get_index(battle_instance.battle_factions, CelestialSimulator.player_faction) == -1)
 	{
@@ -1181,7 +1251,11 @@ function celestial_battle_depth_sort_choreography_actors(battle_instance)
 		
 		repeat (temp_battle_column_size)
 		{
+			// Index the Battle Column Possible Position in the Battle Column Possible Positions Array
 			temp_battle_column_possible_positions_array[temp_battle_column_possible_positions_index] = temp_battle_column_possible_positions_index;
+			
+			// Increment Battle Column Possible Positions Index
+			temp_battle_column_possible_positions_index++;
 		}
 		
 		// Add Battle Column Possible Positions Array to Battle Choreography's Column Possible Positions Array
@@ -1201,12 +1275,17 @@ function celestial_battle_depth_sort_choreography_actors(battle_instance)
 		var temp_battle_choreography_actor_struct = array_get(battle_instance.battle_choreography_actors, temp_battle_choreography_actors_index);
 		
 		// Assign Random Vertical Column Position
-		var temp_battle_actor_column_index = temp_battle_choreography_actor_struct.actor_platform_side == CelestialBattlePlatformSide.Left ? temp_battle_choreography_actor_struct.actor_priority_rank : (CelestialBattlePriorityRankMax * 2) - 1 - temp_battle_choreography_actor_struct.actor_priority_rank;
+		var temp_battle_actor_column_index = CelestialBattlePriorityRankMax - 1 - temp_battle_choreography_actor_struct.actor_priority_rank;
+		temp_battle_actor_column_index = temp_battle_choreography_actor_struct.actor_platform_side == CelestialBattlePlatformSide.Right ? CelestialBattlePriorityRankMax + temp_battle_choreography_actor_struct.actor_priority_rank : temp_battle_choreography_actor_struct.actor_priority_rank;
 		var temp_battle_actor_column_size = battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_actor_column_index];
 		var temp_battle_actor_column_possible_positions_array = array_get(temp_battle_choreography_actors_battle_column_possible_positions, temp_battle_actor_column_index);
-		var temp_random_column_possible_positions_index = irandom(array_length(temp_battle_actor_column_possible_positions_array) - 1);
-		temp_battle_choreography_actor_struct.actor_vertical_tile = temp_battle_actor_column_possible_positions_array[temp_random_column_possible_positions_index];
-		array_delete(temp_battle_actor_column_possible_positions_array, temp_random_column_possible_positions_index, 1);
+		
+		if (array_length(temp_battle_actor_column_possible_positions_array) > 0)
+		{
+			var temp_random_column_possible_positions_index = irandom(array_length(temp_battle_actor_column_possible_positions_array) - 1);
+			temp_battle_choreography_actor_struct.actor_vertical_tile = temp_battle_actor_column_possible_positions_array[temp_random_column_possible_positions_index];
+			array_delete(temp_battle_actor_column_possible_positions_array, temp_random_column_possible_positions_index, 1);
+		}
 		
 		// Calculate the Battle Column's Vertical Alignment
 		var temp_battle_column_start = 0;
@@ -1262,7 +1341,11 @@ function celestial_battle_depth_sort_choreography_actors(battle_instance)
 
 function celestial_battle_add_choreography_action(battle_instance)
 {
-	
+	// Check if Battle Exists
+	if (!battle_instance.battle_exists)
+	{
+		return;
+	}
 }
 
 function celestial_battle_clear_choreography_actors(battle_instance)
@@ -1287,9 +1370,6 @@ function celestial_battle_clear_choreography_actors(battle_instance)
 	}
 	
 	array_resize(battle_instance.battle_choreography_actors, 0);
-	
-	// Clear Battle Choreography Actors Battle Column Sizes Array
-	array_resize(battle_instance.battle_choreography_actors_battle_column_sizes, 0);
 	
 	// Clear Battle's Choreography Actors DS Map
 	ds_map_clear(battle_instance.battle_choreography_actors_map);
@@ -1360,7 +1440,7 @@ function celestial_battle_check_participation(battle_instance)
 				var temp_battle_land_pool_subunit_inst = array_get(temp_battle_faction_land_priority_rank_pool_array, temp_battle_land_pool_index);
 				
 				// Check if Sub-Unit is participating in Battle
-				if (!array_contains(temp_battle_faction_units, temp_battle_land_pool_subunit_inst.unit_instance))
+				if (!instance_exists(temp_battle_land_pool_subunit_inst) or !array_contains(temp_battle_faction_units, temp_battle_land_pool_subunit_inst.unit_instance))
 				{
 					// Sub-Unit is NOT participating - Delete Sub-Unit from Priority Rank Sub-Unit Pool Array
 					array_delete(temp_battle_faction_land_priority_rank_pool_array, temp_battle_land_pool_index, 1);
@@ -1380,7 +1460,7 @@ function celestial_battle_check_participation(battle_instance)
 				var temp_battle_air_pool_subunit_inst = array_get(temp_battle_faction_air_priority_rank_pool_array, temp_battle_air_pool_index);
 				
 				// Check if Sub-Unit is participating in Battle
-				if (!array_contains(temp_battle_faction_units, temp_battle_air_pool_subunit_inst.unit_instance))
+				if (!instance_exists(temp_battle_air_pool_subunit_inst) or !array_contains(temp_battle_faction_units, temp_battle_air_pool_subunit_inst.unit_instance))
 				{
 					// Sub-Unit is NOT participating - Delete Sub-Unit from Priority Rank Sub-Unit Pool Array
 					array_delete(temp_battle_faction_air_priority_rank_pool_array, temp_battle_air_pool_index, 1);
@@ -1400,7 +1480,7 @@ function celestial_battle_check_participation(battle_instance)
 				var temp_battle_sea_pool_subunit_inst = array_get(temp_battle_faction_sea_priority_rank_pool_array, temp_battle_sea_pool_index);
 				
 				// Check if Sub-Unit is participating in Battle
-				if (!array_contains(temp_battle_faction_units, temp_battle_sea_pool_subunit_inst.unit_instance))
+				if (!instance_exists(temp_battle_sea_pool_subunit_inst) or !array_contains(temp_battle_faction_units, temp_battle_sea_pool_subunit_inst.unit_instance))
 				{
 					// Sub-Unit is NOT participating - Delete Sub-Unit from Priority Rank Sub-Unit Pool Array
 					array_delete(temp_battle_faction_sea_priority_rank_pool_array, temp_battle_sea_pool_index, 1);
@@ -1435,16 +1515,9 @@ function celestial_battle_check_participation(battle_instance)
 		{
 			temp_attacking_subunit_exists = false;
 		}
-		else if (instance_exists(temp_battle_matchup_struct.attacking_subunit.unit_instance))
+		else if (!array_contains(array_get(battle_instance.battle_units, temp_battle_matchup_struct.attacking_faction_index), temp_battle_matchup_struct.attacking_subunit.unit_instance))
 		{
-			if (array_get_index(battle_instance.battle_factions, temp_battle_matchup_struct.attacking_subunit.unit_instance.unit_faction) == -1)
-			{
-				temp_attacking_subunit_exists = false;
-			}
-			else if (array_get_index(array_get(battle_instance.battle_units, array_get_index(battle_instance.battle_factions, temp_battle_matchup_struct.attacking_subunit.unit_instance.unit_faction)), temp_battle_matchup_struct.attacking_subunit.unit_instance) == -1)
-			{
-				temp_attacking_subunit_exists = false;
-			}
+			temp_attacking_subunit_exists = false;
 		}
 		
 		// Check if Battle Matchup Structs are Valid
@@ -1466,16 +1539,9 @@ function celestial_battle_check_participation(battle_instance)
 			{
 				temp_defending_subunit_exists = false;
 			}
-			else if (instance_exists(temp_battle_matchup_struct.defending_subunit.unit_instance))
+			else if (!array_contains(array_get(battle_instance.battle_units, temp_battle_matchup_struct.defending_faction_index), temp_battle_matchup_struct.defending_subunit.unit_instance))
 			{
-				if (array_get_index(battle_instance.battle_factions, temp_battle_matchup_struct.defending_subunit.unit_instance.unit_faction) == -1)
-				{
-					temp_defending_subunit_exists = false;
-				}
-				else if (array_get_index(array_get(battle_instance.battle_units, array_get_index(battle_instance.battle_factions, temp_battle_matchup_struct.defending_subunit.unit_instance.unit_faction)), temp_battle_matchup_struct.defending_subunit.unit_instance) == -1)
-				{
-					temp_defending_subunit_exists = false;
-				}
+				temp_defending_subunit_exists = false;
 			}
 			
 			// Check to delete Defending Sub-Unit from Battle Matchup

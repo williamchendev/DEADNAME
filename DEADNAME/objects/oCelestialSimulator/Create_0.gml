@@ -95,7 +95,7 @@ global_no_atmosphere_radius_padding = 32;
 
 global_sub_objects_unit_depth_offset = 5;
 global_sub_objects_city_depth_offset = 10;
-global_sub_objects_battle_depth_offset = -10;
+global_sub_objects_battle_depth_offset = -100;
 global_sub_objects_default_depth_transparent_start = -0.4;
 global_sub_objects_default_depth_transparent_end = -0.2;
 global_sub_objects_satellite_depth_transparent_start = -0.3;

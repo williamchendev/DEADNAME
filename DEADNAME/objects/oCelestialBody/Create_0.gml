@@ -719,7 +719,7 @@ if (pathfinding_enabled)
 	var temp_second_pathfinding_node_y = pathfinding_portal_y_array[temp_second_pathfinding_node_index];
 	var temp_second_pathfinding_node_z = pathfinding_portal_z_array[temp_second_pathfinding_node_index];
 	
-	pathfinding_node_distance = point_distance_3d(temp_first_pathfinding_node_x, temp_first_pathfinding_node_y, temp_first_pathfinding_node_z, temp_second_pathfinding_node_x, temp_second_pathfinding_node_y, temp_second_pathfinding_node_z);
+	pathfinding_node_distance = point_distance_3d(temp_first_pathfinding_node_x, temp_first_pathfinding_node_y, temp_first_pathfinding_node_z, temp_second_pathfinding_node_x, temp_second_pathfinding_node_y, temp_second_pathfinding_node_z) * 4;
 	
 	// Initialize Pathfinding Node Battles Map
 	pathfinding_node_battles_map = ds_map_create();
