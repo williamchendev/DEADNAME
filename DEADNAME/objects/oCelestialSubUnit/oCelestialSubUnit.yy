@@ -30,6 +30,9 @@
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"unit_combat","filters":[],"listItems":[],"multiselect":false,"name":"unit_combat","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"unit_combat_attendance","filters":[],"listItems":[],"multiselect":false,"name":"unit_combat_attendance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"unit_battle_sprite","filters":[
+        "GMSprite",
+      ],"listItems":[],"multiselect":false,"name":"unit_battle_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"noone","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"unit_size","filters":[],"listItems":[],"multiselect":false,"name":"unit_size","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"1","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"unit_count","filters":[],"listItems":[],"multiselect":false,"name":"unit_count","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"8","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"unit_health","filters":[],"listItems":[],"multiselect":false,"name":"unit_health","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"10","varType":0,},
@@ -40,7 +43,7 @@
         "CelestialUnitTerrainType.Sea",
       ],"multiselect":false,"name":"unit_terrain_type","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"CelestialUnitTerrainType.Land","varType":6,},
     {"$GMObjectProperty":"v2","%Name":"unit_attack_air","filters":[],"listItems":[],"multiselect":false,"name":"unit_attack_air","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v2","%Name":"unit_attack_land","filters":[],"listItems":[],"multiselect":false,"name":"unit_attack_land","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"unit_attack_land","filters":[],"listItems":[],"multiselect":false,"name":"unit_attack_land","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"unit_attack_sea","filters":[],"listItems":[],"multiselect":false,"name":"unit_attack_sea","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"unit_attack_assassination","filters":[],"listItems":[],"multiselect":false,"name":"unit_attack_assassination","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"unit_accuracy","filters":[],"listItems":[],"multiselect":false,"name":"unit_accuracy","rangeEnabled":true,"rangeMax":12.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"6","varType":1,},

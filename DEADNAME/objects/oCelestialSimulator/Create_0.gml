@@ -122,6 +122,11 @@ battle_platform_top_vertical_position = 240;
 battle_platform_bottom_horizontal_width = 620;
 battle_platform_bottom_vertical_position = 340;
 
+battle_default_column_size = 9;
+
+battle_tile_padding_horizontal = 0.0028;
+battle_tile_padding_vertical = 0.01;
+
 battle_camera_observing_lerp_spd = 0.05;
 battle_camera_observing_lerp_multiplier = 1.8;
 
@@ -136,6 +141,9 @@ triangle_rotate_range = 30;
 triangle_rotate_spd = 2;
 
 triangle_animation_speed = 0.01;
+
+// Player Variables
+player_faction = noone;
 
 // Camera Variables
 camera_instance = camera_create();
@@ -1291,6 +1299,10 @@ render_triangle_ui = function(triangle_x, triangle_y, triangle_alpha)
 // Universe Campaign Generation
 generate_default_solar_system = function()
 {
+	// Create Factions
+	player_faction = instance_create_depth(0, 0, 0, oFactionMoralist);
+	instance_create_depth(0, 0, 0, oFactionNorthernBrigade);
+	
 	//
 	camera_position_z = 0;
 	

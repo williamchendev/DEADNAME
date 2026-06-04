@@ -495,21 +495,21 @@ repeat (array_length(solar_systems))
 						if (temp_battle_instance.battle_round <= 0)
 						{
 							// Battle Shuffle Round Behaviour
-							//celestial_battle_shuffle_round(temp_battle_instance);
+							celestial_battle_shuffle_round(temp_battle_instance);
 							
 							// Reset Battle Round Count
 							temp_battle_instance.battle_round = temp_battle_instance.battle_rounds_per_shuffle;
 							
 							// Battle Perform Round Behaviour
-							//celestial_battle_perform_round(temp_battle_instance);
+							celestial_battle_perform_round(temp_battle_instance);
 						}
 						else
 						{
 							// Cleanup Sub-Units based on Priority Pool & Matchup Participation
-							//celestial_battle_check_participation(temp_battle_instance);
+							celestial_battle_check_participation(temp_battle_instance);
 							
 							// Battle Perform Round Behaviour
-							//celestial_battle_perform_round(temp_battle_instance);
+							celestial_battle_perform_round(temp_battle_instance);
 						}
 						
 						// Reset Battle Round Timer

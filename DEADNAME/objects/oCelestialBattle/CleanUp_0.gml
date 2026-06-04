@@ -1,6 +1,9 @@
 /// @description Battle Cleanup Event
 // Celestial Battle Cleanup Behaviour Event
 
+// Clear Celestial Battle's Choreography
+celestial_battle_clear_choreography(id);
+
 // Incrememnt through Battle's Faction Arrays and Erase Battle's Faction Data
 var temp_factions_count = array_length(battle_factions);
 var temp_factions_index = temp_factions_count - 1;

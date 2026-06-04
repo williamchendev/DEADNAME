@@ -49,7 +49,25 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 			// Check for Sub Object Instance's Collision with Cursor
 			if (position_meeting(GameManager.cursor_x, GameManager.cursor_y, temp_sub_object_sorted_instance))
 			{
-				temp_sub_object_click_inst = temp_sub_object_sorted_instance;
+				// Establish Sorted Sub Object Selection Variables
+				var temp_sorted_sub_object_can_be_selected = true;
+				
+				// Check if Sub Object has Selection Conditions
+				switch (temp_sub_object_sorted_instance.celestial_sub_object_type)
+				{
+					case CelestialSubObjectType.Unit:
+						// Limit Unit Selection to Units belonging to Player's Faction
+						temp_sorted_sub_object_can_be_selected = temp_sub_object_sorted_instance.unit_faction == CelestialSimulator.player_faction;
+						break;
+					default:
+						break;
+				}
+				
+				// Check if Sub Object can be Selected
+				if (temp_sorted_sub_object_can_be_selected)
+				{
+					temp_sub_object_click_inst = temp_sub_object_sorted_instance;
+				}
 			}
 			
 			// Increment Sub Object Index

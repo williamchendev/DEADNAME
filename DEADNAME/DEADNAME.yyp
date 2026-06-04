@@ -16,6 +16,7 @@
     {"$GMFolder":"","%Name":"Notes","folderPath":"folders/Notes.yy","name":"Notes","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Celestial","folderPath":"folders/Objects/Celestial.yy","name":"Celestial","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"_Test","folderPath":"folders/Objects/Celestial/_Test.yy","name":"_Test","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Battles","folderPath":"folders/Objects/Celestial/Battles.yy","name":"Battles","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Factions","folderPath":"folders/Objects/Celestial/Factions.yy","name":"Factions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Grandmom","folderPath":"folders/Objects/Celestial/Grandmom.yy","name":"Grandmom","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -298,7 +299,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2026.0.0.15",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"DEADNAME",
   "resources":[
@@ -365,6 +366,8 @@
     {"id":{"name":"oExplosion_Hitmarker","path":"objects/oExplosion_Hitmarker/oExplosion_Hitmarker.yy",},},
     {"id":{"name":"oExplosion_Shockwave","path":"objects/oExplosion_Shockwave/oExplosion_Shockwave.yy",},},
     {"id":{"name":"oExplosion","path":"objects/oExplosion/oExplosion.yy",},},
+    {"id":{"name":"oFactionMoralist","path":"objects/oFactionMoralist/oFactionMoralist.yy",},},
+    {"id":{"name":"oFactionNorthernBrigade","path":"objects/oFactionNorthernBrigade/oFactionNorthernBrigade.yy",},},
     {"id":{"name":"oFirearm_Magazine","path":"objects/oFirearm_Magazine/oFirearm_Magazine.yy",},},
     {"id":{"name":"oFirearm_MuzzleFlare_Medium","path":"objects/oFirearm_MuzzleFlare_Medium/oFirearm_MuzzleFlare_Medium.yy",},},
     {"id":{"name":"oFirearm_MuzzleFlare_Small","path":"objects/oFirearm_MuzzleFlare_Small/oFirearm_MuzzleFlare_Small.yy",},},

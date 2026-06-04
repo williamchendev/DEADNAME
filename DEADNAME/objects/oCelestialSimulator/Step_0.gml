@@ -478,6 +478,9 @@ repeat (array_length(temp_solar_system))
 			// Find Celestial Unit's Instance
 			var temp_unit_instance = temp_celestial_object_instance.units[temp_unit_index];
 			
+			// Set Celestial Unit's Color based on Faction
+			temp_unit_instance.image_blend = instance_exists(temp_unit_instance.unit_faction) ? temp_unit_instance.unit_faction.faction_color : temp_unit_instance.image_blend;
+			
 			// Establish Unit Local Vector and Elevation Variables
 			var temp_unit_local_x, temp_unit_local_y, temp_unit_local_z, temp_unit_elevation;
 			
