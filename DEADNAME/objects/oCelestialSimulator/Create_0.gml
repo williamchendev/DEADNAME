@@ -1301,7 +1301,10 @@ generate_default_solar_system = function()
 {
 	// Create Factions
 	player_faction = instance_create_depth(0, 0, 0, oFactionMoralist);
-	instance_create_depth(0, 0, 0, oFactionNorthernBrigade);
+	var temp_enemy_faction = instance_create_depth(0, 0, 0, oFactionNorthernBrigade);
+	
+	// Initialize Hostilities between Factions
+	celestial_faction_set_relationship(player_faction, temp_enemy_faction, CelestialFactionRelationshipType.Hostile);
 	
 	//
 	camera_position_z = 0;
