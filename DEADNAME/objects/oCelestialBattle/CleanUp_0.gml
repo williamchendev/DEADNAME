@@ -2,9 +2,14 @@
 // Celestial Battle Cleanup Behaviour Event
 
 // Clear Celestial Battle's Choreography
-celestial_battle_clear_choreography(id);
+celestial_battle_clear_choreography_actors(id);
+celestial_battle_clear_choreography_actions(id);
 
-// Incrememnt through Battle's Faction Arrays and Erase Battle's Faction Data
+// Destroy Celestial Battle's DS Map
+ds_map_destroy(battle_choreography_actors_map);
+battle_choreography_actors_map = -1;
+
+// Increment through Battle's Faction Arrays and Erase Battle's Faction Data
 var temp_factions_count = array_length(battle_factions);
 var temp_factions_index = temp_factions_count - 1;
 
@@ -54,7 +59,7 @@ array_resize(battle_land_priority_pools, 0);
 array_resize(battle_air_priority_pools, 0);
 array_resize(battle_sea_priority_pools, 0);
 
-// Incrememnt through Battle's Matchups Array and Erase Battle's Matchup Structs
+// Increment through Battle's Matchups Array and Erase Battle's Matchup Structs
 var temp_battle_matchup_count = array_length(battle_matchups);
 var temp_battle_matchup_index = temp_battle_matchup_count - 1;
 

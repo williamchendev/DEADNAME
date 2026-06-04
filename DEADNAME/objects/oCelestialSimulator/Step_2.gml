@@ -57,7 +57,11 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 				{
 					case CelestialSubObjectType.Unit:
 						// Limit Unit Selection to Units belonging to Player's Faction
-						temp_sorted_sub_object_can_be_selected = temp_sub_object_sorted_instance.unit_faction == CelestialSimulator.player_faction;
+						temp_sorted_sub_object_can_be_selected = temp_sub_object_sorted_instance.unit_faction == player_faction;
+						break;
+					case CelestialSubObjectType.Battle:
+						// Limit Battle Selection to Battles involving the Player's Faction
+						temp_sorted_sub_object_can_be_selected = instance_exists(player_faction) and array_get_index(temp_sub_object_sorted_instance.battle_factions, player_faction) != -1;
 						break;
 					default:
 						break;

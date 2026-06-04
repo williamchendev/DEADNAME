@@ -46,8 +46,10 @@ battle_air_priority_pools = array_create(0);
 battle_sea_priority_pools = array_create(0);
 battle_matchups = array_create(0);
 
-// Initialize Battle Choreography Arrays
+// Initialize Battle Choreography Arrays & DS Map
+battle_choreography_actors_map = ds_map_create();
 battle_choreography_actors = array_create(0);
+battle_choreography_actors_battle_column_sizes = array_create(0);
 battle_choreography_actions = array_create(0);
 
 // Populate Battle Array with Default Faction

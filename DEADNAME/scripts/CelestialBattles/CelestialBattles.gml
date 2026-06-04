@@ -2,6 +2,14 @@
 #macro CelestialBattlePriorityRankMax 10
 #macro CelestialBattleAssassinationPriorityRank 7
 
+// Battle Enums
+enum CelestialBattlePlatformSide
+{
+	Left,
+	None,
+	Right
+}
+
 //
 function celestial_battle_create_from_pathfinding_node(celestial_object, pathfinding_node_a_index, pathfinding_node_b_index) 
 {
@@ -132,6 +140,11 @@ function celestial_battle_matchup_sort(current, next)
 	return next.attacking_subunit.unit_priority_rank == current.attacking_subunit.unit_priority_rank ? (next.attacking_subunit.unit_agility > current.attacking_subunit.unit_agility ? -1 : 1) : (next.attacking_subunit.unit_priority_rank < current.attacking_subunit.unit_priority_rank ? -1 : 1);
 }
 
+function celestial_battle_choreography_actors_sort(current, next) 
+{
+	return next.actor_vertical_depth > current.actor_vertical_depth ? -1 : 1;
+}
+
 //
 function celestial_battle_shuffle_round(battle_instance)
 {
@@ -140,6 +153,12 @@ function celestial_battle_shuffle_round(battle_instance)
 	{
 		return;
 	}
+	
+	// Clear Battle's Choreography Actors
+	celestial_battle_clear_choreography_actors(battle_instance)
+	
+	// Reset Battle Choreography Actors Battle Column Sizes Array
+	array_resize(battle_instance.battle_choreography_actors_battle_column_sizes, CelestialBattlePriorityRankMax * 2);
 	
 	// Calculate Battle Instance's Terrain Combat Size
 	var temp_battle_land_combat_size = 70;
@@ -386,6 +405,9 @@ function celestial_battle_shuffle_round(battle_instance)
 							
 							// Add Sub-Unit to Battle Matchups
 							array_push(battle_instance.battle_matchups, { attacking_subunit: temp_battle_unit_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+							
+							// Add Sub-Unit to Battle Choreography as an Actor
+							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_subunit_instance);
 							break;
 						case CelestialUnitTerrainType.Air:
 							// Add Sub-Unit to Battle Faction's Air Priority Rank Sub-Unit Pools
@@ -394,6 +416,9 @@ function celestial_battle_shuffle_round(battle_instance)
 							
 							// Add Sub-Unit to Battle Matchups
 							array_push(battle_instance.battle_matchups, { attacking_subunit: temp_battle_unit_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+							
+							// Add Sub-Unit to Battle Choreography as an Actor
+							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_subunit_instance);
 							break;
 						case CelestialUnitTerrainType.Sea:
 							// Add Sub-Unit to Battle Faction's Sea Priority Rank Sub-Unit Pools
@@ -402,6 +427,9 @@ function celestial_battle_shuffle_round(battle_instance)
 							
 							// Add Sub-Unit to Battle Matchups
 							array_push(battle_instance.battle_matchups, { attacking_subunit: temp_battle_unit_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+							
+							// Add Sub-Unit to Battle Choreography as an Actor
+							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_subunit_instance);
 							break;
 					}
 				}
@@ -455,6 +483,9 @@ function celestial_battle_shuffle_round(battle_instance)
 				
 				// Add Sub-Unit to Battle Matchups
 				array_push(battle_instance.battle_matchups, { attacking_subunit: temp_land_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+				
+				// Add Sub-Unit to Battle Choreography as an Actor
+				celestial_battle_add_choreography_actor(battle_instance, temp_land_subunit_instance);
 			}
 			
 			// Delete Sub-Unit from Sub-Unit Index Array
@@ -479,6 +510,9 @@ function celestial_battle_shuffle_round(battle_instance)
 				
 				// Add Sub-Unit to Battle Matchups
 				array_push(battle_instance.battle_matchups, { attacking_subunit: temp_air_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+				
+				// Add Sub-Unit to Battle Choreography as an Actor
+				celestial_battle_add_choreography_actor(battle_instance, temp_air_subunit_instance);
 			}
 			
 			// Delete Sub-Unit from Sub-Unit Index Array
@@ -503,6 +537,9 @@ function celestial_battle_shuffle_round(battle_instance)
 				
 				// Add Sub-Unit to Battle Matchups
 				array_push(battle_instance.battle_matchups, { attacking_subunit: temp_sea_subunit_instance, defending_subunit: noone, attacking_faction_index: temp_battle_faction_index, defending_faction_index: -1, skip_matchup: false });
+				
+				// Add Sub-Unit to Battle Choreography as an Actor
+				celestial_battle_add_choreography_actor(battle_instance, temp_sea_subunit_instance);
 			}
 			
 			// Delete Sub-Unit from Sub-Unit Index Array
@@ -665,6 +702,9 @@ function celestial_battle_shuffle_round(battle_instance)
 		// Decrement Battle Matchup Index
 		temp_battle_matchup_index--;
 	}
+	
+	// Sort Battle's Choreography Actors and Index the Actors into the Battle's Choreography Actors DS Map
+	celestial_battle_depth_sort_choreography_actors(battle_instance);
 }
 
 function celestial_battle_perform_round(battle_instance)
@@ -675,8 +715,8 @@ function celestial_battle_perform_round(battle_instance)
 		return;
 	}
 	
-	// Clear Battle's Choreography
-	celestial_battle_clear_choreography(battle_instance);
+	// Clear Battle's Choreography Actions
+	celestial_battle_clear_choreography_actions(battle_instance);
 	
 	// Establish Battle's Combat Variables
 	var temp_battle_combat_ongoing = false;
@@ -1025,9 +1065,190 @@ function celestial_battle_perform_round(battle_instance)
 	}
 }
 
-function celestial_battle_add_choreography_unit(battle_instance)
+function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_instance)
 {
+	// Establish Actor Battle Platform Side & Faction
+	var temp_actor_platform_side = CelestialBattlePlatformSide.None;
+	var temp_actor_faction_instance = instance_exists(actor_subunit_instance.unit_instance) ? actor_subunit_instance.unit_instance.unit_faction : noone;
 	
+	// Check what Battle Platform Side the Actor is participating on
+	if (temp_actor_faction_instance == CelestialSimulator.player_faction)
+	{
+		// Establish Actor Battle Platform Side
+		temp_actor_platform_side = CelestialBattlePlatformSide.Left;
+	}
+	else if (instance_exists(temp_actor_faction_instance) and instance_exists(CelestialSimulator.player_faction))
+	{
+		// Check the Player Faction's Relationship with the Actor Faction
+		var temp_player_faction_hostile_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Hostile;
+		var temp_actor_faction_hostile_check = ds_map_find_value(temp_actor_faction_instance.relationships, CelestialSimulator.player_faction) == CelestialFactionRelationshipType.Hostile;
+		
+		var temp_player_faction_allied_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Allied;
+		var temp_actor_faction_allied_check = ds_map_find_value(temp_actor_faction_instance.relationships, CelestialSimulator.player_faction) == CelestialFactionRelationshipType.Allied;
+		
+		// Establish Actor Battle Platform Side
+		if (temp_player_faction_hostile_check or temp_actor_faction_hostile_check)
+		{
+			temp_actor_platform_side = CelestialBattlePlatformSide.Right;
+		}
+		else if (temp_player_faction_allied_check or temp_actor_faction_allied_check)
+		{
+			temp_actor_platform_side = CelestialBattlePlatformSide.Left;
+		}
+	}
+	else if (instance_exists(CelestialSimulator.player_faction))
+	{
+		// Check the Player Faction's Relationship with the Actor Faction
+		var temp_player_faction_null_faction_hostile_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Hostile;
+		var temp_player_faction_null_faction_allied_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Allied;
+		
+		// Establish Actor Battle Platform Side
+		if (temp_player_faction_null_faction_hostile_check)
+		{
+			temp_actor_platform_side = CelestialBattlePlatformSide.Right;
+		}
+		else if (temp_player_faction_null_faction_allied_check)
+		{
+			temp_actor_platform_side = CelestialBattlePlatformSide.Left;
+		}
+	}
+	
+	// Check if Actor is participating in the Battle's Choreography
+	if (temp_actor_platform_side != CelestialBattlePlatformSide.None)
+	{
+		// Initialize Actor Struct
+		var temp_actor_struct =
+		{
+			actor_subunit: actor_subunit_instance,
+			actor_faction: temp_actor_faction_instance,
+			actor_platform_side: temp_actor_platform_side,
+			actor_priority_rank: actor_subunit_instance.unit_priority_rank,
+			actor_vertical_tile: 0,
+			actor_vertical_depth: 0,
+			actor_battle_sprite: actor_subunit_instance.unit_battle_sprite,
+			actor_micro_unit_count: actor_subunit_instance.micro_unit_count,
+		};
+		
+		// Increment Battle's Vertical Tile Count for Choreography Actor Vertical Placement
+		if (temp_actor_platform_side == CelestialBattlePlatformSide.Left)
+		{
+			var temp_battle_choreography_actors_battle_column_size_left = array_get(battle_instance.battle_choreography_actors_battle_column_sizes, actor_subunit_instance.unit_priority_rank);
+			array_set(battle_instance.battle_choreography_actors_battle_column_sizes, actor_subunit_instance.unit_priority_rank, temp_battle_choreography_actors_battle_column_size_left + 1);
+		}
+		else if (temp_actor_platform_side == CelestialBattlePlatformSide.Right)
+		{
+			var temp_battle_choreography_actors_battle_column_size_right = array_get(battle_instance.battle_choreography_actors_battle_column_sizes, (CelestialBattlePriorityRankMax * 2) - 1 - actor_subunit_instance.unit_priority_rank);
+			array_set(battle_instance.battle_choreography_actors_battle_column_sizes, (CelestialBattlePriorityRankMax * 2) - 1 - actor_subunit_instance.unit_priority_rank, temp_battle_choreography_actors_battle_column_size_right + 1);
+		}
+		
+		// Index Actor Struct into Battle's Choreography Actors Array
+		array_push(battle_instance, temp_actor_struct);
+	}
+}
+
+function celestial_battle_depth_sort_choreography_actors(battle_instance)
+{
+	// Check if Celestial Battle should perform Depth Sort for the Battle's Choreography Actors Arrays and Data Structures
+	if (!instance_exists(CelestialSimulator.player_faction) or array_get_index(battle_instance.battle_factions, CelestialSimulator.player_faction) == -1)
+	{
+		return;
+	}
+	
+	// Create and Populate Battle Choreography's Column Possible Positions Array with Possible Positions
+	var temp_battle_choreography_actors_battle_column_possible_positions = array_create(0);
+	var temp_battle_choreography_actors_battle_column_sizes_index = 0;
+	
+	repeat (array_length(battle_instance.battle_choreography_actors_battle_column_sizes))
+	{
+		// Find Battle Column's Size
+		var temp_battle_column_size = max(battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_choreography_actors_battle_column_sizes_index], CelestialSimulator.battle_default_column_size);
+		
+		// Update Battle's Column Size
+		battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_choreography_actors_battle_column_sizes_index] = temp_battle_column_size;
+		
+		// Create and Populate Battle Column Possible Positions Array with Possible Positions
+		var temp_battle_column_possible_positions_array = array_create(temp_battle_column_size);
+		var temp_battle_column_possible_positions_index = 0;
+		
+		repeat (temp_battle_column_size)
+		{
+			temp_battle_column_possible_positions_array[temp_battle_column_possible_positions_index] = temp_battle_column_possible_positions_index;
+		}
+		
+		// Add Battle Column Possible Positions Array to Battle Choreography's Column Possible Positions Array
+		array_push(temp_battle_choreography_actors_battle_column_possible_positions, temp_battle_column_possible_positions_array);
+		
+		// Increment Battle Choreography Column Sizes Index
+		temp_battle_choreography_actors_battle_column_sizes_index++;
+	}
+	
+	// Increment through Battle's Choreography Actors Array
+	var temp_battle_choreography_actors_count = array_length(battle_instance.battle_choreography_actors);
+	var temp_battle_choreography_actors_index = 0;
+	
+	repeat (temp_battle_choreography_actors_count)
+	{
+		// Find Battle Choreography Actor Struct
+		var temp_battle_choreography_actor_struct = array_get(battle_instance.battle_choreography_actors, temp_battle_choreography_actors_index);
+		
+		// Assign Random Vertical Column Position
+		var temp_battle_actor_column_index = temp_battle_choreography_actor_struct.actor_platform_side == CelestialBattlePlatformSide.Left ? temp_battle_choreography_actor_struct.actor_priority_rank : (CelestialBattlePriorityRankMax * 2) - 1 - actor_subunit_instance.unit_priority_rank;
+		var temp_battle_actor_column_size = battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_actor_column_index];
+		var temp_battle_actor_column_possible_positions_array = array_get(temp_battle_choreography_actors_battle_column_possible_positions, temp_battle_actor_column_index);
+		var temp_random_column_possible_positions_index = irandom(array_length(temp_battle_actor_column_possible_positions_array) - 1);
+		temp_battle_choreography_actor_struct.actor_vertical_tile = temp_battle_actor_column_possible_positions_array[temp_random_column_possible_positions_index];
+		array_delete(temp_battle_actor_column_possible_positions_array, temp_random_column_possible_positions_index, 1);
+		
+		// Calculate the Battle Column's Vertical Alignment
+		var temp_battle_column_start = 0;
+		var temp_battle_tile_height = 1 / temp_battle_actor_column_size;
+		
+		if (temp_battle_actor_column_size == CelestialSimulator.battle_default_column_size - 1)
+		{
+			// Battle Column Size is one less than the Default Size - Shift vertical alignment slightly up to preserve the Isosceles Trapezoid Perspective
+			temp_battle_column_start = 0.5 - (temp_battle_tile_height * temp_battle_actor_column_size * 0.5) - temp_battle_tile_height * 0.25;
+		}
+		else if (temp_battle_actor_column_size < CelestialSimulator.battle_default_column_size)
+		{
+			// Battle Column Size is less than the Default Size - Shift vertical alignment by one tile's height up to preserve the Isosceles Trapezoid Perspective
+			temp_battle_column_start = 0.5 - (temp_battle_tile_height * temp_battle_actor_column_size * 0.5) - temp_battle_tile_height * 0.5;
+		}
+		
+		// Update Battle Actor's Vertical Depth
+		temp_battle_choreography_actor_struct.actor_vertical_depth = temp_battle_column_start + (temp_battle_choreography_actor_struct.actor_vertical_tile * temp_battle_tile_height);
+		
+		// Increment Battle Choreography Actors Index
+		temp_battle_choreography_actors_index++;
+	}
+	
+	// Sort Battle's Choreography Actors Array by Vertical Depth
+	array_sort(battle_instance.battle_choreography_actors, celestial_battle_choreography_actors_sort);
+	
+	// Iterate through Battle's Choreography Actors and Index them into Battle Choreography Actors DS Map
+	temp_battle_choreography_actors_index = 0;
+	
+	repeat (temp_battle_choreography_actors_count)
+	{
+		// Index Battle Choreography Actor into Battle Choreography Actors DS Map
+		ds_map_add(battle_instance.battle_choreography_actors_map, battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index].actor_subunit, temp_battle_choreography_actors_index);
+		
+		// Increment Battle Choreography Actors Index
+		temp_battle_choreography_actors_index++;
+	}
+	
+	// Cleanup Unused Battle Choreography's Column Possible Positions Array
+	temp_battle_choreography_actors_battle_column_sizes_index = 0;
+	
+	repeat (array_length(battle_instance.battle_choreography_actors_battle_column_sizes))
+	{
+		// Clear Unused Array
+		array_resize(temp_battle_choreography_actors_battle_column_possible_positions[temp_battle_choreography_actors_battle_column_sizes_index], 0);
+		
+		// Increment Battle Choreography Column Sizes Index
+		temp_battle_choreography_actors_battle_column_sizes_index++;
+	}
+	
+	array_resize(temp_battle_choreography_actors_battle_column_possible_positions, 0);
 }
 
 function celestial_battle_add_choreography_action(battle_instance)
@@ -1035,9 +1256,9 @@ function celestial_battle_add_choreography_action(battle_instance)
 	
 }
 
-function celestial_battle_clear_choreography(battle_instance)
+function celestial_battle_clear_choreography_actors(battle_instance)
 {
-	// Incrememnt through Battle's Choreography Actors Array and Erase Battle's Choreography Actors Structs
+	// Increment through Battle's Choreography Actors Array and Erase Battle's Choreography Actors Structs
 	var temp_battle_choreography_actors_count = array_length(battle_instance.battle_choreography_actors);
 	var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
 	
@@ -1052,7 +1273,16 @@ function celestial_battle_clear_choreography(battle_instance)
 	
 	array_resize(battle_instance.battle_choreography_actors, 0);
 	
-	// Incrememnt through Battle's Choreography Actions Array and Erase Battle's Choreography Actions Structs
+	// Clear Battle Choreography Actors Battle Column Sizes Array
+	array_resize(battle_instance.battle_choreography_actors_battle_column_sizes, 0);
+	
+	// Clear Battle's Choreography Actors DS Map
+	ds_map_clear(battle_instance.battle_choreography_actors_map);
+}
+
+function celestial_battle_clear_choreography_actions(battle_instance)
+{
+	// Increment through Battle's Choreography Actions Array and Erase Battle's Choreography Actions Structs
 	var temp_battle_choreography_actions_count = array_length(battle_instance.battle_choreography_actions);
 	var temp_battle_choreography_actions_index = temp_battle_choreography_actions_count - 1;
 	
