@@ -2,12 +2,71 @@
 #macro CelestialBattlePriorityRankMax 10
 #macro CelestialBattleAssassinationPriorityRank 7
 
+global.celestial_battles_unit_engagement_radius = 20;
+global.celestial_battles_battle_engagement_radius = 30;
+
 // Battle Enums
 enum CelestialBattlePlatformSide
 {
 	Left,
 	None,
 	Right
+}
+
+//
+function celestial_battle_create(celestial_object, battle_x, battle_y, battle_z, battle_elevation)
+{
+	// Create new Celestial Battle Instance
+	var temp_celestial_battle_instance = instance_create_depth(0, 0, 0, oCelestialBattle);
+	
+	// Update Celestial Battle's Celestial Body Instance
+	temp_celestial_battle_instance.celestial_body_instance = celestial_object;
+	
+	// Update Celestial Battle's Local Sphere Vector
+	temp_celestial_battle_instance.sphere_vector_x = battle_x;
+	temp_celestial_battle_instance.sphere_vector_y = battle_y;
+	temp_celestial_battle_instance.sphere_vector_z = battle_z;
+	temp_celestial_battle_instance.sphere_vector_elevation = battle_elevation;
+	
+	//
+	temp_celestial_battle_instance.local_position_u = 0.5 - arctan2(-battle_x, -battle_z) / (2 * pi);
+	temp_celestial_battle_instance.local_position_v = 0.5 - arcsin(battle_y) / pi;
+	
+	// Calculate Combat Engagement Threshold
+	var temp_battle_combat_engagement_threshold = cos(global.celestial_battles_battle_engagement_radius / celestial_object.radius);
+	
+	// Index Celestial Battle Instance in Celestial Object Battle Array
+	array_push(celestial_object.battles, temp_celestial_battle_instance);
+	
+	// Iterate through Celestial Object's Units Array
+	var temp_unit_index = 0;
+	
+	repeat (array_length(celestial_object.units))
+	{
+		// Find Unit Instance
+		var temp_unit_instance = celestial_object.units[temp_unit_index];
+		
+		// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
+		var temp_battle_collision_check_unit_dot_product = dot_product_3d
+		(
+			temp_celestial_battle_instance.sphere_vector_x, 
+			temp_celestial_battle_instance.sphere_vector_y, 
+			temp_celestial_battle_instance.sphere_vector_z, 
+			temp_unit_instance.sphere_vector_x, 
+			temp_unit_instance.sphere_vector_y, 
+			temp_unit_instance.sphere_vector_z
+		);
+		
+		// Check if Unit is within the Battle's Combat Engagement Threshold
+		if (temp_battle_collision_check_unit_dot_product > temp_battle_combat_engagement_threshold)
+		{
+			// Add Unit Instance to Battle
+			celestial_battle_add_unit(temp_celestial_battle_instance, temp_unit_instance);
+		}
+		
+		// Increment Battle Collision Check Unit Index
+		temp_unit_index++;
+	}
 }
 
 //
@@ -137,6 +196,9 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	
 	// Update that Unit Instance has entered Combat
 	unit_instance.engaged_in_battle = true;
+	
+	// Randomize Unit Instance's Collision Check Timer
+	unit_instance.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 }
 
 //
@@ -176,6 +238,7 @@ function celestial_battle_shuffle_round(battle_instance)
 	var temp_battle_air_combat_size = 70;
 	var temp_battle_sea_combat_size = 70;
 	
+	/*
 	if (battle_instance.celestial_body_instance.pathfinding_enabled)
 	{
 		// Find Battle Instance's Pathfinding Node Microclimate Biome Types
@@ -189,6 +252,7 @@ function celestial_battle_shuffle_round(battle_instance)
 		temp_battle_air_combat_size = celestial_microclimate_biome_get_air_combat_size(temp_battle_pathfinding_node_a_microclimate_biome_type) + celestial_microclimate_biome_get_air_combat_size(temp_battle_pathfinding_node_b_microclimate_biome_type);
 		temp_battle_sea_combat_size = celestial_microclimate_biome_get_sea_combat_size(temp_battle_pathfinding_node_a_microclimate_biome_type) + celestial_microclimate_biome_get_sea_combat_size(temp_battle_pathfinding_node_b_microclimate_biome_type);
 	}
+	*/
 	
 	// Cleanup and erase Battle's unused Factions 
 	var temp_battle_faction_cleanup_count = array_length(battle_instance.battle_factions);
@@ -1191,17 +1255,29 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 		// Initialize Actor Struct
 		var temp_actor_struct =
 		{
+			//
 			actor_subunit: actor_subunit_instance,
 			actor_faction: temp_actor_faction_instance,
+			
+			//
 			actor_platform_side: temp_actor_platform_side,
 			actor_priority_rank: actor_subunit_instance.unit_priority_rank,
 			actor_vertical_tile: 0,
 			actor_vertical_depth: 0,
-			actor_battle_sprite: actor_subunit_instance.unit_battle_sprite,
+			
+			//
 			actor_micro_unit_count: actor_subunit_instance.micro_unit_count,
+			
+			//
+			actor_battle_sprite: actor_subunit_instance.unit_battle_sprite,
 			actor_draw_x: 0,
 			actor_draw_y: 0,
 			actor_facing_direction: temp_actor_platform_side == CelestialBattlePlatformSide.Left ? 1 : -1,
+			
+			//
+			actor_entry_animation: true,
+			actor_entry_animation_value: 0,
+			actor_entry_delay_duration: random(18),
 		};
 		
 		// Increment Battle's Vertical Tile Count for Choreography Actor Vertical Placement

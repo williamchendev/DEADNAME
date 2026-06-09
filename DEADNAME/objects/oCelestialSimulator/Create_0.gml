@@ -70,6 +70,9 @@ global_clock_delta_time_multiplier = 0.2;
 
 global_clock_hydrosphere_delta_time_multiplier = 0.0037;
 
+// Collision Settings
+global_collision_check_interval = 20;
+
 // Pathfinding Settings
 global_pathfinding_queue_calculations_max = 5;
 
@@ -95,7 +98,7 @@ global_no_atmosphere_radius_padding = 32;
 
 global_sub_objects_unit_depth_offset = 5;
 global_sub_objects_city_depth_offset = 10;
-global_sub_objects_battle_depth_offset = -100;
+global_sub_objects_battle_depth_offset = -10;
 global_sub_objects_default_depth_transparent_start = -0.4;
 global_sub_objects_default_depth_transparent_end = -0.2;
 global_sub_objects_satellite_depth_transparent_start = -0.3;
@@ -113,9 +116,9 @@ bloom_global_intensity = 1.0;
 sub_object_city_name_vertical_offset = -8;
 
 // Battle UI Settings
-battle_platform_animation_spd = 0.03;
+battle_platform_animation_spd = 0.01;
 battle_platform_animation_square_size = 42;
-battle_platform_animation_cycle_count = 3;
+battle_platform_animation_cycle_count = 2;
 
 battle_platform_top_horizontal_width = 420;
 battle_platform_top_vertical_position = 240;
@@ -563,6 +566,38 @@ selected_unit_movement_path_render_depth_sort = function(current, next)
 solar_system_render_depth_sort = function(current, next) 
 {
 	return CelestialSimulator.solar_system_render_depth_sorting_depth_array[next] < CelestialSimulator.solar_system_render_depth_sorting_depth_array[current] ? -1 : 1;
+}
+
+// Sub Object Methods
+select_sub_object_instance = function(sub_object_instance)
+{
+	// Set given Sub Object Instance as the Celestial Simulator's Selected Sub Object Instance
+	sub_object_selected_instance = sub_object_instance;
+	
+	// Check if New Select Input Sub Object Instance Exists
+	if (instance_exists(sub_object_selected_instance))
+	{
+		// Select Input Sub Object Behaviour
+		switch (sub_object_selected_instance.celestial_sub_object_type)
+		{
+			case CelestialSubObjectType.Battle:
+				// Reset Battle Selection Animation Variables
+				battle_platform_animation = true;
+				battle_platform_animation_momentum = 0;
+				battle_platform_animation_value = 0;
+				battle_platform_animation_cycles = 0;
+				
+				battle_camera_observing_lerp = 0;
+				battle_camera_observing_polar_horizontal_angle = camera_observing_polar_horizontal_angle;
+				battle_camera_observing_polar_vertical_angle = camera_observing_polar_vertical_angle;
+				break;
+			case CelestialSubObjectType.Unit:
+			case CelestialSubObjectType.City:
+			case CelestialSubObjectType.Satellite:
+			default:
+				break;
+		}
+	}
 }
 
 // Solar System Methods

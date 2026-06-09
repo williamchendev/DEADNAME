@@ -477,11 +477,30 @@ if (instance_exists(sub_object_selected_instance))
 				temp_battle_tile_bx += temp_battle_platform_tile_w == temp_battle_row_count - 1 ? -1 : 0;
 				temp_battle_tile_dx += temp_battle_platform_tile_w == temp_battle_row_count - 1 ? -1 : 0;
 				
-				// Draw Set Alpha Transparent
-				draw_set_color(1.0);
-				
-				// Draw Set Color as White - For the Battle Tiles' Color
-				draw_set_color(c_white);
+				//
+				if (temp_battle_tile_choreography_actor.actor_entry_animation_value == 1)
+				{
+					// Draw Set Color as White - For the Battle Tiles' Color
+					draw_set_color(c_white);
+				}
+				else
+				{
+					//
+					temp_battle_tile_ax = lerp(temp_battle_tile_choreography_actor.actor_draw_x, temp_battle_tile_ax, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					temp_battle_tile_ay = lerp(temp_battle_tile_choreography_actor.actor_draw_y, temp_battle_tile_ay, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					
+					temp_battle_tile_bx = lerp(temp_battle_tile_choreography_actor.actor_draw_x, temp_battle_tile_bx, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					temp_battle_tile_by = lerp(temp_battle_tile_choreography_actor.actor_draw_y, temp_battle_tile_by, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					
+					temp_battle_tile_cx = lerp(temp_battle_tile_choreography_actor.actor_draw_x, temp_battle_tile_cx, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					temp_battle_tile_cy = lerp(temp_battle_tile_choreography_actor.actor_draw_y, temp_battle_tile_cy, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					
+					temp_battle_tile_dx = lerp(temp_battle_tile_choreography_actor.actor_draw_x, temp_battle_tile_dx, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					temp_battle_tile_dy = lerp(temp_battle_tile_choreography_actor.actor_draw_y, temp_battle_tile_dy, temp_battle_tile_choreography_actor.actor_entry_animation_value);
+					
+					// Draw Set Battle Tiles' Color
+					draw_set_color(merge_color(c_black, c_white, temp_battle_tile_choreography_actor.actor_entry_animation_value));
+				}
 				
 				// Draw the Battle Tile
 				draw_triangle(temp_battle_tile_ax, temp_battle_tile_ay, temp_battle_tile_bx, temp_battle_tile_by, temp_battle_tile_cx, temp_battle_tile_cy, false);
@@ -499,8 +518,33 @@ if (instance_exists(sub_object_selected_instance))
 				// Establish Battle Choreography Actors Struct
 				var temp_battle_actor = sub_object_selected_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
 				
-				// Draw Battle Choreography Actor Sprite
-				draw_sprite_ext(temp_battle_actor.actor_battle_sprite, 0, temp_battle_actor.actor_draw_x, temp_battle_actor.actor_draw_y, temp_battle_actor.actor_facing_direction, 1, 0, temp_battle_actor.actor_faction.faction_color, 1);
+				// Check to Perform Battle Actor's Animations
+				if (temp_battle_actor.actor_entry_delay_duration > 0)
+				{
+					//
+					temp_battle_actor.actor_entry_delay_duration -= frame_delta;
+				}
+				else if (temp_battle_actor.actor_entry_animation)
+				{
+					//
+					temp_battle_actor.actor_entry_animation_value += 0.037 * frame_delta;
+					temp_battle_actor.actor_entry_animation_value = clamp(temp_battle_actor.actor_entry_animation_value, 0, 1);
+					
+					//
+					temp_battle_actor.actor_entry_animation = temp_battle_actor.actor_entry_animation_value != 1;
+					
+					//
+					var temp_actor_entry_animation_value = temp_battle_actor.actor_entry_animation_value * temp_battle_actor.actor_entry_animation_value;
+					var temp_actor_entry_x_offset = -18 * temp_battle_actor.actor_facing_direction * (1 - power(temp_battle_actor.actor_entry_animation_value, 1.6));
+					
+					// Draw Battle Choreography Actor Sprite
+					draw_sprite_ext(temp_battle_actor.actor_battle_sprite, 0, temp_battle_actor.actor_draw_x + temp_actor_entry_x_offset, temp_battle_actor.actor_draw_y, temp_battle_actor.actor_facing_direction, 1, 0, temp_battle_actor.actor_faction.faction_color, temp_actor_entry_animation_value);
+				}
+				else
+				{
+					// Draw Battle Choreography Actor Sprite
+					draw_sprite_ext(temp_battle_actor.actor_battle_sprite, 0, temp_battle_actor.actor_draw_x, temp_battle_actor.actor_draw_y, temp_battle_actor.actor_facing_direction, 1, 0, temp_battle_actor.actor_faction.faction_color, 1);
+				}
 				
 				// Increment Battle Choreography Actors Index
 				temp_battle_choreography_actors_index++;

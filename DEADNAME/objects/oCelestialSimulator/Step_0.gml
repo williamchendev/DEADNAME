@@ -770,6 +770,13 @@ repeat (array_length(temp_solar_system))
 			var temp_battle_instance = temp_celestial_object_instance.battles[temp_battle_index];
 			
 			// Establish Battle Local Vector and Elevation Variables
+			var temp_battle_local_x = temp_battle_instance.sphere_vector_x;
+			var temp_battle_local_y = temp_battle_instance.sphere_vector_y;
+			var temp_battle_local_z = temp_battle_instance.sphere_vector_z;
+			var temp_battle_elevation = 1.0;
+			
+			/*
+			// Establish Battle Local Vector and Elevation Variables
 			var temp_battle_local_x, temp_battle_local_y, temp_battle_local_z, temp_battle_elevation;
 			
 			// Check if Pathfinding is Enabled or Battle's Celestial Body Pathfinding Node Index is Valid
@@ -802,6 +809,7 @@ repeat (array_length(temp_solar_system))
 				temp_battle_instance.local_position_u = lerp(temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
 				temp_battle_instance.local_position_v = lerp(temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
 			}
+			*/
 			
 			// Find Celestial Battle's Elevation from Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
@@ -810,7 +818,7 @@ repeat (array_length(temp_solar_system))
 				temp_battle_elevation = max(temp_battle_elevation, temp_celestial_object_instance.ocean_elevation);
 			}
 			
-			temp_battle_elevation = temp_celestial_object_instance.radius + (temp_battle_elevation * temp_celestial_object_instance.elevation);
+			temp_battle_elevation = temp_celestial_object_instance.radius + (temp_battle_elevation * temp_celestial_object_instance.elevation) + temp_battle_instance.battle_surface_elevation;
 			
 			// Find Celestial Battle's World Position
 			temp_battle_instance.world_position_x = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[0] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[4] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[8]) + temp_celestial_object_instance.x;

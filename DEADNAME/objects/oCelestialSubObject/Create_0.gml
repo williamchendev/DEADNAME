@@ -9,3 +9,7 @@ celestial_sub_object_type = CelestialSubObjectType.None;
 
 // Celestial Body Variables
 celestial_body_instance = noone;
+
+sphere_vector_x = 0;
+sphere_vector_y = 0;
+sphere_vector_z = 0;

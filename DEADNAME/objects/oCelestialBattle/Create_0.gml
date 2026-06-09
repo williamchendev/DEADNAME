@@ -15,6 +15,13 @@ world_position_x = 0;
 world_position_y = 0;
 world_position_z = 0;
 
+sphere_vector_x = 0;
+sphere_vector_y = 0;
+sphere_vector_z = 0;
+sphere_vector_elevation = 0;
+
+collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
+
 emissive = 0;
 emissive_multiplier = 0;
 

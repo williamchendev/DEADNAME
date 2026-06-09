@@ -97,10 +97,3 @@ if (array_length(battles) > 0)
 
 battles = -1;
 
-// Destroy Pathfinding Node Battles Map
-if (!is_undefined(pathfinding_node_battles_map))
-{
-	ds_map_destroy(pathfinding_node_battles_map);
-	pathfinding_node_battles_map = -1;
-}
-
