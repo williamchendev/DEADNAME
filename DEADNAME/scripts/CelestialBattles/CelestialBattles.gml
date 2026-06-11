@@ -143,6 +143,7 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	// Check if Battle Exists
 	if (!battle_instance.battle_exists)
 	{
+		// Battle Instance does not exist - Early Exit
 		return;
 	}
 	
@@ -186,6 +187,11 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 		array_push(battle_instance.battle_land_priority_pools, temp_faction_battle_land_priority_pool);
 		array_push(battle_instance.battle_air_priority_pools, temp_faction_battle_air_priority_pool);
 		array_push(battle_instance.battle_sea_priority_pools, temp_faction_battle_sea_priority_pool);
+	}
+	else if (array_get_index(battle_instance.battle_units[temp_unit_faction_index], unit_instance) != -1)
+	{
+		// Unit already Exists in Battle Instance - Early Exit
+		return;
 	}
 	
 	// Index the Unit Instance within the Celestial Battle's Units Array
