@@ -71,7 +71,10 @@ global_clock_delta_time_multiplier = 0.2;
 global_clock_hydrosphere_delta_time_multiplier = 0.0037;
 
 // Collision Settings
-global_collision_check_interval = 20;
+global_unit_collision_radius = 20;
+global_battle_collision_radius = 30;
+
+global_collision_check_interval = 40;
 
 // Pathfinding Settings
 global_pathfinding_queue_calculations_max = 5;
@@ -604,9 +607,10 @@ select_sub_object_instance = function(sub_object_instance)
 clear_celestial_sim = function()
 {
 	// Iterate through Solar Systems
-	var temp_solar_system_index = array_length(CelestialSimulator.solar_systems_ids) - 1;
+	var temp_solar_system_count = array_length(CelestialSimulator.solar_systems_ids);
+	var temp_solar_system_index = temp_solar_system_count - 1;
 	
-	repeat (array_length(CelestialSimulator.solar_systems_ids))
+	repeat (temp_solar_system_count)
 	{
 		// Delete Solar System
 		var temp_solar_system = CelestialSimulator.solar_systems[temp_solar_system_index];
@@ -1085,8 +1089,9 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 		
 		// Iterate through Icosphere Triangles and assemble Vertex Buffer
 		var temp_triangle_index = 0;
+		var temp_triangle_count = array_length(CelestialSimulator.background_star_sphere.triangles);
 		
-		repeat (array_length(CelestialSimulator.background_star_sphere.triangles))
+		repeat (temp_triangle_count)
 		{
 			// Retreive Triangle Data
 			var temp_triangle = CelestialSimulator.background_star_sphere.triangles[temp_triangle_index];
@@ -1151,8 +1156,9 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 	
 	// Iterate through Celestial Object's Depth Sorted Celestial Sub Objects
 	var temp_sub_object_index = 0;
+	var temp_sub_object_count = array_length(temp_sub_objects_index_array);
 	
-	repeat (array_length(temp_sub_objects_index_array))
+	repeat (temp_sub_object_count)
 	{
 		// Find Celestial Object's Sub Object Index
 		var temp_index = temp_sub_objects_index_array[temp_sub_object_index];
@@ -1355,7 +1361,7 @@ generate_default_solar_system = function()
 	generate_solar_system_background_stars_vertex_buffer("grandmom", 3000);
 	
 	/*
-	for (var i = 0; i < 23; i++)
+	for (var i = 0; i < 9; i++)
 	{
 		add_solar_system($"grandmom_{i}", $"Grandmother_{i}");
 		add_celestial_object($"grandmom_{i}", instance_create_depth(0, 0, 0, oPlanet_Mom, {  image_blend: make_color_rgb(8, 0, 15), radius: 200, ocean_elevation: 0.2, orbit_size: 5000, orbit_speed: 0.1, orbit_rotation: 270, rotation_speed: 0.3, clouds: true, sky: true}));

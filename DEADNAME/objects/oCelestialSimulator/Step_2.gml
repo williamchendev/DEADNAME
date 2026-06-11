@@ -39,8 +39,9 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 	{
 		// Iterate through all Celestial Sub Object Instances in Observing Instance's Sub Object Front Layer for Cursor Collisions
 		var temp_sub_object_index = 0;
+		var temp_sub_object_count = array_length(camera_observing_instance.sub_objects_front_layer_index_array);
 		
-		repeat (array_length(camera_observing_instance.sub_objects_front_layer_index_array))
+		repeat (temp_sub_object_count)
 		{
 			// Find Sub Object Index and Instance
 			var temp_sub_object_sorted_index = camera_observing_instance.sub_objects_front_layer_index_array[temp_sub_object_index];
@@ -114,8 +115,9 @@ else if (temp_input_select or temp_input_action)
 	
 	// Iterate through Solar System's Celestial Objects to check Cursor Raycast Selection
 	var temp_celestial_object_index = 0;
+	var temp_celestial_object_count = array_length(temp_solar_system);
 	
-	repeat (array_length(temp_solar_system))
+	repeat (temp_celestial_object_count)
 	{
 		// Find Celestial Object Instance within Solar System at Index
 		var temp_celestial_object_instance = temp_solar_system[temp_celestial_object_index];
@@ -229,8 +231,9 @@ else if (temp_input_select or temp_input_action)
 			
 			// Iterate through all Pathfinding Groups to find closest Pathfinding Group to Selection Position on Celestial Object
 			var temp_pathfinding_group_index = 0;
+			var temp_pathfinding_group_count = array_length(temp_selection_inst.pathfinding_group_direction_array);
 			
-			repeat (array_length(temp_selection_inst.pathfinding_group_direction_array))
+			repeat (temp_pathfinding_group_count)
 			{
 				// Establish Pathfinding Group's Normalized Sphere Vector
 				var temp_group_vector_x = array_get(temp_selection_inst.pathfinding_group_direction_array[temp_pathfinding_group_index], 0);
@@ -256,8 +259,9 @@ else if (temp_input_select or temp_input_action)
 			if (temp_selection_group_index != -1)
 			{
 				var temp_pathfinding_node_index = 0;
+				var temp_pathfinding_node_count = array_length(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index]);
 				
-				repeat (array_length(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index]))
+				repeat (temp_pathfinding_node_count)
 				{
 					// Establish Node Index from Pathfinding Group
 					var temp_group_node_index = array_get(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index], temp_pathfinding_node_index);
@@ -389,8 +393,30 @@ else if (temp_input_select or temp_input_action)
 										switch (temp_sub_object_action_inst.celestial_sub_object_type)
 										{
 											case CelestialSubObjectType.Unit:
+												// Establish Action Unit Movement Variables
+												var temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.None;
+												
+												// Check Selected Unit's Faction Relationship to the Action Unit's Faction
+												if (sub_object_selected_instance.unit_faction == temp_sub_object_action_inst.unit_faction)
+												{
+													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Regroup;
+												}
+												else if (instance_exists(sub_object_selected_instance.unit_faction) and ds_map_find_value(sub_object_selected_instance.unit_faction.relationships, temp_sub_object_action_inst.unit_faction) == CelestialFactionRelationshipType.Hostile)
+												{
+													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Attack;
+												}
+												
 												// Check if Action Unit is Pathfinding
-												if (is_undefined(temp_sub_object_action_inst.pathfinding_path))
+												if (temp_unit_movement_behaviour_type == CelestialUnitBehaviourType.Regroup and !is_undefined(temp_sub_object_action_inst.pathfinding_path))
+												{
+													// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
+													temp_pathfinding_goal_node_index = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.node_index, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_x = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_x, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_y = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_y, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_z = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_z, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+													temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+												}
+												else
 												{
 													// Set Pathfinding Goal as Action Unit's Position
 													temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
@@ -399,19 +425,10 @@ else if (temp_input_select or temp_input_action)
 													temp_pathfinding_goal_z = temp_sub_object_action_inst.pathfinding_position_z;
 													temp_pathfinding_goal_elevation = temp_sub_object_action_inst.pathfinding_position_elevation;
 												}
-												else
-												{
-													// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
-													temp_pathfinding_goal_node_index = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.node_index, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_x = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_x, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_y = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_y, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_z = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_z, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													
-													// Set Selected Unit's Behaviour to Regroup
-													sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Regroup;
-													sub_object_selected_instance.unit_behaviour_target_instance = temp_sub_object_action_inst;
-												}
+												
+												// Set Selected Unit's Behaviour and Target Instance
+												sub_object_selected_instance.unit_behaviour = temp_unit_movement_behaviour_type;
+												sub_object_selected_instance.unit_behaviour_target_instance = temp_unit_movement_behaviour_type != CelestialUnitBehaviourType.None ? temp_sub_object_action_inst : noone;
 												break;
 											case CelestialSubObjectType.City:
 												// Set Pathfinding Goal as Action City's Position

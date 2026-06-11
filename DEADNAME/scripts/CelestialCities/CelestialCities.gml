@@ -47,37 +47,16 @@ function celestial_cities_add_resource(city_instance, celestial_resource, amount
 	var temp_new_amount = 0;
 	var temp_amount_added = 0;
 	
-	// Check if Celestial City has the Resource already
-	if (ds_map_exists(city_instance.resources_supply_amount_map, celestial_resource))
-	{
-		// Establish Supply Limit & Supply Amount
-		var temp_resource_entry_supply_limit = ds_map_find_value(city_instance.resources_supply_limit_map, celestial_resource);
-		var temp_resource_entry_supply_amount = ds_map_find_value(city_instance.resources_supply_amount_map, celestial_resource);
-		
-		// Update Amount Added
-		temp_new_amount = clamp(temp_resource_entry_supply_amount + amount, 0, temp_resource_entry_supply_limit);
-		temp_amount_added = temp_new_amount - temp_resource_entry_supply_amount;
-		
-		// Add Resource Amount to City's Supply Amount without going over City's Supply Limit
-		ds_map_set(city_instance.resources_supply_amount_map, celestial_resource, temp_new_amount);
-	}
-	else
-	{
-		// Establish Supply Limit
-		var temp_new_resource_entry_supply_limit = global.celestial_resources[celestial_resource].city_default_supply_limit;
-		
-		// Update Amount Added
-		temp_new_amount = clamp(amount, 0, temp_new_resource_entry_supply_limit);
-		temp_amount_added = temp_new_amount - temp_new_resource_entry_supply_limit;
-		
-		// Add New City Resource Entries
-		array_push(city_instance.resources, celestial_resource);
-		ds_map_add(city_instance.resources_supply_limit_map, celestial_resource, temp_new_resource_entry_supply_limit);
-		ds_map_add(city_instance.resources_supply_amount_map, celestial_resource, temp_new_amount);
-		
-		// Sort City Resource Entries
-		array_sort(city_instance.resources, true);
-	}
+	// Establish Supply Limit & Supply Amount
+	var temp_resource_entry_supply_limit = city_instance.resources_limit[celestial_resource];
+	var temp_resource_entry_supply_amount = city_instance.resources_supply[celestial_resource];
+	
+	// Update Amount Added
+	temp_new_amount = clamp(temp_resource_entry_supply_amount + amount, 0, temp_resource_entry_supply_limit);
+	temp_amount_added = temp_new_amount - temp_resource_entry_supply_amount;
+	
+	// Add Resource Amount to City's Supply Amount without going over City's Supply Limit
+	city_instance.resources_supply[celestial_resource] = temp_new_amount;
 	
 	// Return Amount Added
 	return temp_amount_added;

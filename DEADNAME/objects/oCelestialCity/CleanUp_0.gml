@@ -16,20 +16,9 @@ repeat (temp_buildings_count)
 
 array_resize(buildings, 0);
 
-// Destroy City Resources Array & DS Maps
-array_resize(resources, 0);
-
-if (!is_undefined(resources_supply_amount_map))
-{
-	ds_map_destroy(resources_supply_amount_map);
-	resources_supply_amount_map = undefined;
-}
-
-if (!is_undefined(resources_supply_limit_map))
-{
-	ds_map_destroy(resources_supply_limit_map);
-	resources_supply_limit_map = undefined;
-}
+// Destroy City Resources Arrays
+array_resize(resources_supply, 0);
+array_resize(resources_limit, 0);
 
 // Destroy City Notifications Array
 var temp_notification_count = array_length(notifications);

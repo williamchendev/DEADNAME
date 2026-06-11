@@ -195,8 +195,9 @@ var temp_dm = dot_product_3d(temp_dx, temp_dy, temp_dz, temp_dx, temp_dy, temp_d
 
 // Iterate through Solar System's Celestial Objects to Calculate their Depths from the Camera's Render Orientation
 var temp_celestial_object_index = 0;
+var temp_celestial_object_count = array_length(temp_solar_system);
 
-repeat (array_length(temp_solar_system))
+repeat (temp_celestial_object_count)
 {
 	// Find Celestial Object Instance within Solar System at Index
 	var temp_celestial_object_instance = temp_solar_system[temp_celestial_object_index];
@@ -472,8 +473,9 @@ repeat (array_length(temp_solar_system))
 		
 		// Celestial Object's Unit Depth Sorting Behaviour
 		var temp_unit_index = 0;
+		var temp_unit_count = array_length(temp_celestial_object_instance.units);
 		
-		repeat (array_length(temp_celestial_object_instance.units))
+		repeat (temp_unit_count)
 		{
 			// Find Celestial Unit's Instance
 			var temp_unit_instance = temp_celestial_object_instance.units[temp_unit_index];
@@ -561,8 +563,9 @@ repeat (array_length(temp_solar_system))
 		
 		// Celestial Object's City Depth Sorting Behaviour
 		var temp_city_index = 0;
+		var temp_city_count = array_length(temp_celestial_object_instance.cities);
 		
-		repeat (array_length(temp_celestial_object_instance.cities))
+		repeat (temp_city_count)
 		{
 			// Find Celestial City's Instance
 			var temp_city_instance = temp_celestial_object_instance.cities[temp_city_index];
@@ -653,8 +656,9 @@ repeat (array_length(temp_solar_system))
 		
 		// Celestial Object's Satellite Depth Sorting Behaviour
 		var temp_satellite_index = 0;
+		var temp_satellite_count = array_length(temp_celestial_object_instance.satellites);
 		
-		repeat (array_length(temp_celestial_object_instance.satellites))
+		repeat (temp_satellite_count)
 		{
 			// Find Celestial Satellite's Instance
 			var temp_satellite_instance = temp_celestial_object_instance.satellites[temp_satellite_index];
@@ -763,8 +767,9 @@ repeat (array_length(temp_solar_system))
 		
 		// Celestial Object's Battle Depth Sorting Behaviour
 		var temp_battle_index = 0;
+		var temp_battle_count = array_length(temp_celestial_object_instance.battles);
 		
-		repeat (array_length(temp_celestial_object_instance.battles))
+		repeat (temp_battle_count)
 		{
 			// Find Celestial Battle's Instance
 			var temp_battle_instance = temp_celestial_object_instance.battles[temp_battle_index];
@@ -773,7 +778,7 @@ repeat (array_length(temp_solar_system))
 			var temp_battle_local_x = temp_battle_instance.sphere_vector_x;
 			var temp_battle_local_y = temp_battle_instance.sphere_vector_y;
 			var temp_battle_local_z = temp_battle_instance.sphere_vector_z;
-			var temp_battle_elevation = 1.0;
+			var temp_battle_elevation = temp_battle_instance.sphere_vector_elevation;
 			
 			/*
 			// Establish Battle Local Vector and Elevation Variables
@@ -924,46 +929,46 @@ repeat (array_length(temp_solar_system))
 				ds_list_clear(temp_celestial_object_instance.clouds_render_absorption_list);
 				
 				// Iterate through Planet's Clouds
-				var temp_cloud_count = 0;
 				var temp_cloud_index = 0;
+				var temp_cloud_count = 0;
 				
-				repeat (ds_list_size(temp_celestial_object_instance.clouds_density_list))
+				repeat (temp_celestial_object_instance.clouds_count)
 				{
 					// Find Cloud's Density
-					var temp_cloud_density = ds_list_find_value(temp_celestial_object_instance.clouds_density_list, temp_cloud_index);
+					var temp_cloud_density = temp_celestial_object_instance.clouds_density_array[temp_cloud_index];
 					
 					// Check if Cloud is Active
 					if (temp_cloud_density > 0)
 					{
 						// Find Cloud's Absorption
-						var temp_cloud_absorption = ds_list_find_value(temp_celestial_object_instance.clouds_absorption_list, temp_cloud_index);
+						var temp_cloud_absorption = temp_celestial_object_instance.clouds_absorption_array[temp_cloud_index];
 						
 						// Find Cloud Height
-						var temp_cloud_height = ds_list_find_value(temp_celestial_object_instance.clouds_position_height_list, temp_cloud_index);
+						var temp_cloud_height = temp_celestial_object_instance.clouds_position_height_array[temp_cloud_index];
 						
 						// Find Cloud Rotation
-						var temp_cloud_rotation = ds_list_find_value(temp_celestial_object_instance.clouds_rotation_list, temp_cloud_index);
+						var temp_cloud_rotation = temp_celestial_object_instance.clouds_rotation_array[temp_cloud_index];
 						
 						// Find Cloud Sphere UV
-						var temp_cloud_u = ds_list_find_value(temp_celestial_object_instance.clouds_position_u_list, temp_cloud_index);
-						var temp_cloud_v = ds_list_find_value(temp_celestial_object_instance.clouds_position_v_list, temp_cloud_index);
+						var temp_cloud_u = temp_celestial_object_instance.clouds_position_u_array[temp_cloud_index];
+						var temp_cloud_v = temp_celestial_object_instance.clouds_position_v_array[temp_cloud_index];
 						
-						// Find Cloud Group's Individual Cloud Properties nested DS Lists
-						var temp_cloud_group_radius_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_radius_list, temp_cloud_index);
-						var temp_cloud_group_height_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_height_list, temp_cloud_index);
-						var temp_cloud_group_bearing_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_bearing_list, temp_cloud_index);
-						var temp_cloud_group_distance_list = ds_list_find_value(temp_celestial_object_instance.clouds_group_distance_list, temp_cloud_index);
+						// Find Cloud Group's Individual Cloud Properties Nested Arrays
+						var temp_cloud_group_radius_array = temp_celestial_object_instance.clouds_group_radius_array[temp_cloud_index];
+						var temp_cloud_group_height_array = temp_celestial_object_instance.clouds_group_height_array[temp_cloud_index];
+						var temp_cloud_group_bearing_array = temp_celestial_object_instance.clouds_group_bearing_array[temp_cloud_index];
+						var temp_cloud_group_distance_array = temp_celestial_object_instance.clouds_group_distance_array[temp_cloud_index];
 						
 						// Iterate through Cloud Group's Individual Clouds
 						var temp_cloud_individual_index = 0;
 						
-						repeat (ds_list_size(temp_cloud_group_radius_list))
+						repeat (temp_celestial_object_instance.clouds_group_count_array[temp_cloud_index])
 						{
-							// Find Individual Cloud's Properties from nested DS Lists
-							var temp_cloud_individual_radius = ds_list_find_value(temp_cloud_group_radius_list, temp_cloud_individual_index);
-							var temp_cloud_individual_height = temp_cloud_height + ds_list_find_value(temp_cloud_group_height_list, temp_cloud_individual_index);
-							var temp_cloud_individual_bearing = ds_list_find_value(temp_cloud_group_bearing_list, temp_cloud_individual_index) + temp_cloud_rotation;
-							var temp_cloud_individual_distance = ds_list_find_value(temp_cloud_group_distance_list, temp_cloud_individual_index);
+							// Find Individual Cloud's Properties from Nested Arrays
+							var temp_cloud_individual_radius = temp_cloud_group_radius_array[temp_cloud_individual_index];
+							var temp_cloud_individual_height = temp_cloud_height + temp_cloud_group_height_array[temp_cloud_individual_index];
+							var temp_cloud_individual_bearing = temp_cloud_group_bearing_array[temp_cloud_individual_index] + temp_cloud_rotation;
+							var temp_cloud_individual_distance = temp_cloud_group_distance_array[temp_cloud_individual_index];
 							
 							// Find Individual Cloud's UV from Cloud Group's Origin UV Position
 							var temp_cloud_individual_uv_offset = haversine_distance_uv_offset(temp_cloud_u, temp_cloud_v, temp_cloud_individual_bearing, temp_cloud_individual_distance, temp_celestial_object_instance.radius);

@@ -935,27 +935,3 @@ add_satellite_uv = function(satellite_instance, satellite_u, satellite_v)
 	// Index Satellite Instance into Celestial Body Satellites Array
 	array_push(satellites, satellite_instance);
 }
-
-// DEBUG
-if (pathfinding_enabled)
-{
-	add_unit_node(instance_create_depth(0, 0, 0, oCelestialUnit), irandom_range(0, pathfinding_nodes_count - 1));
-	
-	repeat(200)
-	{
-		// Select Random Unit
-		var temp_unit = instance_create_depth(0, 0, 0, oCelestialUnit);
-		temp_unit.unit_faction = array_length(CelestialSimulator.factions) > 0 ? CelestialSimulator.factions[irandom(array_length(CelestialSimulator.factions) - 1)] : temp_unit.unit_faction;
-		add_unit_node(temp_unit, irandom_range(0, pathfinding_nodes_count - 1));
-	}
-	
-	repeat(50)
-	{
-		add_satellite_node(instance_create_depth(0, 0, 0, oCelestialSatellite), irandom_range(0, pathfinding_nodes_count - 1));
-	}
-	
-	repeat(50)
-	{
-		add_city_node(instance_create_depth(0, 0, 0, oCelestialCity), irandom_range(0, pathfinding_nodes_count - 1));
-	}
-}

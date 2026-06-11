@@ -49,9 +49,10 @@ vertex_format_delete(square_uv_vertex_format);
 square_uv_vertex_format = -1;
 
 // Delete Vertex Buffers
-var temp_solar_systems_background_stars_vertex_buffer_index = array_length(solar_systems_background_stars_vertex_buffer) - 1;
+var temp_solar_systems_background_stars_vertex_buffer_count = array_length(solar_systems_background_stars_vertex_buffer);
+var temp_solar_systems_background_stars_vertex_buffer_index = temp_solar_systems_background_stars_vertex_buffer_count - 1;
 
-repeat (array_length(solar_systems_background_stars_vertex_buffer))
+repeat (temp_solar_systems_background_stars_vertex_buffer_count)
 {
 	// Delete Background Stars Vertex Buffer from Background Stars Vertex Buffer Array
 	vertex_delete_buffer(solar_systems_background_stars_vertex_buffer[temp_solar_systems_background_stars_vertex_buffer_index]);

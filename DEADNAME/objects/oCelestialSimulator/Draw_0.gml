@@ -19,7 +19,9 @@ if (solar_system_index == -1)
 var temp_solar_system = solar_systems[solar_system_index];
 
 // Check if any Celestial Objects within the Solar System are eligible to be Rendered
-if (array_length(solar_system_render_depth_sorting_index_array) == 0)
+var temp_celestial_object_depth_render_count = array_length(solar_system_render_depth_sorting_index_array);
+
+if (temp_celestial_object_depth_render_count == 0)
 {
 	// There are no Celestial Objects in the Solar System eligible to be Rendered - Early Return
 	return;
@@ -28,7 +30,7 @@ if (array_length(solar_system_render_depth_sorting_index_array) == 0)
 // Iterate through Solar System's Depth Sorted Celestial Objects for Celestial Simulator Render Pass
 var temp_celestial_object_depth_render_index = 0;
 
-repeat (array_length(solar_system_render_depth_sorting_index_array))
+repeat (temp_celestial_object_depth_render_count)
 {
 	// Establish Celestial Object Instance at Index
 	var temp_celestial_object_index = solar_system_render_depth_sorting_index_array[temp_celestial_object_depth_render_index];
@@ -417,8 +419,9 @@ repeat (array_length(solar_system_render_depth_sorting_index_array))
 						
 						// Iterate through all Clouds in Planet's Atmosphere
 						var temp_cloud_index = 0;
+						var temp_cloud_count = array_length(temp_celestial_object_instance.clouds_index_array);
 						
-						repeat (array_length(temp_celestial_object_instance.clouds_index_array))
+						repeat (temp_cloud_count)
 						{
 							// Find Cloud's Sorted Index
 							var temp_cloud_sorted_index = temp_celestial_object_instance.clouds_index_array[temp_cloud_index];

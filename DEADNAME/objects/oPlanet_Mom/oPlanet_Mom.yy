@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"oPlanet_Mom",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"oPlanet_Mom",
   "overriddenProperties":[
@@ -28,6 +30,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"orbit_speed","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"1",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"pathfinding_enabled","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"True",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},"propertyId":{"name":"pathfinding_resolution","path":"objects/oCelestialBody/oCelestialBody.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"32",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oPlanet","path":"objects/oPlanet/oPlanet.yy",},"propertyId":{"name":"clouds_count","path":"objects/oPlanet/oPlanet.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"64",},
   ],
   "parent":{
     "name":"Grandmom",

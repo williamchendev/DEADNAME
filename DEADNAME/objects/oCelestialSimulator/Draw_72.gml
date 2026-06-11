@@ -43,8 +43,9 @@ if (instance_exists(camera_observing_instance))
 	
 	// Iterate through Celestial Object's Depth Sorted Celestial Sub Objects
 	var temp_sub_object_index = 0;
+	var temp_sub_object_count = array_length(camera_observing_instance.sub_objects_front_layer_index_array);
 	
-	repeat (array_length(camera_observing_instance.sub_objects_front_layer_index_array))
+	repeat (temp_sub_object_count)
 	{
 		// Find Celestial Object's Sub Object Index
 		var temp_index = camera_observing_instance.sub_objects_front_layer_index_array[temp_sub_object_index];
@@ -109,8 +110,9 @@ if (instance_exists(camera_observing_instance))
 					
 					// Draw City Notification Texts above City Sprite
 					var temp_city_notification_index = 0;
+					var temp_city_notification_count = array_length(temp_instance.notifications);
 					
-					repeat (array_length(temp_instance.notifications))
+					repeat (temp_city_notification_count)
 					{
 						// Establish City Notification Struct
 						var temp_city_notification_struct = temp_instance.notifications[temp_city_notification_index];
