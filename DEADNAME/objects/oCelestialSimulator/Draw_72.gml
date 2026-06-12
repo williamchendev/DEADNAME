@@ -171,6 +171,13 @@ if (instance_exists(camera_observing_instance))
 			
 			// Draw Selected Sub Object Instance
 			draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, 1);
+			
+			// Unit Emotion Sprite Animation Rendering Behaviour
+			if (celestial_sub_object_type == CelestialSubObjectType.Unit and !temp_sub_object_miniature_icon and emotion_sprite_index != -1)
+			{
+				// Unit Emotion Animation Draw Sprite Behaviour
+				draw_sprite_ext(emotion_sprite_index, emotion_image_index, x, y - sprite_get_yoffset(sprite_index) + sprite_get_bbox_top(sprite_index), 1, 1, 0, c_white, 1);
+			}
 		}
 		
 		// Reset Surface Target

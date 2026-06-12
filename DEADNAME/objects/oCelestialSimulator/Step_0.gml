@@ -552,6 +552,22 @@ repeat (temp_celestial_object_count)
 				
 				// Increment Sub Object Front Layer Count Index
 				temp_sub_object_front_layer_count++;
+				
+				// Perform Celestial Unit's Animation Behaviour
+				switch (temp_unit_instance.unit_behaviour)
+				{
+					case CelestialUnitBehaviourType.Retreat:
+						// Calculate Unit's Retreat Emotion Animation Behaviour
+						temp_unit_instance.emotion_sprite_index = temp_unit_instance.emotion_retreat_sprite;
+						temp_unit_instance.emotion_draw_image_index += temp_unit_instance.emotion_retreat_image_spd * frame_delta;
+						temp_unit_instance.emotion_draw_image_index = temp_unit_instance.emotion_draw_image_index mod sprite_get_number(temp_unit_instance.emotion_retreat_sprite);
+						temp_unit_instance.emotion_image_index = max(floor(temp_unit_instance.emotion_draw_image_index), 0);
+						break;
+					default:
+						// Reset Unit's Emotion Animation Behaviour
+						temp_unit_instance.emotion_sprite_index = -1;
+						break;
+				}
 			}
 			
 			// Delete Unused Array

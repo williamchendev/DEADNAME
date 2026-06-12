@@ -71,10 +71,10 @@ global_clock_delta_time_multiplier = 0.2;
 global_clock_hydrosphere_delta_time_multiplier = 0.0037;
 
 // Collision Settings
-global_unit_collision_radius = 20;
-global_battle_collision_radius = 30;
+global_unit_collision_radius = 12;
+global_battle_collision_radius = 20;
 
-global_collision_check_interval = 40;
+global_collision_check_interval = 8;
 
 // Pathfinding Settings
 global_pathfinding_queue_calculations_max = 5;
@@ -1206,6 +1206,16 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		
 		// Sub Object Draw Sprite Behaviour
 		draw_sprite_ext(temp_sprite_index, temp_image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_alpha);
+		
+		// Unit Emotion Sprite Animation Rendering Behaviour
+		if (temp_instance.celestial_sub_object_type == CelestialSubObjectType.Unit and !temp_sub_object_miniature_icon and temp_instance.emotion_sprite_index != -1)
+		{
+			// Calculate Emotion Sprite Vertical Offset
+			var temp_unit_emotion_vertical_offset = -sprite_get_yoffset(temp_sprite_index) + sprite_get_bbox_top(temp_sprite_index);
+			
+			// Unit Emotion Animation Draw Sprite Behaviour
+			draw_sprite_ext(temp_instance.emotion_sprite_index, temp_instance.emotion_image_index, temp_instance.x, temp_instance.y + temp_unit_emotion_vertical_offset, 1, 1, 0, c_white, temp_alpha);
+		}
 		
 		// Increment Celestial Object's Sub Object Index
 		temp_sub_object_index++;

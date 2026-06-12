@@ -7,6 +7,10 @@ event_inherited();
 // Initialize Unit Celestial Sub Object Type
 celestial_sub_object_type = CelestialSubObjectType.Unit;
 
+// Emotion Settings
+emotion_retreat_sprite = sOverworld_Emotion_Retreat;
+emotion_retreat_image_spd = 0.18;
+
 // Initialize Unit Faction
 unit_faction = noone;
 
@@ -53,6 +57,11 @@ unit_behaviour = CelestialUnitBehaviourType.None;
 
 unit_behaviour_target_instance = noone;
 unit_behaviour_target_node_index = -1;
+
+// Emotion Variables
+emotion_sprite_index = -1;
+emotion_image_index = 0;
+emotion_draw_image_index = 0;
 
 // Randomize Sprite Facing Direction
 image_xscale = random(1.0) < 0.5 ? -1 : 1;

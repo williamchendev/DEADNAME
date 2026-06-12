@@ -386,10 +386,15 @@ else if (temp_input_select or temp_input_action)
 									sub_object_selected_instance.unit_behaviour_target_instance = noone;
 									sub_object_selected_instance.unit_behaviour_target_node_index = -1;
 									
-									// Check if Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance
-									if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
+									// Check Unit Pathfinding Action Behaviour Conditions
+									if (sub_object_selected_instance.engaged_in_battle)
 									{
-										// Set new Pathfinding Goal Behaviour based on Action Sub Object Type
+										// Unit is currently engaged in Battle and Pathfinding to a new Location is considered Retreating - Change their Unit Behaviour to "Retreat" before Pathfinding to their new Location
+										sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Retreat;
+									}
+									else if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
+									{
+										// Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance - Set new Pathfinding Goal Behaviour based on Action Sub Object Type
 										switch (temp_sub_object_action_inst.celestial_sub_object_type)
 										{
 											case CelestialSubObjectType.Unit:
@@ -448,7 +453,7 @@ else if (temp_input_select or temp_input_action)
 								}
 								else
 								{
-									// Behaviour for Pathfinding to Location that the Unit is not currently on
+									// Behaviour for Pathfinding to a Location on a Celestial Body that the Unit Instance is not currently on
 								}
 								break;
 							case CelestialSubObjectType.City:

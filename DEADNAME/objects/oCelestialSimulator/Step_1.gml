@@ -567,25 +567,26 @@ repeat (temp_solar_systems_count)
 				var temp_unit_instance = units[temp_unit_index];
 				
 				// Establish Unit Behaviour Variables
-				var temp_unit_skip_movement = false;
+				var temp_unit_movement = !temp_unit_instance.engaged_in_battle;
 				
-				// Performm Action Behaviour
+				// Perform Action Behaviour
 				switch (temp_unit_instance.unit_behaviour)
 				{
 					case CelestialUnitBehaviourType.Attack:
-						// Check if Engaged in Battle
-						if (temp_unit_instance.engaged_in_battle)
-						{
-							temp_unit_skip_movement = true;
-							break;
-						}
 					case CelestialUnitBehaviourType.Regroup:
 					case CelestialUnitBehaviourType.Hunt:
 					case CelestialUnitBehaviourType.Garrison:
+						// Check if Unit Instance is Engaged in Battle
+						if (temp_unit_instance.engaged_in_battle)
+						{
+							// Unit is busy fighting in Combat and does not need to recalculate their Pathfinding Behaviour - Early Break
+							break;
+						}
+						
 						// Check if Unit is already indexed in the Celestial Simulator's Pathfinding Queue
 						if (ds_list_find_index(CelestialSimulator.pathfinding_queue_list, temp_unit_instance) != -1)
 						{
-							// Unit is already scheduled to Recalculate Pathfinding Behaviour - Early Break
+							// Unit is already scheduled to recalculate their Pathfinding Behaviour - Early Break
 							break;
 						}
 						
@@ -625,6 +626,18 @@ repeat (temp_solar_systems_count)
 							ds_list_set(temp_unit_instance.pathfinding_path.position_elevation, temp_unit_instance.pathfinding_path.path_size - 1, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_elevation);
 						}
 						break;
+					case CelestialUnitBehaviourType.Retreat:
+						// Unit Instance is Retreating and is allowed to Perform Movement Behaviour
+						temp_unit_movement = true;
+						
+						// Check if Unit Instance is Engaged in Battle
+						if (!temp_unit_instance.engaged_in_battle)
+						{
+							// Unit is no longer fighting in Combat and does not need to Retreat - Reset Unit's Behaviour
+							temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
+							break;
+						}
+						break;
 					case CelestialUnitBehaviourType.Patrol:
 					case CelestialUnitBehaviourType.None:
 					default:
@@ -632,7 +645,7 @@ repeat (temp_solar_systems_count)
 				}
 				
 				// Perform Movement Behaviour
-				if (!is_undefined(temp_unit_instance.pathfinding_path) and !temp_unit_skip_movement)
+				if (!is_undefined(temp_unit_instance.pathfinding_path) and temp_unit_movement)
 				{
 					// Establish Unit Movement Power
 					var temp_movement_power = temp_unit_instance.unit_movement_power * CelestialSimulator.global_clock_delta_time;
@@ -727,6 +740,7 @@ repeat (temp_solar_systems_count)
 										}
 										break;
 									case CelestialUnitBehaviourType.Patrol:
+									case CelestialUnitBehaviourType.Retreat:
 									case CelestialUnitBehaviourType.None:
 									default:
 										break;
@@ -812,14 +826,7 @@ repeat (temp_solar_systems_count)
 														
 														// Instantiate and Establish Celestial Battle Instance
 														celestial_battle_create(id, temp_pathfinding_collision_unit_battle_x, temp_pathfinding_collision_unit_battle_y, temp_pathfinding_collision_unit_battle_z, temp_pathfinding_collision_unit_battle_elevation);
-														
-														show_debug_message("hi");
-														
-														//
 														var temp_pathfinding_collision_unit_battle_instance = battles[array_length(battles) - 1];
-														
-														//celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance);
-														//celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance.unit_behaviour_target_instance);
 														
 														// Check if either of the Unit Instances are currently selected by the Player
 														if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance or temp_unit_instance.unit_behaviour_target_instance == CelestialSimulator.sub_object_selected_instance)
@@ -828,7 +835,7 @@ repeat (temp_solar_systems_count)
 															CelestialSimulator.select_sub_object_instance(temp_pathfinding_collision_unit_battle_instance);
 														}
 														
-														//
+														// Reset Unit Instance's Movement Power
 														temp_movement_power = 0;
 													}
 												}
@@ -858,6 +865,7 @@ repeat (temp_solar_systems_count)
 											case CelestialUnitBehaviourType.Hunt:
 											case CelestialUnitBehaviourType.Garrison:
 											case CelestialUnitBehaviourType.Patrol:
+											case CelestialUnitBehaviourType.Retreat:
 											case CelestialUnitBehaviourType.None:
 											default:
 												temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
@@ -920,28 +928,6 @@ repeat (temp_solar_systems_count)
 					temp_unit_instance.sphere_vector_z = temp_unit_instance.pathfinding_position_z;
 				}
 				
-				// Calculate Unit Solar Value & Unit Solar Type
-				/*
-				var temp_unit_solar_x = temp_unit_instance.sphere_vector_x * rotation_matrix[0] + temp_unit_instance.sphere_vector_y * rotation_matrix[4] + temp_unit_instance.sphere_vector_z * rotation_matrix[8];
-				var temp_unit_solar_y = temp_unit_instance.sphere_vector_x * rotation_matrix[1] + temp_unit_instance.sphere_vector_y * rotation_matrix[5] + temp_unit_instance.sphere_vector_z * rotation_matrix[9];
-				var temp_unit_solar_z = temp_unit_instance.sphere_vector_x * rotation_matrix[2] + temp_unit_instance.sphere_vector_y * rotation_matrix[6] + temp_unit_instance.sphere_vector_z * rotation_matrix[10];
-				
-				var temp_unit_solar_value = dot_product_3d(temp_unit_solar_x, temp_unit_solar_y, temp_unit_solar_z, temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z);
-				
-				if (temp_unit_solar_value > 0.333)
-				{
-					temp_unit_instance.unit_solar = CelestialSolarType.Day;
-				}
-				else if (temp_unit_solar_value > -0.333)
-				{
-					temp_unit_instance.unit_solar = CelestialSolarType.Twilight;
-				}
-				else
-				{
-					temp_unit_instance.unit_solar = CelestialSolarType.Night;
-				}
-				*/
-				
 				// Check if Unit is Engaged in Battle
 				if (!temp_unit_instance.engaged_in_battle)
 				{
@@ -984,6 +970,28 @@ repeat (temp_solar_systems_count)
 							// Increment Battles Check Index
 							temp_battle_check_index++;
 						}
+					}
+				}
+				else
+				{
+					// Calculate Unit Solar Value & Unit Solar Type
+					var temp_unit_solar_x = temp_unit_instance.sphere_vector_x * rotation_matrix[0] + temp_unit_instance.sphere_vector_y * rotation_matrix[4] + temp_unit_instance.sphere_vector_z * rotation_matrix[8];
+					var temp_unit_solar_y = temp_unit_instance.sphere_vector_x * rotation_matrix[1] + temp_unit_instance.sphere_vector_y * rotation_matrix[5] + temp_unit_instance.sphere_vector_z * rotation_matrix[9];
+					var temp_unit_solar_z = temp_unit_instance.sphere_vector_x * rotation_matrix[2] + temp_unit_instance.sphere_vector_y * rotation_matrix[6] + temp_unit_instance.sphere_vector_z * rotation_matrix[10];
+					
+					var temp_unit_solar_value = dot_product_3d(temp_unit_solar_x, temp_unit_solar_y, temp_unit_solar_z, temp_sun_vector_x, temp_sun_vector_y, temp_sun_vector_z);
+					
+					if (temp_unit_solar_value > 0.333)
+					{
+						temp_unit_instance.unit_solar = CelestialSolarType.Day;
+					}
+					else if (temp_unit_solar_value > -0.333)
+					{
+						temp_unit_instance.unit_solar = CelestialSolarType.Twilight;
+					}
+					else
+					{
+						temp_unit_instance.unit_solar = CelestialSolarType.Night;
 					}
 				}
 				
@@ -1189,6 +1197,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						// Initiate Unit Pathfinding Behaviour
 						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_node_target_node_index, temp_node_target_x, temp_node_target_y, temp_node_target_z, temp_node_target_elevation);
 						break;
+					case CelestialUnitBehaviourType.Retreat:
 					case CelestialUnitBehaviourType.None:
 					default:
 						// Remove Unit Instance from Pathfinding Queue

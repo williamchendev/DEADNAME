@@ -6,7 +6,8 @@ enum CelestialUnitBehaviourType
 	Regroup,
 	Hunt,
 	Patrol,
-	Garrison
+	Garrison,
+	Retreat
 }
 
 enum CelestialUnitTerrainType

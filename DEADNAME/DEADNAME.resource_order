@@ -740,6 +740,7 @@
     {"name":"sOverworld_City_Quarry","order":18,"path":"sprites/sOverworld_City_Quarry/sOverworld_City_Quarry.yy",},
     {"name":"sOverworld_City_Ruins","order":19,"path":"sprites/sOverworld_City_Ruins/sOverworld_City_Ruins.yy",},
     {"name":"sOverworld_Conflict_Icon","order":16,"path":"sprites/sOverworld_Conflict_Icon/sOverworld_Conflict_Icon.yy",},
+    {"name":"sOverworld_Emotion_Retreat","order":22,"path":"sprites/sOverworld_Emotion_Retreat/sOverworld_Emotion_Retreat.yy",},
     {"name":"sOverworld_Satellite_Default","order":14,"path":"sprites/sOverworld_Satellite_Default/sOverworld_Satellite_Default.yy",},
     {"name":"sOverworld_Satellite_Miniature","order":11,"path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},
     {"name":"sOverworld_Selection_Border","order":15,"path":"sprites/sOverworld_Selection_Border/sOverworld_Selection_Border.yy",},
