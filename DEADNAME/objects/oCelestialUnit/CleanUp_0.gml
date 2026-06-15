@@ -24,3 +24,7 @@ if (array_length(sub_units) > 0)
 	}
 }
 
+// Clear Unit Collision Check Arrays
+array_resize(unit_battle_within_timed_collision_check_battles, 0);
+array_resize(unit_battle_within_timed_collision_check_timers, 0);
+

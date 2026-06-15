@@ -47,6 +47,9 @@ unit_collision_threshold = 2;
 
 unit_collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 
+unit_battle_within_timed_collision_check_battles = array_create(0);
+unit_battle_within_timed_collision_check_timers = array_create(0);
+
 // Combat Variables
 engaged_in_battle = false;
 

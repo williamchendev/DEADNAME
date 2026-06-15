@@ -30,8 +30,6 @@ battle_total_time = 0;
 battle_round = 0;
 battle_round_timer = 0;
 
-battle_collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
-
 // Battle Variables
 battle_exists = true;
 
@@ -42,6 +40,8 @@ battle_elevation = 0;
 
 battle_near_collision_threshold = 2;
 battle_far_collision_threshold = 2;
+
+battle_collision_check_timer = CelestialSimulator.global_collision_check_interval + random(CelestialSimulator.global_collision_check_interval);
 
 // Celestial Body Variables
 celestial_body_instance = noone;

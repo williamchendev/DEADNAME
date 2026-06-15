@@ -796,42 +796,6 @@ repeat (temp_celestial_object_count)
 			var temp_battle_local_z = temp_battle_instance.battle_z;
 			var temp_battle_elevation = temp_battle_instance.battle_elevation;
 			
-			/*
-			// Establish Battle Local Vector and Elevation Variables
-			var temp_battle_local_x, temp_battle_local_y, temp_battle_local_z, temp_battle_elevation;
-			
-			// Check if Pathfinding is Enabled or Battle's Celestial Body Pathfinding Node Index is Valid
-			if (!temp_celestial_object_instance.pathfinding_enabled)
-			{
-				// Find Vertical Sphere Vector
-				var temp_battle_atan_value = (0.5 - temp_battle_instance.local_position_u) * 2 * pi;
-				var temp_battle_asin_value = (0.5 - temp_battle_instance.local_position_v) * pi;
-				temp_battle_local_y = -sin(temp_battle_asin_value);
-				
-				// Find Horizontal and Forwards Sphere Vectors
-				var temp_battle_sphere_horizontal_radius = sqrt(1.0 - temp_battle_local_y * temp_battle_local_y);
-				temp_battle_local_x = temp_battle_sphere_horizontal_radius * -sin(temp_battle_atan_value);
-				temp_battle_local_z = temp_battle_sphere_horizontal_radius * -cos(temp_battle_atan_value);
-				
-				// Set Default Sphere Elevation
-				temp_battle_elevation = 1.0;
-			}
-			else
-			{
-				// Find Celestial Battle's Normalized Local Vector from Celestial Body's Sphere Center with their Pathfinding Node Indexes
-				temp_battle_local_x = lerp(temp_celestial_object_instance.pathfinding_node_x_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_x_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-				temp_battle_local_y = lerp(temp_celestial_object_instance.pathfinding_node_y_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_y_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-				temp_battle_local_z = lerp(temp_celestial_object_instance.pathfinding_node_z_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_z_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-				
-				// Find Celestial Battle's Elevation from Celestial Body's Sphere Center with their Pathfinding Node Indexes
-				temp_battle_elevation = lerp(temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_elevation_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-				
-				// Update Local UV Position
-				temp_battle_instance.local_position_u = lerp(temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_u_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-				temp_battle_instance.local_position_v = lerp(temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_a_index], temp_celestial_object_instance.pathfinding_node_v_array[temp_battle_instance.pathfinding_node_b_index], 0.5);
-			}
-			*/
-			
 			// Find Celestial Battle's Elevation from Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
 			{

@@ -11,28 +11,13 @@ enum CelestialBattlePlatformSide
 }
 
 //
-function celestial_battle_create(celestial_object, battle_x, battle_y, battle_z, battle_elevation)
+function celestial_battle_create(celestial_object)
 {
-	// Create new Celestial Battle Instance
+	// Create Celestial Battle Instance
 	var temp_celestial_battle_instance = instance_create_depth(0, 0, 0, oCelestialBattle);
 	
 	// Update Celestial Battle's Celestial Body Instance
 	temp_celestial_battle_instance.celestial_body_instance = celestial_object;
-	
-	// Update Celestial Battle's Local Sphere Vector
-	temp_celestial_battle_instance.sphere_vector_x = battle_x;
-	temp_celestial_battle_instance.sphere_vector_y = battle_y;
-	temp_celestial_battle_instance.sphere_vector_z = battle_z;
-	
-	// Update Celestial Battle's Position & Elevation
-	temp_celestial_battle_instance.battle_x = battle_x;
-	temp_celestial_battle_instance.battle_y = battle_y;
-	temp_celestial_battle_instance.battle_z = battle_z;
-	temp_celestial_battle_instance.battle_elevation = battle_elevation;
-	
-	//
-	temp_celestial_battle_instance.local_position_u = 0.5 - arctan2(-battle_x, -battle_z) / (2 * pi);
-	temp_celestial_battle_instance.local_position_v = 0.5 - arcsin(battle_y) / pi;
 	
 	// Calculate Combat Engagement Threshold
 	temp_celestial_battle_instance.battle_near_collision_threshold = cos(temp_celestial_battle_instance.battle_near_collision_radius / celestial_object.radius);
@@ -41,106 +26,8 @@ function celestial_battle_create(celestial_object, battle_x, battle_y, battle_z,
 	// Index Celestial Battle Instance in Celestial Object Battle Array
 	array_push(celestial_object.battles, temp_celestial_battle_instance);
 	
-	// Iterate through Celestial Object's Units Array
-	var temp_unit_index = 0;
-	
-	repeat (array_length(celestial_object.units))
-	{
-		// Find Unit Instance
-		var temp_unit_instance = celestial_object.units[temp_unit_index];
-		
-		// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
-		var temp_battle_collision_check_unit_dot_product = dot_product_3d
-		(
-			temp_celestial_battle_instance.sphere_vector_x, 
-			temp_celestial_battle_instance.sphere_vector_y, 
-			temp_celestial_battle_instance.sphere_vector_z, 
-			temp_unit_instance.sphere_vector_x, 
-			temp_unit_instance.sphere_vector_y, 
-			temp_unit_instance.sphere_vector_z
-		);
-		
-		// Check if Unit is within the Battle's Combat Engagement Threshold
-		if (temp_battle_collision_check_unit_dot_product >= temp_celestial_battle_instance.battle_near_collision_threshold)
-		{
-			// Add Unit Instance to Battle
-			celestial_battle_add_unit(temp_celestial_battle_instance, temp_unit_instance);
-		}
-		
-		// Increment Battle Collision Check Unit Index
-		temp_unit_index++;
-	}
-}
-
-//
-function celestial_battle_create_from_pathfinding_node(celestial_object, pathfinding_node_a_index, pathfinding_node_b_index) 
-{
-	// Check if Celestial Object has a Pathfinding Navigation Mesh
-	if (!celestial_object.pathfinding_enabled)
-	{
-		// Celestial Object does not have a Pathfinding Navigation Mesh - Early Return
-		return;
-	}
-	
-	// Create new Celestial Battle Pathfinding Nodes Key
-	var temp_battle_pathfinding_nodes_key = $"{min(pathfinding_node_a_index, pathfinding_node_b_index)}:{max(pathfinding_node_a_index, pathfinding_node_b_index)}";
-	
-	// Check if Pathfinding Nodes Key already exists
-	if (ds_map_exists(celestial_object.pathfinding_node_battles_map, temp_battle_pathfinding_nodes_key))
-	{
-		// Celestial Battle already exists at the given Pathfinding Nodes - Early Return
-		return;
-	}
-	
-	// Create new Celestial Battle Instance
-	var temp_celestial_battle_instance = instance_create_depth(0, 0, 0, oCelestialBattle);
-	
-	// Update Celestial Battle Celestial Body Instance
-	temp_celestial_battle_instance.celestial_body_instance = celestial_object;
-	
-	// Update Celestial Battle Pathfinding Node Indexes
-	temp_celestial_battle_instance.pathfinding_node_a_index = pathfinding_node_a_index;
-	temp_celestial_battle_instance.pathfinding_node_b_index = pathfinding_node_b_index;
-	
-	// Index Celestial Battle Instance in Celestial Object Battle Array
-	array_push(celestial_object.battles, temp_celestial_battle_instance);
-	
-	// Index Celestial Battle in Celestial Object's Pathfinding Node Battles DS Map
-	ds_map_set(celestial_object.pathfinding_node_battles_map, temp_battle_pathfinding_nodes_key, temp_celestial_battle_instance);
-	
-	// Iterate through Pathfinding Node A's Units Array
-	var temp_pathfinding_node_a_units_array_index = 0;
-	
-	repeat (array_length(pathfinding_node_units_array[pathfinding_node_a_index]))
-	{
-		// Find Unit Instance from Pathfinding Node Units Array
-		var temp_pathfinding_node_a_units_array_unit_instance = array_get(pathfinding_node_units_array[pathfinding_node_a_index], temp_pathfinding_node_a_units_array_index);
-		
-		// Add Unit Instance to Battle
-		celestial_battle_add_unit(temp_celestial_battle_instance, temp_pathfinding_node_a_units_array_unit_instance);
-		
-		// Increment Pathfinding Node Units Array Index
-		temp_pathfinding_node_a_units_array_index++;
-	}
-	
-	// Check if Pathfinding Node B's Index is different from Pathfinding Node A's Index
-	if (pathfinding_node_a_index != pathfinding_node_b_index)
-	{
-		// Iterate through Pathfinding Node A's Units Array
-		var temp_pathfinding_node_b_units_array_index = 0;
-		
-		repeat (array_length(pathfinding_node_units_array[pathfinding_node_b_index]))
-		{
-			// Find Unit Instance from Pathfinding Node Units Array
-			var temp_pathfinding_node_b_units_array_unit_instance = array_get(pathfinding_node_units_array[pathfinding_node_b_index], temp_pathfinding_node_b_units_array_index);
-			
-			// Add Unit Instance to Battle
-			celestial_battle_add_unit(temp_celestial_battle_instance, temp_pathfinding_node_b_units_array_unit_instance);
-			
-			// Increment Pathfinding Node Units Array Index
-			temp_pathfinding_node_b_units_array_index++;
-		}
-	}
+	// Return Celestial Battle Instance
+	return temp_celestial_battle_instance;
 }
 
 //

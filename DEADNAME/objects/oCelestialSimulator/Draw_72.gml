@@ -267,6 +267,10 @@ if (instance_exists(sub_object_selected_instance))
 		// Check if Camera is Observing a Battle on a valid Celestial Body Instance and Move Camera to face Battle
 		if (instance_exists(camera_observing_instance) and sub_object_selected_instance.celestial_body_instance == camera_observing_instance)
 		{
+			// Update Battle's Local UV Position
+			sub_object_selected_instance.local_position_u = 0.5 - arctan2(-sub_object_selected_instance.battle_x, -sub_object_selected_instance.battle_z) / (2 * pi);
+			sub_object_selected_instance.local_position_v = 0.5 - arcsin(sub_object_selected_instance.battle_y) / pi;
+			
 			// Lerp Battle's Camera Movement Value
 			battle_camera_observing_lerp += battle_camera_observing_lerp_spd * frame_delta;
 			battle_camera_observing_lerp = clamp(battle_camera_observing_lerp, 0, 1);
