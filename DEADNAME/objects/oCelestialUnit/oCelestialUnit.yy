@@ -2,8 +2,8 @@
   "$GMObject":"",
   "%Name":"oCelestialUnit",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":1,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
@@ -34,6 +34,7 @@
   "physicsStartAwake":true,
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"unit_name","filters":[],"listItems":[],"multiselect":false,"name":"unit_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"Unit","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"unit_collision_radius","filters":[],"listItems":[],"multiselect":false,"name":"unit_collision_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"10","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"unit_movement_power","filters":[],"listItems":[],"multiselect":false,"name":"unit_movement_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"3","varType":0,},
   ],
   "resourceType":"GMObject",

@@ -791,10 +791,10 @@ repeat (temp_celestial_object_count)
 			var temp_battle_instance = temp_celestial_object_instance.battles[temp_battle_index];
 			
 			// Establish Battle Local Vector and Elevation Variables
-			var temp_battle_local_x = temp_battle_instance.sphere_vector_x;
-			var temp_battle_local_y = temp_battle_instance.sphere_vector_y;
-			var temp_battle_local_z = temp_battle_instance.sphere_vector_z;
-			var temp_battle_elevation = temp_battle_instance.sphere_vector_elevation;
+			var temp_battle_local_x = temp_battle_instance.battle_x;
+			var temp_battle_local_y = temp_battle_instance.battle_y;
+			var temp_battle_local_z = temp_battle_instance.battle_z;
+			var temp_battle_elevation = temp_battle_instance.battle_elevation;
 			
 			/*
 			// Establish Battle Local Vector and Elevation Variables

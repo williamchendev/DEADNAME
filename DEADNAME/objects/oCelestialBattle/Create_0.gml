@@ -18,9 +18,6 @@ world_position_z = 0;
 sphere_vector_x = 0;
 sphere_vector_y = 0;
 sphere_vector_z = 0;
-sphere_vector_elevation = 0;
-
-collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 
 emissive = 0;
 emissive_multiplier = 0;
@@ -33,8 +30,18 @@ battle_total_time = 0;
 battle_round = 0;
 battle_round_timer = 0;
 
+battle_collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
+
 // Battle Variables
 battle_exists = true;
+
+battle_x = 0;
+battle_y = 0;
+battle_z = 0;
+battle_elevation = 0;
+
+battle_near_collision_threshold = 2;
+battle_far_collision_threshold = 2;
 
 // Celestial Body Variables
 celestial_body_instance = noone;

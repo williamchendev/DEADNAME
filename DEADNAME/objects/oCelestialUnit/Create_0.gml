@@ -43,7 +43,9 @@ pathfinding_position_z = 0;
 pathfinding_position_elevation = 0;
 
 // Collision Variables
-collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
+unit_collision_threshold = 2;
+
+unit_collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 
 // Combat Variables
 engaged_in_battle = false;

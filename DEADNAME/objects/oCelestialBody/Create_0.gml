@@ -785,6 +785,9 @@ add_unit_node = function(unit_instance, node_index)
 	// Index Unit Instance into Celestial Body Units Array
 	array_push(units, unit_instance);
 	
+	// Calculate Unit Instance's Collision Threshold
+	unit_instance.unit_collision_threshold = cos(unit_instance.unit_collision_radius / radius);
+	
 	// Find Unit Faction Index
 	var temp_unit_faction_index = array_get_index(factions, unit_instance.unit_faction);
 	
@@ -834,6 +837,9 @@ add_unit_uv = function(unit_instance, unit_u, unit_v)
 	
 	// Index Unit Instance into Celestial Body Units Array
 	array_push(units, unit_instance);
+	
+	// Calculate Unit Instance's Collision Threshold
+	unit_instance.unit_collision_threshold = cos(unit_instance.unit_collision_radius / radius);
 	
 	// Find Unit Faction Index
 	var temp_unit_faction_index = array_get_index(factions, unit_instance.unit_faction);

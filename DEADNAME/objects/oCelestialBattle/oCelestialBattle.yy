@@ -28,6 +28,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v2","%Name":"battle_near_collision_radius","filters":[],"listItems":[],"multiselect":false,"name":"battle_near_collision_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"15","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"battle_far_collision_radius","filters":[],"listItems":[],"multiselect":false,"name":"battle_far_collision_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"25","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"battle_rounds_per_shuffle","filters":[],"listItems":[],"multiselect":false,"name":"battle_rounds_per_shuffle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"5","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"battle_rounds_time_duration","filters":[],"listItems":[],"multiselect":false,"name":"battle_rounds_time_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"30","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"battle_faction_combat_width","filters":[],"listItems":[],"multiselect":false,"name":"battle_faction_combat_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"6","varType":1,},

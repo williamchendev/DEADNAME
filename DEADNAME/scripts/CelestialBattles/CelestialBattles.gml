@@ -23,14 +23,20 @@ function celestial_battle_create(celestial_object, battle_x, battle_y, battle_z,
 	temp_celestial_battle_instance.sphere_vector_x = battle_x;
 	temp_celestial_battle_instance.sphere_vector_y = battle_y;
 	temp_celestial_battle_instance.sphere_vector_z = battle_z;
-	temp_celestial_battle_instance.sphere_vector_elevation = battle_elevation;
+	
+	// Update Celestial Battle's Position & Elevation
+	temp_celestial_battle_instance.battle_x = battle_x;
+	temp_celestial_battle_instance.battle_y = battle_y;
+	temp_celestial_battle_instance.battle_z = battle_z;
+	temp_celestial_battle_instance.battle_elevation = battle_elevation;
 	
 	//
 	temp_celestial_battle_instance.local_position_u = 0.5 - arctan2(-battle_x, -battle_z) / (2 * pi);
 	temp_celestial_battle_instance.local_position_v = 0.5 - arcsin(battle_y) / pi;
 	
 	// Calculate Combat Engagement Threshold
-	var temp_battle_collision_radius = cos(CelestialSimulator.global_battle_collision_radius / celestial_object.radius);
+	temp_celestial_battle_instance.battle_near_collision_threshold = cos(temp_celestial_battle_instance.battle_near_collision_radius / celestial_object.radius);
+	temp_celestial_battle_instance.battle_far_collision_threshold = cos(temp_celestial_battle_instance.battle_far_collision_radius / celestial_object.radius);
 	
 	// Index Celestial Battle Instance in Celestial Object Battle Array
 	array_push(celestial_object.battles, temp_celestial_battle_instance);
@@ -55,7 +61,7 @@ function celestial_battle_create(celestial_object, battle_x, battle_y, battle_z,
 		);
 		
 		// Check if Unit is within the Battle's Combat Engagement Threshold
-		if (temp_battle_collision_check_unit_dot_product >= temp_battle_collision_radius)
+		if (temp_battle_collision_check_unit_dot_product >= temp_celestial_battle_instance.battle_near_collision_threshold)
 		{
 			// Add Unit Instance to Battle
 			celestial_battle_add_unit(temp_celestial_battle_instance, temp_unit_instance);

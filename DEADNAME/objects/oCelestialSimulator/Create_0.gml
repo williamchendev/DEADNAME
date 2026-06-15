@@ -71,9 +71,6 @@ global_clock_delta_time_multiplier = 0.2;
 global_clock_hydrosphere_delta_time_multiplier = 0.0037;
 
 // Collision Settings
-global_unit_collision_radius = 12;
-global_battle_collision_radius = 20;
-
 global_collision_check_interval = 8;
 
 // Pathfinding Settings
