@@ -557,11 +557,17 @@ repeat (temp_solar_systems_count)
 				// Check if Battle can update its Position & Elevation if there are Units belonging to Factions participating in Combat
 				if (temp_battle_unit_divisor > 0 and temp_battle_faction_divisor > 1)
 				{
-					// Calculate Final Updated Battle Position & Elevation by using the Battle's Unit Divisor
+					// Calculate Updated Battle Position & Elevation by using the Battle's Unit Divisor to find the Weighted Averaged Faction Center Position & Elevation Contribution
 					temp_battle_x /= temp_battle_unit_divisor;
 					temp_battle_y /= temp_battle_unit_divisor;
 					temp_battle_z /= temp_battle_unit_divisor;
 					temp_battle_elevation /= temp_battle_unit_divisor;
+					
+					// Calculate Final Lerped Movement Battle Position & Elevation
+					temp_battle_x = lerp(temp_battle_instance.battle_x, temp_battle_x, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
+					temp_battle_y = lerp(temp_battle_instance.battle_y, temp_battle_y, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
+					temp_battle_z = lerp(temp_battle_instance.battle_z, temp_battle_z, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
+					temp_battle_elevation = lerp(temp_battle_instance.battle_elevation, temp_battle_elevation, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
 					
 					// Update Battle Sphere Vector and Battle's Position & Elevation Values
 					temp_battle_instance.sphere_vector_x = temp_battle_x;

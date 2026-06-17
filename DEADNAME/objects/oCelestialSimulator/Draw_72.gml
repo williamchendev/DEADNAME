@@ -172,11 +172,30 @@ if (instance_exists(camera_observing_instance))
 			// Draw Selected Sub Object Instance
 			draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, 1);
 			
-			// Unit Emotion Sprite Animation Rendering Behaviour
-			if (celestial_sub_object_type == CelestialSubObjectType.Unit and !temp_sub_object_miniature_icon and emotion_sprite_index != -1)
+			// Celestial Unit Selected UI Drawing Behaviour
+			if (celestial_sub_object_type == CelestialSubObjectType.Unit)
 			{
-				// Unit Emotion Animation Draw Sprite Behaviour
-				draw_sprite_ext(emotion_sprite_index, emotion_image_index, x, y - sprite_get_yoffset(sprite_index) + sprite_get_bbox_top(sprite_index), 1, 1, 0, c_white, 1);
+				// Calculate Unit's Sprite Vertical Offset
+				var temp_sprite_vertical_offset = -sprite_get_yoffset(sprite_index) + sprite_get_bbox_top(sprite_index);
+				
+				// Unit Emotion Battle Popup Animation Rendering Behaviour
+				if (engaged_in_battle and emotion_battle_popup_timer > 0)
+				{
+					// Calculate Unit Emotion Battle Popup Animation Values
+					var temp_emotion_battle_popup_anim_value = power(emotion_battle_popup_timer / emotion_battle_popup_duration, emotion_battle_popup_animation_multiplier);
+					var temp_emotion_battle_popup_scale = lerp(1, emotion_battle_popup_initial_scale, temp_emotion_battle_popup_anim_value * temp_emotion_battle_popup_anim_value);
+					var temp_emotion_battle_popup_y = y + temp_sprite_vertical_offset + (emotion_battle_popup_vertical_movement * temp_emotion_battle_popup_anim_value);
+					
+					// Unit Engaged in Battle Popup Animation Draw Sprite Behaviour
+					draw_sprite_ext(sOverworld_Emotion_Battle, 0, x, temp_emotion_battle_popup_y, image_xscale * temp_emotion_battle_popup_scale, temp_emotion_battle_popup_scale, 0, c_white, temp_alpha);
+				}
+				
+				// Unit Emotion Sprite Animation Rendering Behaviour
+				if (!temp_sub_object_miniature_icon and emotion_sprite_index != -1)
+				{
+					// Unit Emotion Animation Draw Sprite Behaviour
+					draw_sprite_ext(emotion_sprite_index, emotion_image_index, x, y + temp_sprite_vertical_offset, 1, 1, 0, c_white, temp_alpha);
+				}
 			}
 		}
 		

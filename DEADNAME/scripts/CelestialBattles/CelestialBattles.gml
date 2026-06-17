@@ -93,6 +93,9 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	// Update that Unit Instance has entered Combat
 	unit_instance.engaged_in_battle = true;
 	
+	// Update Unit Instance's Battle Popup
+	unit_instance.emotion_battle_popup_timer = unit_instance.emotion_battle_popup_duration;
+	
 	// Randomize Unit Instance's Collision Check Timer
 	unit_instance.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 }

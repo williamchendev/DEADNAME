@@ -553,6 +553,13 @@ repeat (temp_celestial_object_count)
 				// Increment Sub Object Front Layer Count Index
 				temp_sub_object_front_layer_count++;
 				
+				// Perform Celestial Unit's Battle Behaviour
+				if (temp_unit_instance.engaged_in_battle and temp_unit_instance.emotion_battle_popup_timer > 0)
+				{
+					// Decrement Celestial Unit's Engaged in Battle Popup Timer
+					temp_unit_instance.emotion_battle_popup_timer -= frame_delta;
+				}
+				
 				// Perform Celestial Unit's Animation Behaviour
 				switch (temp_unit_instance.unit_behaviour)
 				{

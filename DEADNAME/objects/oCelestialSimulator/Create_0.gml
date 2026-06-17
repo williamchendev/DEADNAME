@@ -835,6 +835,38 @@ load_solar_system = function(solar_system_id)
 	
 	// Solar System with Solar System ID exists - Load Solar System
 	CelestialSimulator.solar_system_index = array_get_index(CelestialSimulator.solar_systems_ids, solar_system_id);
+	
+	// Reset Celestial Simulator Selected Celestial Sub-Object
+	CelestialSimulator.select_sub_object_instance(noone);
+	
+	// Reset Celestial Simulator Camera Observing Instance
+	CelestialSimulator.camera_observing_instance = noone;
+	
+	// Reset Celestial Unit Notifications
+	with (oCelestialUnit)
+	{
+		// Reset Unit Notification Timers
+		emotion_battle_popup_timer = -1;
+	}
+	
+	// Reset Celestial City Notifications
+	with (oCelestialCity)
+	{
+		// Destroy City Notifications Array
+		var temp_notification_count = array_length(notifications);
+		var temp_notification_index = temp_notification_count - 1;
+		
+		repeat (temp_notification_count)
+		{
+			// Delete Notifications Struct
+			delete notifications[temp_notification_index];
+			
+			// Decrement Notifications Index
+			temp_notification_index--;
+		}
+		
+		array_resize(notifications, 0);
+	}
 }
 
 create_celestial_shadows = function(solar_system_id, celestial_ids_array)
@@ -1168,6 +1200,9 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		var temp_sprite_index = temp_sub_object_miniature_icon and temp_instance != CelestialSimulator.sub_object_selected_instance ? temp_instance.miniature_sprite_index : temp_instance.sprite_index;
 		var temp_image_index = temp_sub_object_miniature_icon and temp_instance != CelestialSimulator.sub_object_selected_instance ? 0 : temp_instance.image_index;
 		
+		// Calculate Sprite Vertical Offset
+		var temp_sprite_vertical_offset = -sprite_get_yoffset(temp_sprite_index) + sprite_get_bbox_top(temp_sprite_index);
+		
 		// Establish Sub Object's Unlit Sprite Alpha
 		var temp_alpha = temp_instance.image_alpha;
 		
@@ -1204,14 +1239,27 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		// Sub Object Draw Sprite Behaviour
 		draw_sprite_ext(temp_sprite_index, temp_image_index, temp_instance.x, temp_instance.y, temp_instance.image_xscale, temp_instance.image_yscale, temp_instance.image_angle, temp_instance.image_blend, temp_alpha);
 		
-		// Unit Emotion Sprite Animation Rendering Behaviour
-		if (temp_instance.celestial_sub_object_type == CelestialSubObjectType.Unit and !temp_sub_object_miniature_icon and temp_instance.emotion_sprite_index != -1)
+		// Celestial Unit UI Drawing Behaviour
+		if (temp_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 		{
-			// Calculate Emotion Sprite Vertical Offset
-			var temp_unit_emotion_vertical_offset = -sprite_get_yoffset(temp_sprite_index) + sprite_get_bbox_top(temp_sprite_index);
+			// Unit Emotion Battle Popup Animation Rendering Behaviour
+			if (temp_instance.engaged_in_battle and temp_instance.emotion_battle_popup_timer > 0)
+			{
+				// Calculate Unit Emotion Battle Popup Animation Values
+				var temp_emotion_battle_popup_anim_value = power(temp_instance.emotion_battle_popup_timer / temp_instance.emotion_battle_popup_duration, temp_instance.emotion_battle_popup_animation_multiplier);
+				var temp_emotion_battle_popup_scale = lerp(1, temp_instance.emotion_battle_popup_initial_scale, temp_emotion_battle_popup_anim_value * temp_emotion_battle_popup_anim_value);
+				var temp_emotion_battle_popup_y = temp_instance.y + temp_sprite_vertical_offset + (temp_instance.emotion_battle_popup_vertical_movement * temp_emotion_battle_popup_anim_value);
+				
+				// Unit Engaged in Battle Popup Animation Draw Sprite Behaviour
+				draw_sprite_ext(sOverworld_Emotion_Battle, 0, temp_instance.x, temp_emotion_battle_popup_y, temp_instance.image_xscale * temp_emotion_battle_popup_scale, temp_emotion_battle_popup_scale, 0, c_white, temp_alpha);
+			}
 			
-			// Unit Emotion Animation Draw Sprite Behaviour
-			draw_sprite_ext(temp_instance.emotion_sprite_index, temp_instance.emotion_image_index, temp_instance.x, temp_instance.y + temp_unit_emotion_vertical_offset, 1, 1, 0, c_white, temp_alpha);
+			// Unit Emotion Sprite Animation Rendering Behaviour
+			if (!temp_sub_object_miniature_icon and temp_instance.emotion_sprite_index != -1)
+			{
+				// Unit Emotion Animation Draw Sprite Behaviour
+				draw_sprite_ext(temp_instance.emotion_sprite_index, temp_instance.emotion_image_index, temp_instance.x, temp_instance.y + temp_sprite_vertical_offset, 1, 1, 0, c_white, temp_alpha);
+			}
 		}
 		
 		// Increment Celestial Object's Sub Object Index

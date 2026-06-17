@@ -11,6 +11,11 @@ celestial_sub_object_type = CelestialSubObjectType.Unit;
 emotion_retreat_sprite = sOverworld_Emotion_Retreat;
 emotion_retreat_image_spd = 0.18;
 
+emotion_battle_popup_duration = 40;
+emotion_battle_popup_vertical_movement = 7;
+emotion_battle_popup_initial_scale = 1.6;
+emotion_battle_popup_animation_multiplier = 3;
+
 // Initialize Unit Faction
 unit_faction = noone;
 
@@ -67,6 +72,8 @@ unit_behaviour_target_node_index = -1;
 emotion_sprite_index = -1;
 emotion_image_index = 0;
 emotion_draw_image_index = 0;
+
+emotion_battle_popup_timer = 0;
 
 // Randomize Sprite Facing Direction
 image_xscale = random(1.0) < 0.5 ? -1 : 1;
