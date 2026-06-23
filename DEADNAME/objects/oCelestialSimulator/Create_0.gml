@@ -1242,18 +1242,6 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		// Celestial Unit UI Drawing Behaviour
 		if (temp_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
 		{
-			// Unit Emotion Battle Popup Animation Rendering Behaviour
-			if (temp_instance.engaged_in_battle and temp_instance.emotion_battle_popup_timer > 0)
-			{
-				// Calculate Unit Emotion Battle Popup Animation Values
-				var temp_emotion_battle_popup_anim_value = power(temp_instance.emotion_battle_popup_timer / temp_instance.emotion_battle_popup_duration, temp_instance.emotion_battle_popup_animation_multiplier);
-				var temp_emotion_battle_popup_scale = lerp(1, temp_instance.emotion_battle_popup_initial_scale, temp_emotion_battle_popup_anim_value * temp_emotion_battle_popup_anim_value);
-				var temp_emotion_battle_popup_y = temp_instance.y + temp_sprite_vertical_offset + (temp_instance.emotion_battle_popup_vertical_movement * temp_emotion_battle_popup_anim_value);
-				
-				// Unit Engaged in Battle Popup Animation Draw Sprite Behaviour
-				draw_sprite_ext(sOverworld_Emotion_Battle, 0, temp_instance.x, temp_emotion_battle_popup_y, temp_instance.image_xscale * temp_emotion_battle_popup_scale, temp_emotion_battle_popup_scale, 0, c_white, temp_alpha);
-			}
-			
 			// Unit Emotion Sprite Animation Rendering Behaviour
 			if (!temp_sub_object_miniature_icon and temp_instance.emotion_sprite_index != -1)
 			{
