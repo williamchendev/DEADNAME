@@ -1,4 +1,4 @@
-//
+// Celestial Unit Enums
 enum CelestialUnitBehaviourType
 {
 	None,
@@ -8,13 +8,6 @@ enum CelestialUnitBehaviourType
 	Patrol,
 	Garrison,
 	Retreat
-}
-
-enum CelestialUnitTerrainType
-{
-	Land,
-	Air,
-	Sea
 }
 
 //

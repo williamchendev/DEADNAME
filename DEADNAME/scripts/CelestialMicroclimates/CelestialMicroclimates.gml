@@ -1,4 +1,4 @@
-//
+// DEBUG DO NOT USE THIS - REPLACE LATER
 enum PlanetBiome
 {
 	Terrestrial_Rainforest,
@@ -37,7 +37,6 @@ enum PlanetTemperature
 	CosmicHot
 }
 
-//
 function geodesic_icosphere_biome_is_marine(biome)
 {
 	switch (biome)
@@ -53,13 +52,17 @@ function geodesic_icosphere_biome_is_marine(biome)
 	}
 }
 
-//
+// Celestial Microclimate Enums
 enum CelestialMicroclimateBiomeType
 {
 	None
 }
 
-//
+// Celestial Microclimate Functions
+/// @function celestial_microclimate_biome_get_movement_cost_modifier(celestial_microclimate_biome_type);
+/// @description Finds the Movement Cost Modifier of the given Celestial Microclimate Biome Type
+/// @param {CelestialMicroclimateBiomeType} celestial_microclimate_biome_type The Celestial Microclimate Biome Type to find the Movement Cost Modifier of
+/// @returns {real} Returns the Movement Cost Modifier of the given Biome
 function celestial_microclimate_biome_get_movement_cost_modifier(celestial_microclimate_biome_type)
 {
 	// Establish Default Microclimate Biome Movement Power Cost Modifier
@@ -78,7 +81,10 @@ function celestial_microclimate_biome_get_movement_cost_modifier(celestial_micro
 	return temp_movement_cost_modifier;
 }
 
-//
+/// @function celestial_microclimate_biome_get_land_combat_size(celestial_microclimate_biome_type);
+/// @description Finds the Land Combat Size of the given Celestial Microclimate Biome Type
+/// @param {CelestialMicroclimateBiomeType} celestial_microclimate_biome_type The Celestial Microclimate Biome Type to find the Land Combat Size of
+/// @returns {real} Returns the Land Combat Size of the given Biome
 function celestial_microclimate_biome_get_land_combat_size(celestial_microclimate_biome_type)
 {
 	// Establish Default Microclimate Biome Combat Size
@@ -97,6 +103,10 @@ function celestial_microclimate_biome_get_land_combat_size(celestial_microclimat
 	return temp_combat_size;
 }
 
+/// @function celestial_microclimate_biome_get_sea_combat_size(celestial_microclimate_biome_type);
+/// @description Finds the Sea Combat Size of the given Celestial Microclimate Biome Type
+/// @param {CelestialMicroclimateBiomeType} celestial_microclimate_biome_type The Celestial Microclimate Biome Type to find the Sea Combat Size of
+/// @returns {real} Returns the Sea Combat Size of the given Biome
 function celestial_microclimate_biome_get_sea_combat_size(celestial_microclimate_biome_type)
 {
 	// Establish Default Microclimate Biome Combat Size
@@ -115,6 +125,10 @@ function celestial_microclimate_biome_get_sea_combat_size(celestial_microclimate
 	return temp_combat_size;
 }
 
+/// @function celestial_microclimate_biome_get_air_combat_size(celestial_microclimate_biome_type);
+/// @description Finds the Air Combat Size of the given Celestial Microclimate Biome Type
+/// @param {CelestialMicroclimateBiomeType} celestial_microclimate_biome_type The Celestial Microclimate Biome Type to find the Air Combat Size of
+/// @returns {real} Returns the Air Combat Size of the given Biome
 function celestial_microclimate_biome_get_air_combat_size(celestial_microclimate_biome_type)
 {
 	// Establish Default Microclimate Biome Combat Size

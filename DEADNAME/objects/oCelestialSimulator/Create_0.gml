@@ -34,6 +34,13 @@ enum CelestialSolarType
 	Night = 2
 }
 
+enum CelestialTerrainType
+{
+	Land,
+	Air,
+	Sea
+}
+
 // Delete to prevent multiple Celestial Simulator Instances
 if (instance_number(object_index) > 1) 
 {
@@ -1442,11 +1449,7 @@ generate_default_solar_system = function()
 }
 
 // DEBUG
-//planet_simulator_add_light_source(-500, 240, -1400, make_color_rgb(206, 185, 240), 3000, 3, 2);
-//planet_simulator_add_light_source(1000, 240, -1400, c_red, 100, 1, 2);
 generate_default_solar_system();
-
-//cloud_noise(2048, 256);
 
 // DEBUG DEBUG DEBUG
 look_dir = 0;

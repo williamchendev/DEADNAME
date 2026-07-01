@@ -12,7 +12,7 @@ city_solar = CelestialSolarType.Twilight;
 
 // Buildings Array
 buildings = array_create(0);
-celestial_cities_add_building(id, CelestialCityBuilding.TankFactory);
+celestial_cities_add_building(id, CelestialBuildingType.TankFactory);
 
 // Resources Arrays
 var temp_celestial_resources_index = 0;

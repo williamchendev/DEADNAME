@@ -1,17 +1,17 @@
-//
-enum CelestialCityBuilding
+// Celestial City Enums
+enum CelestialBuildingType
 {
 	HousingDistrict,
 	TankFactory
 }
 
-//
-global.celestial_buildings[CelestialCityBuilding.HousingDistrict] =
+// Global Celestial Buildings
+global.celestial_buildings[CelestialBuildingType.HousingDistrict] =
 {
 	building_name: "Housing District",
 };
 
-global.celestial_buildings[CelestialCityBuilding.TankFactory] =
+global.celestial_buildings[CelestialBuildingType.TankFactory] =
 {
 	// Building Variables
 	building_name: "Coal Mine",
@@ -27,13 +27,17 @@ global.celestial_buildings[CelestialCityBuilding.TankFactory] =
 	production_cycle_night_enabled: false,
 };
 
-//
-function celestial_cities_add_building(city_instance, celestial_city_building)
+// Celestial City Methods
+/// @function celestial_cities_add_building(city_instance, celestial_city_building);
+/// @description Adds a Building to the given Celestial City Instance
+/// @param {oCelestialCity} city_instance The Celestial City to add a Building to
+/// @param {int<CelestialBuildingType>} celestial_building The Building Type of the Celestial Building to add to the Celestial City Instance
+function celestial_cities_add_building(city_instance, celestial_building)
 {
 	// Initalize Building Struct
 	var temp_building_struct =
 	{
-		building: celestial_city_building,
+		building: celestial_building,
 		production_cycle_timer: 0
 	};
 	
@@ -41,6 +45,11 @@ function celestial_cities_add_building(city_instance, celestial_city_building)
 	array_push(city_instance.buildings, temp_building_struct);
 }
 
+/// @function celestial_cities_add_resource(city_instance, celestial_resource, amount)
+/// @description Adds Resources to the given Celestial City Instance
+/// @param {oCelestialCity} city_instance The Celestial City to add Resources to
+/// @param {int<CelestialResource>} celestial_resource The Resource Type of the Celestial Resource being added to the Celestial City Instance
+/// @param {int} amount The amount of the quantity of Resources being added to the Celestial City Instance
 function celestial_cities_add_resource(city_instance, celestial_resource, amount)
 {
 	// Establish Amount Added
@@ -62,6 +71,11 @@ function celestial_cities_add_resource(city_instance, celestial_resource, amount
 	return temp_amount_added;
 }
 
+/// @function celestial_cities_add_notification(city_instance, notification_text, notification_duration)
+/// @description Adds a Notification Popup to the given Celestial City Instance
+/// @param {oCelestialCity} city_instance The Celestial City to add a Notification Popup to
+/// @param {string} notification_text The Display Text of the Notification Popup
+/// @param {real} notification_duration The duration of the Notification Popup's lifespan existing above the Celestial City Instance
 function celestial_cities_add_notification(city_instance, notification_text, notification_duration)
 {
 	array_push(city_instance.notifications, { text: notification_text, duration: notification_duration });

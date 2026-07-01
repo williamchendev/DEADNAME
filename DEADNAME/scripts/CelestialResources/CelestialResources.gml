@@ -1,10 +1,10 @@
-//
+// Celestial Resource Enums
 enum CelestialResource
 {
 	Coal
 }
 
-//
+// Global Celetial Resources
 global.celestial_resources[CelestialResource.Coal] =
 {
 	// Resource Variables

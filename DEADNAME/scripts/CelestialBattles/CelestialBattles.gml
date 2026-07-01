@@ -10,7 +10,21 @@ enum CelestialBattlePlatformSide
 	Right
 }
 
-//
+// Celestial Battle Sorting Functions
+function celestial_battle_matchup_sort(current, next) 
+{
+	return next.attacking_subunit.unit_priority_rank == current.attacking_subunit.unit_priority_rank ? (next.attacking_subunit.unit_agility > current.attacking_subunit.unit_agility ? -1 : 1) : (next.attacking_subunit.unit_priority_rank < current.attacking_subunit.unit_priority_rank ? -1 : 1);
+}
+
+function celestial_battle_choreography_actors_sort(current, next) 
+{
+	return next.actor_vertical_depth > current.actor_vertical_depth ? -1 : 1;
+}
+
+/// @function celestial_battle_create(celestial_object);
+/// @description Creates and returns a Celestial Battle Instance within the Celestial Simulation with the given Celestial Object Instance
+/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Celestial Battle will belong to
+/// @returns {real:Id.Instance} Returns a Celestial Battle Instance
 function celestial_battle_create(celestial_object)
 {
 	// Create Celestial Battle Instance
@@ -30,7 +44,10 @@ function celestial_battle_create(celestial_object)
 	return temp_celestial_battle_instance;
 }
 
-//
+/// @function celestial_battle_add_unit(battle_instance, unit_instance);
+/// @description Adds a given Celestial Unit Instance to the ongoing Battle with the given Celestial Battle Instance (this function prevents Celestial Units from being redundantly "double added" to the Celestial Battle)
+/// @param {oCelestialBattle} battle_instance The Celestial Battle the given Celestial Unit Instance will be added to
+/// @param {real:Id.Instance} unit_instance The Celestial Unit Instance that will be added to the given Celestial Battle Instance
 function celestial_battle_add_unit(battle_instance, unit_instance)
 {
 	// Check if Battle Exists
@@ -100,18 +117,9 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	unit_instance.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 }
 
-//
-function celestial_battle_matchup_sort(current, next) 
-{
-	return next.attacking_subunit.unit_priority_rank == current.attacking_subunit.unit_priority_rank ? (next.attacking_subunit.unit_agility > current.attacking_subunit.unit_agility ? -1 : 1) : (next.attacking_subunit.unit_priority_rank < current.attacking_subunit.unit_priority_rank ? -1 : 1);
-}
-
-function celestial_battle_choreography_actors_sort(current, next) 
-{
-	return next.actor_vertical_depth > current.actor_vertical_depth ? -1 : 1;
-}
-
-//
+/// @function celestial_battle_shuffle_round(battle_instance);
+/// @description Initializes a Celestial Battle's Round by shuffling and randomly selecting available Celestial Units from the Celestial Battle's Faction Unit Pools and sorting them into Priority Rank Arrays to determine the Battle's Matchups between opposing Celestial Factions and their Units
+/// @param {oCelestialBattle} battle_instance The Celestial Battle that will perform the Round Shuffle Behaviour
 function celestial_battle_shuffle_round(battle_instance)
 {
 	// Check if Battle Exists
@@ -376,7 +384,7 @@ function celestial_battle_shuffle_round(battle_instance)
 					// Sub-Unit has mandatory Combat Attendance - Add Sub-Unit to Battle Faction's Priority Pools directly
 					switch (temp_battle_unit_subunit_instance.unit_terrain_type)
 					{
-						case CelestialUnitTerrainType.Land:
+						case CelestialTerrainType.Land:
 							// Add Sub-Unit to Battle Faction's Land Priority Rank Sub-Unit Pools
 							array_push(array_get(temp_battle_faction_land_priority_pool, temp_battle_unit_subunit_instance.unit_priority_rank), temp_battle_unit_subunit_instance);
 							temp_faction_land_combat_size -= temp_battle_unit_subunit_instance.unit_size;
@@ -387,7 +395,7 @@ function celestial_battle_shuffle_round(battle_instance)
 							// Add Sub-Unit to Battle Choreography as an Actor
 							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_subunit_instance);
 							break;
-						case CelestialUnitTerrainType.Air:
+						case CelestialTerrainType.Air:
 							// Add Sub-Unit to Battle Faction's Air Priority Rank Sub-Unit Pools
 							array_push(array_get(temp_battle_faction_air_priority_pool, temp_battle_unit_subunit_instance.unit_priority_rank), temp_battle_unit_subunit_instance);
 							temp_faction_air_combat_size -= temp_battle_unit_subunit_instance.unit_size;
@@ -398,7 +406,7 @@ function celestial_battle_shuffle_round(battle_instance)
 							// Add Sub-Unit to Battle Choreography as an Actor
 							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_subunit_instance);
 							break;
-						case CelestialUnitTerrainType.Sea:
+						case CelestialTerrainType.Sea:
 							// Add Sub-Unit to Battle Faction's Sea Priority Rank Sub-Unit Pools
 							array_push(array_get(temp_battle_faction_sea_priority_pool, temp_battle_unit_subunit_instance.unit_priority_rank), temp_battle_unit_subunit_instance);
 							temp_faction_sea_combat_size -= temp_battle_unit_subunit_instance.unit_size;
@@ -416,17 +424,17 @@ function celestial_battle_shuffle_round(battle_instance)
 					// Sub-Unit engages in Combat - Add Sub-Unit to Combat Terrain Pools for random selection
 					switch (temp_battle_unit_subunit_instance.unit_terrain_type)
 					{
-						case CelestialUnitTerrainType.Land:
+						case CelestialTerrainType.Land:
 							// Add Sub-Unit to Combat Land Pool for random selection
 							array_push(temp_land_indexes_pool, array_length(temp_land_subunit_pool));
 							array_push(temp_land_subunit_pool, temp_battle_unit_subunit_instance);
 							break;
-						case CelestialUnitTerrainType.Air:
+						case CelestialTerrainType.Air:
 							// Add Sub-Unit to Combat Air Pool for random selection
 							array_push(temp_air_indexes_pool, array_length(temp_air_subunit_pool));
 							array_push(temp_air_subunit_pool, temp_battle_unit_subunit_instance);
 							break;
-						case CelestialUnitTerrainType.Sea:
+						case CelestialTerrainType.Sea:
 							// Add Sub-Unit to Combat Sea Pool for random selection
 							array_push(temp_sea_indexes_pool, array_length(temp_sea_subunit_pool));
 							array_push(temp_sea_subunit_pool, temp_battle_unit_subunit_instance);
@@ -685,6 +693,9 @@ function celestial_battle_shuffle_round(battle_instance)
 	celestial_battle_depth_sort_choreography_actors(battle_instance);
 }
 
+/// @function celestial_battle_perform_round(battle_instance);
+/// @description Performs a Celestial Battle's Round behaviour by executing the Battle's Matchups between Celestial Units and recording their behaviours into the Battle's choreography arrays
+/// @param {oCelestialBattle} battle_instance The Celestial Battle that will perform and execute its Battle Round's behaviour
 function celestial_battle_perform_round(battle_instance)
 {
 	// Check if Battle Exists
@@ -1094,6 +1105,10 @@ function celestial_battle_perform_round(battle_instance)
 	}
 }
 
+/// @function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_instance);
+/// @description Adds a Celestial Sub Unit as an Actor to a Celestial Battle's choreography arrays
+/// @param {oCelestialBattle} battle_instance The Celestial Battle to add a Choreography Actor to
+/// @param {real:Id.Instance} actor_subunit_instance The Celestial Sub Unit to add as a Choreography Actor
 function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_instance)
 {
 	// Check if Battle Exists
@@ -1350,6 +1365,9 @@ function celestial_battle_clear_choreography_actors(battle_instance)
 	ds_map_clear(battle_instance.battle_choreography_actors_map);
 }
 
+/// @function celestial_battle_clear_choreography_actions(battle_instance);
+/// @description Clears the Choreography Actions array with the given Celestial Battle Instance
+/// @param {oCelestialBattle} battle_instance The Celestial Battle to clear and reset the Choreography Actions array of
 function celestial_battle_clear_choreography_actions(battle_instance)
 {
 	// Check if Celestial Battle Instance Exists
@@ -1374,6 +1392,9 @@ function celestial_battle_clear_choreography_actions(battle_instance)
 	array_resize(battle_instance.battle_choreography_actions, 0);
 }
 
+/// @function celestial_battle_check_participation(battle_instance);
+/// @description Checks the Participation of Celestial Battle Units indexed in the ongoing Battle with the given Celestial Battle Instance and deletes Units and Factions that are ineligible to participate in the Combat
+/// @param {oCelestialBattle} battle_instance The Celestial Battle to update Unit Participation in
 function celestial_battle_check_participation(battle_instance)
 {
 	// Check if Battle Exists
