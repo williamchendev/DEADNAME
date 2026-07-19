@@ -26,9 +26,9 @@ miniature_sprite_index = sOverworld_Conflict_Icon;
 
 // Clock Variables
 battle_total_time = 0;
+battle_round_timer = 0;
 
 battle_round = 0;
-battle_round_timer = 0;
 
 // Battle Variables
 battle_exists = true;
@@ -53,12 +53,9 @@ pathfinding_node_b_index = -1;
 // Initialize Battle Arrays
 battle_factions = array_create(0);
 battle_units = array_create(0);
-battle_hostile_factions = array_create(0);
-battle_allied_factions = array_create(0);
 battle_land_priority_pools = array_create(0);
 battle_air_priority_pools = array_create(0);
 battle_sea_priority_pools = array_create(0);
-battle_matchups = array_create(0);
 
 // Initialize Battle Choreography Arrays & DS Map
 battle_choreography_actors_map = ds_map_create();
@@ -69,8 +66,6 @@ battle_choreography_actions = array_create(0);
 // Populate Battle Array with Default Faction
 array_push(battle_factions, noone);
 array_push(battle_units, array_create(0));
-array_push(battle_hostile_factions, array_create(0));
-array_push(battle_allied_factions, array_create(0));
 
 // Initialize Empty Battle Priority Pools
 var temp_default_faction_battle_land_priority_pool = array_create(CelestialBattlePriorityRankMax);

@@ -58,6 +58,8 @@ unit_battle_within_timed_collision_check_timers = array_create(0);
 // Combat Variables
 engaged_in_battle = false;
 
+battle_action_stun_timer = -1;
+
 // Willpower Variables
 willpower_sun = 3;
 willpower_moon = 1;
@@ -74,6 +76,10 @@ emotion_image_index = 0;
 emotion_draw_image_index = 0;
 
 emotion_battle_popup_timer = 0;
+
+// Status Effect Variables
+status_effect_array = array_create(0);
+status_effect_duration_array = array_create(0);
 
 // Randomize Sprite Facing Direction
 image_xscale = random(1.0) < 0.5 ? -1 : 1;

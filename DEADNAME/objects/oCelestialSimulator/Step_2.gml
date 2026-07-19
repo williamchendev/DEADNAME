@@ -551,3 +551,48 @@ input_action = temp_input_action;
 
 // Delete Unused Array
 array_resize(temp_cursor_raycast, 0);
+
+// Selected Celestial Sub Object UI Behaviour
+if (instance_exists(sub_object_selected_instance))
+{
+	// Determine Behaviour based on Selected Celestial Sub Object Type
+	if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit)
+	{
+		// Celestial Unit Selected UI Behaviour
+	}
+	else if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Battle)
+	{
+		// Celestial Battle Selected UI Behaviour
+		array_resize(battle_choreography_stack, 0);
+		
+		// Check if Battle is Rendering its Choreography Stack
+		if (!battle_platform_animation)
+		{
+			// Perform Battle Choreography Stack Rendering Pre-Calculation
+			calculate_celestial_battle_choreography_stack();
+		}
+		
+		// Check if Camera is Observing a Battle on a valid Celestial Body Instance and Move Camera to face Battle
+		if (instance_exists(camera_observing_instance) and sub_object_selected_instance.celestial_body_instance == camera_observing_instance)
+		{
+			// Update Battle's Local UV Position
+			sub_object_selected_instance.local_position_u = 0.5 - arctan2(-sub_object_selected_instance.battle_x, -sub_object_selected_instance.battle_z) / (2 * pi);
+			sub_object_selected_instance.local_position_v = 0.5 - arcsin(sub_object_selected_instance.battle_y) / pi;
+			
+			// Lerp Battle's Camera Movement Value
+			battle_camera_observing_lerp += battle_camera_observing_lerp_spd * frame_delta;
+			battle_camera_observing_lerp = clamp(battle_camera_observing_lerp, 0, 1);
+			
+			// Calculate Animation Curve for Battle's Camera Movement Value
+			var temp_battle_camera_observing_lerp_value = power(battle_camera_observing_lerp, battle_camera_observing_lerp_multiplier);
+			
+			// Calculate Camera's new Polar Horizontal & Vertical Angles
+			var temp_battle_target_camera_observing_polar_horizontal_angle = ((sub_object_selected_instance.local_position_u + 0.25) mod 1) * 360;
+			var temp_battle_target_camera_observing_polar_vertical_angle = lerp(89.5, -89.5, sub_object_selected_instance.local_position_v);
+			
+			// Adjust Camera's Observing Polar Horizontal & Vertical based on the lerped Battle's Camera Movement Value
+			camera_observing_polar_horizontal_angle = battle_camera_observing_polar_horizontal_angle + angle_difference(temp_battle_target_camera_observing_polar_horizontal_angle, battle_camera_observing_polar_horizontal_angle) * temp_battle_camera_observing_lerp_value;
+			camera_observing_polar_vertical_angle = battle_camera_observing_polar_vertical_angle + angle_difference(temp_battle_target_camera_observing_polar_vertical_angle, battle_camera_observing_polar_vertical_angle) * temp_battle_camera_observing_lerp_value;
+		}
+	}
+}

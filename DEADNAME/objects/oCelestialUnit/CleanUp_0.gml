@@ -28,3 +28,7 @@ if (array_length(sub_units) > 0)
 array_resize(unit_battle_within_timed_collision_check_battles, 0);
 array_resize(unit_battle_within_timed_collision_check_timers, 0);
 
+// Clear Unit Status Effect Arrays
+array_resize(status_effect_array, 0);
+array_resize(status_effect_duration_array, 0);
+

@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sOverworld_Unit_William",
+  "%Name":"sOverworld_Unit_William_Idle",
   "bboxMode":0,
   "bbox_bottom":23,
   "bbox_left":8,
-  "bbox_right":15,
+  "bbox_right":16,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -13,6 +13,9 @@
   "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"v1","%Name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ca144618-12e9-4553-947b-30b22df19b7e","name":"ca144618-12e9-4553-947b-30b22df19b7e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"02898c4f-2952-4f0c-9974-538f423ff7c4","name":"02898c4f-2952-4f0c-9974-538f423ff7c4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9e03b035-1e1f-4b2c-b29d-f74d5324cc79","name":"9e03b035-1e1f-4b2c-b29d-f74d5324cc79","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -21,7 +24,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"9a64b8da-ca06-4e92-9086-6119ec36e0f5","blendMode":0,"displayName":"default","isLocked":false,"name":"9a64b8da-ca06-4e92-9086-6119ec36e0f5","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sOverworld_Unit_William",
+  "name":"sOverworld_Unit_William_Idle",
   "nineSlice":null,
   "origin":7,
   "parent":{
@@ -33,7 +36,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sOverworld_Unit_William",
+    "%Name":"sOverworld_Unit_William_Idle",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -49,7 +52,7 @@
     },
     "eventStubScript":null,
     "eventToFunction":{},
-    "length":1.0,
+    "length":4.0,
     "lockOrigin":false,
     "moments":{
       "$KeyframeStore<MomentsEventKeyframe>":"",
@@ -57,9 +60,9 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sOverworld_Unit_William",
+    "name":"sOverworld_Unit_William_Idle",
     "playback":1,
-    "playbackSpeed":30.0,
+    "playbackSpeed":8.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
@@ -69,8 +72,17 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","path":"sprites/sOverworld_Unit_William/sOverworld_Unit_William.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c1c0aa79-3533-4c49-90ec-5d26fd588ae3","path":"sprites/sOverworld_Unit_William_Idle/sOverworld_Unit_William_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"fd28a616-9390-43a6-81b6-2451b1e975de","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ca144618-12e9-4553-947b-30b22df19b7e","path":"sprites/sOverworld_Unit_William_Idle/sOverworld_Unit_William_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"e4860e60-8f75-409b-821b-0286c6d7d725","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"02898c4f-2952-4f0c-9974-538f423ff7c4","path":"sprites/sOverworld_Unit_William_Idle/sOverworld_Unit_William_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"dfbacde3-ec3d-4b81-a973-9c326b000f5d","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9e03b035-1e1f-4b2c-b29d-f74d5324cc79","path":"sprites/sOverworld_Unit_William_Idle/sOverworld_Unit_William_Idle.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"9de451a7-5d79-40c7-a52e-7a73201fb08d","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
