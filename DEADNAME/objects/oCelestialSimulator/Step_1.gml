@@ -891,6 +891,9 @@ repeat (temp_solar_systems_count)
 							var temp_attack_damage = celestial_unit_attack_stat_to_value_conversion(temp_actor_struct.actor_subunit.unit_attack);
 							var temp_attack_accuracy = clamp(0.5 + (temp_actor_struct.actor_subunit.unit_accuracy - temp_actor_struct.target_subunit.unit_evasion) * 0.05, 0, 1);
 							
+							// Reset Actor's Action Animation Behaviours
+							array_resize(temp_actor_struct.actor_action_animation_success, 0);
+							
 							// Establish Actor's Action Animation Behaviours
 							temp_actor_struct.actor_action_animation_type = temp_actor_struct.actor_subunit.unit_attack_animation_types[irandom(array_length(temp_actor_struct.actor_subunit.unit_attack_animation_types) - 1)];
 							temp_actor_struct.actor_action_animation_count = temp_attack_number;
@@ -907,6 +910,9 @@ repeat (temp_solar_systems_count)
 								{
 									// Apply Attack Damage to Defending Sub-Unit's Health
 									temp_actor_struct.target_subunit.unit_health -= temp_attack_damage;
+									
+									//
+									array_push(temp_actor_struct.actor_action_animation_success, true);
 									
 									// Check if Defending Sub-Unit has been Destroyed
 									if (temp_actor_struct.target_subunit.unit_health <= 0)
@@ -947,6 +953,13 @@ repeat (temp_solar_systems_count)
 										//
 										break;
 									}
+								}
+								else
+								{
+									// Attack Missed Behaviour
+									
+									//
+									array_push(temp_actor_struct.actor_action_animation_success, false);
 								}
 							}
 							

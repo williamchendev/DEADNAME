@@ -928,6 +928,7 @@
     {"id":{"name":"sOverworld_Emotion_Battle","path":"sprites/sOverworld_Emotion_Battle/sOverworld_Emotion_Battle.yy",},},
     {"id":{"name":"sOverworld_Emotion_Retreat","path":"sprites/sOverworld_Emotion_Retreat/sOverworld_Emotion_Retreat.yy",},},
     {"id":{"name":"sOverworld_Hitmarker","path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",},},
+    {"id":{"name":"sOverworld_HitmarkerMiss","path":"sprites/sOverworld_HitmarkerMiss/sOverworld_HitmarkerMiss.yy",},},
     {"id":{"name":"sOverworld_Satellite_Default","path":"sprites/sOverworld_Satellite_Default/sOverworld_Satellite_Default.yy",},},
     {"id":{"name":"sOverworld_Satellite_Miniature","path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},},
     {"id":{"name":"sOverworld_Selection_Border","path":"sprites/sOverworld_Selection_Border/sOverworld_Selection_Border.yy",},},

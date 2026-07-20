@@ -1475,6 +1475,9 @@ calculate_celestial_battle_choreography_stack = function()
 							temp_actor_struct.actor_action_animation_delay = 0;
 							
 							//
+							var temp_actor_action_success = array_get(temp_actor_struct.actor_action_animation_success, 0);
+							
+							//
 							temp_actor_struct.actor_weapon_angle_recoil = random_range(3, 13) * temp_actor_struct.facing_direction;
 							temp_actor_struct.actor_weapon_horizontal_recoil = random_range(-6, -4);
 							temp_actor_struct.actor_weapon_vertical_recoil = random_range(-3, -1) * temp_actor_struct.facing_direction;
@@ -1498,6 +1501,27 @@ calculate_celestial_battle_choreography_stack = function()
 							temp_actor_struct.actor_weapon_attack_timer = 4;
 							
 							//
+							var temp_linear_projectile_hitmarker_sprite = temp_actor_action_success ? sOverworld_Hitmarker : sOverworld_HitmarkerMiss;
+							
+							//
+							if (!temp_actor_action_success)
+							{
+								//
+								var temp_linear_projectile_overshoot = random_range(-32, 64);
+								
+								//
+								temp_actor_struct.actor_weapon_target_x += rot_point_x(temp_linear_projectile_overshoot, 0);
+								temp_actor_struct.actor_weapon_target_y += rot_point_y(temp_linear_projectile_overshoot, 0);
+								
+								//
+								if (temp_actor_struct.actor_weapon_target_y < CelestialSimulator.battle_platform_top_vertical_position or  temp_actor_struct.actor_weapon_target_y > CelestialSimulator.battle_platform_bottom_vertical_position)
+								{
+									temp_actor_struct.actor_weapon_target_x += rot_point_x(640, 0);
+									temp_actor_struct.actor_weapon_target_y += rot_point_y(640, 0);
+								}
+							}
+							
+							//
 							var temp_actor_weapon_linear_projectile_struct = 
 							{
 								// Choreography Stack Object Type Variable
@@ -1507,16 +1531,16 @@ calculate_celestial_battle_choreography_stack = function()
 								vertical_depth: inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, 0),
 								
 								// Choreography Stack Rendering Variables
-								draw_sprite_index: sOverworld_Hitmarker,
-								draw_image_index: irandom(sprite_get_number(sOverworld_Hitmarker) - 1),
+								draw_sprite_index: temp_linear_projectile_hitmarker_sprite,
+								draw_image_index: irandom(sprite_get_number(temp_linear_projectile_hitmarker_sprite) - 1),
 								
 								draw_x: temp_actor_struct.actor_weapon_target_x,
 								draw_y: temp_actor_struct.actor_weapon_target_y,
 								
 								draw_xscale: random(1.0) > 0.5 ? 1 : -1,
-								draw_yscale: random(1.0) > 0.5 ? 1 : -1,
+								draw_yscale: temp_actor_action_success ? (random(1.0) > 0.5 ? 1 : -1) : 1,
 								
-								draw_color: c_white,
+								draw_color: temp_actor_action_success ? c_white : c_grey,
 								draw_alpha: 1,
 								
 								//
@@ -1529,8 +1553,8 @@ calculate_celestial_battle_choreography_stack = function()
 								linear_projectile_width: 1,
 								
 								//
-								linear_projectile_vertical_depth_y: temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y,
-								linear_projectile_vertical_depth_offset: 2,
+								linear_projectile_vertical_depth_y: temp_actor_action_success ? temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y : temp_actor_struct.actor_weapon_target_y,
+								linear_projectile_vertical_depth_offset: temp_actor_action_success ? 2 : 0,
 								
 								//
 								linear_projectile_timer: 5,
@@ -1542,6 +1566,7 @@ calculate_celestial_battle_choreography_stack = function()
 							
 							//
 							temp_actor_struct.actor_action_animation_count--;
+							array_delete(temp_actor_struct.actor_action_animation_success, 0, 1);
 							
 							//
 							if (temp_actor_struct.actor_action_animation_count <= 0)
@@ -1746,7 +1771,7 @@ render_celestial_battle_choreography_stack = function()
 			case CelestialBattleChoreographyObjectType.LinearProjectile:
 				//
 				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width + 2, c_black, c_black);
-				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, c_white, c_white);
+				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, temp_stack_obj.draw_color, temp_stack_obj.draw_color);
 				
 				//
 				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_stack_obj.draw_x, temp_stack_obj.draw_y, temp_stack_obj.draw_xscale, temp_stack_obj.draw_yscale, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);

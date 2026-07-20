@@ -743,6 +743,7 @@
     {"name":"sOverworld_Emotion_Battle","order":22,"path":"sprites/sOverworld_Emotion_Battle/sOverworld_Emotion_Battle.yy",},
     {"name":"sOverworld_Emotion_Retreat","order":21,"path":"sprites/sOverworld_Emotion_Retreat/sOverworld_Emotion_Retreat.yy",},
     {"name":"sOverworld_Hitmarker","order":26,"path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",},
+    {"name":"sOverworld_HitmarkerMiss","order":27,"path":"sprites/sOverworld_HitmarkerMiss/sOverworld_HitmarkerMiss.yy",},
     {"name":"sOverworld_Satellite_Default","order":13,"path":"sprites/sOverworld_Satellite_Default/sOverworld_Satellite_Default.yy",},
     {"name":"sOverworld_Satellite_Miniature","order":10,"path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},
     {"name":"sOverworld_Selection_Border","order":14,"path":"sprites/sOverworld_Selection_Border/sOverworld_Selection_Border.yy",},

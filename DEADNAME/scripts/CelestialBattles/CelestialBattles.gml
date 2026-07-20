@@ -1056,7 +1056,9 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 			//
 			actor_action_animation_type: -1,
 			actor_action_animation_delay: 0,
+			
 			actor_action_animation_count: 0,
+			actor_action_animation_success: array_create(0),
 			
 			//
 			actor_weapon_enabled: actor_subunit_instance.unit_weapon_enabled,
