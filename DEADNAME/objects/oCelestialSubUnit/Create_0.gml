@@ -8,10 +8,10 @@ persistent = true;
 unit_instance = noone;
 
 //
-unit_total_health = unit_health;
+
 
 //
-unit_attack_animation_types = [ CelestialUnitActionAnimationType.DefaultFirearm ];
+unit_total_health = unit_health;
 
 // Micro-Unit Arrays
 micro_unit_count = unit_count;

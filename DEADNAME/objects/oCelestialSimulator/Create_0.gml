@@ -10,6 +10,18 @@
 // Celestial Simulator Singleton Global Initialization
 gml_pragma("global", @"room_instance_add(room_first, 0, 0, oCelestialSimulator);");
 
+// Delete to prevent multiple Celestial Simulator Instances
+if (instance_number(object_index) > 1) 
+{
+	instance_destroy(id, false);
+	exit;
+}
+
+// Celestial Simulator Singleton
+global.celestial_simulator = id;
+sprite_index = -1;
+
+#region Celestial Enums
 // Celestial Simulator Enums
 enum CelestialObjectType
 {
@@ -40,18 +52,9 @@ enum CelestialTerrainType
 	Air,
 	Sea
 }
+#endregion
 
-// Delete to prevent multiple Celestial Simulator Instances
-if (instance_number(object_index) > 1) 
-{
-	instance_destroy(id, false);
-	exit;
-}
-
-// Celestial Simulator Singleton
-global.celestial_simulator = id;
-sprite_index = -1;
-
+#region Celestial Settings
 // Celestial Simulator Settings
 active = false;
 
@@ -120,6 +123,7 @@ bloom_global_color = c_white;
 bloom_global_intensity = 1.0;
 
 // Sub Object UI Settings
+sub_object_unit_vertical_offset = 2;
 sub_object_city_name_vertical_offset = -8;
 
 // Battle UI Settings
@@ -151,6 +155,8 @@ triangle_rotate_range = 30;
 triangle_rotate_spd = 2;
 
 triangle_animation_speed = 0.01;
+
+#endregion
 
 // Player Variables
 player_faction = noone;
@@ -308,6 +314,7 @@ vertex_position(square_uv_vertex_buffer, 1, -1);
 vertex_end(square_uv_vertex_buffer);
 vertex_freeze(square_uv_vertex_buffer);
 
+#region Celestial Shader Indexes
 // Solar System Background Stars Unlit Rendering Shader Indexes
 background_stars_unlit_shader_camera_position_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraPosition");
 background_stars_unlit_shader_camera_rotation_index = shader_get_uniform(shd_background_stars_unlit, "in_CameraRotation");
@@ -535,6 +542,8 @@ sun_unlit_shader_elevation_index = shader_get_uniform(shd_sun_unlit, "u_Elevatio
 sun_unlit_shader_position_index = shader_get_uniform(shd_sun_unlit, "u_Position");
 sun_unlit_shader_euler_angles_index = shader_get_uniform(shd_sun_unlit, "u_EulerAngles");
 
+#endregion
+
 // (Forward Rendered Lighting) Light Source Variables
 light_source_exists = array_create(CelestialSimMaxLights);
 
@@ -551,6 +560,7 @@ light_source_falloff = array_create(CelestialSimMaxLights);
 light_source_intensity = array_create(CelestialSimMaxLights);
 light_source_emitter_size = array_create(CelestialSimMaxLights);
 
+#region Depth Sort Functions
 // Render Depth Sort Type Functions
 sub_objects_back_render_depth_sort = function(current, next) 
 {
@@ -581,8 +591,10 @@ battle_choreography_stack_depth_sort = function(current, next)
 {
 	return next.vertical_depth > current.vertical_depth ? -1 : 1;
 }
+#endregion
 
-// Sub Object Methods
+#region Sub-Object Functions
+// Sub Object Functions
 select_sub_object_instance = function(sub_object_instance)
 {
 	// Set given Sub Object Instance as the Celestial Simulator's Selected Sub Object Instance
@@ -613,8 +625,10 @@ select_sub_object_instance = function(sub_object_instance)
 		}
 	}
 }
+#endregion
 
-// Solar System Methods
+#region Solar System Functions
+// Solar System Functions
 clear_celestial_sim = function()
 {
 	// Iterate through Solar Systems
@@ -1168,8 +1182,565 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 	// Index Background Stars Vertex Buffer within Celestial Simulator's Solar Systems Array
 	CelestialSimulator.solar_systems_background_stars_vertex_buffer[temp_solar_system_index] = temp_background_stars_vertex_buffer;
 }
+#endregion
 
-// Rendering Methods
+#region Choreography Functions
+// Choreography Functions
+calculate_celestial_battle_choreography_stack = function()
+{
+	// Iterate through Battle's Choreography Actions
+	var temp_battle_choreography_actions_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions);
+	var temp_battle_choreography_actions_index = 0;
+	
+	repeat (temp_battle_choreography_actions_count)
+	{
+		// Find Battle Choreography Action Struct
+		var temp_action_struct = CelestialSimulator.sub_object_selected_instance.battle_choreography_actions[temp_battle_choreography_actions_index];
+		
+		//
+		switch (temp_action_struct.choreography_object_type)
+		{
+			case CelestialBattleChoreographyObjectType.LinearProjectile:
+				//
+				temp_action_struct.linear_projectile_timer -= frame_delta;
+				
+				//
+				if (temp_action_struct.linear_projectile_timer <= 0)
+				{
+					//
+					array_delete(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions, temp_battle_choreography_actions_index, 1);
+					
+					//
+					delete temp_action_struct;
+					
+					//
+					continue;
+				}
+				
+				//
+				temp_action_struct.linear_projectile_start_x = lerp(temp_action_struct.linear_projectile_start_x, temp_action_struct.linear_projectile_end_x, temp_action_struct.linear_projectile_decay * frame_delta);
+				temp_action_struct.linear_projectile_start_y = lerp(temp_action_struct.linear_projectile_start_y, temp_action_struct.linear_projectile_end_y, temp_action_struct.linear_projectile_decay * frame_delta);
+				
+				// Calculate and Update Linear Projectile's Vertical Depth
+				var temp_linear_projectile_depth_calculation_y = temp_action_struct.linear_projectile_vertical_depth_y + temp_action_struct.linear_projectile_vertical_depth_offset;
+				temp_action_struct.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_linear_projectile_depth_calculation_y);
+				
+				// Add Battle Choreography Linear Projectile to Battle Choreography Stack
+				array_push(CelestialSimulator.battle_choreography_stack, temp_action_struct);
+				break;
+			case CelestialBattleChoreographyObjectType.ArcProjectile:
+				break;
+		}
+		
+		// Increment Battle Choreography Actions Index
+		temp_battle_choreography_actions_index++;
+	}
+	
+	// Iterate through Battle's Choreography Actors and Populate Battle Choreography Stack
+	var temp_battle_choreography_actors_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_choreography_actors);
+	var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
+	
+	repeat (temp_battle_choreography_actors_count)
+	{
+		// Find Battle Choreography Actor Struct
+		var temp_actor_struct = CelestialSimulator.sub_object_selected_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
+		
+		// Calculate Battle Choreography Actor Behaviour
+		if (temp_actor_struct.actor_entry_delay_duration > 0)
+		{
+			// Actor is Performing their Battle Entry Delay - Skip Battle Actor's Rendering Behaviour
+			temp_actor_struct.actor_entry_delay_duration -= frame_delta;
+			
+			// Decrement Battle Choreography Actors Index
+			temp_battle_choreography_actors_index--;
+			continue;
+		}
+		
+		// Establish Battle Actor's Render Variables
+		temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_idle_sprite_index;
+		temp_actor_struct.draw_offset_x = 0;
+		temp_actor_struct.draw_offset_y = 0;
+		temp_actor_struct.draw_xscale = temp_actor_struct.facing_direction;
+		temp_actor_struct.draw_alpha = 1;
+		
+		//
+		temp_actor_struct.actor_weapon_angle_recoil = lerp(temp_actor_struct.actor_weapon_angle_recoil, 0, 0.1 * frame_delta);
+		temp_actor_struct.actor_weapon_horizontal_recoil = lerp(temp_actor_struct.actor_weapon_horizontal_recoil, 0, 0.1 * frame_delta);
+		temp_actor_struct.actor_weapon_vertical_recoil = lerp(temp_actor_struct.actor_weapon_vertical_recoil, 0, 0.1 * frame_delta);
+		
+		// Establish Battle Actor's Weapon Variables
+		var temp_actor_weapon_attacking_phase = false;
+		var temp_actor_weapon_target_angle = temp_actor_struct.draw_xscale > 0 ? 0 : 180;
+		
+		// Check if Battle Actor has an Animation Condition
+		if (temp_actor_struct.actor_entry_animation)
+		{
+			// Actor is Performing their Battle Entry Animation - Increment the Actor's Entry Animation Values
+			temp_actor_struct.actor_entry_animation_value += 0.037 * frame_delta;
+			temp_actor_struct.actor_entry_animation_value = clamp(temp_actor_struct.actor_entry_animation_value, 0, 1);
+			
+			// Check Toggle if Battle Actor has finished their Battle Entry Animation
+			temp_actor_struct.actor_entry_animation = temp_actor_struct.actor_entry_animation_value != 1;
+			
+			// Calculate Battle Entry Animation Value & Horizontal Offset
+			var temp_entry_animation_value = temp_actor_struct.actor_entry_animation_value * temp_actor_struct.actor_entry_animation_value;
+			var temp_entry_horizontal_offset = -18 * temp_actor_struct.facing_direction * (1 - power(temp_actor_struct.actor_entry_animation_value, 1.6));
+			
+			// Update Battle Actor's Render Variables
+			temp_actor_struct.draw_offset_x = temp_entry_horizontal_offset;
+			temp_actor_struct.draw_alpha = temp_entry_animation_value;
+			
+			//
+			if (temp_actor_struct.actor_move_sprite_index != noone)
+			{
+				temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_move_sprite_index;
+			}
+			
+			// Update Battle Actor's Weapon Variables
+			temp_actor_weapon_target_angle = 90 + (temp_actor_struct.draw_xscale * -135);
+		}
+		else if (temp_actor_struct.actor_exit_animation)
+		{
+			// Check if Actor Exit Animation Delay is Active
+			if (temp_actor_struct.actor_exit_delay_duration > 0)
+			{
+				// Decrement Actor Exit Animation Delay Duration
+				temp_actor_struct.actor_exit_delay_duration -= frame_delta;
+			}
+			else
+			{
+				// Actor is Performing their Battle Exit Animation - Increment the Actor's Exit Animation Values
+				temp_actor_struct.actor_exit_animation_value -= 0.037 * frame_delta;
+				temp_actor_struct.actor_exit_animation_value = clamp(temp_actor_struct.actor_exit_animation_value, 0, 1);
+				
+				//
+				if (temp_actor_struct.actor_move_sprite_index != noone)
+				{
+					temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_move_sprite_index;
+				}
+			}
+			
+			// Calculate Battle Exit Animation Value & Horizontal Offset
+			var temp_exit_animation_value = temp_actor_struct.actor_exit_animation_value * temp_actor_struct.actor_exit_animation_value;
+			var temp_exit_horizontal_offset = -18 * temp_actor_struct.facing_direction * (1 - power(temp_actor_struct.actor_exit_animation_value, 0.5));
+			
+			// Update Battle Actor's Render Variables
+			temp_actor_struct.draw_offset_x = temp_exit_horizontal_offset;
+			temp_actor_struct.draw_xscale = -temp_actor_struct.facing_direction;
+			temp_actor_struct.draw_alpha = temp_exit_animation_value;
+			
+			// Update Battle Actor's Weapon Variables
+			temp_actor_weapon_target_angle = 90 + (temp_actor_struct.draw_xscale * -135);
+		}
+		else if (temp_actor_struct.actor_action_type != -1)
+		{
+			//
+			var temp_actor_target_subunit_exists = false;
+			
+			var temp_target_actor_index = -1;
+			var temp_target_actor_struct = noone;
+			
+			//
+			if (instance_exists(temp_actor_struct.target_subunit))
+			{
+				//
+				temp_target_actor_index = ds_map_find_value(sub_object_selected_instance.battle_choreography_actors_map, temp_actor_struct.target_subunit);
+				temp_target_actor_struct = array_get(sub_object_selected_instance.battle_choreography_actors, temp_target_actor_index);
+				
+				//
+				if (!is_undefined(temp_target_actor_struct))
+				{
+					//
+					temp_actor_target_subunit_exists = true;
+					
+					// Calculate the Target Sub-Unit Sprite's Vertical Offset
+					var temp_actor_target_sprite_vertical_offset = -sprite_get_yoffset(temp_target_actor_struct.draw_sprite_index) + sprite_get_bbox_top(temp_target_actor_struct.draw_sprite_index);
+					
+					//
+					temp_actor_struct.actor_weapon_target_x = temp_target_actor_struct.draw_x + temp_target_actor_struct.draw_offset_x + temp_target_actor_struct.draw_random_offset_x;
+					temp_actor_struct.actor_weapon_target_y = temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y + temp_actor_target_sprite_vertical_offset * 0.5;
+				}
+			}
+			
+			//
+			if (temp_actor_target_subunit_exists)
+			{
+				//
+				var temp_actor_weapon_pivot_x = lerp(temp_actor_struct.actor_weapon_pivot_x, temp_actor_struct.actor_weapon_aim_pivot_x, temp_actor_struct.actor_weapon_aim) * temp_actor_struct.draw_xscale;
+				var temp_actor_weapon_pivot_y = lerp(temp_actor_struct.actor_weapon_pivot_y, temp_actor_struct.actor_weapon_aim_pivot_y, temp_actor_struct.actor_weapon_aim);
+				
+				//
+				var temp_actor_weapon_x = temp_actor_struct.draw_x + temp_actor_struct.draw_offset_x + temp_actor_struct.draw_random_offset_x + temp_actor_weapon_pivot_x;
+				var temp_actor_weapon_y = temp_actor_struct.draw_y + temp_actor_struct.draw_offset_y + temp_actor_struct.draw_random_offset_y + temp_actor_weapon_pivot_y;
+				
+				//
+				temp_actor_weapon_target_angle = point_direction(temp_actor_weapon_x, temp_actor_weapon_y, temp_actor_struct.actor_weapon_target_x, temp_actor_struct.actor_weapon_target_y);
+				
+				//
+				switch (temp_actor_struct.actor_action_type)
+				{
+					case CelestialUnitActionType.DefaultFirearm:
+					case CelestialUnitActionType.DefaultTankCannon:
+						//
+						if (!temp_actor_struct.actor_weapon_enabled or temp_actor_struct.actor_weapon_aim > 0.9 and angle_difference(temp_actor_weapon_target_angle, temp_actor_struct.actor_weapon_angle) <= 5)
+						{
+							temp_actor_struct.actor_action_animation_delay += 0.1 * frame_delta;
+						}
+						
+						//
+						if (temp_actor_struct.actor_action_animation_delay >= 1)
+						{
+							//
+							temp_actor_struct.actor_action_animation_delay = 0;
+							
+							//
+							temp_actor_struct.draw_image_index_value = 0;
+							
+							//
+							var temp_actor_action_success = array_get(temp_actor_struct.actor_action_animation_success, 0);
+							
+							//
+							var temp_actor_weapon_attack_offset_x = 0;
+							var temp_actor_weapon_attack_offset_y = 0;
+							
+							//
+							if (temp_actor_struct.actor_weapon_enabled)
+							{
+								//
+								rot_prefetch(temp_actor_struct.actor_weapon_angle);
+								
+								//
+								temp_actor_struct.actor_weapon_angle_recoil = random_range(3, 13) * temp_actor_struct.facing_direction;
+								temp_actor_struct.actor_weapon_horizontal_recoil = random_range(-6, -4);
+								temp_actor_struct.actor_weapon_vertical_recoil = random_range(-3, -1) * temp_actor_struct.facing_direction;
+								
+								//
+								temp_actor_weapon_attack_offset_x = rot_point_x(8, -2 * temp_actor_struct.facing_direction);
+								temp_actor_weapon_attack_offset_y = rot_point_y(8, -2 * temp_actor_struct.facing_direction);
+							}
+							else
+							{
+								//
+								rot_prefetch(temp_actor_weapon_target_angle);
+							}
+							
+							//
+							temp_actor_struct.actor_weapon_target_x += random_range(-3, 3);
+							temp_actor_struct.actor_weapon_target_y += random_range(-3, 3);
+							
+							//
+							temp_actor_struct.actor_weapon_attack_sprite_index = sOverworld_Unit_William_Firearm_MuzzleFlash;
+							temp_actor_struct.actor_weapon_attack_image_index = irandom(sprite_get_number(temp_actor_struct.actor_weapon_attack_sprite_index) - 1);
+							temp_actor_struct.actor_weapon_attack_image_angle = temp_actor_struct.actor_weapon_enabled ? temp_actor_struct.actor_weapon_angle : 90 + (temp_actor_struct.facing_direction * -90);
+							temp_actor_struct.actor_weapon_attack_x = temp_actor_weapon_x + temp_actor_weapon_attack_offset_x;
+							temp_actor_struct.actor_weapon_attack_y = temp_actor_weapon_y + temp_actor_weapon_attack_offset_y;
+							temp_actor_struct.actor_weapon_attack_timer = 4;
+							
+							//
+							var temp_linear_projectile_hitmarker_sprite = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].linear_projectile_hitmarker_hit_sprite;
+							
+							//
+							if (!temp_actor_action_success)
+							{
+								//
+								var temp_linear_projectile_overshoot = random_range(-32, 64);
+								
+								//
+								temp_linear_projectile_hitmarker_sprite = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].linear_projectile_hitmarker_miss_sprite;
+								
+								//
+								temp_actor_struct.actor_weapon_target_x += rot_point_x(temp_linear_projectile_overshoot, 0);
+								temp_actor_struct.actor_weapon_target_y += rot_point_y(temp_linear_projectile_overshoot, 0);
+								
+								//
+								if (temp_actor_struct.actor_weapon_target_y < CelestialSimulator.battle_platform_top_vertical_position or  temp_actor_struct.actor_weapon_target_y > CelestialSimulator.battle_platform_bottom_vertical_position)
+								{
+									//
+									var temp_linear_projectile_screen_length = max(GameManager.game_width, GameManager.game_height);
+									
+									//
+									temp_actor_struct.actor_weapon_target_x += rot_point_x(temp_linear_projectile_screen_length, 0);
+									temp_actor_struct.actor_weapon_target_y += rot_point_y(temp_linear_projectile_screen_length, 0);
+								}
+							}
+							
+							//
+							var temp_actor_weapon_linear_projectile_struct = 
+							{
+								// Choreography Stack Object Type Variable
+								choreography_object_type: CelestialBattleChoreographyObjectType.LinearProjectile,
+								
+								// Choreography Stack Object Depth Sorting Variable
+								vertical_depth: inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, 0),
+								
+								// Choreography Stack Rendering Variables
+								draw_sprite_index: temp_linear_projectile_hitmarker_sprite,
+								draw_image_index: irandom(sprite_get_number(temp_linear_projectile_hitmarker_sprite) - 1),
+								
+								draw_x: temp_actor_struct.actor_weapon_target_x,
+								draw_y: temp_actor_struct.actor_weapon_target_y,
+								
+								draw_xscale: random(1.0) > 0.5 ? 1 : -1,
+								draw_yscale: temp_actor_action_success ? (random(1.0) > 0.5 ? 1 : -1) : 1,
+								
+								draw_color: temp_actor_action_success ? c_white : c_dkgrey,
+								draw_alpha: 1,
+								
+								//
+								linear_projectile_start_x: temp_actor_struct.actor_weapon_attack_x,
+								linear_projectile_start_y: temp_actor_struct.actor_weapon_attack_y,
+								
+								linear_projectile_end_x: temp_actor_struct.actor_weapon_target_x,
+								linear_projectile_end_y: temp_actor_struct.actor_weapon_target_y,
+								
+								linear_projectile_width: global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].linear_projectile_width,
+								linear_projectile_decay: global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].linear_projectile_decay,
+								
+								//
+								linear_projectile_vertical_depth_y: temp_actor_action_success ? temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y : temp_actor_struct.actor_weapon_target_y,
+								linear_projectile_vertical_depth_offset: temp_actor_action_success ? 2 : random_range(-2, 2),
+								
+								//
+								linear_projectile_timer: 5,
+							};
+							
+							//
+							array_push(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions, temp_actor_weapon_linear_projectile_struct);
+							array_push(CelestialSimulator.battle_choreography_stack, temp_actor_weapon_linear_projectile_struct);
+							
+							//
+							temp_actor_struct.actor_action_animation_count--;
+							array_delete(temp_actor_struct.actor_action_animation_success, 0, 1);
+							
+							//
+							if (temp_actor_struct.actor_action_animation_count <= 0)
+							{
+								//
+								temp_actor_struct.actor_action_type = -1;
+							}
+						}
+						break;
+					default:
+						break;
+				}
+				
+				//
+				temp_actor_weapon_attacking_phase = true;
+			}
+		}
+		
+		//
+		if (temp_actor_struct.actor_weapon_attack_timer > 0)
+		{
+			//
+			temp_actor_struct.actor_weapon_attack_timer -= frame_delta;
+			
+			//
+			if (temp_actor_struct.actor_attack_sprite_index != noone)
+			{
+				temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_attack_sprite_index;
+			}
+		}
+		
+		//
+		temp_actor_struct.draw_image_index_value += sprite_get_speed_real(temp_actor_struct.draw_sprite_index) * frame_delta;
+		temp_actor_struct.draw_image_index_value = temp_actor_struct.draw_image_index_value mod sprite_get_number(temp_actor_struct.draw_sprite_index);
+		temp_actor_struct.draw_image_index = floor(temp_actor_struct.draw_image_index_value);
+		
+		//
+		if (temp_actor_struct.actor_weapon_enabled)
+		{
+			//
+			temp_actor_struct.actor_weapon_angle = temp_actor_struct.actor_weapon_angle + (angle_difference(temp_actor_weapon_target_angle, temp_actor_struct.actor_weapon_angle) * 0.25 * frame_delta);
+			
+			//
+			rot_prefetch(temp_actor_struct.actor_weapon_angle);
+			
+			temp_actor_struct.actor_weapon_offset_x = rot_point_x(temp_actor_struct.actor_weapon_horizontal_recoil, temp_actor_struct.actor_weapon_vertical_recoil);
+			temp_actor_struct.actor_weapon_offset_y = rot_point_y(temp_actor_struct.actor_weapon_horizontal_recoil, temp_actor_struct.actor_weapon_vertical_recoil);
+			
+			//
+			if (temp_actor_weapon_attacking_phase)
+			{
+				temp_actor_struct.actor_weapon_aim = lerp(temp_actor_struct.actor_weapon_aim, 1, 0.1 * frame_delta);
+				temp_actor_struct.actor_weapon_vertical_bobbing_y_offset = lerp(temp_actor_struct.actor_weapon_vertical_bobbing_y_offset, 0, 0.1 * frame_delta);
+			}
+			else
+			{
+				temp_actor_struct.actor_weapon_aim = lerp(temp_actor_struct.actor_weapon_aim, 0, 0.15 * frame_delta);
+				temp_actor_struct.actor_weapon_vertical_bobbing_y_offset = (cos((temp_actor_struct.draw_image_index_value / sprite_get_number(temp_actor_struct.draw_sprite_index)) * 2 * pi) + 1) * 0.5 * temp_actor_struct.actor_weapon_vertical_bobbing_height;
+			}
+		}
+		
+		// Calculate and Update Actor's Vertical Depth
+		var temp_actor_depth_calculation_y = temp_actor_struct.draw_y + temp_actor_struct.draw_offset_y + temp_actor_struct.draw_random_offset_y;
+		temp_actor_struct.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_actor_depth_calculation_y);
+		
+		// Add Battle Choreography Actor Struct to Battle Choreography Stack
+		array_push(CelestialSimulator.battle_choreography_stack, temp_actor_struct);
+		
+		// Decrement Battle Choreography Actors Index
+		temp_battle_choreography_actors_index--;
+	}
+	
+	//
+	var temp_prop_struct = 
+	{
+		// Choreography Stack Object Type Variable
+		choreography_object_type: CelestialBattleChoreographyObjectType.Prop,
+		
+		// Choreography Stack Object Depth Sorting Variable
+		vertical_depth: inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, mouse_y),
+		
+		// Choreography Stack Rendering Variables
+		draw_sprite_index: sOverworld_Unit_William_Idle,
+		draw_image_index: 0,
+		
+		draw_x: mouse_x,
+		draw_y: mouse_y,
+		
+		draw_xscale: 1,
+		
+		draw_color: c_white,
+		draw_alpha: 1,
+		
+		facing_direction: 1,
+		
+		//
+		draw_image_index_value: 0,
+		
+		draw_offset_x: 0,
+		draw_offset_y: 0,
+		
+		draw_random_offset_x: 0,
+		draw_random_offset_y: 0,
+	};
+	
+	array_push(CelestialSimulator.battle_choreography_stack, temp_prop_struct);
+	
+	// Depth Sort the Celestial Simulator's Battle Choreography Stack by Vertical Depth
+	array_sort(CelestialSimulator.battle_choreography_stack, CelestialSimulator.battle_choreography_stack_depth_sort);
+}
+
+render_celestial_battle_choreography_stack = function()
+{
+	// Iterate through Battle's Choreography Stack
+	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);
+	var temp_battle_choreography_stack_index = 0;
+	
+	repeat (temp_battle_choreography_stack_count)
+	{
+		// Establish Choreography Stack Object Struct
+		var temp_stack_obj = CelestialSimulator.battle_choreography_stack[temp_battle_choreography_stack_index];
+		
+		// Perform Battle Choreography Stack Render Behaviour based on Choreography Instance's Object Type
+		switch (temp_stack_obj.choreography_object_type)
+		{
+			case CelestialBattleChoreographyObjectType.Actor:
+				//
+				var temp_actor_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
+				var temp_actor_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
+				
+				// Calculate Sprite Vertical Offset
+				var temp_actor_sprite_vertical_offset = -sprite_get_yoffset(temp_stack_obj.draw_sprite_index) + sprite_get_bbox_top(temp_stack_obj.draw_sprite_index);
+				
+				// Draw Battle Choreography Actor Sprite
+				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_actor_x, temp_actor_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
+				
+				// Check to Draw Weapon
+				if (temp_stack_obj.actor_weapon_enabled)
+				{
+					//
+					var temp_actor_weapon_pivot_x = lerp(temp_stack_obj.actor_weapon_pivot_x, temp_stack_obj.actor_weapon_aim_pivot_x, temp_stack_obj.actor_weapon_aim) * temp_stack_obj.draw_xscale;
+					var temp_actor_weapon_pivot_y = lerp(temp_stack_obj.actor_weapon_pivot_y, temp_stack_obj.actor_weapon_aim_pivot_y, temp_stack_obj.actor_weapon_aim);
+					
+					//
+					var temp_actor_weapon_x = temp_actor_x + temp_actor_weapon_pivot_x + temp_stack_obj.actor_weapon_offset_x;
+					var temp_actor_weapon_y = temp_actor_y + temp_actor_weapon_pivot_y + temp_stack_obj.actor_weapon_offset_y + temp_stack_obj.actor_weapon_vertical_bobbing_y_offset;
+					
+					//
+					var temp_actor_weapon_angle = temp_stack_obj.actor_weapon_angle + temp_stack_obj.actor_weapon_angle_recoil;
+					
+					//
+					draw_sprite_ext(temp_stack_obj.actor_weapon_sprite, 0, temp_actor_weapon_x, temp_actor_weapon_y, 1, temp_stack_obj.draw_xscale, temp_actor_weapon_angle, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
+				}
+				
+				//
+				if (temp_stack_obj.actor_weapon_attack_timer > 0)
+				{
+					draw_sprite_ext(temp_stack_obj.actor_weapon_attack_sprite_index, temp_stack_obj.actor_weapon_attack_image_index, temp_stack_obj.actor_weapon_attack_x, temp_stack_obj.actor_weapon_attack_y, 1, 1, temp_stack_obj.actor_weapon_attack_image_angle, c_white, 1);
+				}
+				
+				// Unit Emotion Sprite Animation Rendering Behaviour
+				if (instance_exists(temp_stack_obj.actor_subunit))
+				{
+					if (instance_exists(temp_stack_obj.actor_subunit.unit_instance) and temp_stack_obj.actor_subunit.unit_instance.emotion_sprite_index != -1)
+					{
+						//
+						var temp_actor_unit_emotion_sprite_index = temp_stack_obj.actor_subunit.unit_instance.emotion_sprite_index;
+						var temp_actor_unit_emotion_image_index = temp_stack_obj.actor_subunit.unit_instance.emotion_image_index;
+						
+						// Unit Emotion Animation Draw Sprite Behaviour
+						draw_sprite_ext(temp_actor_unit_emotion_sprite_index, temp_actor_unit_emotion_image_index, temp_actor_x, temp_actor_y + temp_actor_sprite_vertical_offset, 1, 1, 0, c_white, temp_stack_obj.draw_alpha);
+					}
+					else if (temp_stack_obj.action_delay_timer > 0 and temp_stack_obj.action_duration_timer <= 0)
+					{
+						//
+						var temp_action_timer_rect_w = 22;
+						var temp_action_timer_rect_h = 1;
+						
+						var temp_action_timer_rect_h_offset = -4;
+						
+						//
+						var temp_action_timer_rect_x1 = temp_actor_x - (temp_action_timer_rect_w * 0.5);
+						var temp_action_timer_rect_y1 = temp_actor_y + temp_actor_sprite_vertical_offset - temp_action_timer_rect_h + temp_action_timer_rect_h_offset;
+						var temp_action_timer_rect_x2 = temp_actor_x + (temp_action_timer_rect_w * 0.5);
+						var temp_action_timer_rect_y2 = temp_actor_y + temp_actor_sprite_vertical_offset + temp_action_timer_rect_h_offset;
+						
+						var temp_action_timer_rect_xvalue = temp_actor_x - (temp_action_timer_rect_w * 0.5) + (temp_action_timer_rect_w * temp_stack_obj.action_delay_timer);
+						
+						//
+						draw_set_color(c_white);
+						draw_rectangle(temp_action_timer_rect_x1 - 2, temp_action_timer_rect_y1 - 2, temp_action_timer_rect_x2 + 2, temp_action_timer_rect_y2 + 2, false);
+						draw_set_color(c_black);
+						draw_rectangle(temp_action_timer_rect_x1 - 1, temp_action_timer_rect_y1 - 1, temp_action_timer_rect_x2 + 1, temp_action_timer_rect_y2 + 1, false);
+						
+						//
+						draw_set_color(c_white);
+						draw_rectangle(temp_action_timer_rect_x1, temp_action_timer_rect_y1, temp_action_timer_rect_xvalue, temp_action_timer_rect_y2, false);
+					}
+				}
+				break;
+			case CelestialBattleChoreographyObjectType.Prop:
+				//
+				var temp_prop_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
+				var temp_prop_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
+				
+				// Draw Battle Choreography Actor Sprite
+				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_prop_x, temp_prop_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
+				
+				//
+				break;
+			case CelestialBattleChoreographyObjectType.LinearProjectile:
+				//
+				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width + 2, c_black, c_black);
+				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, temp_stack_obj.draw_color, temp_stack_obj.draw_color);
+				
+				//
+				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_stack_obj.draw_x, temp_stack_obj.draw_y, temp_stack_obj.draw_xscale, temp_stack_obj.draw_yscale, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
+				break;
+			case CelestialBattleChoreographyObjectType.SmokeParticle:
+				break;
+		}
+		
+		// Increment Battle Choreography Stack Index
+		temp_battle_choreography_stack_index++;
+	}
+}
+#endregion
+
+#region Rendering Functions
+// Rendering Functions
 render_celestial_object_sub_object_layer = function(celestial_object, front_layer = true)
 {
 	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, Emissive, & Atmospheric Depth Surfaces as Surface Targets
@@ -1273,514 +1844,6 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 	
 	// Reset Surface Target
 	surface_reset_target();
-}
-
-calculate_celestial_battle_choreography_stack = function()
-{
-	// Iterate through Battle's Choreography Actions
-	var temp_battle_choreography_actions_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions);
-	var temp_battle_choreography_actions_index = 0;
-	
-	repeat (temp_battle_choreography_actions_count)
-	{
-		// Find Battle Choreography Action Struct
-		var temp_action_struct = CelestialSimulator.sub_object_selected_instance.battle_choreography_actions[temp_battle_choreography_actions_index];
-		
-		//
-		switch (temp_action_struct.choreography_object_type)
-		{
-			case CelestialBattleChoreographyObjectType.LinearProjectile:
-				//
-				temp_action_struct.linear_projectile_timer -= frame_delta;
-				
-				//
-				if (temp_action_struct.linear_projectile_timer <= 0)
-				{
-					//
-					array_delete(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions, temp_battle_choreography_actions_index, 1);
-					
-					//
-					delete temp_action_struct;
-					
-					//
-					continue;
-				}
-				
-				//
-				temp_action_struct.linear_projectile_start_x = lerp(temp_action_struct.linear_projectile_start_x, temp_action_struct.linear_projectile_end_x, 0.2 * frame_delta);
-				temp_action_struct.linear_projectile_start_y = lerp(temp_action_struct.linear_projectile_start_y, temp_action_struct.linear_projectile_end_y, 0.2 * frame_delta);
-				
-				// Calculate and Update Linear Projectile's Vertical Depth
-				var temp_linear_projectile_depth_calculation_y = temp_action_struct.linear_projectile_vertical_depth_y + temp_action_struct.linear_projectile_vertical_depth_offset;
-				temp_action_struct.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_linear_projectile_depth_calculation_y);
-				
-				// Add Battle Choreography Linear Projectile to Battle Choreography Stack
-				array_push(CelestialSimulator.battle_choreography_stack, temp_action_struct);
-				break;
-			case CelestialBattleChoreographyObjectType.ArcProjectile:
-				break;
-		}
-		
-		// Increment Battle Choreography Actions Index
-		temp_battle_choreography_actions_index++;
-	}
-	
-	// Iterate through Battle's Choreography Actors and Populate Battle Choreography Stack
-	var temp_battle_choreography_actors_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_choreography_actors);
-	var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
-	
-	repeat (temp_battle_choreography_actors_count)
-	{
-		// Find Battle Choreography Actor Struct
-		var temp_actor_struct = CelestialSimulator.sub_object_selected_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
-		
-		// Calculate Battle Choreography Actor Behaviour
-		if (temp_actor_struct.actor_entry_delay_duration > 0)
-		{
-			// Actor is Performing their Battle Entry Delay - Skip Battle Actor's Rendering Behaviour
-			temp_actor_struct.actor_entry_delay_duration -= frame_delta;
-			
-			// Decrement Battle Choreography Actors Index
-			temp_battle_choreography_actors_index--;
-			continue;
-		}
-		
-		// Establish Battle Actor's Render Variables
-		temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_idle_sprite_index;
-		temp_actor_struct.draw_offset_x = 0;
-		temp_actor_struct.draw_offset_y = 0;
-		temp_actor_struct.draw_xscale = temp_actor_struct.facing_direction;
-		temp_actor_struct.draw_alpha = 1;
-		
-		//
-		temp_actor_struct.actor_weapon_angle_recoil = lerp(temp_actor_struct.actor_weapon_angle_recoil, 0, 0.1 * frame_delta);
-		temp_actor_struct.actor_weapon_horizontal_recoil = lerp(temp_actor_struct.actor_weapon_horizontal_recoil, 0, 0.1 * frame_delta);
-		temp_actor_struct.actor_weapon_vertical_recoil = lerp(temp_actor_struct.actor_weapon_vertical_recoil, 0, 0.1 * frame_delta);
-		
-		// Establish Battle Actor's Weapon Variables
-		var temp_actor_weapon_attacking_phase = false;
-		var temp_actor_weapon_target_angle = temp_actor_struct.draw_xscale > 0 ? 0 : 180;
-		
-		// Check if Battle Actor has an Animation Condition
-		if (temp_actor_struct.actor_entry_animation)
-		{
-			// Actor is Performing their Battle Entry Animation - Increment the Actor's Entry Animation Values
-			temp_actor_struct.actor_entry_animation_value += 0.037 * frame_delta;
-			temp_actor_struct.actor_entry_animation_value = clamp(temp_actor_struct.actor_entry_animation_value, 0, 1);
-			
-			// Check Toggle if Battle Actor has finished their Battle Entry Animation
-			temp_actor_struct.actor_entry_animation = temp_actor_struct.actor_entry_animation_value != 1;
-			
-			// Calculate Battle Entry Animation Value & Horizontal Offset
-			var temp_entry_animation_value = temp_actor_struct.actor_entry_animation_value * temp_actor_struct.actor_entry_animation_value;
-			var temp_entry_horizontal_offset = -18 * temp_actor_struct.facing_direction * (1 - power(temp_actor_struct.actor_entry_animation_value, 1.6));
-			
-			// Update Battle Actor's Render Variables
-			temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_move_sprite_index;
-			temp_actor_struct.draw_offset_x = temp_entry_horizontal_offset;
-			temp_actor_struct.draw_alpha = temp_entry_animation_value;
-			
-			// Update Battle Actor's Weapon Variables
-			temp_actor_weapon_target_angle = 90 + (temp_actor_struct.draw_xscale * -135);
-		}
-		else if (temp_actor_struct.actor_exit_animation)
-		{
-			// Check if Actor Exit Animation Delay is Active
-			if (temp_actor_struct.actor_exit_delay_duration > 0)
-			{
-				// Decrement Actor Exit Animation Delay Duration
-				temp_actor_struct.actor_exit_delay_duration -= frame_delta;
-			}
-			else
-			{
-				// Actor is Performing their Battle Exit Animation - Increment the Actor's Exit Animation Values
-				temp_actor_struct.actor_exit_animation_value -= 0.037 * frame_delta;
-				temp_actor_struct.actor_exit_animation_value = clamp(temp_actor_struct.actor_exit_animation_value, 0, 1);
-				
-				//
-				temp_actor_struct.draw_sprite_index = temp_actor_struct.actor_move_sprite_index;
-			}
-			
-			// Calculate Battle Exit Animation Value & Horizontal Offset
-			var temp_exit_animation_value = temp_actor_struct.actor_exit_animation_value * temp_actor_struct.actor_exit_animation_value;
-			var temp_exit_horizontal_offset = -18 * temp_actor_struct.facing_direction * (1 - power(temp_actor_struct.actor_exit_animation_value, 0.5));
-			
-			// Update Battle Actor's Render Variables
-			temp_actor_struct.draw_offset_x = temp_exit_horizontal_offset;
-			temp_actor_struct.draw_xscale = -temp_actor_struct.facing_direction;
-			temp_actor_struct.draw_alpha = temp_exit_animation_value;
-			
-			// Update Battle Actor's Weapon Variables
-			temp_actor_weapon_target_angle = 90 + (temp_actor_struct.draw_xscale * -135);
-		}
-		else if (temp_actor_struct.actor_action_animation_type != -1)
-		{
-			//
-			var temp_actor_target_subunit_exists = false;
-			
-			var temp_target_actor_index = -1;
-			var temp_target_actor_struct = noone;
-			
-			//
-			if (instance_exists(temp_actor_struct.target_subunit))
-			{
-				//
-				temp_target_actor_index = ds_map_find_value(sub_object_selected_instance.battle_choreography_actors_map, temp_actor_struct.target_subunit);
-				temp_target_actor_struct = array_get(sub_object_selected_instance.battle_choreography_actors, temp_target_actor_index);
-				
-				//
-				if (!is_undefined(temp_target_actor_struct))
-				{
-					//
-					temp_actor_target_subunit_exists = true;
-					
-					// Calculate the Target Sub-Unit Sprite's Vertical Offset
-					var temp_actor_target_sprite_vertical_offset = -sprite_get_yoffset(temp_target_actor_struct.draw_sprite_index) + sprite_get_bbox_top(temp_target_actor_struct.draw_sprite_index);
-					
-					//
-					temp_actor_struct.actor_weapon_target_x = temp_target_actor_struct.draw_x + temp_target_actor_struct.draw_offset_x + temp_target_actor_struct.draw_random_offset_x;
-					temp_actor_struct.actor_weapon_target_y = temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y + temp_actor_target_sprite_vertical_offset * 0.5;
-				}
-			}
-			
-			//
-			if (temp_actor_struct.actor_weapon_enabled and temp_actor_target_subunit_exists)
-			{
-				//
-				var temp_actor_weapon_pivot_x = lerp(temp_actor_struct.actor_weapon_pivot_x, temp_actor_struct.actor_weapon_aim_pivot_x, temp_actor_struct.actor_weapon_aim) * temp_actor_struct.draw_xscale;
-				var temp_actor_weapon_pivot_y = lerp(temp_actor_struct.actor_weapon_pivot_y, temp_actor_struct.actor_weapon_aim_pivot_y, temp_actor_struct.actor_weapon_aim);
-				
-				//
-				var temp_actor_weapon_x = temp_actor_struct.draw_x + temp_actor_struct.draw_offset_x + temp_actor_struct.draw_random_offset_x + temp_actor_weapon_pivot_x;
-				var temp_actor_weapon_y = temp_actor_struct.draw_y + temp_actor_struct.draw_offset_y + temp_actor_struct.draw_random_offset_y + temp_actor_weapon_pivot_y;
-				
-				//
-				temp_actor_weapon_target_angle = point_direction(temp_actor_weapon_x, temp_actor_weapon_y, temp_actor_struct.actor_weapon_target_x, temp_actor_struct.actor_weapon_target_y);
-				
-				//
-				switch (temp_actor_struct.actor_action_animation_type)
-				{
-					default:
-					case CelestialUnitActionAnimationType.DefaultFirearm:
-						//
-						if (temp_actor_struct.actor_weapon_aim > 0.9 and angle_difference(temp_actor_weapon_target_angle, temp_actor_struct.actor_weapon_angle) <= 5)
-						{
-							temp_actor_struct.actor_action_animation_delay += 0.1 * frame_delta;
-						}
-						
-						//
-						if (temp_actor_struct.actor_action_animation_delay >= 1)
-						{
-							//
-							temp_actor_struct.actor_action_animation_delay = 0;
-							
-							//
-							var temp_actor_action_success = array_get(temp_actor_struct.actor_action_animation_success, 0);
-							
-							//
-							temp_actor_struct.actor_weapon_angle_recoil = random_range(3, 13) * temp_actor_struct.facing_direction;
-							temp_actor_struct.actor_weapon_horizontal_recoil = random_range(-6, -4);
-							temp_actor_struct.actor_weapon_vertical_recoil = random_range(-3, -1) * temp_actor_struct.facing_direction;
-							
-							//
-							rot_prefetch(temp_actor_struct.actor_weapon_angle);
-							
-							var temp_actor_weapon_attack_offset_x = rot_point_x(8, -2 * temp_actor_struct.facing_direction);
-							var temp_actor_weapon_attack_offset_y = rot_point_y(8, -2 * temp_actor_struct.facing_direction);
-							
-							//
-							temp_actor_struct.actor_weapon_target_x += random_range(-3, 3);
-							temp_actor_struct.actor_weapon_target_y += random_range(-3, 3);
-							
-							//
-							temp_actor_struct.actor_weapon_attack_sprite_index = sOverworld_Unit_William_Firearm_MuzzleFlash;
-							temp_actor_struct.actor_weapon_attack_image_index = irandom(sprite_get_number(temp_actor_struct.actor_weapon_attack_sprite_index) - 1);
-							temp_actor_struct.actor_weapon_attack_image_angle = temp_actor_struct.actor_weapon_angle;
-							temp_actor_struct.actor_weapon_attack_x = temp_actor_weapon_x + temp_actor_weapon_attack_offset_x;
-							temp_actor_struct.actor_weapon_attack_y = temp_actor_weapon_y + temp_actor_weapon_attack_offset_y;
-							temp_actor_struct.actor_weapon_attack_timer = 4;
-							
-							//
-							var temp_linear_projectile_hitmarker_sprite = temp_actor_action_success ? sOverworld_Hitmarker : sOverworld_HitmarkerMiss;
-							
-							//
-							if (!temp_actor_action_success)
-							{
-								//
-								var temp_linear_projectile_overshoot = random_range(-32, 64);
-								
-								//
-								temp_actor_struct.actor_weapon_target_x += rot_point_x(temp_linear_projectile_overshoot, 0);
-								temp_actor_struct.actor_weapon_target_y += rot_point_y(temp_linear_projectile_overshoot, 0);
-								
-								//
-								if (temp_actor_struct.actor_weapon_target_y < CelestialSimulator.battle_platform_top_vertical_position or  temp_actor_struct.actor_weapon_target_y > CelestialSimulator.battle_platform_bottom_vertical_position)
-								{
-									temp_actor_struct.actor_weapon_target_x += rot_point_x(640, 0);
-									temp_actor_struct.actor_weapon_target_y += rot_point_y(640, 0);
-								}
-							}
-							
-							//
-							var temp_actor_weapon_linear_projectile_struct = 
-							{
-								// Choreography Stack Object Type Variable
-								choreography_object_type: CelestialBattleChoreographyObjectType.LinearProjectile,
-								
-								// Choreography Stack Object Depth Sorting Variable
-								vertical_depth: inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, 0),
-								
-								// Choreography Stack Rendering Variables
-								draw_sprite_index: temp_linear_projectile_hitmarker_sprite,
-								draw_image_index: irandom(sprite_get_number(temp_linear_projectile_hitmarker_sprite) - 1),
-								
-								draw_x: temp_actor_struct.actor_weapon_target_x,
-								draw_y: temp_actor_struct.actor_weapon_target_y,
-								
-								draw_xscale: random(1.0) > 0.5 ? 1 : -1,
-								draw_yscale: temp_actor_action_success ? (random(1.0) > 0.5 ? 1 : -1) : 1,
-								
-								draw_color: temp_actor_action_success ? c_white : c_grey,
-								draw_alpha: 1,
-								
-								//
-								linear_projectile_start_x: temp_actor_struct.actor_weapon_attack_x,
-								linear_projectile_start_y: temp_actor_struct.actor_weapon_attack_y,
-								
-								linear_projectile_end_x: temp_actor_struct.actor_weapon_target_x,
-								linear_projectile_end_y: temp_actor_struct.actor_weapon_target_y,
-								
-								linear_projectile_width: 1,
-								
-								//
-								linear_projectile_vertical_depth_y: temp_actor_action_success ? temp_target_actor_struct.draw_y + temp_target_actor_struct.draw_offset_y + temp_target_actor_struct.draw_random_offset_y : temp_actor_struct.actor_weapon_target_y,
-								linear_projectile_vertical_depth_offset: temp_actor_action_success ? 2 : 0,
-								
-								//
-								linear_projectile_timer: 5,
-							};
-							
-							//
-							array_push(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions, temp_actor_weapon_linear_projectile_struct);
-							array_push(CelestialSimulator.battle_choreography_stack, temp_actor_weapon_linear_projectile_struct);
-							
-							//
-							temp_actor_struct.actor_action_animation_count--;
-							array_delete(temp_actor_struct.actor_action_animation_success, 0, 1);
-							
-							//
-							if (temp_actor_struct.actor_action_animation_count <= 0)
-							{
-								//
-								temp_actor_struct.actor_action_animation_type = -1;
-							}
-						}
-						break;
-				}
-				
-				//
-				temp_actor_weapon_attacking_phase = true;
-			}
-		}
-		
-		//
-		temp_actor_struct.draw_image_index_value += sprite_get_speed_real(temp_actor_struct.draw_sprite_index) * frame_delta;
-		temp_actor_struct.draw_image_index_value = temp_actor_struct.draw_image_index_value mod sprite_get_number(temp_actor_struct.draw_sprite_index);
-		temp_actor_struct.draw_image_index = floor(temp_actor_struct.draw_image_index_value);
-		
-		//
-		if (temp_actor_struct.actor_weapon_enabled)
-		{
-			//
-			temp_actor_struct.actor_weapon_angle = temp_actor_struct.actor_weapon_angle + (angle_difference(temp_actor_weapon_target_angle, temp_actor_struct.actor_weapon_angle) * 0.25 * frame_delta);
-			
-			//
-			rot_prefetch(temp_actor_struct.actor_weapon_angle);
-			
-			temp_actor_struct.actor_weapon_offset_x = rot_point_x(temp_actor_struct.actor_weapon_horizontal_recoil, temp_actor_struct.actor_weapon_vertical_recoil);
-			temp_actor_struct.actor_weapon_offset_y = rot_point_y(temp_actor_struct.actor_weapon_horizontal_recoil, temp_actor_struct.actor_weapon_vertical_recoil);
-			
-			//
-			if (temp_actor_weapon_attacking_phase)
-			{
-				temp_actor_struct.actor_weapon_aim = lerp(temp_actor_struct.actor_weapon_aim, 1, 0.1 * frame_delta);
-				temp_actor_struct.actor_weapon_vertical_bobbing_y_offset = lerp(temp_actor_struct.actor_weapon_vertical_bobbing_y_offset, 0, 0.1 * frame_delta);
-			}
-			else
-			{
-				temp_actor_struct.actor_weapon_aim = lerp(temp_actor_struct.actor_weapon_aim, 0, 0.15 * frame_delta);
-				temp_actor_struct.actor_weapon_vertical_bobbing_y_offset = (cos((temp_actor_struct.draw_image_index_value / sprite_get_number(temp_actor_struct.draw_sprite_index)) * 2 * pi) + 1) * 0.5 * temp_actor_struct.actor_weapon_vertical_bobbing_height;
-			}
-			
-			//
-			if (temp_actor_struct.actor_weapon_attack_timer > 0)
-			{
-				temp_actor_struct.actor_weapon_attack_timer -= frame_delta;
-			}
-		}
-		
-		// Calculate and Update Actor's Vertical Depth
-		var temp_actor_depth_calculation_y = temp_actor_struct.draw_y + temp_actor_struct.draw_offset_y + temp_actor_struct.draw_random_offset_y;
-		temp_actor_struct.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_actor_depth_calculation_y);
-		
-		// Add Battle Choreography Actor Struct to Battle Choreography Stack
-		array_push(CelestialSimulator.battle_choreography_stack, temp_actor_struct);
-		
-		// Decrement Battle Choreography Actors Index
-		temp_battle_choreography_actors_index--;
-	}
-	
-	//
-	var temp_prop_struct = 
-	{
-		// Choreography Stack Object Type Variable
-		choreography_object_type: CelestialBattleChoreographyObjectType.Prop,
-		
-		// Choreography Stack Object Depth Sorting Variable
-		vertical_depth: inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, mouse_y),
-		
-		// Choreography Stack Rendering Variables
-		draw_sprite_index: sOverworld_Unit_William_Idle,
-		draw_image_index: 0,
-		
-		draw_x: mouse_x,
-		draw_y: mouse_y,
-		
-		draw_xscale: 1,
-		
-		draw_color: c_white,
-		draw_alpha: 1,
-		
-		facing_direction: 1,
-		
-		//
-		draw_image_index_value: 0,
-		
-		draw_offset_x: 0,
-		draw_offset_y: 0,
-		
-		draw_random_offset_x: 0,
-		draw_random_offset_y: 0,
-	};
-	
-	array_push(CelestialSimulator.battle_choreography_stack, temp_prop_struct);
-	
-	// Depth Sort the Celestial Simulator's Battle Choreography Stack by Vertical Depth
-	array_sort(CelestialSimulator.battle_choreography_stack, CelestialSimulator.battle_choreography_stack_depth_sort);
-}
-
-render_celestial_battle_choreography_stack = function()
-{
-	// Iterate through Battle's Choreography Stack
-	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);
-	var temp_battle_choreography_stack_index = 0;
-	
-	repeat (temp_battle_choreography_stack_count)
-	{
-		// Establish Choreography Stack Object Struct
-		var temp_stack_obj = CelestialSimulator.battle_choreography_stack[temp_battle_choreography_stack_index];
-		
-		// Perform Battle Choreography Stack Render Behaviour based on Choreography Instance's Object Type
-		switch (temp_stack_obj.choreography_object_type)
-		{
-			case CelestialBattleChoreographyObjectType.Actor:
-				//
-				var temp_actor_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
-				var temp_actor_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
-				
-				// Calculate Sprite Vertical Offset
-				var temp_actor_sprite_vertical_offset = -sprite_get_yoffset(temp_stack_obj.draw_sprite_index) + sprite_get_bbox_top(temp_stack_obj.draw_sprite_index);
-				
-				// Draw Battle Choreography Actor Sprite
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_actor_x, temp_actor_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				
-				// Check to Draw Weapon
-				if (temp_stack_obj.actor_weapon_enabled)
-				{
-					//
-					var temp_actor_weapon_pivot_x = lerp(temp_stack_obj.actor_weapon_pivot_x, temp_stack_obj.actor_weapon_aim_pivot_x, temp_stack_obj.actor_weapon_aim) * temp_stack_obj.draw_xscale;
-					var temp_actor_weapon_pivot_y = lerp(temp_stack_obj.actor_weapon_pivot_y, temp_stack_obj.actor_weapon_aim_pivot_y, temp_stack_obj.actor_weapon_aim);
-					
-					//
-					var temp_actor_weapon_x = temp_actor_x + temp_actor_weapon_pivot_x + temp_stack_obj.actor_weapon_offset_x;
-					var temp_actor_weapon_y = temp_actor_y + temp_actor_weapon_pivot_y + temp_stack_obj.actor_weapon_offset_y + temp_stack_obj.actor_weapon_vertical_bobbing_y_offset;
-					
-					//
-					var temp_actor_weapon_angle = temp_stack_obj.actor_weapon_angle + temp_stack_obj.actor_weapon_angle_recoil;
-					
-					//
-					draw_sprite_ext(temp_stack_obj.actor_weapon_sprite, 0, temp_actor_weapon_x, temp_actor_weapon_y, 1, temp_stack_obj.draw_xscale, temp_actor_weapon_angle, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-					
-					//
-					if (temp_stack_obj.actor_weapon_attack_timer > 0)
-					{
-						draw_sprite_ext(temp_stack_obj.actor_weapon_attack_sprite_index, temp_stack_obj.actor_weapon_attack_image_index, temp_stack_obj.actor_weapon_attack_x, temp_stack_obj.actor_weapon_attack_y, 1, 1, temp_stack_obj.actor_weapon_attack_image_angle, c_white, 1);
-					}
-				}
-				
-				// Unit Emotion Sprite Animation Rendering Behaviour
-				if (instance_exists(temp_stack_obj.actor_subunit))
-				{
-					if (instance_exists(temp_stack_obj.actor_subunit.unit_instance) and temp_stack_obj.actor_subunit.unit_instance.emotion_sprite_index != -1)
-					{
-						//
-						var temp_actor_unit_emotion_sprite_index = temp_stack_obj.actor_subunit.unit_instance.emotion_sprite_index;
-						var temp_actor_unit_emotion_image_index = temp_stack_obj.actor_subunit.unit_instance.emotion_image_index;
-						
-						// Unit Emotion Animation Draw Sprite Behaviour
-						draw_sprite_ext(temp_actor_unit_emotion_sprite_index, temp_actor_unit_emotion_image_index, temp_actor_x, temp_actor_y + temp_actor_sprite_vertical_offset, 1, 1, 0, c_white, temp_stack_obj.draw_alpha);
-					}
-					else if (temp_stack_obj.action_delay_timer > 0 and temp_stack_obj.action_duration_timer <= 0)
-					{
-						//
-						var temp_action_timer_rect_w = 22;
-						var temp_action_timer_rect_h = 1;
-						
-						var temp_action_timer_rect_h_offset = -4;
-						
-						//
-						var temp_action_timer_rect_x1 = temp_actor_x - (temp_action_timer_rect_w * 0.5);
-						var temp_action_timer_rect_y1 = temp_actor_y + temp_actor_sprite_vertical_offset - temp_action_timer_rect_h + temp_action_timer_rect_h_offset;
-						var temp_action_timer_rect_x2 = temp_actor_x + (temp_action_timer_rect_w * 0.5);
-						var temp_action_timer_rect_y2 = temp_actor_y + temp_actor_sprite_vertical_offset + temp_action_timer_rect_h_offset;
-						
-						var temp_action_timer_rect_xvalue = temp_actor_x - (temp_action_timer_rect_w * 0.5) + (temp_action_timer_rect_w * temp_stack_obj.action_delay_timer);
-						
-						//
-						draw_set_color(c_white);
-						draw_rectangle(temp_action_timer_rect_x1 - 2, temp_action_timer_rect_y1 - 2, temp_action_timer_rect_x2 + 2, temp_action_timer_rect_y2 + 2, false);
-						draw_set_color(c_black);
-						draw_rectangle(temp_action_timer_rect_x1 - 1, temp_action_timer_rect_y1 - 1, temp_action_timer_rect_x2 + 1, temp_action_timer_rect_y2 + 1, false);
-						
-						//
-						draw_set_color(c_white);
-						draw_rectangle(temp_action_timer_rect_x1, temp_action_timer_rect_y1, temp_action_timer_rect_xvalue, temp_action_timer_rect_y2, false);
-					}
-				}
-				break;
-			case CelestialBattleChoreographyObjectType.Prop:
-				//
-				var temp_prop_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
-				var temp_prop_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
-				
-				// Draw Battle Choreography Actor Sprite
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_prop_x, temp_prop_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				
-				//
-				break;
-			case CelestialBattleChoreographyObjectType.LinearProjectile:
-				//
-				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width + 2, c_black, c_black);
-				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, temp_stack_obj.draw_color, temp_stack_obj.draw_color);
-				
-				//
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_stack_obj.draw_x, temp_stack_obj.draw_y, temp_stack_obj.draw_xscale, temp_stack_obj.draw_yscale, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				break;
-		}
-		
-		// Increment Battle Choreography Stack Index
-		temp_battle_choreography_stack_index++;
-	}
 }
 
 render_selected_unit_movement_path_ui = function()
@@ -1901,6 +1964,7 @@ render_triangle_ui = function(triangle_x, triangle_y, triangle_alpha)
 	// Reset Draw Alpha
 	draw_set_alpha(1);
 }
+#endregion
 
 // Universe Campaign Generation
 generate_default_solar_system = function()

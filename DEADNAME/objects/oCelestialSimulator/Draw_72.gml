@@ -14,6 +14,7 @@ gpu_set_blendmode(bm_normal);
 // Set Celestial Simulator's UI Surface as Render Target
 surface_set_target(LightingEngine.ui_surface);
 
+#region Debug UI Rendering
 // Celestial Simulator Debug UI Behaviour
 if (global.debug)
 {
@@ -30,7 +31,9 @@ if (global.debug)
 		}
 	}
 }
+#endregion
 
+#region Object UI Rendering
 // Celestial Simulator Observing Celestial Object UI Behaviour
 if (instance_exists(camera_observing_instance))
 {
@@ -244,10 +247,12 @@ if (instance_exists(camera_observing_instance))
 	draw_set_halign(fa_left);
 	draw_set_valign(fa_top);
 }
+#endregion
 
 // Set Default Alpha Enabled Blendmode - Correctly Layers Transparent Images over each other on Surfaces
 gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_src_alpha, bm_one);
 
+#region Selection UI Rendering
 // DEBUG UNFINISHED BULLSHIT WILLPOWER UI - PLEASE FIX
 // Draw Selected Celestial Sub Object UI
 if (instance_exists(sub_object_selected_instance))
@@ -572,6 +577,7 @@ if (instance_exists(sub_object_selected_instance))
 		draw_set_color(c_white);
 	}
 }
+#endregion
 
 // Reset Surface Target
 surface_reset_target();

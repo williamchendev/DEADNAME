@@ -10,35 +10,163 @@ enum CelestialUnitBehaviourType
 	Retreat
 }
 
+#region Unit Types
+// Celestial Sub-Unit Enum
+enum CelestialSubUnitTypes
+{
+	DefaultInfantry,
+	DefaultTank
+}
+
+// Global Celestial Sub-Units
+global.celestial_subunits[CelestialSubUnitTypes.DefaultInfantry] =
+{
+	// Unit Sprites
+	unit_idle_sprite: sOverworld_Unit_William_Idle,
+	unit_move_sprite: sOverworld_Unit_William_Move,
+	unit_attack_sprite: noone,
+	
+	// Unit Stats
+	unit_health: 10,
+	unit_accuracy: 6,
+	unit_evasion: 6,
+	unit_attack: 2,
+	unit_armor: 1,
+	unit_agility: 4,
+	unit_experience: 0,
+	unit_entrenchment: 0,
+	
+	// Movement Settings
+	unit_terrain_type: CelestialTerrainType.Land,
+	
+	// Combat Settings
+	unit_combat: true,
+	unit_combat_attendance: false,
+	
+	unit_priority_rank: 4,
+	
+	unit_attack_air: false,
+	unit_attack_land: true,
+	unit_attack_sea: false,
+	
+	unit_attack_assassination: false,
+	
+	// Action Settings
+	unit_attack_types: [CelestialUnitActionType.DefaultFirearm],
+	
+	// Unit Weapon Animation Settings
+	unit_weapon_enabled: true,
+	unit_weapon_sprite: sOverworld_Unit_William_Firearm,
+	unit_weapon_pivot_x: 0,
+	unit_weapon_pivot_y: -14,
+	unit_weapon_aim_pivot_x: 3,
+	unit_weapon_aim_pivot_y: -16,
+};
+
+global.celestial_subunits[CelestialSubUnitTypes.DefaultTank] =
+{
+	// Unit Sprites
+	unit_idle_sprite: sOverworld_Unit_Tank_Medium,
+	unit_move_sprite: sOverworld_Unit_Tank_Medium,
+	unit_attack_sprite: sOverworld_Unit_Tank_Medium_Attack,
+	
+	// Unit Stats
+	unit_health: 10,
+	unit_accuracy: 6,
+	unit_evasion: 6,
+	unit_attack: 2,
+	unit_armor: 1,
+	unit_agility: 4,
+	unit_experience: 0,
+	unit_entrenchment: 0,
+	
+	// Movement Settings
+	unit_terrain_type: CelestialTerrainType.Land,
+	
+	// Combat Settings
+	unit_combat: true,
+	unit_combat_attendance: false,
+	
+	unit_priority_rank: 0,
+	
+	unit_attack_air: false,
+	unit_attack_land: true,
+	unit_attack_sea: false,
+	
+	unit_attack_assassination: false,
+	
+	// Action Settings
+	unit_attack_types: [CelestialUnitActionType.DefaultTankCannon],
+	
+	// Unit Weapon Animation Settings
+	unit_weapon_enabled: false,
+	unit_weapon_sprite: noone,
+	unit_weapon_pivot_x: 0,
+	unit_weapon_pivot_y: 0,
+	unit_weapon_aim_pivot_x: 0,
+	unit_weapon_aim_pivot_y: 0,
+};
+#endregion
+
+#region Status Effects
+// Celestial Unit Status Effect Enum
 enum CelestialUnitStatusEffectType
 {
 	CombatActionStun
 }
 
-enum CelestialUnitActionAnimationType
-{
-	DefaultFirearm,
-	TankProjectile,
-}
-
-//
 // Global Celestial Unit Status Effects
 global.celestial_unit_status_effects[CelestialUnitStatusEffectType.CombatActionStun] =
 {
 	status_effect_name: "Ambushed!",
 	status_effect_duration: 120
 };
+#endregion
+
+#region Action Types
+// Celestial Unit Action Enum
+enum CelestialUnitActionType
+{
+	DefaultFirearm,
+	DefaultTankCannon,
+}
 
 // Global Celestial Unit Action Animations
-global.celestial_unit_action_animations[CelestialUnitActionAnimationType.DefaultFirearm] =
+global.celestial_unit_action_animations[CelestialUnitActionType.DefaultFirearm] =
 {
-	action_duration: 20,
+	//
+	action_duration: 5.5,
+	
+	//
+	action_animation_count: 3,
+	
+	//
+	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
+	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss,
+	
+	//
+	linear_projectile_width: 2,
+	linear_projectile_decay: 0.2,
+	
 };
 
-global.celestial_unit_action_animations[CelestialUnitActionAnimationType.TankProjectile] =
+global.celestial_unit_action_animations[CelestialUnitActionType.DefaultTankCannon] =
 {
-	action_duration: 20,
+	//
+	action_duration: 5.5,
+	
+	//
+	action_animation_count: 1,
+	
+	//
+	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
+	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss_Large,
+	
+	//
+	linear_projectile_width: 3,
+	linear_projectile_decay: 0.08,
 };
+#endregion
 
 //
 function celestial_unit_attack_stat_to_value_conversion(attack_stat)

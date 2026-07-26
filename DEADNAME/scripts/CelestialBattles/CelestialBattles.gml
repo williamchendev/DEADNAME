@@ -15,7 +15,8 @@ enum CelestialBattleChoreographyObjectType
 	Actor,
 	Prop,
 	LinearProjectile,
-	ArcProjectile
+	ArcProjectile,
+	SmokeParticle
 }
 
 // Celestial Battle Sorting Functions
@@ -1018,7 +1019,7 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 			draw_offset_y: 0,
 			
 			draw_random_offset_x: irandom_range(-3, 3),
-			draw_random_offset_y: irandom_range(-1, 1),
+			draw_random_offset_y: irandom_range(-1, 3),
 			
 			// Actor Sub-Unit & Faction Variables
 			actor_subunit: actor_subunit_instance,
@@ -1052,9 +1053,10 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_subunit_
 			//
 			actor_idle_sprite_index: actor_subunit_instance.unit_idle_sprite,
 			actor_move_sprite_index: actor_subunit_instance.unit_move_sprite,
+			actor_attack_sprite_index: actor_subunit_instance.unit_attack_sprite,
 			
 			//
-			actor_action_animation_type: -1,
+			actor_action_type: -1,
 			actor_action_animation_delay: 0,
 			
 			actor_action_animation_count: 0,

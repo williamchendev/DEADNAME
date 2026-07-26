@@ -41,6 +41,7 @@ repeat (temp_celestial_object_depth_render_count)
 	switch (temp_celestial_object_instance.celestial_object_type)
 	{
 		case CelestialObjectType.Sun:
+			#region Sun Rendering
 			// Render Unlit Sun
 			with (temp_celestial_object_instance)
 			{
@@ -123,8 +124,10 @@ repeat (temp_celestial_object_depth_render_count)
 				// Reset Surface Target
 				surface_reset_target();
 			}
+			#endregion
 			break;
 		case CelestialObjectType.Planet:
+			#region Planet Rendering
 			// Render Planet (Lithosphere, Hydrosphere, Atmosphere)
 			with (temp_celestial_object_instance)
 			{
@@ -576,6 +579,7 @@ repeat (temp_celestial_object_depth_render_count)
 					surface_reset_target();
 				}
 			}
+			#endregion
 			break;
 		default:
 			// Celestial Object is not a Planet - Skip rendering Lithosphere

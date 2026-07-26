@@ -19,6 +19,7 @@ if (solar_system_index == -1)
 	return;
 }
 
+#region Camera Behaviour 
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
@@ -156,6 +157,7 @@ else
 		game_end();
 	}
 }
+#endregion
 
 // Establish Perspective Camera Projection Matrix
 matrix_build_projection_perspective_fov(-camera_fov, -GameManager.game_width / GameManager.game_height, camera_z_near, camera_z_far, camera_projection_matrix);
@@ -471,6 +473,7 @@ repeat (temp_celestial_object_count)
 		var temp_sub_object_back_layer_count = 0;
 		var temp_sub_object_front_layer_count = 0;
 		
+		#region Unit Depth Calculation
 		// Celestial Object's Unit Depth Sorting Behaviour
 		var temp_unit_index = 0;
 		var temp_unit_count = array_length(temp_celestial_object_instance.units);
@@ -529,7 +532,7 @@ repeat (temp_celestial_object_count)
 			var temp_unit_screen_position = world_position_to_screen_position(temp_unit_instance.world_position_x, temp_unit_instance.world_position_y, temp_unit_instance.world_position_z, camera_view_matrix, camera_projection_matrix);
 			
 			temp_unit_instance.x = temp_unit_screen_position[0];
-			temp_unit_instance.y = temp_unit_screen_position[1];
+			temp_unit_instance.y = temp_unit_screen_position[1] + sub_object_unit_vertical_offset;
 			
 			// Find Celestial Unit's Depth from Render Camera
 			var temp_unit_vx = temp_unit_instance.world_position_x - temp_render_start_x;
@@ -583,7 +586,9 @@ repeat (temp_celestial_object_count)
 			// Increment Celestial Unit Index
 			temp_unit_index++;
 		}
+		#endregion
 		
+		#region City Depth Calculation
 		// Celestial Object's City Depth Sorting Behaviour
 		var temp_city_index = 0;
 		var temp_city_count = array_length(temp_celestial_object_instance.cities);
@@ -676,7 +681,9 @@ repeat (temp_celestial_object_count)
 			// Increment Celestial City Index
 			temp_city_index++;
 		}
+		#endregion
 		
+		#region Satellite Depth Calculation
 		// Celestial Object's Satellite Depth Sorting Behaviour
 		var temp_satellite_index = 0;
 		var temp_satellite_count = array_length(temp_celestial_object_instance.satellites);
@@ -787,7 +794,9 @@ repeat (temp_celestial_object_count)
 			// Increment Celestial Satellite Index
 			temp_satellite_index++;
 		}
+		#endregion
 		
+		#region Battle Depth Calculation
 		// Celestial Object's Battle Depth Sorting Behaviour
 		var temp_battle_index = 0;
 		var temp_battle_count = array_length(temp_celestial_object_instance.battles);
@@ -852,6 +861,7 @@ repeat (temp_celestial_object_count)
 			// Increment Celestial Battle Index
 			temp_battle_index++;
 		}
+		#endregion
 		
 		// Sort Celestial Simulator's Sub Objects Back and Front Render Depth Sorting Arrays
 		array_sort(sub_objects_back_render_depth_sorting_index_array, sub_objects_back_render_depth_sort);

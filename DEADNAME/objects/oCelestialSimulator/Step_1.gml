@@ -77,6 +77,7 @@ repeat (temp_solar_systems_count)
 		// Perform Celestial Object Simulation
 		with (temp_celestial_object)
 		{
+			#region Celestial Physics
 			// Update Celestial Object's Rotation around Y Axis
 			euler_angle_y += rotation_speed * CelestialSimulator.global_clock_delta_time;
 			euler_angle_y = ((euler_angle_y mod 360) + 360) mod 360;
@@ -255,7 +256,9 @@ repeat (temp_solar_systems_count)
 					// Empty Celestial Object Type - Skip Behaviour
 					break;
 			}
+			#endregion
 			
+			#region City Behaviour 
 			// Iterate through Celestial Object Cities Behaviours
 			var temp_city_count = array_length(cities);
 			var temp_city_index = temp_city_count - 1;
@@ -420,7 +423,9 @@ repeat (temp_solar_systems_count)
 				// Decrement City Index
 				temp_city_index--;
 			}
+			#endregion
 			
+			#region Battle Behaviour 
 			// Iterate through Celestial Object Battle Behaviours
 			var temp_battle_index = 0;
 			var temp_battle_count = array_length(battles);
@@ -433,6 +438,7 @@ repeat (temp_solar_systems_count)
 				// Decrement Collision Check Timer
 				temp_battle_instance.battle_collision_check_timer -= frame_delta;
 				
+				#region Position Behaviour
 				// Establish Battle Position, Elevation, & Divisor
 				var temp_battle_x = 0;
 				var temp_battle_y = 0;
@@ -601,6 +607,7 @@ repeat (temp_solar_systems_count)
 					temp_battle_instance.battle_z = temp_battle_z;
 					temp_battle_instance.battle_elevation = temp_battle_elevation;
 				}
+				#endregion
 				
 				// Battle Collision Check Behaviour
 				if (temp_battle_instance.battle_collision_check_timer <= 0)
@@ -626,6 +633,7 @@ repeat (temp_solar_systems_count)
 					celestial_battle_shuffle_round(temp_battle_instance);
 				}
 				
+				#region Choreography Behaviour
 				// Iterate through and Perform Battle Choreography Behaviour
 				var temp_battle_choreography_actors_count = array_length(temp_battle_instance.battle_choreography_actors);
 				var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
@@ -886,8 +894,11 @@ repeat (temp_solar_systems_count)
 						}
 						else
 						{
+							// Establish Actor's Action Type
+							temp_actor_struct.actor_action_type = temp_actor_struct.actor_subunit.unit_attack_types[irandom(array_length(temp_actor_struct.actor_subunit.unit_attack_types) - 1)];
+							
 							// Calculate Matchup Combat Behaviour
-							var temp_attack_number = temp_actor_struct.actor_subunit.unit_attack_count;
+							var temp_attack_number = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].action_animation_count;
 							var temp_attack_damage = celestial_unit_attack_stat_to_value_conversion(temp_actor_struct.actor_subunit.unit_attack);
 							var temp_attack_accuracy = clamp(0.5 + (temp_actor_struct.actor_subunit.unit_accuracy - temp_actor_struct.target_subunit.unit_evasion) * 0.05, 0, 1);
 							
@@ -895,15 +906,13 @@ repeat (temp_solar_systems_count)
 							array_resize(temp_actor_struct.actor_action_animation_success, 0);
 							
 							// Establish Actor's Action Animation Behaviours
-							temp_actor_struct.actor_action_animation_type = temp_actor_struct.actor_subunit.unit_attack_animation_types[irandom(array_length(temp_actor_struct.actor_subunit.unit_attack_animation_types) - 1)];
 							temp_actor_struct.actor_action_animation_count = temp_attack_number;
 							
 							//
 							repeat (temp_attack_number)
 							{
 								//
-								//var temp_randomized_attack_accuracy = random(1.0);
-								var temp_randomized_attack_accuracy = 1;
+								var temp_randomized_attack_accuracy = random(1.0);
 								
 								// Check if Attack hits Defending Sub-Unit
 								if (temp_randomized_attack_accuracy <= temp_attack_accuracy)
@@ -914,6 +923,7 @@ repeat (temp_solar_systems_count)
 									//
 									array_push(temp_actor_struct.actor_action_animation_success, true);
 									
+									/*
 									// Check if Defending Sub-Unit has been Destroyed
 									if (temp_actor_struct.target_subunit.unit_health <= 0)
 									{
@@ -953,6 +963,7 @@ repeat (temp_solar_systems_count)
 										//
 										break;
 									}
+									*/
 								}
 								else
 								{
@@ -984,6 +995,7 @@ repeat (temp_solar_systems_count)
 					// Decrement Battle Choreography Actor Index
 					temp_battle_choreography_actors_index--;
 				}
+				#endregion
 				
 				// Check to Destroy Battle Instance
 				if (!temp_battle_instance.battle_exists)
@@ -1001,7 +1013,9 @@ repeat (temp_solar_systems_count)
 				// Increment Battle Index
 				temp_battle_index++;
 			}
+			#endregion
 			
+			#region Unit Behaviour 
 			// Iterate through Celestial Object Unit Behaviours
 			var temp_unit_index = 0;
 			var temp_unit_count = array_length(units);
@@ -1591,6 +1605,7 @@ repeat (temp_solar_systems_count)
 				// Increment Unit Index
 				temp_unit_index++;
 			}
+			#endregion
 			
 			// Build Identity Matrix of Celestial Object
 			matrix_build(x, y, z, euler_angle_x, euler_angle_y, euler_angle_z, scale_x, scale_y, scale_z, identity_matrix);
@@ -1607,6 +1622,7 @@ repeat (temp_solar_systems_count)
 	temp_solar_systems_index++;
 }
 
+#region Pathfinding Queue
 // Pathfinding Queue Behaviour
 if (ds_list_size(pathfinding_queue_list) > 0)
 {
@@ -1825,6 +1841,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 		temp_pathfinding_queue_calculations--;
 	}
 }
+#endregion
 
 // Reset Celestial Simulator's UI Behaviours
 selected_unit_movement_path_ui = false;

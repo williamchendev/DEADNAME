@@ -24,7 +24,7 @@ sub_units = array_create(0);
 
 repeat (irandom_range(3, 8))
 {
-	celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestial_CombatUnit_Artillery));
+	//celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestial_CombatUnit_Artillery));
 }
 repeat (irandom_range(3, 8))
 {

@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
-  "%Name":"sOverworld_Unit_Tank_Medium",
+  "%Name":"sOverworld_Unit_Tank_Medium_Attack",
   "bboxMode":0,
   "bbox_bottom":18,
-  "bbox_left":3,
-  "bbox_right":21,
+  "bbox_left":1,
+  "bbox_right":19,
   "bbox_top":5,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"561db0a4-c333-4d19-a159-9157ddbe2b19","name":"561db0a4-c333-4d19-a159-9157ddbe2b19","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"v1","%Name":"a3e05386-1287-48d4-a080-29180ed90103","name":"a3e05386-1287-48d4-a080-29180ed90103","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e3c99211-7821-4934-acd6-68f0645e399e","name":"e3c99211-7821-4934-acd6-68f0645e399e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"bf1b0f3e-6c63-4260-9729-28721688b2a8","name":"bf1b0f3e-6c63-4260-9729-28721688b2a8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -22,7 +22,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"3d611701-e06d-4f1f-8a4e-df167614e038","blendMode":0,"displayName":"default","isLocked":false,"name":"3d611701-e06d-4f1f-8a4e-df167614e038","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"sOverworld_Unit_Tank_Medium",
+  "name":"sOverworld_Unit_Tank_Medium_Attack",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -34,7 +34,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"sOverworld_Unit_Tank_Medium",
+    "%Name":"sOverworld_Unit_Tank_Medium_Attack",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -58,9 +58,9 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"sOverworld_Unit_Tank_Medium",
+    "name":"sOverworld_Unit_Tank_Medium_Attack",
     "playback":1,
-    "playbackSpeed":8.0,
+    "playbackSpeed":12.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
@@ -70,11 +70,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"561db0a4-c333-4d19-a159-9157ddbe2b19","path":"sprites/sOverworld_Unit_Tank_Medium/sOverworld_Unit_Tank_Medium.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"af3950ce-51be-4919-a87f-6049c32c700f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e3c99211-7821-4934-acd6-68f0645e399e","path":"sprites/sOverworld_Unit_Tank_Medium_Attack/sOverworld_Unit_Tank_Medium_Attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"86bf639d-30d6-48be-bf86-406e6a190f64","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a3e05386-1287-48d4-a080-29180ed90103","path":"sprites/sOverworld_Unit_Tank_Medium/sOverworld_Unit_Tank_Medium.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"8b65a758-c343-4b61-aae6-974764408389","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"bf1b0f3e-6c63-4260-9729-28721688b2a8","path":"sprites/sOverworld_Unit_Tank_Medium_Attack/sOverworld_Unit_Tank_Medium_Attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"dd252978-c456-41b2-8ba8-3593e38f824f","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

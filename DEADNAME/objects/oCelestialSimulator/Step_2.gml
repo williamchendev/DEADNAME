@@ -22,6 +22,7 @@ if (solar_system_index == -1)
 // Establish Solar System from Solar Systems Array
 var temp_solar_system = solar_systems[solar_system_index];
 
+#region Cursor Input Collision
 // Celestial Simulator Input Behaviour
 var temp_input_select = mouse_check_button(mb_left);
 var temp_input_action = mouse_check_button(mb_right);
@@ -93,6 +94,7 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 		temp_sub_object_selected_inst = temp_sub_object_click_inst;
 	}
 }
+#endregion
 
 // Calculate Cursor's Screen to World Raycast Vector
 var temp_cursor_raycast = screen_position_to_world_vector(clamp(GameManager.cursor_x, 0, GameManager.game_width), clamp(GameManager.cursor_y, 0, GameManager.game_height), camera_view_matrix, camera_projection_matrix);
@@ -181,6 +183,7 @@ else if (temp_input_select or temp_input_action)
 		temp_celestial_object_index++;
 	}
 	
+	#region Cursor Raycast Collision
 	// Check if Selection Position is Valid
 	if (!is_undefined(temp_selection_position))
 	{
@@ -524,6 +527,7 @@ else if (temp_input_select or temp_input_action)
 		// Delete Unused Array
 		array_resize(temp_selection_rotation_matrix_inverse, 0);
 	}
+	#endregion
 }
 
 // Calculate Triangle UI Animation Behaviour
@@ -552,6 +556,7 @@ input_action = temp_input_action;
 // Delete Unused Array
 array_resize(temp_cursor_raycast, 0);
 
+#region Selected UI Behaviour
 // Selected Celestial Sub Object UI Behaviour
 if (instance_exists(sub_object_selected_instance))
 {
@@ -596,3 +601,4 @@ if (instance_exists(sub_object_selected_instance))
 		}
 	}
 }
+#endregion
