@@ -20,19 +20,15 @@ emotion_battle_popup_animation_multiplier = 3;
 unit_faction = noone;
 
 // Initialize Unit Sub-Units
-sub_units = array_create(0);
+combat_units = array_create(0);
 
 repeat (irandom_range(3, 8))
 {
-	//celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestial_CombatUnit_Artillery));
+	celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultTank);
 }
 repeat (irandom_range(3, 8))
 {
-	celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestial_CombatUnit_Tank));
-}
-repeat (irandom_range(3, 8))
-{
-	celestial_unit_add_subunit(id, instance_create_depth(0, 0, 0, oCelestial_CombatUnit_Infantry));
+	celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultInfantry);
 }
 
 // Solar Variables
