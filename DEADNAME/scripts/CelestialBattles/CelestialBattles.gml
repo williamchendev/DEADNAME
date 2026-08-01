@@ -2,6 +2,10 @@
 #macro CelestialBattlePriorityRankMax 10
 #macro CelestialBattleAssassinationPriorityRank 7
 
+global.celestial_battle_exit_stage_animation_mult = 1.5;
+global.celestial_battle_exit_stage_animation_spd = 0.02;
+global.celestial_battle_exit_stage_animation_movement_distance = 32;
+
 // Battle Enums
 enum CelestialBattlePlatformSide
 {
@@ -570,13 +574,13 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_combat_u
 		// Initialize (Actor) Battle Choreography Stack Struct
 		var temp_actor_struct =
 		{
-			// Choreography Stack Object Type Variable
+			// Object Type Variables
 			choreography_object_type: CelestialBattleChoreographyObjectType.Actor,
 			
-			// Choreography Stack Object Depth Sorting Variable
+			// Object Depth Sorting Variables
 			vertical_depth: 0,
 			
-			// Choreography Stack Rendering Variables
+			// Rendering Variables
 			draw_sprite_index: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_idle_sprite,
 			draw_image_index: 0,
 			
@@ -588,9 +592,9 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_combat_u
 			draw_color: instance_exists(temp_actor_faction_instance) ? temp_actor_faction_instance.faction_color : c_white,
 			draw_alpha: 0,
 			
+			// Advanced Rendering Variables
 			facing_direction: temp_actor_platform_side == CelestialBattlePlatformSide.Left ? 1 : -1,
 			
-			//
 			draw_image_index_value: random(sprite_get_number(global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_move_sprite)),
 			
 			draw_offset_x: 0,
@@ -600,8 +604,9 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_combat_u
 			draw_random_offset_y: irandom_range(-1, 3),
 			
 			// Actor Combat Unit & Faction Variables
-			actor_combat_unit: actor_combat_unit_instance,
-			actor_faction: temp_actor_faction_instance,
+			combat_unit_type: actor_combat_unit_instance.combat_unit_type,
+			combat_unit_instance: actor_combat_unit_instance,
+			combat_unit_faction: temp_actor_faction_instance,
 			
 			target_combat_unit: noone,
 			target_faction: noone,
@@ -628,12 +633,11 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_combat_u
 			battle_tile_dx: 0,
 			battle_tile_dy: 0,
 			
-			//
-			actor_idle_sprite_index: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_idle_sprite,
-			actor_move_sprite_index: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_move_sprite,
-			actor_attack_sprite_index: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_attack_sprite,
+			// Actor Position Variables
+			actor_offset_x: 0,
+			actor_offset_y: 0,
 			
-			//
+			// Actor Action Variables
 			actor_action_type: -1,
 			actor_action_animation_delay: 0,
 			
@@ -779,7 +783,7 @@ function celestial_battle_assign_depth_choreography_actors(battle_instance)
 	repeat (temp_battle_choreography_actors_count)
 	{
 		// Index Battle Choreography Actor into Battle Choreography Actors DS Map
-		ds_map_add(battle_instance.battle_choreography_actors_map, battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index].actor_combat_unit, temp_battle_choreography_actors_index);
+		ds_map_add(battle_instance.battle_choreography_actors_map, battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index].combat_unit_instance, temp_battle_choreography_actors_index);
 		
 		// Increment Battle Choreography Actors Index
 		temp_battle_choreography_actors_index++;
@@ -800,15 +804,9 @@ function celestial_battle_assign_depth_choreography_actors(battle_instance)
 	array_resize(temp_battle_choreography_actors_battle_column_possible_positions, 0);
 }
 
-function celestial_battle_add_choreography_action(battle_instance)
-{
-	// Check if Battle Exists
-	if (!battle_instance.battle_exists)
-	{
-		return;
-	}
-}
-
+/// @function celestial_battle_clear_choreography_actors(battle_instance);
+/// @description Clears the Choreography Actors array with the given Celestial Battle Instance
+/// @param {oCelestialBattle} battle_instance The Celestial Battle to clear and reset the Choreography Actors array of
 function celestial_battle_clear_choreography_actors(battle_instance)
 {
 	// Check if Celestial Battle Instance Exists

@@ -507,8 +507,8 @@ repeat (temp_solar_systems_count)
 									
 									if (!is_undefined(temp_battle_unit_instance_combat_unit_battle_actor_index))
 									{
-										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].actor_combat_unit = noone;
-										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].actor_faction = noone;
+										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].combat_unit_instance = noone;
+										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].combat_unit_faction = noone;
 										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].actor_exit_animation = true;
 									}
 									
@@ -644,15 +644,18 @@ repeat (temp_solar_systems_count)
 					var temp_actor_struct = temp_battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
 					
 					// Check if Battle Choreography Actor is participating in the Battle
-					if (!instance_exists(temp_actor_struct.actor_combat_unit) or !temp_actor_struct.action_enabled)
+					if (!instance_exists(temp_actor_struct.combat_unit_instance) or !temp_actor_struct.action_enabled)
 					{
 						// Decrement Battle Choreography Actor Index
 						temp_battle_choreography_actors_index--;
 						continue;
 					}
 					
+					// Find Battle Choreography Actor's Combat Unit Struct
+					var temp_combat_unit_struct = global.celestial_combat_units[temp_actor_struct.combat_unit_type];
+					
 					// Check if Actor's Unit can prepare their Action during Combat
-					if (temp_actor_struct.actor_combat_unit.unit_instance.unit_behaviour != CelestialUnitBehaviourType.Retreat)
+					if (temp_actor_struct.combat_unit_instance.unit_instance.unit_behaviour != CelestialUnitBehaviourType.Retreat)
 					{
 						// Establish Action Time Elapsed
 						var temp_actor_action_time_elapsed = CelestialSimulator.global_clock_delta_time;
@@ -681,7 +684,7 @@ repeat (temp_solar_systems_count)
 						if (temp_actor_action_time_elapsed > 0)
 						{
 							// Find the Actor's Agility Value
-							var temp_actor_agility_value = global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_agility;
+							var temp_actor_agility_value = temp_combat_unit_struct.unit_agility;
 							
 							// Increment Actor's Action Delay Timer by their Agility Value
 							temp_actor_struct.action_delay_timer += temp_actor_action_time_elapsed * temp_actor_agility_value;
@@ -708,10 +711,10 @@ repeat (temp_solar_systems_count)
 							var temp_battle_matchup_comparison_faction = temp_battle_instance.battle_factions[temp_battle_matchup_total_factions_index];
 							
 							// Check if Comparison Faction is the Combat Unit's Faction
-							if (temp_actor_struct.actor_faction != temp_battle_matchup_comparison_faction)
+							if (temp_actor_struct.combat_unit_faction != temp_battle_matchup_comparison_faction)
 							{
 								// Check if Combat Unit's Faction is hostile to the Comparison Faction
-								if (ds_map_find_value(temp_actor_struct.actor_faction.relationships, temp_battle_matchup_comparison_faction) == CelestialFactionRelationshipType.Hostile)
+								if (ds_map_find_value(temp_actor_struct.combat_unit_faction.relationships, temp_battle_matchup_comparison_faction) == CelestialFactionRelationshipType.Hostile)
 								{
 									// Add Comparison Faction to Hostile Factions Array and Increment Hostile Factions Count
 									array_push(temp_battle_matchup_hostile_factions_array, temp_battle_matchup_total_factions_index);
@@ -741,13 +744,13 @@ repeat (temp_solar_systems_count)
 								var temp_battle_hostile_faction_sea_priority_pool = array_get(temp_battle_instance.battle_sea_priority_pools, temp_battle_hostile_faction_index);
 								
 								// Start Priority Pool Search Index at 0 by Default, or at the Celestial Battle Assassination Priority Rank if Attacking Combat Unit has Attacks as Assassinations Enabled
-								var temp_battle_priority_pool_search_index = global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_assassination ? CelestialBattleAssassinationPriorityRank : 0;
+								var temp_battle_priority_pool_search_index = temp_combat_unit_struct.unit_attack_assassination ? CelestialBattleAssassinationPriorityRank : 0;
 								
 								// Iterate through Priority Pools to find Combat Unit Matchup
 								repeat (CelestialBattlePriorityRankMax)
 								{
 									// Check if Unit can engage in Anti-Air Combat
-									if (global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_air)
+									if (temp_combat_unit_struct.unit_attack_air)
 									{
 										// Check if Priority Pool is Populated at the Priority Rank Index
 										if (array_length(array_get(temp_battle_hostile_faction_air_priority_pool, temp_battle_priority_pool_search_index)) > 0)
@@ -787,7 +790,7 @@ repeat (temp_solar_systems_count)
 									}
 									
 									// Check if Unit can engage in Anti-Surface Combat
-									if (global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_land)
+									if (temp_combat_unit_struct.unit_attack_land)
 									{
 										// Check if Priority Pool is Populated at the Priority Rank Index
 										if (array_length(array_get(temp_battle_hostile_faction_land_priority_pool, temp_battle_priority_pool_search_index)) > 0)
@@ -827,7 +830,7 @@ repeat (temp_solar_systems_count)
 									}
 									
 									// Check if Unit can engage in Anti-Naval Combat
-									if (global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_sea)
+									if (temp_combat_unit_struct.unit_attack_sea)
 									{
 										// Check if Priority Pool is Populated at the Priority Rank Index
 										if (array_length(array_get(temp_battle_hostile_faction_sea_priority_pool, temp_battle_priority_pool_search_index)) > 0)
@@ -895,16 +898,16 @@ repeat (temp_solar_systems_count)
 						else
 						{
 							// Establish Actor's Action Type
-							var temp_unit_attack_action_types_count = array_length(global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_types);
-							temp_actor_struct.actor_action_type = global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack_types[irandom(temp_unit_attack_action_types_count - 1)];
+							var temp_unit_attack_action_types_count = array_length(temp_combat_unit_struct.unit_attack_types);
+							temp_actor_struct.actor_action_type = temp_combat_unit_struct.unit_attack_types[irandom(temp_unit_attack_action_types_count - 1)];
 							
 							//
-							var temp_actor_attacking_accuracy = global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_accuracy;
-							var temp_target_defending_evasion = global.celestial_combat_units[temp_actor_struct.target_combat_unit.combat_unit_type].unit_evasion;
+							var temp_actor_attacking_accuracy = temp_combat_unit_struct.unit_accuracy;
+							var temp_target_defending_evasion = global.celestial_combat_units[temp_actor_struct.combat_unit_type].unit_evasion;
 							
 							// Calculate Matchup Combat Behaviour
 							var temp_attack_number = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].action_animation_count;
-							var temp_attack_damage = global.celestial_combat_units[temp_actor_struct.actor_combat_unit.combat_unit_type].unit_attack;
+							var temp_attack_damage = temp_combat_unit_struct.unit_attack;
 							var temp_attack_accuracy = clamp(0.5 + (temp_actor_attacking_accuracy - temp_target_defending_evasion) * 0.05, 0, 1);
 							
 							// Reset Actor's Action Animation Behaviours
@@ -975,7 +978,7 @@ repeat (temp_solar_systems_count)
 							// Initialize Battle Choreography Action Struct
 							var temp_choreography_action_struct = 
 							{
-								attacking_choreography_actor_index: ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_actor_struct.actor_combat_unit),
+								attacking_choreography_actor_index: ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_actor_struct.combat_unit_instance),
 								defending_choreography_actor_index: ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_actor_struct.target_combat_unit),
 							};
 							

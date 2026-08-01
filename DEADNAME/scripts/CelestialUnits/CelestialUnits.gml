@@ -56,11 +56,19 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultInfantry] =
 	
 	// Unit Weapon Animation Settings
 	unit_weapon_enabled: true,
+	
 	unit_weapon_sprite: sOverworld_Unit_William_Firearm,
+	
 	unit_weapon_pivot_x: 0,
 	unit_weapon_pivot_y: -14,
+	
 	unit_weapon_aim_pivot_x: 3,
 	unit_weapon_aim_pivot_y: -16,
+	
+	unit_weapon_idle_ambient_angle: 0,
+	unit_weapon_move_ambient_angle: 45,
+	
+	unit_weapon_recoil_recovery_spd: 0.1,
 };
 
 global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
@@ -100,11 +108,19 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
 	
 	// Unit Weapon Animation Settings
 	unit_weapon_enabled: false,
+	
 	unit_weapon_sprite: noone,
-	unit_weapon_pivot_x: 0,
-	unit_weapon_pivot_y: 0,
-	unit_weapon_aim_pivot_x: 0,
-	unit_weapon_aim_pivot_y: 0,
+	
+	unit_weapon_pivot_x: 8,
+	unit_weapon_pivot_y: -11,
+	
+	unit_weapon_aim_pivot_x: 8,
+	unit_weapon_aim_pivot_y: -11,
+	
+	unit_weapon_idle_ambient_angle: 0,
+	unit_weapon_move_ambient_angle: 45,
+	
+	unit_weapon_recoil_recovery_spd: 0.1,
 };
 #endregion
 

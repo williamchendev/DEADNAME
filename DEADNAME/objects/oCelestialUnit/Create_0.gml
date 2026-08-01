@@ -24,7 +24,7 @@ combat_units = array_create(0);
 
 repeat (irandom_range(3, 8))
 {
-	celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultTank);
+	//celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultTank);
 }
 repeat (irandom_range(3, 8))
 {
