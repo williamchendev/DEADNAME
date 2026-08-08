@@ -45,13 +45,6 @@ enum CelestialSolarType
 	Twilight = 1,
 	Night = 2
 }
-
-enum CelestialTerrainType
-{
-	Land,
-	Air,
-	Sea
-}
 #endregion
 
 #region Celestial Settings
@@ -200,6 +193,9 @@ pathfinding_queue_list = ds_list_create();
 
 // Faction Variables
 factions = array_create(0);
+faction_relationships = ds_map_create();
+
+faction_available_id = 0;
 
 // Rendering Variables
 global_noise_time = 0;
@@ -679,8 +675,10 @@ clear_celestial_sim = function()
 	array_resize(CelestialSimulator.solar_systems_orbit_update_order, 0);
 	array_resize(CelestialSimulator.solar_systems_background_stars_vertex_buffer, 0);
 	
-	// Clear Celestial Simulator's Faction Array
+	// Clear Celestial Simulator's Factions
 	array_resize(CelestialSimulator.factions, 0);
+	ds_map_clear(CelestialSimulator.faction_relationships);
+	CelestialSimulator.faction_available_id = 0;
 	
 	// Destroy Remaining Celestial Instances
 	with (oCelestialFaction)

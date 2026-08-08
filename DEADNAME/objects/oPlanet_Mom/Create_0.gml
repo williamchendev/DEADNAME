@@ -11,7 +11,7 @@ if (pathfinding_enabled)
 	{
 		// Select Random Unit
 		var temp_unit = instance_create_depth(0, 0, 0, oCelestialUnit);
-		temp_unit.unit_faction = array_length(CelestialSimulator.factions) > 0 ? CelestialSimulator.factions[irandom(array_length(CelestialSimulator.factions) - 1)] : temp_unit.unit_faction;
+		celestial_unit_join_faction(temp_unit, CelestialSimulator.factions[irandom(array_length(CelestialSimulator.factions) - 1)]);
 		add_unit_node(temp_unit, irandom_range(0, pathfinding_nodes_count - 1));
 	}
 	

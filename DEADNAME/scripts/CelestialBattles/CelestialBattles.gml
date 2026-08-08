@@ -1,12 +1,30 @@
 // Global Celestial Battle Properties
-#macro CelestialBattlePriorityRankMax 10
-#macro CelestialBattleAssassinationPriorityRank 7
+#macro CelestialBattleCombatGridColumns 10
+#macro CelestialBattleCombatGridRows 10
+
+global.celestial_battle_combat_grid_column_type[0] = CelestialBattleColumnType.Frontline;
+global.celestial_battle_combat_grid_column_type[1] = CelestialBattleColumnType.Frontline;
+global.celestial_battle_combat_grid_column_type[2] = CelestialBattleColumnType.Frontline;
+global.celestial_battle_combat_grid_column_type[3] = CelestialBattleColumnType.Frontline;
+global.celestial_battle_combat_grid_column_type[4] = CelestialBattleColumnType.Frontline;
+global.celestial_battle_combat_grid_column_type[5] = CelestialBattleColumnType.Midline;
+global.celestial_battle_combat_grid_column_type[6] = CelestialBattleColumnType.Midline;
+global.celestial_battle_combat_grid_column_type[7] = CelestialBattleColumnType.Midline;
+global.celestial_battle_combat_grid_column_type[8] = CelestialBattleColumnType.Backline;
+global.celestial_battle_combat_grid_column_type[9] = CelestialBattleColumnType.Backline;
 
 global.celestial_battle_exit_stage_animation_mult = 1.5;
 global.celestial_battle_exit_stage_animation_spd = 0.02;
 global.celestial_battle_exit_stage_animation_movement_distance = 32;
 
 // Battle Enums
+enum CelestialBattleColumnType
+{
+	Frontline,
+	Midline,
+	Backline
+}
+
 enum CelestialBattlePlatformSide
 {
 	Left,
@@ -24,11 +42,6 @@ enum CelestialBattleChoreographyObjectType
 }
 
 // Celestial Battle Sorting Functions
-function celestial_battle_matchup_sort(current, next) 
-{
-	return next.attacking_combat_unit.unit_priority_rank == current.attacking_combat_unit.unit_priority_rank ? (next.attacking_combat_unit.unit_agility > current.attacking_combat_unit.unit_agility ? -1 : 1) : (next.attacking_combat_unit.unit_priority_rank < current.attacking_combat_unit.unit_priority_rank ? -1 : 1);
-}
-
 /// @function celestial_battle_create(celestial_object);
 /// @description Creates and returns a Celestial Battle Instance within the Celestial Simulation with the given Celestial Object Instance
 /// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Celestial Battle will belong to
@@ -52,11 +65,278 @@ function celestial_battle_create(celestial_object)
 	return temp_celestial_battle_instance;
 }
 
+function celestial_battle_end(celestial_battle)
+{
+	
+}
+
+/// @function celestial_battle_add_primary_units(battle_instance, unit_instance_a, unit_instance_b);
+/// @description Creates and returns a Celestial Battle Instance within the Celestial Simulation with the given Celestial Object Instance
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance_a The Celestial Object Instance the Celestial Battle will belong to
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance_b The Celestial Object Instance the Celestial Battle will belong to
+function celestial_battle_add_primary_units(battle_instance, unit_instance_a, unit_instance_b)
+{
+	// Battle Unit Sorting Behaviour
+	var temp_first_unit = unit_instance_a;
+	var temp_second_unit = unit_instance_b;
+	
+	if (unit_instance_b.unit_faction == CelestialSimulator.player_faction)
+	{
+		temp_first_unit = unit_instance_b;
+		temp_second_unit = unit_instance_a;
+	}
+	else if (unit_instance_a.unit_faction != CelestialSimulator.player_faction and random(1.0) > 0.5)
+	{
+		temp_first_unit = unit_instance_b;
+		temp_second_unit = unit_instance_a;
+	}
+	
+	// Set Battle's Primary Units and Factions
+	battle_instance.battle_faction_a = temp_first_unit.unit_faction;
+	battle_instance.battle_primary_unit_a = temp_first_unit;
+	
+	battle_instance.battle_faction_b = temp_second_unit.unit_faction;
+	battle_instance.battle_primary_unit_b = temp_second_unit;
+	
+	// Iterate through Primary Unit's Combat Unit Arrays and add all possible Combat Units to Battle's Combat Grid
+	var temp_first_unit_can_add_units = true;
+	var temp_second_unit_can_add_units = true;
+	
+	while (temp_first_unit_can_add_units or temp_second_unit_can_add_units)
+	{
+		// Check if the First Unit can add Combat Units to Combat Grid
+		if (temp_first_unit_can_add_units)
+		{
+			// Check Combat Grid Column Types for available slots for the First Unit's Combat Units
+			if (battle_instance.battle_frontline_available_slots_count_a > 0 and temp_first_unit.frontline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Frontline Combat Unit from the First Unit
+				var temp_random_frontline_combat_unit_index_a = irandom(temp_first_unit.frontline_combat_unit_unengaged_count - 1);
+				var temp_random_frontline_combat_unit_instance_a = array_get(temp_first_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_a);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_first_unit.frontline_combat_unit_unengaged_count--;
+				array_delete(temp_first_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_a, 1);
+				array_push(temp_first_unit.frontline_combat_unit_engaged, temp_random_frontline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_frontline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Faction & Frontline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_a, temp_random_frontline_combat_unit_instance_a);
+				array_push(battle_instance.battle_frontline_combat_units_a, temp_random_frontline_combat_unit_instance_a);
+				
+				// Find random Available Slot in the Combat Grid's Frontline
+				var temp_random_frontline_combat_grid_available_slot_index_a = irandom(battle_instance.battle_frontline_available_slots_count_a - 1);
+				var temp_random_frontline_combat_grid_available_slot_a = array_get(battle_instance.battle_frontline_available_slots_a, temp_random_frontline_combat_grid_available_slot_index_a);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_frontline_available_slots_count_a--;
+				array_delete(battle_instance.battle_frontline_available_slots_a, temp_random_frontline_combat_grid_available_slot_index_a, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_frontline_combat_unit_instance_a.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_frontline_combat_unit_instance_a.combat_grid_row = temp_random_frontline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_a, temp_random_frontline_combat_unit_instance_a.combat_grid_column), temp_random_frontline_combat_unit_instance_a.combat_grid_row, temp_random_frontline_combat_unit_instance_a);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_a, temp_random_frontline_combat_unit_instance_a.combat_grid_column), temp_random_frontline_combat_unit_instance_a);
+			}
+			else if (battle_instance.battle_midline_available_slots_count_a > 0 and temp_first_unit.midline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Midline Combat Unit from the First Unit
+				var temp_random_midline_combat_unit_index_a = irandom(temp_first_unit.midline_combat_unit_unengaged_count - 1);
+				var temp_random_midline_combat_unit_instance_a = array_get(temp_first_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_a);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_first_unit.midline_combat_unit_unengaged_count--;
+				array_delete(temp_first_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_a, 1);
+				array_push(temp_first_unit.midline_combat_unit_engaged, temp_random_midline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_midline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Faction & Midline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_a, temp_random_midline_combat_unit_instance_a);
+				array_push(battle_instance.battle_midline_combat_units_a, temp_random_midline_combat_unit_instance_a);
+				
+				// Find random Available Slot in the Combat Grid's Midline
+				var temp_random_midline_combat_grid_available_slot_index_a = irandom(battle_instance.battle_midline_available_slots_count_a - 1);
+				var temp_random_midline_combat_grid_available_slot_a = array_get(battle_instance.battle_midline_available_slots_a, temp_random_midline_combat_grid_available_slot_index_a);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_midline_available_slots_count_a--;
+				array_delete(battle_instance.battle_midline_available_slots_a, temp_random_midline_combat_grid_available_slot_index_a, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_midline_combat_unit_instance_a.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_midline_combat_unit_instance_a.combat_grid_row = temp_random_midline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_a, temp_random_midline_combat_unit_instance_a.combat_grid_column), temp_random_midline_combat_unit_instance_a.combat_grid_row, temp_random_midline_combat_unit_instance_a);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_a, temp_random_midline_combat_unit_instance_a.combat_grid_column), temp_random_midline_combat_unit_instance_a);
+			}
+			else if (battle_instance.battle_backline_available_slots_count_a > 0 and temp_first_unit.backline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Backline Combat Unit from the First Unit
+				var temp_random_backline_combat_unit_index_a = irandom(temp_first_unit.backline_combat_unit_unengaged_count - 1);
+				var temp_random_backline_combat_unit_instance_a = array_get(temp_first_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_a);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_first_unit.backline_combat_unit_unengaged_count--;
+				array_delete(temp_first_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_a, 1);
+				array_push(temp_first_unit.backline_combat_unit_engaged, temp_random_backline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_backline_combat_unit_instance_a);
+				
+				// Add Selected Combat Unit to Battle's Faction & Backline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_a, temp_random_backline_combat_unit_instance_a);
+				array_push(battle_instance.battle_backline_combat_units_a, temp_random_backline_combat_unit_instance_a);
+				
+				// Find random Available Slot in the Combat Grid's Backline
+				var temp_random_backline_combat_grid_available_slot_index_a = irandom(battle_instance.battle_backline_available_slots_count_a - 1);
+				var temp_random_backline_combat_grid_available_slot_a = array_get(battle_instance.battle_backline_available_slots_a, temp_random_backline_combat_grid_available_slot_index_a);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_backline_available_slots_count_a--;
+				array_delete(battle_instance.battle_backline_available_slots_a, temp_random_backline_combat_grid_available_slot_index_a, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_backline_combat_unit_instance_a.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_backline_combat_unit_instance_a.combat_grid_row = temp_random_backline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_a, temp_random_backline_combat_unit_instance_a.combat_grid_column), temp_random_backline_combat_unit_instance_a.combat_grid_row, temp_random_backline_combat_unit_instance_a);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_a, temp_random_backline_combat_unit_instance_a.combat_grid_column), temp_random_backline_combat_unit_instance_a);
+			}
+			else
+			{
+				// There are no more Available Slots on the Combat Grid for the First Unit's Combat Units to occupy or the First Unit has no more available Combat Units to add to the Combat Grid
+				temp_first_unit_can_add_units = false;
+			}
+		}
+		
+		// Check if the Second Unit can add Combat Units to Combat Grid
+		if (temp_second_unit_can_add_units)
+		{
+			// Check Combat Grid Column Types for available slots for the Second Unit's Combat Units
+			if (battle_instance.battle_frontline_available_slots_count_b > 0 and temp_second_unit.frontline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Frontline Combat Unit from the Second Unit
+				var temp_random_frontline_combat_unit_index_b = irandom(temp_second_unit.frontline_combat_unit_unengaged_count - 1);
+				var temp_random_frontline_combat_unit_instance_b = array_get(temp_second_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_b);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_second_unit.frontline_combat_unit_unengaged_count--;
+				array_delete(temp_second_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_b, 1);
+				array_push(temp_second_unit.frontline_combat_unit_engaged, temp_random_frontline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_frontline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Faction & Frontline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_b, temp_random_frontline_combat_unit_instance_b);
+				array_push(battle_instance.battle_frontline_combat_units_b, temp_random_frontline_combat_unit_instance_b);
+				
+				// Find random Available Slot in the Combat Grid's Frontline
+				var temp_random_frontline_combat_grid_available_slot_index_b = irandom(battle_instance.battle_frontline_available_slots_count_b - 1);
+				var temp_random_frontline_combat_grid_available_slot_b = array_get(battle_instance.battle_frontline_available_slots_b, temp_random_frontline_combat_grid_available_slot_index_b);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_frontline_available_slots_count_b--;
+				array_delete(battle_instance.battle_frontline_available_slots_b, temp_random_frontline_combat_grid_available_slot_index_b, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_frontline_combat_unit_instance_b.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_frontline_combat_unit_instance_b.combat_grid_row = temp_random_frontline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_b, temp_random_frontline_combat_unit_instance_b.combat_grid_column), temp_random_frontline_combat_unit_instance_b.combat_grid_row, temp_random_frontline_combat_unit_instance_b);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_b, temp_random_frontline_combat_unit_instance_b.combat_grid_column), temp_random_frontline_combat_unit_instance_b);
+			}
+			else if (battle_instance.battle_midline_available_slots_count_b > 0 and temp_second_unit.midline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Midline Combat Unit from the Second Unit
+				var temp_random_midline_combat_unit_index_b = irandom(temp_second_unit.midline_combat_unit_unengaged_count - 1);
+				var temp_random_midline_combat_unit_instance_b = array_get(temp_second_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_b);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_second_unit.midline_combat_unit_unengaged_count--;
+				array_delete(temp_second_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_b, 1);
+				array_push(temp_second_unit.midline_combat_unit_engaged, temp_random_midline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_midline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Faction & Midline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_b, temp_random_midline_combat_unit_instance_b);
+				array_push(battle_instance.battle_midline_combat_units_b, temp_random_midline_combat_unit_instance_b);
+				
+				// Find random Available Slot in the Combat Grid's Midline
+				var temp_random_midline_combat_grid_available_slot_index_b = irandom(battle_instance.battle_midline_available_slots_count_b - 1);
+				var temp_random_midline_combat_grid_available_slot_b = array_get(battle_instance.battle_midline_available_slots_b, temp_random_midline_combat_grid_available_slot_index_b);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_midline_available_slots_count_b--;
+				array_delete(battle_instance.battle_midline_available_slots_b, temp_random_midline_combat_grid_available_slot_index_b, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_midline_combat_unit_instance_b.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_midline_combat_unit_instance_b.combat_grid_row = temp_random_midline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_b, temp_random_midline_combat_unit_instance_b.combat_grid_column), temp_random_midline_combat_unit_instance_b.combat_grid_row, temp_random_midline_combat_unit_instance_b);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_b, temp_random_midline_combat_unit_instance_b.combat_grid_column), temp_random_midline_combat_unit_instance_b);
+			}
+			else if (battle_instance.battle_backline_available_slots_count_b > 0 and temp_second_unit.backline_combat_unit_unengaged_count > 0)
+			{
+				// Find random Unengaged Backline Combat Unit from the Second Unit
+				var temp_random_backline_combat_unit_index_b = irandom(temp_second_unit.backline_combat_unit_unengaged_count - 1);
+				var temp_random_backline_combat_unit_instance_b = array_get(temp_second_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_b);
+				
+				// Move Selected Combat Unit from Unengaged Array to Engaged Array
+				temp_second_unit.backline_combat_unit_unengaged_count--;
+				array_delete(temp_second_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_b, 1);
+				array_push(temp_second_unit.backline_combat_unit_engaged, temp_random_backline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Combat Units Pool
+				array_insert(battle_instance.battle_combat_units, 0, temp_random_backline_combat_unit_instance_b);
+				
+				// Add Selected Combat Unit to Battle's Faction & Backline Combat Unit Pools
+				array_push(battle_instance.battle_combat_units_b, temp_random_backline_combat_unit_instance_b);
+				array_push(battle_instance.battle_backline_combat_units_b, temp_random_backline_combat_unit_instance_b);
+				
+				// Find random Available Slot in the Combat Grid's Backline
+				var temp_random_backline_combat_grid_available_slot_index_b = irandom(battle_instance.battle_backline_available_slots_count_b - 1);
+				var temp_random_backline_combat_grid_available_slot_b = array_get(battle_instance.battle_backline_available_slots_b, temp_random_backline_combat_grid_available_slot_index_b);
+				
+				// Remove Available Slot from Available Slot Array
+				battle_instance.battle_backline_available_slots_count_b--;
+				array_delete(battle_instance.battle_backline_available_slots_b, temp_random_backline_combat_grid_available_slot_index_b, 1);
+				
+				// Set Selected Combat Unit's Column and Row from Available Slot Index
+				temp_random_backline_combat_unit_instance_b.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_backline_combat_unit_instance_b.combat_grid_row = temp_random_backline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
+				
+				// Place Selected Combat Unit in the Combat Grid's Available Slot
+				array_set(array_get(battle_instance.battle_combat_grid_b, temp_random_backline_combat_unit_instance_b.combat_grid_column), temp_random_backline_combat_unit_instance_b.combat_grid_row, temp_random_backline_combat_unit_instance_b);
+				array_push(array_get(battle_instance.battle_combat_grid_instances_b, temp_random_backline_combat_unit_instance_b.combat_grid_column), temp_random_backline_combat_unit_instance_b);
+			}
+			else
+			{
+				// There are no more Available Slots on the Combat Grid for the Second Unit's Combat Units to occupy or the Second Unit has no more available Combat Units to add to the Combat Grid
+				temp_second_unit_can_add_units = false;
+			}
+		}
+	}
+}
+
 /// @function celestial_battle_add_unit(battle_instance, unit_instance);
 /// @description Adds a given Celestial Unit Instance to the ongoing Battle with the given Celestial Battle Instance (this function prevents Celestial Units from being redundantly "double added" to the Celestial Battle)
 /// @param {oCelestialBattle} battle_instance The Celestial Battle the given Celestial Unit Instance will be added to
 /// @param {real:Id.Instance} unit_instance The Celestial Unit Instance that will be added to the given Celestial Battle Instance
-function celestial_battle_add_unit(battle_instance, unit_instance)
+function celestial_battle_add_supporting_unit(battle_instance, unit_instance)
 {
 	// Check if Battle Exists
 	if (!battle_instance.battle_exists)
@@ -64,54 +344,6 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 		// Battle Instance does not exist - Early Exit
 		return;
 	}
-	
-	// Check Unit Faction Index within Battle Instance
-	var temp_unit_faction_index = array_get_index(battle_instance.battle_factions, unit_instance.unit_faction);
-	
-	// Check if Unit's Faction Instance was already indexed in Celestial Battle's Faction Array
-	if (temp_unit_faction_index == -1)
-	{
-		// Find the index of the Unit's Faction Instance within the Celestial Battle's Faction Array
-		temp_unit_faction_index = array_length(battle_instance.battle_factions);
-		
-		// Index the Unit's Faction Instance within the Celestial Battle's Faction Array
-		array_push(battle_instance.battle_factions, unit_instance.unit_faction);
-		
-		// Index New Celestial Battle Faction's Unit
-		array_push(battle_instance.battle_units, array_create(0));
-		
-		// Initialize Empty Battle Priority Pools
-		var temp_faction_battle_land_priority_pool = array_create(CelestialBattlePriorityRankMax);
-		var temp_faction_battle_air_priority_pool = array_create(CelestialBattlePriorityRankMax);
-		var temp_faction_battle_sea_priority_pool = array_create(CelestialBattlePriorityRankMax);
-		
-		// Iterate through Battle Priority Pools to create Empty Combat Unit Arrays
-		var temp_priority_rank_index = 0;
-		
-		repeat (CelestialBattlePriorityRankMax)
-		{
-			// Create and Index Empty Priority Rank Combat Unit Array
-			array_set(temp_faction_battle_land_priority_pool, temp_priority_rank_index, array_create(0));
-			array_set(temp_faction_battle_air_priority_pool, temp_priority_rank_index, array_create(0));
-			array_set(temp_faction_battle_sea_priority_pool, temp_priority_rank_index, array_create(0));
-			
-			// Increment Priority Rank Index
-			temp_priority_rank_index++;
-		}
-		
-		// Index Battle Priority Pools in Battle Instance
-		array_push(battle_instance.battle_land_priority_pools, temp_faction_battle_land_priority_pool);
-		array_push(battle_instance.battle_air_priority_pools, temp_faction_battle_air_priority_pool);
-		array_push(battle_instance.battle_sea_priority_pools, temp_faction_battle_sea_priority_pool);
-	}
-	else if (array_get_index(battle_instance.battle_units[temp_unit_faction_index], unit_instance) != -1)
-	{
-		// Unit already Exists in Battle Instance - Early Exit
-		return;
-	}
-	
-	// Index the Unit Instance within the Celestial Battle's Units Array
-	array_push(battle_instance.battle_units[temp_unit_faction_index], unit_instance);
 	
 	// Update that Unit Instance has entered Combat
 	unit_instance.engaged_in_battle = true;
@@ -123,391 +355,14 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	unit_instance.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 }
 
-/// @function celestial_battle_shuffle_round(battle_instance);
-/// @description Initializes a Celestial Battle's Round by shuffling and randomly selecting available Celestial Units from the Celestial Battle's Faction Unit Pools and sorting them into Priority Rank Arrays to determine the Battle's Matchups between opposing Celestial Factions and their Units
-/// @param {oCelestialBattle} battle_instance The Celestial Battle that will perform the Round Shuffle Behaviour
-function celestial_battle_shuffle_round(battle_instance)
+function celestial_battle_remove_unit(battle_instance, unit_instance)
 {
 	// Check if Battle Exists
 	if (!battle_instance.battle_exists)
 	{
+		// Battle Instance does not exist - Early Exit
 		return;
 	}
-	
-	// Clear Battle's Choreography Actors
-	celestial_battle_clear_choreography_actors(battle_instance)
-	
-	// Reset Battle Choreography Actors Battle Column Sizes Array
-	var temp_battle_choreography_actors_battle_column_sizes_index = 0;
-	
-	repeat (CelestialBattlePriorityRankMax * 2)
-	{
-		battle_instance.battle_choreography_actors_battle_column_sizes[temp_battle_choreography_actors_battle_column_sizes_index] = 0;
-		temp_battle_choreography_actors_battle_column_sizes_index++;
-	}
-	
-	// Calculate Battle Instance's Terrain Combat Size
-	var temp_battle_land_combat_size = 70;
-	var temp_battle_air_combat_size = 70;
-	var temp_battle_sea_combat_size = 70;
-	
-	/*
-	if (battle_instance.celestial_body_instance.pathfinding_enabled)
-	{
-		// Find Battle Instance's Pathfinding Node Microclimate Biome Types
-		var temp_battle_pathfinding_node_a_microclimate_index = battle_instance.celestial_body_instance.pathfinding_node_microclimate_array[battle_instance.pathfinding_node_a_index];
-		var temp_battle_pathfinding_node_b_microclimate_index = battle_instance.celestial_body_instance.pathfinding_node_microclimate_array[battle_instance.pathfinding_node_b_index];
-		var temp_battle_pathfinding_node_a_microclimate_biome_type = battle_instance.celestial_body_instance.microclimate_biome_type_array[temp_battle_pathfinding_node_a_microclimate_index];
-		var temp_battle_pathfinding_node_b_microclimate_biome_type = battle_instance.celestial_body_instance.microclimate_biome_type_array[temp_battle_pathfinding_node_b_microclimate_index];
-		
-		// Calculate Combat Size from Microclimate Biome Types
-		temp_battle_land_combat_size = celestial_microclimate_biome_get_land_combat_size(temp_battle_pathfinding_node_a_microclimate_biome_type) + celestial_microclimate_biome_get_land_combat_size(temp_battle_pathfinding_node_b_microclimate_biome_type);
-		temp_battle_air_combat_size = celestial_microclimate_biome_get_air_combat_size(temp_battle_pathfinding_node_a_microclimate_biome_type) + celestial_microclimate_biome_get_air_combat_size(temp_battle_pathfinding_node_b_microclimate_biome_type);
-		temp_battle_sea_combat_size = celestial_microclimate_biome_get_sea_combat_size(temp_battle_pathfinding_node_a_microclimate_biome_type) + celestial_microclimate_biome_get_sea_combat_size(temp_battle_pathfinding_node_b_microclimate_biome_type);
-	}
-	*/
-	
-	// Cleanup and erase Battle's unused Factions 
-	var temp_battle_faction_cleanup_count = array_length(battle_instance.battle_factions);
-	var temp_battle_faction_cleanup_index = temp_battle_faction_cleanup_count - 1;
-	
-	repeat (temp_battle_faction_cleanup_count)
-	{
-		// Skip check if Battle Faction is the Default Faction
-		if (temp_battle_faction_cleanup_index == 0)
-		{
-			break;
-		}
-		
-		// Check if Battle Faction exists and has Units participating in Combat - if not, delete Faction from Battle
-		if (!instance_exists(battle_instance.battle_factions[temp_battle_faction_cleanup_index]) or array_length(battle_instance.battle_units[temp_battle_faction_cleanup_index]) <= 0)
-		{
-			// Find Battle Faction Arrays
-			var temp_battle_faction_cleanup_land_priority_pool = array_get(battle_instance.battle_land_priority_pools, temp_battle_faction_cleanup_index);
-			var temp_battle_faction_cleanup_air_priority_pool = array_get(battle_instance.battle_air_priority_pools, temp_battle_faction_cleanup_index);
-			var temp_battle_faction_cleanup_sea_priority_pool = array_get(battle_instance.battle_sea_priority_pools, temp_battle_faction_cleanup_index);
-			
-			// Empty Battle Faction's Priority Pools
-			var temp_battle_faction_cleanup_priority_rank_index = 0;
-			
-			repeat (CelestialBattlePriorityRankMax)
-			{
-				// Empty Priority Rank Combat Unit Array
-				array_resize(array_get(temp_battle_faction_cleanup_land_priority_pool, temp_battle_faction_cleanup_priority_rank_index), 0);
-				array_resize(array_get(temp_battle_faction_cleanup_air_priority_pool, temp_battle_faction_cleanup_priority_rank_index), 0);
-				array_resize(array_get(temp_battle_faction_cleanup_sea_priority_pool, temp_battle_faction_cleanup_priority_rank_index), 0);
-				
-				// Increment Battle Faction's Priority Rank Index
-				temp_battle_faction_cleanup_priority_rank_index++;
-			}
-			
-			// Resize Unused Arrays
-			array_resize(array_get(battle_instance.battle_units, temp_battle_faction_cleanup_index), 0);
-			
-			array_resize(temp_battle_faction_cleanup_land_priority_pool, 0);
-			array_resize(temp_battle_faction_cleanup_air_priority_pool, 0);
-			array_resize(temp_battle_faction_cleanup_sea_priority_pool, 0);
-			
-			// Delete Battle Faction from Battle Instance
-			array_delete(battle_instance.battle_factions, temp_battle_faction_cleanup_index, 1);
-			array_delete(battle_instance.battle_units, temp_battle_faction_cleanup_index, 1);
-			array_delete(battle_instance.battle_land_priority_pools, temp_battle_faction_cleanup_index, 1);
-			array_delete(battle_instance.battle_air_priority_pools, temp_battle_faction_cleanup_index, 1);
-			array_delete(battle_instance.battle_sea_priority_pools, temp_battle_faction_cleanup_index, 1);
-		}
-		
-		// Decrement Battle Faction Index
-		temp_battle_faction_cleanup_index--;
-	}
-	
-	// Establish Empty Count of Total Hostile Faction Relationships
-	var temp_faction_hostile_relationships_count = 0;
-	
-	// Iterate through Battle's Active Factions
-	var temp_battle_faction_count = array_length(battle_instance.battle_factions);
-	var temp_battle_faction_index = temp_battle_faction_count - 1;
-	
-	repeat (temp_battle_faction_count)
-	{
-		// Find Battle Faction Instance & Faction Arrays
-		var temp_battle_faction_inst = array_get(battle_instance.battle_factions, temp_battle_faction_index);
-		var temp_battle_units_array = array_get(battle_instance.battle_units, temp_battle_faction_index);
-		
-		var temp_battle_faction_land_priority_pool = array_get(battle_instance.battle_land_priority_pools, temp_battle_faction_index);
-		var temp_battle_faction_air_priority_pool = array_get(battle_instance.battle_air_priority_pools, temp_battle_faction_index);
-		var temp_battle_faction_sea_priority_pool = array_get(battle_instance.battle_sea_priority_pools, temp_battle_faction_index);
-		
-		// Empty Battle Faction's Priority Pools
-		var temp_battle_faction_priority_rank_index = 0;
-		
-		repeat (CelestialBattlePriorityRankMax)
-		{
-			// Empty Priority Rank Combat Unit Array
-			array_resize(array_get(temp_battle_faction_land_priority_pool, temp_battle_faction_priority_rank_index), 0);
-			array_resize(array_get(temp_battle_faction_air_priority_pool, temp_battle_faction_priority_rank_index), 0);
-			array_resize(array_get(temp_battle_faction_sea_priority_pool, temp_battle_faction_priority_rank_index), 0);
-			
-			// Increment Battle Faction's Priority Rank Index
-			temp_battle_faction_priority_rank_index++;
-		}
-		
-		// Check if Battle Faction Instance Exists
-		if (instance_exists(temp_battle_faction_inst))
-		{
-			// Increment through all of the Battle's Factions to compare this Faction's Relationship to the rest
-			var temp_comparison_faction_index = temp_battle_faction_count - 1;
-			
-			repeat (temp_battle_faction_count)
-			{
-				// Check if Comparison Faction index matches the current Faction's Index
-				if (temp_comparison_faction_index == temp_battle_faction_index)
-				{
-					// Decrement Comparison Faction Index
-					temp_comparison_faction_index--;
-					
-					// Skip Comparison Faction - Can't compare the same Faction with itself
-					continue;
-				}
-				
-				// Check if Faction Exists and has Units participating in the current Battle
-				if (instance_exists(array_get(battle_instance.battle_factions, temp_comparison_faction_index)))
-				{
-					// Find the Comparison Faction's Index
-					var temp_comparison_faction = array_get(battle_instance.battle_factions, temp_comparison_faction_index);
-					
-					// Check the current Faction's Relationship with the Comparison Factions
-					var temp_faction_hostile_check = ds_map_find_value(temp_battle_faction_inst.relationships, temp_comparison_faction) == CelestialFactionRelationshipType.Hostile;
-					
-					// Check if Faction Relationship Status is Hostile
-					if (temp_faction_hostile_check)
-					{
-						// Increase Faction Hostile Relationships Count
-						temp_faction_hostile_relationships_count++;
-					}
-				}
-				
-				// Decrement Comparison Faction Index
-				temp_comparison_faction_index--;
-			}
-		}
-		
-		// Calculate Faction Combat Width
-		var temp_faction_land_combat_size = temp_battle_land_combat_size;
-		var temp_faction_air_combat_size = temp_battle_air_combat_size;
-		var temp_faction_sea_combat_size = temp_battle_sea_combat_size;
-		
-		// Initialize Faction Indexes & Combat Unit Pools
-		var temp_land_indexes_pool = array_create(0);
-		var temp_air_indexes_pool = array_create(0);
-		var temp_sea_indexes_pool = array_create(0);
-		
-		var temp_land_combat_unit_pool = array_create(0);
-		var temp_air_combat_unit_pool = array_create(0);
-		var temp_sea_combat_unit_pool = array_create(0);
-		
-		// Populate Faction Combat Unit Pools
-		var temp_battle_units_count = array_length(temp_battle_units_array);
-		var temp_battle_units_index = temp_battle_units_count - 1;
-		
-		repeat (temp_battle_units_count)
-		{
-			// Find Unit Instance
-			var temp_battle_unit_instance = temp_battle_units_array[temp_battle_units_index];
-			
-			// Check if Battle Unit Exists
-			if (!instance_exists(temp_battle_unit_instance))
-			{
-				// Battle Unit does not exist - Remove Battle Unit from Battle Factions Unit Array
-				array_delete(temp_battle_units_array, temp_battle_units_index, 1);
-				
-				// Decrement Battle Unit Index
-				temp_battle_units_index--;
-				
-				// Skip to next Battle Unit Instance
-				continue;
-			}
-			
-			// Iterate through Battle Unit's Combat Units Array
-			var temp_battle_unit_combat_unit_count = array_length(temp_battle_unit_instance.combat_units);
-			var temp_battle_unit_combat_unit_index = temp_battle_unit_combat_unit_count - 1;
-			
-			repeat (temp_battle_unit_combat_unit_count)
-			{
-				// Find Combat Unit Instance
-				var temp_battle_unit_combat_unit_instance = temp_battle_unit_instance.combat_units[temp_battle_unit_combat_unit_index];
-				
-				// Check if Combat Unit Instance Exists
-				if (!instance_exists(temp_battle_unit_combat_unit_instance))
-				{
-					// Battle Unit's Combat Unit Instance does not exist - Remove Battle Unit's Combat Unit Instance from Battle Unit's Combat Unit Array
-					array_delete(temp_battle_unit_instance.combat_units, temp_battle_unit_combat_unit_index, 1);
-					
-					// Decrement Battle Unit's Combat Unit Index
-					temp_battle_unit_combat_unit_index--;
-					
-					// Skip to next Battle Unit's Combat Unit Instance
-					continue;
-				}
-				
-				// Check if Combat Unit engages in Combat
-				if (global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_combat_attendance)
-				{
-					// Combat Unit has mandatory Combat Attendance - Add Combat Unit to Battle Faction's Priority Pools directly
-					switch (global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_terrain_type)
-					{
-						case CelestialTerrainType.Land:
-							// Add Combat Unit to Battle Faction's Land Priority Rank Combat Unit Pools
-							array_push(array_get(temp_battle_faction_land_priority_pool, global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_battle_unit_combat_unit_instance);
-							temp_faction_land_combat_size -= global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_size;
-							
-							// Add Combat Unit to Battle Choreography as an Actor
-							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_combat_unit_instance);
-							break;
-						case CelestialTerrainType.Air:
-							// Add Combat Unit to Battle Faction's Air Priority Rank Combat Unit Pools
-							array_push(array_get(temp_battle_faction_air_priority_pool, global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_battle_unit_combat_unit_instance);
-							temp_faction_air_combat_size -= global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_size;
-							
-							// Add Combat Unit to Battle Choreography as an Actor
-							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_combat_unit_instance);
-							break;
-						case CelestialTerrainType.Sea:
-							// Add Combat Unit to Battle Faction's Sea Priority Rank Combat Unit Pools
-							array_push(array_get(temp_battle_faction_sea_priority_pool, global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_battle_unit_combat_unit_instance);
-							temp_faction_sea_combat_size -= global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_size;
-							
-							// Add Combat Unit to Battle Choreography as an Actor
-							celestial_battle_add_choreography_actor(battle_instance, temp_battle_unit_combat_unit_instance);
-							break;
-					}
-				}
-				else if (global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_combat)
-				{
-					// Combat Unit engages in Combat - Add Combat Unit to Combat Terrain Pools for random selection
-					switch (global.celestial_combat_units[temp_battle_unit_combat_unit_instance.combat_unit_type].unit_terrain_type)
-					{
-						case CelestialTerrainType.Land:
-							// Add Combat Unit to Combat Land Pool for random selection
-							array_push(temp_land_indexes_pool, array_length(temp_land_combat_unit_pool));
-							array_push(temp_land_combat_unit_pool, temp_battle_unit_combat_unit_instance);
-							break;
-						case CelestialTerrainType.Air:
-							// Add Combat Unit to Combat Air Pool for random selection
-							array_push(temp_air_indexes_pool, array_length(temp_air_combat_unit_pool));
-							array_push(temp_air_combat_unit_pool, temp_battle_unit_combat_unit_instance);
-							break;
-						case CelestialTerrainType.Sea:
-							// Add Combat Unit to Combat Sea Pool for random selection
-							array_push(temp_sea_indexes_pool, array_length(temp_sea_combat_unit_pool));
-							array_push(temp_sea_combat_unit_pool, temp_battle_unit_combat_unit_instance);
-							break;
-					}
-				}
-				
-				// Decrement Battle Unit's Combat Unit Index
-				temp_battle_unit_combat_unit_index--;
-			}
-			
-			// Decrement Battle Unit Index
-			temp_battle_units_index--;
-		}
-		
-		// Populate Faction Priority Rank Pools
-		while (array_length(temp_land_indexes_pool) > 0 and temp_faction_land_combat_size > 0)
-		{
-			// Choose Random Combat Unit
-			var temp_land_combat_unit_random_value = irandom(array_length(temp_land_indexes_pool) - 1);
-			
-			// Find Combat Unit Index and Instance from Combat Unit Pool
-			var temp_land_combat_unit_index = array_get(temp_land_indexes_pool, temp_land_combat_unit_random_value);
-			var temp_land_combat_unit_instance = array_get(temp_land_combat_unit_pool, temp_land_combat_unit_index);
-			
-			// Check if Combat Unit's Unit Size fits within Battle Terrain Combat Size
-			if (global.celestial_combat_units[temp_land_combat_unit_instance.combat_unit_type].unit_size <= temp_faction_land_combat_size)
-			{
-				// Add Combat Unit to Battle Faction's Priority Rank Combat Unit Pools
-				array_push(array_get(temp_battle_faction_land_priority_pool, global.celestial_combat_units[temp_land_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_land_combat_unit_instance);
-				temp_faction_land_combat_size -= global.celestial_combat_units[temp_land_combat_unit_instance.combat_unit_type].unit_size;
-				
-				// Add Combat Unit to Battle Choreography as an Actor
-				celestial_battle_add_choreography_actor(battle_instance, temp_land_combat_unit_instance);
-			}
-			
-			// Delete Combat Unit from Combat Unit Index Array
-			array_delete(temp_land_indexes_pool, temp_land_combat_unit_random_value, 1);
-		}
-		
-		while (array_length(temp_air_indexes_pool) > 0 and temp_faction_air_combat_size > 0)
-		{
-			// Choose Random Combat Unit
-			var temp_air_combat_unit_random_value = irandom(array_length(temp_air_indexes_pool) - 1);
-			
-			// Find Combat Unit Index and Instance from Combat Unit Pool
-			var temp_air_combat_unit_index = array_get(temp_air_indexes_pool, temp_air_combat_unit_random_value);
-			var temp_air_combat_unit_instance = array_get(temp_air_combat_unit_pool, temp_air_combat_unit_index);
-			
-			// Check if Combat Unit's Unit Size fits within Battle Terrain Combat Size
-			if (global.celestial_combat_units[temp_air_combat_unit_instance.combat_unit_type].unit_size <= temp_faction_air_combat_size)
-			{
-				// Add Combat Unit to Battle Faction's Priority Rank Combat Unit Pools
-				array_push(array_get(temp_battle_faction_air_priority_pool, global.celestial_combat_units[temp_air_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_air_combat_unit_instance);
-				temp_faction_air_combat_size -= global.celestial_combat_units[temp_air_combat_unit_instance.combat_unit_type].unit_size;
-				
-				// Add Combat Unit to Battle Choreography as an Actor
-				celestial_battle_add_choreography_actor(battle_instance, temp_air_combat_unit_instance);
-			}
-			
-			// Delete Combat Unit from Combat Unit Index Array
-			array_delete(temp_air_indexes_pool, temp_air_combat_unit_random_value, 1);
-		}
-		
-		while (array_length(temp_sea_indexes_pool) > 0 and temp_faction_sea_combat_size > 0)
-		{
-			// Choose Random Combat Unit
-			var temp_sea_combat_unit_random_value = irandom(array_length(temp_sea_indexes_pool) - 1);
-			
-			// Find Combat Unit Index and Instance from Combat Unit Pool
-			var temp_sea_combat_unit_index = array_get(temp_sea_indexes_pool, temp_sea_combat_unit_random_value);
-			var temp_sea_combat_unit_instance = array_get(temp_sea_combat_unit_pool, temp_sea_combat_unit_index);
-			
-			// Check if Combat Unit's Unit Size fits within Battle Terrain Combat Size
-			if (global.celestial_combat_units[temp_sea_combat_unit_instance.combat_unit_type].unit_size <= temp_faction_sea_combat_size)
-			{
-				// Add Combat Unit to Battle Faction's Priority Rank Combat Unit Pools
-				array_push(array_get(temp_battle_faction_sea_priority_pool, global.celestial_combat_units[temp_sea_combat_unit_instance.combat_unit_type].unit_priority_rank), temp_sea_combat_unit_instance);
-				temp_faction_sea_combat_size -= global.celestial_combat_units[temp_sea_combat_unit_instance.combat_unit_type].unit_size;
-				
-				// Add Combat Unit to Battle Choreography as an Actor
-				celestial_battle_add_choreography_actor(battle_instance, temp_sea_combat_unit_instance);
-			}
-			
-			// Delete Combat Unit from Combat Unit Index Array
-			array_delete(temp_sea_indexes_pool, temp_sea_combat_unit_random_value, 1);
-		}
-		
-		// Destroy Unused Arrays
-		array_resize(temp_land_indexes_pool, 0);
-		array_resize(temp_air_indexes_pool, 0);
-		array_resize(temp_sea_indexes_pool, 0);
-		
-		array_resize(temp_land_combat_unit_pool, 0);
-		array_resize(temp_air_combat_unit_pool, 0);
-		array_resize(temp_sea_combat_unit_pool, 0);
-		
-		// Decrement Battle Faction Index
-		temp_battle_faction_index--;
-	}
-	
-	// Check if Hostile Faction Relationships Exist
-	if (temp_faction_hostile_relationships_count <= 0)
-	{
-		// End Battle Behaviour
-		battle_instance.battle_exists = false;
-		return;
-	}
-	
-	// Sort Battle's Choreography Actors and Index the Actors into the Battle's Choreography Actors DS Map
-	celestial_battle_assign_depth_choreography_actors(battle_instance);
 }
 
 /// @function celestial_battle_add_choreography_actor(battle_instance, actor_combat_unit_instance);
@@ -632,10 +487,6 @@ function celestial_battle_add_choreography_actor(battle_instance, actor_combat_u
 			
 			battle_tile_dx: 0,
 			battle_tile_dy: 0,
-			
-			// Actor Position Variables
-			actor_offset_x: 0,
-			actor_offset_y: 0,
 			
 			// Actor Action Variables
 			actor_action_type: -1,
@@ -860,4 +711,29 @@ function celestial_battle_clear_choreography_actions(battle_instance)
 	
 	array_resize(battle_instance.battle_choreography_actions, 0);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+function celestial_battle_damage_combat_unit(celestial_combat_unit, damage_value)
+{
+	//
+	celestial_combat_unit.combat_unit_health -= damage_value;
+	
+	//
+	if (celestial_combat_unit.combat_unit_health > 0)
+	{
+		//
+		return;
+	}
+	
+	//
+	if (instance_exists(celestial_combat_unit.unit_instance))
+	{
+		//
+		celestial_unit_remove_combat_unit(celestial_combat_unit.unit_instance, celestial_combat_unit)
+	}
+	
+	//
+	instance_destroy(celestial_combat_unit);
+}
+
 

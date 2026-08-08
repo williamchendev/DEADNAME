@@ -7,8 +7,11 @@ persistent = true;
 // Unit Instance Variable
 unit_instance = noone;
 
-// Combat Unit Type
+// Combat Unit Variables
 combat_unit_type = -1;
-
-// Combat Unit Properties
 combat_unit_health = -1;
+
+// Combat Grid Variables
+combat_grid_column = -1;
+combat_grid_row = -1;
+

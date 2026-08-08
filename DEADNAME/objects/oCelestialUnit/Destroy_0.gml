@@ -30,5 +30,12 @@ if (instance_exists(celestial_body_instance))
 	}
 }
 
+// Check if this Celestial Unit belongs to a Celestial Faction
+if (instance_exists(unit_faction))
+{
+	// Leave the Celestial Faction
+	celestial_unit_leave_faction(id);
+}
+
 // Inherited Celestial Sub Object Destroy Behaviour
 event_inherited();

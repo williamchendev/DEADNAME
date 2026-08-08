@@ -7,6 +7,18 @@ event_inherited();
 // Initialize Unit Celestial Sub Object Type
 celestial_sub_object_type = CelestialSubObjectType.Unit;
 
+// Terrain Settings
+unit_terrain_type = CelestialUnitTerrainType.Terrestrial;
+
+// Combat Settings
+unit_frontline_combat_units_max = 12;
+unit_midline_combat_units_max = 6;
+unit_backline_combat_units_max = 3;
+
+support_contribution_frontline_combat_units_max = 4;
+support_contribution_midline_combat_units_max = 1;
+support_contribution_backline_combat_units_max = 0;
+
 // Emotion Settings
 emotion_retreat_sprite = sOverworld_Emotion_Retreat;
 emotion_retreat_image_spd = 0.18;
@@ -19,8 +31,29 @@ emotion_battle_popup_animation_multiplier = 3;
 // Initialize Unit Faction
 unit_faction = noone;
 
-// Initialize Unit Sub-Units
+// Initialize Combat Unit Arrays
 combat_units = array_create(0);
+
+frontline_combat_unit_type = array_create(0);
+frontline_combat_unit_instances = array_create(0);
+frontline_combat_unit_count = array_create(0);
+frontline_combat_unit_unengaged_count = array_create(0);
+frontline_combat_unit_engaged = array_create(0);
+frontline_combat_unit_unengaged = array_create(0);
+
+midline_combat_unit_type = array_create(0);
+midline_combat_unit_count = array_create(0);
+midline_combat_unit_instances = array_create(0);
+midline_combat_unit_unengaged_count = array_create(0);
+midline_combat_unit_engaged = array_create(0);
+midline_combat_unit_unengaged = array_create(0);
+
+backline_combat_unit_type = array_create(0);
+backline_combat_unit_count = array_create(0);
+backline_combat_unit_instances = array_create(0);
+backline_combat_unit_unengaged_count = array_create(0);
+backline_combat_unit_engaged = array_create(0);
+backline_combat_unit_unengaged = array_create(0);
 
 repeat (irandom_range(3, 8))
 {

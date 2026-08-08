@@ -68,3 +68,7 @@ square_uv_vertex_buffer = -1;
 // Destroy DS Lists
 ds_list_destroy(pathfinding_queue_list);
 pathfinding_queue_list = -1;
+
+// Destroy DS Maps
+ds_map_destroy(faction_relationships);
+faction_relationships = -1;

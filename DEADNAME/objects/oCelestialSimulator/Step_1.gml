@@ -714,7 +714,7 @@ repeat (temp_solar_systems_count)
 							if (temp_actor_struct.combat_unit_faction != temp_battle_matchup_comparison_faction)
 							{
 								// Check if Combat Unit's Faction is hostile to the Comparison Faction
-								if (ds_map_find_value(temp_actor_struct.combat_unit_faction.relationships, temp_battle_matchup_comparison_faction) == CelestialFactionRelationshipType.Hostile)
+								if (celestial_faction_is_relationship_hostile(temp_actor_struct.combat_unit_faction.relationships, temp_battle_matchup_comparison_faction))
 								{
 									// Add Comparison Faction to Hostile Factions Array and Increment Hostile Factions Count
 									array_push(temp_battle_matchup_hostile_factions_array, temp_battle_matchup_total_factions_index);
@@ -1272,7 +1272,7 @@ repeat (temp_solar_systems_count)
 												{
 													// Units are both in the same Faction
 												}
-												else if (instance_exists(temp_unit_instance.unit_faction) and ds_map_find_value(temp_unit_instance.unit_faction.relationships, temp_unit_instance.unit_behaviour_target_instance.unit_faction) == CelestialFactionRelationshipType.Hostile)
+												else if (celestial_faction_is_relationship_hostile(temp_unit_instance.unit_faction, temp_unit_instance.unit_behaviour_target_instance.unit_faction))
 												{
 													// Unit is Hostile to Target Unit - Create a new Celestial Battle between the two Units if eligible to do so
 													if (!temp_unit_instance.engaged_in_battle)
@@ -1294,8 +1294,7 @@ repeat (temp_solar_systems_count)
 														}
 														
 														// Add Unit Instances to Battle
-														celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance);
-														celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance.unit_behaviour_target_instance);
+														celestial_battle_add_primary_units(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance, temp_unit_instance.unit_behaviour_target_instance);
 														
 														// Check if either of the Unit Instances are currently selected by the Player
 														if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance or temp_unit_instance.unit_behaviour_target_instance == CelestialSimulator.sub_object_selected_instance)
@@ -1377,7 +1376,7 @@ repeat (temp_solar_systems_count)
 											var temp_pathfinding_node_units_array_unit_instance = array_get(pathfinding_node_units_array[temp_unit_instance.pathfinding_node_index], temp_pathfinding_node_units_array_index);
 											
 											// Add Unit Instance to Battle
-											if (ds_map_find_value(temp_unit_instance.unit_faction.relationships, temp_pathfinding_node_units_array_unit_instance.unit_faction) == CelestialFactionRelationshipType.Hostile)
+											if (celestial_faction_is_relationship_hostile(temp_unit_instance.unit_faction, temp_pathfinding_node_units_array_unit_instance.unit_faction))
 											{
 												// Instantiate and Establish Celestial Battle Instance
 												var temp_pathfinding_node_unit_battle_instance = celestial_battle_create(id);
@@ -1396,8 +1395,7 @@ repeat (temp_solar_systems_count)
 												}
 												
 												// Add Unit Instances to Battle
-												celestial_battle_add_unit(temp_pathfinding_node_unit_battle_instance, temp_unit_instance);
-												celestial_battle_add_unit(temp_pathfinding_node_unit_battle_instance, temp_pathfinding_node_units_array_unit_instance);
+												celestial_battle_add_primary_units(temp_pathfinding_node_unit_battle_instance, temp_unit_instance, temp_pathfinding_node_units_array_unit_instance);
 												
 												// Check if either of the Unit Instances are currently selected by the Player
 												if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance or temp_pathfinding_node_units_array_unit_instance == CelestialSimulator.sub_object_selected_instance)
@@ -1491,7 +1489,7 @@ repeat (temp_solar_systems_count)
 							}
 							
 							// Add Unit Instance to Battle
-							celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
+							//celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
 						}
 					}
 					
@@ -1539,7 +1537,7 @@ repeat (temp_solar_systems_count)
 							if (temp_unit_collision_check_battle_dot_product >= temp_battle_check_instance.battle_near_collision_threshold)
 							{
 								// Add Unit Instance to Battle
-								celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
+								//celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
 							}
 							else if (temp_unit_collision_check_battle_dot_product >= temp_battle_check_instance.battle_far_collision_threshold and array_get_index(temp_unit_instance.unit_battle_within_timed_collision_check_battles, temp_battle_check_instance) == -1)
 							{

@@ -409,7 +409,7 @@ else if (temp_input_select or temp_input_action)
 												{
 													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Regroup;
 												}
-												else if (instance_exists(sub_object_selected_instance.unit_faction) and ds_map_find_value(sub_object_selected_instance.unit_faction.relationships, temp_sub_object_action_inst.unit_faction) == CelestialFactionRelationshipType.Hostile)
+												else if (celestial_faction_is_relationship_hostile(sub_object_selected_instance.unit_faction, temp_sub_object_action_inst.unit_faction))
 												{
 													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Attack;
 												}

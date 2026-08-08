@@ -4,11 +4,12 @@
 // Initialize as Persistent Object
 persistent = true;
 
-// Index Faction within Celestial Simulator
-array_push(CelestialSimulator.factions, id);
+// Initialize Celestial Faction
+celestial_faction_init(id);
+
+// Faction Variables
+faction_id = -1;
 
 // Initialize Faction Arrays
 units = array_create(0);
 
-// Initialize Faction Relationship DS Map
-relationships = ds_map_create();

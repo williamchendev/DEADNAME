@@ -50,43 +50,116 @@ celestial_body_instance = noone;
 pathfinding_node_a_index = -1;
 pathfinding_node_b_index = -1;
 
-// Initialize Battle Arrays
-battle_factions = array_create(0);
-battle_units = array_create(0);
-battle_land_priority_pools = array_create(0);
-battle_air_priority_pools = array_create(0);
-battle_sea_priority_pools = array_create(0);
+// Initialize Battle Unit & Faction Variables
+battle_faction_a = noone;
+battle_faction_b = noone;
 
-// Initialize Battle Choreography Arrays & DS Map
-battle_choreography_actors_map = ds_map_create();
-battle_choreography_actors = array_create(0);
-battle_choreography_actors_battle_column_sizes = array_create(0);
-battle_choreography_actions = array_create(0);
+battle_primary_unit_a = noone;
+battle_primary_unit_b = noone;
 
-// Populate Battle Array with Default Faction
-array_push(battle_factions, noone);
-array_push(battle_units, array_create(0));
+battle_supporting_units_a = array_create(0);
+battle_supporting_units_b = array_create(0);
 
-// Initialize Empty Battle Priority Pools
-var temp_default_faction_battle_land_priority_pool = array_create(CelestialBattlePriorityRankMax);
-var temp_default_faction_battle_air_priority_pool = array_create(CelestialBattlePriorityRankMax);
-var temp_default_faction_battle_sea_priority_pool = array_create(CelestialBattlePriorityRankMax);
+// Initialize Battle Combat Unit Variables
+battle_combat_units = array_create(0);
 
-// Iterate through Battle Priority Pools to create Empty Sub-Unit Arrays
-var temp_priority_rank_index = 0;
+battle_combat_units_a = array_create(0);
+battle_combat_units_b = array_create(0);
 
-repeat (CelestialBattlePriorityRankMax)
+battle_frontline_combat_units_a = array_create(0);
+battle_midline_combat_units_a = array_create(0);
+battle_backline_combat_units_a = array_create(0);
+
+battle_frontline_combat_units_b = array_create(0);
+battle_midline_combat_units_b = array_create(0);
+battle_backline_combat_units_b = array_create(0);
+
+battle_frontline_available_slots_a = array_create(0);
+battle_midline_available_slots_a = array_create(0);
+battle_backline_available_slots_a = array_create(0);
+
+battle_frontline_available_slots_b = array_create(0);
+battle_midline_available_slots_b = array_create(0);
+battle_backline_available_slots_b = array_create(0);
+
+battle_frontline_available_slots_count_a = 0;
+battle_midline_available_slots_count_a = 0;
+battle_backline_available_slots_count_a = 0;
+
+battle_frontline_available_slots_count_b = 0;
+battle_midline_available_slots_count_b = 0;
+battle_backline_available_slots_count_b = 0;
+
+// Initialize & Populate Battle's Empty Combat Grid Arrays
+battle_combat_grid_a = array_create(CelestialBattleCombatGridColumns);
+battle_combat_grid_b = array_create(CelestialBattleCombatGridColumns);
+
+battle_combat_grid_instances_a = array_create(CelestialBattleCombatGridColumns);
+battle_combat_grid_instances_b = array_create(CelestialBattleCombatGridColumns);
+
+var temp_battle_combat_grid_column_index = 0;
+
+repeat (CelestialBattleCombatGridColumns)
 {
-	// Create and Index Empty Priority Rank Sub-Unit Array
-	array_set(temp_default_faction_battle_land_priority_pool, temp_priority_rank_index, array_create(0));
-	array_set(temp_default_faction_battle_air_priority_pool, temp_priority_rank_index, array_create(0));
-	array_set(temp_default_faction_battle_sea_priority_pool, temp_priority_rank_index, array_create(0));
+	// Initialize Battle Combat Grid's Column Array
+	battle_combat_grid_a[temp_battle_combat_grid_column_index] = array_create(CelestialBattleCombatGridRows, noone);
+	battle_combat_grid_b[temp_battle_combat_grid_column_index] = array_create(CelestialBattleCombatGridRows, noone);
 	
-	// Increment Priority Rank Index
-	temp_priority_rank_index++;
+	battle_combat_grid_instances_a[temp_battle_combat_grid_column_index] = array_create(0);
+	battle_combat_grid_instances_b[temp_battle_combat_grid_column_index] = array_create(0);
+	
+	// Establish Column's Type to index Available Combat Grid Slots properly
+	var temp_column_type_available_slots_a_array = battle_frontline_available_slots_a;
+	var temp_column_type_available_slots_b_array = battle_frontline_available_slots_b;
+	
+	switch (global.celestial_battle_combat_grid_column_type[temp_battle_combat_grid_column_index])
+	{
+		case CelestialBattleColumnType.Midline:
+			// Increment Column Type's Available Slots by the number of Rows within the Column
+			battle_midline_available_slots_count_a += CelestialBattleCombatGridRows;
+			battle_midline_available_slots_count_b += CelestialBattleCombatGridRows;
+			
+			// Set the Column Type's Available Slot Arrays to Midline
+			temp_column_type_available_slots_a_array = battle_midline_available_slots_a;
+			temp_column_type_available_slots_b_array = battle_midline_available_slots_b;
+			break;
+		case CelestialBattleColumnType.Backline:
+			// Increment Column Type's Available Slots by the number of Rows within the Column
+			battle_backline_available_slots_count_a += CelestialBattleCombatGridRows;
+			battle_backline_available_slots_count_b += CelestialBattleCombatGridRows;
+			
+			// Set the Column Type's Available Slot Arrays to Backline
+			temp_column_type_available_slots_a_array = battle_backline_available_slots_a;
+			temp_column_type_available_slots_b_array = battle_backline_available_slots_b;
+			break;
+		case CelestialBattleColumnType.Frontline:
+		default:
+			// Increment Column Type's Available Slots by the number of Rows within the Column
+			battle_frontline_available_slots_count_a += CelestialBattleCombatGridRows;
+			battle_frontline_available_slots_count_b += CelestialBattleCombatGridRows;
+			break;
+	}
+	
+	// Iterate through the Battle Combat Grid Column's Rows to add all Available Slots to their Column Type's Available Slots Array
+	var temp_battle_combat_grid_row_index = 0;
+	
+	repeat (CelestialBattleCombatGridRows)
+	{
+		// Establish the Index of the Combat Grid's Available Slot
+		var temp_available_slot_index = (temp_battle_combat_grid_column_index * CelestialBattleCombatGridRows) + temp_battle_combat_grid_row_index;
+		
+		// Add the Available Slot Index to the Column Type's Available Slots Array
+		array_push(temp_column_type_available_slots_a_array, temp_available_slot_index);
+		array_push(temp_column_type_available_slots_b_array, temp_available_slot_index);
+		
+		// Increment Combat Grid Row Index
+		temp_battle_combat_grid_row_index++;
+	}
+	
+	// Increment Combat Grid Column Index
+	temp_battle_combat_grid_column_index++;
 }
 
-// Index Battle Priority Pools in Battle Instance
-array_push(battle_land_priority_pools, temp_default_faction_battle_land_priority_pool);
-array_push(battle_air_priority_pools, temp_default_faction_battle_air_priority_pool);
-array_push(battle_sea_priority_pools, temp_default_faction_battle_sea_priority_pool);
+// Initialize Battle Choreography Arrays
+battle_choreography_actors = array_create(0);
+battle_choreography_actions = array_create(0);
