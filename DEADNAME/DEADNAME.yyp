@@ -313,6 +313,7 @@
     {"id":{"name":"oCelestialBattle","path":"objects/oCelestialBattle/oCelestialBattle.yy",},},
     {"id":{"name":"oCelestialBody","path":"objects/oCelestialBody/oCelestialBody.yy",},},
     {"id":{"name":"oCelestialCity","path":"objects/oCelestialCity/oCelestialCity.yy",},},
+    {"id":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},},
     {"id":{"name":"oCelestialCombatUnit","path":"objects/oCelestialCombatUnit/oCelestialCombatUnit.yy",},},
     {"id":{"name":"oCelestialFaction","path":"objects/oCelestialFaction/oCelestialFaction.yy",},},
     {"id":{"name":"oCelestialSatellite","path":"objects/oCelestialSatellite/oCelestialSatellite.yy",},},

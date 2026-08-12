@@ -160,6 +160,9 @@ repeat (CelestialBattleCombatGridColumns)
 	temp_battle_combat_grid_column_index++;
 }
 
+// Initialize Battle Combat Action Variables
+battle_combat_actions = array_create(0);
+
 // Initialize Battle Choreography Arrays
 battle_choreography_actors = array_create(0);
 battle_choreography_actions = array_create(0);

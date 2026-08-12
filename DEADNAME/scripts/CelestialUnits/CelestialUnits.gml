@@ -16,7 +16,7 @@ enum CelestialUnitBehaviourType
 	Retreat
 }
 
-#region Unit Types
+#region Combat Units
 // Celestial Combat Unit Enum
 enum CelestialCombatUnitTypes
 {
@@ -53,7 +53,7 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultInfantry] =
 	unit_attack_assassination: false,
 	
 	// Action Settings
-	unit_attack_types: [CelestialUnitActionType.DefaultFirearm],
+	unit_attack_types: [CelestialCombatUnitAction.DefaultFirearm],
 	
 	// Unit Weapon Animation Settings
 	unit_weapon_enabled: true,
@@ -100,7 +100,7 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
 	unit_attack_assassination: false,
 	
 	// Action Settings
-	unit_attack_types: [CelestialUnitActionType.DefaultTankCannon],
+	unit_attack_types: [CelestialCombatUnitAction.DefaultTankCannon],
 	
 	// Unit Weapon Animation Settings
 	unit_weapon_enabled: false,
@@ -120,6 +120,78 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
 };
 #endregion
 
+#region Combat Actions
+// Global Celestial Combat Action Enums
+enum CelestialCombatUnitActionType
+{
+	Attack,
+	Support
+}
+
+enum CelestialCombatUnitAction
+{
+	DefaultFirearm,
+	DefaultTankCannon,
+}
+
+// Global Celestial Combat Actions
+global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultFirearm] =
+{
+	// Action Settings
+	action_type: CelestialCombatUnitActionType.Attack,
+	action_count: 1,
+	action_duration: 5.5,
+	action_instance: noone,
+	
+	// Animation Settings
+	action_animation_type: CelestialCombatUnitActionAnimationType.Firearm,
+	action_animation_count: 3,
+};
+
+global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultTankCannon] =
+{
+	// Action Settings
+	action_type: CelestialCombatUnitActionType.Attack,
+	action_count: 1,
+	action_duration: 5.5,
+	action_instance: noone,
+	
+	// Animation Settings
+	action_animation_type: CelestialCombatUnitActionAnimationType.TankCannon,
+	action_animation_count: 1,
+};
+
+// Celestial Unit Action Animations Enum
+enum CelestialCombatUnitActionAnimationType
+{
+	Firearm,
+	TankCannon
+}
+
+// Global Celestial Unit Action Animations
+global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
+{
+	// Hitmarker Settings
+	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
+	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss,
+	
+	// Linear Projectile Settings
+	linear_projectile_width: 2,
+	linear_projectile_decay: 0.2,
+};
+
+global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
+{
+	// Hitmarker Settings
+	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
+	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss_Large,
+	
+	// Linear Projectile Settings
+	linear_projectile_width: 3,
+	linear_projectile_decay: 0.08,
+};
+#endregion
+
 #region Status Effects
 // Celestial Unit Status Effect Enum
 enum CelestialUnitStatusEffectType
@@ -132,51 +204,6 @@ global.celestial_unit_status_effects[CelestialUnitStatusEffectType.CombatActionS
 {
 	status_effect_name: "Ambushed!",
 	status_effect_duration: 120
-};
-#endregion
-
-#region Action Types
-// Celestial Unit Action Enum
-enum CelestialUnitActionType
-{
-	DefaultFirearm,
-	DefaultTankCannon,
-}
-
-// Global Celestial Unit Action Animations
-global.celestial_unit_action_animations[CelestialUnitActionType.DefaultFirearm] =
-{
-	// Action Settings
-	action_duration: 5.5,
-	
-	// Animation Settings
-	action_animation_count: 3,
-	
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 2,
-	linear_projectile_decay: 0.2,
-	
-};
-
-global.celestial_unit_action_animations[CelestialUnitActionType.DefaultTankCannon] =
-{
-	// Action Settings
-	action_duration: 5.5,
-	
-	// Animation Settings
-	action_animation_count: 1,
-	
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss_Large,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 3,
-	linear_projectile_decay: 0.08,
 };
 #endregion
 

@@ -269,6 +269,7 @@
     {"name":"font_Title","order":3,"path":"fonts/font_Title/font_Title.yy",},
     {"name":"oBulkDynamic_DroppedItem","order":3,"path":"objects/oBulkDynamic_DroppedItem/oBulkDynamic_DroppedItem.yy",},
     {"name":"oCelestialCity","order":1,"path":"objects/oCelestialCity/oCelestialCity.yy",},
+    {"name":"oCelestialCombatAction","order":2,"path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},
     {"name":"oCelestialCombatUnit","order":1,"path":"objects/oCelestialCombatUnit/oCelestialCombatUnit.yy",},
     {"name":"oCelestialSatellite","order":2,"path":"objects/oCelestialSatellite/oCelestialSatellite.yy",},
     {"name":"oCelestialSimulator","order":1,"path":"objects/oCelestialSimulator/oCelestialSimulator.yy",},

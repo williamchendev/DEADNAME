@@ -634,6 +634,225 @@ repeat (temp_solar_systems_count)
 				}
 				
 				#region Battle Choreography
+				// Iterate through and Perform Battle Combat Units Behaviour
+				var temp_combat_unit_count = array_length(temp_battle_instance.battle_combat_units);
+				var temp_combat_unit_index = temp_combat_unit_count - 1;
+				
+				repeat (temp_combat_unit_count)
+				{
+					// Find Battle Combat Unit Instance
+					var temp_combat_unit_instance = temp_battle_instance.battle_combat_units[temp_combat_unit_index];
+					
+					// Establish Action Time Elapsed
+					temp_combat_unit_instance.combat_unit_action_time += CelestialSimulator.global_clock_delta_time;
+					
+					// Check if Combat Unit is performing an Action or reducing their Exhaustion
+					if (temp_combat_unit_instance.combat_unit_action_count > 0)
+					{
+						// Calculate the Action Duration Spend from the Action Time Elapsed
+						var temp_combat_unit_action_duration_time_spend = clamp(temp_combat_unit_instance.combat_unit_action_time, 0, temp_combat_unit_instance.combat_unit_action_duration);
+						
+						// Decrement the Total Action Time Elapsed and the Action Duration Timer by the Action Duration Spend
+						temp_combat_unit_instance.combat_unit_action_time -= temp_combat_unit_action_duration_time_spend;
+						temp_combat_unit_instance.combat_unit_action_duration -= temp_combat_unit_action_duration_time_spend;
+						
+						// Check if the Combat Unit is finished Performing their Action
+						if (temp_combat_unit_instance.combat_unit_action_duration <= 0)
+						{
+							// Initialize Combat Action Instance
+							var temp_new_combat_action_instance = instance_create_depth(0, 0, 0, global.celestial_combat_unit_actions[temp_combat_unit_instance.combat_unit_action].action_instance);
+							
+							// Index Combat Action Instance within the Celestial Battle's Combat Actions Array
+							array_insert(temp_battle_instance.battle_combat_actions, 0, temp_new_combat_action_instance);
+							temp_new_combat_action_instance.battle_instance = temp_battle_instance;
+							
+							// Set the Combat Action Instance's Combat Unit and Combat Unit Action Behaviour
+							temp_new_combat_action_instance.combat_unit = temp_combat_unit_instance;
+							temp_new_combat_action_instance.combat_unit_action = temp_combat_unit_instance.combat_unit_action;
+							
+							// Set the Combat Action Instance's Target Combat Unit and Target Combat Grid Variables
+							temp_new_combat_action_instance.target_combat_unit = temp_combat_unit_instance.combat_unit_action_target_inst;
+							temp_new_combat_action_instance.target_combat_grid_side = temp_combat_unit_instance.combat_unit_action_target_grid_side;
+							temp_new_combat_action_instance.target_combat_grid_column = temp_combat_unit_instance.combat_unit_action_target_grid_column;
+							temp_new_combat_action_instance.target_combat_grid_row = temp_combat_unit_instance.combat_unit_action_target_grid_row;
+							
+							// Decrement Combat Unit's Action Count
+							temp_combat_unit_instance.combat_unit_action_count--;
+							
+							// Check if Combat Unit has more Actions to Perform
+							if (temp_combat_unit_instance.combat_unit_action_count > 0)
+							{
+								// Reset Combat Unit's Action Duration
+								temp_combat_unit_instance.combat_unit_action_duration = global.celestial_combat_unit_actions[temp_combat_unit_instance.combat_unit_action].action_duration;
+							}
+						}
+					}
+					else if (temp_combat_unit_instance.unit_instance.unit_behaviour != CelestialUnitBehaviourType.Retreat)
+					{
+						// Find the Combat Unit's Agility Value
+						var temp_combat_unit_agility_value = global.celestial_combat_units[temp_combat_unit_instance.combat_unit_type].unit_agility;
+						
+						// Calculate the Action Exhaustion Spend from the Action Time Elapsed
+						var temp_combat_unit_action_exhaustion_time_spend = clamp(temp_combat_unit_instance.combat_unit_action_time * temp_combat_unit_agility_value, 0, temp_combat_unit_instance.combat_unit_action_exhaustion);
+						
+						// Decrement Total Action Time Elapsed and the Combat Unit's Action Exhaustion by their Agility Value
+						temp_combat_unit_instance.combat_unit_action_exhaustion -= temp_combat_unit_action_exhaustion_time_spend;
+						temp_combat_unit_instance.combat_unit_action_time -= temp_combat_unit_action_exhaustion_time_spend / temp_combat_unit_agility_value;
+						
+						// Check if the Combat Unit can perform an Action
+						if (temp_combat_unit_instance.combat_unit_action_exhaustion <= 0)
+						{
+							// Reset Combat Unit's Action Selection
+							temp_combat_unit_instance.combat_unit_action = -1;
+							temp_combat_unit_instance.combat_unit_action_target_inst = noone;
+							
+							// Calculate Combat Unit's Action Selection
+							var temp_combat_unit_action = CelestialCombatUnitAction.DefaultFirearm;
+							
+							// Perform Combat Unit Action's Behaviour based on Combat Unit Action Type
+							switch (global.celestial_combat_unit_actions[temp_combat_unit_action].action_type)
+							{
+								case CelestialCombatUnitActionType.Attack:
+									// Establish Combat Unit Attack Target
+									var temp_combat_unit_attack_target_instance = noone;
+									
+									// Find Valid Combat Unit Instance as Attack Target relative to enemies opposing the Combat Unit's Battle Platform Orientation
+									switch (temp_combat_unit_instance.combat_grid_facing_direction)
+									{
+										case CelestialBattlePlatformSide.Left:
+											// Iterate through Combat Grid's Columns to find Valid Target
+											var temp_combat_grid_b_attack_column_index = 0;
+											
+											repeat (CelestialBattleCombatGridColumns)
+											{
+												// Find number of Combat Grid Column's Instances
+												var temp_combat_grid_b_attack_column_instance_count = array_length(temp_battle_instance.battle_combat_grid_instances_b[temp_combat_grid_b_attack_column_index]);
+												
+												// Check if Valid Instance exists in the Combat Grid Column
+												if (temp_combat_grid_b_attack_column_instance_count > 0)
+												{
+													// Select random Valid Instance from Combat Grid Column
+													var temp_random_combat_grid_b_attack_column_instance_index = irandom(temp_combat_grid_b_attack_column_instance_count - 1);
+													
+													// Set random Valid Instance as Attack Target
+													temp_combat_unit_attack_target_instance = array_get(temp_battle_instance.battle_combat_grid_instances_b[temp_combat_grid_b_attack_column_index], temp_random_combat_grid_b_attack_column_instance_index);
+													
+													// Exit Loop
+													break;
+												}
+												
+												// Increment Combat Grid Attack Column Index
+												temp_combat_grid_b_attack_column_index++;
+											}
+											break;
+										case CelestialBattlePlatformSide.Right:
+											// Iterate through Combat Grid's Columns to find Valid Target
+											var temp_combat_grid_a_attack_column_index = 0;
+											
+											repeat (CelestialBattleCombatGridColumns)
+											{
+												// Find number of Combat Grid Column's Instances
+												var temp_combat_grid_a_attack_column_instance_count = array_length(temp_battle_instance.battle_combat_grid_instances_a[temp_combat_grid_a_attack_column_index]);
+												
+												// Check if Valid Instance exists in the Combat Grid Column
+												if (temp_combat_grid_a_attack_column_instance_count > 0)
+												{
+													// Select random Valid Instance from Combat Grid Column
+													var temp_random_combat_grid_a_attack_column_instance_index = irandom(temp_combat_grid_a_attack_column_instance_count - 1);
+													
+													// Set random Valid Instance as Attack Target
+													temp_combat_unit_attack_target_instance = array_get(temp_battle_instance.battle_combat_grid_instances_a[temp_combat_grid_a_attack_column_index], temp_random_combat_grid_a_attack_column_instance_index);
+													
+													// Exit Loop
+													break;
+												}
+												
+												// Increment Combat Grid Attack Column Index
+												temp_combat_grid_a_attack_column_index++;
+											}
+											break;
+									}
+									
+									// Set Combat Unit's Action Target Instance as the Attack Target Instance
+									temp_combat_unit_instance.combat_unit_action_target_inst = temp_combat_unit_attack_target_instance;
+									break;
+								case CelestialCombatUnitActionType.Support:
+									// Establish Combat Unit Support Target
+									var temp_combat_unit_support_target_instance = noone;
+									
+									// Find Valid Combat Unit Instance as Support Target relative to enemies opposing the Combat Unit's Battle Platform Orientation
+									switch (temp_combat_unit_instance.combat_grid_facing_direction)
+									{
+										case CelestialBattlePlatformSide.Left:
+											// Iterate through Combat Grid's Columns to find Valid Target
+											break;
+										case CelestialBattlePlatformSide.Right:
+											// Iterate through Combat Grid's Columns to find Valid Target
+											break;
+									}
+									
+									// Set Combat Unit's Action Target Instance as the Support Target Instance
+									temp_combat_unit_instance.combat_unit_action_target_inst = temp_combat_unit_support_target_instance;
+									break;
+							}
+							
+							// Check if Valid Combat Unit Target Instance has been identified
+							if (instance_exists(temp_combat_unit_instance.combat_unit_action_target_inst))
+							{
+								// Set Combat Unit's Action Behaviour
+								temp_combat_unit_instance.combat_unit_action = temp_combat_unit_action;
+								temp_combat_unit_instance.combat_unit_action_count = global.celestial_combat_unit_actions[temp_combat_unit_action].action_count;
+								temp_combat_unit_instance.combat_unit_action_duration = global.celestial_combat_unit_actions[temp_combat_unit_action].action_duration;
+								
+								// Set Combat Unit's Action Target Variables
+								temp_combat_unit_instance.combat_unit_action_target_grid_side = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_facing_direction;
+								temp_combat_unit_instance.combat_unit_action_target_grid_column = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_column;
+								temp_combat_unit_instance.combat_unit_action_target_grid_row = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_row;
+							}
+							else
+							{
+								// Combat Unit has no Valid Targets and must skip their Action behaviour
+							}
+							
+							//
+							temp_combat_unit_instance.combat_unit_action_exhaustion += 1;
+						}
+					}
+					
+					//
+					
+					
+					// Decrement Battle Combat Unit Index
+					temp_combat_unit_index--;
+				}
+				
+				// Iterate through and Perform Battle Combat Actions Behaviour
+				var temp_combat_action_count = array_length(temp_battle_instance.battle_combat_actions);
+				var temp_combat_action_index = temp_combat_action_count - 1;
+				
+				repeat (temp_combat_action_count)
+				{
+					// Find Battle Combat Action Instance
+					var temp_combat_action_instance = temp_battle_instance.battle_combat_actions[temp_combat_action_index];
+					
+					//
+					temp_combat_action_instance.action_timer -= CelestialSimulator.global_clock_delta_time;
+					
+					//
+					if (temp_combat_action_instance.action_timer <= 0)
+					{
+						//
+						temp_combat_action_instance.battle_instance = noone;
+						array_delete(temp_battle_instance.battle_combat_actions, temp_combat_action_index, 1);
+						
+						//
+						instance_destroy(temp_combat_action_instance);
+					}
+					
+					// Decrement Battle Combat Action Index
+					temp_combat_action_index--;
+				}
+				
 				// Iterate through and Perform Battle Choreography Behaviour
 				var temp_battle_choreography_actors_count = array_length(temp_battle_instance.battle_choreography_actors);
 				var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
