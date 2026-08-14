@@ -108,14 +108,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 		if (temp_first_unit_can_add_units)
 		{
 			// Check Combat Grid Column Types for available slots for the First Unit's Combat Units
-			if (battle_instance.battle_frontline_available_slots_count_a > 0 and temp_first_unit.frontline_combat_unit_unengaged_count > 0)
+			if (battle_instance.battle_frontline_available_slots_count_a > 0 and array_length(temp_first_unit.frontline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Frontline Combat Unit from the First Unit
-				var temp_random_frontline_combat_unit_index_a = irandom(temp_first_unit.frontline_combat_unit_unengaged_count - 1);
+				var temp_random_frontline_combat_unit_index_a = irandom(array_length(temp_first_unit.frontline_combat_unit_unengaged) - 1);
 				var temp_random_frontline_combat_unit_instance_a = array_get(temp_first_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_a);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_first_unit.frontline_combat_unit_unengaged_count--;
+				temp_first_unit.frontline_combat_unit_unengaged_count[array_get_index(temp_first_unit.frontline_combat_unit_type, temp_random_frontline_combat_unit_instance_a.combat_unit_type)] -= 1;
 				array_delete(temp_first_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_a, 1);
 				array_push(temp_first_unit.frontline_combat_unit_engaged, temp_random_frontline_combat_unit_instance_a);
 				
@@ -135,7 +135,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_frontline_available_slots_a, temp_random_frontline_combat_grid_available_slot_index_a, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_frontline_combat_unit_instance_a.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_frontline_combat_unit_instance_a.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_a div CelestialBattleCombatGridRows;
 				temp_random_frontline_combat_unit_instance_a.combat_grid_row = temp_random_frontline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -148,14 +148,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				// Reset Combat Unit Instance's Celestial Battle Behaviour
 				celestial_battle_reset_combat_unit(temp_random_frontline_combat_unit_instance_a);
 			}
-			else if (battle_instance.battle_midline_available_slots_count_a > 0 and temp_first_unit.midline_combat_unit_unengaged_count > 0)
+			else if (battle_instance.battle_midline_available_slots_count_a > 0 and array_length(temp_first_unit.midline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Midline Combat Unit from the First Unit
-				var temp_random_midline_combat_unit_index_a = irandom(temp_first_unit.midline_combat_unit_unengaged_count - 1);
+				var temp_random_midline_combat_unit_index_a = irandom(array_length(temp_first_unit.midline_combat_unit_unengaged) - 1);
 				var temp_random_midline_combat_unit_instance_a = array_get(temp_first_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_a);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_first_unit.midline_combat_unit_unengaged_count--;
+				temp_first_unit.midline_combat_unit_unengaged_count[array_get_index(temp_first_unit.midline_combat_unit_type, temp_random_midline_combat_unit_instance_a.combat_unit_type)] -= 1;
 				array_delete(temp_first_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_a, 1);
 				array_push(temp_first_unit.midline_combat_unit_engaged, temp_random_midline_combat_unit_instance_a);
 				
@@ -175,7 +175,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_midline_available_slots_a, temp_random_midline_combat_grid_available_slot_index_a, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_midline_combat_unit_instance_a.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_midline_combat_unit_instance_a.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_a div CelestialBattleCombatGridRows;
 				temp_random_midline_combat_unit_instance_a.combat_grid_row = temp_random_midline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -188,14 +188,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				// Reset Combat Unit Instance's Celestial Battle Behaviour
 				celestial_battle_reset_combat_unit(temp_random_midline_combat_unit_instance_a);
 			}
-			else if (battle_instance.battle_backline_available_slots_count_a > 0 and temp_first_unit.backline_combat_unit_unengaged_count > 0)
+			else if (battle_instance.battle_backline_available_slots_count_a > 0 and array_length(temp_first_unit.backline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Backline Combat Unit from the First Unit
-				var temp_random_backline_combat_unit_index_a = irandom(temp_first_unit.backline_combat_unit_unengaged_count - 1);
+				var temp_random_backline_combat_unit_index_a = irandom(array_length(temp_first_unit.backline_combat_unit_unengaged) - 1);
 				var temp_random_backline_combat_unit_instance_a = array_get(temp_first_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_a);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_first_unit.backline_combat_unit_unengaged_count--;
+				temp_first_unit.backline_combat_unit_unengaged_count[array_get_index(temp_first_unit.backline_combat_unit_type, temp_random_backline_combat_unit_instance_a.combat_unit_type)] -= 1;
 				array_delete(temp_first_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_a, 1);
 				array_push(temp_first_unit.backline_combat_unit_engaged, temp_random_backline_combat_unit_instance_a);
 				
@@ -215,7 +215,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_backline_available_slots_a, temp_random_backline_combat_grid_available_slot_index_a, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_backline_combat_unit_instance_a.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_a div CelestialBattleCombatGridColumns;
+				temp_random_backline_combat_unit_instance_a.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_a div CelestialBattleCombatGridRows;
 				temp_random_backline_combat_unit_instance_a.combat_grid_row = temp_random_backline_combat_grid_available_slot_index_a mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -239,14 +239,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 		if (temp_second_unit_can_add_units)
 		{
 			// Check Combat Grid Column Types for available slots for the Second Unit's Combat Units
-			if (battle_instance.battle_frontline_available_slots_count_b > 0 and temp_second_unit.frontline_combat_unit_unengaged_count > 0)
+			if (battle_instance.battle_frontline_available_slots_count_b > 0 and array_length(temp_second_unit.frontline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Frontline Combat Unit from the Second Unit
-				var temp_random_frontline_combat_unit_index_b = irandom(temp_second_unit.frontline_combat_unit_unengaged_count - 1);
+				var temp_random_frontline_combat_unit_index_b = irandom(array_length(temp_second_unit.frontline_combat_unit_unengaged) - 1);
 				var temp_random_frontline_combat_unit_instance_b = array_get(temp_second_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_b);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_second_unit.frontline_combat_unit_unengaged_count--;
+				temp_second_unit.frontline_combat_unit_unengaged_count[array_get_index(temp_second_unit.frontline_combat_unit_type, temp_random_frontline_combat_unit_instance_b.combat_unit_type)] -= 1;
 				array_delete(temp_second_unit.frontline_combat_unit_unengaged, temp_random_frontline_combat_unit_index_b, 1);
 				array_push(temp_second_unit.frontline_combat_unit_engaged, temp_random_frontline_combat_unit_instance_b);
 				
@@ -266,7 +266,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_frontline_available_slots_b, temp_random_frontline_combat_grid_available_slot_index_b, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_frontline_combat_unit_instance_b.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_frontline_combat_unit_instance_b.combat_grid_column = temp_random_frontline_combat_grid_available_slot_index_b div CelestialBattleCombatGridRows;
 				temp_random_frontline_combat_unit_instance_b.combat_grid_row = temp_random_frontline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -279,14 +279,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				// Reset Combat Unit Instance's Celestial Battle Behaviour
 				celestial_battle_reset_combat_unit(temp_random_frontline_combat_unit_instance_b);
 			}
-			else if (battle_instance.battle_midline_available_slots_count_b > 0 and temp_second_unit.midline_combat_unit_unengaged_count > 0)
+			else if (battle_instance.battle_midline_available_slots_count_b > 0 and array_length(temp_second_unit.midline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Midline Combat Unit from the Second Unit
-				var temp_random_midline_combat_unit_index_b = irandom(temp_second_unit.midline_combat_unit_unengaged_count - 1);
+				var temp_random_midline_combat_unit_index_b = irandom(array_length(temp_second_unit.midline_combat_unit_unengaged) - 1);
 				var temp_random_midline_combat_unit_instance_b = array_get(temp_second_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_b);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_second_unit.midline_combat_unit_unengaged_count--;
+				temp_second_unit.midline_combat_unit_unengaged_count[array_get_index(temp_second_unit.midline_combat_unit_type, temp_random_midline_combat_unit_instance_b.combat_unit_type)] -= 1;
 				array_delete(temp_second_unit.midline_combat_unit_unengaged, temp_random_midline_combat_unit_index_b, 1);
 				array_push(temp_second_unit.midline_combat_unit_engaged, temp_random_midline_combat_unit_instance_b);
 				
@@ -306,7 +306,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_midline_available_slots_b, temp_random_midline_combat_grid_available_slot_index_b, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_midline_combat_unit_instance_b.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_midline_combat_unit_instance_b.combat_grid_column = temp_random_midline_combat_grid_available_slot_index_b div CelestialBattleCombatGridRows;
 				temp_random_midline_combat_unit_instance_b.combat_grid_row = temp_random_midline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -319,14 +319,14 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				// Reset Combat Unit Instance's Celestial Battle Behaviour
 				celestial_battle_reset_combat_unit(temp_random_midline_combat_unit_instance_b);
 			}
-			else if (battle_instance.battle_backline_available_slots_count_b > 0 and temp_second_unit.backline_combat_unit_unengaged_count > 0)
+			else if (battle_instance.battle_backline_available_slots_count_b > 0 and array_length(temp_second_unit.backline_combat_unit_unengaged) > 0)
 			{
 				// Find random Unengaged Backline Combat Unit from the Second Unit
-				var temp_random_backline_combat_unit_index_b = irandom(temp_second_unit.backline_combat_unit_unengaged_count - 1);
+				var temp_random_backline_combat_unit_index_b = irandom(array_length(temp_second_unit.backline_combat_unit_unengaged) - 1);
 				var temp_random_backline_combat_unit_instance_b = array_get(temp_second_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_b);
 				
 				// Move Selected Combat Unit from Unengaged Array to Engaged Array
-				temp_second_unit.backline_combat_unit_unengaged_count--;
+				temp_second_unit.backline_combat_unit_unengaged_count[array_get_index(temp_second_unit.backline_combat_unit_type, temp_random_backline_combat_unit_instance_b.combat_unit_type)] -= 1;
 				array_delete(temp_second_unit.backline_combat_unit_unengaged, temp_random_backline_combat_unit_index_b, 1);
 				array_push(temp_second_unit.backline_combat_unit_engaged, temp_random_backline_combat_unit_instance_b);
 				
@@ -346,7 +346,7 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 				array_delete(battle_instance.battle_backline_available_slots_b, temp_random_backline_combat_grid_available_slot_index_b, 1);
 				
 				// Set Selected Combat Unit's Column and Row from Available Slot Index
-				temp_random_backline_combat_unit_instance_b.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_b div CelestialBattleCombatGridColumns;
+				temp_random_backline_combat_unit_instance_b.combat_grid_column = temp_random_backline_combat_grid_available_slot_index_b div CelestialBattleCombatGridRows;
 				temp_random_backline_combat_unit_instance_b.combat_grid_row = temp_random_backline_combat_grid_available_slot_index_b mod CelestialBattleCombatGridRows;
 				
 				// Set Selected Combat Unit's Facing Direction
@@ -366,6 +366,22 @@ function celestial_battle_add_primary_units(battle_instance, unit_instance_a, un
 			}
 		}
 	}
+	
+	// Index Battle in Unit Instance's Engaged Celestial Battles Array
+	array_push(temp_first_unit.engaged_battles, battle_instance);
+	array_push(temp_second_unit.engaged_battles, battle_instance);
+	
+	// Update that Unit Instance has entered Combat
+	temp_first_unit.engaged_in_battle = true;
+	temp_second_unit.engaged_in_battle = true;
+	
+	// Update Unit Instance's Battle Popup
+	temp_first_unit.emotion_battle_popup_timer = temp_first_unit.emotion_battle_popup_duration;
+	temp_second_unit.emotion_battle_popup_timer = temp_second_unit.emotion_battle_popup_duration;
+	
+	// Randomize Unit Instance's Collision Check Timer
+	temp_first_unit.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
+	temp_second_unit.collision_check_timer = random(CelestialSimulator.global_collision_check_interval);
 }
 
 /// @function celestial_battle_add_unit(battle_instance, unit_instance);
@@ -393,11 +409,84 @@ function celestial_battle_add_supporting_unit(battle_instance, unit_instance)
 
 function celestial_battle_remove_unit(battle_instance, unit_instance)
 {
-	// Check if Battle Exists
-	if (!battle_instance.battle_exists)
+	//
+	if (unit_instance == battle_instance.battle_primary_unit_a)
 	{
-		// Battle Instance does not exist - Early Exit
-		return;
+		//
+		battle_instance.battle_primary_unit_a = noone;
+		
+		//
+		battle_instance.battle_exists = false;
+	}
+	else if (unit_instance == battle_instance.battle_primary_unit_b)
+	{
+		//
+		battle_instance.battle_primary_unit_b = noone;
+		
+		//
+		battle_instance.battle_exists = false;
+	}
+	else
+	{
+		
+	}
+	
+	// Iterate through Celestial Unit's Engaged Frontline Combat Units Array to remove them from the current Battle
+	var temp_frontline_engaged_combat_unit_count = array_length(unit_instance.frontline_combat_unit_engaged);
+	var temp_frontline_engaged_combat_unit_index = temp_frontline_engaged_combat_unit_count - 1;
+	
+	repeat (temp_frontline_engaged_combat_unit_count)
+	{
+		// Find the Engaged Combat Unit Instance
+		var temp_frontline_engaged_combat_unit_instance = unit_instance.frontline_combat_unit_engaged[temp_frontline_engaged_combat_unit_index];
+		
+		// Remove the Engaged Combat Unit Instance from the Celestial Battle
+		celestial_battle_remove_combat_unit(battle_instance, temp_frontline_engaged_combat_unit_instance);
+		
+		// Decrement the Engaged Combat Unit Index
+		temp_frontline_engaged_combat_unit_index--;
+	}
+	
+	// Iterate through Celestial Unit's Engaged Midline Combat Units Array to remove them from the current Battle
+	var temp_midline_engaged_combat_unit_count = array_length(unit_instance.midline_combat_unit_engaged);
+	var temp_midline_engaged_combat_unit_index = temp_midline_engaged_combat_unit_count - 1;
+	
+	repeat (temp_midline_engaged_combat_unit_count)
+	{
+		// Find the Engaged Combat Unit Instance
+		var temp_midline_engaged_combat_unit_instance = unit_instance.midline_combat_unit_engaged[temp_midline_engaged_combat_unit_index];
+		
+		// Remove the Engaged Combat Unit Instance from the Celestial Battle
+		celestial_battle_remove_combat_unit(battle_instance, temp_midline_engaged_combat_unit_instance);
+		
+		// Decrement the Engaged Combat Unit Index
+		temp_midline_engaged_combat_unit_index--;
+	}
+	
+	// Iterate through Celestial Unit's Engaged Backline Combat Units Array to remove them from the current Battle
+	var temp_backline_engaged_combat_unit_count = array_length(unit_instance.backline_combat_unit_engaged);
+	var temp_backline_engaged_combat_unit_index = temp_backline_engaged_combat_unit_count - 1;
+	
+	repeat (temp_backline_engaged_combat_unit_count)
+	{
+		// Find the Engaged Combat Unit Instance
+		var temp_backline_engaged_combat_unit_instance = unit_instance.backline_combat_unit_engaged[temp_backline_engaged_combat_unit_index];
+		
+		// Remove the Engaged Combat Unit Instance from the Celestial Battle
+		celestial_battle_remove_combat_unit(battle_instance, temp_backline_engaged_combat_unit_instance);
+		
+		// Decrement the Engaged Combat Unit Index
+		temp_backline_engaged_combat_unit_index--;
+	}
+	
+	// Remove Battle from Celestial Unit's Engaged Celestial Battles Array
+	array_delete(unit_instance.engaged_battles, array_get_index(unit_instance.engaged_battles, battle_instance), 1);
+	
+	// Check if Celestial Unit is still engaged in Battle
+	if (array_length(unit_instance.engaged_battles) < 1)
+	{
+		// Toggle Celestial Unit is no longer participating in Combat
+		unit_instance.engaged_in_battle = false;
 	}
 }
 
@@ -417,6 +506,157 @@ function celestial_battle_reset_combat_unit(combat_unit_instance)
 	combat_unit_instance.combat_unit_action_target_grid_column = -1;
 	combat_unit_instance.combat_unit_action_target_grid_row = -1;
 }
+
+/// @function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance);
+function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance)
+{
+	// Find Combat Unit's Index within the Celestial Battle's Combat Units Array
+	var temp_battle_combat_unit_index = array_get_index(battle_instance.battle_combat_units, combat_unit_instance);
+	
+	// Check if Combat Unit exists within the Celestial Battle
+	if (temp_battle_combat_unit_index == -1)
+	{
+		// Combat Unit doesn't exist in the Celestial Battle - Early Return
+		return;
+	}
+	
+	// Delete the Combat Unit Instance from the Celestial Battle's Combat Units Array
+	array_delete(battle_instance.battle_combat_units, temp_battle_combat_unit_index, 1);
+	
+	// Check Combat Unit's Grid Direction
+	switch (combat_unit_instance.combat_grid_facing_direction)
+	{
+		case CelestialBattlePlatformSide.Left:
+			// Remove Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
+			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
+			{
+				case CelestialBattleColumnType.Frontline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.frontline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.frontline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.frontline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.frontline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.frontline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Frontline Combat Units Array
+					array_delete(battle_instance.battle_frontline_combat_units_a, array_get_index(battle_instance.battle_frontline_combat_units_a, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_frontline_combat_grid_available_slot_a = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_frontline_available_slots_a, temp_frontline_combat_grid_available_slot_a);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_frontline_available_slots_count_a++;
+					break;
+				case CelestialBattleColumnType.Midline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.midline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.midline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.midline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.midline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.midline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Midline Combat Units Array
+					array_delete(battle_instance.battle_midline_combat_units_a, array_get_index(battle_instance.battle_midline_combat_units_a, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_midline_combat_grid_available_slot_a = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_midline_available_slots_a, temp_midline_combat_grid_available_slot_a);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_midline_available_slots_count_a++;
+					break;
+				case CelestialBattleColumnType.Backline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.backline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.backline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.backline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.backline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.backline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Backline Combat Units Array
+					array_delete(battle_instance.battle_backline_combat_units_a, array_get_index(battle_instance.battle_backline_combat_units_a, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_backline_combat_grid_available_slot_a = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_backline_available_slots_a, temp_backline_combat_grid_available_slot_a);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_backline_available_slots_count_a++;
+					break;
+			}
+			
+			// Remove Combat Unit from Celestial Battle's Left Combat Units Pool
+			array_delete(battle_instance.battle_combat_units_a, array_get_index(battle_instance.battle_combat_units_a, combat_unit_instance), 1);
+			
+			// Remove Combat Unit from Celestial Battle's Combat Grid
+			array_set(array_get(battle_instance.battle_combat_grid_a, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, noone);
+			array_delete(battle_instance.battle_combat_grid_instances_a[combat_unit_instance.combat_grid_column], array_get_index(battle_instance.battle_combat_grid_instances_a[combat_unit_instance.combat_grid_column], combat_unit_instance), 1);
+			break;
+		case CelestialBattlePlatformSide.Right:
+			// Remove Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
+			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
+			{
+				case CelestialBattleColumnType.Frontline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.frontline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.frontline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.frontline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.frontline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.frontline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Frontline Combat Units Array
+					array_delete(battle_instance.battle_frontline_combat_units_b, array_get_index(battle_instance.battle_frontline_combat_units_b, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_frontline_combat_grid_available_slot_b = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_frontline_available_slots_b, temp_frontline_combat_grid_available_slot_b);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_frontline_available_slots_count_b++;
+					break;
+				case CelestialBattleColumnType.Midline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.midline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.midline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.midline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.midline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.midline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Midline Combat Units Array
+					array_delete(battle_instance.battle_midline_combat_units_b, array_get_index(battle_instance.battle_midline_combat_units_b, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_midline_combat_grid_available_slot_b = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_midline_available_slots_b, temp_midline_combat_grid_available_slot_b);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_midline_available_slots_count_b++;
+					break;
+				case CelestialBattleColumnType.Backline:
+					// Move Combat Unit from the Engaged Combat Unit Pool to the Unengaged Combat Unit Pool within their Celestial Unit Instance
+					array_delete(combat_unit_instance.unit_instance.backline_combat_unit_engaged, array_find_index(combat_unit_instance.unit_instance.backline_combat_unit_engaged, combat_unit_instance), 1);
+					array_push(combat_unit_instance.unit_instance.backline_combat_unit_unengaged, combat_unit_instance);
+					combat_unit_instance.unit_instance.backline_combat_unit_unengaged_count[array_get_index(combat_unit_instance.unit_instance.backline_combat_unit_type, combat_unit_instance.combat_unit_type)] += 1;
+					
+					// Remove Combat Unit from Celestial Battle's Backline Combat Units Array
+					array_delete(battle_instance.battle_backline_combat_units_b, array_get_index(battle_instance.battle_backline_combat_units_b, combat_unit_instance), 1);
+					
+					// Calculate Battle Available Slot and add the Available Slot Index back to its Available Slot Pool
+					var temp_backline_combat_grid_available_slot_b = (CelestialBattleCombatGridRows * combat_unit_instance.combat_grid_column) + combat_unit_instance.combat_grid_row;
+					array_push(battle_instance.battle_backline_available_slots_b, temp_backline_combat_grid_available_slot_b);
+					
+					// Increment Battle Available Slots Count
+					battle_instance.battle_backline_available_slots_count_b++;
+					break;
+			}
+			
+			// Remove Combat Unit from Celestial Battle's Left Combat Units Pool
+			array_delete(battle_instance.battle_combat_units_b, array_get_index(battle_instance.battle_combat_units_b, combat_unit_instance), 1);
+			
+			// Remove Combat Unit from Celestial Battle's Combat Grid
+			array_set(array_get(battle_instance.battle_combat_grid_b, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, noone);
+			array_delete(battle_instance.battle_combat_grid_instances_b[combat_unit_instance.combat_grid_column], array_get_index(battle_instance.battle_combat_grid_instances_b[combat_unit_instance.combat_grid_column], combat_unit_instance), 1);
+			break;
+	}
+	
+	// Reset Combat Unit's Combat Grid Variables
+	combat_unit_instance.combat_grid_facing_direction = CelestialBattlePlatformSide.None;
+	combat_unit_instance.combat_grid_column = -1;
+	combat_unit_instance.combat_grid_row = -1;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////=====================================================================
 
 /// @function celestial_battle_add_choreography_actor(battle_instance, actor_combat_unit_instance);
 /// @description Adds a Celestial Combat Unit as an Actor to a Celestial Battle's choreography arrays
@@ -766,7 +1006,7 @@ function celestial_battle_clear_choreography_actions(battle_instance)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-function celestial_battle_damage_combat_unit(celestial_combat_unit, damage_value)
+function celestial_battle_damage_combat_unit(battle_instance, celestial_combat_unit, damage_value)
 {
 	//
 	celestial_combat_unit.combat_unit_health -= damage_value;
@@ -779,10 +1019,30 @@ function celestial_battle_damage_combat_unit(celestial_combat_unit, damage_value
 	}
 	
 	//
+	
+	
+	//
 	if (instance_exists(celestial_combat_unit.unit_instance))
 	{
 		//
-		celestial_unit_remove_combat_unit(celestial_combat_unit.unit_instance, celestial_combat_unit)
+		var temp_unit_instance = celestial_combat_unit.unit_instance;
+		
+		//
+		celestial_unit_remove_combat_unit(temp_unit_instance, celestial_combat_unit);
+		
+		//
+		if (array_length(temp_unit_instance.combat_units) < 1)
+		{
+			//
+			if (battle_instance.battle_primary_unit_a == temp_unit_instance or battle_instance.battle_primary_unit_b == temp_unit_instance)
+			{
+				//
+				celestial_battle_end(battle_instance);
+			}
+			
+			//
+			instance_destroy(temp_unit_instance);
+		}
 	}
 	
 	//

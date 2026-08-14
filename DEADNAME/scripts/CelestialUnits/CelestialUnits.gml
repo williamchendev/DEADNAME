@@ -141,7 +141,7 @@ global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultFirearm] =
 	action_type: CelestialCombatUnitActionType.Attack,
 	action_count: 1,
 	action_duration: 5.5,
-	action_instance: noone,
+	action_instance: oCelestialCombatAction,
 	
 	// Animation Settings
 	action_animation_type: CelestialCombatUnitActionAnimationType.Firearm,
@@ -154,7 +154,7 @@ global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultTankCannon
 	action_type: CelestialCombatUnitActionType.Attack,
 	action_count: 1,
 	action_duration: 5.5,
-	action_instance: noone,
+	action_instance: oCelestialCombatAction,
 	
 	// Animation Settings
 	action_animation_type: CelestialCombatUnitActionAnimationType.TankCannon,

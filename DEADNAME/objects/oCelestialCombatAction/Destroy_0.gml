@@ -12,3 +12,4 @@ if (instance_exists(battle_instance))
 		array_delete(battle_instance.battle_combat_actions, temp_combat_action_index, 1);
 	}
 }
+

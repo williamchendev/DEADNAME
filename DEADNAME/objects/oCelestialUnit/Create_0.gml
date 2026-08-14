@@ -85,6 +85,7 @@ unit_battle_within_timed_collision_check_battles = array_create(0);
 unit_battle_within_timed_collision_check_timers = array_create(0);
 
 // Combat Variables
+engaged_battles = array_create(0);
 engaged_in_battle = false;
 
 battle_action_stun_timer = -1;

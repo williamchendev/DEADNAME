@@ -43,13 +43,6 @@ repeat (CelestialSimMaxLights)
 	light_source_emitter_size[temp_light_source_index] = 0;
 }
 
-// Reset Celestial Unit Behaviours
-with (oCelestialUnit)
-{
-	// Reset Celestial Unit Combat Behaviour
-	engaged_in_battle = false;
-}
-
 // Iterate through all Solar Systems within the Celestial Simulation
 var temp_solar_systems_index = 0;
 var temp_solar_systems_count = array_length(solar_systems);
@@ -435,161 +428,15 @@ repeat (temp_solar_systems_count)
 				// Find Battle Instance
 				var temp_battle_instance = battles[temp_battle_index];
 				
-				// Decrement Collision Check Timer
-				temp_battle_instance.battle_collision_check_timer -= frame_delta;
-				
 				#region Battle Position
 				// Establish Battle Position, Elevation, & Divisor
-				var temp_battle_x = 0;
-				var temp_battle_y = 0;
-				var temp_battle_z = 0;
-				var temp_battle_elevation = 0;
-				var temp_battle_unit_divisor = 0;
-				var temp_battle_faction_divisor = 0;
-				
-				// Iterate through Battle Faction Unit Arrays
-				var temp_battle_faction_count = array_length(temp_battle_instance.battle_factions);
-				var temp_battle_faction_index = temp_battle_faction_count - 1;
-				
-				repeat (temp_battle_faction_count)
+				if (instance_exists(temp_battle_instance.battle_primary_unit_a) and instance_exists(temp_battle_instance.battle_primary_unit_b))
 				{
-					// Establish Faction's Units Active Count
-					var temp_battle_faction_units_active = 0;
-					
-					// Establish Faction's Unit Center Position & Elevation
-					var temp_battle_faction_unit_center_x = 0;
-					var temp_battle_faction_unit_center_y = 0;
-					var temp_battle_faction_unit_center_z = 0;
-					var temp_battle_faction_unit_elevation = 0;
-					
-					// Iterate through Battle Units
-					var temp_battle_unit_count = array_length(temp_battle_instance.battle_units[temp_battle_faction_index]);
-					var temp_battle_unit_index = temp_battle_unit_count - 1;
-					
-					repeat (temp_battle_unit_count)
-					{
-						// Find Battle Unit Instance
-						var temp_battle_unit_instance = array_get(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index);
-						
-						// Check if Unit is still in the Active Combat Pathfinding Node
-						if (!instance_exists(temp_battle_unit_instance))
-						{
-							// Remove Battle Unit from Battle Faction Unit Array
-							array_delete(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index, 1);
-						}
-						else if (temp_battle_instance.battle_collision_check_timer <= 0)
-						{
-							// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
-							var temp_battle_unit_dot_product = dot_product_3d
-							(
-								temp_battle_instance.sphere_vector_x, 
-								temp_battle_instance.sphere_vector_y, 
-								temp_battle_instance.sphere_vector_z, 
-								temp_battle_unit_instance.sphere_vector_x, 
-								temp_battle_unit_instance.sphere_vector_y, 
-								temp_battle_unit_instance.sphere_vector_z
-							);
-							
-							// Check if Unit is within the Battle's Collision Threshold
-							if (temp_battle_unit_dot_product < temp_battle_instance.battle_far_collision_threshold)
-							{
-								// Remove Battle Unit Instance's Combat Units from Battle Choreography
-								var temp_battle_unit_instance_combat_unit_count = array_length(temp_battle_unit_instance.combat_units);
-								var temp_battle_unit_instance_combat_unit_index = temp_battle_unit_instance_combat_unit_count - 1;
-								
-								repeat (temp_battle_unit_instance_combat_unit_count)
-								{
-									// Find Battle Unit Instance's Combat Unit Instance
-									var temp_battle_unit_instance_combat_unit_instance = temp_battle_unit_instance.combat_units[temp_battle_unit_instance_combat_unit_index];
-									
-									// Toggle Escape Animation for Battle Combat Unit's Choreography Actor Struct if currently loaded in Battle's Choreography Stack
-									var temp_battle_unit_instance_combat_unit_battle_actor_index = ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_battle_unit_instance_combat_unit_instance);
-									
-									if (!is_undefined(temp_battle_unit_instance_combat_unit_battle_actor_index))
-									{
-										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].combat_unit_instance = noone;
-										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].combat_unit_faction = noone;
-										temp_battle_instance.battle_choreography_actors[temp_battle_unit_instance_combat_unit_battle_actor_index].actor_exit_animation = true;
-									}
-									
-									// Decrement Battle Unit Instance's Combat Unit Index
-									temp_battle_unit_instance_combat_unit_index--;
-								}
-								
-								// Remove Battle Unit from Battle Faction Unit Array
-								array_delete(temp_battle_instance.battle_units[temp_battle_faction_index], temp_battle_unit_index, 1);
-							}
-							else
-							{
-								// Set Unit is Engaged in Battle
-								temp_battle_unit_instance.engaged_in_battle = true;
-								
-								// Add Unit's Position to Faction Centering
-								temp_battle_faction_unit_center_x += temp_battle_unit_instance.sphere_vector_x;
-								temp_battle_faction_unit_center_y += temp_battle_unit_instance.sphere_vector_y;
-								temp_battle_faction_unit_center_z += temp_battle_unit_instance.sphere_vector_z;
-								
-								// Find Battle Faction's Elevation Maxiumum
-								temp_battle_faction_unit_elevation = max(temp_battle_faction_unit_elevation, temp_battle_unit_instance.pathfinding_position_elevation);
-								
-								// Increment Faction's Units Active Count
-								temp_battle_faction_units_active++;
-							}
-						}
-						else
-						{
-							// Set Unit is Engaged in Battle
-							temp_battle_unit_instance.engaged_in_battle = true;
-							
-							// Add Unit's Position to Faction Centering
-							temp_battle_faction_unit_center_x += temp_battle_unit_instance.sphere_vector_x;
-							temp_battle_faction_unit_center_y += temp_battle_unit_instance.sphere_vector_y;
-							temp_battle_faction_unit_center_z += temp_battle_unit_instance.sphere_vector_z;
-							
-							// Find Battle Faction's Elevation Maxiumum
-							temp_battle_faction_unit_elevation = max(temp_battle_faction_unit_elevation, temp_battle_unit_instance.pathfinding_position_elevation);
-							
-							// Increment Faction's Units Active Count
-							temp_battle_faction_units_active++;
-						}
-						
-						// Decrement Battle Unit Index
-						temp_battle_unit_index--;
-					}
-					
-					// Check if Battle Faction is Eligible to Impact Battle Instance's Position & Elevation
-					if (temp_battle_faction_units_active > 0)
-					{
-						// Calculate Battle Faction's Unit Center Position
-						temp_battle_faction_unit_center_x /= temp_battle_faction_units_active;
-						temp_battle_faction_unit_center_y /= temp_battle_faction_units_active;
-						temp_battle_faction_unit_center_z /= temp_battle_faction_units_active;
-						
-						// Add Battle Faction's Unit Center Position and Elevation to Battle's Updated Position and Elevation
-						temp_battle_x += temp_battle_faction_unit_center_x * temp_battle_faction_units_active;
-						temp_battle_y += temp_battle_faction_unit_center_y * temp_battle_faction_units_active;
-						temp_battle_z += temp_battle_faction_unit_center_z * temp_battle_faction_units_active;
-						temp_battle_elevation += temp_battle_faction_unit_elevation * temp_battle_faction_units_active;
-						
-						// Increment Battle Unit Divisor by Battle Faction's Units Active Count
-						temp_battle_unit_divisor += temp_battle_faction_units_active;
-						
-						// Increment Battle Faction Divisor
-						temp_battle_faction_divisor++;
-					}
-					
-					// Decrement Battle Faction Index
-					temp_battle_faction_index--;
-				}
-				
-				// Check if Battle can update its Position & Elevation if there are Units belonging to Factions participating in Combat
-				if (temp_battle_unit_divisor > 0 and temp_battle_faction_divisor > 1)
-				{
-					// Calculate Updated Battle Position & Elevation by using the Battle's Unit Divisor to find the Weighted Averaged Faction Center Position & Elevation Contribution
-					temp_battle_x /= temp_battle_unit_divisor;
-					temp_battle_y /= temp_battle_unit_divisor;
-					temp_battle_z /= temp_battle_unit_divisor;
-					temp_battle_elevation /= temp_battle_unit_divisor;
+					// Establish Battle Position and Elevation between the Celestial Battle's Primary Units engaged in Combat
+					var temp_battle_x = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_x, temp_battle_instance.battle_primary_unit_b.sphere_vector_x, 0.5);
+					var temp_battle_y = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_y, temp_battle_instance.battle_primary_unit_b.sphere_vector_y, 0.5);
+					var temp_battle_z = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_z, temp_battle_instance.battle_primary_unit_b.sphere_vector_z, 0.5);
+					var temp_battle_elevation = max(temp_battle_instance.battle_primary_unit_a.pathfinding_position_elevation, temp_battle_instance.battle_primary_unit_b.pathfinding_position_elevation);
 					
 					// Calculate Final Lerped Movement Battle Position & Elevation
 					temp_battle_x = lerp(temp_battle_instance.battle_x, temp_battle_x, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
@@ -609,12 +456,61 @@ repeat (temp_solar_systems_count)
 				}
 				#endregion
 				
+				#region Battle Collisions
+				// Decrement Collision Check Timer
+				temp_battle_instance.battle_collision_check_timer -= frame_delta;
+				
 				// Battle Collision Check Behaviour
 				if (temp_battle_instance.battle_collision_check_timer <= 0)
 				{
 					// Reset Collision Check Timer
 					temp_battle_instance.battle_collision_check_timer = CelestialSimulator.global_collision_check_interval;
+					
+					// Check if Celestial Battle's first Primary Unit exists
+					if (instance_exists(temp_battle_instance.battle_primary_unit_a))
+					{
+						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
+						var temp_battle_primary_unit_a_dot_product = dot_product_3d
+						(
+							temp_battle_instance.sphere_vector_x, 
+							temp_battle_instance.sphere_vector_y, 
+							temp_battle_instance.sphere_vector_z, 
+							temp_battle_instance.battle_primary_unit_a.sphere_vector_x, 
+							temp_battle_instance.battle_primary_unit_a.sphere_vector_y, 
+							temp_battle_instance.battle_primary_unit_a.sphere_vector_z
+						);
+						
+						// Check if Unit is within the Battle's Collision Threshold
+						if (temp_battle_primary_unit_a_dot_product < temp_battle_instance.battle_far_collision_threshold)
+						{
+							// Remove Primary Unit from Celestial Battle's Combat
+							celestial_battle_remove_unit(temp_battle_instance, temp_battle_instance.battle_primary_unit_a);
+						}
+					}
+					
+					// Check if Celestial Battle's second Primary Unit exists
+					if (instance_exists(temp_battle_instance.battle_primary_unit_b))
+					{
+						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
+						var temp_battle_primary_unit_b_dot_product = dot_product_3d
+						(
+							temp_battle_instance.sphere_vector_x, 
+							temp_battle_instance.sphere_vector_y, 
+							temp_battle_instance.sphere_vector_z, 
+							temp_battle_instance.battle_primary_unit_b.sphere_vector_x, 
+							temp_battle_instance.battle_primary_unit_b.sphere_vector_y, 
+							temp_battle_instance.battle_primary_unit_b.sphere_vector_z
+						);
+						
+						// Check if Unit is within the Battle's Collision Threshold
+						if (temp_battle_primary_unit_b_dot_product < temp_battle_instance.battle_far_collision_threshold)
+						{
+							// Remove Primary Unit from Celestial Battle's Combat
+							celestial_battle_remove_unit(temp_battle_instance, temp_battle_instance.battle_primary_unit_b);
+						}
+					}
 				}
+				#endregion
 				
 				// Update Battle Clock
 				temp_battle_instance.battle_total_time += CelestialSimulator.global_clock_delta_time;
@@ -630,7 +526,7 @@ repeat (temp_solar_systems_count)
 					temp_battle_instance.battle_round_timer = temp_battle_instance.battle_round_time_duration;
 					
 					// Battle Shuffle Round Behaviour
-					celestial_battle_shuffle_round(temp_battle_instance);
+					//celestial_battle_shuffle_round(temp_battle_instance);
 				}
 				
 				#region Battle Choreography
@@ -669,6 +565,9 @@ repeat (temp_solar_systems_count)
 							// Set the Combat Action Instance's Combat Unit and Combat Unit Action Behaviour
 							temp_new_combat_action_instance.combat_unit = temp_combat_unit_instance;
 							temp_new_combat_action_instance.combat_unit_action = temp_combat_unit_instance.combat_unit_action;
+							
+							// Set Combat Action Instance's Stats from Combat Unit's Stats
+							temp_new_combat_action_instance.action_accuracy = temp_combat_unit_instance.combat_unit_accuracy;
 							
 							// Set the Combat Action Instance's Target Combat Unit and Target Combat Grid Variables
 							temp_new_combat_action_instance.target_combat_unit = temp_combat_unit_instance.combat_unit_action_target_inst;
@@ -814,13 +713,10 @@ repeat (temp_solar_systems_count)
 								// Combat Unit has no Valid Targets and must skip their Action behaviour
 							}
 							
-							//
+							// Increast Combat Unit's Action Exhaustion
 							temp_combat_unit_instance.combat_unit_action_exhaustion += 1;
 						}
 					}
-					
-					//
-					
 					
 					// Decrement Battle Combat Unit Index
 					temp_combat_unit_index--;
@@ -835,384 +731,65 @@ repeat (temp_solar_systems_count)
 					// Find Battle Combat Action Instance
 					var temp_combat_action_instance = temp_battle_instance.battle_combat_actions[temp_combat_action_index];
 					
-					//
+					// Decrement Combat Action's Timer
 					temp_combat_action_instance.action_timer -= CelestialSimulator.global_clock_delta_time;
 					
-					//
+					// Check if Combat Action's Lifetime has Elapsed
 					if (temp_combat_action_instance.action_timer <= 0)
 					{
-						//
+						// Check if Combat Action's Target still exists
+						if (!instance_exists(temp_combat_action_instance.target_combat_unit))
+						{
+							// Combat Action's Target Instance does not exist - Attempt to pull Target Combat Unit from Target Combat Grid Variables
+							switch (temp_combat_action_instance.target_combat_grid_side)
+							{
+								case CelestialBattlePlatformSide.Left:
+									// Combat Grid Left Side Target Instance Retrieval
+									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_instances_a[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
+									break;
+								case CelestialBattlePlatformSide.Right:
+									// Combat Grid Right Side Target Instance Retrieval
+									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_instances_b[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
+									break;
+								
+							}
+						}
+						
+						// Check if Combat Action has a Valid Target Combat Unit Instance
+						if (instance_exists(temp_combat_action_instance.target_combat_unit))
+						{
+							// Perform Combat Action Behaviour on Target Combat Unit Instance
+							switch (global.celestial_combat_unit_actions[temp_combat_action_instance.combat_unit_action].action_type)
+							{
+								case CelestialCombatUnitActionType.Attack:
+									// Calculate Combat Action's Attack Success Chance
+									var temp_combat_action_attack_accuracy = temp_combat_action_instance.action_accuracy;
+									var temp_combat_action_defend_evasion = temp_combat_action_instance.target_combat_unit.combat_unit_evasion;
+									var temp_combat_action_attack_success_chance = clamp(0.5 + (temp_combat_action_attack_accuracy - temp_combat_action_defend_evasion) * 0.05, 0, 1);
+									
+									// Calculate Combat Action's Attack Random Chance to hit the Target Combat Unit Instance
+									var temp_combat_action_attack_random_chance = random(1.0);
+									
+									if (temp_combat_action_attack_random_chance <= temp_combat_action_attack_success_chance)
+									{
+										
+									}
+									break;
+								case CelestialCombatUnitActionType.Support:
+									break;
+							}
+						}
+						
+						// Deindex Combat Action from the Celestial Battle's Combat Actions Array
 						temp_combat_action_instance.battle_instance = noone;
 						array_delete(temp_battle_instance.battle_combat_actions, temp_combat_action_index, 1);
 						
-						//
+						// Destroy the Combat Action Instance
 						instance_destroy(temp_combat_action_instance);
 					}
 					
 					// Decrement Battle Combat Action Index
 					temp_combat_action_index--;
-				}
-				
-				// Iterate through and Perform Battle Choreography Behaviour
-				var temp_battle_choreography_actors_count = array_length(temp_battle_instance.battle_choreography_actors);
-				var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
-				
-				repeat (temp_battle_choreography_actors_count)
-				{
-					// Find Battle Choreography Actor Struct
-					var temp_actor_struct = temp_battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
-					
-					// Check if Battle Choreography Actor is participating in the Battle
-					if (!instance_exists(temp_actor_struct.combat_unit_instance) or !temp_actor_struct.action_enabled)
-					{
-						// Decrement Battle Choreography Actor Index
-						temp_battle_choreography_actors_index--;
-						continue;
-					}
-					
-					// Find Battle Choreography Actor's Combat Unit Struct
-					var temp_combat_unit_struct = global.celestial_combat_units[temp_actor_struct.combat_unit_type];
-					
-					// Check if Actor's Unit can prepare their Action during Combat
-					if (temp_actor_struct.combat_unit_instance.unit_instance.unit_behaviour != CelestialUnitBehaviourType.Retreat)
-					{
-						// Establish Action Time Elapsed
-						var temp_actor_action_time_elapsed = CelestialSimulator.global_clock_delta_time;
-						
-						// Check if Actor is Performing their Action
-						if (temp_actor_struct.action_duration_timer > 0)
-						{
-							// Calculate the Action Duration Spend from the Action Time Elapsed
-							var temp_actor_action_duration_time_spend = clamp(temp_actor_action_time_elapsed, 0, temp_actor_struct.action_duration_timer);
-							
-							// Decrement the Total Action Time Elapsed and the Action Duration Timer by the Action Duration Spend
-							temp_actor_action_time_elapsed -= temp_actor_action_duration_time_spend;
-							temp_actor_struct.action_duration_timer -= temp_actor_action_duration_time_spend;
-							
-							// Check if the Actor is finished Performing their Action
-							if (temp_actor_struct.action_duration_timer <= 0)
-							{
-								// Reset the Action Duration Timer
-								temp_actor_struct.action_duration_timer = -1;
-								
-								//
-							}
-						}
-						
-						// Calculate the Actor's Action Delay Timer (Exhaustion)
-						if (temp_actor_action_time_elapsed > 0)
-						{
-							// Find the Actor's Agility Value
-							var temp_actor_agility_value = temp_combat_unit_struct.unit_agility;
-							
-							// Increment Actor's Action Delay Timer by their Agility Value
-							temp_actor_struct.action_delay_timer += temp_actor_action_time_elapsed * temp_actor_agility_value;
-						}
-					}
-					
-					// Check if Battle Choreography Actor can perform an Action
-					if (temp_actor_struct.action_duration_timer <= 0 and temp_actor_struct.action_delay_timer >= 1)
-					{
-						// Establish Matchup Variables
-						var temp_matchup_exists = false;
-						
-						// Establish Combat Unit's Empty Hostile Factions Array
-						var temp_battle_matchup_hostile_factions_count = 0;
-						var temp_battle_matchup_hostile_factions_array = array_create(0);
-						
-						// Iterate through Battle's Participating Factions to find Hostile Factions to Combat Unit's Faction
-						var temp_battle_matchup_total_factions_index = 0;
-						var temp_battle_matchup_total_factions_count = array_length(temp_battle_instance.battle_factions);
-						
-						repeat (temp_battle_matchup_total_factions_count)
-						{
-							// Establish Comparison Faction
-							var temp_battle_matchup_comparison_faction = temp_battle_instance.battle_factions[temp_battle_matchup_total_factions_index];
-							
-							// Check if Comparison Faction is the Combat Unit's Faction
-							if (temp_actor_struct.combat_unit_faction != temp_battle_matchup_comparison_faction)
-							{
-								// Check if Combat Unit's Faction is hostile to the Comparison Faction
-								if (celestial_faction_is_relationship_hostile(temp_actor_struct.combat_unit_faction.relationships, temp_battle_matchup_comparison_faction))
-								{
-									// Add Comparison Faction to Hostile Factions Array and Increment Hostile Factions Count
-									array_push(temp_battle_matchup_hostile_factions_array, temp_battle_matchup_total_factions_index);
-									temp_battle_matchup_hostile_factions_count++;
-								}
-							}
-							
-							// Increment Battle Faction Index
-							temp_battle_matchup_total_factions_index++;
-						}
-						
-						// Check if Hostile Faction Relationship Exists
-						if (temp_battle_matchup_hostile_factions_count > 0)
-						{
-							// Randomize Hostile Factions Array and Select Combat Unit Target from Random Hostile Faction
-							array_shuffle_ext(temp_battle_matchup_hostile_factions_array);
-							var temp_battle_matchup_hostile_factions_index = 0;
-							
-							repeat (temp_battle_matchup_hostile_factions_count)
-							{
-								// Find Index of Randomized Hostile Faction
-								var temp_battle_hostile_faction_index = array_get(temp_battle_matchup_hostile_factions_array, temp_battle_matchup_hostile_factions_index);
-								
-								// Find Randomized Hostile Faction's Priority Pools
-								var temp_battle_hostile_faction_land_priority_pool = array_get(temp_battle_instance.battle_land_priority_pools, temp_battle_hostile_faction_index);
-								var temp_battle_hostile_faction_air_priority_pool = array_get(temp_battle_instance.battle_air_priority_pools, temp_battle_hostile_faction_index);
-								var temp_battle_hostile_faction_sea_priority_pool = array_get(temp_battle_instance.battle_sea_priority_pools, temp_battle_hostile_faction_index);
-								
-								// Start Priority Pool Search Index at 0 by Default, or at the Celestial Battle Assassination Priority Rank if Attacking Combat Unit has Attacks as Assassinations Enabled
-								var temp_battle_priority_pool_search_index = temp_combat_unit_struct.unit_attack_assassination ? CelestialBattleAssassinationPriorityRank : 0;
-								
-								// Iterate through Priority Pools to find Combat Unit Matchup
-								repeat (CelestialBattlePriorityRankMax)
-								{
-									// Check if Unit can engage in Anti-Air Combat
-									if (temp_combat_unit_struct.unit_attack_air)
-									{
-										// Check if Priority Pool is Populated at the Priority Rank Index
-										if (array_length(array_get(temp_battle_hostile_faction_air_priority_pool, temp_battle_priority_pool_search_index)) > 0)
-										{
-											// Iterate through Air Priority Pool Array
-											var temp_air_priority_pool_array = array_get(temp_battle_hostile_faction_air_priority_pool, temp_battle_priority_pool_search_index);
-											var temp_air_priority_pool_count = array_length(temp_air_priority_pool_array);
-											
-											repeat (temp_air_priority_pool_count)
-											{
-												// Pull Random Combat Unit from Priority Rank Index's Priority Pool
-												var temp_air_priority_pool_random_value = irandom(array_length(temp_air_priority_pool_array) - 1);
-												var temp_air_priority_pool_random_combat_unit_inst = array_get(temp_air_priority_pool_array, temp_air_priority_pool_random_value);
-												
-												// Check if Random Combat Unit Exists
-												if (instance_exists(temp_air_priority_pool_random_combat_unit_inst))
-												{
-													// Set Battle Matchup's Target Combat Unit Properties
-													temp_actor_struct.target_combat_unit = array_get(temp_air_priority_pool_array, temp_air_priority_pool_random_value);
-													temp_actor_struct.target_faction = array_get(temp_battle_instance.battle_factions, temp_battle_hostile_faction_index);
-													
-													// Toggle Matchup Found
-													temp_matchup_exists = true;
-													
-													// Matchup was found - Exit Air Priority Pool Combat Unit Search
-													break;
-												}
-											}
-											
-											// Check if Matchup was Found
-											if (temp_matchup_exists)
-											{
-												// Exit searching across Combat Unit's Hostile Factions Priority Pools
-												break;
-											}
-										}
-									}
-									
-									// Check if Unit can engage in Anti-Surface Combat
-									if (temp_combat_unit_struct.unit_attack_land)
-									{
-										// Check if Priority Pool is Populated at the Priority Rank Index
-										if (array_length(array_get(temp_battle_hostile_faction_land_priority_pool, temp_battle_priority_pool_search_index)) > 0)
-										{
-											// Iterate through Land Priority Pool Array
-											var temp_land_priority_pool_array = array_get(temp_battle_hostile_faction_land_priority_pool, temp_battle_priority_pool_search_index);
-											var temp_land_priority_pool_count = array_length(temp_land_priority_pool_array);
-											
-											repeat (temp_land_priority_pool_count)
-											{
-												// Pull Random Combat Unit from Priority Rank Index's Priority Pool
-												var temp_land_priority_pool_random_value = irandom(array_length(temp_land_priority_pool_array) - 1);
-												var temp_land_priority_pool_random_combat_unit_inst = array_get(temp_land_priority_pool_array, temp_land_priority_pool_random_value);
-												
-												// Check if Random Combat Unit Exists
-												if (instance_exists(temp_land_priority_pool_random_combat_unit_inst))
-												{
-													// Set Battle Matchup's Target Combat Unit Properties
-													temp_actor_struct.target_combat_unit = array_get(temp_land_priority_pool_array, temp_land_priority_pool_random_value);
-													temp_actor_struct.target_faction = array_get(temp_battle_instance.battle_factions, temp_battle_hostile_faction_index);
-													
-													// Toggle Matchup Found
-													temp_matchup_exists = true;
-													
-													// Matchup was found - Exit Land Priority Pool Combat Unit Search
-													break;
-												}
-											}
-											
-											// Check if Matchup was Found
-											if (temp_matchup_exists)
-											{
-												// Exit searching across Combat Unit's Hostile Factions Priority Pools
-												break;
-											}
-										}
-									}
-									
-									// Check if Unit can engage in Anti-Naval Combat
-									if (temp_combat_unit_struct.unit_attack_sea)
-									{
-										// Check if Priority Pool is Populated at the Priority Rank Index
-										if (array_length(array_get(temp_battle_hostile_faction_sea_priority_pool, temp_battle_priority_pool_search_index)) > 0)
-										{
-											// Iterate through Sea Priority Pool Array
-											var temp_sea_priority_pool_array = array_get(temp_battle_hostile_faction_sea_priority_pool, temp_battle_priority_pool_search_index);
-											var temp_sea_priority_pool_count = array_length(temp_sea_priority_pool_array);
-											
-											repeat (temp_sea_priority_pool_count)
-											{
-												// Pull Random Combat Unit from Priority Rank Index's Priority Pool
-												var temp_sea_priority_pool_random_value = irandom(array_length(temp_sea_priority_pool_array) - 1);
-												var temp_sea_priority_pool_random_combat_unit_inst = array_get(temp_sea_priority_pool_array, temp_sea_priority_pool_random_value);
-												
-												// Check if Random Combat Unit Exists
-												if (instance_exists(temp_sea_priority_pool_random_combat_unit_inst))
-												{
-													// Set Battle Matchup's Target Combat Unit Properties
-													temp_actor_struct.target_combat_unit = array_get(temp_sea_priority_pool_array, temp_sea_priority_pool_random_value);
-													temp_actor_struct.target_faction = array_get(temp_battle_instance.battle_factions, temp_battle_hostile_faction_index);
-													
-													// Toggle Matchup Found
-													temp_matchup_exists = true;
-													
-													// Matchup was found - Exit Sea Priority Pool Combat Unit Search
-													break;
-												}
-											}
-											
-											// Check if Matchup was Found
-											if (temp_matchup_exists)
-											{
-												// Exit searching across Combat Unit's Hostile Factions Priority Pools
-												break;
-											}
-										}
-									}
-									
-									// Increment Priority Pool Search Index
-									temp_battle_priority_pool_search_index++;
-									temp_battle_priority_pool_search_index = temp_battle_priority_pool_search_index mod CelestialBattlePriorityRankMax;
-								}
-								
-								// Check if Matchup was Found
-								if (temp_matchup_exists)
-								{
-									// Exit searching across Combat Unit's Hostile Factions Priority Pools
-									break;
-								}
-								
-								// Increment Randomized Hostile Factions Index
-								temp_battle_matchup_hostile_factions_index++;
-							}
-							
-							// Delete Unused Array
-							array_resize(temp_battle_matchup_hostile_factions_array, 0);
-						}
-						
-						// Check if Matchup was Found
-						if (!temp_matchup_exists)
-						{
-							// Disable Actor Actions
-							temp_actor_struct.action_enabled = false;
-						}
-						else
-						{
-							// Establish Actor's Action Type
-							var temp_unit_attack_action_types_count = array_length(temp_combat_unit_struct.unit_attack_types);
-							temp_actor_struct.actor_action_type = temp_combat_unit_struct.unit_attack_types[irandom(temp_unit_attack_action_types_count - 1)];
-							
-							//
-							var temp_actor_attacking_accuracy = temp_combat_unit_struct.unit_accuracy;
-							var temp_target_defending_evasion = global.celestial_combat_units[temp_actor_struct.combat_unit_type].unit_evasion;
-							
-							// Calculate Matchup Combat Behaviour
-							var temp_attack_number = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].action_animation_count;
-							var temp_attack_damage = temp_combat_unit_struct.unit_attack;
-							var temp_attack_accuracy = clamp(0.5 + (temp_actor_attacking_accuracy - temp_target_defending_evasion) * 0.05, 0, 1);
-							
-							// Reset Actor's Action Animation Behaviours
-							array_resize(temp_actor_struct.actor_action_animation_success, 0);
-							
-							// Establish Actor's Action Animation Behaviours
-							temp_actor_struct.actor_action_animation_count = temp_attack_number;
-							
-							//
-							repeat (temp_attack_number)
-							{
-								//
-								var temp_randomized_attack_accuracy = random(1.0);
-								
-								// Check if Attack hits Defending Combat Unit
-								if (temp_randomized_attack_accuracy <= temp_attack_accuracy)
-								{
-									// Apply Attack Damage to Defending Combat Unit's Health
-									//temp_actor_struct.target_combat_unit.combat_unit_health -= temp_attack_damage;
-									
-									//
-									array_push(temp_actor_struct.actor_action_animation_success, true);
-									
-									/*
-									// Check if Defending Combat Unit has been Destroyed
-									if (temp_actor_struct.target_combat_unit.combat_unit_health <= 0)
-									{
-										// Establish Combat Unit's Unit Instance
-										var temp_target_combat_unit_instance = temp_actor_struct.target_combat_unit.unit_instance;
-										
-										// Delete Combat Unit Instance
-										instance_destroy(temp_actor_struct.target_combat_unit);
-										
-										// Check if Defending Unit Instance should be Destroyed
-										if (instance_exists(temp_target_combat_unit_instance) and array_length(temp_defending_combat_unit_unit_instance.combat_units) <= 0)
-										{
-											// Remove Defending Unit Instance from Faction Units Array
-											var temp_defending_unit_instance_battle_units_array_index = array_get_index(array_get(temp_battle_instance.battle_units, temp_defending_battle_faction_index), temp_defending_combat_unit_unit_instance);
-											
-											if (temp_defending_unit_instance_battle_units_array_index != -1)
-											{
-												array_delete(array_get(temp_battle_instance.battle_units, temp_defending_battle_faction_index), temp_defending_unit_instance_battle_units_array_index, 1);
-											}
-											
-											// Destroy Defending Unit Instance
-											instance_destroy(temp_defending_combat_unit_unit_instance);
-										}
-										
-										// Set Matchup Defending Variables as Empty
-										temp_actor_struct.target_combat_unit = noone;
-										temp_actor_struct.target_faction = noone;
-										
-										//
-										break;
-									}
-									*/
-								}
-								else
-								{
-									// Attack Missed Behaviour
-									
-									//
-									array_push(temp_actor_struct.actor_action_animation_success, false);
-								}
-							}
-							
-							/*
-							// Initialize Battle Choreography Action Struct
-							var temp_choreography_action_struct = 
-							{
-								attacking_choreography_actor_index: ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_actor_struct.combat_unit_instance),
-								defending_choreography_actor_index: ds_map_find_value(temp_battle_instance.battle_choreography_actors_map, temp_actor_struct.target_combat_unit),
-							};
-							
-							// OIAU*()U)FGQAUJA)(FSU)ASFU)ASFU)(AFSUJPFA)
-							array_push(temp_battle_instance.battle_choreography_actions, temp_choreography_action_struct);
-							*/
-							
-							//
-							temp_actor_struct.action_delay_timer -= 1;
-							temp_actor_struct.action_duration_timer = global.celestial_unit_action_animations[temp_actor_struct.actor_action_type].action_duration;
-						}
-					}
-					
-					// Decrement Battle Choreography Actor Index
-					temp_battle_choreography_actors_index--;
 				}
 				#endregion
 				

@@ -10,6 +10,9 @@ unit_instance = noone;
 // Combat Unit Properties
 combat_unit_type = -1;
 
+combat_unit_accuracy = 1;
+combat_unit_evasion = 1;
+
 // Health & Armor Variables
 combat_unit_health = -1;
 
