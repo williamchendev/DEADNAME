@@ -36,6 +36,13 @@ function celestial_faction_set_relationship(first_faction_instance, second_facti
 		return;
 	}
 	
+	// Check if both Celestial Faction Instances are the same
+	if (first_faction_instance == second_faction_instance)
+	{
+		// Celestial Faction Instance has a Default Relationship Status with itself that cannot be modified - Early Return
+		return;
+	}
+	
 	// Calculate Faction Relationship ID
 	var temp_faction_relationship_id = $"{min(first_faction_instance.faction_id, second_faction_instance.faction_id)}:{max(first_faction_instance.faction_id, second_faction_instance.faction_id)}";
 	
@@ -63,6 +70,13 @@ function celestial_faction_get_relationship(first_faction_instance, second_facti
 	{
 		// One or More of the Celestial Faction Instances do not exist - Return Default Faction Relationship Status
 		return CelestialFactionRelationshipType.Neutral;
+	}
+	
+	// Check if both Celestial Faction Instances are the same
+	if (first_faction_instance == second_faction_instance)
+	{
+		// Celestial Faction Instance is Allied to itself - Return Allied Faction Relationship Status
+		return CelestialFactionRelationshipType.Allied;
 	}
 	
 	// Find Faction Relationship ID
@@ -93,6 +107,13 @@ function celestial_faction_is_relationship_hostile(first_faction_instance, secon
 	{
 		// One or More of the Celestial Faction Instances do not exist - Return Default Faction Relationship Status
 		return false
+	}
+	
+	// Check if both Celestial Faction Instances are the same
+	if (first_faction_instance == second_faction_instance)
+	{
+		// Celestial Faction Instance cannot be Hostile to itself - Return False
+		return false;
 	}
 	
 	// Set Default Faction Relationship Status
@@ -131,6 +152,13 @@ function celestial_faction_is_relationship_allied(first_faction_instance, second
 	{
 		// One or More of the Celestial Faction Instances do not exist - Return Default Faction Relationship Status
 		return false
+	}
+	
+	// Check if both Celestial Faction Instances are the same
+	if (first_faction_instance == second_faction_instance)
+	{
+		// Celestial Faction Instance is Allied to itself - Return True
+		return true;
 	}
 	
 	// Set Default Faction Relationship Status

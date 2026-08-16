@@ -243,6 +243,75 @@ battle_camera_observing_polar_vertical_angle = 0;
 
 battle_choreography_stack = array_create(0);
 
+battle_combat_grid_a_structs = array_create(CelestialBattleCombatGridColumns);
+battle_combat_grid_b_structs = array_create(CelestialBattleCombatGridColumns);
+
+var temp_combat_grid_column_index = 0;
+
+repeat (CelestialBattleCombatGridColumns)
+{
+	// Initialize Combat Grid Column Arrays
+	var temp_battle_combat_grid_column_a = array_create(CelestialBattleCombatGridRows);
+	var temp_battle_combat_grid_column_b = array_create(CelestialBattleCombatGridRows);
+	
+	// Add Combat Grid Column Arrays to Combat Grid
+	battle_combat_grid_a_structs[temp_combat_grid_column_index] = temp_battle_combat_grid_column_a;
+	battle_combat_grid_b_structs[temp_combat_grid_column_index] = temp_battle_combat_grid_column_b;
+	
+	// Iterate through Combat Grid's Rows
+	var temp_combat_grid_row_index = 0;
+	
+	repeat (CelestialBattleCombatGridRows)
+	{
+		// Initialize and Index the Combat Grid Tile Structs
+		temp_battle_combat_grid_column_a[temp_combat_grid_row_index] =
+		{
+			// Tile Position
+			tile_x: 0,
+			tile_y: 0,
+			
+			// Tile Vertex Positions
+			tile_ax: 0,
+			tile_ay: 0,
+			
+			tile_bx: 0,
+			tile_by: 0,
+			
+			tile_cx: 0,
+			tile_cy: 0,
+			
+			tile_dx: 0,
+			tile_dy: 0,
+		};
+		
+		temp_battle_combat_grid_column_b[temp_combat_grid_row_index] = 
+		{
+			// Tile Position
+			tile_x: 0,
+			tile_y: 0,
+			
+			// Tile Vertex Positions
+			tile_ax: 0,
+			tile_ay: 0,
+			
+			tile_bx: 0,
+			tile_by: 0,
+			
+			tile_cx: 0,
+			tile_cy: 0,
+			
+			tile_dx: 0,
+			tile_dy:0,
+		};
+		
+		// Increment Combat Grid's Row Index
+		temp_combat_grid_row_index++;
+	}
+	
+	// Increment Combat Grid's Column Index
+	temp_combat_grid_column_index++;
+}
+
 // Triangle UI Variables
 triangle_animation_value = 0;
 triangle_breath_value = 0;
@@ -589,7 +658,7 @@ battle_choreography_stack_depth_sort = function(current, next)
 }
 #endregion
 
-#region Combat Object Functions
+#region Celestial Object Functions
 // Sub Object Functions
 select_sub_object_instance = function(sub_object_instance)
 {
@@ -1151,7 +1220,7 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 		
 		repeat (temp_triangle_count)
 		{
-			// Retreive Triangle Data
+			// Retrieve Triangle Data
 			var temp_triangle = CelestialSimulator.background_star_sphere.triangles[temp_triangle_index];
 			
 			// Obtain Triangle Vertex Positions
@@ -1189,6 +1258,286 @@ generate_solar_system_background_stars_vertex_buffer = function(solar_system_id,
 // Choreography Functions
 calculate_celestial_battle_choreography_stack = function()
 {
+	// Calculate Battle's Trapezoidal Shaped Platform Vertex Positions
+	var temp_battle_platform_ax = (GameManager.game_width * 0.5) - (CelestialSimulator.battle_platform_top_horizontal_width * 0.5);
+	var temp_battle_platform_ay = CelestialSimulator.battle_platform_top_vertical_position;
+	
+	var temp_battle_platform_bx = (GameManager.game_width * 0.5) + (CelestialSimulator.battle_platform_top_horizontal_width * 0.5);
+	var temp_battle_platform_by = CelestialSimulator.battle_platform_top_vertical_position;
+	
+	var temp_battle_platform_cx = (GameManager.game_width * 0.5) - (CelestialSimulator.battle_platform_bottom_horizontal_width * 0.5);
+	var temp_battle_platform_cy = CelestialSimulator.battle_platform_bottom_vertical_position;
+	
+	var temp_battle_platform_dx = (GameManager.game_width * 0.5) + (CelestialSimulator.battle_platform_bottom_horizontal_width * 0.5);
+	var temp_battle_platform_dy = CelestialSimulator.battle_platform_bottom_vertical_position;
+	
+	// Calculate Battle Tile Width & Height
+	var temp_battle_row_count = (CelestialBattleCombatGridColumns * 2) + 1;
+	var temp_battle_tile_width = 1 / temp_battle_row_count;
+	var temp_battle_tile_height = 1 / CelestialBattleCombatGridRows;
+	
+	// Iterate through Combat Grid's Columns
+	var temp_combat_grid_column_index = 0;
+	
+	repeat (CelestialBattleCombatGridColumns)
+	{
+		// Retrieve Combat Grid Column Arrays
+		var temp_battle_combat_grid_column_a = CelestialSimulator.battle_combat_grid_a_structs[temp_combat_grid_column_index];
+		var temp_battle_combat_grid_column_b = CelestialSimulator.battle_combat_grid_b_structs[temp_combat_grid_column_index];
+		
+		// Iterate through Combat Grid's Rows
+		var temp_combat_grid_row_index = 0;
+		
+		repeat (CelestialBattleCombatGridRows)
+		{
+			// Calculate Battle Tile's Horizontal and Vertical Grid Position
+			var temp_battle_platform_tile_left_w = CelestialBattleCombatGridColumns - 1 - temp_combat_grid_column_index;
+			var temp_battle_platform_tile_right_w = CelestialBattleCombatGridColumns + 1 + temp_combat_grid_column_index;
+			
+			var temp_battle_platform_tile_h = temp_combat_grid_row_index;
+			
+			// Calculate the Battle Column's Vertical Alignment
+			var temp_battle_column_start = 0.5 - (temp_battle_tile_height * CelestialBattleCombatGridRows * 0.5);
+			
+			// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Horizontal Linear Interpolation Values
+			var temp_battle_tile_left_wa = temp_battle_platform_tile_left_w * temp_battle_tile_width + CelestialSimulator.battle_tile_padding_horizontal;
+			var temp_battle_tile_left_wb = (temp_battle_platform_tile_left_w * temp_battle_tile_width) + temp_battle_tile_width - CelestialSimulator.battle_tile_padding_horizontal;
+			
+			var temp_battle_tile_right_wa = temp_battle_platform_tile_right_w * temp_battle_tile_width + CelestialSimulator.battle_tile_padding_horizontal;
+			var temp_battle_tile_right_wb = (temp_battle_platform_tile_right_w * temp_battle_tile_width) + temp_battle_tile_width - CelestialSimulator.battle_tile_padding_horizontal;
+			
+			// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Vertical Linear Interpolation Values
+			var temp_battle_tile_ha = temp_battle_column_start + (temp_battle_platform_tile_h * temp_battle_tile_height) + CelestialSimulator.battle_tile_padding_vertical;
+			var temp_battle_tile_hb = temp_battle_column_start + (temp_battle_platform_tile_h * temp_battle_tile_height) + temp_battle_tile_height - CelestialSimulator.battle_tile_padding_vertical;
+			
+			// Calculate the Battle Tile's "Isosceles Trapezoid Perspective" Horizontal Vertex Positions on the Isosceles Trapezoid's Left and Right Sides
+			var temp_battle_tile_left_wa_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_left_wa);
+			var temp_battle_tile_left_wa_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_left_wa);
+			
+			var temp_battle_tile_right_wa_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_right_wa);
+			var temp_battle_tile_right_wa_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_right_wa);
+			
+			var temp_battle_tile_left_wb_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_left_wb);
+			var temp_battle_tile_left_wb_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_left_wb);
+			
+			var temp_battle_tile_right_wb_top = lerp(temp_battle_platform_ax, temp_battle_platform_bx, temp_battle_tile_right_wb);
+			var temp_battle_tile_right_wb_bottom = lerp(temp_battle_platform_cx, temp_battle_platform_dx, temp_battle_tile_right_wb);
+			
+			// Calculate the Battle Tile's Vertex Positions
+			var temp_battle_tile_left_ax = lerp(temp_battle_tile_left_wa_top, temp_battle_tile_left_wa_bottom, temp_battle_tile_ha);
+			var temp_battle_tile_right_ax = lerp(temp_battle_tile_right_wa_top, temp_battle_tile_right_wa_bottom, temp_battle_tile_ha);
+			var temp_battle_tile_ay = lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_battle_tile_ha);
+			
+			var temp_battle_tile_left_bx = lerp(temp_battle_tile_left_wb_top, temp_battle_tile_left_wb_bottom, temp_battle_tile_ha);
+			var temp_battle_tile_right_bx = lerp(temp_battle_tile_right_wb_top, temp_battle_tile_right_wb_bottom, temp_battle_tile_ha);
+			var temp_battle_tile_by = lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_battle_tile_ha);
+			
+			var temp_battle_tile_left_cx = lerp(temp_battle_tile_left_wa_top, temp_battle_tile_left_wa_bottom, temp_battle_tile_hb);
+			var temp_battle_tile_right_cx = lerp(temp_battle_tile_right_wa_top, temp_battle_tile_right_wa_bottom, temp_battle_tile_hb);
+			var temp_battle_tile_cy = lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_battle_tile_hb);
+			
+			var temp_battle_tile_left_dx = lerp(temp_battle_tile_left_wb_top, temp_battle_tile_left_wb_bottom, temp_battle_tile_hb);
+			var temp_battle_tile_right_dx = lerp(temp_battle_tile_right_wb_top, temp_battle_tile_right_wb_bottom, temp_battle_tile_hb);
+			var temp_battle_tile_dy = lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_battle_tile_hb);
+			
+			// Update Battle Actor's Draw Position
+			var temp_battle_tile_left_x = round(lerp(temp_battle_tile_left_ax, temp_battle_tile_left_bx, 0.5));
+			var temp_battle_tile_right_x = round(lerp(temp_battle_tile_right_ax, temp_battle_tile_right_bx, 0.5)) + 2;
+			
+			var temp_battle_tile_y = floor(lerp(temp_battle_tile_ay, temp_battle_tile_cy, 0.8));
+			
+			// If the Battle Tile's Horizontal Alignment is at the Right-Hand most side, Adjust the Battle Tile's Isosceles Trapezoid's Right Size by one pixel to the Left
+			if (temp_combat_grid_column_index == CelestialBattleCombatGridColumns - 1)
+			{
+				temp_battle_tile_right_bx += -1;
+				temp_battle_tile_right_dx += -1;
+			}
+			
+			// Retrieve the Celestial Simulator's Combat Grid Tile Structs
+			var temp_combat_grid_tile_struct_a = array_get(CelestialSimulator.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			var temp_combat_grid_tile_struct_b = array_get(CelestialSimulator.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			
+			// Update Left Tile Vertex Positions
+			temp_combat_grid_tile_struct_a.tile_x = temp_battle_tile_left_x;
+			temp_combat_grid_tile_struct_a.tile_y = temp_battle_tile_y;
+			
+			temp_combat_grid_tile_struct_a.tile_ax = temp_battle_tile_left_ax;
+			temp_combat_grid_tile_struct_a.tile_ay = temp_battle_tile_ay;
+			
+			temp_combat_grid_tile_struct_a.tile_bx = temp_battle_tile_left_bx;
+			temp_combat_grid_tile_struct_a.tile_by = temp_battle_tile_by;
+			
+			temp_combat_grid_tile_struct_a.tile_cx = temp_battle_tile_left_cx;
+			temp_combat_grid_tile_struct_a.tile_cy = temp_battle_tile_cy;
+			
+			temp_combat_grid_tile_struct_a.tile_dx = temp_battle_tile_left_dx;
+			temp_combat_grid_tile_struct_a.tile_dy = temp_battle_tile_dy;
+			
+			// Update Right Tile Vertex Positions
+			temp_combat_grid_tile_struct_b.tile_x = temp_battle_tile_right_x;
+			temp_combat_grid_tile_struct_b.tile_y = temp_battle_tile_y;
+			
+			temp_combat_grid_tile_struct_b.tile_ax = temp_battle_tile_right_ax;
+			temp_combat_grid_tile_struct_b.tile_ay = temp_battle_tile_ay;
+			
+			temp_combat_grid_tile_struct_b.tile_bx = temp_battle_tile_right_bx;
+			temp_combat_grid_tile_struct_b.tile_by = temp_battle_tile_by;
+			
+			temp_combat_grid_tile_struct_b.tile_cx = temp_battle_tile_right_cx;
+			temp_combat_grid_tile_struct_b.tile_cy = temp_battle_tile_cy;
+			
+			temp_combat_grid_tile_struct_b.tile_dx = temp_battle_tile_right_dx;
+			temp_combat_grid_tile_struct_b.tile_dy = temp_battle_tile_dy;
+			
+			// Retrieve the Celestial Battle's Combat Grid Combat Unit Instances and Tile Structs
+			var temp_combat_unit_a = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_a[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			var temp_combat_unit_b = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_b[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			
+			var temp_battle_combat_grid_tile_a = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			var temp_battle_combat_grid_tile_b = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			
+			// Update the Combat Grid Tile's Alpha Values
+			temp_battle_combat_grid_tile_a.tile_alpha = instance_exists(temp_combat_unit_a) ? power(temp_combat_unit_a.entry_animation_value, 0.5) : lerp(temp_battle_combat_grid_tile_a.tile_alpha, 0, frame_delta * 0.05);
+			temp_battle_combat_grid_tile_b.tile_alpha = instance_exists(temp_combat_unit_b) ? power(temp_combat_unit_b.entry_animation_value, 0.5) : lerp(temp_battle_combat_grid_tile_b.tile_alpha, 0, frame_delta * 0.05);
+			
+			//temp_battle_combat_grid_tile_a.tile_alpha = lerp(temp_battle_combat_grid_tile_a.tile_alpha, instance_exists(temp_combat_unit_a) ? 1 : 0, frame_delta * 0.05);
+			//temp_battle_combat_grid_tile_b.tile_alpha = lerp(temp_battle_combat_grid_tile_b.tile_alpha, instance_exists(temp_combat_unit_b) ? 1 : 0, frame_delta * 0.05);
+			
+			// Increment Combat Grid's Row Index
+			temp_combat_grid_row_index++;
+		}
+		
+		// Increment Combat Grid's Column Index
+		temp_combat_grid_column_index++;
+	}
+	
+	//
+	var temp_battle_combat_unit_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_combat_units);
+	var temp_battle_combat_unit_index = temp_battle_combat_unit_count - 1;
+	
+	repeat (temp_battle_combat_unit_count)
+	{
+		// Establish Combat Unit Instance & Combat Unit Type Struct
+		var temp_combat_unit_instance = CelestialSimulator.sub_object_selected_instance.battle_combat_units[temp_battle_combat_unit_index];
+		var temp_combat_unit_struct = global.celestial_combat_units[temp_combat_unit_instance.combat_unit_type];
+		
+		// Establish Combat Unit's Tile Position Struct
+		var temp_combat_grid_side_tile_structs = temp_combat_unit_instance.combat_grid_side == CelestialBattleCombatGridSide.Left ? CelestialSimulator.battle_combat_grid_a_structs : CelestialSimulator.battle_combat_grid_b_structs;
+		var temp_combat_grid_tile_struct = array_get(temp_combat_grid_side_tile_structs[temp_combat_unit_instance.combat_grid_column], temp_combat_unit_instance.combat_grid_row);
+		
+		//
+		var temp_combat_unit_grid_side = temp_combat_unit_instance.combat_grid_side == CelestialBattleCombatGridSide.Left ? 1 : -1;
+		
+		//
+		var temp_combat_unit_sprite_index = temp_combat_unit_struct.unit_idle_sprite;
+		
+		// Calculate Actor Weapon Recoil Recovery
+		temp_combat_unit_instance.item_angle_recoil = lerp(temp_combat_unit_instance.item_angle_recoil, 0, temp_combat_unit_struct.unit_weapon_recoil_recovery_spd * frame_delta);
+		temp_combat_unit_instance.item_horizontal_recoil = lerp(temp_combat_unit_instance.item_horizontal_recoil, 0, temp_combat_unit_struct.unit_weapon_recoil_recovery_spd * frame_delta);
+		temp_combat_unit_instance.item_vertical_recoil = lerp(temp_combat_unit_instance.item_vertical_recoil, 0, temp_combat_unit_struct.unit_weapon_recoil_recovery_spd * frame_delta);
+		
+		// Establish Battle Actor's Weapon Variables
+		var temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_grid_side * -(90 + temp_combat_unit_struct.unit_weapon_idle_ambient_angle));
+		
+		// Check if Battle Actor has an Animation Condition
+		if (temp_combat_unit_instance.entry_animation)
+		{
+			// Calculate Battle Choreography Actor Behaviour
+			if (temp_combat_unit_instance.entry_delay_duration > 0)
+			{
+				// Actor is Performing their Battle Entry Delay - Skip Battle Actor's Rendering Behaviour
+				temp_combat_unit_instance.entry_delay_duration -= frame_delta;
+				
+				// Decrement Battle Choreography Actors Index
+				temp_battle_combat_unit_index--;
+				
+				// Skip Choreography Actor
+				continue;
+			}
+			
+			// Actor is Performing their Battle Entry Animation - Increment the Actor's Entry Animation Values
+			temp_combat_unit_instance.entry_animation_value += global.celestial_battle_exit_stage_animation_spd * frame_delta;
+			temp_combat_unit_instance.entry_animation_value = clamp(temp_combat_unit_instance.entry_animation_value, 0, 1);
+			
+			// Check Toggle if Battle Actor has finished their Battle Entry Animation
+			temp_combat_unit_instance.entry_animation = temp_combat_unit_instance.entry_animation_value != 1;
+			
+			// Calculate Battle Entry Animation Value & Horizontal Offset
+			var temp_entry_animation_value = temp_combat_unit_instance.entry_animation_value * temp_combat_unit_instance.entry_animation_value;
+			var temp_entry_horizontal_offset = -global.celestial_battle_exit_stage_animation_movement_distance * temp_combat_unit_grid_side * power(1 - temp_combat_unit_instance.entry_animation_value, global.celestial_battle_exit_stage_animation_mult);
+			
+			// Update Battle Actor's Render Variables
+			temp_combat_unit_instance.draw_offset_x = temp_entry_horizontal_offset;
+			temp_combat_unit_instance.draw_alpha = temp_entry_animation_value;
+			
+			// Update Battle Actor's Render Sprite
+			if (temp_combat_unit_struct.unit_move_sprite != noone)
+			{
+				temp_combat_unit_sprite_index = temp_combat_unit_struct.unit_move_sprite;
+			}
+			
+			// Update Battle Actor's Weapon Variables
+			temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_grid_side * -(90 + temp_combat_unit_struct.unit_weapon_move_ambient_angle));
+		}
+		else if (temp_combat_unit_instance.exit_animation)
+		{
+			// Check if Actor Exit Animation Delay is Active
+			if (temp_combat_unit_instance.exit_delay_duration > 0)
+			{
+				// Decrement Actor Exit Animation Delay Duration
+				temp_combat_unit_instance.exit_delay_duration -= frame_delta;
+			}
+			else
+			{
+				// Actor is Performing their Battle Exit Animation - Increment the Actor's Exit Animation Values
+				temp_combat_unit_instance.exit_animation_value -= global.celestial_battle_exit_stage_animation_spd * frame_delta;
+				temp_combat_unit_instance.exit_animation_value = clamp(temp_combat_unit_instance.exit_animation_value, 0, 1);
+				
+				// Calculate Battle Exit Animation Value & Horizontal Offset
+				var temp_exit_animation_value = temp_combat_unit_instance.exit_animation_value * temp_combat_unit_instance.exit_animation_value;
+				var temp_exit_horizontal_offset = -global.celestial_battle_exit_stage_animation_movement_distance * temp_combat_unit_grid_side * (1 - power(temp_combat_unit_instance.exit_animation_value, global.celestial_battle_exit_stage_animation_mult));
+				
+				// Update Battle Actor's Render Variables
+				temp_combat_unit_instance.draw_offset_x = temp_exit_horizontal_offset;
+				temp_combat_unit_grid_side = -temp_combat_unit_grid_side;
+				temp_combat_unit_instance.draw_alpha = temp_exit_animation_value;
+				
+				// Update Battle Actor's Render Sprite
+				if (temp_combat_unit_struct.unit_move_sprite != noone)
+				{
+					temp_combat_unit_sprite_index = temp_combat_unit_struct.unit_move_sprite;
+				}
+				
+				// Update Battle Actor's Weapon Variables
+				temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_grid_side * -(90 + temp_combat_unit_struct.unit_weapon_move_ambient_angle));
+			}
+		}
+		
+		//
+		temp_combat_unit_instance.x = temp_combat_grid_tile_struct.tile_x + temp_combat_unit_instance.random_offset_x + temp_combat_unit_instance.draw_offset_x;
+		temp_combat_unit_instance.y = temp_combat_grid_tile_struct.tile_y + temp_combat_unit_instance.random_offset_y;
+		
+		//
+		temp_combat_unit_instance.image_xscale = temp_combat_unit_grid_side;
+		
+		//
+		temp_combat_unit_instance.sprite_index = temp_combat_unit_sprite_index;
+		
+		// Calculate and Update Actor's Vertical Depth
+		var temp_combat_unit_depth_calculation_y = temp_combat_unit_instance.y;
+		temp_combat_unit_instance.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_combat_unit_depth_calculation_y);
+		
+		//
+		array_push(CelestialSimulator.battle_choreography_stack, temp_combat_unit_instance);
+		
+		// Decrement Battle Combat Unit Index
+		temp_battle_combat_unit_index--;
+	}
+	
+	// Depth Sort the Celestial Simulator's Battle Choreography Stack by Vertical Depth
+	array_sort(CelestialSimulator.battle_choreography_stack, CelestialSimulator.battle_choreography_stack_depth_sort);
+	
+	/*
 	// Iterate through Battle's Choreography Actions
 	var temp_battle_choreography_actions_count = array_length(CelestialSimulator.sub_object_selected_instance.battle_choreography_actions);
 	var temp_battle_choreography_actions_index = 0;
@@ -1594,10 +1943,145 @@ calculate_celestial_battle_choreography_stack = function()
 	
 	// Depth Sort the Celestial Simulator's Battle Choreography Stack by Vertical Depth
 	array_sort(CelestialSimulator.battle_choreography_stack, CelestialSimulator.battle_choreography_stack_depth_sort);
+	*/
 }
 
 render_celestial_battle_choreography_stack = function()
 {
+	//
+	draw_set_color(c_white);
+	
+	// Iterate through Combat Grid's Columns
+	var temp_combat_grid_column_index = 0;
+	
+	repeat (CelestialBattleCombatGridColumns)
+	{
+		// Iterate through Combat Grid's Rows
+		var temp_combat_grid_row_index = 0;
+		
+		repeat (CelestialBattleCombatGridRows)
+		{
+			// 
+			var temp_tile_a = array_get(CelestialSimulator.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			var temp_tile_b = array_get(CelestialSimulator.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			
+			//
+			var temp_battle_combat_grid_tile_a = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			var temp_battle_combat_grid_tile_b = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
+			
+			//
+			var temp_left_tile_ax = temp_tile_a.tile_ax;
+			var temp_left_tile_ay = temp_tile_a.tile_ay;
+			
+			var temp_left_tile_bx = temp_tile_a.tile_bx;
+			var temp_left_tile_by = temp_tile_a.tile_by;
+			
+			var temp_left_tile_cx = temp_tile_a.tile_cx;
+			var temp_left_tile_cy = temp_tile_a.tile_cy;
+			
+			var temp_left_tile_dx = temp_tile_a.tile_dx;
+			var temp_left_tile_dy = temp_tile_a.tile_dy;
+			
+			// Check to Perform Battle Actor's Entry Animation
+			if (temp_battle_combat_grid_tile_a.tile_alpha < 1)
+			{
+				// Establish Battle Actor Entry or Exit Animation Value
+				var temp_left_tile_lerp_value = power(temp_battle_combat_grid_tile_a.tile_alpha, 0.8);
+				
+				// Update Battle Tile Vertex Positions to Lerp from Tile Center
+				temp_left_tile_ax = lerp(temp_tile_a.tile_x, temp_tile_a.tile_ax, temp_left_tile_lerp_value);
+				temp_left_tile_ay = lerp(temp_tile_a.tile_y, temp_tile_a.tile_ay, temp_left_tile_lerp_value);
+				
+				temp_left_tile_bx = lerp(temp_tile_a.tile_x, temp_tile_a.tile_bx, temp_left_tile_lerp_value);
+				temp_left_tile_by = lerp(temp_tile_a.tile_y, temp_tile_a.tile_by, temp_left_tile_lerp_value);
+				
+				temp_left_tile_cx = lerp(temp_tile_a.tile_x, temp_tile_a.tile_cx, temp_left_tile_lerp_value);
+				temp_left_tile_cy = lerp(temp_tile_a.tile_y, temp_tile_a.tile_cy, temp_left_tile_lerp_value);
+				
+				temp_left_tile_dx = lerp(temp_tile_a.tile_x, temp_tile_a.tile_dx, temp_left_tile_lerp_value);
+				temp_left_tile_dy = lerp(temp_tile_a.tile_y, temp_tile_a.tile_dy, temp_left_tile_lerp_value);
+				
+				// Draw Set Actor Entry Animation Battle Tiles' Color
+				draw_set_color(merge_color(c_black, c_white, temp_left_tile_lerp_value));
+			}
+			else
+			{
+				// Draw Set Color as White - For the Battle Tiles' Color
+				draw_set_color(c_white);
+			}
+			
+			//
+			draw_triangle(temp_left_tile_ax, temp_left_tile_ay, temp_left_tile_bx, temp_left_tile_by, temp_left_tile_cx, temp_left_tile_cy, false);
+			draw_triangle(temp_left_tile_bx, temp_left_tile_by, temp_left_tile_cx, temp_left_tile_cy, temp_left_tile_dx, temp_left_tile_dy, false);
+			
+			//
+			var temp_right_tile_ax = temp_tile_b.tile_ax;
+			var temp_right_tile_ay = temp_tile_b.tile_ay;
+			
+			var temp_right_tile_bx = temp_tile_b.tile_bx;
+			var temp_right_tile_by = temp_tile_b.tile_by;
+			
+			var temp_right_tile_cx = temp_tile_b.tile_cx;
+			var temp_right_tile_cy = temp_tile_b.tile_cy;
+			
+			var temp_right_tile_dx = temp_tile_b.tile_dx;
+			var temp_right_tile_dy = temp_tile_b.tile_dy;
+			
+			// Check to Perform Battle Actor's Entry Animation
+			if (temp_battle_combat_grid_tile_b.tile_alpha < 1)
+			{
+				// Establish Battle Actor Entry or Exit Animation Value
+				var temp_right_tile_lerp_value = power(temp_battle_combat_grid_tile_b.tile_alpha, 0.8);
+				
+				// Update Battle Tile Vertex Positions to Lerp from Tile Center
+				temp_right_tile_ax = lerp(temp_tile_b.tile_x, temp_tile_b.tile_ax, temp_right_tile_lerp_value);
+				temp_right_tile_ay = lerp(temp_tile_b.tile_y, temp_tile_b.tile_ay, temp_right_tile_lerp_value);
+				
+				temp_right_tile_bx = lerp(temp_tile_b.tile_x, temp_tile_b.tile_bx, temp_right_tile_lerp_value);
+				temp_right_tile_by = lerp(temp_tile_b.tile_y, temp_tile_b.tile_by, temp_right_tile_lerp_value);
+				
+				temp_right_tile_cx = lerp(temp_tile_b.tile_x, temp_tile_b.tile_cx, temp_right_tile_lerp_value);
+				temp_right_tile_cy = lerp(temp_tile_b.tile_y, temp_tile_b.tile_cy, temp_right_tile_lerp_value);
+				
+				temp_right_tile_dx = lerp(temp_tile_b.tile_x, temp_tile_b.tile_dx, temp_right_tile_lerp_value);
+				temp_right_tile_dy = lerp(temp_tile_b.tile_y, temp_tile_b.tile_dy, temp_right_tile_lerp_value);
+				
+				// Draw Set Actor Entry Animation Battle Tiles' Color
+				draw_set_color(merge_color(c_black, c_white, temp_right_tile_lerp_value));
+			}
+			else
+			{
+				// Draw Set Color as White - For the Battle Tiles' Color
+				draw_set_color(c_white);
+			}
+			
+			draw_triangle(temp_right_tile_ax, temp_right_tile_ay, temp_right_tile_bx, temp_right_tile_by, temp_right_tile_cx, temp_right_tile_cy, false);
+			draw_triangle(temp_right_tile_bx, temp_right_tile_by, temp_right_tile_cx, temp_right_tile_cy, temp_right_tile_dx, temp_right_tile_dy, false);
+			
+			// Increment Combat Grid's Row Index
+			temp_combat_grid_row_index++;
+		}
+		
+		// Increment Combat Grid's Column Index
+		temp_combat_grid_column_index++;
+	}
+	
+	// Iterate through Battle's Choreography Stack
+	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);
+	var temp_battle_choreography_stack_index = 0;
+	
+	repeat (temp_battle_choreography_stack_count)
+	{
+		// Establish Choreography Stack Object Struct
+		var temp_stack_obj = CelestialSimulator.battle_choreography_stack[temp_battle_choreography_stack_index];
+		
+		// Draw Battle Choreography Actor Sprite
+		draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, 1, 0, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+		
+		// Increment Battle Choreography Stack Index
+		temp_battle_choreography_stack_index++;
+	}
+	/*
 	// Iterate through Battle's Choreography Stack
 	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);
 	var temp_battle_choreography_stack_index = 0;
@@ -1716,6 +2200,7 @@ render_celestial_battle_choreography_stack = function()
 		// Increment Battle Choreography Stack Index
 		temp_battle_choreography_stack_index++;
 	}
+	*/
 }
 #endregion
 

@@ -238,7 +238,7 @@ function celestial_unit_join_faction(celestial_unit, celestial_faction)
 function celestial_unit_leave_faction(celestial_unit)
 {
 	// Find the Index of the given Celestial Unit within the Celestial Faction's Units Array
-	var temp_celestial_unit_index = array_find_index(celestial_unit.unit_faction.units, celestial_unit);
+	var temp_celestial_unit_index = array_get_index(celestial_unit.unit_faction.units, celestial_unit);
 	
 	// Check if the given Celestial Unit exists within the Celestial Faction's Units Array
 	if (temp_celestial_unit_index != -1)

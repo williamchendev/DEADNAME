@@ -1,36 +1,15 @@
 /// @description Battle Cleanup Event
 // Celestial Battle Cleanup Behaviour Event
 
-// Increment through Battle's Combat Grid Arrays and clear all Column Arrays
-var temp_battle_combat_grid_column_size = CelestialBattleCombatGridColumns;
-var temp_battle_combat_grid_column_index = temp_battle_combat_grid_column_size - 1;
-
-repeat (temp_battle_combat_grid_column_size)
-{
-	// Clear Battle Combat Grid's Column Arrays
-	array_resize(battle_combat_grid_a[temp_battle_combat_grid_column_index], 0);
-	array_resize(battle_combat_grid_b[temp_battle_combat_grid_column_index], 0);
-	
-	array_resize(battle_combat_grid_instances_a[temp_battle_combat_grid_column_index], 0);
-	array_resize(battle_combat_grid_instances_b[temp_battle_combat_grid_column_index], 0);
-	
-	// Delete Battle Combat Grid's Column Arrays from Battle Combat Grid Arrays
-	array_delete(battle_combat_grid_a, temp_battle_combat_grid_column_index, 1);
-	array_delete(battle_combat_grid_b, temp_battle_combat_grid_column_index, 1);
-	
-	array_delete(battle_combat_grid_instances_a, temp_battle_combat_grid_column_index, 1);
-	array_delete(battle_combat_grid_instances_b, temp_battle_combat_grid_column_index, 1);
-	
-	// Decrement Combat Grid Column Index
-	temp_battle_combat_grid_column_index--;
-}
-
 // Clear Battle Combat Grid Arrays
 array_resize(battle_combat_grid_a, 0);
 array_resize(battle_combat_grid_b, 0);
 
 array_resize(battle_combat_grid_instances_a, 0);
 array_resize(battle_combat_grid_instances_b, 0);
+
+array_resize(battle_combat_grid_a_structs, 0);
+array_resize(battle_combat_grid_b_structs, 0);
 
 // Clear Battle Combat Unit Arrays
 array_resize(battle_supporting_units_a, 0);

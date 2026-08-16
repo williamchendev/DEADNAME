@@ -45,7 +45,7 @@
         "GMTimeLine",
         "GMObject",
         "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"camera_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"camera_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"camera_y","filters":[
         "GMTileSet",
         "GMSprite",
@@ -57,7 +57,7 @@
         "GMTimeLine",
         "GMObject",
         "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"camera_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"camera_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"camera_width","filters":[
         "GMTileSet",
         "GMSprite",
@@ -69,7 +69,7 @@
         "GMTimeLine",
         "GMObject",
         "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"camera_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"camera_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"camera_height","filters":[
         "GMTileSet",
         "GMSprite",
@@ -81,7 +81,7 @@
         "GMTimeLine",
         "GMObject",
         "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"camera_height","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"camera_height","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -571,9 +571,9 @@ repeat (temp_solar_systems_count)
 							
 							// Set the Combat Action Instance's Target Combat Unit and Target Combat Grid Variables
 							temp_new_combat_action_instance.target_combat_unit = temp_combat_unit_instance.combat_unit_action_target_inst;
-							temp_new_combat_action_instance.target_combat_grid_side = temp_combat_unit_instance.combat_unit_action_target_grid_side;
-							temp_new_combat_action_instance.target_combat_grid_column = temp_combat_unit_instance.combat_unit_action_target_grid_column;
-							temp_new_combat_action_instance.target_combat_grid_row = temp_combat_unit_instance.combat_unit_action_target_grid_row;
+							temp_new_combat_action_instance.target_combat_grid_side = temp_combat_unit_instance.combat_unit_action_target_combat_grid_side;
+							temp_new_combat_action_instance.target_combat_grid_column = temp_combat_unit_instance.combat_unit_action_target_combat_grid_column;
+							temp_new_combat_action_instance.target_combat_grid_row = temp_combat_unit_instance.combat_unit_action_target_combat_grid_row;
 							
 							// Decrement Combat Unit's Action Count
 							temp_combat_unit_instance.combat_unit_action_count--;
@@ -615,10 +615,10 @@ repeat (temp_solar_systems_count)
 									// Establish Combat Unit Attack Target
 									var temp_combat_unit_attack_target_instance = noone;
 									
-									// Find Valid Combat Unit Instance as Attack Target relative to enemies opposing the Combat Unit's Battle Platform Orientation
-									switch (temp_combat_unit_instance.combat_grid_facing_direction)
+									// Find Valid Combat Unit Instance as Attack Target relative to enemies opposing the Combat Unit's Combat Grid Side
+									switch (temp_combat_unit_instance.combat_grid_side)
 									{
-										case CelestialBattlePlatformSide.Left:
+										case CelestialBattleCombatGridSide.Left:
 											// Iterate through Combat Grid's Columns to find Valid Target
 											var temp_combat_grid_b_attack_column_index = 0;
 											
@@ -644,7 +644,7 @@ repeat (temp_solar_systems_count)
 												temp_combat_grid_b_attack_column_index++;
 											}
 											break;
-										case CelestialBattlePlatformSide.Right:
+										case CelestialBattleCombatGridSide.Right:
 											// Iterate through Combat Grid's Columns to find Valid Target
 											var temp_combat_grid_a_attack_column_index = 0;
 											
@@ -679,13 +679,13 @@ repeat (temp_solar_systems_count)
 									// Establish Combat Unit Support Target
 									var temp_combat_unit_support_target_instance = noone;
 									
-									// Find Valid Combat Unit Instance as Support Target relative to enemies opposing the Combat Unit's Battle Platform Orientation
-									switch (temp_combat_unit_instance.combat_grid_facing_direction)
+									// Find Valid Combat Unit Instance as Support Target relative to enemies opposing the Combat Unit's Combat Grid Side
+									switch (temp_combat_unit_instance.combat_grid_side)
 									{
-										case CelestialBattlePlatformSide.Left:
+										case CelestialBattleCombatGridSide.Left:
 											// Iterate through Combat Grid's Columns to find Valid Target
 											break;
-										case CelestialBattlePlatformSide.Right:
+										case CelestialBattleCombatGridSide.Right:
 											// Iterate through Combat Grid's Columns to find Valid Target
 											break;
 									}
@@ -704,9 +704,9 @@ repeat (temp_solar_systems_count)
 								temp_combat_unit_instance.combat_unit_action_duration = global.celestial_combat_unit_actions[temp_combat_unit_action].action_duration;
 								
 								// Set Combat Unit's Action Target Variables
-								temp_combat_unit_instance.combat_unit_action_target_grid_side = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_facing_direction;
-								temp_combat_unit_instance.combat_unit_action_target_grid_column = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_column;
-								temp_combat_unit_instance.combat_unit_action_target_grid_row = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_row;
+								temp_combat_unit_instance.combat_unit_action_target_combat_grid_side = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_side;
+								temp_combat_unit_instance.combat_unit_action_target_combat_grid_column = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_column;
+								temp_combat_unit_instance.combat_unit_action_target_combat_grid_row = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_row;
 							}
 							else
 							{
@@ -743,11 +743,11 @@ repeat (temp_solar_systems_count)
 							// Combat Action's Target Instance does not exist - Attempt to pull Target Combat Unit from Target Combat Grid Variables
 							switch (temp_combat_action_instance.target_combat_grid_side)
 							{
-								case CelestialBattlePlatformSide.Left:
+								case CelestialBattleCombatGridSide.Left:
 									// Combat Grid Left Side Target Instance Retrieval
 									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_instances_a[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
 									break;
-								case CelestialBattlePlatformSide.Right:
+								case CelestialBattleCombatGridSide.Right:
 									// Combat Grid Right Side Target Instance Retrieval
 									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_instances_b[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
 									break;

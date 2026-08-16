@@ -97,6 +97,9 @@ battle_combat_grid_b = array_create(CelestialBattleCombatGridColumns);
 battle_combat_grid_instances_a = array_create(CelestialBattleCombatGridColumns);
 battle_combat_grid_instances_b = array_create(CelestialBattleCombatGridColumns);
 
+battle_combat_grid_a_structs = array_create(CelestialBattleCombatGridColumns);
+battle_combat_grid_b_structs = array_create(CelestialBattleCombatGridColumns);
+
 var temp_battle_combat_grid_column_index = 0;
 
 repeat (CelestialBattleCombatGridColumns)
@@ -107,6 +110,9 @@ repeat (CelestialBattleCombatGridColumns)
 	
 	battle_combat_grid_instances_a[temp_battle_combat_grid_column_index] = array_create(0);
 	battle_combat_grid_instances_b[temp_battle_combat_grid_column_index] = array_create(0);
+	
+	battle_combat_grid_a_structs[temp_battle_combat_grid_column_index] = array_create(CelestialBattleCombatGridRows);
+	battle_combat_grid_b_structs[temp_battle_combat_grid_column_index] = array_create(CelestialBattleCombatGridRows);
 	
 	// Establish Column's Type to index Available Combat Grid Slots properly
 	var temp_column_type_available_slots_a_array = battle_frontline_available_slots_a;
@@ -140,11 +146,26 @@ repeat (CelestialBattleCombatGridColumns)
 			break;
 	}
 	
-	// Iterate through the Battle Combat Grid Column's Rows to add all Available Slots to their Column Type's Available Slots Array
+	// Iterate through the Battle Combat Grid Column's Rows
 	var temp_battle_combat_grid_row_index = 0;
 	
 	repeat (CelestialBattleCombatGridRows)
 	{
+		// Initialize Combat Grid Tile Structs
+		var temp_battle_combat_tile_struct_a = 
+		{
+			tile_alpha: 0
+		};
+		
+		var temp_battle_combat_tile_struct_b = 
+		{
+			tile_alpha: 0
+		};
+		
+		// Index Combat Grid Tile Structs in Combat Grid's Struct Arrays
+		array_set(battle_combat_grid_a_structs[temp_battle_combat_grid_column_index], temp_battle_combat_grid_row_index, temp_battle_combat_tile_struct_a);
+		array_set(battle_combat_grid_b_structs[temp_battle_combat_grid_column_index], temp_battle_combat_grid_row_index, temp_battle_combat_tile_struct_b);
+		
 		// Establish the Index of the Combat Grid's Available Slot
 		var temp_available_slot_index = (temp_battle_combat_grid_column_index * CelestialBattleCombatGridRows) + temp_battle_combat_grid_row_index;
 		

@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Unit_Tank_Small",
-    "path":"sprites/sOverworld_Unit_Tank_Small/sOverworld_Unit_Tank_Small.yy",
+    "name":"sOverworld_Unit_William_Idle",
+    "path":"sprites/sOverworld_Unit_William_Idle/sOverworld_Unit_William_Idle.yy",
   },
   "spriteMaskId":null,
   "visible":false,

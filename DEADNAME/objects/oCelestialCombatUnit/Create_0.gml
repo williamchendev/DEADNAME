@@ -24,18 +24,22 @@ combat_unit_action_exhaustion = -1;
 combat_unit_action_duration = -1;
 
 combat_unit_action_target_inst = noone;
-combat_unit_action_target_grid_side = CelestialBattlePlatformSide.None;
-combat_unit_action_target_grid_column = -1;
-combat_unit_action_target_grid_row = -1;
+combat_unit_action_target_combat_grid_side = CelestialBattleCombatGridSide.None;
+combat_unit_action_target_combat_grid_column = -1;
+combat_unit_action_target_combat_grid_row = -1;
 
 // Combat Grid Variables
-combat_grid_facing_direction = CelestialBattlePlatformSide.None;
+combat_grid_side = CelestialBattleCombatGridSide.None;
 
 combat_grid_column = -1;
 combat_grid_row = -1;
 
 // Object Depth Sorting Variables
 vertical_depth = 0;
+
+// Position Variables
+random_offset_x = 0;
+random_offset_y = 0;
 
 // Weapon Settings
 item_enabled = false;
@@ -64,4 +68,14 @@ item_vertical_recoil = 0;
 
 item_vertical_bobbing_height = -1;
 item_vertical_bobbing_y_offset = 0;
+
+// Entry Animation Variables
+entry_animation = true;
+entry_animation_value = 0;
+entry_delay_duration = 0;
+
+// Exit Animation Variables
+exit_animation = false;
+exit_animation_value = 1;
+exit_delay_duration = 0;
 

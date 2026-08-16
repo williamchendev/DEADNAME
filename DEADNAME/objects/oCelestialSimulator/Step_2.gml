@@ -63,7 +63,7 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 						break;
 					case CelestialSubObjectType.Battle:
 						// Limit Battle Selection to Battles involving the Player's Faction
-						temp_sorted_sub_object_can_be_selected = instance_exists(player_faction) and array_get_index(temp_sub_object_sorted_instance.battle_factions, player_faction) != -1;
+						temp_sorted_sub_object_can_be_selected = instance_exists(player_faction) and (temp_sub_object_sorted_instance.battle_faction_a == player_faction or temp_sub_object_sorted_instance.battle_faction_b == player_faction);
 						break;
 					default:
 						break;
@@ -395,7 +395,7 @@ else if (temp_input_select or temp_input_action)
 										// Unit is currently engaged in Battle and Pathfinding to a new Location is considered Retreating - Change their Unit Behaviour to "Retreat" before Pathfinding to their new Location
 										sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Retreat;
 									}
-									else if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
+									else if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst != sub_object_selected_instance and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
 									{
 										// Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance - Set new Pathfinding Goal Behaviour based on Action Sub Object Type
 										switch (temp_sub_object_action_inst.celestial_sub_object_type)
