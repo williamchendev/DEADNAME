@@ -1,6 +1,26 @@
 /// @description Battle Destroy Event
 // Celestial Battle Destroy Behaviour Event
 
+// Remove Celestial Units from all Battles
+var temp_battle_unit_count = array_length(battle_units);
+var temp_battle_unit_index = temp_battle_unit_count - 1;
+
+repeat (temp_battle_unit_count)
+{
+	// Establish Celestial Unit Instance
+	var temp_battle_unit_instance = battle_units[temp_battle_unit_index];
+	
+	// Check if Celestial Unit Instance exists
+	if (instance_exists(temp_battle_unit_instance))
+	{
+		// Remove Celestial Unit (and all of their participating Combat Units) from the Celestial Battle
+		celestial_battle_remove_unit(id, temp_battle_unit_instance);
+	}
+	
+	// Decrement Battle Unit Index
+	temp_battle_unit_index--;
+}
+
 // Check if Celestial Body Instance exists
 if (instance_exists(celestial_body_instance))
 {

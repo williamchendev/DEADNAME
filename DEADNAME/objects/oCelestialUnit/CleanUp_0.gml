@@ -83,6 +83,9 @@ array_resize(backline_combat_unit_unengaged, 0);
 
 // Reset Battle Array
 array_resize(engaged_battles, 0);
+array_resize(engaged_battles_combat_units, 0);
+array_resize(engaged_battles_combat_units_contribution, 0);
+array_resize(unengaged_battles, 0);
 
 // Clear Unit Collision Check Arrays
 array_resize(unit_battle_within_timed_collision_check_battles, 0);

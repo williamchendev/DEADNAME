@@ -26,9 +26,7 @@ miniature_sprite_index = sOverworld_Conflict_Icon;
 
 // Clock Variables
 battle_total_time = 0;
-battle_round_timer = 0;
-
-battle_round = 0;
+battle_ending_time = 15;
 
 // Battle Variables
 battle_exists = true;
@@ -41,8 +39,6 @@ battle_elevation = 0;
 battle_near_collision_threshold = 2;
 battle_far_collision_threshold = 2;
 
-battle_collision_check_timer = CelestialSimulator.global_collision_check_interval + random(CelestialSimulator.global_collision_check_interval);
-
 // Celestial Body Variables
 celestial_body_instance = noone;
 
@@ -54,11 +50,10 @@ pathfinding_node_b_index = -1;
 battle_faction_a = noone;
 battle_faction_b = noone;
 
-battle_primary_unit_a = noone;
-battle_primary_unit_b = noone;
+battle_units = array_create(0);
 
-battle_supporting_units_a = array_create(0);
-battle_supporting_units_b = array_create(0);
+battle_units_a = array_create(0);
+battle_units_b = array_create(0);
 
 // Initialize Battle Combat Unit Variables
 battle_combat_units = array_create(0);

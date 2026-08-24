@@ -420,15 +420,281 @@ repeat (temp_solar_systems_count)
 			
 			#region Battle Behaviour 
 			// Iterate through Celestial Object Battle Behaviours
-			var temp_battle_index = 0;
 			var temp_battle_count = array_length(battles);
+			var temp_battle_index = temp_battle_count - 1;
 			
 			repeat (temp_battle_count)
 			{
 				// Find Battle Instance
 				var temp_battle_instance = battles[temp_battle_index];
 				
+				//
+				var temp_battle_units_count = array_length(temp_battle_instance.battle_units);
+				var temp_battle_units_a_count = array_length(temp_battle_instance.battle_units_a);
+				var temp_battle_units_b_count = array_length(temp_battle_instance.battle_units_b);
+				
+				// Check to Destroy Battle Instance
+				if (!temp_battle_instance.battle_exists)
+				{
+					// Decrement Battle Instance's Ending Timer
+					temp_battle_instance.battle_ending_time -= CelestialSimulator.global_clock_delta_time;
+					
+					// Check if Battle's Ending Duration Timer has Elapsed
+					if (temp_battle_instance.battle_ending_time <= 0)
+					{
+						// Destroy Battle Instance
+						instance_destroy(temp_battle_instance);
+						
+						// Decrement Battle Index
+						temp_battle_index--;
+						
+						// Skip to Next Battle Instance
+						continue;
+					}
+				}
+				else
+				{
+					// Establish the Battle's Faction Aligned Combat Units Count
+					var temp_battle_combat_units_a_count = array_length(temp_battle_instance.battle_combat_units_a);
+					var temp_battle_combat_units_b_count = array_length(temp_battle_instance.battle_combat_units_b);
+					
+					// Check if the Battle's Left-Hand Combat Grid is still populated Combat Units
+					if (temp_battle_combat_units_a_count < 1)
+					{
+						// Iterate through the Battle's Faction Aligned Celestial Units to pull their engaged Combat Units into this fight
+						var temp_battle_units_a_index = 0;
+						
+						repeat (temp_battle_units_a_count)
+						{
+							// Find Battle Faction Aligned Celestial Unit Instance
+							var temp_battle_units_a_instance = temp_battle_instance.battle_units_a[temp_battle_units_a_index];
+							
+							// Iterate through Celestial Unit's Engaged Battles
+							var temp_battle_units_a_engaged_battles_index = 0;
+							var temp_battle_units_a_engaged_battles_count = array_length(temp_battle_units_a_instance.engaged_battles);
+							
+							repeat (temp_battle_units_a_engaged_battles_count)
+							{
+								// Find Celestial Unit's Combat Unit Contribution to this given Battle
+								var temp_battle_units_a_engaged_battles_combat_unit_contribution = temp_battle_units_a_instance.engaged_battles_combat_units_contribution[temp_battle_units_a_engaged_battles_index];
+								
+								// Check if the Celestial Unit's Combat Unit Contribution is greater than the Battle Population Minimum
+								if (temp_battle_units_a_engaged_battles_combat_unit_contribution > global.celestial_battle_combat_grid_population_minimum)
+								{
+									// Find both the Celestial Unit's Engaged Battle Instance
+									var temp_battle_units_a_engaged_battle_instance = temp_battle_units_a_instance.engaged_battles[temp_battle_units_a_engaged_battles_index];
+									
+									// Calculate how many Combat Units can be pulled from this Engaged Battle without dropping below the Battle Population Minimum
+									var temp_battle_units_a_contribution_pull = min(temp_battle_units_a_engaged_battles_combat_unit_contribution - global.celestial_battle_combat_grid_population_minimum, global.celestial_battle_combat_grid_population_minimum - temp_battle_combat_units_a_count);
+									
+									// Move Combat Units from the Celestial Unit's Engaged Battle Instance to this Battle Instance
+									repeat (temp_battle_units_a_contribution_pull)
+									{
+										// Find a Random Combat Unit to pull from the Celestial Unit's Engaged Battle
+										var temp_random_battle_units_a_contribution_pull_combat_unit_index = irandom(temp_battle_units_a_engaged_battles_combat_unit_contribution - 1);
+										var temp_random_battle_units_a_contribution_pull_combat_unit_instance = array_get(temp_battle_units_a_instance.engaged_battles_combat_units[temp_battle_units_a_engaged_battles_index], temp_random_battle_units_a_contribution_pull_combat_unit_index);
+										
+										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle
+										celestial_battle_remove_combat_unit(temp_battle_units_a_engaged_battle_instance, temp_random_battle_units_a_contribution_pull_combat_unit_instance);
+										
+										// Add the Random Combat Unit to this Battle Instance
+										celestial_battle_add_combat_unit(temp_battle_instance, temp_random_battle_units_a_contribution_pull_combat_unit_instance);
+										
+										// Decrement the Celestial Unit's Combat Unit Contribution Count
+										temp_battle_units_a_engaged_battles_combat_unit_contribution--;
+										
+										// Increment the Battle's Faction Aligned Combat Units Count
+										temp_battle_combat_units_a_count++;
+									}
+									
+									// Check if the Battle's Faction Aligned Combat Units Count has met the Battle Population Minimum
+									if (temp_battle_combat_units_a_count >= global.celestial_battle_combat_grid_population_minimum)
+									{
+										// Exit from Combat Unit Pull Behaviour
+										break;
+									}
+								}
+								
+								// Increment Battle Faction Aligned Celestial Unit's Engaged Battles Index
+								temp_battle_units_a_engaged_battles_index++;
+							}
+							
+							// Check if the Battle's Faction Aligned Combat Units Count has met the Battle Population Minimum
+							if (temp_battle_combat_units_a_count >= global.celestial_battle_combat_grid_population_minimum)
+							{
+								// Exit from Combat Unit Pull Behaviour
+								break;
+							}
+							
+							// Increment Battle Faction Aligned Celestial Unit Index
+							temp_battle_units_a_index++;
+						}
+					}
+					
+					// Check if the Battle's Right-Hand Combat Grid is still populated Combat Units
+					if (temp_battle_combat_units_b_count < 1)
+					{
+						// Iterate through the Battle's Faction Aligned Celestial Units to pull their engaged Combat Units into this fight
+						var temp_battle_units_b_index = 0;
+						
+						repeat (temp_battle_units_b_count)
+						{
+							// Find Battle Faction Aligned Celestial Unit Instance
+							var temp_battle_units_b_instance = temp_battle_instance.battle_units_b[temp_battle_units_b_index];
+							
+							// Iterate through Celestial Unit's Engaged Battles
+							var temp_battle_units_b_engaged_battles_index = 0;
+							var temp_battle_units_b_engaged_battles_count = array_length(temp_battle_units_b_instance.engaged_battles);
+							
+							repeat (temp_battle_units_b_engaged_battles_count)
+							{
+								// Find Celestial Unit's Combat Unit Contribution to this given Battle
+								var temp_battle_units_b_engaged_battles_combat_unit_contribution = temp_battle_units_b_instance.engaged_battles_combat_units_contribution[temp_battle_units_b_engaged_battles_index];
+								
+								// Check if the Celestial Unit's Combat Unit Contribution is greater than the Battle Population Minimum
+								if (temp_battle_units_b_engaged_battles_combat_unit_contribution > global.celestial_battle_combat_grid_population_minimum)
+								{
+									// Find both the Celestial Unit's Engaged Battle Instance
+									var temp_battle_units_b_engaged_battle_instance = temp_battle_units_b_instance.engaged_battles[temp_battle_units_b_engaged_battles_index];
+									
+									// Calculate how many Combat Units can be pulled from this Engaged Battle without dropping below the Battle Population Minimum
+									var temp_battle_units_b_contribution_pull = min(temp_battle_units_b_engaged_battles_combat_unit_contribution - global.celestial_battle_combat_grid_population_minimum, global.celestial_battle_combat_grid_population_minimum - temp_battle_combat_units_b_count);
+									
+									// Move Combat Units from the Celestial Unit's Engaged Battle Instance to this Battle Instance
+									repeat (temp_battle_units_b_contribution_pull)
+									{
+										// Find a Random Combat Unit to pull from the Celestial Unit's Engaged Battle
+										var temp_random_battle_units_b_contribution_pull_combat_unit_index = irandom(temp_battle_units_b_engaged_battles_combat_unit_contribution - 1);
+										var temp_random_battle_units_b_contribution_pull_combat_unit_instance = array_get(temp_battle_units_b_instance.engaged_battles_combat_units[temp_battle_units_b_engaged_battles_index], temp_random_battle_units_b_contribution_pull_combat_unit_index);
+										
+										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle
+										celestial_battle_remove_combat_unit(temp_battle_units_b_engaged_battle_instance, temp_random_battle_units_b_contribution_pull_combat_unit_instance);
+										
+										// Add the Random Combat Unit to this Battle Instance
+										celestial_battle_add_combat_unit(temp_battle_instance, temp_random_battle_units_b_contribution_pull_combat_unit_instance);
+										
+										// Decrement the Celestial Unit's Combat Unit Contribution Count
+										temp_battle_units_b_engaged_battles_combat_unit_contribution--;
+										
+										// Increment the Battle's Faction Aligned Combat Units Count
+										temp_battle_combat_units_b_count++;
+									}
+									
+									// Check if the Battle's Faction Aligned Combat Units Count has met the Battle Population Minimum
+									if (temp_battle_combat_units_b_count >= global.celestial_battle_combat_grid_population_minimum)
+									{
+										// Exit from Combat Unit Pull Behaviour
+										break;
+									}
+								}
+								
+								// Increment Battle Faction Aligned Celestial Unit's Engaged Battles Index
+								temp_battle_units_b_engaged_battles_index++;
+							}
+							
+							// Check if the Battle's Faction Aligned Combat Units Count has met the Battle Population Minimum
+							if (temp_battle_combat_units_b_count >= global.celestial_battle_combat_grid_population_minimum)
+							{
+								// Exit from Combat Unit Pull Behaviour
+								break;
+							}
+							
+							// Increment Battle Faction Aligned Celestial Unit Index
+							temp_battle_units_b_index++;
+						}
+					}
+				}
+				
+				// Update Battle Clock
+				temp_battle_instance.battle_total_time += CelestialSimulator.global_clock_delta_time;
+				
+				
 				#region Battle Position
+				// Establish Battle Position, Elevation, & Divisor
+				var temp_battle_x = 0;
+				var temp_battle_y = 0;
+				var temp_battle_z = 0;
+				var temp_battle_elevation = 0;
+				var temp_battle_divisor = 0;
+				
+				// Iterate through Battle's participating Celestial Units to calculate the Battle's Position and Unit Proximity
+				var temp_battle_units_index = temp_battle_units_count - 1;
+				
+				repeat (temp_battle_units_count)
+				{
+					// Find Battle Celestial Unit Instance
+					var temp_battle_unit_instance = temp_battle_instance.battle_units[temp_battle_units_index];
+					
+					// Check if Unit is moving despite being Engaged in Combat
+					if (temp_battle_unit_instance.unit_behaviour == CelestialUnitBehaviourType.Retreat)
+					{
+						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
+						var temp_battle_unit_dot_product = dot_product_3d
+						(
+							temp_battle_instance.sphere_vector_x, 
+							temp_battle_instance.sphere_vector_y, 
+							temp_battle_instance.sphere_vector_z, 
+							temp_battle_unit_instance.sphere_vector_x, 
+							temp_battle_unit_instance.sphere_vector_y, 
+							temp_battle_unit_instance.sphere_vector_z
+						);
+						
+						// Check if Unit is within the Battle's Collision Threshold
+						if (temp_battle_unit_dot_product < temp_battle_instance.battle_far_collision_threshold)
+						{
+							// Remove Unit from Celestial Battle's Combat
+							celestial_battle_remove_unit(temp_battle_instance, temp_battle_unit_instance);
+							
+							// Decrement Battle Units Index
+							temp_battle_units_index--;
+							
+							// Continue iteration to next Celestial Unit Instance's Behaviour
+							continue;
+						}
+					}
+					
+					// Add Unit's Position to Battle Position Centering
+					temp_battle_x += temp_battle_unit_instance.sphere_vector_x;
+					temp_battle_y += temp_battle_unit_instance.sphere_vector_y;
+					temp_battle_z += temp_battle_unit_instance.sphere_vector_z;
+					
+					// Find Battle Faction's Elevation Maxiumum
+					temp_battle_elevation = max(temp_battle_elevation, temp_battle_unit_instance.pathfinding_position_elevation);
+					
+					//
+					temp_battle_divisor++;
+					
+					// Decrement Battle Units Index
+					temp_battle_units_index--;
+				}
+				
+				//
+				if (temp_battle_units_a_count > 0 and temp_battle_units_b_count > 0)
+				{
+					//
+					temp_battle_x /= temp_battle_divisor;
+					temp_battle_y /= temp_battle_divisor;
+					temp_battle_z /= temp_battle_divisor;
+					
+					// Calculate Final Lerped Movement Battle Position & Elevation
+					var temp_battle_position_lerp_value = temp_battle_instance.battle_position_lerp_spd * CelestialSimulator.global_clock_delta_time;
+					temp_battle_x = lerp(temp_battle_instance.battle_x, temp_battle_x, temp_battle_position_lerp_value);
+					temp_battle_y = lerp(temp_battle_instance.battle_y, temp_battle_y, temp_battle_position_lerp_value);
+					temp_battle_z = lerp(temp_battle_instance.battle_z, temp_battle_z, temp_battle_position_lerp_value);
+					temp_battle_elevation = lerp(temp_battle_instance.battle_elevation, temp_battle_elevation, temp_battle_position_lerp_value);
+					
+					// Update Battle Sphere Vector and Battle's Position & Elevation Values
+					temp_battle_instance.sphere_vector_x = temp_battle_x;
+					temp_battle_instance.sphere_vector_y = temp_battle_y;
+					temp_battle_instance.sphere_vector_z = temp_battle_z;
+					
+					temp_battle_instance.battle_x = temp_battle_x;
+					temp_battle_instance.battle_y = temp_battle_y;
+					temp_battle_instance.battle_z = temp_battle_z;
+					temp_battle_instance.battle_elevation = temp_battle_elevation;
+				}
+				
+				/*
 				// Establish Battle Position, Elevation, & Divisor
 				if (instance_exists(temp_battle_instance.battle_primary_unit_a) and instance_exists(temp_battle_instance.battle_primary_unit_b))
 				{
@@ -453,21 +719,9 @@ repeat (temp_solar_systems_count)
 					temp_battle_instance.battle_y = temp_battle_y;
 					temp_battle_instance.battle_z = temp_battle_z;
 					temp_battle_instance.battle_elevation = temp_battle_elevation;
-				}
-				#endregion
-				
-				#region Battle Collisions
-				// Decrement Collision Check Timer
-				temp_battle_instance.battle_collision_check_timer -= frame_delta;
-				
-				// Battle Collision Check Behaviour
-				if (temp_battle_instance.battle_collision_check_timer <= 0)
-				{
-					// Reset Collision Check Timer
-					temp_battle_instance.battle_collision_check_timer = CelestialSimulator.global_collision_check_interval;
 					
-					// Check if Celestial Battle's first Primary Unit exists
-					if (instance_exists(temp_battle_instance.battle_primary_unit_a))
+					// Check if Celestial Battle's first Primary Unit is Retreating
+					if (temp_battle_instance.battle_primary_unit_a.unit_behaviour == CelestialUnitBehaviourType.Retreat)
 					{
 						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
 						var temp_battle_primary_unit_a_dot_product = dot_product_3d
@@ -488,8 +742,8 @@ repeat (temp_solar_systems_count)
 						}
 					}
 					
-					// Check if Celestial Battle's second Primary Unit exists
-					if (instance_exists(temp_battle_instance.battle_primary_unit_b))
+					// Check if Celestial Battle's second Primary Unit is Retreating
+					if (temp_battle_instance.battle_primary_unit_b.unit_behaviour == CelestialUnitBehaviourType.Retreat)
 					{
 						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
 						var temp_battle_primary_unit_b_dot_product = dot_product_3d
@@ -510,24 +764,8 @@ repeat (temp_solar_systems_count)
 						}
 					}
 				}
+				*/
 				#endregion
-				
-				// Update Battle Clock
-				temp_battle_instance.battle_total_time += CelestialSimulator.global_clock_delta_time;
-				temp_battle_instance.battle_round_timer -= CelestialSimulator.global_clock_delta_time;
-				
-				// Perform Battle Round & Shuffle Behaviours
-				if (temp_battle_instance.battle_round_timer <= 0)
-				{
-					// Increment Battle Round
-					temp_battle_instance.battle_round++;
-					
-					// Reset Battle Round Timer
-					temp_battle_instance.battle_round_timer = temp_battle_instance.battle_round_time_duration;
-					
-					// Battle Shuffle Round Behaviour
-					//celestial_battle_shuffle_round(temp_battle_instance);
-				}
 				
 				#region Battle Choreography
 				// Iterate through and Perform Battle Combat Units Behaviour
@@ -793,21 +1031,8 @@ repeat (temp_solar_systems_count)
 				}
 				#endregion
 				
-				// Check to Destroy Battle Instance
-				if (!temp_battle_instance.battle_exists)
-				{
-					// Delete Battle Instance from Celestial Body's Battles Array
-					array_delete(battles, temp_battle_index, 1);
-					
-					// Destroy Battle Instance
-					instance_destroy(temp_battle_instance);
-					
-					// Skip to Next Battle Instance
-					continue;
-				}
-				
-				// Increment Battle Index
-				temp_battle_index++;
+				// Decrement Battle Index
+				temp_battle_index--;
 			}
 			#endregion
 			
@@ -1074,7 +1299,7 @@ repeat (temp_solar_systems_count)
 													if (!temp_unit_instance.engaged_in_battle)
 													{
 														// Instantiate and Establish Celestial Battle Instance
-														var temp_pathfinding_collision_unit_battle_instance = celestial_battle_create(id);
+														var temp_pathfinding_collision_unit_battle_instance = celestial_battle_create(id, temp_unit_instance.unit_faction, temp_unit_instance.unit_behaviour_target_instance.unit_faction);
 														
 														// Update Celestial Battle Instance's Position & Elevation
 														temp_pathfinding_collision_unit_battle_instance.battle_x = lerp(temp_unit_instance.pathfinding_position_x, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_x, 0.5);
@@ -1090,7 +1315,8 @@ repeat (temp_solar_systems_count)
 														}
 														
 														// Add Unit Instances to Battle
-														celestial_battle_add_primary_units(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance, temp_unit_instance.unit_behaviour_target_instance);
+														celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance);
+														celestial_battle_add_unit(temp_pathfinding_collision_unit_battle_instance, temp_unit_instance.unit_behaviour_target_instance);
 														
 														// Check if either of the Unit Instances are currently selected by the Player
 														if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance or temp_unit_instance.unit_behaviour_target_instance == CelestialSimulator.sub_object_selected_instance)
@@ -1175,7 +1401,7 @@ repeat (temp_solar_systems_count)
 											if (celestial_faction_is_relationship_hostile(temp_unit_instance.unit_faction, temp_pathfinding_node_units_array_unit_instance.unit_faction))
 											{
 												// Instantiate and Establish Celestial Battle Instance
-												var temp_pathfinding_node_unit_battle_instance = celestial_battle_create(id);
+												var temp_pathfinding_node_unit_battle_instance = celestial_battle_create(id, temp_unit_instance.unit_faction, temp_pathfinding_node_units_array_unit_instance.unit_faction);
 												
 												// Update Celestial Battle Instance's Position & Elevation
 												temp_pathfinding_node_unit_battle_instance.battle_x = lerp(temp_unit_instance.pathfinding_position_x, temp_pathfinding_node_units_array_unit_instance.pathfinding_position_x, 0.5);
@@ -1191,7 +1417,8 @@ repeat (temp_solar_systems_count)
 												}
 												
 												// Add Unit Instances to Battle
-												celestial_battle_add_primary_units(temp_pathfinding_node_unit_battle_instance, temp_unit_instance, temp_pathfinding_node_units_array_unit_instance);
+												celestial_battle_add_unit(temp_pathfinding_node_unit_battle_instance, temp_unit_instance);
+												celestial_battle_add_unit(temp_pathfinding_node_unit_battle_instance, temp_pathfinding_node_units_array_unit_instance);
 												
 												// Check if either of the Unit Instances are currently selected by the Player
 												if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance or temp_pathfinding_node_units_array_unit_instance == CelestialSimulator.sub_object_selected_instance)
@@ -1285,7 +1512,7 @@ repeat (temp_solar_systems_count)
 							}
 							
 							// Add Unit Instance to Battle
-							//celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
+							celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
 						}
 					}
 					
@@ -1333,7 +1560,7 @@ repeat (temp_solar_systems_count)
 							if (temp_unit_collision_check_battle_dot_product >= temp_battle_check_instance.battle_near_collision_threshold)
 							{
 								// Add Unit Instance to Battle
-								//celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
+								celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
 							}
 							else if (temp_unit_collision_check_battle_dot_product >= temp_battle_check_instance.battle_far_collision_threshold and array_get_index(temp_unit_instance.unit_battle_within_timed_collision_check_battles, temp_battle_check_instance) == -1)
 							{

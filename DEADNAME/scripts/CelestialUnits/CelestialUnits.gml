@@ -18,14 +18,14 @@ enum CelestialUnitBehaviourType
 
 #region Combat Units
 // Celestial Combat Unit Enum
-enum CelestialCombatUnitTypes
+enum CelestialCombatUnitType
 {
 	DefaultInfantry,
 	DefaultTank
 }
 
 // Global Celestial Combat Units
-global.celestial_combat_units[CelestialCombatUnitTypes.DefaultInfantry] =
+global.celestial_combat_units[CelestialCombatUnitType.DefaultInfantry] =
 {
 	// Unit Sprites
 	unit_idle_sprite: sOverworld_Unit_William_Idle,
@@ -72,7 +72,7 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultInfantry] =
 	unit_weapon_recoil_recovery_spd: 0.1,
 };
 
-global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
+global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
 {
 	// Unit Sprites
 	unit_idle_sprite: sOverworld_Unit_Tank_Medium,
@@ -117,6 +117,20 @@ global.celestial_combat_units[CelestialCombatUnitTypes.DefaultTank] =
 	unit_weapon_move_ambient_angle: 45,
 	
 	unit_weapon_recoil_recovery_spd: 0.1,
+};
+#endregion
+
+#region Combat Items
+// Celestial Combat Item Enum
+enum CelestialCombatItem
+{
+	DefaultFirearm
+}
+
+// Global Celestial Combat Units
+global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
+{
+	
 };
 #endregion
 
@@ -256,7 +270,7 @@ function celestial_unit_leave_faction(celestial_unit)
 /// @function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type);
 /// @description Adds a Combat Unit to the given Celestial Unit
 /// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit to add a Combat Unit to
-/// @param {int<CelestialCombatUnitTypes>} combat_unit_type The Combat Unit Type of the Combat Unit to add to the given Celestial Unit
+/// @param {int<CelestialCombatUnitType>} combat_unit_type The Combat Unit Type of the Combat Unit to add to the given Celestial Unit
 function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 {
 	// Check if Combat Unit Type is eligible to be added to the given Celestial Unit based on their shared Terrain Type

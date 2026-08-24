@@ -11,10 +11,13 @@ array_resize(battle_combat_grid_instances_b, 0);
 array_resize(battle_combat_grid_a_structs, 0);
 array_resize(battle_combat_grid_b_structs, 0);
 
-// Clear Battle Combat Unit Arrays
-array_resize(battle_supporting_units_a, 0);
-array_resize(battle_supporting_units_b, 0);
+// Clear Battle Unit Arrays
+array_resize(battle_units, 0);
 
+array_resize(battle_units_a, 0);
+array_resize(battle_units_b, 0);
+
+// Clear Battle Combat Unit Arrays
 array_resize(battle_combat_units, 0);
 
 array_resize(battle_combat_units_a, 0);

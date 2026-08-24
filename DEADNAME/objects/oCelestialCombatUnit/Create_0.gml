@@ -28,6 +28,9 @@ combat_unit_action_target_combat_grid_side = CelestialBattleCombatGridSide.None;
 combat_unit_action_target_combat_grid_column = -1;
 combat_unit_action_target_combat_grid_row = -1;
 
+// Battle Variables
+battle_instance = noone;
+
 // Combat Grid Variables
 combat_grid_side = CelestialBattleCombatGridSide.None;
 
@@ -41,7 +44,7 @@ vertical_depth = 0;
 random_offset_x = 0;
 random_offset_y = 0;
 
-// Weapon Settings
+// Item Settings
 item_enabled = false;
 item_sprite = -1;
 
@@ -51,7 +54,7 @@ item_pivot_y = 0;
 item_aim_pivot_x = 0;
 item_aim_pivot_y = 0;
 
-// Weapon Variables
+// Item Variables
 item_aim = 0;
 
 item_offset_x = 0;
@@ -78,4 +81,3 @@ entry_delay_duration = 0;
 exit_animation = false;
 exit_animation_value = 1;
 exit_delay_duration = 0;
-

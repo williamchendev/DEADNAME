@@ -426,8 +426,7 @@ if (instance_exists(sub_object_selected_instance))
 			
 			// Draw Battle Round Clock
 			draw_set_halign(fa_center);
-			draw_text_outline(GameManager.game_width * 0.5, battle_platform_top_vertical_position - 32, $"{sub_object_selected_instance.battle_round}");
-			draw_text_outline(GameManager.game_width * 0.5, battle_platform_top_vertical_position - 18, $"{string_delete(string(sub_object_selected_instance.battle_round_timer), -1, -1)}");
+			draw_text_outline(GameManager.game_width * 0.5, battle_platform_top_vertical_position - 18, $"{string_delete(string(sub_object_selected_instance.battle_total_time), -1, -1)}");
 			draw_set_halign(fa_left);
 		}
 		

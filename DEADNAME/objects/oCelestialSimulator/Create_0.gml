@@ -1344,7 +1344,7 @@ calculate_celestial_battle_choreography_stack = function()
 			var temp_battle_tile_left_x = round(lerp(temp_battle_tile_left_ax, temp_battle_tile_left_bx, 0.5));
 			var temp_battle_tile_right_x = round(lerp(temp_battle_tile_right_ax, temp_battle_tile_right_bx, 0.5)) + 2;
 			
-			var temp_battle_tile_y = floor(lerp(temp_battle_tile_ay, temp_battle_tile_cy, 0.8));
+			var temp_battle_tile_y = floor(lerp(temp_battle_tile_ay, temp_battle_tile_cy, 0.75));
 			
 			// If the Battle Tile's Horizontal Alignment is at the Right-Hand most side, Adjust the Battle Tile's Isosceles Trapezoid's Right Size by one pixel to the Left
 			if (temp_combat_grid_column_index == CelestialBattleCombatGridColumns - 1)

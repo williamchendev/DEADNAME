@@ -57,11 +57,11 @@ backline_combat_unit_unengaged = array_create(0);
 
 repeat (irandom_range(3, 8))
 {
-	//celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultTank);
+	//celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultTank);
 }
 repeat (irandom_range(3, 8))
 {
-	celestial_unit_add_combat_unit(id, CelestialCombatUnitTypes.DefaultInfantry);
+	celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultInfantry);
 }
 
 // Solar Variables
@@ -85,8 +85,12 @@ unit_battle_within_timed_collision_check_battles = array_create(0);
 unit_battle_within_timed_collision_check_timers = array_create(0);
 
 // Combat Variables
-engaged_battles = array_create(0);
 engaged_in_battle = false;
+
+engaged_battles = array_create(0);
+engaged_battles_combat_units = array_create(0);
+engaged_battles_combat_units_contribution = array_create(0);
+unengaged_battles = array_create(0);
 
 battle_action_stun_timer = -1;
 
