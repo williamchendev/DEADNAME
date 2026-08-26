@@ -271,6 +271,7 @@ function celestial_unit_leave_faction(celestial_unit)
 /// @description Adds a Combat Unit to the given Celestial Unit
 /// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit to add a Combat Unit to
 /// @param {int<CelestialCombatUnitType>} combat_unit_type The Combat Unit Type of the Combat Unit to add to the given Celestial Unit
+/// @returns {bool} Returns True if the Combat Unit was added to the Celestial Unit, and False otherwise
 function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 {
 	// Check if Combat Unit Type is eligible to be added to the given Celestial Unit based on their shared Terrain Type
@@ -290,8 +291,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_frontline_combat_units_count >= celestial_unit.unit_frontline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Early Return
-				return;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return False
+				return false;
 			}
 			break;
 		case CelestialBattleColumnType.Midline:
@@ -301,8 +302,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_midline_combat_units_count >= celestial_unit.unit_midline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Early Return
-				return;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return False
+				return false;
 			}
 			break;
 		case CelestialBattleColumnType.Backline:
@@ -312,8 +313,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_backline_combat_units_count >= celestial_unit.unit_backline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Early Return
-				return;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return False
+				return false;
 			}
 			break;
 		default:
@@ -463,6 +464,10 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 	// Set Combat Unit Instance's Unit Instance
 	temp_combat_unit_instance.unit_instance = celestial_unit;
 	
+	// Increment Celestial Unit's Combat Unit Counts
+	celestial_unit.combat_unit_count++;
+	celestial_unit.combat_unit_unengaged_count++;
+	
 	// Compatible Combat Unit Type with given Celestial Unit - Return True
 	return true;
 }
@@ -504,7 +509,11 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_frontline_combat_unit_unengaged_index != -1)
 				{
+					// Remove Combat Unit from the Unengaged Combat Unit Array
 					array_delete(celestial_unit.frontline_combat_unit_unengaged, temp_frontline_combat_unit_unengaged_index, 1);
+					
+					// Decrement the Celestial Unit's Unengaged Combat Units Count
+					celestial_unit.combat_unit_unengaged_count--;
 				}
 				
 				// Attempt to remove the Combat Unit from the Engaged Combat Unit Array
@@ -512,6 +521,7 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_frontline_combat_unit_engaged_index != -1)
 				{
+					// Remove Combat Unit from the Engaged Combat Unit Array
 					array_delete(celestial_unit.frontline_combat_unit_engaged, temp_frontline_combat_unit_engaged_index, 1);
 				}
 				
@@ -563,7 +573,11 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_midline_combat_unit_unengaged_index != -1)
 				{
+					// Remove Combat Unit from the Unengaged Combat Unit Array
 					array_delete(celestial_unit.midline_combat_unit_unengaged, temp_midline_combat_unit_unengaged_index, 1);
+					
+					// Decrement the Celestial Unit's Unengaged Combat Units Count
+					celestial_unit.combat_unit_unengaged_count--;
 				}
 				
 				// Attempt to remove the Combat Unit from the Engaged Combat Unit Array
@@ -571,6 +585,7 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_midline_combat_unit_engaged_index != -1)
 				{
+					// Remove Combat Unit from the Engaged Combat Unit Array
 					array_delete(celestial_unit.midline_combat_unit_engaged, temp_midline_combat_unit_engaged_index, 1);
 				}
 				
@@ -622,7 +637,11 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_backline_combat_unit_unengaged_index != -1)
 				{
+					// Remove Combat Unit from the Unengaged Combat Unit Array
 					array_delete(celestial_unit.backline_combat_unit_unengaged, temp_backline_combat_unit_unengaged_index, 1);
+					
+					// Decrement the Celestial Unit's Unengaged Combat Units Count
+					celestial_unit.combat_unit_unengaged_count--;
 				}
 				
 				// Attempt to remove the Combat Unit from the Engaged Combat Unit Array
@@ -630,6 +649,7 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 				
 				if (temp_backline_combat_unit_engaged_index != -1)
 				{
+					// Remove Combat Unit from the Engaged Combat Unit Array
 					array_delete(celestial_unit.backline_combat_unit_engaged, temp_backline_combat_unit_engaged_index, 1);
 				}
 				
@@ -672,6 +692,9 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 		default:
 			break;
 	}
+	
+	// Decrement Celestial Unit's Combat Unit Counts
+	celestial_unit.combat_unit_count--;
 }
 
 // Status Effect Methods

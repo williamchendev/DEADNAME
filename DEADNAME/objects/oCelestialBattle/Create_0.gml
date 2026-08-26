@@ -15,6 +15,8 @@ world_position_x = 0;
 world_position_y = 0;
 world_position_z = 0;
 
+world_depth = 0;
+
 sphere_vector_x = 0;
 sphere_vector_y = 0;
 sphere_vector_z = 0;

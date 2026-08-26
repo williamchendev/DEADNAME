@@ -763,8 +763,20 @@ cities = array_create(0);
 // Initialize Satellite Array
 satellites = array_create(0);
 
-// Initialize Battles Array
+// Initialize Battle Arrays
 battles = array_create(0);
+
+battle_unit_connection_entries = 0;
+battle_unit_connection_depth_sorting_index_array = array_create(0);
+battle_unit_connection_depth_sorting_depth_array = array_create(0);
+battle_unit_connection_point_a_position_x_array = array_create(0);
+battle_unit_connection_point_a_position_y_array = array_create(0);
+battle_unit_connection_point_a_alpha_array = array_create(0);
+battle_unit_connection_point_b_position_x_array = array_create(0);
+battle_unit_connection_point_b_position_y_array = array_create(0);
+battle_unit_connection_point_b_alpha_array = array_create(0);
+battle_unit_connection_thickness_array = array_create(0);
+battle_unit_connection_draw_drop_shadow_array = array_create(0);
 
 // Initialize Faction Arrays
 factions = array_create(0);

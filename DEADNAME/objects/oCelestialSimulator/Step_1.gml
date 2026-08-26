@@ -428,7 +428,7 @@ repeat (temp_solar_systems_count)
 				// Find Battle Instance
 				var temp_battle_instance = battles[temp_battle_index];
 				
-				//
+				// Establish Battle's Celestial Unit Counts
 				var temp_battle_units_count = array_length(temp_battle_instance.battle_units);
 				var temp_battle_units_a_count = array_length(temp_battle_instance.battle_units_a);
 				var temp_battle_units_b_count = array_length(temp_battle_instance.battle_units_b);
@@ -608,7 +608,6 @@ repeat (temp_solar_systems_count)
 				// Update Battle Clock
 				temp_battle_instance.battle_total_time += CelestialSimulator.global_clock_delta_time;
 				
-				
 				#region Battle Position
 				// Establish Battle Position, Elevation, & Divisor
 				var temp_battle_x = 0;
@@ -625,10 +624,10 @@ repeat (temp_solar_systems_count)
 					// Find Battle Celestial Unit Instance
 					var temp_battle_unit_instance = temp_battle_instance.battle_units[temp_battle_units_index];
 					
-					// Check if Unit is moving despite being Engaged in Combat
+					// Check if Celestial Unit is moving despite being Engaged in Combat
 					if (temp_battle_unit_instance.unit_behaviour == CelestialUnitBehaviourType.Retreat)
 					{
-						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
+						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Celestial Unit Instance's Normalized Local Sphere Vector
 						var temp_battle_unit_dot_product = dot_product_3d
 						(
 							temp_battle_instance.sphere_vector_x, 
@@ -639,13 +638,13 @@ repeat (temp_solar_systems_count)
 							temp_battle_unit_instance.sphere_vector_z
 						);
 						
-						// Check if Unit is within the Battle's Collision Threshold
+						// Check if Celestial Unit is within the Battle's Collision Threshold
 						if (temp_battle_unit_dot_product < temp_battle_instance.battle_far_collision_threshold)
 						{
-							// Remove Unit from Celestial Battle's Combat
+							// Remove Celestial Unit from Celestial Battle's Combat
 							celestial_battle_remove_unit(temp_battle_instance, temp_battle_unit_instance);
 							
-							// Decrement Battle Units Index
+							// Decrement Battle Celestial Units Index
 							temp_battle_units_index--;
 							
 							// Continue iteration to next Celestial Unit Instance's Behaviour
@@ -661,22 +660,22 @@ repeat (temp_solar_systems_count)
 					// Find Battle Faction's Elevation Maxiumum
 					temp_battle_elevation = max(temp_battle_elevation, temp_battle_unit_instance.pathfinding_position_elevation);
 					
-					//
+					// Increment Battle's Unit Divisor
 					temp_battle_divisor++;
 					
 					// Decrement Battle Units Index
 					temp_battle_units_index--;
 				}
 				
-				//
-				if (temp_battle_units_a_count > 0 and temp_battle_units_b_count > 0)
+				// Update Battle's Position if the Battle's Combat is still ongoing
+				if (temp_battle_instance.battle_exists)
 				{
-					//
+					// Calculate Battle's Target Position from dividing the Battle's Cumulative Position Value by the Battle's Unit Divisor
 					temp_battle_x /= temp_battle_divisor;
 					temp_battle_y /= temp_battle_divisor;
 					temp_battle_z /= temp_battle_divisor;
 					
-					// Calculate Final Lerped Movement Battle Position & Elevation
+					// Calculate Battle's Position from Lerped Movement to Battle's Target Position & Elevation
 					var temp_battle_position_lerp_value = temp_battle_instance.battle_position_lerp_spd * CelestialSimulator.global_clock_delta_time;
 					temp_battle_x = lerp(temp_battle_instance.battle_x, temp_battle_x, temp_battle_position_lerp_value);
 					temp_battle_y = lerp(temp_battle_instance.battle_y, temp_battle_y, temp_battle_position_lerp_value);
@@ -693,78 +692,6 @@ repeat (temp_solar_systems_count)
 					temp_battle_instance.battle_z = temp_battle_z;
 					temp_battle_instance.battle_elevation = temp_battle_elevation;
 				}
-				
-				/*
-				// Establish Battle Position, Elevation, & Divisor
-				if (instance_exists(temp_battle_instance.battle_primary_unit_a) and instance_exists(temp_battle_instance.battle_primary_unit_b))
-				{
-					// Establish Battle Position and Elevation between the Celestial Battle's Primary Units engaged in Combat
-					var temp_battle_x = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_x, temp_battle_instance.battle_primary_unit_b.sphere_vector_x, 0.5);
-					var temp_battle_y = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_y, temp_battle_instance.battle_primary_unit_b.sphere_vector_y, 0.5);
-					var temp_battle_z = lerp(temp_battle_instance.battle_primary_unit_a.sphere_vector_z, temp_battle_instance.battle_primary_unit_b.sphere_vector_z, 0.5);
-					var temp_battle_elevation = max(temp_battle_instance.battle_primary_unit_a.pathfinding_position_elevation, temp_battle_instance.battle_primary_unit_b.pathfinding_position_elevation);
-					
-					// Calculate Final Lerped Movement Battle Position & Elevation
-					temp_battle_x = lerp(temp_battle_instance.battle_x, temp_battle_x, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
-					temp_battle_y = lerp(temp_battle_instance.battle_y, temp_battle_y, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
-					temp_battle_z = lerp(temp_battle_instance.battle_z, temp_battle_z, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
-					temp_battle_elevation = lerp(temp_battle_instance.battle_elevation, temp_battle_elevation, temp_battle_instance.battle_unit_centering_lerp_spd * CelestialSimulator.global_clock_delta_time);
-					
-					// Update Battle Sphere Vector and Battle's Position & Elevation Values
-					temp_battle_instance.sphere_vector_x = temp_battle_x;
-					temp_battle_instance.sphere_vector_y = temp_battle_y;
-					temp_battle_instance.sphere_vector_z = temp_battle_z;
-					
-					temp_battle_instance.battle_x = temp_battle_x;
-					temp_battle_instance.battle_y = temp_battle_y;
-					temp_battle_instance.battle_z = temp_battle_z;
-					temp_battle_instance.battle_elevation = temp_battle_elevation;
-					
-					// Check if Celestial Battle's first Primary Unit is Retreating
-					if (temp_battle_instance.battle_primary_unit_a.unit_behaviour == CelestialUnitBehaviourType.Retreat)
-					{
-						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
-						var temp_battle_primary_unit_a_dot_product = dot_product_3d
-						(
-							temp_battle_instance.sphere_vector_x, 
-							temp_battle_instance.sphere_vector_y, 
-							temp_battle_instance.sphere_vector_z, 
-							temp_battle_instance.battle_primary_unit_a.sphere_vector_x, 
-							temp_battle_instance.battle_primary_unit_a.sphere_vector_y, 
-							temp_battle_instance.battle_primary_unit_a.sphere_vector_z
-						);
-						
-						// Check if Unit is within the Battle's Collision Threshold
-						if (temp_battle_primary_unit_a_dot_product < temp_battle_instance.battle_far_collision_threshold)
-						{
-							// Remove Primary Unit from Celestial Battle's Combat
-							celestial_battle_remove_unit(temp_battle_instance, temp_battle_instance.battle_primary_unit_a);
-						}
-					}
-					
-					// Check if Celestial Battle's second Primary Unit is Retreating
-					if (temp_battle_instance.battle_primary_unit_b.unit_behaviour == CelestialUnitBehaviourType.Retreat)
-					{
-						// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Battle Unit Instance's Normalized Local Sphere Vector
-						var temp_battle_primary_unit_b_dot_product = dot_product_3d
-						(
-							temp_battle_instance.sphere_vector_x, 
-							temp_battle_instance.sphere_vector_y, 
-							temp_battle_instance.sphere_vector_z, 
-							temp_battle_instance.battle_primary_unit_b.sphere_vector_x, 
-							temp_battle_instance.battle_primary_unit_b.sphere_vector_y, 
-							temp_battle_instance.battle_primary_unit_b.sphere_vector_z
-						);
-						
-						// Check if Unit is within the Battle's Collision Threshold
-						if (temp_battle_primary_unit_b_dot_product < temp_battle_instance.battle_far_collision_threshold)
-						{
-							// Remove Primary Unit from Celestial Battle's Combat
-							celestial_battle_remove_unit(temp_battle_instance, temp_battle_instance.battle_primary_unit_b);
-						}
-					}
-				}
-				*/
 				#endregion
 				
 				#region Battle Choreography
@@ -1307,6 +1234,10 @@ repeat (temp_solar_systems_count)
 														temp_pathfinding_collision_unit_battle_instance.battle_z = lerp(temp_unit_instance.pathfinding_position_z, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_z, 0.5);
 														temp_pathfinding_collision_unit_battle_instance.battle_elevation = lerp(temp_unit_instance.pathfinding_position_elevation, temp_unit_instance.unit_behaviour_target_instance.pathfinding_position_elevation, 0.5);
 														
+														temp_pathfinding_collision_unit_battle_instance.sphere_vector_x = temp_pathfinding_collision_unit_battle_instance.battle_x;
+														temp_pathfinding_collision_unit_battle_instance.sphere_vector_y = temp_pathfinding_collision_unit_battle_instance.battle_y;
+														temp_pathfinding_collision_unit_battle_instance.sphere_vector_z = temp_pathfinding_collision_unit_battle_instance.battle_z;
+														
 														// Check if Target Unit Instance was Engaged in Combat
 														if (temp_unit_instance.unit_behaviour_target_instance.engaged_in_battle)
 														{
@@ -1408,6 +1339,10 @@ repeat (temp_solar_systems_count)
 												temp_pathfinding_node_unit_battle_instance.battle_y = lerp(temp_unit_instance.pathfinding_position_y, temp_pathfinding_node_units_array_unit_instance.pathfinding_position_y, 0.5);
 												temp_pathfinding_node_unit_battle_instance.battle_z = lerp(temp_unit_instance.pathfinding_position_z, temp_pathfinding_node_units_array_unit_instance.pathfinding_position_z, 0.5);
 												temp_pathfinding_node_unit_battle_instance.battle_elevation = lerp(temp_unit_instance.pathfinding_position_elevation, temp_pathfinding_node_units_array_unit_instance.pathfinding_position_elevation, 0.5);
+												
+												temp_pathfinding_node_unit_battle_instance.sphere_vector_x = temp_pathfinding_node_unit_battle_instance.battle_x;
+												temp_pathfinding_node_unit_battle_instance.sphere_vector_y = temp_pathfinding_node_unit_battle_instance.battle_y;
+												temp_pathfinding_node_unit_battle_instance.sphere_vector_z = temp_pathfinding_node_unit_battle_instance.battle_z;
 												
 												// Check if Hostile Unit Instance was Engaged in Combat
 												if (temp_pathfinding_node_units_array_unit_instance.engaged_in_battle)
@@ -1576,6 +1511,22 @@ repeat (temp_solar_systems_count)
 				}
 				else
 				{
+					// Unit Reinforcement Behaviour
+					temp_unit_instance.battle_reinforcement_timer -= CelestialSimulator.global_clock_delta_time;
+					
+					if (temp_unit_instance.battle_reinforcement_timer <= 0)
+					{
+						// Check if Unit has Unengaged Combat Units to load into their Engaged Battles
+						if (temp_unit_instance.combat_unit_unengaged_count > 0)
+						{
+							// Load Combat Units into the first Battle the Unit is engaged in
+							celestial_battle_load_combat_units(temp_unit_instance.engaged_battles[0], temp_unit_instance);
+						}
+						
+						// Reset the Unit's Battle Reinforcement Timer
+						temp_unit_instance.battle_reinforcement_timer += global.celestial_battle_unit_reinforcement_delay;
+					}
+					
 					// Calculate Unit Solar Value & Unit Solar Type
 					var temp_unit_solar_x = temp_unit_instance.sphere_vector_x * rotation_matrix[0] + temp_unit_instance.sphere_vector_y * rotation_matrix[4] + temp_unit_instance.sphere_vector_z * rotation_matrix[8];
 					var temp_unit_solar_y = temp_unit_instance.sphere_vector_x * rotation_matrix[1] + temp_unit_instance.sphere_vector_y * rotation_matrix[5] + temp_unit_instance.sphere_vector_z * rotation_matrix[9];

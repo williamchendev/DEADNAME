@@ -321,6 +321,13 @@ repeat (temp_celestial_object_depth_render_count)
 				// Check if Celestial Object's Sub Object Rendering is Enabled
 				if (sub_objects_render_enabled)
 				{
+					// Battle Unit Connections UI Behaviour
+					if (battle_unit_connection_entries > 0)
+					{
+						// Render Battle Unit Connections over Celestial Object
+						CelestialSimulator.render_celestial_battle_unit_connections_ui(temp_celestial_object_instance);
+					}
+					
 					// Check if Celestial Object is the Celestial Simulator's Observed Instance and Celestial Simulator Observation UI should be Rendered
 					if (temp_celestial_object_instance == CelestialSimulator.camera_observing_instance)
 					{

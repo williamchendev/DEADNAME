@@ -514,7 +514,7 @@ repeat (temp_celestial_object_count)
 				temp_unit_elevation = temp_unit_instance.pathfinding_position_elevation;
 			}
 			
-			// Find Celestial Unit's Elevation from Celestial Body's Sphere Center
+			// Find Celestial Unit's Elevation from the Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
 			{
 				// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
@@ -541,6 +541,8 @@ repeat (temp_celestial_object_count)
 			
 			var temp_unit_projection_scalar = dot_product_3d(temp_unit_vx, temp_unit_vy, temp_unit_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
 			var temp_unit_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_unit_projection_scalar) - temp_celestial_object_depth;
+			
+			temp_unit_instance.world_depth = temp_unit_depth;
 			
 			// Check if Unit's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_unit_depth < 0)
@@ -632,7 +634,7 @@ repeat (temp_celestial_object_count)
 				temp_city_instance.local_position_v = temp_celestial_object_instance.pathfinding_node_v_array[temp_city_instance.pathfinding_node_index];
 			}
 			
-			// Find Celestial City's Elevation from Celestial Body's Sphere Center
+			// Find Celestial City's Elevation from the Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
 			{
 				// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
@@ -659,6 +661,8 @@ repeat (temp_celestial_object_count)
 			
 			var temp_city_projection_scalar = dot_product_3d(temp_city_vx, temp_city_vy, temp_city_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
 			var temp_city_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_city_projection_scalar) - temp_celestial_object_depth;
+			
+			temp_city_instance.world_depth = temp_city_depth;
 			
 			// Check if City's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_city_depth < 0)
@@ -727,7 +731,7 @@ repeat (temp_celestial_object_count)
 				temp_satellite_instance.local_position_v = temp_celestial_object_instance.pathfinding_node_v_array[temp_satellite_instance.pathfinding_node_index];
 			}
 			
-			// Find Celestial Satellite's Elevation from Celestial Body's Sphere Center
+			// Find Celestial Satellite's Elevation from the Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
 			{
 				// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
@@ -759,6 +763,8 @@ repeat (temp_celestial_object_count)
 			
 			var temp_satellite_projection_scalar = dot_product_3d(temp_satellite_vx, temp_satellite_vy, temp_satellite_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
 			var temp_satellite_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_satellite_projection_scalar) - temp_celestial_object_depth;
+			
+			temp_satellite_instance.world_depth = temp_satellite_depth;
 			
 			// Check if Satellite's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_satellite_depth < temp_celestial_object_instance.render_depth_radius * -0.25)
@@ -797,6 +803,24 @@ repeat (temp_celestial_object_count)
 		#endregion
 		
 		#region Battle Depth Calculation
+		// Clear Battle Unit Connection UI Arrays
+		if (temp_celestial_object_instance.battle_unit_connection_entries > 0)
+		{
+			array_resize(temp_celestial_object_instance.battle_unit_connection_depth_sorting_index_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_depth_sorting_depth_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_a_position_x_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_a_position_y_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_a_alpha_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_b_position_x_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_b_position_y_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_point_b_alpha_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_thickness_array, 0);
+			array_resize(temp_celestial_object_instance.battle_unit_connection_draw_drop_shadow_array, 0);
+		}
+		
+		// Reset Battle Unit Connection Entries Count
+		temp_celestial_object_instance.battle_unit_connection_entries = 0;
+		
 		// Celestial Object's Battle Depth Sorting Behaviour
 		var temp_battle_index = 0;
 		var temp_battle_count = array_length(temp_celestial_object_instance.battles);
@@ -812,19 +836,35 @@ repeat (temp_celestial_object_count)
 			var temp_battle_local_z = temp_battle_instance.battle_z;
 			var temp_battle_elevation = temp_battle_instance.battle_elevation;
 			
-			// Find Celestial Battle's Elevation from Celestial Body's Sphere Center
+			// Find Celestial Battle's Elevation from the Celestial Body's Sphere Center
 			if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
 			{
 				// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
 				temp_battle_elevation = max(temp_battle_elevation, temp_celestial_object_instance.ocean_elevation);
 			}
 			
-			temp_battle_elevation = temp_celestial_object_instance.radius + (temp_battle_elevation * temp_celestial_object_instance.elevation) + temp_battle_instance.battle_surface_elevation;
+			temp_battle_elevation = temp_celestial_object_instance.radius + (temp_battle_elevation * temp_celestial_object_instance.elevation);
+			
+			// Find the Celestial Battle's Local Position from the Celestial Body's Sphere Center
+			var temp_battle_local_position_x = temp_battle_local_x * temp_celestial_obj_rotation_matrix[0] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[4] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[8];
+			var temp_battle_local_position_y = temp_battle_local_x * temp_celestial_obj_rotation_matrix[1] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[5] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[9];
+			var temp_battle_local_position_z = temp_battle_local_x * temp_celestial_obj_rotation_matrix[2] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[6] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[10];
+			
+			// Find Celestial Battle's Grounded World Position
+			var temp_battle_grounded_world_position_x = temp_battle_elevation * temp_battle_local_position_x + temp_celestial_object_instance.x;
+			var temp_battle_grounded_world_position_y = temp_battle_elevation * temp_battle_local_position_y + temp_celestial_object_instance.y;
+			var temp_battle_grounded_world_position_z = temp_battle_elevation * temp_battle_local_position_z + temp_celestial_object_instance.z;
+			
+			// Find Celestial Battle's Grounded Screen Position and set the Celestial Battle Instance's Position to their Converted World Position to Screen Coordinates
+			var temp_battle_grounded_screen_position = world_position_to_screen_position(temp_battle_grounded_world_position_x, temp_battle_grounded_world_position_y, temp_battle_grounded_world_position_z, camera_view_matrix, camera_projection_matrix);
+			
+			// Add the Battle's Surface Elevation to the Battle's Elevation
+			temp_battle_elevation += temp_battle_instance.battle_surface_elevation;
 			
 			// Find Celestial Battle's World Position
-			temp_battle_instance.world_position_x = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[0] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[4] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[8]) + temp_celestial_object_instance.x;
-			temp_battle_instance.world_position_y = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[1] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[5] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[9]) + temp_celestial_object_instance.y;
-			temp_battle_instance.world_position_z = temp_battle_elevation * (temp_battle_local_x * temp_celestial_obj_rotation_matrix[2] + temp_battle_local_y * temp_celestial_obj_rotation_matrix[6] + temp_battle_local_z * temp_celestial_obj_rotation_matrix[10]) + temp_celestial_object_instance.z;
+			temp_battle_instance.world_position_x = temp_battle_elevation * temp_battle_local_position_x + temp_celestial_object_instance.x;
+			temp_battle_instance.world_position_y = temp_battle_elevation * temp_battle_local_position_y + temp_celestial_object_instance.y;
+			temp_battle_instance.world_position_z = temp_battle_elevation * temp_battle_local_position_z + temp_celestial_object_instance.z;
 			
 			// Find Celestial Battle's Screen Position and set the Celestial Battle Instance's Position to their Converted World Position to Screen Coordinates
 			var temp_battle_screen_position = world_position_to_screen_position(temp_battle_instance.world_position_x, temp_battle_instance.world_position_y, temp_battle_instance.world_position_z, camera_view_matrix, camera_projection_matrix);
@@ -839,6 +879,8 @@ repeat (temp_celestial_object_count)
 			
 			var temp_battle_projection_scalar = dot_product_3d(temp_battle_vx, temp_battle_vy, temp_battle_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
 			var temp_battle_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_battle_projection_scalar) - temp_celestial_object_depth;
+			
+			temp_battle_instance.world_depth = temp_battle_depth;
 			
 			// Check if Battle's Depth is in front of the Celestial Body or behind the Celestial Body
 			if (temp_battle_depth < 0)
@@ -855,13 +897,74 @@ repeat (temp_celestial_object_count)
 				temp_sub_object_front_layer_count++;
 			}
 			
-			// Delete Unused Array
+			// Iterate through Battle's Celestial Units Array to create their Battle Unit Connections UI
+			var temp_battle_unit_count = array_length(temp_battle_instance.battle_units);
+			var temp_battle_unit_index = temp_battle_unit_count - 1;
+			
+			repeat (temp_battle_unit_count)
+			{
+				// Find Battle Celestial Unit Instance
+				var temp_battle_unit_instance = temp_battle_instance.battle_units[temp_battle_unit_index];
+				
+				// Index the Battle Unit Connection Entry Index and Sorting Depth
+				array_push(temp_celestial_object_instance.battle_unit_connection_depth_sorting_index_array, temp_celestial_object_instance.battle_unit_connection_entries);
+				array_push(temp_celestial_object_instance.battle_unit_connection_depth_sorting_depth_array, lerp(temp_battle_instance.world_depth, temp_battle_unit_instance.world_depth, 0.5));
+				
+				// Index the Screen Position of the Battle's Unit Instance
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_a_position_x_array, temp_battle_unit_instance.x);
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_a_position_y_array, temp_battle_unit_instance.y - sub_object_unit_vertical_offset);
+				
+				// Index the Screen Position of the Celestial Battle
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_b_position_x_array, temp_battle_grounded_screen_position[0]);
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_b_position_y_array, temp_battle_grounded_screen_position[1]);
+				
+				// Calculate Battle Unit Connection's Alpha Transparencies
+				var temp_battle_point_a_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_battle_unit_instance.world_depth);
+				var temp_battle_point_b_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_battle_instance.world_depth);
+				
+				// Index Battle Unit Connection's Alpha Transparencies
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_a_alpha_array, temp_battle_point_a_alpha * temp_battle_point_a_alpha * temp_battle_point_a_alpha * temp_battle_point_a_alpha * temp_battle_point_a_alpha * temp_battle_point_a_alpha);
+				array_push(temp_celestial_object_instance.battle_unit_connection_point_b_alpha_array, temp_battle_point_b_alpha * temp_battle_point_b_alpha * temp_battle_point_b_alpha * temp_battle_point_b_alpha * temp_battle_point_b_alpha * temp_battle_point_b_alpha);
+				
+				// Calculate and Index the Battle Unit Connection's Line Thickness as a ratio of the Unit's Dot Product Distance to the Battle
+				var temp_battle_unit_dot_product = dot_product_3d
+				(
+					temp_battle_instance.sphere_vector_x, 
+					temp_battle_instance.sphere_vector_y, 
+					temp_battle_instance.sphere_vector_z, 
+					temp_battle_unit_instance.sphere_vector_x, 
+					temp_battle_unit_instance.sphere_vector_y, 
+					temp_battle_unit_instance.sphere_vector_z
+				);
+				
+				var temp_battle_point_thickness = 1 - ((1 - temp_battle_unit_dot_product) / (1 - temp_battle_instance.battle_far_collision_threshold));
+				array_push(temp_celestial_object_instance.battle_unit_connection_thickness_array, clamp((temp_battle_point_thickness * 4) + 1, 1.5, 4));
+				
+				// Index the Battle Unit Connection's Draw Drop Shadow Toggle
+				array_push(temp_celestial_object_instance.battle_unit_connection_draw_drop_shadow_array, temp_battle_unit_index == 0 ? true : false);
+				
+				// Increment Battle Unit Connection Entries
+				temp_celestial_object_instance.battle_unit_connection_entries++;
+				
+				// Decrement Battle Unit Index
+				temp_battle_unit_index--;
+			}
+			
+			// Delete Unused Arrays
+			array_resize(temp_battle_grounded_screen_position, 0);
 			array_resize(temp_battle_screen_position, 0);
 			
 			// Increment Celestial Battle Index
 			temp_battle_index++;
 		}
 		#endregion
+		
+		// Depth Sort Battle Unit Connection UI Entries
+		if (temp_celestial_object_instance.battle_unit_connection_entries > 1)
+		{
+			battle_depth_sorting_celestial_object_instance = temp_celestial_object_instance;
+			array_sort(temp_celestial_object_instance.battle_unit_connection_depth_sorting_index_array, battle_unit_connection_render_depth_sort);
+		}
 		
 		// Sort Celestial Simulator's Sub Objects Back and Front Render Depth Sorting Arrays
 		array_sort(sub_objects_back_render_depth_sorting_index_array, sub_objects_back_render_depth_sort);

@@ -34,7 +34,7 @@
   "physicsStartAwake":true,
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"unit_name","filters":[],"listItems":[],"multiselect":false,"name":"unit_name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"Unit","varType":2,},
-    {"$GMObjectProperty":"v2","%Name":"unit_collision_radius","filters":[],"listItems":[],"multiselect":false,"name":"unit_collision_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"12","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"unit_collision_radius","filters":[],"listItems":[],"multiselect":false,"name":"unit_collision_radius","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"18","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"unit_movement_power","filters":[],"listItems":[],"multiselect":false,"name":"unit_movement_power","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"3","varType":0,},
   ],
   "resourceType":"GMObject",

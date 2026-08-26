@@ -15,9 +15,8 @@ unit_frontline_combat_units_max = 12;
 unit_midline_combat_units_max = 6;
 unit_backline_combat_units_max = 3;
 
-support_contribution_frontline_combat_units_max = 4;
-support_contribution_midline_combat_units_max = 1;
-support_contribution_backline_combat_units_max = 0;
+combat_unit_count = 0;
+combat_unit_unengaged_count = 0;
 
 // Emotion Settings
 emotion_retreat_sprite = sOverworld_Emotion_Retreat;
@@ -92,6 +91,7 @@ engaged_battles_combat_units = array_create(0);
 engaged_battles_combat_units_contribution = array_create(0);
 unengaged_battles = array_create(0);
 
+battle_reinforcement_timer = 0;
 battle_action_stun_timer = -1;
 
 // Willpower Variables

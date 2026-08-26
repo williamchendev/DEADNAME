@@ -5,6 +5,18 @@
 vertex_delete_buffer(icosphere_vertex_buffer);
 icosphere_vertex_buffer = -1;
 
+// Clear all Battle Unit Connection Arrays
+array_resize(battle_unit_connection_depth_sorting_index_array, 0);
+array_resize(battle_unit_connection_depth_sorting_depth_array, 0);
+array_resize(battle_unit_connection_point_a_position_x_array, 0);
+array_resize(battle_unit_connection_point_a_position_y_array, 0);
+array_resize(battle_unit_connection_point_a_alpha_array, 0);
+array_resize(battle_unit_connection_point_b_position_x_array, 0);
+array_resize(battle_unit_connection_point_b_position_y_array, 0);
+array_resize(battle_unit_connection_point_b_alpha_array, 0);
+array_resize(battle_unit_connection_thickness_array, 0);
+array_resize(battle_unit_connection_draw_drop_shadow_array, 0);
+
 // Destroy all Unit Instances indexed in Celestial Body's Unit Array
 if (array_length(units) > 0)
 {

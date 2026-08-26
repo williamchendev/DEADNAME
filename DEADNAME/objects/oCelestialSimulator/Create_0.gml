@@ -119,6 +119,8 @@ bloom_global_intensity = 1.0;
 sub_object_unit_vertical_offset = 2;
 sub_object_city_name_vertical_offset = -8;
 
+selected_unit_movement_path_color = c_white;
+
 // Battle UI Settings
 battle_platform_animation_spd = 0.01;
 battle_platform_animation_square_size = 42;
@@ -129,13 +131,13 @@ battle_platform_top_vertical_position = 240;
 battle_platform_bottom_horizontal_width = 620;
 battle_platform_bottom_vertical_position = 340;
 
-battle_default_column_size = 9;
-
 battle_tile_padding_horizontal = 0.0028;
 battle_tile_padding_vertical = 0.01;
 
 battle_camera_observing_lerp_spd = 0.05;
 battle_camera_observing_lerp_multiplier = 1.8;
+
+battle_unit_connection_color = make_color_rgb(240, 206, 82);
 
 // Triangle UI Settings
 triangle_angle = -105;
@@ -203,6 +205,8 @@ global_hydrosphere_time = 0;
 
 solar_system_render_depth_sorting_index_array = array_create(0);
 solar_system_render_depth_sorting_depth_array = array_create(0);
+
+battle_depth_sorting_celestial_object_instance = noone;
 
 clouds_render_depth_sorting_index_array = array_create(0);
 clouds_render_depth_sorting_depth_array = array_create(0);
@@ -645,6 +649,11 @@ clouds_render_depth_sort = function(current, next)
 selected_unit_movement_path_render_depth_sort = function(current, next) 
 {
 	return CelestialSimulator.selected_unit_movement_path_depth_sorting_depth_array[next] < CelestialSimulator.selected_unit_movement_path_depth_sorting_depth_array[current] ? -1 : 1;
+}
+
+battle_unit_connection_render_depth_sort = function(current, next) 
+{
+	return CelestialSimulator.battle_depth_sorting_celestial_object_instance.battle_unit_connection_depth_sorting_depth_array[next] < CelestialSimulator.battle_depth_sorting_celestial_object_instance.battle_unit_connection_depth_sorting_depth_array[current] ? -1 : 1;
 }
 
 solar_system_render_depth_sort = function(current, next) 
@@ -2266,6 +2275,13 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 				var temp_default_depth_alpha = inverse_lerp(celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_end, celestial_object.render_depth_radius * CelestialSimulator.global_sub_objects_default_depth_transparent_start, temp_depth);
 				temp_alpha *= power(temp_default_depth_alpha, 3);
 				
+				// Check if Celestial Sub Object's Sub Object Type is a Battle and is in the process of ending
+				if (temp_instance.celestial_sub_object_type == CelestialSubObjectType.Battle and !temp_instance.battle_exists)
+				{
+					// Celestial Battles that are in the process of ending have their transparency reduced
+					temp_alpha *= 0.65;
+				}
+				
 				// Establish Sub Object's Unlit Sprite Shader Depth Rendering Properties
 				shader_set_uniform_f(CelestialSimulator.celestial_sprite_unlit_shader_depth_index, lerp(celestial_object.render_depth_radius, temp_depth + celestial_object.render_depth_radius, temp_alpha) + 50);
 				break;
@@ -2303,6 +2319,94 @@ render_celestial_object_sub_object_layer = function(celestial_object, front_laye
 		// Increment Celestial Object's Sub Object Index
 		temp_sub_object_index++;
 	}
+	
+	// Reset Shader
+	shader_reset();
+	
+	// Reset Surface Target
+	surface_reset_target();
+}
+
+render_celestial_battle_unit_connections_ui = function(celestial_object_instance)
+{
+	// Set Celestial Temporary Render Surface as Surface Targets
+	surface_set_target(CelestialSimulator.temp_surface);
+	
+	// Reset Celestial Temporary Render Surface
+	draw_clear_alpha(c_black, 0);
+	
+	// Reset Camera Orientation
+	camera_set_view_mat(GameManager.camera_instance, GameManager.view_matrix);
+	camera_set_proj_mat(GameManager.camera_instance, GameManager.projection_matrix);
+	camera_apply(GameManager.camera_instance);
+	
+	// Reset Matrix World Identity
+	matrix_set(matrix_world, GameManager.identity_matrix);
+	
+	// Iterate through and Draw all Battle Unit Connection Entries
+	var temp_battle_unit_connection_entry_index = 0;
+	
+	repeat (celestial_object_instance.battle_unit_connection_entries)
+	{
+		// Find Battle Unit Connection Entry's Sorted Index
+		var temp_battle_unit_connection_entry_sorted_index = celestial_object_instance.battle_unit_connection_depth_sorting_index_array[temp_battle_unit_connection_entry_index];
+		
+		// Find Battle Unit Connection Point Positions and Alphas
+		var temp_point_a_position_x = celestial_object_instance.battle_unit_connection_point_a_position_x_array[temp_battle_unit_connection_entry_sorted_index];
+		var temp_point_a_position_y = celestial_object_instance.battle_unit_connection_point_a_position_y_array[temp_battle_unit_connection_entry_sorted_index];
+		var temp_point_a_alpha = celestial_object_instance.battle_unit_connection_point_a_alpha_array[temp_battle_unit_connection_entry_sorted_index];
+		
+		var temp_point_b_position_x = celestial_object_instance.battle_unit_connection_point_b_position_x_array[temp_battle_unit_connection_entry_sorted_index];
+		var temp_point_b_position_y = celestial_object_instance.battle_unit_connection_point_b_position_y_array[temp_battle_unit_connection_entry_sorted_index];
+		var temp_point_b_alpha = celestial_object_instance.battle_unit_connection_point_b_alpha_array[temp_battle_unit_connection_entry_sorted_index];
+		
+		// Find Battle Unit Connection Line Thickness
+		var temp_thickness = celestial_object_instance.battle_unit_connection_thickness_array[temp_battle_unit_connection_entry_sorted_index];
+		
+		// Create Battle Unit Connection Point's Render Color based on the Point Alphas
+		var temp_color_a = make_color_rgb(temp_point_a_alpha * 255, 0, 0);
+		var temp_color_b = make_color_rgb(temp_point_b_alpha * 255, 0, 0);
+		
+		// Draw Line Width of the given Battle Unit Connection
+		draw_line_width_color(temp_point_a_position_x, temp_point_a_position_y, temp_point_b_position_x, temp_point_b_position_y, temp_thickness, temp_color_a, temp_color_b);
+		
+		// Check to draw the Battle's "Drop Shadow" Ellipse
+		if (celestial_object_instance.battle_unit_connection_draw_drop_shadow_array[temp_battle_unit_connection_entry_sorted_index])
+		{
+			// Establish Ellipse Horizontal and Vertical Radius Variables
+			var temp_ellipse_horizontal_radius = 6;
+			var temp_ellipse_vertical_radius = 3;
+			
+			// Establish Ellipse Rectangular Dimension Variables
+			var temp_ellipse_left = temp_point_b_position_x - temp_ellipse_horizontal_radius;
+			var temp_ellipse_top = temp_point_b_position_y - temp_ellipse_vertical_radius;
+			var temp_ellipse_right = temp_point_b_position_x + temp_ellipse_horizontal_radius;
+			var temp_ellipse_bottom = temp_point_b_position_y + temp_ellipse_vertical_radius;
+			
+			// Draw a "Drop Shadow" Ellipse at the Battle's Position on the Celestial Object
+			draw_ellipse_color(temp_ellipse_left, temp_ellipse_top, temp_ellipse_right, temp_ellipse_bottom, temp_color_b, temp_color_b, false);
+		}
+		
+		// Increment Battle Unit Connection Entry Index
+		temp_battle_unit_connection_entry_index++;
+	}
+	
+	// Reset Surface Target
+	surface_reset_target();
+	
+	// (Multiple Render Targets) Set Celestial Body Render, Diffuse, & Emissive Surfaces as Surface Targets
+	surface_set_target_ext(0, CelestialSimulator.celestial_body_render_surface);
+	surface_set_target_ext(1, CelestialSimulator.celestial_body_diffuse_surface);
+	surface_set_target_ext(2, CelestialSimulator.celestial_body_emissive_surface);
+	
+	// Enable Celestial Path Unlit Rendering Shader
+	shader_set(shd_celestial_path_unlit);
+	
+	// Establish Unlit Pathfinding Path Shader Depth Rendering Properties
+	shader_set_uniform_f(CelestialSimulator.celestial_path_unlit_shader_depth_index, CelestialSimulator.camera_observing_instance.render_depth_radius);
+	
+	// Draw Celestial Temporary Render Surface to Observing Celestial Object Render
+	draw_surface_ext(CelestialSimulator.temp_surface, 0, 0, 1, 1, 0, CelestialSimulator.battle_unit_connection_color, 1);
 	
 	// Reset Shader
 	shader_reset();
@@ -2387,7 +2491,7 @@ render_selected_unit_movement_path_ui = function()
 	shader_set_uniform_f(CelestialSimulator.celestial_path_unlit_shader_depth_index, CelestialSimulator.camera_observing_instance.render_depth_radius);
 	
 	// Draw Celestial Temporary Render Surface to Observing Celestial Object Render
-	draw_surface_ext(CelestialSimulator.temp_surface, 0, 0, 1, 1, 0, c_white, 1);
+	draw_surface_ext(CelestialSimulator.temp_surface, 0, 0, 1, 1, 0, CelestialSimulator.selected_unit_movement_path_color, 1);
 	
 	// Reset Shader
 	shader_reset();
