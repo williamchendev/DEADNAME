@@ -237,6 +237,36 @@ function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector
 	return vector_ax * temp_cross_x + vector_ay * temp_cross_y + vector_az * temp_cross_z;
 }
 
+/*
+/// @function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz);
+/// @description Returns the Signed Orientation of the Three Points using Vector A as a reference, this is meant to be used in a Funnel Algorithm to find if the second given point is clockwise or counter-clockwise compared to the third given point as relative to the first given point
+/// @param {real} vector_ax The first Vector's X Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_ay The first Vector's Y Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_az The first Vector's Z Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
+/// @param {real} vector_bx The second Vector's X Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_by The second Vector's Y Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_bz The second Vector's Z Value as the Triangle's Second Vertex in 3D World Space
+/// @param {real} vector_cx The third Vector's X Value as the Triangle's Third Vertex in 3D World Space
+/// @param {real} vector_cy The third Vector's Y Value as the Triangle's Third Vertex in 3D World Space
+/// @param {real} vector_cz The third Vector's Z Value as the Triangle's Third Vertex in 3D World Space
+/// @return {real} Returns the Signed Orientation of the Three Points using Vector A as the reference for calculating Vector C's Orientation from Vector B
+function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz) 
+{
+	// Dot products with reference point
+	var temp_ab_dot_product = dot_product_3d(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz);
+	var temp_ac_dot_product = dot_product_3d(vector_ax, vector_ay, vector_az, vector_cx, vector_cy, vector_cz);
+	
+	// Dot product of tangent projections
+	var temp_cos_angle = vector_bx * vector_cx + vector_by * vector_cy + vector_bz * vector_cz - temp_ab_dot_product * temp_ac_dot_product;
+	
+	// R · (A × B)
+	var temp_sin_angle = vector_ax * (vector_by * vector_cz - vector_bz * vector_cy) + vector_ay * (vector_bz * vector_cx - vector_bx * vector_cz) + vector_az * (vector_bx * vector_cy - vector_by * vector_cx);
+	
+	// Return the signed orientation
+	return arctan2(temp_sin_angle, temp_cos_angle);
+}
+*/
+
 /// @function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, portal_ay, portal_az, portal_bx, portal_by, portal_bz, funnel_ax, funnel_ay, funnel_az, funnel_bx, funnel_by, funnel_bz);
 /// @description Finds the Closest Point on a Pathfinding Node's Portal Edge Line Segment to the Funnel Algorithm's Shortest Great-Circle Distance Path Segment by finding the intersection between the Funnel's Great-Circle Distance Path's Plane Normal and the Portal Edge Line Segment
 /// @param {real} portal_ax The X position of the first point in the Pathfinding Node's Portal Edge Line Segment

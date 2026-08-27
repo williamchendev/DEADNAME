@@ -289,24 +289,31 @@ repeat (temp_celestial_object_count)
 			{
 				case CelestialSubObjectType.Unit:
 					// Unit Pathfinding UI Precalculation Behaviour
-					if (temp_celestial_object_instance.pathfinding_enabled and !is_undefined(sub_object_selected_instance.pathfinding_path))
+					if (!temp_celestial_object_instance.pathfinding_enabled or is_undefined(sub_object_selected_instance.pathfinding_path))
 					{
-						// Clear Selected Unit Movement Path UI Arrays
-						if (selected_unit_movement_path_entries > 0)
-						{
-							array_resize(selected_unit_movement_path_depth_sorting_index_array, 0);
-							array_resize(selected_unit_movement_path_depth_sorting_depth_array, 0);
-							array_resize(selected_unit_movement_path_point_a_position_x_array, 0);
-							array_resize(selected_unit_movement_path_point_a_position_y_array, 0);
-							array_resize(selected_unit_movement_path_point_a_alpha_array, 0);
-							array_resize(selected_unit_movement_path_point_b_position_x_array, 0);
-							array_resize(selected_unit_movement_path_point_b_position_y_array, 0);
-							array_resize(selected_unit_movement_path_point_b_alpha_array, 0);
-						}
-						
-						// Reset Selected Unit Movement Path UI Entries Count
-						selected_unit_movement_path_entries = 0;
-						
+						// Pathfinding is not enabled on the Selected Unit's Celestial Object or does not have a Pathfinding Path to render UI for - Skip Pathfinding UI Behaviour
+						break;
+					}
+					
+					// Clear Selected Unit Movement Path UI Arrays
+					if (selected_unit_movement_path_entries > 0)
+					{
+						array_resize(selected_unit_movement_path_depth_sorting_index_array, 0);
+						array_resize(selected_unit_movement_path_depth_sorting_depth_array, 0);
+						array_resize(selected_unit_movement_path_point_a_position_x_array, 0);
+						array_resize(selected_unit_movement_path_point_a_position_y_array, 0);
+						array_resize(selected_unit_movement_path_point_a_alpha_array, 0);
+						array_resize(selected_unit_movement_path_point_b_position_x_array, 0);
+						array_resize(selected_unit_movement_path_point_b_position_y_array, 0);
+						array_resize(selected_unit_movement_path_point_b_alpha_array, 0);
+					}
+					
+					// Reset Selected Unit Movement Path UI Entries Count
+					selected_unit_movement_path_entries = 0;
+					
+					// Check if Unit Behaviour allows for Pathfinding UI to be rendered
+					if (!sub_object_selected_instance.engaged_in_battle or sub_object_selected_instance.unit_behaviour == CelestialUnitBehaviourType.Retreat)
+					{
 						// Iterate through Selected Sub Object Unit's Pathfinding Path Array to create Path UI
 						var temp_selected_unit_pathfinding_path_index = 0;
 						

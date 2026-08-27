@@ -708,7 +708,7 @@ function celestial_unit_add_status_effect(celestial_unit, status_effect_type)
 	if (temp_status_effect_index != -1)
 	{
 		//
-		celestial_unit.status_effect_duration_array = global.celestial_unit_status_effects[status_effect_type].status_effect_duration;
+		celestial_unit.status_effect_duration_array[temp_status_effect_index] = global.celestial_unit_status_effects[status_effect_type].status_effect_duration;
 	}
 	else
 	{
@@ -727,7 +727,7 @@ function celestial_unit_remove_status_effect(celestial_unit, status_effect_type)
 	if (temp_status_effect_index != -1)
 	{
 		//
-		celestial_unit.status_effect_duration_array = 0;
+		celestial_unit.status_effect_duration_array[temp_status_effect_index] = 0;
 	}
 }
 
@@ -735,6 +735,19 @@ function celestial_unit_check_status_effect(celestial_unit, status_effect_type)
 {
 	//
 	return array_get_index(celestial_unit.status_effect_array, status_effect_type) != -1;
+}
+
+//
+function celestial_unit_calculate_spherical_facing_direction(x1, z1, x2, z2)
+{
+	// Find U Positions and convert them into Horizontal Angles from Sphere's Horizontal Wrap
+	var temp_u_angle_a = (0.5 - arctan2(-x1, -z1) / (2 * pi)) * 360;
+	var temp_u_angle_b = (0.5 - arctan2(-x2, -z2) / (2 * pi)) * 360;
+	
+	// Return Facing Direction based on the Angle Difference
+	var temp_horizontal_angle_difference = angle_difference(temp_u_angle_b, temp_u_angle_a);
+	
+	return sign(temp_horizontal_angle_difference);
 }
 
 

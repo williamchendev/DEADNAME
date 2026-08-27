@@ -436,6 +436,20 @@ repeat (temp_solar_systems_count)
 				// Check to Destroy Battle Instance
 				if (!temp_battle_instance.battle_exists)
 				{
+					// If this Battle was selected by the Celestial Simulator, Check for Duplicate Battles to switch to as the Celestial Simulator's next Selected Battle
+					if (CelestialSimulator.sub_object_selected_instance == temp_battle_instance)
+					{
+						// Search for Battle's Duplicate Instance
+						var temp_battle_duplicate_instance = celestial_battle_check_for_duplicate(temp_battle_instance);
+						
+						// Check if Duplicate Battle Exists
+						if (instance_exists(temp_battle_duplicate_instance))
+						{
+							// Duplicate Battle Exists - Select the Duplicate Celestial Battle that matches the selected Celestial Battle that has ended
+							CelestialSimulator.select_sub_object_instance(temp_battle_duplicate_instance);
+						}
+					}
+					
 					// Decrement Battle Instance's Ending Timer
 					temp_battle_instance.battle_ending_time -= CelestialSimulator.global_clock_delta_time;
 					
@@ -1153,6 +1167,68 @@ repeat (temp_solar_systems_count)
 										break;
 								}
 								
+								// Battle Engagement Unit Pathfinding Behaviour
+								if (temp_unit_instance.engaged_in_battle)
+								{
+									// Establish Pathfinding Unit's Valid Retreat Destination Condition
+									var temp_pathfinding_target_is_valid_retreat_destination = true;
+									
+									// Iterate through Pathfinding Unit's Engaged Battles and check if their Target Position is a Valid Retreat Destination
+									var temp_pathfinding_unit_engaged_battle_count = array_length(temp_unit_instance.engaged_battles);
+									var temp_pathfinding_unit_engaged_battle_index = temp_pathfinding_unit_engaged_battle_count - 1;
+									
+									repeat (temp_pathfinding_unit_engaged_battle_count)
+									{
+										// Find Pathfinding Unit's Engaged Battle Instance
+										var temp_pathfinding_unit_engaged_battle_instance = temp_unit_instance.engaged_battles[temp_pathfinding_unit_engaged_battle_index];
+										
+										// Calculate the Retreat Direction the Pathfinding Unit is heading towards using their current position and their orientation to the Engaged Battle as a reference
+										var temp_pathfinding_retreat_direction = spherical_point_direction
+										(
+											temp_pathfinding_unit_x, 
+											temp_pathfinding_unit_y, 
+											temp_pathfinding_unit_z,
+											temp_pathfinding_unit_engaged_battle_instance.sphere_vector_x, 
+											temp_pathfinding_unit_engaged_battle_instance.sphere_vector_y, 
+											temp_pathfinding_unit_engaged_battle_instance.sphere_vector_z,
+											temp_pathfinding_target_x, 
+											temp_pathfinding_target_y, 
+											temp_pathfinding_target_z
+										);
+										
+										// Check if the Retreat Direction is above the Celestial Battle Unit Retreat Angle Minimum
+										if (temp_pathfinding_retreat_direction <= global.celestial_battle_unit_retreat_angle_minimum)
+										{
+											// Retreat Direction is in the direction the Unit is facing towards the Battle - Target Position is disqualified as a Valid Retreat Destination
+											temp_pathfinding_target_is_valid_retreat_destination = false;
+											
+											// End iterating through the Pathfinding Unit's Engaged Battles
+											break;
+										}
+										
+										// Decrement the Pathfinding Unit's Engaged Battle Index
+										temp_pathfinding_unit_engaged_battle_index--;
+									}
+									
+									// Check if Unit's Pathfinding Target was a Valid Retreat Destination
+									if (!temp_pathfinding_target_is_valid_retreat_destination)
+									{
+										// Reset Unit's Behaviour to end their Retreat
+										temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
+										
+										// Find Celestial Unit's First Engaged Battle Spherical Normalized Vector
+										var temp_pathfinding_retreat_battle_x = temp_unit_instance.engaged_battles[0].sphere_vector_x;
+										var temp_pathfinding_retreat_battle_z = temp_unit_instance.engaged_battles[0].sphere_vector_z;
+										
+										// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
+										var temp_pathfinding_retreat_facing_direction = celestial_unit_calculate_spherical_facing_direction(temp_unit_instance.sphere_vector_x, temp_unit_instance.sphere_vector_z, temp_pathfinding_retreat_battle_x, temp_pathfinding_retreat_battle_z);
+										temp_unit_instance.image_xscale = temp_pathfinding_retreat_facing_direction != 0 ? temp_pathfinding_retreat_facing_direction : temp_unit_instance.image_xscale;
+										
+										// End Unit's Pathfinding Behaviour
+										break;
+									}
+								}
+								
 								// Find Unit Pathfinding Node Microbiome
 								var temp_pathfinding_node_microbiome_type = microclimate_biome_type_array[pathfinding_node_microclimate_array[temp_pathfinding_node_index]];
 								
@@ -1177,13 +1253,9 @@ repeat (temp_solar_systems_count)
 								var temp_pathfinding_movement_position_z = lerp(temp_pathfinding_unit_z, temp_pathfinding_target_z, temp_pathfinding_path_lerp_value);
 								var temp_pathfinding_movement_position_elevation = lerp(temp_pathfinding_unit_elevation, temp_pathfinding_target_elevation, temp_pathfinding_path_lerp_value);
 								
-								// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
-								var temp_pathfinding_unit_position_u_angle = (0.5 - arctan2(-temp_pathfinding_unit_x, -temp_pathfinding_unit_z) / (2 * pi)) * 360;
-								var temp_pathfinding_target_position_u_angle = (0.5 - arctan2(-temp_pathfinding_target_x, -temp_pathfinding_target_z) / (2 * pi)) * 360;
-								
 								// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
-								var temp_pathfinding_horizontal_angle_difference = angle_difference(temp_pathfinding_target_position_u_angle, temp_pathfinding_unit_position_u_angle);
-								temp_unit_instance.image_xscale = temp_pathfinding_horizontal_angle_difference != 0 ? sign(temp_pathfinding_horizontal_angle_difference) : temp_unit_instance.image_xscale;
+								var temp_pathfinding_movement_facing_direction = celestial_unit_calculate_spherical_facing_direction(temp_pathfinding_unit_x, temp_pathfinding_unit_z, temp_pathfinding_target_x, temp_pathfinding_target_z);
+								temp_unit_instance.image_xscale = temp_pathfinding_movement_facing_direction != 0 ? temp_pathfinding_movement_facing_direction : temp_unit_instance.image_xscale;
 								
 								// Update Unit's Pathfinding Position & Elevation
 								temp_unit_instance.pathfinding_position_x = temp_pathfinding_movement_position_x;
@@ -1291,6 +1363,18 @@ repeat (temp_solar_systems_count)
 											default:
 												temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 												break;
+										}
+										
+										// Face the Celestial Unit towards the Battle they're engaged in
+										if (temp_unit_instance.engaged_in_battle)
+										{
+											// Find Celestial Unit's First Engaged Battle Spherical Normalized Vector
+											var temp_pathfinding_ended_battle_x = temp_unit_instance.engaged_battles[0].sphere_vector_x;
+											var temp_pathfinding_ended_battle_z = temp_unit_instance.engaged_battles[0].sphere_vector_z;
+											
+											// Update Unit's Sprite Facing Direction based on their Pathfinding Angle Difference
+											var temp_pathfinding_ended_facing_direction = celestial_unit_calculate_spherical_facing_direction(temp_unit_instance.sphere_vector_x, temp_unit_instance.sphere_vector_z, temp_pathfinding_ended_battle_x, temp_pathfinding_ended_battle_z);
+											temp_unit_instance.image_xscale = temp_pathfinding_ended_facing_direction != 0 ? temp_pathfinding_ended_facing_direction : temp_unit_instance.image_xscale;
 										}
 										
 										// Destroy Unit's Pathfinding Path Struct
@@ -1558,15 +1642,23 @@ repeat (temp_solar_systems_count)
 					
 					repeat (temp_unit_status_effect_count)
 					{
+						// Find Unit Status Effect's Duration
+						var temp_unit_status_effect_duration = array_get(temp_unit_instance.status_effect_duration_array, temp_unit_status_effect_index);
+						
 						// Decrement Unit Status Effect's Duration
-						temp_unit_instance.status_effect_duration_array[temp_unit_status_effect_index] -= CelestialSimulator.global_clock_delta_time;
+						temp_unit_status_effect_duration -= CelestialSimulator.global_clock_delta_time;
 						
 						// Check if Unit Status Effect has Elapsed
-						if (temp_unit_instance.status_effect_duration_array[temp_unit_status_effect_index] <= 0)
+						if (temp_unit_status_effect_duration <= 0)
 						{
 							// Delete Unit Status Effect
 							array_delete(temp_unit_instance.status_effect_array, temp_unit_status_effect_index, 1);
 							array_delete(temp_unit_instance.status_effect_duration_array, temp_unit_status_effect_index, 1);
+						}
+						else
+						{
+							// Update Unit Status Effect's Duration
+							array_set(temp_unit_instance.status_effect_duration_array, temp_unit_status_effect_index, temp_unit_status_effect_duration);
 						}
 						
 						// Decrement Unit Status Effect Index

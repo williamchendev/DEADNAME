@@ -14,7 +14,9 @@ global.celestial_battle_combat_grid_column_type[8] = CelestialBattleColumnType.B
 global.celestial_battle_combat_grid_column_type[9] = CelestialBattleColumnType.Backline;
 
 global.celestial_battle_combat_grid_population_minimum = 5;
+
 global.celestial_battle_unit_reinforcement_delay = 5;
+global.celestial_battle_unit_retreat_angle_minimum = 60;
 
 global.celestial_battle_exit_stage_animation_mult = 1.5;
 global.celestial_battle_exit_stage_animation_spd = 0.02;
@@ -109,6 +111,13 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 		return;
 	}
 	
+	// Check if Battle and Unit Instances both share the same Celestial Body Instance
+	if (battle_instance.celestial_body_instance != unit_instance.celestial_body_instance)
+	{
+		// Battle Instance and Unit Instance do not share the same Celestial Body Instance - Early Exit
+		return;
+	}
+	
 	// Establish Celestial Unit Instance's Battle Combat Grid Side
 	var temp_battle_combat_grid_side = CelestialBattleCombatGridSide.None;
 	
@@ -123,8 +132,12 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	}
 	else
 	{
-		// Index Battle in Unit Instance's Unengaged Celestial Battles Array
-		array_push(unit_instance.unengaged_battles, battle_instance);
+		// Check if Battle has already been added to the Unit Instance's Unengaged Celestial Battles Array
+		if (array_get_index(unit_instance.unengaged_battles, battle_instance) == -1)
+		{
+			// Index Battle in Unit Instance's Unengaged Celestial Battles Array
+			array_push(unit_instance.unengaged_battles, battle_instance);
+		}
 		
 		// Celestial Unit Instance is not involved in this conflict - Early Exit
 		return;
@@ -161,6 +174,18 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	if (!unit_instance.engaged_in_battle)
 	{
 		unit_instance.battle_reinforcement_timer = random(global.celestial_battle_unit_reinforcement_delay);
+	}
+	
+	// Update Unit Instance's Facing Direction towards the Battle
+	if (instance_exists(battle_instance.celestial_body_instance))
+	{
+		// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
+		var temp_face_battle_unit_position_u_angle = (0.5 - arctan2(-unit_instance.sphere_vector_x, -unit_instance.sphere_vector_z) / (2 * pi)) * 360;
+		var temp_face_battle_battle_position_u_angle = (0.5 - arctan2(-battle_instance.sphere_vector_x, -battle_instance.sphere_vector_z) / (2 * pi)) * 360;
+		
+		// Update Unit's Sprite Facing Direction based on their Angle Difference
+		var temp_face_battle_horizontal_angle_difference = angle_difference(temp_face_battle_battle_position_u_angle, temp_face_battle_unit_position_u_angle);
+		unit_instance.image_xscale = temp_face_battle_horizontal_angle_difference != 0 ? sign(temp_face_battle_horizontal_angle_difference) : unit_instance.image_xscale;
 	}
 	
 	// Update that Unit Instance has entered Combat
@@ -303,51 +328,14 @@ function celestial_battle_remove_unit(battle_instance, unit_instance)
 	// Duplicate Battle Prevention Behaviour
 	if (battle_instance.battle_exists)
 	{
-		// Check if Celestial Body Instance exists
-		if (instance_exists(battle_instance.celestial_body_instance))
+		// Search for Battle's Duplicate Instance
+		var temp_battle_duplicate_instance = celestial_battle_check_for_duplicate(battle_instance);
+		
+		// Check if Duplicate Battle Exists
+		if (instance_exists(temp_battle_duplicate_instance))
 		{
-			// Find the Index of this Celestial Battle within the Celestial Body Instance's Battles Array
-			var temp_battle_instance_celestial_body_battles_index = array_get_index(battle_instance.celestial_body_instance.battles, battle_instance);
-			
-			// Remove Celestial Battle Instance from Celestial Body's Battles Array
-			var temp_celestial_body_battles_count = array_length(battle_instance.celestial_body_instance.battles);
-			var temp_celestial_body_battles_index = temp_celestial_body_battles_count - 1;
-			
-			repeat (temp_celestial_body_battles_count)
-			{
-				// Check if Comparing the given Celestial Battle with itself
-				if (temp_celestial_body_battles_index == temp_battle_instance_celestial_body_battles_index)
-				{
-					// Decrement Celestial Body Battles Index
-					temp_celestial_body_battles_index--;
-					
-					// Skip Comparison
-					continue;
-				}
-				
-				// Find Celestial Body's Battle Instance
-				var temp_celestial_body_battles_instance = battle_instance.celestial_body_instance.battles[temp_celestial_body_battles_index];
-				
-				// Check if the Celestial Body's Battle Instance has the same Celestial Units participating in Combat as the given Celestial Battle
-				if (array_equals(battle_instance.battle_units, temp_celestial_body_battles_instance.battle_units))
-				{
-					// Toggle that the given Celestial Battle has ended
-					battle_instance.battle_exists = false;
-					
-					// Check if the given Celestial Battle is currently selected by the Player
-					if (battle_instance == CelestialSimulator.sub_object_selected_instance)
-					{
-						// Select the new Celestial Battle that matches the given Celestial Battle that has ended
-						CelestialSimulator.select_sub_object_instance(temp_celestial_body_battles_instance);
-					}
-					
-					// Exit Duplicate Battle Prevention Behaviour
-					return;
-				}
-				
-				// Decrement Celestial Body Battles Index
-				temp_celestial_body_battles_index--;
-			}
+			// Duplicate Battle Exists - Toggle that the given Celestial Battle has ended
+			battle_instance.battle_exists = false;
 		}
 	}
 }
@@ -990,6 +978,49 @@ function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instan
 	
 	// Increment the Combat Unit's Celestial Unit Unengaged Combat Units Count
 	combat_unit_instance.unit_instance.combat_unit_unengaged_count++;
+}
+
+function celestial_battle_check_for_duplicate(battle_instance)
+{
+	// Check if Celestial Body Instance exists
+	if (instance_exists(battle_instance.celestial_body_instance))
+	{
+		// Find the Index of this Celestial Battle within the Celestial Body Instance's Battles Array
+		var temp_battle_instance_celestial_body_battles_index = array_get_index(battle_instance.celestial_body_instance.battles, battle_instance);
+		
+		// Remove Celestial Battle Instance from Celestial Body's Battles Array
+		var temp_celestial_body_battles_count = array_length(battle_instance.celestial_body_instance.battles);
+		var temp_celestial_body_battles_index = temp_celestial_body_battles_count - 1;
+		
+		repeat (temp_celestial_body_battles_count)
+		{
+			// Check if Comparing the given Celestial Battle with itself
+			if (temp_celestial_body_battles_index == temp_battle_instance_celestial_body_battles_index)
+			{
+				// Decrement Celestial Body Battles Index
+				temp_celestial_body_battles_index--;
+				
+				// Skip Comparison
+				continue;
+			}
+			
+			// Find Celestial Body's Battle Instance
+			var temp_celestial_body_battles_instance = battle_instance.celestial_body_instance.battles[temp_celestial_body_battles_index];
+			
+			// Check if the Celestial Body's Battle Instance has the same Celestial Units participating in Combat as the given Celestial Battle
+			if (temp_celestial_body_battles_instance.battle_exists and array_equals(battle_instance.battle_units, temp_celestial_body_battles_instance.battle_units))
+			{
+				// Return Duplicate Battle Instance
+				return temp_celestial_body_battles_instance;
+			}
+			
+			// Decrement Celestial Body Battles Index
+			temp_celestial_body_battles_index--;
+		}
+	}
+	
+	// Unable to find Duplicate Battle Instance - Return Null Instance
+	return noone;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////=====================================================================

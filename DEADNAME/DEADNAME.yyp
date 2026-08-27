@@ -533,6 +533,7 @@
     {"id":{"name":"round_to","path":"scripts/round_to/round_to.yy",},},
     {"id":{"name":"SceneBehaviours","path":"scripts/SceneBehaviours/SceneBehaviours.yy",},},
     {"id":{"name":"screen_position_to_world_vector","path":"scripts/screen_position_to_world_vector/screen_position_to_world_vector.yy",},},
+    {"id":{"name":"spherical_point_direction","path":"scripts/spherical_point_direction/spherical_point_direction.yy",},},
     {"id":{"name":"sprite_get_index","path":"scripts/sprite_get_index/sprite_get_index.yy",},},
     {"id":{"name":"sprite_get_speed_","path":"scripts/sprite_get_speed_/sprite_get_speed_.yy",},},
     {"id":{"name":"sprite_get_uvs_transformed","path":"scripts/sprite_get_uvs_transformed/sprite_get_uvs_transformed.yy",},},
