@@ -45,6 +45,13 @@ enum CelestialSolarType
 	Twilight = 1,
 	Night = 2
 }
+
+enum CelestialSelectNodeType
+{
+	Any,
+	Land,
+	Sea
+}
 #endregion
 
 #region Celestial Settings

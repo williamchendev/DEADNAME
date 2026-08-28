@@ -179,13 +179,9 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	// Update Unit Instance's Facing Direction towards the Battle
 	if (instance_exists(battle_instance.celestial_body_instance))
 	{
-		// Find Celestial Unit's U Positions and convert them into Horizontal Angles from Celestial Body's Sphere Horizontal Wrap
-		var temp_face_battle_unit_position_u_angle = (0.5 - arctan2(-unit_instance.sphere_vector_x, -unit_instance.sphere_vector_z) / (2 * pi)) * 360;
-		var temp_face_battle_battle_position_u_angle = (0.5 - arctan2(-battle_instance.sphere_vector_x, -battle_instance.sphere_vector_z) / (2 * pi)) * 360;
-		
-		// Update Unit's Sprite Facing Direction based on their Angle Difference
-		var temp_face_battle_horizontal_angle_difference = angle_difference(temp_face_battle_battle_position_u_angle, temp_face_battle_unit_position_u_angle);
-		unit_instance.image_xscale = temp_face_battle_horizontal_angle_difference != 0 ? sign(temp_face_battle_horizontal_angle_difference) : unit_instance.image_xscale;
+		// Update Unit's Sprite Facing Direction
+		var temp_unit_facing_direction = celestial_unit_calculate_spherical_facing_direction(unit_instance.sphere_vector_x, unit_instance.sphere_vector_z, battle_instance.sphere_vector_x, battle_instance.sphere_vector_z);
+		unit_instance.image_xscale = temp_unit_facing_direction != 0 ? temp_unit_facing_direction : unit_instance.image_xscale;
 	}
 	
 	// Update that Unit Instance has entered Combat

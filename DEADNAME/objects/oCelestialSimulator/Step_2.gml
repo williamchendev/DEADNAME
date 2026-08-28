@@ -187,6 +187,26 @@ else if (temp_input_select or temp_input_action)
 	// Check if Selection Position is Valid
 	if (!is_undefined(temp_selection_position))
 	{
+		// Establish Preferred Selection Node Type Criteria
+		var temp_selection_preferred_node_type = CelestialSelectNodeType.Any;
+		
+		if (instance_exists(sub_object_selected_instance))
+		{
+			// Check if Selected Unit is potentially moving towards a Pathfinding Node on a Planet
+			if (sub_object_selected_instance.celestial_sub_object_type == CelestialSubObjectType.Unit and temp_selection_inst.celestial_object_type == CelestialObjectType.Planet)
+			{
+				// Select for Planet Pathfinding Nodes compatible with Unit's Terrain
+				if (sub_object_selected_instance.unit_terrain_type == CelestialUnitTerrainType.Terrestrial)
+				{
+					temp_selection_preferred_node_type = temp_selection_inst.ocean ? CelestialSelectNodeType.Land : CelestialSelectNodeType.Any;
+				}
+				else if (sub_object_selected_instance.unit_terrain_type == CelestialUnitTerrainType.Aquatic)
+				{
+					temp_selection_preferred_node_type = temp_selection_inst.ocean ? CelestialSelectNodeType.Sea : CelestialSelectNodeType.Any;
+				}
+			}
+		}
+		
 		// Establish Selection Instance's Minimum Elevation
 		var temp_selection_inst_minimum_elevation = 0;
 		
@@ -269,6 +289,38 @@ else if (temp_input_select or temp_input_action)
 					// Establish Node Index from Pathfinding Group
 					var temp_group_node_index = array_get(temp_selection_inst.pathfinding_group_node_index_array[temp_selection_group_index], temp_pathfinding_node_index);
 					
+					// Check if Node Index matches the Selection's Preferred Node Type
+					switch (temp_selection_preferred_node_type)
+					{
+						case CelestialSelectNodeType.Land:
+							// Check if Pathfinding Node is Above the Planet's Sea Level
+							if (temp_selection_inst.pathfinding_node_elevation_array[temp_group_node_index] > temp_selection_inst.ocean_elevation)
+							{
+								break;
+							}
+							
+							// Increment Pathfinding Node Index
+							temp_pathfinding_node_index++;
+							
+							// Skip Node Index
+							continue;
+						case CelestialSelectNodeType.Sea:
+							// Check if Pathfinding Node is Equal to or Below the Planet's Sea Level
+							if (temp_selection_inst.pathfinding_node_elevation_array[temp_group_node_index] <= temp_selection_inst.ocean_elevation)
+							{
+								break;
+							}
+							
+							// Increment Pathfinding Node Index
+							temp_pathfinding_node_index++;
+							
+							// Skip Node Index
+							continue;
+						case CelestialSelectNodeType.Any:
+						default:
+							break;
+					}
+					
 					// Establish Pathfinding Node's Normalized Sphere Vector
 					var temp_node_vector_x = temp_selection_inst.pathfinding_node_x_array[temp_group_node_index];
 					var temp_node_vector_y = temp_selection_inst.pathfinding_node_y_array[temp_group_node_index];
@@ -290,15 +342,15 @@ else if (temp_input_select or temp_input_action)
 				}
 			}
 			
-			// Check if Selection Node Index Exists
+			// Establish Selection Triangle Position & Elevation
+			var temp_selection_tri_x = 0;
+			var temp_selection_tri_y = 0;
+			var temp_selection_tri_z = 0;
+			var temp_selection_tri_elevation = 0;
+			
+			// Calculate Selection Triangle Position & Elevation from the Closest Barycentric Interpolated Point to the Selection's Screen Space Position
 			if (temp_selection_node_index != -1)
 			{
-				// Set Default Selection Triangle Position & Elevation as Pathfinding Node's Position and Elevation
-				var temp_selection_tri_x = temp_selection_inst.pathfinding_node_x_array[temp_selection_node_index];
-				var temp_selection_tri_y = temp_selection_inst.pathfinding_node_y_array[temp_selection_node_index];
-				var temp_selection_tri_z = temp_selection_inst.pathfinding_node_z_array[temp_selection_node_index];
-				var temp_selection_tri_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_selection_node_index];
-				
 				// Find Pathfinding Node Triangle Portal Vertex Indexes and Positions
 				var temp_selection_a_portal_index = array_get(temp_selection_inst.pathfinding_node_edges_portal_left_array[temp_selection_node_index], 0);
 				var temp_selection_b_portal_index = array_get(temp_selection_inst.pathfinding_node_edges_portal_left_array[temp_selection_node_index], 1);
@@ -363,121 +415,125 @@ else if (temp_input_select or temp_input_action)
 				
 				// Delete Unused Array
 				array_resize(temp_selection_tri_barycentric_values, 0);
-				
-				// Check if Celestial Object is being Observed and Celestial Simulator's Sub Object Selected Instance Exists
-				if (instance_exists(camera_observing_instance) and instance_exists(sub_object_selected_instance))
+			}
+			
+			// Check if Celestial Object is being Observed and Celestial Simulator's Sub Object Selected Instance Exists
+			if (instance_exists(camera_observing_instance) and instance_exists(sub_object_selected_instance))
+			{
+				// Perform Sub Object Selected Instance's Input Behaviour Tree
+				if (temp_input_action and !input_action)
 				{
-					// Perform Sub Object Selected Instance's Input Behaviour Tree
-					if (temp_input_action and !input_action)
+					// Action Input Behaviour
+					switch (sub_object_selected_instance.celestial_sub_object_type)
 					{
-						// Action Input Behaviour
-						switch (sub_object_selected_instance.celestial_sub_object_type)
-						{
-							case CelestialSubObjectType.Unit:
-								// Unit Action Behaviour - Pathfinding
-								if (temp_selection_inst == sub_object_selected_instance.celestial_body_instance)
+						case CelestialSubObjectType.Unit:
+							// Unit Action Behaviour - Pathfinding
+							if (temp_selection_inst == sub_object_selected_instance.celestial_body_instance)
+							{
+								// Establish Pathfinding Goal Variables
+								var temp_pathfinding_goal_node_index = temp_selection_node_index;
+								var temp_pathfinding_goal_x = temp_selection_tri_x;
+								var temp_pathfinding_goal_y = temp_selection_tri_y;
+								var temp_pathfinding_goal_z = temp_selection_tri_z;
+								var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
+								
+								// Reset Selected Unit's Behaviour to None
+								sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.None;
+								sub_object_selected_instance.unit_behaviour_target_instance = noone;
+								sub_object_selected_instance.unit_behaviour_target_node_index = -1;
+								
+								// Check Unit Pathfinding Action Behaviour Conditions
+								if (sub_object_selected_instance.engaged_in_battle)
 								{
-									// Establish Pathfinding Goal Variables
-									var temp_pathfinding_goal_node_index = temp_selection_node_index;
-									var temp_pathfinding_goal_x = temp_selection_tri_x;
-									var temp_pathfinding_goal_y = temp_selection_tri_y;
-									var temp_pathfinding_goal_z = temp_selection_tri_z;
-									var temp_pathfinding_goal_elevation = temp_selection_tri_elevation;
-									
-									// Reset Selected Unit's Behaviour to None
-									sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.None;
-									sub_object_selected_instance.unit_behaviour_target_instance = noone;
-									sub_object_selected_instance.unit_behaviour_target_node_index = -1;
-									
-									// Check Unit Pathfinding Action Behaviour Conditions
-									if (sub_object_selected_instance.engaged_in_battle)
+									// Unit is currently engaged in Battle and Pathfinding to a new Location is considered Retreating - Change their Unit Behaviour to "Retreat" before Pathfinding to their new Location
+									sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Retreat;
+								}
+								else if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst != sub_object_selected_instance and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
+								{
+									// Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance - Set new Pathfinding Goal Behaviour based on Action Sub Object Type
+									switch (temp_sub_object_action_inst.celestial_sub_object_type)
 									{
-										// Unit is currently engaged in Battle and Pathfinding to a new Location is considered Retreating - Change their Unit Behaviour to "Retreat" before Pathfinding to their new Location
-										sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.Retreat;
-									}
-									else if (instance_exists(temp_sub_object_action_inst) and temp_sub_object_action_inst != sub_object_selected_instance and temp_sub_object_action_inst.celestial_body_instance == sub_object_selected_instance.celestial_body_instance)
-									{
-										// Action Sub Object was selected as an Action and is on the same Celestial Body Instance as the Selected Sub Object Instance - Set new Pathfinding Goal Behaviour based on Action Sub Object Type
-										switch (temp_sub_object_action_inst.celestial_sub_object_type)
-										{
-											case CelestialSubObjectType.Unit:
-												// Establish Action Unit Movement Variables
-												var temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.None;
-												
-												// Check Selected Unit's Faction Relationship to the Action Unit's Faction
-												if (sub_object_selected_instance.unit_faction == temp_sub_object_action_inst.unit_faction)
-												{
-													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Regroup;
-												}
-												else if (celestial_faction_is_relationship_hostile(sub_object_selected_instance.unit_faction, temp_sub_object_action_inst.unit_faction))
-												{
-													temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Attack;
-												}
-												
-												// Check if Action Unit is Pathfinding
-												if (temp_unit_movement_behaviour_type == CelestialUnitBehaviourType.Regroup and !is_undefined(temp_sub_object_action_inst.pathfinding_path))
-												{
-													// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
-													temp_pathfinding_goal_node_index = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.node_index, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_x = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_x, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_y = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_y, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_z = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_z, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-													temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
-												}
-												else
-												{
-													// Set Pathfinding Goal as Action Unit's Position
-													temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
-													temp_pathfinding_goal_x = temp_sub_object_action_inst.pathfinding_position_x;
-													temp_pathfinding_goal_y = temp_sub_object_action_inst.pathfinding_position_y;
-													temp_pathfinding_goal_z = temp_sub_object_action_inst.pathfinding_position_z;
-													temp_pathfinding_goal_elevation = temp_sub_object_action_inst.pathfinding_position_elevation;
-												}
-												
-												// Set Selected Unit's Behaviour and Target Instance
-												sub_object_selected_instance.unit_behaviour = temp_unit_movement_behaviour_type;
-												sub_object_selected_instance.unit_behaviour_target_instance = temp_unit_movement_behaviour_type != CelestialUnitBehaviourType.None ? temp_sub_object_action_inst : noone;
-												break;
-											case CelestialSubObjectType.City:
-												// Set Pathfinding Goal as Action City's Position
+										case CelestialSubObjectType.Unit:
+											// Establish Action Unit Movement Variables
+											var temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.None;
+											
+											// Check Selected Unit's Faction Relationship to the Action Unit's Faction
+											if (sub_object_selected_instance.unit_faction == temp_sub_object_action_inst.unit_faction)
+											{
+												temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Regroup;
+											}
+											else if (celestial_faction_is_relationship_hostile(sub_object_selected_instance.unit_faction, temp_sub_object_action_inst.unit_faction))
+											{
+												temp_unit_movement_behaviour_type = CelestialUnitBehaviourType.Attack;
+											}
+											
+											// Check if Action Unit is Pathfinding
+											if (temp_unit_movement_behaviour_type == CelestialUnitBehaviourType.Regroup and !is_undefined(temp_sub_object_action_inst.pathfinding_path))
+											{
+												// Set Pathfinding Goal as Action Unit's Pathfinding Path Endpoint
+												temp_pathfinding_goal_node_index = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.node_index, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+												temp_pathfinding_goal_x = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_x, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+												temp_pathfinding_goal_y = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_y, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+												temp_pathfinding_goal_z = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_z, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+												temp_pathfinding_goal_elevation = ds_list_find_value(temp_sub_object_action_inst.pathfinding_path.position_elevation, temp_sub_object_action_inst.pathfinding_path.path_size - 1);
+											}
+											else
+											{
+												// Set Pathfinding Goal as Action Unit's Position
 												temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
-												temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_sub_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_sub_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_sub_object_action_inst.pathfinding_node_index];
-												temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_sub_object_action_inst.pathfinding_node_index];
-												break;
-											default:
-												break;
-										}
+												temp_pathfinding_goal_x = temp_sub_object_action_inst.pathfinding_position_x;
+												temp_pathfinding_goal_y = temp_sub_object_action_inst.pathfinding_position_y;
+												temp_pathfinding_goal_z = temp_sub_object_action_inst.pathfinding_position_z;
+												temp_pathfinding_goal_elevation = temp_sub_object_action_inst.pathfinding_position_elevation;
+											}
+											
+											// Set Selected Unit's Behaviour and Target Instance
+											sub_object_selected_instance.unit_behaviour = temp_unit_movement_behaviour_type;
+											sub_object_selected_instance.unit_behaviour_target_instance = temp_unit_movement_behaviour_type != CelestialUnitBehaviourType.None ? temp_sub_object_action_inst : noone;
+											break;
+										case CelestialSubObjectType.City:
+											// Set Pathfinding Goal as Action City's Position
+											temp_pathfinding_goal_node_index = temp_sub_object_action_inst.pathfinding_node_index;
+											temp_pathfinding_goal_x = temp_selection_inst.pathfinding_node_x_array[temp_sub_object_action_inst.pathfinding_node_index];
+											temp_pathfinding_goal_y = temp_selection_inst.pathfinding_node_y_array[temp_sub_object_action_inst.pathfinding_node_index];
+											temp_pathfinding_goal_z = temp_selection_inst.pathfinding_node_z_array[temp_sub_object_action_inst.pathfinding_node_index];
+											temp_pathfinding_goal_elevation = temp_selection_inst.pathfinding_node_elevation_array[temp_sub_object_action_inst.pathfinding_node_index];
+											break;
+										default:
+											break;
 									}
-									
+								}
+								
+								// Check if Selection Goal Node Index Exists
+								if (temp_pathfinding_goal_node_index != -1)
+								{
 									// Initiate Unit Pathfinding Behaviour
 									celestial_pathfinding(sub_object_selected_instance.celestial_body_instance, sub_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
 								}
-								else
-								{
-									// Behaviour for Pathfinding to a Location on a Celestial Body that the Unit Instance is not currently on
-								}
-								break;
-							case CelestialSubObjectType.City:
-							case CelestialSubObjectType.Satellite:
-							case CelestialSubObjectType.Battle:
-							default:
-								break;
-						}
+							}
+							else
+							{
+								// Behaviour for Pathfinding to a Location on a Celestial Body that the Unit Instance is not currently on
+							}
+							break;
+						case CelestialSubObjectType.City:
+						case CelestialSubObjectType.Satellite:
+						case CelestialSubObjectType.Battle:
+						default:
+							break;
 					}
-					else if (temp_input_select and !input_select)
+				}
+				else if (temp_input_select and !input_select)
+				{
+					// Select Input Behaviour
+					switch (sub_object_selected_instance.celestial_sub_object_type)
 					{
-						// Select Input Behaviour
-						switch (sub_object_selected_instance.celestial_sub_object_type)
-						{
-							case CelestialSubObjectType.Unit:
-							case CelestialSubObjectType.City:
-							case CelestialSubObjectType.Satellite:
-							case CelestialSubObjectType.Battle:
-							default:
-								break;
-						}
+						case CelestialSubObjectType.Unit:
+						case CelestialSubObjectType.City:
+						case CelestialSubObjectType.Satellite:
+						case CelestialSubObjectType.Battle:
+						default:
+							break;
 					}
 				}
 			}

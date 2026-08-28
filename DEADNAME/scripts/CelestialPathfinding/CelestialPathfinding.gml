@@ -1,3 +1,15 @@
+// Celestial Pathfinding Enums
+
+#region Celestial Pathfinding Enums
+enum CelestialPathfindingType
+{
+	Default,
+	TerrestrialPathfinding,
+	AquaticPathfinding
+}
+#endregion
+
+#region Celestial Pathfinding Functions
 /// @function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation, path_smoothing);
 /// @description Generates a Pathfinding Path with the given Celestial Object's Navigation Mesh and the Pathfinding Path Goal and assigns it to the given Unit Instance
 /// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
@@ -13,8 +25,31 @@ function celestial_pathfinding(celestial_object, unit_object, goal_node_index, g
 	// Destroy Unit's Pathfinding Path
 	celestial_pathfinding_destroy_path(unit_object.pathfinding_path);
 	
+	// Determine Celestial Pathfinding Movement Behaviour based on the Celestial Unit's Terrain Type
+	var temp_celestial_pathfinding_type = CelestialPathfindingType.Default;
+	
+	switch (unit_object.unit_terrain_type)
+	{
+		case CelestialUnitTerrainType.Terrestrial:
+			// Check if the Celestial Object the Celestial Pathfinding Grid belongs to is a Planet and has an Ocean
+			if (celestial_object.celestial_object_type == CelestialObjectType.Planet and celestial_object.ocean)
+			{
+				temp_celestial_pathfinding_type = CelestialPathfindingType.TerrestrialPathfinding;
+			}
+			break;
+		case CelestialUnitTerrainType.Aquatic:
+			// Check if the Celestial Object the Celestial Pathfinding Grid belongs to is a Planet and has an Ocean
+			if (celestial_object.celestial_object_type == CelestialObjectType.Planet and celestial_object.ocean)
+			{
+				temp_celestial_pathfinding_type = CelestialPathfindingType.AquaticPathfinding;
+			}
+			break;
+		default:
+			break;
+	}
+	
 	// Create Path Node List using A* Pathfinding
-	var temp_path_node_list = celestial_pathfinding_a_star(celestial_object, unit_object.pathfinding_node_index, goal_node_index);
+	var temp_path_node_list = celestial_pathfinding_a_star(celestial_object, unit_object.pathfinding_node_index, goal_node_index, temp_celestial_pathfinding_type);
 	
 	// Check if Path is Valid
 	if (is_undefined(temp_path_node_list))
@@ -107,8 +142,9 @@ function celestial_pathfinding_reconstruct_path(path_map, node_index)
 /// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
 /// @param {int} start_node_index The starting Pathfinding Node's Index to create a Path from to the given ending Pathfinding Node
 /// @param {*int,array<int>} end_node_index The ending Pathfinding Node's Index to create a Path to the given starting Pathfinding Node, optionally can be passed as an array of multiple acceptable ending Pathfinding Node Indexes
+/// @param {CelestialPathfindingType} pathfinding_type The Celestial Pathfinding Type that determines the pathfinding's node discrimination behaviour, i.e. a land path that cannot cross node indexes determined to be at or below sea level
 /// @return {?Id.DsList<int>} Returns a DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index, and Undefined if a Path is not viable between the two given Pathfinding Nodes
-function celestial_pathfinding_a_star(celestial_object, start_node_index, end_node_index)
+function celestial_pathfinding_a_star(celestial_object, start_node_index, end_node_index, pathfinding_type = CelestialPathfindingType.Default)
 {
 	// Initialize Unchecked Nodes Priority List, Path Reconstruction Map, and G Score Map Data Structures
 	var temp_unchecked_nodes = ds_priority_create();
@@ -176,6 +212,38 @@ function celestial_pathfinding_a_star(celestial_object, start_node_index, end_no
 				// Decrement Node Edge Neighbor Index
 				temp_node_edges_index--;
 				continue;
+			}
+			
+			// Celestial Pathfinding Node Discrimination Behaviour
+			switch (pathfinding_type)
+			{
+				case CelestialPathfindingType.TerrestrialPathfinding:
+					// Terrestrial Pathfinding Behaviour - Path cannot cross Node Indexes at or below Sea Level
+					if (celestial_object.pathfinding_node_elevation_array[temp_pathfinding_node_edge_neighbor_index] <= celestial_object.ocean_elevation)
+					{
+						// Toggle Pathfinding Node Edge Neighbor's Pathfinding Node Index as Checked due to its ineligibility with the Pathfinding Type's Behaviour
+						temp_checked_nodes[temp_pathfinding_node_edge_neighbor_index] = true;
+						
+						// Decrement Node Edge Neighbor Index
+						temp_node_edges_index--;
+						continue;
+					}
+					break;
+				case CelestialPathfindingType.AquaticPathfinding:
+					// Aquatic Pathfinding Behaviour - Path cannot cross Node Indexes above Sea Level
+					if (celestial_object.pathfinding_node_elevation_array[temp_pathfinding_node_edge_neighbor_index] > celestial_object.ocean_elevation)
+					{
+						// Toggle Pathfinding Node Edge Neighbor's Pathfinding Node Index as Checked due to its ineligibility with the Pathfinding Type's Behaviour
+						temp_checked_nodes[temp_pathfinding_node_edge_neighbor_index] = true;
+						
+						// Decrement Node Edge Neighbor Index
+						temp_node_edges_index--;
+						continue;
+					}
+					break;
+				case CelestialPathfindingType.Default:
+				default:
+					break;
 			}
 			
 			// Calculate Pathfinding Edge Weight between Current Pathfinding Node and Neighbor Pathfinding Node
@@ -259,8 +327,12 @@ function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector
 	// Dot product of tangent projections
 	var temp_cos_angle = vector_bx * vector_cx + vector_by * vector_cy + vector_bz * vector_cz - temp_ab_dot_product * temp_ac_dot_product;
 	
-	// R · (A × B)
-	var temp_sin_angle = vector_ax * (vector_by * vector_cz - vector_bz * vector_cy) + vector_ay * (vector_bz * vector_cx - vector_bx * vector_cz) + vector_az * (vector_bx * vector_cy - vector_by * vector_cx);
+	// Calculate the Sin Angle using Cross Product
+	var temp_cross_x = vector_by * vector_cz - vector_bz * vector_cy;
+	var temp_cross_y = vector_bz * vector_cx - vector_bx * vector_cz;
+	var temp_cross_z = vector_bx * vector_cy - vector_by * vector_cx;
+	
+	var temp_sin_angle = vector_ax * temp_cross_x + vector_ay * temp_cross_y + vector_az * temp_cross_z;
 	
 	// Return the signed orientation
 	return arctan2(temp_sin_angle, temp_cos_angle);
@@ -774,6 +846,7 @@ function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_
 	// Return Final Path Struct
 	return temp_path_struct;
 }
+#endregion
 
 /// @function celestial_pathfinding_draw_path_gizmos(celestial_object, unit_object);
 /// @description Renders the Debug Gizmos of the given Unit Object's Pathfinding Path on the given Celestial Object's Navigation Mesh
