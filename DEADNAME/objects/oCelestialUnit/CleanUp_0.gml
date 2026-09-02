@@ -85,11 +85,14 @@ array_resize(backline_combat_unit_unengaged, 0);
 array_resize(engaged_battles, 0);
 array_resize(engaged_battles_combat_units, 0);
 array_resize(engaged_battles_combat_units_contribution, 0);
-array_resize(unengaged_battles, 0);
 
 // Clear Unit Collision Check Arrays
 array_resize(unit_battle_within_timed_collision_check_battles, 0);
 array_resize(unit_battle_within_timed_collision_check_timers, 0);
+
+// Clear Unit Avoid Arrays
+array_resize(avoid_instance, 0);
+array_resize(avoid_radius, 0);
 
 // Clear Unit Status Effect Arrays
 array_resize(status_effect_array, 0);

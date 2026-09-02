@@ -104,6 +104,11 @@ unit_behaviour = CelestialUnitBehaviourType.None;
 unit_behaviour_target_instance = noone;
 unit_behaviour_target_node_index = -1;
 
+// Avoid Variables
+avoid_count = 0;
+avoid_instance = array_create(0);
+avoid_radius = array_create(0);
+
 // Emotion Variables
 emotion_sprite_index = -1;
 emotion_image_index = 0;

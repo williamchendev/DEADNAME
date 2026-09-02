@@ -316,6 +316,7 @@
     {"name":"oExplosion_Shockwave","order":4,"path":"objects/oExplosion_Shockwave/oExplosion_Shockwave.yy",},
     {"name":"oExplosion","order":2,"path":"objects/oExplosion/oExplosion.yy",},
     {"name":"oFactionNorthernBrigade","order":1,"path":"objects/oFactionNorthernBrigade/oFactionNorthernBrigade.yy",},
+    {"name":"oFactionSocialistCavass","order":2,"path":"objects/oFactionSocialistCavass/oFactionSocialistCavass.yy",},
     {"name":"oFirearm_MuzzleFlare_Medium","order":2,"path":"objects/oFirearm_MuzzleFlare_Medium/oFirearm_MuzzleFlare_Medium.yy",},
     {"name":"oFirearm_MuzzleFlare_Small","order":1,"path":"objects/oFirearm_MuzzleFlare_Small/oFirearm_MuzzleFlare_Small.yy",},
     {"name":"oFirearm_MuzzleSmoke_Medium","order":1,"path":"objects/oFirearm_MuzzleSmoke_Medium/oFirearm_MuzzleSmoke_Medium.yy",},

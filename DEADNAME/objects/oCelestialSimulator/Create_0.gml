@@ -2377,21 +2377,34 @@ render_celestial_battle_unit_connections_ui = function(celestial_object_instance
 		// Draw Line Width of the given Battle Unit Connection
 		draw_line_width_color(temp_point_a_position_x, temp_point_a_position_y, temp_point_b_position_x, temp_point_b_position_y, temp_thickness, temp_color_a, temp_color_b);
 		
+		// Establish Unit Ellipse Horizontal and Vertical Radius Variables
+		var temp_unit_ellipse_horizontal_radius = 6;
+		var temp_unit_ellipse_vertical_radius = 3;
+		
+		// Establish Unit Ellipse Rectangular Dimension Variables
+		var temp_unit_ellipse_left = temp_point_a_position_x - temp_unit_ellipse_horizontal_radius;
+		var temp_unit_ellipse_top = temp_point_a_position_y - temp_unit_ellipse_vertical_radius;
+		var temp_unit_ellipse_right = temp_point_a_position_x + temp_unit_ellipse_horizontal_radius;
+		var temp_unit_ellipse_bottom = temp_point_a_position_y + temp_unit_ellipse_vertical_radius;
+		
+		// Draw a "Drop Shadow" Ellipse at the Unit's Position on the Celestial Object
+		draw_ellipse_color(temp_unit_ellipse_left, temp_unit_ellipse_top, temp_unit_ellipse_right, temp_unit_ellipse_bottom, temp_color_b, temp_color_b, false);
+		
 		// Check to draw the Battle's "Drop Shadow" Ellipse
 		if (celestial_object_instance.battle_unit_connection_draw_drop_shadow_array[temp_battle_unit_connection_entry_sorted_index])
 		{
-			// Establish Ellipse Horizontal and Vertical Radius Variables
-			var temp_ellipse_horizontal_radius = 6;
-			var temp_ellipse_vertical_radius = 3;
+			// Establish Battle Ellipse Horizontal and Vertical Radius Variables
+			var temp_battle_ellipse_horizontal_radius = 8;
+			var temp_battle_ellipse_vertical_radius = 4;
 			
-			// Establish Ellipse Rectangular Dimension Variables
-			var temp_ellipse_left = temp_point_b_position_x - temp_ellipse_horizontal_radius;
-			var temp_ellipse_top = temp_point_b_position_y - temp_ellipse_vertical_radius;
-			var temp_ellipse_right = temp_point_b_position_x + temp_ellipse_horizontal_radius;
-			var temp_ellipse_bottom = temp_point_b_position_y + temp_ellipse_vertical_radius;
+			// Establish Battle Ellipse Rectangular Dimension Variables
+			var temp_battle_ellipse_left = temp_point_b_position_x - temp_battle_ellipse_horizontal_radius;
+			var temp_battle_ellipse_top = temp_point_b_position_y - temp_battle_ellipse_vertical_radius;
+			var temp_battle_ellipse_right = temp_point_b_position_x + temp_battle_ellipse_horizontal_radius;
+			var temp_battle_ellipse_bottom = temp_point_b_position_y + temp_battle_ellipse_vertical_radius;
 			
 			// Draw a "Drop Shadow" Ellipse at the Battle's Position on the Celestial Object
-			draw_ellipse_color(temp_ellipse_left, temp_ellipse_top, temp_ellipse_right, temp_ellipse_bottom, temp_color_b, temp_color_b, false);
+			draw_ellipse_color(temp_battle_ellipse_left, temp_battle_ellipse_top, temp_battle_ellipse_right, temp_battle_ellipse_bottom, temp_color_b, temp_color_b, false);
 		}
 		
 		// Increment Battle Unit Connection Entry Index
@@ -2548,9 +2561,12 @@ generate_default_solar_system = function()
 	// Create Factions
 	player_faction = instance_create_depth(0, 0, 0, oFactionMoralist);
 	var temp_enemy_faction = instance_create_depth(0, 0, 0, oFactionNorthernBrigade);
+	var temp_neutral_faction = instance_create_depth(0, 0, 0, oFactionSocialistCavass);
 	
 	// Initialize Hostilities between Factions
 	celestial_faction_set_relationship(player_faction, temp_enemy_faction, CelestialFactionRelationshipType.Hostile);
+	
+	show_debug_message(celestial_faction_is_relationship_hostile(player_faction, temp_neutral_faction));
 	
 	//
 	camera_position_z = 0;

@@ -312,134 +312,143 @@ repeat (temp_celestial_object_count)
 					selected_unit_movement_path_entries = 0;
 					
 					// Check if Unit Behaviour allows for Pathfinding UI to be rendered
-					if (!sub_object_selected_instance.engaged_in_battle or sub_object_selected_instance.unit_behaviour == CelestialUnitBehaviourType.Retreat)
+					if (sub_object_selected_instance.engaged_in_battle and sub_object_selected_instance.unit_behaviour != CelestialUnitBehaviourType.Retreat)
 					{
-						// Iterate through Selected Sub Object Unit's Pathfinding Path Array to create Path UI
-						var temp_selected_unit_pathfinding_path_index = 0;
-						
-						repeat (sub_object_selected_instance.pathfinding_path.path_size)
+						// Units engaged in Combat should not show their Pathfinding UI as it creates too much visual clutter - Early Break
+						break;
+					}
+					
+					if (sub_object_selected_instance.unit_behaviour == CelestialUnitBehaviourType.Avoid)
+					{
+						// Units performing their Avoid Behaviour should not show their Pathfinding UI as the paths created by the Avoid Behaviour look short, terrible, and unnatural - Early Break
+						break;
+					}
+					
+					// Iterate through Selected Sub Object Unit's Pathfinding Path Array to create Path UI
+					var temp_selected_unit_pathfinding_path_index = 0;
+					
+					repeat (sub_object_selected_instance.pathfinding_path.path_size)
+					{
+						// Check if Selected Unit has progressed past the given Pathfinding Path Index
+						if (sub_object_selected_instance.pathfinding_path_index > temp_selected_unit_pathfinding_path_index)
 						{
-							// Check if Selected Unit has progressed past the given Pathfinding Path Index
-							if (sub_object_selected_instance.pathfinding_path_index > temp_selected_unit_pathfinding_path_index)
-							{
-								// Increment Selected Unit's Pathfinding Path Index
-								temp_selected_unit_pathfinding_path_index++;
-								continue;
-							}
-							
-							// Find Selected Unit's Pathfinding Path Node Positions & Elevations
-							var temp_ui_path_a_local_x, temp_ui_path_a_local_y, temp_ui_path_a_local_z, temp_ui_path_a_local_elevation;
-							
-							var temp_ui_path_b_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index);
-							var temp_ui_path_b_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index);
-							var temp_ui_path_b_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index);
-							
-							var temp_ui_path_b_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index);
-							
-							// Check if Pathfinding Path Index is the First Path Index or Selected Unit is currently traversing the given Pathfinding Path Index
-							if (temp_selected_unit_pathfinding_path_index == 0 or sub_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
-							{
-								// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their precalculated positioning variables from their Pathfinding Behaviour
-								temp_ui_path_a_local_x = sub_object_selected_instance.pathfinding_position_x;
-								temp_ui_path_a_local_y = sub_object_selected_instance.pathfinding_position_y;
-								temp_ui_path_a_local_z = sub_object_selected_instance.pathfinding_position_z;
-								
-								temp_ui_path_a_local_elevation = sub_object_selected_instance.pathfinding_position_elevation;
-							}
-							else
-							{
-								// Use Previous Pathfinding Path Index Position and Elevation Values
-								temp_ui_path_a_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index - 1);
-								temp_ui_path_a_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index - 1);
-								temp_ui_path_a_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index - 1);
-								
-								temp_ui_path_a_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index - 1);
-							}
-							
-							// Find Selected Unit's Pathfinding Path World Positions
-							if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
-							{
-								// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
-								temp_ui_path_a_local_elevation = max(temp_ui_path_a_local_elevation, temp_celestial_object_instance.ocean_elevation);
-								temp_ui_path_b_local_elevation = max(temp_ui_path_b_local_elevation, temp_celestial_object_instance.ocean_elevation);
-							}
-							
-							var temp_ui_path_a_elevation = temp_celestial_object_instance.radius + (temp_ui_path_a_local_elevation * temp_celestial_object_instance.elevation);
-							var temp_ui_path_b_elevation = temp_celestial_object_instance.radius + (temp_ui_path_b_local_elevation * temp_celestial_object_instance.elevation);
-							
-							var temp_ui_path_a_world_position_x = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[0] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[4] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[8]);
-							var temp_ui_path_a_world_position_y = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[1] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[5] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[9]);
-							var temp_ui_path_a_world_position_z = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[2] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[6] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[10]);
-							
-							var temp_ui_path_b_world_position_x = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[0] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[4] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[8]);
-							var temp_ui_path_b_world_position_y = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[1] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[5] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[9]);
-							var temp_ui_path_b_world_position_z = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[2] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[6] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[10]);
-							
-							temp_ui_path_a_world_position_x += temp_celestial_object_instance.x;
-							temp_ui_path_a_world_position_y += temp_celestial_object_instance.y;
-							temp_ui_path_a_world_position_z += temp_celestial_object_instance.z;
-							
-							temp_ui_path_b_world_position_x += temp_celestial_object_instance.x;
-							temp_ui_path_b_world_position_y += temp_celestial_object_instance.y;
-							temp_ui_path_b_world_position_z += temp_celestial_object_instance.z;
-							
-							// Find Selected Unit's Pathfinding Path Screen Positions
-							var temp_ui_path_a_screen_position = world_position_to_screen_position(temp_ui_path_a_world_position_x, temp_ui_path_a_world_position_y, temp_ui_path_a_world_position_z, camera_view_matrix, camera_projection_matrix);
-							var temp_ui_path_b_screen_position = world_position_to_screen_position(temp_ui_path_b_world_position_x, temp_ui_path_b_world_position_y, temp_ui_path_b_world_position_z, camera_view_matrix, camera_projection_matrix);
-							
-							// Find Selected Unit's Pathfinding Path Depths from Render Camera
-							var temp_ui_path_a_vx = temp_ui_path_a_world_position_x - temp_render_start_x;
-							var temp_ui_path_a_vy = temp_ui_path_a_world_position_y - temp_render_start_y;
-							var temp_ui_path_a_vz = temp_ui_path_a_world_position_z - temp_render_start_z;
-							
-							var temp_ui_path_a_projection_scalar = dot_product_3d(temp_ui_path_a_vx, temp_ui_path_a_vy, temp_ui_path_a_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
-							var temp_ui_path_a_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_ui_path_a_projection_scalar) - temp_celestial_object_depth;
-							
-							var temp_ui_path_b_vx = temp_ui_path_b_world_position_x - temp_render_start_x;
-							var temp_ui_path_b_vy = temp_ui_path_b_world_position_y - temp_render_start_y;
-							var temp_ui_path_b_vz = temp_ui_path_b_world_position_z - temp_render_start_z;
-							
-							var temp_ui_path_b_projection_scalar = dot_product_3d(temp_ui_path_b_vx, temp_ui_path_b_vy, temp_ui_path_b_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
-							var temp_ui_path_b_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_ui_path_b_projection_scalar) - temp_celestial_object_depth;
-							
-							// Calculate Selected Unit's Pathfinding Path Alpha Transparencies
-							var temp_ui_path_point_a_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_ui_path_a_depth);
-							var temp_ui_path_point_b_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_ui_path_b_depth);
-							
-							// Index Selected Unit's Movement Path UI Depth Sorting Entry Data
-							array_push(selected_unit_movement_path_depth_sorting_index_array, selected_unit_movement_path_entries);
-							array_push(selected_unit_movement_path_depth_sorting_depth_array, lerp(temp_ui_path_a_depth, temp_ui_path_b_depth, 0.5));
-							
-							// Index Selected Unit's Movement Path UI Point Positions
-							array_push(selected_unit_movement_path_point_a_position_x_array, temp_ui_path_a_screen_position[0]);
-							array_push(selected_unit_movement_path_point_a_position_y_array, temp_ui_path_a_screen_position[1]);
-							
-							array_push(selected_unit_movement_path_point_b_position_x_array, temp_ui_path_b_screen_position[0]);
-							array_push(selected_unit_movement_path_point_b_position_y_array, temp_ui_path_b_screen_position[1]);
-							
-							// Index Selected Unit's Movement Path UI Point Alpha Transparencies
-							array_push(selected_unit_movement_path_point_a_alpha_array, temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha);
-							array_push(selected_unit_movement_path_point_b_alpha_array, temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha);
-							
-							// Delete Unused Arrays
-							array_resize(temp_ui_path_a_screen_position, 0);
-							array_resize(temp_ui_path_b_screen_position, 0);
-							
-							// Increment Selected Unit's Movement Path Entries Count
-							selected_unit_movement_path_entries++;
-							
 							// Increment Selected Unit's Pathfinding Path Index
 							temp_selected_unit_pathfinding_path_index++;
+							continue;
 						}
 						
-						// Check Toggle UI if Selected Unit's Pathfinding Path has One or More Entries
-						selected_unit_movement_path_ui = selected_unit_movement_path_entries > 0;
+						// Find Selected Unit's Pathfinding Path Node Positions & Elevations
+						var temp_ui_path_a_local_x, temp_ui_path_a_local_y, temp_ui_path_a_local_z, temp_ui_path_a_local_elevation;
 						
-						// Depth Sort Selected Unit's Pathfinding Path UI Entries
-						if (selected_unit_movement_path_entries > 1)
+						var temp_ui_path_b_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index);
+						var temp_ui_path_b_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index);
+						var temp_ui_path_b_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index);
+						
+						var temp_ui_path_b_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index);
+						
+						// Check if Pathfinding Path Index is the First Path Index or Selected Unit is currently traversing the given Pathfinding Path Index
+						if (temp_selected_unit_pathfinding_path_index == 0 or sub_object_selected_instance.pathfinding_path_index == temp_selected_unit_pathfinding_path_index)
 						{
-							array_sort(selected_unit_movement_path_depth_sorting_index_array, selected_unit_movement_path_render_depth_sort);
+							// Find Celestial Unit's Normalized Local Vector and Elevation from Celestial Body's Sphere Center with their precalculated positioning variables from their Pathfinding Behaviour
+							temp_ui_path_a_local_x = sub_object_selected_instance.pathfinding_position_x;
+							temp_ui_path_a_local_y = sub_object_selected_instance.pathfinding_position_y;
+							temp_ui_path_a_local_z = sub_object_selected_instance.pathfinding_position_z;
+							
+							temp_ui_path_a_local_elevation = sub_object_selected_instance.pathfinding_position_elevation;
 						}
+						else
+						{
+							// Use Previous Pathfinding Path Index Position and Elevation Values
+							temp_ui_path_a_local_x = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_x, temp_selected_unit_pathfinding_path_index - 1);
+							temp_ui_path_a_local_y = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_y, temp_selected_unit_pathfinding_path_index - 1);
+							temp_ui_path_a_local_z = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_z, temp_selected_unit_pathfinding_path_index - 1);
+							
+							temp_ui_path_a_local_elevation = ds_list_find_value(sub_object_selected_instance.pathfinding_path.position_elevation, temp_selected_unit_pathfinding_path_index - 1);
+						}
+						
+						// Find Selected Unit's Pathfinding Path World Positions
+						if (temp_celestial_object_instance.celestial_object_type == CelestialObjectType.Planet)
+						{
+							// If the Celestial Object is a Planet, the Elevation must be equal to or higher than the Planet's Ocean Elevation Value
+							temp_ui_path_a_local_elevation = max(temp_ui_path_a_local_elevation, temp_celestial_object_instance.ocean_elevation);
+							temp_ui_path_b_local_elevation = max(temp_ui_path_b_local_elevation, temp_celestial_object_instance.ocean_elevation);
+						}
+						
+						var temp_ui_path_a_elevation = temp_celestial_object_instance.radius + (temp_ui_path_a_local_elevation * temp_celestial_object_instance.elevation);
+						var temp_ui_path_b_elevation = temp_celestial_object_instance.radius + (temp_ui_path_b_local_elevation * temp_celestial_object_instance.elevation);
+						
+						var temp_ui_path_a_world_position_x = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[0] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[4] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[8]);
+						var temp_ui_path_a_world_position_y = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[1] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[5] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[9]);
+						var temp_ui_path_a_world_position_z = temp_ui_path_a_elevation * (temp_ui_path_a_local_x * temp_celestial_obj_rotation_matrix[2] + temp_ui_path_a_local_y * temp_celestial_obj_rotation_matrix[6] + temp_ui_path_a_local_z * temp_celestial_obj_rotation_matrix[10]);
+						
+						var temp_ui_path_b_world_position_x = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[0] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[4] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[8]);
+						var temp_ui_path_b_world_position_y = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[1] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[5] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[9]);
+						var temp_ui_path_b_world_position_z = temp_ui_path_b_elevation * (temp_ui_path_b_local_x * temp_celestial_obj_rotation_matrix[2] + temp_ui_path_b_local_y * temp_celestial_obj_rotation_matrix[6] + temp_ui_path_b_local_z * temp_celestial_obj_rotation_matrix[10]);
+						
+						temp_ui_path_a_world_position_x += temp_celestial_object_instance.x;
+						temp_ui_path_a_world_position_y += temp_celestial_object_instance.y;
+						temp_ui_path_a_world_position_z += temp_celestial_object_instance.z;
+						
+						temp_ui_path_b_world_position_x += temp_celestial_object_instance.x;
+						temp_ui_path_b_world_position_y += temp_celestial_object_instance.y;
+						temp_ui_path_b_world_position_z += temp_celestial_object_instance.z;
+						
+						// Find Selected Unit's Pathfinding Path Screen Positions
+						var temp_ui_path_a_screen_position = world_position_to_screen_position(temp_ui_path_a_world_position_x, temp_ui_path_a_world_position_y, temp_ui_path_a_world_position_z, camera_view_matrix, camera_projection_matrix);
+						var temp_ui_path_b_screen_position = world_position_to_screen_position(temp_ui_path_b_world_position_x, temp_ui_path_b_world_position_y, temp_ui_path_b_world_position_z, camera_view_matrix, camera_projection_matrix);
+						
+						// Find Selected Unit's Pathfinding Path Depths from Render Camera
+						var temp_ui_path_a_vx = temp_ui_path_a_world_position_x - temp_render_start_x;
+						var temp_ui_path_a_vy = temp_ui_path_a_world_position_y - temp_render_start_y;
+						var temp_ui_path_a_vz = temp_ui_path_a_world_position_z - temp_render_start_z;
+						
+						var temp_ui_path_a_projection_scalar = dot_product_3d(temp_ui_path_a_vx, temp_ui_path_a_vy, temp_ui_path_a_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
+						var temp_ui_path_a_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_ui_path_a_projection_scalar) - temp_celestial_object_depth;
+						
+						var temp_ui_path_b_vx = temp_ui_path_b_world_position_x - temp_render_start_x;
+						var temp_ui_path_b_vy = temp_ui_path_b_world_position_y - temp_render_start_y;
+						var temp_ui_path_b_vz = temp_ui_path_b_world_position_z - temp_render_start_z;
+						
+						var temp_ui_path_b_projection_scalar = dot_product_3d(temp_ui_path_b_vx, temp_ui_path_b_vy, temp_ui_path_b_vz, temp_dx, temp_dy, temp_dz) / temp_dm;
+						var temp_ui_path_b_depth = lerp(camera_z_near + camera_z_near_depth_overpass, camera_z_far, temp_ui_path_b_projection_scalar) - temp_celestial_object_depth;
+						
+						// Calculate Selected Unit's Pathfinding Path Alpha Transparencies
+						var temp_ui_path_point_a_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_ui_path_a_depth);
+						var temp_ui_path_point_b_alpha = inverse_lerp(temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_end, temp_celestial_object_instance.render_depth_radius * global_render_path_depth_transparent_start, temp_ui_path_b_depth);
+						
+						// Index Selected Unit's Movement Path UI Depth Sorting Entry Data
+						array_push(selected_unit_movement_path_depth_sorting_index_array, selected_unit_movement_path_entries);
+						array_push(selected_unit_movement_path_depth_sorting_depth_array, lerp(temp_ui_path_a_depth, temp_ui_path_b_depth, 0.5));
+						
+						// Index Selected Unit's Movement Path UI Point Positions
+						array_push(selected_unit_movement_path_point_a_position_x_array, temp_ui_path_a_screen_position[0]);
+						array_push(selected_unit_movement_path_point_a_position_y_array, temp_ui_path_a_screen_position[1]);
+						
+						array_push(selected_unit_movement_path_point_b_position_x_array, temp_ui_path_b_screen_position[0]);
+						array_push(selected_unit_movement_path_point_b_position_y_array, temp_ui_path_b_screen_position[1]);
+						
+						// Index Selected Unit's Movement Path UI Point Alpha Transparencies
+						array_push(selected_unit_movement_path_point_a_alpha_array, temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha * temp_ui_path_point_a_alpha);
+						array_push(selected_unit_movement_path_point_b_alpha_array, temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha * temp_ui_path_point_b_alpha);
+						
+						// Delete Unused Arrays
+						array_resize(temp_ui_path_a_screen_position, 0);
+						array_resize(temp_ui_path_b_screen_position, 0);
+						
+						// Increment Selected Unit's Movement Path Entries Count
+						selected_unit_movement_path_entries++;
+						
+						// Increment Selected Unit's Pathfinding Path Index
+						temp_selected_unit_pathfinding_path_index++;
+					}
+					
+					// Check Toggle UI if Selected Unit's Pathfinding Path has One or More Entries
+					selected_unit_movement_path_ui = selected_unit_movement_path_entries > 0;
+					
+					// Depth Sort Selected Unit's Pathfinding Path UI Entries
+					if (selected_unit_movement_path_entries > 1)
+					{
+						array_sort(selected_unit_movement_path_depth_sorting_index_array, selected_unit_movement_path_render_depth_sort);
 					}
 					break;
 				default:
@@ -576,6 +585,7 @@ repeat (temp_celestial_object_count)
 				switch (temp_unit_instance.unit_behaviour)
 				{
 					case CelestialUnitBehaviourType.Retreat:
+					case CelestialUnitBehaviourType.Avoid:
 						// Calculate Unit's Retreat Emotion Animation Behaviour
 						temp_unit_instance.emotion_sprite_index = temp_unit_instance.emotion_retreat_sprite;
 						temp_unit_instance.emotion_draw_image_index += temp_unit_instance.emotion_retreat_image_spd * frame_delta;

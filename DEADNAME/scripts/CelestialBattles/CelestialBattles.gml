@@ -46,13 +46,13 @@ enum CelestialBattleChoreographyObjectType
 	SmokeParticle
 }
 
-// Celestial Battle Sorting Functions
+// Celestial Battle Functions
 /// @function celestial_battle_create(celestial_object);
 /// @description Creates and returns a Celestial Battle Instance within the Celestial Simulation with the given Celestial Object Instance and Hostile Celestial Factions, if the given Celestial Factions do not have a Hostile Relationship the Celestial Battle will not be created
-/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Celestial Battle will belong to
-/// @param {real:Id.Instance} celestial_faction_a The first Celestial Faction Instance that is engaged in the Celestial Battle
-/// @param {real:Id.Instance} celestial_faction_b The second Celestial Faction Instance that is engaged in the Celestial Battle
-/// @returns {?real:Id.Instance} Returns a Celestial Battle Instance
+/// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object Instance the Celestial Battle will belong to
+/// @param {real:Id.Instance<oCelestialFaction>} celestial_faction_a The first Celestial Faction Instance that is engaged in the Celestial Battle
+/// @param {real:Id.Instance<oCelestialFaction>} celestial_faction_b The second Celestial Faction Instance that is engaged in the Celestial Battle
+/// @returns {?real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance
 function celestial_battle_create(celestial_object, celestial_faction_a, celestial_faction_b)
 {
 	// Check if the given Celestial Factions are hostile to eachother
@@ -68,7 +68,7 @@ function celestial_battle_create(celestial_object, celestial_faction_a, celestia
 	// Update Celestial Battle's Celestial Body Instance
 	temp_celestial_battle_instance.celestial_body_instance = celestial_object;
 	
-	// Update Celestial Battle's Factions
+	// Update Celestial Battle's Faction Orientation (Player Faction must be placed on the Left-Hand Combat Grid)
 	var temp_first_faction = celestial_faction_a;
 	var temp_second_faction = celestial_faction_b;
 	
@@ -97,11 +97,11 @@ function celestial_battle_create(celestial_object, celestial_faction_a, celestia
 	return temp_celestial_battle_instance;
 }
 
-function celestial_battle_end(celestial_battle)
-{
-	
-}
-
+/// @function celestial_battle_add_unit(battle_instance, unit_instance);
+/// @description Adds the given Celestial Unit Instance to the ongoing Battle with the provided Celestial Battle Instance (this function prevents Celestial Units from being redundantly "double added" to the Celestial Battle)
+/// If the given Celestial Unit Instance is not allied with any of the factions and is not hostile to the opposing faction, they will add the Celestial Battle Instance as a Hazard to their Avoid Behaviour and move away from the vicinity of the Battle
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle the given Celestial Unit Instance will be added to
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance The Celestial Unit Instance that will be added to the given Celestial Battle Instance
 function celestial_battle_add_unit(battle_instance, unit_instance)
 {
 	// Check if Battle Exists
@@ -132,12 +132,8 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	}
 	else
 	{
-		// Check if Battle has already been added to the Unit Instance's Unengaged Celestial Battles Array
-		if (array_get_index(unit_instance.unengaged_battles, battle_instance) == -1)
-		{
-			// Index Battle in Unit Instance's Unengaged Celestial Battles Array
-			array_push(unit_instance.unengaged_battles, battle_instance);
-		}
+		// Unit Instance is Factionally uninvolved with this conflict - Index Battle Instance as a Hazard to avoid for the Celestial Unit
+		celestial_unit_add_avoid_instance(unit_instance, battle_instance, battle_instance.battle_far_collision_threshold);
 		
 		// Celestial Unit Instance is not involved in this conflict - Early Exit
 		return;
@@ -197,6 +193,10 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 	celestial_battle_load_combat_units(battle_instance, unit_instance);
 }
 
+/// @function celestial_battle_remove_unit(battle_instance, unit_instance);
+/// @description Removes the given Celestial Unit Instance from the provided Celestial Battle Instance (this function can end a Celestial Battle if the Celestial Unit being removed is the last participating Unit within one of the Battle's Factions)
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle the given Celestial Unit Instance will be removed from
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance The Celestial Unit Instance that will be removed from the given Celestial Battle Instance
 function celestial_battle_remove_unit(battle_instance, unit_instance)
 {
 	// Find the index of the given Celestial Unit Instance within the Celestial Battle's Celestial Units Array
@@ -336,7 +336,11 @@ function celestial_battle_remove_unit(battle_instance, unit_instance)
 	}
 }
 
-///
+/// @function celestial_battle_load_combat_units(battle_instance, unit_instance, combat_units_count);
+/// @description Loads Combat Units indexed within the given Celestial Unit Instance to be loaded into the provided Celestial Battle Instance
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Celestial Unit Instance will be loading Combat Units into
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance The Celestial Unit Instance that will be loading Combat Units into the given Celestial Battle Instance
+/// @param {int} combat_units_count The maximum limit of Combat Units to add into the Celestial Battle, by default this number is set to "-1" which causes the maximum limit to be disabled/unenforced
 function celestial_battle_load_combat_units(battle_instance, unit_instance, combat_units_count = -1)
 {
 	// Check if Battle Exists
@@ -510,7 +514,11 @@ function celestial_battle_combat_unit_leave(battle_instance, combat_unit_instanc
 	
 }
 
-///
+/// @function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance, combat_grid_side);
+/// @description Adds a Combat Unit Instance to the given Celestial Battle Instance
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be added to
+/// @param {real:Id.Instance<oCelestialUnit>} combat_unit_instance The Combat Unit Instance that will be added to the given Celestial Battle Instance
+/// @param {int<CelestialBattleCombatGridSide>} combat_grid_side The Combat Grid side of the Celestial Battle to add the given Combat Unit Instance to, if set to "None" this function will check the Faction of the Combat Unit Instance and add the unit to the appropriate side
 function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance, combat_grid_side = CelestialBattleCombatGridSide.None)
 {
 	// Check if Battle Exists
@@ -728,6 +736,8 @@ function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance,
 }
 
 /// @function celestial_battle_reset_combat_unit(combat_unit_instance);
+/// @description Resets a Combat Unit Instance's Celestial Battle behaviour and variables, intended to be used on Combat Units being added to a new Celestial Battle
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance that will have its Celestial Battle behaviour and variables reset
 function celestial_battle_reset_combat_unit(combat_unit_instance)
 {
 	// Reset Combat Unit Instance's Combat Action Behaviour
@@ -759,6 +769,9 @@ function celestial_battle_reset_combat_unit(combat_unit_instance)
 }
 
 /// @function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance);
+/// @description Removes a Combat Unit Instance from the given Celestial Battle Instance
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be removed from
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance to be removed from the given Celestial Battle Instance
 function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance)
 {
 	// Find Combat Unit's Index within the Celestial Battle's Combat Units Array
@@ -976,6 +989,10 @@ function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instan
 	combat_unit_instance.unit_instance.combat_unit_unengaged_count++;
 }
 
+/// @function celestial_battle_check_for_duplicate(battle_instance);
+/// @description Checks if there is a duplicate Celestial Battle Instance that shares the same Celestial Body Instance and list of Celestial Unit Instances engaged in combat as the Celestial Battle provided and returns its Instance
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to check for a duplicate instance of
+/// @returns {real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance
 function celestial_battle_check_for_duplicate(battle_instance)
 {
 	// Check if Celestial Body Instance exists
@@ -1300,8 +1317,7 @@ function celestial_battle_damage_combat_unit(battle_instance, celestial_combat_u
 			//
 			if (battle_instance.battle_primary_unit_a == temp_unit_instance or battle_instance.battle_primary_unit_b == temp_unit_instance)
 			{
-				//
-				celestial_battle_end(battle_instance);
+				
 			}
 			
 			//

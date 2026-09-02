@@ -987,6 +987,9 @@ repeat (temp_solar_systems_count)
 				// Find Unit Instance
 				var temp_unit_instance = units[temp_unit_index];
 				
+				// Check for Unit Hazard Avoidance Behaviour
+				temp_unit_instance.unit_behaviour = temp_unit_instance.avoid_count > 0 ? CelestialUnitBehaviourType.Avoid : temp_unit_instance.unit_behaviour;
+				
 				// Establish Unit Behaviour Variables
 				var temp_unit_movement = !temp_unit_instance.engaged_in_battle;
 				
@@ -1057,6 +1060,57 @@ repeat (temp_solar_systems_count)
 							// Unit is no longer fighting in Combat and does not need to Retreat - Reset Unit's Behaviour
 							temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 							break;
+						}
+						break;
+					case CelestialUnitBehaviourType.Avoid:
+						// Iterate through Unit's Avoid Instances
+						var temp_unit_avoid_instance_index = temp_unit_instance.avoid_count - 1;
+						
+						repeat (temp_unit_instance.avoid_count)
+						{
+							// Establish Avoid Instance & Radius
+							var temp_unit_avoid_instance = temp_unit_instance.avoid_instance[temp_unit_avoid_instance_index];
+							var temp_unit_avoid_radius = temp_unit_instance.avoid_radius[temp_unit_avoid_instance_index];
+							var temp_unit_avoid_dot_product = -2;
+							
+							// Check if Unit's Avoid Instance Exists
+							if (instance_exists(temp_unit_avoid_instance))
+							{
+								// Calculate the Dot Product between the Unit Instance's Normalized Local Sphere Vector and the Avoid Instance's Normalized Local Sphere Vector
+								temp_unit_avoid_dot_product = dot_product_3d
+								(
+									temp_unit_instance.sphere_vector_x, 
+									temp_unit_instance.sphere_vector_y, 
+									temp_unit_instance.sphere_vector_z, 
+									temp_unit_avoid_instance.sphere_vector_x, 
+									temp_unit_avoid_instance.sphere_vector_y, 
+									temp_unit_avoid_instance.sphere_vector_z
+								);
+							}
+							
+							// Check if Unit Instance is still within the Avoid Instance's Radius
+							if (temp_unit_avoid_dot_product < temp_unit_avoid_radius)
+							{
+								// Unit has left the Avoid Instance's Area of Effect - Remove Avoid Instance from Unit's Avoid Arrays
+								temp_unit_instance.avoid_count--;
+								array_delete(temp_unit_instance.avoid_instance, temp_unit_avoid_instance_index, 1);
+								array_delete(temp_unit_instance.avoid_radius, temp_unit_avoid_instance_index, 1);
+							}
+							
+							// Decrement Unit's Avoid Instance Index
+							temp_unit_avoid_instance_index--;
+						}
+						
+						// Check if Unit Instance is still within range of Hazards to Avoid
+						if (temp_unit_instance.avoid_count > 0)
+						{
+							// Initiate Unit Pathfinding (Avoid) Behaviour
+							celestial_pathfinding_avoid(temp_unit_instance);
+						}
+						else if (is_undefined(temp_unit_instance.pathfinding_path))
+						{
+							// Unit is no longer within range of a Hazard and does not need to perform their Avoid Behaviour - Reset Unit's Behaviour
+							temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
 						}
 						break;
 					case CelestialUnitBehaviourType.Patrol:
@@ -1162,6 +1216,7 @@ repeat (temp_solar_systems_count)
 										break;
 									case CelestialUnitBehaviourType.Patrol:
 									case CelestialUnitBehaviourType.Retreat:
+									case CelestialUnitBehaviourType.Avoid:
 									case CelestialUnitBehaviourType.None:
 									default:
 										break;
@@ -1359,6 +1414,7 @@ repeat (temp_solar_systems_count)
 											case CelestialUnitBehaviourType.Garrison:
 											case CelestialUnitBehaviourType.Patrol:
 											case CelestialUnitBehaviourType.Retreat:
+											case CelestialUnitBehaviourType.Avoid:
 											case CelestialUnitBehaviourType.None:
 											default:
 												temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
@@ -1871,6 +1927,7 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_node_target_node_index, temp_node_target_x, temp_node_target_y, temp_node_target_z, temp_node_target_elevation);
 						break;
 					case CelestialUnitBehaviourType.Retreat:
+					case CelestialUnitBehaviourType.Avoid:
 					case CelestialUnitBehaviourType.None:
 					default:
 						// Remove Unit Instance from Pathfinding Queue

@@ -12,8 +12,8 @@ enum CelestialPathfindingType
 #region Celestial Pathfinding Functions
 /// @function celestial_pathfinding(celestial_object, unit_object, goal_node_index, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation, path_smoothing);
 /// @description Generates a Pathfinding Path with the given Celestial Object's Navigation Mesh and the Pathfinding Path Goal and assigns it to the given Unit Instance
-/// @param {real:Id.Instance} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
-/// @param {real:Id.Instance} unit_object The Celestial Unit Object Instance that the generated Pathfinding Path will belong to
+/// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object Instance the Pathfinding Navigation Mesh belong to
+/// @param {real:Id.Instance<oCelestialUnit>} unit_object The Celestial Unit Object Instance that the generated Pathfinding Path will belong to
 /// @param {int} goal_node_index The Path Goal Endpoint's Pathfinding Node Index on the Celestial Object's Navigation Mesh 
 /// @param {real} goal_position_x The Path Goal Endpoint's X value of the normalized vector from the Celestial Object's Origin 
 /// @param {real} goal_position_y The Path Goal Endpoint's Y value of the normalized vector from the Celestial Object's Origin
@@ -101,7 +101,7 @@ function celestial_pathfinding_destroy_path(path_struct)
 
 /// @function celestial_pathfinding_find_edge_weight(celestial_object, first_node_index, second_node_index);
 /// @description Finds the weight of the Pathfinding Edge between two Pathfinding Node Indexes on the given Celestial Object and returns it as a real value or returns Undefined if the edge does not exist
-/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
+/// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object the Pathfinding Nodes belong to
 /// @param {int} first_node_index The first Pathfinding Node's Index in the Pathfinding Edge to find the Weights of
 /// @param {int} second_node_index The second Pathfinding Node's Index in the Pathfinding Edge to find the Weights of
 /// @returns {?real} Returns the cumulative weight of the edge between the given Node IDs, and returns Undefined if the Edge is not viable
@@ -139,7 +139,7 @@ function celestial_pathfinding_reconstruct_path(path_map, node_index)
 
 /// @function celestial_pathfinding_a_star(celestial_object, start_node_index, end_node_index);
 /// @description Finds the shortest path of nodes between the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index (or, optionally, to multiple possible Ending Pathfinding Node Indexes within an array) using the A* algorithm
-/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Nodes belong to
+/// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object the Pathfinding Nodes belong to
 /// @param {int} start_node_index The starting Pathfinding Node's Index to create a Path from to the given ending Pathfinding Node
 /// @param {*int,array<int>} end_node_index The ending Pathfinding Node's Index to create a Path to the given starting Pathfinding Node, optionally can be passed as an array of multiple acceptable ending Pathfinding Node Indexes
 /// @param {CelestialPathfindingType} pathfinding_type The Celestial Pathfinding Type that determines the pathfinding's node discrimination behaviour, i.e. a land path that cannot cross node indexes determined to be at or below sea level
@@ -388,7 +388,7 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 
 /// @function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation);
 /// @description Uses a funnel algorithm to create a smoothed final path by iterating through the list of pathfinding nodes to create (hopefully) the most direct path on the Celestial Object's navigation mesh
-/// @param {real:Id.Instance} celestial_object The Celestial Object the Pathfinding Navigation Mesh belong to
+/// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object the Pathfinding Navigation Mesh belong to
 /// @param {Id.DsList<int>} path_list A DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index
 /// @param {real} end_x The X value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
 /// @param {real} end_y The Y value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
@@ -752,6 +752,196 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 	
 	// Return Final Path Struct
 	return temp_path_struct;
+}
+
+/// @function celestial_pathfinding_avoid(unit_object);
+/// @description Generates a Pathfinding Path with the given Celestial Unit, avoiding all the hazards designated within the Unit's Avoid Arrays, on their Celestial Body Instance's Navigation Mesh and assigns it to the given Unit Instance
+/// @param {real:Id.Instance<oCelestialUnit>} unit_object The Celestial Unit Object Instance that the generated (Avoidant Behaviour) Pathfinding Path will belong to
+function celestial_pathfinding_avoid(unit_object)
+{
+	// Check if the given Celestial Unit has a Celestial Body with a navigation mesh they're Pathfinding on
+	var temp_celestial_object = unit_object.celestial_body_instance;
+	
+	if (!instance_exists(temp_celestial_object) or !temp_celestial_object.pathfinding_enabled)
+	{
+		// Celestial Unit does not belong to a valid Celestial Pathfinding Navigation Mesh - Early Return
+		return;
+	}
+	
+	// Establish an Empty Pathfinding Mesh for the Celestial Unit
+	if (is_undefined(unit_object.pathfinding_path))
+	{
+		// Initialize Empty Path Struct
+		unit_object.pathfinding_path = 
+		{
+			path_size: 0,
+			node_index: ds_list_create(),
+			position_x: ds_list_create(),
+			position_y: ds_list_create(),
+			position_z: ds_list_create(),
+			position_elevation: ds_list_create(),
+		}
+	}
+	
+	ds_list_clear(unit_object.pathfinding_path.node_index);
+	ds_list_clear(unit_object.pathfinding_path.position_x);
+	ds_list_clear(unit_object.pathfinding_path.position_y);
+	ds_list_clear(unit_object.pathfinding_path.position_z);
+	ds_list_clear(unit_object.pathfinding_path.position_elevation);
+	
+	// Determine Celestial Pathfinding Movement Behaviour based on the Celestial Unit's Terrain Type
+	var temp_celestial_pathfinding_type = CelestialPathfindingType.Default;
+	
+	switch (unit_object.unit_terrain_type)
+	{
+		case CelestialUnitTerrainType.Terrestrial:
+			// Check if the Celestial Object the Celestial Pathfinding Grid belongs to is a Planet and has an Ocean
+			if (temp_celestial_object.celestial_object_type == CelestialObjectType.Planet and temp_celestial_object.ocean)
+			{
+				temp_celestial_pathfinding_type = CelestialPathfindingType.TerrestrialPathfinding;
+			}
+			break;
+		case CelestialUnitTerrainType.Aquatic:
+			// Check if the Celestial Object the Celestial Pathfinding Grid belongs to is a Planet and has an Ocean
+			if (temp_celestial_object.celestial_object_type == CelestialObjectType.Planet and temp_celestial_object.ocean)
+			{
+				temp_celestial_pathfinding_type = CelestialPathfindingType.AquaticPathfinding;
+			}
+			break;
+		default:
+			break;
+	}
+	
+	// Establish Avoid Score & Pathfinding Target Variables
+	var temp_avoid_score = -1;
+	var temp_avoid_target_node_index = -1;
+	var temp_avoid_target_x = 0;
+	var temp_avoid_target_y = 0;
+	var temp_avoid_target_z = 0;
+	var temp_avoid_target_elevation = 0;
+	
+	// Iterate through the Edge Array of the Celestial Unit's Pathfinding Node
+	var temp_pathfinding_node_edges_array = temp_celestial_object.pathfinding_node_edges_array[unit_object.pathfinding_node_index];
+	
+	var temp_pathfinding_node_edges_array_count = array_length(temp_pathfinding_node_edges_array);
+	var temp_pathfinding_node_edges_array_index = temp_pathfinding_node_edges_array_count - 1;
+	
+	repeat (temp_pathfinding_node_edges_array_count)
+	{
+		// Find Edge's Node Index
+		var temp_node_index = temp_pathfinding_node_edges_array[temp_pathfinding_node_edges_array_index];
+		
+		// Celestial Pathfinding Node Discrimination Behaviour
+		switch (temp_celestial_pathfinding_type)
+		{
+			case CelestialPathfindingType.TerrestrialPathfinding:
+				// Terrestrial Pathfinding Behaviour - Path cannot cross Node Indexes at or below Sea Level
+				if (temp_celestial_object.pathfinding_node_elevation_array[temp_node_index] <= temp_celestial_object.ocean_elevation)
+				{
+					// Decrement Node Edge Index
+					temp_pathfinding_node_edges_array_index--;
+					continue;
+				}
+				break;
+			case CelestialPathfindingType.AquaticPathfinding:
+				// Aquatic Pathfinding Behaviour - Path cannot cross Node Indexes above Sea Level
+				if (temp_celestial_object.pathfinding_node_elevation_array[temp_node_index] > temp_celestial_object.ocean_elevation)
+				{
+					// Decrement Node Edge Index
+					temp_pathfinding_node_edges_array_index--;
+					continue;
+				}
+				break;
+			case CelestialPathfindingType.Default:
+			default:
+				break;
+		}
+		
+		// Find Portal Indexes
+		var temp_edge_portal_left_index = array_get(temp_celestial_object.pathfinding_node_edges_portal_left_array[unit_object.pathfinding_node_index], temp_pathfinding_node_edges_array_index);
+		var temp_edge_portal_right_index = array_get(temp_celestial_object.pathfinding_node_edges_portal_right_array[unit_object.pathfinding_node_index], temp_pathfinding_node_edges_array_index);
+		
+		// Find Portal Positions
+		var temp_portal_left_vector_x = temp_celestial_object.pathfinding_portal_x_array[temp_edge_portal_left_index];
+		var temp_portal_left_vector_y = temp_celestial_object.pathfinding_portal_y_array[temp_edge_portal_left_index];
+		var temp_portal_left_vector_z = temp_celestial_object.pathfinding_portal_z_array[temp_edge_portal_left_index];
+		var temp_portal_left_vector_elevation = temp_celestial_object.pathfinding_portal_elevation_array[temp_edge_portal_left_index];
+		
+		var temp_portal_right_vector_x = temp_celestial_object.pathfinding_portal_x_array[temp_edge_portal_right_index];
+		var temp_portal_right_vector_y = temp_celestial_object.pathfinding_portal_y_array[temp_edge_portal_right_index];
+		var temp_portal_right_vector_z = temp_celestial_object.pathfinding_portal_z_array[temp_edge_portal_right_index];
+		var temp_portal_right_vector_elevation = temp_celestial_object.pathfinding_portal_elevation_array[temp_edge_portal_right_index];
+		
+		// Find Portal Midpoint Position
+		var temp_portal_midpoint_vector_x = lerp(temp_portal_left_vector_x, temp_portal_right_vector_x, 0.5);
+		var temp_portal_midpoint_vector_y = lerp(temp_portal_left_vector_y, temp_portal_right_vector_y, 0.5);
+		var temp_portal_midpoint_vector_z = lerp(temp_portal_left_vector_z, temp_portal_right_vector_z, 0.5);
+		var temp_portal_midpoint_vector_elevation = lerp(temp_portal_left_vector_elevation, temp_portal_right_vector_elevation, 0.5);
+		
+		// Iterate through Unit's Avoid Instances to generate an Avoid Score based (ideally) on the Pathfinding Edge Direction that moves away from the most of the Unit's Avoid Instance Hazards
+		var temp_avoid_portal_midpoint_pathfinding_score = 0;
+		var temp_pathfinding_score_avoid_instance_index = unit_object.avoid_count - 1;
+		
+		repeat (unit_object.avoid_count)
+		{
+			// Establish Avoid Instance
+			var temp_unit_avoid_instance = unit_object.avoid_instance[temp_pathfinding_score_avoid_instance_index];
+			
+			// Calculate the Spherical Point Direction of the Unit's Avoid Instance to the Pathfinding Node Edge's Portal Midpoint Position using the Unit's Position as a reference
+			var temp_unit_avoid_pathfinding_direction = spherical_point_direction
+			(
+				unit_object.sphere_vector_x, 
+				unit_object.sphere_vector_y, 
+				unit_object.sphere_vector_z,
+				temp_unit_avoid_instance.sphere_vector_x, 
+				temp_unit_avoid_instance.sphere_vector_y, 
+				temp_unit_avoid_instance.sphere_vector_z,
+				temp_portal_midpoint_vector_x, 
+				temp_portal_midpoint_vector_y, 
+				temp_portal_midpoint_vector_z
+			);
+			
+			// Add the Spherical Point Direction to the Avoid Score
+			temp_avoid_portal_midpoint_pathfinding_score += temp_unit_avoid_pathfinding_direction;
+			
+			// Decrement Unit's Avoid Instance Index
+			temp_pathfinding_score_avoid_instance_index--;
+		}
+		
+		// Check if this was the highest Avoid Score so far
+		if (temp_avoid_portal_midpoint_pathfinding_score > temp_avoid_score)
+		{
+			// Set new Avoid Score Record
+			temp_avoid_score = temp_avoid_portal_midpoint_pathfinding_score;
+			
+			// Set Avoid Target to the new Pathfinding Edge Midpoint
+			temp_avoid_target_node_index = temp_node_index;
+			temp_avoid_target_x = temp_portal_midpoint_vector_x;
+			temp_avoid_target_y = temp_portal_midpoint_vector_y;
+			temp_avoid_target_z = temp_portal_midpoint_vector_z;
+			temp_avoid_target_elevation = temp_portal_midpoint_vector_elevation;
+		}
+		
+		// Decrement Node Edge Index
+		temp_pathfinding_node_edges_array_index--;
+	}
+	
+	// Update Pathfinding Path to end at the Avoid Target Position & Elevation
+	unit_object.pathfinding_path.path_size = 2;
+	ds_list_add(unit_object.pathfinding_path.node_index, unit_object.pathfinding_node_index);
+	ds_list_add(unit_object.pathfinding_path.position_x, temp_avoid_target_x);
+	ds_list_add(unit_object.pathfinding_path.position_y, temp_avoid_target_y);
+	ds_list_add(unit_object.pathfinding_path.position_z, temp_avoid_target_z);
+	ds_list_add(unit_object.pathfinding_path.position_elevation, temp_avoid_target_elevation);
+	
+	ds_list_add(unit_object.pathfinding_path.node_index, temp_avoid_target_node_index);
+	ds_list_add(unit_object.pathfinding_path.position_x, temp_celestial_object.pathfinding_node_x_array[temp_avoid_target_node_index]);
+	ds_list_add(unit_object.pathfinding_path.position_y, temp_celestial_object.pathfinding_node_y_array[temp_avoid_target_node_index]);
+	ds_list_add(unit_object.pathfinding_path.position_z, temp_celestial_object.pathfinding_node_z_array[temp_avoid_target_node_index]);
+	ds_list_add(unit_object.pathfinding_path.position_elevation, temp_celestial_object.pathfinding_node_elevation_array[temp_avoid_target_node_index]);
+	
+	// Reset Unit's Path Index
+	unit_object.pathfinding_path_index = 0;
 }
 
 /// @function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation);

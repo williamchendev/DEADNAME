@@ -368,6 +368,7 @@
     {"id":{"name":"oExplosion","path":"objects/oExplosion/oExplosion.yy",},},
     {"id":{"name":"oFactionMoralist","path":"objects/oFactionMoralist/oFactionMoralist.yy",},},
     {"id":{"name":"oFactionNorthernBrigade","path":"objects/oFactionNorthernBrigade/oFactionNorthernBrigade.yy",},},
+    {"id":{"name":"oFactionSocialistCavass","path":"objects/oFactionSocialistCavass/oFactionSocialistCavass.yy",},},
     {"id":{"name":"oFirearm_Magazine","path":"objects/oFirearm_Magazine/oFirearm_Magazine.yy",},},
     {"id":{"name":"oFirearm_MuzzleFlare_Medium","path":"objects/oFirearm_MuzzleFlare_Medium/oFirearm_MuzzleFlare_Medium.yy",},},
     {"id":{"name":"oFirearm_MuzzleFlare_Small","path":"objects/oFirearm_MuzzleFlare_Small/oFirearm_MuzzleFlare_Small.yy",},},

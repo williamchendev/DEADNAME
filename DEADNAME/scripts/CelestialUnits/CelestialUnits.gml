@@ -13,7 +13,8 @@ enum CelestialUnitBehaviourType
 	Hunt,
 	Patrol,
 	Garrison,
-	Retreat
+	Retreat,
+	Avoid
 }
 
 #region Combat Units
@@ -266,7 +267,7 @@ function celestial_unit_leave_faction(celestial_unit)
 }
 #endregion
 
-// Combat Methods
+#region Combat Methods
 /// @function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type);
 /// @description Adds a Combat Unit to the given Celestial Unit
 /// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit to add a Combat Unit to
@@ -696,48 +697,113 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 	// Decrement Celestial Unit's Combat Unit Counts
 	celestial_unit.combat_unit_count--;
 }
+#endregion
 
-// Status Effect Methods
-//
+#region Status Effect Methods
+/// @function celestial_unit_add_status_effect(celestial_unit, status_effect_type);
+/// @description Adds a Status Effect to the given Celestial Unit Instance
+/// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit Instance to add a Status Effect to
+/// @param {int<CelestialUnitStatusEffectType>} status_effect_type The Status Effect's Type enum to add to the given Celestial Unit
 function celestial_unit_add_status_effect(celestial_unit, status_effect_type)
 {
-	//
+	// Find the index of the Status Effect enum within the Unit Instance's Status Effects Array
 	var temp_status_effect_index = array_get_index(celestial_unit.status_effect_array, status_effect_type);
 	
-	//
+	// Check if the Status Effect already exists in the Unit Instance
 	if (temp_status_effect_index != -1)
 	{
-		//
+		// Update the existing Status Effect's Duration to full
 		celestial_unit.status_effect_duration_array[temp_status_effect_index] = global.celestial_unit_status_effects[status_effect_type].status_effect_duration;
 	}
 	else
 	{
-		//
+		// Add the given Status Effect as a new Status Effect
 		array_push(celestial_unit.status_effect_array, status_effect_type);
 		array_push(celestial_unit.status_effect_duration_array, global.celestial_unit_status_effects[status_effect_type].status_effect_duration);
 	}
 }
 
+/// @function celestial_unit_remove_status_effect(celestial_unit, status_effect_type);
+/// @description Removes a Status Effect from the given Celestial Unit Instance
+/// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit Instance to remove a Status Effect from
+/// @param {int<CelestialUnitStatusEffectType>} status_effect_type The Status Effect's Type enum to remove from the given Celestial Unit
 function celestial_unit_remove_status_effect(celestial_unit, status_effect_type)
 {
-	//
+	// Find the index of the Status Effect enum within the Unit Instance's Status Effects Array
 	var temp_status_effect_index = array_get_index(celestial_unit.status_effect_array, status_effect_type);
 	
-	//
+	// Check if the Status Effect exists in the Unit Instance
 	if (temp_status_effect_index != -1)
 	{
-		//
+		// Set the duration of the Status Effect to 0, effectively removing the Status Effect from the Unit Instance
 		celestial_unit.status_effect_duration_array[temp_status_effect_index] = 0;
 	}
 }
 
+/// @function celestial_unit_check_status_effect(celestial_unit, status_effect_type);
+/// @description Checks if a Celestial Unit has a given Status Effect applied to them
+/// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit Instance to check if they have a given Status Effect
+/// @param {int<CelestialUnitStatusEffectType>} status_effect_type The Status Effect's Type enum of the Status Effect to check for
+/// @returns {bool} Returns true if the given Celestial Unit has the given Status Effect and false if not
 function celestial_unit_check_status_effect(celestial_unit, status_effect_type)
 {
-	//
+	// Check if the Status Effect exists within the given Celestial Unit's Status Effect Array
 	return array_get_index(celestial_unit.status_effect_array, status_effect_type) != -1;
 }
+#endregion
 
-//
+// Avoid Methods
+/// @function celestial_unit_add_avoid_instance(celestial_unit, avoid_instance, avoid_radius);
+/// @description Adds a hazard instance to the given Celestial Unit Instance that the Celestial Unit is meant to avoid
+/// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit Instance to index the given hazard avoid instance into
+/// @param {real:Id.Instance} avoid_instance The hazard instance the Celestial Unit Instance is meant to avoid
+/// @param {real} avoid_radius The radius threshold of the hazard instance to avoid (this radius is meant to be a dot product threshold, i.e. a value between -1 and 1)
+function celestial_unit_add_avoid_instance(celestial_unit, avoid_instance, avoid_radius)
+{
+	// Check if Avoid Instance has already been added to the Unit's Avoid Instances Array
+	if (array_get_index(celestial_unit.avoid_instance, avoid_instance) != -1)
+	{
+		// Unit is already Avoiding this Instance - Early Return
+		return;
+	}
+	
+	// Increment Unit's Avoid Count
+	celestial_unit.avoid_count++;
+	
+	// Index Avoid Instance & Radius into Unit's Avoid Arrays
+	array_push(celestial_unit.avoid_instance, avoid_instance);
+	array_push(celestial_unit.avoid_radius, avoid_radius);
+}
+
+/// @function celestial_unit_remove_avoid_instance(celestial_unit, avoid_instance);
+/// @description Removes a hazard instance from the given Celestial Unit Instance
+/// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit Instance to remove the given hazard avoid instance from
+/// @param {real:Id.Instance} avoid_instance The hazard instance to remove from the Celestial Unit Instance's avoid behaviour arrays
+function celestial_unit_remove_avoid_instance(celestial_unit, avoid_instance)
+{
+	// Find Avoid Instance's Index within the Unit's Avoid Instances Array
+	var temp_avoid_instance_index = array_get_index(celestial_unit.avoid_instance, avoid_instance);
+	
+	// Check if Avoid Instance exists within the Unit's Avoid Instances Array
+	if (temp_avoid_instance_index != -1)
+	{
+		// Decrement Unit's Avoid Count
+		celestial_unit.avoid_count--;
+		
+		// Delete Index of Avoid Instance & Radius from Unit's Avoid Arrays
+		array_delete(celestial_unit.avoid_instance, temp_avoid_instance_index, 1);
+		array_delete(celestial_unit.avoid_radius, temp_avoid_instance_index, 1);
+	}
+}
+
+// Trigonometry Functions
+/// @function celestial_unit_calculate_spherical_facing_direction(x1, z1, x2, z2);
+/// @description Calculates the latitude-based facing direction of the first normalized spherical vector coordinate to the second
+/// @param {real} x1 The First Vector's X Value as a Vertex in Normalized 3D Local Space from a Sphere's Origin
+/// @param {real} z1 The First Vector's Z Value as a Vertex in Normalized 3D Local Space from a Sphere's Origin
+/// @param {real} x2 The Second Vector's X Value as a Vertex in Normalized 3D Local Space from a Sphere's Origin
+/// @param {real} z2 The Second Vector's Z Value as a Vertex in Normalized 3D Local Space from a Sphere's Origin
+/// @returns {real} Returns a facing direction (-1, 0, or 1)
 function celestial_unit_calculate_spherical_facing_direction(x1, z1, x2, z2)
 {
 	// Find U Positions and convert them into Horizontal Angles from Sphere's Horizontal Wrap

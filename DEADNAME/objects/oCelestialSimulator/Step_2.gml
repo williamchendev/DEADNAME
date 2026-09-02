@@ -59,7 +59,7 @@ if (((!temp_input_select and input_select) or (temp_input_action and !input_acti
 				{
 					case CelestialSubObjectType.Unit:
 						// Allow Units of all Factions for Action Behaviour but Limit Unit Selection to Units belonging to Player's Faction
-						temp_sorted_sub_object_can_be_selected = (temp_input_action and !input_action) or temp_sub_object_sorted_instance.unit_faction == player_faction;
+						//temp_sorted_sub_object_can_be_selected = (temp_input_action and !input_action) or temp_sub_object_sorted_instance.unit_faction == player_faction;
 						break;
 					case CelestialSubObjectType.Battle:
 						// Limit Battle Selection to Battles involving the Player's Faction
