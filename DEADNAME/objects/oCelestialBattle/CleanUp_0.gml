@@ -58,33 +58,3 @@ repeat (temp_battle_combat_action_count)
 // Clear Battle Combat Action Arrays
 array_resize(battle_combat_actions, 0);
 
-// Increment through Battle's Choreography Actors Array and Erase Battle's Choreography Actors Structs
-var temp_battle_choreography_actors_count = array_length(battle_choreography_actors);
-var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
-
-repeat (temp_battle_choreography_actors_count)
-{
-	// Delete Battle Choreography Actors Struct
-	delete battle_choreography_actors[temp_battle_choreography_actors_index];
-	
-	// Decrement Battle Choreography Actors Index
-	temp_battle_choreography_actors_index--;
-}
-
-array_resize(battle_choreography_actors, 0);
-
-// Increment through Battle's Choreography Actions Array and Erase Battle's Choreography Actions Structs
-var temp_battle_choreography_actions_count = array_length(battle_choreography_actions);
-var temp_battle_choreography_actions_index = temp_battle_choreography_actions_count - 1;
-
-repeat (temp_battle_choreography_actions_count)
-{
-	// Delete Battle Choreography Actions Struct
-	delete battle_choreography_actions[temp_battle_choreography_actions_index];
-	
-	// Decrement Battle Choreography Actions Index
-	temp_battle_choreography_actions_index--;
-}
-
-array_resize(battle_choreography_actions, 0);
-

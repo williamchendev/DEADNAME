@@ -455,65 +455,6 @@ function celestial_battle_load_combat_units(battle_instance, unit_instance, comb
 	}
 }
 
-///
-function celestial_battle_combat_unit_enter(battle_instance, combat_unit_instance)
-{
-	// Check Combat Unit's Grid Direction
-	switch (combat_unit_instance.combat_grid_side)
-	{
-		case CelestialBattleCombatGridSide.Left:
-			// Add Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
-			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
-			{
-				case CelestialBattleColumnType.Frontline:
-					// Add Combat Unit to Battle's Frontline Combat Unit Pools
-					array_push(battle_instance.battle_frontline_combat_units_a, combat_unit_instance);
-					break;
-				case CelestialBattleColumnType.Midline:
-					// Add Combat Unit to Battle's Midline Combat Unit Pools
-					array_push(battle_instance.battle_midline_combat_units_a, combat_unit_instance);
-					break;
-				case CelestialBattleColumnType.Backline:
-					// Add Combat Unit to Battle's Backline Combat Unit Pools
-					array_push(battle_instance.battle_backline_combat_units_a, combat_unit_instance);
-					break;
-			}
-			
-			// Place Selected Combat Unit in the Combat Grid's Available Slot
-			array_set(array_get(battle_instance.battle_combat_grid_a, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, combat_unit_instance);
-			array_push(array_get(battle_instance.battle_combat_grid_instances_a, combat_unit_instance.combat_grid_column), combat_unit_instance);
-			break;
-		case CelestialBattleCombatGridSide.Right:
-			// Add Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
-			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
-			{
-				case CelestialBattleColumnType.Frontline:
-					// Add Combat Unit to Battle's Frontline Combat Unit Pools
-					array_push(battle_instance.battle_frontline_combat_units_b, combat_unit_instance);
-					break;
-				case CelestialBattleColumnType.Midline:
-					// Add Combat Unit to Battle's Midline Combat Unit Pools
-					array_push(battle_instance.battle_midline_combat_units_b, combat_unit_instance);
-					break;
-				case CelestialBattleColumnType.Backline:
-					// Add Combat Unit to Battle's Backline Combat Unit Pools
-					array_push(battle_instance.battle_backline_combat_units_b, combat_unit_instance);
-					break;
-			}
-			
-			// Place Selected Combat Unit in the Combat Grid's Available Slot
-			array_set(array_get(battle_instance.battle_combat_grid_b, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, combat_unit_instance);
-			array_push(array_get(battle_instance.battle_combat_grid_instances_b, combat_unit_instance.combat_grid_column), combat_unit_instance);
-			break;
-	}
-}
-
-///
-function celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance)
-{
-	
-}
-
 /// @function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance, combat_grid_side);
 /// @description Adds a Combat Unit Instance to the given Celestial Battle Instance
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be added to
@@ -705,6 +646,7 @@ function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance,
 	
 	// Set Selected Combat Unit's Facing Direction
 	combat_unit_instance.combat_grid_side = temp_battle_combat_grid_side;
+	combat_unit_instance.draw_xscale = temp_battle_combat_grid_side == CelestialBattleCombatGridSide.Left ? 1 : -1;
 	
 	// Set Combat Unit's Battle Instance
 	combat_unit_instance.battle_instance = battle_instance;
@@ -722,9 +664,11 @@ function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance,
 	{
 		case CelestialBattleCombatGridSide.Left:
 			array_push(battle_instance.battle_combat_units_a, combat_unit_instance);
+			combat_unit_instance.combat_grid_tile = array_get(battle_instance.battle_combat_grid_a_structs[combat_unit_instance.combat_grid_column], combat_unit_instance.combat_grid_row);
 			break;
 		case CelestialBattleCombatGridSide.Right:
 			array_push(battle_instance.battle_combat_units_b, combat_unit_instance);
+			combat_unit_instance.combat_grid_tile = array_get(battle_instance.battle_combat_grid_b_structs[combat_unit_instance.combat_grid_column], combat_unit_instance.combat_grid_row);
 			break;
 	}
 	
@@ -733,39 +677,6 @@ function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance,
 	
 	// Reset Combat Unit Instance's Celestial Battle Behaviour
 	celestial_battle_reset_combat_unit(combat_unit_instance);
-}
-
-/// @function celestial_battle_reset_combat_unit(combat_unit_instance);
-/// @description Resets a Combat Unit Instance's Celestial Battle behaviour and variables, intended to be used on Combat Units being added to a new Celestial Battle
-/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance that will have its Celestial Battle behaviour and variables reset
-function celestial_battle_reset_combat_unit(combat_unit_instance)
-{
-	// Reset Combat Unit Instance's Combat Action Behaviour
-	combat_unit_instance.combat_unit_action = -1;
-	combat_unit_instance.combat_unit_action_time = 0;
-	combat_unit_instance.combat_unit_action_count = -1;
-	combat_unit_instance.combat_unit_action_exhaustion = -1;
-	combat_unit_instance.combat_unit_action_duration = -1;
-	
-	// Reset Combat Unit Instance's Combat Action Target Variables
-	combat_unit_instance.combat_unit_action_target_inst = noone;
-	combat_unit_instance.combat_unit_action_target_combat_grid_side = CelestialBattleCombatGridSide.None;
-	combat_unit_instance.combat_unit_action_target_combat_grid_column = -1;
-	combat_unit_instance.combat_unit_action_target_combat_grid_row = -1;
-	
-	// Randomize Combat Unit Instance's Position Offset
-	combat_unit_instance.random_offset_x = irandom_range(-3, 3);
-	combat_unit_instance.random_offset_y = irandom_range(-1, 3);
-	
-	// Reset Combat Unit Instance's Entry Animation Variables
-	combat_unit_instance.entry_animation = true;
-	combat_unit_instance.entry_animation_value = 0;
-	combat_unit_instance.entry_delay_duration = random(60);
-	
-	// Reset Combat Unit Instance's Exit Animation Variables
-	combat_unit_instance.exit_animation = false;
-	combat_unit_instance.exit_animation_value = 1;
-	combat_unit_instance.exit_delay_duration = random(18);
 }
 
 /// @function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance);
@@ -981,12 +892,151 @@ function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instan
 	combat_unit_instance.combat_grid_side = CelestialBattleCombatGridSide.None;
 	combat_unit_instance.combat_grid_column = -1;
 	combat_unit_instance.combat_grid_row = -1;
+	combat_unit_instance.combat_grid_tile = -1;
 	
 	// Reset Combat Unit's Battle Instance Variable
 	combat_unit_instance.battle_instance = noone;
 	
 	// Increment the Combat Unit's Celestial Unit Unengaged Combat Units Count
 	combat_unit_instance.unit_instance.combat_unit_unengaged_count++;
+}
+
+/// @function celestial_battle_reset_combat_unit(combat_unit_instance);
+/// @description Resets a Combat Unit Instance's Celestial Battle behaviour and variables, intended to be used on Combat Units being added to a new Celestial Battle
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance that will have its Celestial Battle behaviour and variables reset
+function celestial_battle_reset_combat_unit(combat_unit_instance)
+{
+	// Reset Combat Unit Instance's Combat Action Behaviour
+	combat_unit_instance.combat_unit_action_type = CelestialCombatUnitActionType.None;
+	combat_unit_instance.combat_unit_action_time = 0;
+	combat_unit_instance.combat_unit_action_count = -1;
+	combat_unit_instance.combat_unit_action_exhaustion = -1;
+	combat_unit_instance.combat_unit_action_duration = -1;
+	
+	// Reset Combat Unit Instance's Combat Action Target Variables
+	combat_unit_instance.combat_unit_action_target_inst = noone;
+	combat_unit_instance.combat_unit_action_target_combat_grid_side = CelestialBattleCombatGridSide.None;
+	combat_unit_instance.combat_unit_action_target_combat_grid_column = -1;
+	combat_unit_instance.combat_unit_action_target_combat_grid_row = -1;
+	
+	// Randomize Combat Unit Instance's Position Offset
+	combat_unit_instance.random_offset_x = irandom_range(-3, 3);
+	combat_unit_instance.random_offset_y = irandom_range(-1, 3);
+	
+	// Reset Combat Unit Instance's Animation State
+	combat_unit_instance.animation_state = CelestialCombatUnitAnimationState.EntryDelayed;
+	
+	// Reset Combat Unit Instance's Draw Variables
+	combat_unit_instance.draw_alpha = 0;
+	
+	// Reset Combat Unit Instance's Combat Entry Variables
+	combat_unit_instance.combat_entered_delay_duration = random(100);
+	combat_unit_instance.combat_entry_animation_value = 0;
+}
+
+///
+function celestial_battle_combat_unit_enter(battle_instance, combat_unit_instance)
+{
+	// Check Combat Unit's Grid Direction
+	switch (combat_unit_instance.combat_grid_side)
+	{
+		case CelestialBattleCombatGridSide.Left:
+			// Add Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
+			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
+			{
+				case CelestialBattleColumnType.Frontline:
+					// Add Combat Unit to Battle's Frontline Combat Unit Pools
+					array_push(battle_instance.battle_frontline_combat_units_a, combat_unit_instance);
+					break;
+				case CelestialBattleColumnType.Midline:
+					// Add Combat Unit to Battle's Midline Combat Unit Pools
+					array_push(battle_instance.battle_midline_combat_units_a, combat_unit_instance);
+					break;
+				case CelestialBattleColumnType.Backline:
+					// Add Combat Unit to Battle's Backline Combat Unit Pools
+					array_push(battle_instance.battle_backline_combat_units_a, combat_unit_instance);
+					break;
+			}
+			
+			// Place Selected Combat Unit in the Combat Grid's Available Slot
+			array_set(array_get(battle_instance.battle_combat_grid_a, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, combat_unit_instance);
+			array_push(array_get(battle_instance.battle_combat_grid_instances_a, combat_unit_instance.combat_grid_column), combat_unit_instance);
+			break;
+		case CelestialBattleCombatGridSide.Right:
+			// Add Combat Unit Instance from Celestial Battle's Combat Column Type Arrays
+			switch (global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_combat_column_type)
+			{
+				case CelestialBattleColumnType.Frontline:
+					// Add Combat Unit to Battle's Frontline Combat Unit Pools
+					array_push(battle_instance.battle_frontline_combat_units_b, combat_unit_instance);
+					break;
+				case CelestialBattleColumnType.Midline:
+					// Add Combat Unit to Battle's Midline Combat Unit Pools
+					array_push(battle_instance.battle_midline_combat_units_b, combat_unit_instance);
+					break;
+				case CelestialBattleColumnType.Backline:
+					// Add Combat Unit to Battle's Backline Combat Unit Pools
+					array_push(battle_instance.battle_backline_combat_units_b, combat_unit_instance);
+					break;
+			}
+			
+			// Place Selected Combat Unit in the Combat Grid's Available Slot
+			array_set(array_get(battle_instance.battle_combat_grid_b, combat_unit_instance.combat_grid_column), combat_unit_instance.combat_grid_row, combat_unit_instance);
+			array_push(array_get(battle_instance.battle_combat_grid_instances_b, combat_unit_instance.combat_grid_column), combat_unit_instance);
+			break;
+	}
+	
+	// Update Combat Unit Instance's Animation State
+	combat_unit_instance.animation_state = CelestialCombatUnitAnimationState.Entry;
+	
+	// Update Combat Unit Instance's Combat Entry Variables
+	combat_unit_instance.combat_entry_animation_value = 0;
+	
+	// Reset Combat Unit Instance's Draw Variables
+	combat_unit_instance.draw_alpha = 0;
+	combat_unit_instance.draw_image_index_value = random(20);
+	
+	// Combat Unit Equip Item from Inventory Behaviour
+	var temp_combat_unit_inventory_count = array_length(combat_unit_instance.item_inventory);
+	var temp_combat_unit_inventory_index = 0;
+	
+	repeat (temp_combat_unit_inventory_count)
+	{
+		// Check Inventory Slot for Item
+		if (combat_unit_instance.item_inventory[temp_combat_unit_inventory_index].item != -1)
+		{
+			// Equip Item from first Inventory Slot with an Item
+			celestial_combat_unit_equip_item(combat_unit_instance, temp_combat_unit_inventory_index);
+			
+			// Exit Loop
+			break;
+		}
+		
+		// Increment Combat Unit Inventory Index
+		temp_combat_unit_inventory_index++;
+	}
+	
+	// Set Combat Unit's Exhuastion
+	combat_unit_instance.combat_unit_action_exhaustion = random_range(4, 12);
+	
+	// Reset Combat Unit Instance's Item Variables
+	combat_unit_instance.item_aim = 0;
+	
+	combat_unit_instance.item_angle = 270;
+	
+	combat_unit_instance.item_target_x = 0;
+	combat_unit_instance.item_target_y = 0;
+	combat_unit_instance.item_target_angle = 90 + (combat_unit_instance.draw_xscale * -90);
+	
+	combat_unit_instance.item_angle_recoil = 0;
+	combat_unit_instance.item_horizontal_recoil = 0;
+	combat_unit_instance.item_vertical_recoil = 0;
+}
+
+///
+function celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance)
+{
+	
 }
 
 /// @function celestial_battle_check_for_duplicate(battle_instance);

@@ -28,7 +28,7 @@ miniature_sprite_index = sOverworld_Conflict_Icon;
 
 // Clock Variables
 battle_total_time = 0;
-battle_ending_time = 15;
+battle_ending_time = 40;
 
 // Battle Variables
 battle_exists = true;

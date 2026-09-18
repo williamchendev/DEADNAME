@@ -464,6 +464,7 @@
     {"id":{"name":"camera_get_view","path":"scripts/camera_get_view/camera_get_view.yy",},},
     {"id":{"name":"CelestialBattles","path":"scripts/CelestialBattles/CelestialBattles.yy",},},
     {"id":{"name":"CelestialCities","path":"scripts/CelestialCities/CelestialCities.yy",},},
+    {"id":{"name":"CelestialCombatUnits","path":"scripts/CelestialCombatUnits/CelestialCombatUnits.yy",},},
     {"id":{"name":"CelestialFactions","path":"scripts/CelestialFactions/CelestialFactions.yy",},},
     {"id":{"name":"CelestialMicroclimates","path":"scripts/CelestialMicroclimates/CelestialMicroclimates.yy",},},
     {"id":{"name":"CelestialPathfinding","path":"scripts/CelestialPathfinding/CelestialPathfinding.yy",},},

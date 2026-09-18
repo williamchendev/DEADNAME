@@ -184,3 +184,4 @@ function celestial_faction_is_relationship_allied(first_faction_instance, second
 	// Return if Faction Relationship is Allied
 	return temp_faction_relationship_is_allied;
 }
+

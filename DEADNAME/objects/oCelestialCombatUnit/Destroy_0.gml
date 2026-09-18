@@ -15,4 +15,3 @@ if (instance_exists(unit_instance))
 	celestial_unit_remove_combat_unit(unit_instance, id);
 }
 
-

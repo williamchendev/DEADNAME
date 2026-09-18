@@ -17,196 +17,6 @@ enum CelestialUnitBehaviourType
 	Avoid
 }
 
-#region Combat Units
-// Celestial Combat Unit Enum
-enum CelestialCombatUnitType
-{
-	DefaultInfantry,
-	DefaultTank
-}
-
-// Global Celestial Combat Units
-global.celestial_combat_units[CelestialCombatUnitType.DefaultInfantry] =
-{
-	// Unit Sprites
-	unit_idle_sprite: sOverworld_Unit_William_Idle,
-	unit_move_sprite: sOverworld_Unit_William_Move,
-	unit_attack_sprite: noone,
-	
-	// Unit Stats
-	unit_health: 10,
-	unit_accuracy: 6,
-	unit_evasion: 6,
-	unit_attack: 2,
-	unit_armor: 1,
-	unit_agility: 0.04,
-	unit_size: 1,
-	unit_entrenchment: 0,
-	
-	// Terrain Settings
-	unit_terrain_type: CelestialUnitTerrainType.Terrestrial,
-	
-	// Combat Settings
-	unit_combat_mandatory_attendance: false,
-	
-	unit_combat_column_type: CelestialBattleColumnType.Frontline,
-	
-	unit_attack_assassination: false,
-	
-	// Action Settings
-	unit_attack_types: [CelestialCombatUnitAction.DefaultFirearm],
-	
-	// Unit Weapon Animation Settings
-	unit_weapon_enabled: true,
-	
-	unit_weapon_sprite: sOverworld_Unit_William_Firearm,
-	
-	unit_weapon_pivot_x: 0,
-	unit_weapon_pivot_y: -14,
-	
-	unit_weapon_aim_pivot_x: 3,
-	unit_weapon_aim_pivot_y: -16,
-	
-	unit_weapon_idle_ambient_angle: 0,
-	unit_weapon_move_ambient_angle: 45,
-	
-	unit_weapon_recoil_recovery_spd: 0.1,
-};
-
-global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
-{
-	// Unit Sprites
-	unit_idle_sprite: sOverworld_Unit_Tank_Medium,
-	unit_move_sprite: sOverworld_Unit_Tank_Medium,
-	unit_attack_sprite: sOverworld_Unit_Tank_Medium_Attack,
-	
-	// Unit Stats
-	unit_health: 10,
-	unit_accuracy: 6,
-	unit_evasion: 6,
-	unit_attack: 2,
-	unit_armor: 1,
-	unit_agility: 0.02,
-	unit_size: 1,
-	unit_entrenchment: 0,
-	
-	// Terrain Settings
-	unit_terrain_type: CelestialUnitTerrainType.Terrestrial,
-	
-	// Combat Settings
-	unit_combat_mandatory_attendance: false,
-	
-	unit_combat_column_type: CelestialBattleColumnType.Frontline,
-	
-	unit_attack_assassination: false,
-	
-	// Action Settings
-	unit_attack_types: [CelestialCombatUnitAction.DefaultTankCannon],
-	
-	// Unit Weapon Animation Settings
-	unit_weapon_enabled: false,
-	
-	unit_weapon_sprite: noone,
-	
-	unit_weapon_pivot_x: 8,
-	unit_weapon_pivot_y: -11,
-	
-	unit_weapon_aim_pivot_x: 8,
-	unit_weapon_aim_pivot_y: -11,
-	
-	unit_weapon_idle_ambient_angle: 0,
-	unit_weapon_move_ambient_angle: 45,
-	
-	unit_weapon_recoil_recovery_spd: 0.1,
-};
-#endregion
-
-#region Combat Items
-// Celestial Combat Item Enum
-enum CelestialCombatItem
-{
-	DefaultFirearm
-}
-
-// Global Celestial Combat Units
-global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
-{
-	
-};
-#endregion
-
-#region Combat Actions
-// Global Celestial Combat Action Enums
-enum CelestialCombatUnitActionType
-{
-	Attack,
-	Support
-}
-
-enum CelestialCombatUnitAction
-{
-	DefaultFirearm,
-	DefaultTankCannon,
-}
-
-// Global Celestial Combat Actions
-global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultFirearm] =
-{
-	// Action Settings
-	action_type: CelestialCombatUnitActionType.Attack,
-	action_count: 1,
-	action_duration: 5.5,
-	action_instance: oCelestialCombatAction,
-	
-	// Animation Settings
-	action_animation_type: CelestialCombatUnitActionAnimationType.Firearm,
-	action_animation_count: 3,
-};
-
-global.celestial_combat_unit_actions[CelestialCombatUnitAction.DefaultTankCannon] =
-{
-	// Action Settings
-	action_type: CelestialCombatUnitActionType.Attack,
-	action_count: 1,
-	action_duration: 5.5,
-	action_instance: oCelestialCombatAction,
-	
-	// Animation Settings
-	action_animation_type: CelestialCombatUnitActionAnimationType.TankCannon,
-	action_animation_count: 1,
-};
-
-// Celestial Unit Action Animations Enum
-enum CelestialCombatUnitActionAnimationType
-{
-	Firearm,
-	TankCannon
-}
-
-// Global Celestial Unit Action Animations
-global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
-{
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 2,
-	linear_projectile_decay: 0.2,
-};
-
-global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
-{
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss_Large,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 3,
-	linear_projectile_decay: 0.08,
-};
-#endregion
-
 #region Status Effects
 // Celestial Unit Status Effect Enum
 enum CelestialUnitStatusEffectType
@@ -267,7 +77,7 @@ function celestial_unit_leave_faction(celestial_unit)
 }
 #endregion
 
-#region Combat Methods
+#region Combat Unit Methods
 /// @function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type);
 /// @description Adds a Combat Unit to the given Celestial Unit
 /// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit to add a Combat Unit to
@@ -328,6 +138,30 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 	// Set Combat Unit's Properties from Combat Unit Type
 	temp_combat_unit_instance.combat_unit_type = combat_unit_type;
 	temp_combat_unit_instance.combat_unit_health = global.celestial_combat_units[combat_unit_type].unit_health;
+	
+	// Initialize Combat Unit's Inventory from Combat Unit Type
+	var temp_combat_unit_inventory_count = array_length(global.celestial_combat_units[combat_unit_type].unit_inventory_slots);
+	var temp_combat_unit_inventory_index = 0;
+	
+	array_resize(temp_combat_unit_instance.item_inventory, temp_combat_unit_inventory_count);
+	
+	repeat (temp_combat_unit_inventory_count)
+	{
+		// Initialize Empty Inventory Slot
+		temp_combat_unit_instance.item_inventory[temp_combat_unit_inventory_index] = 
+		{
+			item: -1,
+			slot_type: global.celestial_combat_units[combat_unit_type].unit_inventory_slots[temp_combat_unit_inventory_index]
+		};
+		
+		// Increment Combat Unit Inventory Index
+		temp_combat_unit_inventory_index++;
+	}
+	
+	temp_combat_unit_instance.item_inventory_index = -1;
+	
+	// DEBUG DEBUG DEBUG
+	celestial_combat_unit_add_item(temp_combat_unit_instance, CelestialCombatItem.DefaultFirearm, 0);
 	
 	// Index Combat Unit Instance within Celestial Unit's Combat Units Array
 	array_push(celestial_unit.combat_units, temp_combat_unit_instance);

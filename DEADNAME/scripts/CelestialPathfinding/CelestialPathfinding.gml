@@ -306,6 +306,7 @@ function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector
 }
 
 /*
+// I AM NOT SURE HOW TO FIX PATHFINDING - POSSIBLY DELETE THIS LATER
 /// @function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz);
 /// @description Returns the Signed Orientation of the Three Points using Vector A as a reference, this is meant to be used in a Funnel Algorithm to find if the second given point is clockwise or counter-clockwise compared to the third given point as relative to the first given point
 /// @param {real} vector_ax The first Vector's X Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation

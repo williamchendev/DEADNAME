@@ -144,7 +144,7 @@ if (instance_exists(camera_observing_instance))
 						var temp_city_notification_struct = temp_instance.notifications[temp_city_notification_index];
 						
 						// Find City Notification Duration Value
-						var temp_city_notification_duration_value = clamp(temp_city_notification_struct.duration / 5, 0, 1);
+						var temp_city_notification_duration_value = clamp(temp_city_notification_struct.duration / 25, 0, 1);
 						
 						// DEBUG DEBUG DEBUG PLS DO NOT LET THIS BE IN THE FINAL GAME
 						// Draw Notification

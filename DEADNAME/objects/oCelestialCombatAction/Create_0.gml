@@ -1,9 +1,13 @@
+
 //
 battle_instance = noone;
 
 //
 combat_unit = noone;
-combat_unit_action = -1;
+combat_unit_action_type = CelestialCombatUnitActionType.None;
+
+// Celestial Battle Choreography Object Type
+choreography_object_type = CelestialBattleChoreographyObjectType.Prop;
 
 //
 action_accuracy = -1;

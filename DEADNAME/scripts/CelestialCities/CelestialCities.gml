@@ -19,7 +19,7 @@ global.celestial_buildings[CelestialBuildingType.TankFactory] =
 	// Production Variables
 	production_resource: CelestialResource.Coal,
 	
-	production_cycle_duration: 15,
+	production_cycle_duration: 120,
 	production_cycle_resource_count: 3,
 	
 	production_cycle_day_enabled: true,
