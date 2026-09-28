@@ -14,7 +14,7 @@ repeat (temp_battle_unit_count)
 	if (instance_exists(temp_battle_unit_instance))
 	{
 		// Remove Celestial Unit (and all of their participating Combat Units) from the Celestial Battle
-		celestial_battle_remove_unit(id, temp_battle_unit_instance);
+		celestial_battle_remove_unit(id, temp_battle_unit_instance, false);
 	}
 	
 	// Decrement Battle Unit Index

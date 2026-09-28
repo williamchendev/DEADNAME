@@ -19,6 +19,9 @@ switch (scene_get_type())
 		// Set Celestial Simulator Inactive
 		CelestialSimulator.active = false;
 		
+		// Calculate Celestial Simulator's Battle Vertex Positions
+		CelestialSimulator.calculate_celestial_battle_vertex_positions();
+		
 		// Initialize Garbage Collection Service Callback
 		call_later(1, time_source_units_frames, gc_collect, false);
 		break;

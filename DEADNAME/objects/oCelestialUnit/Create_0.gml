@@ -56,11 +56,14 @@ backline_combat_unit_unengaged = array_create(0);
 
 repeat (irandom_range(3, 8))
 {
-	//celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultTank);
-}
-repeat (irandom_range(3, 8))
-{
-	celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultInfantry);
+	//
+	var temp_combat_unit_instance = celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultInfantry);
+	
+	//
+	if (instance_exists(temp_combat_unit_instance))
+	{
+		celestial_combat_unit_add_item(temp_combat_unit_instance, CelestialCombatItem.DefaultFirearm, 0);
+	}
 }
 
 // Solar Variables

@@ -37,16 +37,85 @@ enum CelestialBattleCombatGridSide
 	Right
 }
 
-enum CelestialBattleChoreographyObjectType
+enum CelestialBattleChoreographyStackType
 {
-	Actor,
 	Prop,
+	CombatUnit,
 	LinearProjectile,
 	ArcProjectile,
 	SmokeParticle
 }
 
-// Celestial Battle Functions
+#region Combat Action Functions
+/// @function celestial_battle_calculate_combat_action_success(combat_action_instance);
+/// @description Checks if a Combat Action was successful or not given the Combat Action's properties and the target of the Combat Action
+/// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to check the success of the action being performed
+/// @returns {bool} Returns whether or not the Combat Action performed was successful
+function celestial_battle_calculate_combat_action_success(combat_action_instance)
+{
+	// Establish Default Combat Action Success Value
+	var temp_combat_action_success = false;
+	
+	// Check if Combat Action's Target still exists
+	if (!instance_exists(combat_action_instance.target_combat_unit))
+	{
+		// Combat Action's Target Instance does not exist - Attempt to pull Target Combat Unit from Target Combat Grid Variables
+		switch (combat_action_instance.target_combat_grid_side)
+		{
+			case CelestialBattleCombatGridSide.Left:
+				// Combat Grid Left Side Target Instance Retrieval
+				combat_action_instance.target_combat_unit = array_get(combat_action_instance.battle_instance.battle_combat_grid_a[combat_action_instance.target_combat_grid_column], combat_action_instance.target_combat_grid_row);
+				break;
+			case CelestialBattleCombatGridSide.Right:
+				// Combat Grid Right Side Target Instance Retrieval
+				combat_action_instance.target_combat_unit = array_get(combat_action_instance.battle_instance.battle_combat_grid_b[combat_action_instance.target_combat_grid_column], combat_action_instance.target_combat_grid_row);
+				break;
+			
+		}
+	}
+	
+	// Check if Combat Action has a Valid Target Combat Unit Instance
+	if (instance_exists(combat_action_instance.target_combat_unit))
+	{
+		// Perform Combat Action Behaviour on Target Combat Unit Instance
+		switch (combat_action_instance.action_type)
+		{
+			case CelestialCombatUnitActionType.Attack:
+				// Calculate Combat Action's Attack Success Chance
+				var temp_combat_action_attack_accuracy = combat_action_instance.action_accuracy;
+				var temp_combat_action_defend_evasion = combat_action_instance.target_combat_unit.combat_unit_evasion;
+				var temp_combat_action_attack_success_chance = clamp(0.5 + (temp_combat_action_attack_accuracy - temp_combat_action_defend_evasion) * 0.05, 0, 1);
+				
+				// Calculate Combat Action's Attack Random Chance to hit the Target Combat Unit Instance
+				var temp_combat_action_attack_random_chance = random(1.0);
+				
+				if (temp_combat_action_attack_random_chance <= temp_combat_action_attack_success_chance)
+				{
+					// Combat Action was Successful
+					temp_combat_action_success = true;
+				}
+				break;
+			case CelestialCombatUnitActionType.Support:
+				// Combat Action was Successful
+				temp_combat_action_success = true;
+				break;
+		}
+	}
+	
+	// Return Combat Action's Success/Failure Value
+	return temp_combat_action_success;
+}
+
+/// @function celestial_battle_perform_combat_action(combat_action_instance);
+/// @description 
+/// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to perform the Action Behaviour of
+function celestial_battle_perform_combat_action(combat_action_instance)
+{
+	
+}
+#endregion
+
+#region Celestial Battle Functions
 /// @function celestial_battle_create(celestial_object);
 /// @description Creates and returns a Celestial Battle Instance within the Celestial Simulation with the given Celestial Object Instance and Hostile Celestial Factions, if the given Celestial Factions do not have a Hostile Relationship the Celestial Battle will not be created
 /// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object Instance the Celestial Battle will belong to
@@ -97,6 +166,55 @@ function celestial_battle_create(celestial_object, celestial_faction_a, celestia
 	return temp_celestial_battle_instance;
 }
 
+/// @function celestial_battle_check_for_duplicate(battle_instance);
+/// @description Checks if there is a duplicate Celestial Battle Instance that shares the same Celestial Body Instance and list of Celestial Unit Instances engaged in combat as the Celestial Battle provided and returns its Instance
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to check for a duplicate instance of
+/// @returns {real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance
+function celestial_battle_check_for_duplicate(battle_instance)
+{
+	// Check if Celestial Body Instance exists
+	if (instance_exists(battle_instance.celestial_body_instance))
+	{
+		// Find the Index of this Celestial Battle within the Celestial Body Instance's Battles Array
+		var temp_battle_instance_celestial_body_battles_index = array_get_index(battle_instance.celestial_body_instance.battles, battle_instance);
+		
+		// Remove Celestial Battle Instance from Celestial Body's Battles Array
+		var temp_celestial_body_battles_count = array_length(battle_instance.celestial_body_instance.battles);
+		var temp_celestial_body_battles_index = temp_celestial_body_battles_count - 1;
+		
+		repeat (temp_celestial_body_battles_count)
+		{
+			// Check if Comparing the given Celestial Battle with itself
+			if (temp_celestial_body_battles_index == temp_battle_instance_celestial_body_battles_index)
+			{
+				// Decrement Celestial Body Battles Index
+				temp_celestial_body_battles_index--;
+				
+				// Skip Comparison
+				continue;
+			}
+			
+			// Find Celestial Body's Battle Instance
+			var temp_celestial_body_battles_instance = battle_instance.celestial_body_instance.battles[temp_celestial_body_battles_index];
+			
+			// Check if the Celestial Body's Battle Instance has the same Celestial Units participating in Combat as the given Celestial Battle
+			if (temp_celestial_body_battles_instance.battle_exists and array_equals(battle_instance.battle_units, temp_celestial_body_battles_instance.battle_units))
+			{
+				// Return Duplicate Battle Instance
+				return temp_celestial_body_battles_instance;
+			}
+			
+			// Decrement Celestial Body Battles Index
+			temp_celestial_body_battles_index--;
+		}
+	}
+	
+	// Unable to find Duplicate Battle Instance - Return Null Instance
+	return noone;
+}
+#endregion
+
+#region Celestial Unit Functions
 /// @function celestial_battle_add_unit(battle_instance, unit_instance);
 /// @description Adds the given Celestial Unit Instance to the ongoing Battle with the provided Celestial Battle Instance (this function prevents Celestial Units from being redundantly "double added" to the Celestial Battle)
 /// If the given Celestial Unit Instance is not allied with any of the factions and is not hostile to the opposing faction, they will add the Celestial Battle Instance as a Hazard to their Avoid Behaviour and move away from the vicinity of the Battle
@@ -197,7 +315,8 @@ function celestial_battle_add_unit(battle_instance, unit_instance)
 /// @description Removes the given Celestial Unit Instance from the provided Celestial Battle Instance (this function can end a Celestial Battle if the Celestial Unit being removed is the last participating Unit within one of the Battle's Factions)
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle the given Celestial Unit Instance will be removed from
 /// @param {real:Id.Instance<oCelestialUnit>} unit_instance The Celestial Unit Instance that will be removed from the given Celestial Battle Instance
-function celestial_battle_remove_unit(battle_instance, unit_instance)
+/// @param {bool} leave_animation Toggles whether or not to instantiate the Leave Battle Combat Unit animation when removing the Celestial Unit's Combat Units from the Celestial Battle (off by default)
+function celestial_battle_remove_unit(battle_instance, unit_instance, leave_animation = false)
 {
 	// Find the index of the given Celestial Unit Instance within the Celestial Battle's Celestial Units Array
 	var temp_battle_units_index = array_get_index(battle_instance.battle_units, unit_instance);
@@ -256,7 +375,7 @@ function celestial_battle_remove_unit(battle_instance, unit_instance)
 		if (temp_frontline_engaged_combat_unit_instance.battle_instance == battle_instance)
 		{
 			// Remove the Engaged Combat Unit Instance from the Celestial Battle
-			celestial_battle_remove_combat_unit(battle_instance, temp_frontline_engaged_combat_unit_instance);
+			celestial_battle_remove_combat_unit(battle_instance, temp_frontline_engaged_combat_unit_instance, leave_animation);
 		}
 		
 		// Decrement the Engaged Combat Unit Index
@@ -276,7 +395,7 @@ function celestial_battle_remove_unit(battle_instance, unit_instance)
 		if (temp_midline_engaged_combat_unit_instance.battle_instance == battle_instance)
 		{
 			// Remove the Engaged Combat Unit Instance from the Celestial Battle
-			celestial_battle_remove_combat_unit(battle_instance, temp_midline_engaged_combat_unit_instance);
+			celestial_battle_remove_combat_unit(battle_instance, temp_midline_engaged_combat_unit_instance, leave_animation);
 		}
 		
 		// Decrement the Engaged Combat Unit Index
@@ -296,7 +415,7 @@ function celestial_battle_remove_unit(battle_instance, unit_instance)
 		if (temp_backline_engaged_combat_unit_instance.battle_instance == battle_instance)
 		{
 			// Remove the Engaged Combat Unit Instance from the Celestial Battle
-			celestial_battle_remove_combat_unit(battle_instance, temp_backline_engaged_combat_unit_instance);
+			celestial_battle_remove_combat_unit(battle_instance, temp_backline_engaged_combat_unit_instance, leave_animation);
 		}
 		
 		// Decrement the Engaged Combat Unit Index
@@ -454,7 +573,9 @@ function celestial_battle_load_combat_units(battle_instance, unit_instance, comb
 		}
 	}
 }
+#endregion
 
+#region Combat Unit Functions
 /// @function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance, combat_grid_side);
 /// @description Adds a Combat Unit Instance to the given Celestial Battle Instance
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be added to
@@ -683,7 +804,8 @@ function celestial_battle_add_combat_unit(battle_instance, combat_unit_instance,
 /// @description Removes a Combat Unit Instance from the given Celestial Battle Instance
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be removed from
 /// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance to be removed from the given Celestial Battle Instance
-function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance)
+/// @param {bool} leave_animation Toggles whether or not to instantiate the Leave Battle Combat Unit animation when removing the Combat Unit from the Celestial Battle (off by default)
+function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instance, leave_animation = false)
 {
 	// Find Combat Unit's Index within the Celestial Battle's Combat Units Array
 	var temp_battle_combat_unit_index = array_get_index(battle_instance.battle_combat_units, combat_unit_instance);
@@ -699,7 +821,10 @@ function celestial_battle_remove_combat_unit(battle_instance, combat_unit_instan
 	array_delete(battle_instance.battle_combat_units, temp_battle_combat_unit_index, 1);
 	
 	// Perform Combat Unit's Leave Battle Behaviour
-	celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance);
+	if (leave_animation)
+	{
+		celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance);
+	}
 	
 	// Find the index of this Battle Instance within the Combat Unit's Celestial Unit's Engaged Battles Array and Decrement their Battle Combat Unit Contribution
 	var temp_engaged_battles_index = array_get_index(combat_unit_instance.unit_instance.engaged_battles, battle_instance);
@@ -934,7 +1059,10 @@ function celestial_battle_reset_combat_unit(combat_unit_instance)
 	combat_unit_instance.combat_entry_animation_value = 0;
 }
 
-///
+/// @function celestial_battle_combat_unit_enter(battle_instance, combat_unit_instance);
+/// @description Performs a Combat Unit Instance's Enter Behaviour during a Battle, allowing them to participate in Combat and to be targeted as a Combatant
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be entering
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance to add to the given Celestial Battle Instance's Combat Encounter
 function celestial_battle_combat_unit_enter(battle_instance, combat_unit_instance)
 {
 	// Check Combat Unit's Grid Direction
@@ -1031,354 +1159,76 @@ function celestial_battle_combat_unit_enter(battle_instance, combat_unit_instanc
 	combat_unit_instance.item_angle_recoil = 0;
 	combat_unit_instance.item_horizontal_recoil = 0;
 	combat_unit_instance.item_vertical_recoil = 0;
+	
+	combat_unit_instance.item_muzzle_offset_x = 0;
+	combat_unit_instance.item_muzzle_offset_y = 0;
+	
+	combat_unit_instance.item_muzzle_emission_duration = 0;
+	combat_unit_instance.item_muzzle_emission_image_index = 0;
 }
 
-///
+/// @function celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance);
+/// @description Performs a Combat Unit Instance's Leave Animation during a Battle
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle Instance the given Combat Unit Instance will be performing their Leave Animation within
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Combat Unit Instance to perform their Leave Animation
 function celestial_battle_combat_unit_leave(battle_instance, combat_unit_instance)
 {
-	
-}
-
-/// @function celestial_battle_check_for_duplicate(battle_instance);
-/// @description Checks if there is a duplicate Celestial Battle Instance that shares the same Celestial Body Instance and list of Celestial Unit Instances engaged in combat as the Celestial Battle provided and returns its Instance
-/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to check for a duplicate instance of
-/// @returns {real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance
-function celestial_battle_check_for_duplicate(battle_instance)
-{
-	// Check if Celestial Body Instance exists
-	if (instance_exists(battle_instance.celestial_body_instance))
+	// Check if Combat Unit Instance is already performing their Exit Animation State
+	if (combat_unit_instance.animation_state == CelestialCombatUnitAnimationState.Exit)
 	{
-		// Find the Index of this Celestial Battle within the Celestial Body Instance's Battles Array
-		var temp_battle_instance_celestial_body_battles_index = array_get_index(battle_instance.celestial_body_instance.battles, battle_instance);
-		
-		// Remove Celestial Battle Instance from Celestial Body's Battles Array
-		var temp_celestial_body_battles_count = array_length(battle_instance.celestial_body_instance.battles);
-		var temp_celestial_body_battles_index = temp_celestial_body_battles_count - 1;
-		
-		repeat (temp_celestial_body_battles_count)
-		{
-			// Check if Comparing the given Celestial Battle with itself
-			if (temp_celestial_body_battles_index == temp_battle_instance_celestial_body_battles_index)
-			{
-				// Decrement Celestial Body Battles Index
-				temp_celestial_body_battles_index--;
-				
-				// Skip Comparison
-				continue;
-			}
-			
-			// Find Celestial Body's Battle Instance
-			var temp_celestial_body_battles_instance = battle_instance.celestial_body_instance.battles[temp_celestial_body_battles_index];
-			
-			// Check if the Celestial Body's Battle Instance has the same Celestial Units participating in Combat as the given Celestial Battle
-			if (temp_celestial_body_battles_instance.battle_exists and array_equals(battle_instance.battle_units, temp_celestial_body_battles_instance.battle_units))
-			{
-				// Return Duplicate Battle Instance
-				return temp_celestial_body_battles_instance;
-			}
-			
-			// Decrement Celestial Body Battles Index
-			temp_celestial_body_battles_index--;
-		}
-	}
-	
-	// Unable to find Duplicate Battle Instance - Return Null Instance
-	return noone;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////=====================================================================
-
-/// @function celestial_battle_add_choreography_actor(battle_instance, actor_combat_unit_instance);
-/// @description Adds a Celestial Combat Unit as an Actor to a Celestial Battle's choreography arrays
-/// @param {oCelestialBattle} battle_instance The Celestial Battle to add a Choreography Actor to
-/// @param {real:Id.Instance} actor_combat_unit_instance The Celestial Combat Unit to add as a Choreography Actor
-function celestial_battle_add_choreography_actor(battle_instance, actor_combat_unit_instance)
-{
-	// Check if Battle Exists
-	if (!battle_instance.battle_exists)
-	{
+		// Combat Unit Instance cannot "leave twice" - Early Return
 		return;
 	}
 	
-	// Establish Actor Battle Platform Side & Faction
-	var temp_actor_platform_side = CelestialBattleCombatGridSide.None;
-	var temp_actor_faction_instance = instance_exists(actor_combat_unit_instance.unit_instance) ? actor_combat_unit_instance.unit_instance.unit_faction : noone;
+	// Duplicate Combat Unit Instance with Combat Unit Leave Instance
+	var temp_combat_unit_leave_inst = instance_create_depth(0, 0, 0, oCelestialCombatUnit);
 	
-	// Check what Battle Platform Side the Actor is participating on
-	if (temp_actor_faction_instance == CelestialSimulator.player_faction)
+	with (temp_combat_unit_leave_inst)
 	{
-		// Establish Actor Battle Platform Side
-		temp_actor_platform_side = CelestialBattleCombatGridSide.Left;
-	}
-	else if (instance_exists(temp_actor_faction_instance) and instance_exists(CelestialSimulator.player_faction))
-	{
-		// Check the Player Faction's Relationship with the Actor Faction
-		var temp_player_faction_hostile_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Hostile;
-		var temp_actor_faction_hostile_check = ds_map_find_value(temp_actor_faction_instance.relationships, CelestialSimulator.player_faction) == CelestialFactionRelationshipType.Hostile;
+		// Duplicate Combat Unit Properties
+		combat_unit_type = combat_unit_instance.combat_unit_type;
 		
-		var temp_player_faction_allied_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Allied;
-		var temp_actor_faction_allied_check = ds_map_find_value(temp_actor_faction_instance.relationships, CelestialSimulator.player_faction) == CelestialFactionRelationshipType.Allied;
+		// Duplicate Combat Grid Variables
+		combat_grid_side = combat_unit_instance.combat_grid_side;
 		
-		// Establish Actor Battle Platform Side
-		if (temp_player_faction_hostile_check or temp_actor_faction_hostile_check)
-		{
-			temp_actor_platform_side = CelestialBattleCombatGridSide.Right;
-		}
-		else if (temp_player_faction_allied_check or temp_actor_faction_allied_check)
-		{
-			temp_actor_platform_side = CelestialBattleCombatGridSide.Left;
-		}
-	}
-	else if (instance_exists(CelestialSimulator.player_faction))
-	{
-		// Check the Player Faction's Relationship with the Actor Faction
-		var temp_player_faction_null_faction_hostile_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Hostile;
-		var temp_player_faction_null_faction_allied_check = ds_map_find_value(CelestialSimulator.player_faction.relationships, temp_actor_faction_instance) == CelestialFactionRelationshipType.Allied;
+		combat_grid_column = combat_unit_instance.combat_grid_column;
+		combat_grid_row = combat_unit_instance.combat_grid_row;
 		
-		// Establish Actor Battle Platform Side
-		if (temp_player_faction_null_faction_hostile_check)
-		{
-			temp_actor_platform_side = CelestialBattleCombatGridSide.Right;
-		}
-		else if (temp_player_faction_null_faction_allied_check)
-		{
-			temp_actor_platform_side = CelestialBattleCombatGridSide.Left;
-		}
+		combat_grid_tile = combat_unit_instance.combat_grid_tile;
+		
+		// Duplicate Inventory Variables
+		celestial_combat_unit_duplicate_equipped_item(combat_unit_instance, temp_combat_unit_leave_inst);
+		
+		// Duplicate Item Variables
+		item_aim = combat_unit_instance.item_aim;
+		
+		item_angle = combat_unit_instance.item_angle;
+		
+		item_angle_recoil = combat_unit_instance.item_angle_recoil;
+		item_horizontal_recoil = combat_unit_instance.item_horizontal_recoil;
+		item_vertical_recoil = combat_unit_instance.item_vertical_recoil;
+		
+		// Duplicate Position Variables
+		random_offset_x = combat_unit_instance.random_offset_x;
+		random_offset_y = combat_unit_instance.random_offset_y;
+		
+		// Duplicate Draw Variables
+		draw_image_index_value = combat_unit_instance.draw_image_index_value;
+		draw_xscale = combat_unit_instance.draw_xscale;
+		draw_alpha = combat_unit_instance.draw_alpha;
 	}
 	
-	// Check if Actor is participating in the Battle's Choreography
-	if (temp_actor_platform_side != CelestialBattleCombatGridSide.None)
-	{
-		// Initialize (Actor) Battle Choreography Stack Struct
-		var temp_actor_struct =
-		{
-			// Object Type Variables
-			choreography_object_type: CelestialBattleChoreographyObjectType.Actor,
-			
-			// Object Depth Sorting Variables
-			vertical_depth: 0,
-			
-			// Rendering Variables
-			draw_sprite_index: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_idle_sprite,
-			draw_image_index: 0,
-			
-			draw_x: 0,
-			draw_y: 0,
-			
-			draw_xscale: 1,
-			
-			draw_color: instance_exists(temp_actor_faction_instance) ? temp_actor_faction_instance.faction_color : c_white,
-			draw_alpha: 0,
-			
-			// Advanced Rendering Variables
-			facing_direction: temp_actor_platform_side == CelestialBattleCombatGridSide.Left ? 1 : -1,
-			
-			draw_image_index_value: random(sprite_get_number(global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_move_sprite)),
-			
-			draw_offset_x: 0,
-			draw_offset_y: 0,
-			
-			draw_random_offset_x: irandom_range(-3, 3),
-			draw_random_offset_y: irandom_range(-1, 3),
-			
-			// Actor Combat Unit & Faction Variables
-			combat_unit_type: actor_combat_unit_instance.combat_unit_type,
-			combat_unit_instance: actor_combat_unit_instance,
-			combat_unit_faction: temp_actor_faction_instance,
-			
-			target_combat_unit: noone,
-			target_faction: noone,
-			
-			action_enabled: true,
-			action_delay_timer: random(1.0) + (celestial_unit_check_status_effect(actor_combat_unit_instance.unit_instance, CelestialUnitStatusEffectType.CombatActionStun) ? -3.5 : -1.5),
-			action_duration_timer: -1,
-			
-			// Actor Battle Variables
-			actor_platform_side: temp_actor_platform_side,
-			actor_priority_rank: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_priority_rank,
-			actor_vertical_tile: 0,
-			
-			// Actor Tile Variables
-			battle_tile_ax: 0,
-			battle_tile_ay: 0,
-			
-			battle_tile_bx: 0,
-			battle_tile_by: 0,
-			
-			battle_tile_cx: 0,
-			battle_tile_cy: 0,
-			
-			battle_tile_dx: 0,
-			battle_tile_dy: 0,
-			
-			// Actor Action Variables
-			actor_action_type: -1,
-			actor_action_animation_delay: 0,
-			
-			actor_action_animation_count: 0,
-			actor_action_animation_success: array_create(0),
-			
-			//
-			actor_weapon_enabled: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_enabled,
-			actor_weapon_sprite: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_sprite,
-			
-			actor_weapon_pivot_x: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_pivot_x,
-			actor_weapon_pivot_y: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_pivot_y,
-			
-			actor_weapon_aim_pivot_x: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_aim_pivot_x,
-			actor_weapon_aim_pivot_y: global.celestial_combat_units[actor_combat_unit_instance.combat_unit_type].unit_weapon_aim_pivot_y,
-			
-			actor_weapon_aim: 0,
-			
-			actor_weapon_offset_x: 0,
-			actor_weapon_offset_y: 0,
-			
-			actor_weapon_target_x: 0,
-			actor_weapon_target_y: 0,
-			
-			actor_weapon_angle: 270,
-			
-			actor_weapon_angle_recoil: 0,
-			actor_weapon_horizontal_recoil: 0,
-			actor_weapon_vertical_recoil: 0,
-			
-			actor_weapon_vertical_bobbing_height: -1,
-			actor_weapon_vertical_bobbing_y_offset: 0,
-			
-			//
-			actor_weapon_attack_sprite_index: -1,
-			actor_weapon_attack_image_index: 0,
-			actor_weapon_attack_image_angle: 0,
-			actor_weapon_attack_x: 0,
-			actor_weapon_attack_y: 0,
-			actor_weapon_attack_timer: 0,
-			
-			// Actor Entry Animation Variables
-			actor_entry_animation: true,
-			actor_entry_animation_value: 0,
-			actor_entry_delay_duration: random(18),
-			
-			// Actor Exit Animation Variables
-			actor_exit_animation: false,
-			actor_exit_animation_value: 1,
-			actor_exit_delay_duration: random(18),
-		};
-		
-		// Increment Battle's Vertical Tile Count for Choreography Actor Vertical Placement
-		if (temp_actor_platform_side == CelestialBattleCombatGridSide.Left)
-		{
-			battle_instance.battle_choreography_actors_battle_column_sizes[CelestialBattlePriorityRankMax - temp_actor_struct.actor_priority_rank - 1] += 1;
-		}
-		else if (temp_actor_platform_side == CelestialBattleCombatGridSide.Right)
-		{
-			battle_instance.battle_choreography_actors_battle_column_sizes[CelestialBattlePriorityRankMax + temp_actor_struct.actor_priority_rank] += 1;
-		}
-		
-		// Index Actor Struct into Battle's Choreography Actors Array
-		array_push(battle_instance.battle_choreography_actors, temp_actor_struct);
-	}
+	// Update Combat Unit Leave Instance's Faction Color with Combat Unit Instance's Color
+	temp_combat_unit_leave_inst.image_blend = combat_unit_instance.image_blend;
+	
+	// Add Selected Combat Unit to Battle's Combat Units Pool
+	array_insert(battle_instance.battle_combat_units, 0, temp_combat_unit_leave_inst);
+	
+	// Animation Variables
+	temp_combat_unit_leave_inst.animation_state = CelestialCombatUnitAnimationState.Exit;
+	
+	// Combat Entry & Exit Variables
+	temp_combat_unit_leave_inst.combat_exiting_delay_duration = random(40);
 }
-
-/// @function celestial_battle_clear_choreography_actors(battle_instance);
-/// @description Clears the Choreography Actors array with the given Celestial Battle Instance
-/// @param {oCelestialBattle} battle_instance The Celestial Battle to clear and reset the Choreography Actors array of
-function celestial_battle_clear_choreography_actors(battle_instance)
-{
-	// Check if Celestial Battle Instance Exists
-	if (!instance_exists(battle_instance))
-	{
-		return;
-	}
-	
-	// Increment through Battle's Choreography Actors Array and Erase Battle's Choreography Actors Structs
-	var temp_battle_choreography_actors_count = array_length(battle_instance.battle_choreography_actors);
-	var temp_battle_choreography_actors_index = temp_battle_choreography_actors_count - 1;
-	
-	repeat (temp_battle_choreography_actors_count)
-	{
-		// Delete Battle Choreography Actors Struct
-		delete battle_instance.battle_choreography_actors[temp_battle_choreography_actors_index];
-		
-		// Decrement Battle Choreography Actors Index
-		temp_battle_choreography_actors_index--;
-	}
-	
-	array_resize(battle_instance.battle_choreography_actors, 0);
-	
-	// Clear Battle's Choreography Actors DS Map
-	ds_map_clear(battle_instance.battle_choreography_actors_map);
-}
-
-/// @function celestial_battle_clear_choreography_actions(battle_instance);
-/// @description Clears the Choreography Actions array with the given Celestial Battle Instance
-/// @param {oCelestialBattle} battle_instance The Celestial Battle to clear and reset the Choreography Actions array of
-function celestial_battle_clear_choreography_actions(battle_instance)
-{
-	// Check if Celestial Battle Instance Exists
-	if (!instance_exists(battle_instance))
-	{
-		return;
-	}
-	
-	// Increment through Battle's Choreography Actions Array and Erase Battle's Choreography Actions Structs
-	var temp_battle_choreography_actions_count = array_length(battle_instance.battle_choreography_actions);
-	var temp_battle_choreography_actions_index = temp_battle_choreography_actions_count - 1;
-	
-	repeat (temp_battle_choreography_actions_count)
-	{
-		// Delete Battle Choreography Actions Struct
-		delete battle_instance.battle_choreography_actions[temp_battle_choreography_actions_index];
-		
-		// Decrement Battle Choreography Actions Index
-		temp_battle_choreography_actions_index--;
-	}
-	
-	array_resize(battle_instance.battle_choreography_actions, 0);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-function celestial_battle_damage_combat_unit(battle_instance, celestial_combat_unit, damage_value)
-{
-	//
-	celestial_combat_unit.combat_unit_health -= damage_value;
-	
-	//
-	if (celestial_combat_unit.combat_unit_health > 0)
-	{
-		//
-		return;
-	}
-	
-	//
-	
-	
-	//
-	if (instance_exists(celestial_combat_unit.unit_instance))
-	{
-		//
-		var temp_unit_instance = celestial_combat_unit.unit_instance;
-		
-		//
-		celestial_unit_remove_combat_unit(temp_unit_instance, celestial_combat_unit);
-		
-		//
-		if (array_length(temp_unit_instance.combat_units) < 1)
-		{
-			//
-			if (battle_instance.battle_primary_unit_a == temp_unit_instance or battle_instance.battle_primary_unit_b == temp_unit_instance)
-			{
-				
-			}
-			
-			//
-			instance_destroy(temp_unit_instance);
-		}
-	}
-	
-	//
-	instance_destroy(celestial_combat_unit);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+#endregion
 

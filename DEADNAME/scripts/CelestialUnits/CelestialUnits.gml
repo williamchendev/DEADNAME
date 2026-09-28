@@ -82,14 +82,14 @@ function celestial_unit_leave_faction(celestial_unit)
 /// @description Adds a Combat Unit to the given Celestial Unit
 /// @param {real:Id.Instance<oCelestialUnit>} celestial_unit The Celestial Unit to add a Combat Unit to
 /// @param {int<CelestialCombatUnitType>} combat_unit_type The Combat Unit Type of the Combat Unit to add to the given Celestial Unit
-/// @returns {bool} Returns True if the Combat Unit was added to the Celestial Unit, and False otherwise
+/// @returns {?real:Id.Instance<oCelestialUnit>} Returns a Combat Unit Instance if a Combat Unit was added to the Celestial Unit, and an empty instance (noone) otherwise
 function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 {
 	// Check if Combat Unit Type is eligible to be added to the given Celestial Unit based on their shared Terrain Type
 	if (celestial_unit.unit_terrain_type != global.celestial_combat_units[combat_unit_type].unit_terrain_type)
 	{
-		// Incompatible Combat Unit Type with given Celestial Unit - Return False
-		return false;
+		// Incompatible Combat Unit Type with given Celestial Unit - Return Empty Instance
+		return noone;
 	}
 	
 	// Check if Celestial Unit has the space to allow the given Combat Unit Type to join
@@ -102,8 +102,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_frontline_combat_units_count >= celestial_unit.unit_frontline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Return False
-				return false;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return Empty Instance
+				return noone;
 			}
 			break;
 		case CelestialBattleColumnType.Midline:
@@ -113,8 +113,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_midline_combat_units_count >= celestial_unit.unit_midline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Return False
-				return false;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return Empty Instance
+				return noone;
 			}
 			break;
 		case CelestialBattleColumnType.Backline:
@@ -124,8 +124,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 			// Check if Celestial Unit has the space to add the Combat Unit
 			if (temp_total_backline_combat_units_count >= celestial_unit.unit_backline_combat_units_max)
 			{
-				// Celestial Unit does not have the space to add the given Combat Unit - Return False
-				return false;
+				// Celestial Unit does not have the space to add the given Combat Unit - Return Empty Instance
+				return noone;
 			}
 			break;
 		default:
@@ -140,28 +140,7 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 	temp_combat_unit_instance.combat_unit_health = global.celestial_combat_units[combat_unit_type].unit_health;
 	
 	// Initialize Combat Unit's Inventory from Combat Unit Type
-	var temp_combat_unit_inventory_count = array_length(global.celestial_combat_units[combat_unit_type].unit_inventory_slots);
-	var temp_combat_unit_inventory_index = 0;
-	
-	array_resize(temp_combat_unit_instance.item_inventory, temp_combat_unit_inventory_count);
-	
-	repeat (temp_combat_unit_inventory_count)
-	{
-		// Initialize Empty Inventory Slot
-		temp_combat_unit_instance.item_inventory[temp_combat_unit_inventory_index] = 
-		{
-			item: -1,
-			slot_type: global.celestial_combat_units[combat_unit_type].unit_inventory_slots[temp_combat_unit_inventory_index]
-		};
-		
-		// Increment Combat Unit Inventory Index
-		temp_combat_unit_inventory_index++;
-	}
-	
-	temp_combat_unit_instance.item_inventory_index = -1;
-	
-	// DEBUG DEBUG DEBUG
-	celestial_combat_unit_add_item(temp_combat_unit_instance, CelestialCombatItem.DefaultFirearm, 0);
+	celestial_combat_unit_initialize_inventory(temp_combat_unit_instance);
 	
 	// Index Combat Unit Instance within Celestial Unit's Combat Units Array
 	array_push(celestial_unit.combat_units, temp_combat_unit_instance);
@@ -303,8 +282,8 @@ function celestial_unit_add_combat_unit(celestial_unit, combat_unit_type)
 	celestial_unit.combat_unit_count++;
 	celestial_unit.combat_unit_unengaged_count++;
 	
-	// Compatible Combat Unit Type with given Celestial Unit - Return True
-	return true;
+	// Compatible Combat Unit Type with given Celestial Unit - Return Combat Unit Instance
+	return temp_combat_unit_instance;
 }
 
 /// @function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit);

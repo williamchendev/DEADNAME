@@ -13,6 +13,7 @@ enum CelestialCombatUnitAnimationState
 {
 	EntryDelayed,
 	Entry,
+	Exit,
 	Idle,
 	ActionAttack,
 	ActionSupport
@@ -134,7 +135,7 @@ enum CelestialCombatItem
 	DefaultFirearm
 }
 
-// Global Celestial Combat Units
+// Global Celestial Combat Items
 global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 {
 	// Item Sprite
@@ -149,7 +150,8 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	action_count: 3,
 	action_delay: 30,
 	action_duration: 12,
-	action_instance: oCelestialCombatAction,
+	//action_instance: oCelestialCombatAction_ArcProjectile,
+	action_instance: oCelestialCombatAction_LinearProjectile,
 	
 	// Rotation Settings
 	item_rotate_spd: 0.1,
@@ -167,35 +169,21 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	item_horizontal_recoil_max: -4,
 	item_vertical_recoil_min: -3,
 	item_vertical_recoil_max: -1,
+	
+	// Muzzle Settings
+	item_muzzle_x: 10,
+	item_muzzle_y: -1,
+	
+	item_muzzle_emission_sprite: sOverworld_Unit_William_Firearm_MuzzleFlash,
+	item_muzzle_emission_duration: 3,
 };
 #endregion
 
-/*
-// Global Celestial Unit Action Animations
-global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
-{
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 2,
-	linear_projectile_decay: 0.2,
-};
-
-global.celestial_combat_unit_action_animations[CelestialCombatUnitActionAnimationType.Firearm] =
-{
-	// Hitmarker Settings
-	linear_projectile_hitmarker_hit_sprite: sOverworld_Hitmarker,
-	linear_projectile_hitmarker_miss_sprite: sOverworld_HitmarkerMiss_Large,
-	
-	// Linear Projectile Settings
-	linear_projectile_width: 3,
-	linear_projectile_decay: 0.08,
-};
-*/
-
-////
+#region Inventory Functions
+/// @function celestial_combat_unit_equip_item(combat_unit_instance, inventory_index);
+/// @description Equips the given Celestial Combat Unit with the Inventory Item (or lack thereof) in the given Inventory Index's Inventory Slot
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit that will perform the Equip Behaviour
+/// @param {int} inventory_index The Index of the Inventory Slot to equip an Item (or lack thereof) from
 function celestial_combat_unit_equip_item(combat_unit_instance, inventory_index)
 {
 	// Update Combat Unit's Equipped Item Inventory Index
@@ -231,8 +219,20 @@ function celestial_combat_unit_equip_item(combat_unit_instance, inventory_index)
 	combat_unit_instance.item_angle_recoil = 0;
 	combat_unit_instance.item_horizontal_recoil = 0;
 	combat_unit_instance.item_vertical_recoil = 0;
+	
+	combat_unit_instance.item_muzzle_offset_x = 0;
+	combat_unit_instance.item_muzzle_offset_y = 0;
+	
+	combat_unit_instance.item_muzzle_emission_duration = 0;
+	combat_unit_instance.item_muzzle_emission_image_index = 0;
 }
 
+/// @function celestial_combat_unit_add_item(combat_unit_instance, combat_item_type, inventory_index);
+/// @description Adds a Celestial Combat Item to the given Celestial Combat Unit Instance's Inventory Slot
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit that will have an Item added to their Inventory
+/// @param {int<CelestialCombatItem>} combat_item_type The Celestial Combat Item type enum to add the Combat Item of to the Celestial Combat Unit's Inventory
+/// @param {int} inventory_index The Index of the Inventory Slot to add an Item to
+/// @returns {bool} Returns true or false if the Combat Item was able to be added to the Combat Unit's Inventory
 function celestial_combat_unit_add_item(combat_unit_instance, combat_item_type, inventory_index)
 {
 	// Check if the given Inventory Index is a valid index within Combat Unit's Inventory Array
@@ -260,8 +260,15 @@ function celestial_combat_unit_add_item(combat_unit_instance, combat_item_type, 
 	{
 		celestial_combat_unit_equip_item(combat_unit_instance, inventory_index);
 	}
+	
+	// Added the Combat Item to the Combat Unit's Inventory - Return success condition
+	return true;
 }
 
+/// @function celestial_combat_unit_remove_item(combat_unit_instance, inventory_index);
+/// @description Removes a Celestial Combat Item from the given Celestial Combat Unit Instance's Inventory Slot
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit that will have an Item removed from their Inventory
+/// @param {int} inventory_index The Index of the Inventory Slot to remove an Item from
 function celestial_combat_unit_remove_item(combat_unit_instance, inventory_index)
 {
 	// Check if the given Inventory Index is a valid index within Combat Unit's Inventory Array
@@ -284,6 +291,88 @@ function celestial_combat_unit_remove_item(combat_unit_instance, inventory_index
 	}
 }
 
+/// @function celestial_combat_unit_initialize_inventory(combat_unit_instance);
+/// @description Initializes the Inventory of the given Celestial Combat Unit Instance using their Celestial Combat Unit Type's Inventory as a template
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit Instance that will have their Inventory initialized
+function celestial_combat_unit_initialize_inventory(combat_unit_instance)
+{
+	// Initialize Combat Unit's Inventory from Combat Unit Type
+	var temp_combat_unit_inventory_count = array_length(global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_inventory_slots);
+	var temp_combat_unit_inventory_index = 0;
+	
+	array_resize(combat_unit_instance.item_inventory, temp_combat_unit_inventory_count);
+	
+	repeat (temp_combat_unit_inventory_count)
+	{
+		// Initialize Empty Inventory Slot
+		combat_unit_instance.item_inventory[temp_combat_unit_inventory_index] = 
+		{
+			item: -1,
+			slot_type: global.celestial_combat_units[combat_unit_instance.combat_unit_type].unit_inventory_slots[temp_combat_unit_inventory_index]
+		};
+		
+		// Increment Combat Unit Inventory Index
+		temp_combat_unit_inventory_index++;
+	}
+	
+	// Reset Combat Unit's Equipped Item Index
+	combat_unit_instance.item_inventory_index = -1;
+}
+
+/// @function celestial_combat_unit_duplicate_equipped_item(combat_unit_instance_source, combat_unit_instance_destination);
+/// @description Duplicates the Equipped Inventory Slot of the given Celestial Combat Unit Instance "Source" and copies it to the Celestial Combat Unit Instance "Destination", meant to be used on Duplicate Combat Unit Instances performing their Leave Animation
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance_source The Celestial Combat Unit Instance that will have their Equipped Inventory Slot copied from
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance_destination The Celestial Combat Unit Instance that will have their Equipped Inventory Slot copied to
+function celestial_combat_unit_duplicate_equipped_item(combat_unit_instance_source, combat_unit_instance_destination)
+{
+	// Clear Destination Combat Unit Instance's Inventory Behaviour
+	if (array_length(combat_unit_instance_destination.item_inventory) > 0)
+	{
+		// Clear Combat Unit's Inventory
+		var temp_combat_unit_inventory_count = array_length(combat_unit_instance_destination.item_inventory);
+		var temp_combat_unit_inventory_index = temp_combat_unit_inventory_count - 1;
+		
+		repeat (temp_combat_unit_inventory_count)
+		{
+			// Clear Inventory Slot Struct
+			delete combat_unit_instance_destination.item_inventory[temp_combat_unit_inventory_index];
+			combat_unit_instance_destination.item_inventory[temp_combat_unit_inventory_index] = -1;
+			
+			// Decrement Combat Unit Inventory Index
+			temp_combat_unit_inventory_index--;
+		}
+		
+		array_resize(combat_unit_instance_destination.item_inventory, 0);
+	}
+	
+	// Duplicate Inventory Variables
+	if (combat_unit_instance_source.item_inventory_index != -1)
+	{
+		// Create a single Inventory Slot for the Destination Combat Unit Instance
+		array_resize(combat_unit_instance_destination.item_inventory, 1);
+		
+		// Initialize Inventory Slot as a Copy of the given Source Combat Unit Instance's Equipped Item
+		combat_unit_instance_destination.item_inventory[0] = 
+		{
+			item: combat_unit_instance_source.item_inventory[combat_unit_instance_source.item_inventory_index].item,
+			slot_type: combat_unit_instance_source.item_inventory[combat_unit_instance_source.item_inventory_index].slot_type
+		};
+		
+		// Perform Destination Combat Unit Instance's Item Equip Behaviour for the newly duplicated Inventory Slot Item
+		celestial_combat_unit_equip_item(combat_unit_instance_destination, 0);
+	}
+	else
+	{
+		// Perform Destination Combat Unit Instance's Item Unequip Behaviour
+		celestial_combat_unit_equip_item(combat_unit_instance_destination, -1);
+	}
+}
+
+/// @function celestial_combat_unit_inventory_slot_is_compatible(unit_inventory_slot_type, item_inventory_slot_type);
+/// @description Checks wether the given Item's Inventory Slot Type is compatible with the Unit's Inventory Slot Type and can be placed
+/// @param {int<CelestialCombatUnitInventorySlotType>} unit_inventory_slot_type The Unit's Inventory Slot type to check the compatibility with the given Item
+/// @param {int<CelestialCombatUnitInventorySlotType>} item_inventory_slot_type The Item's Inventory Slot type to check the compatibility with the given Unit's Inventory Slot
+/// @returns {bool} Returns true or false if the Item and the Unit's Inventory Slot are compatible or not
 function celestial_combat_unit_inventory_slot_is_compatible(unit_inventory_slot_type, item_inventory_slot_type)
 {
 	// Establish Inventory Slot Compatibility Check
@@ -310,4 +399,5 @@ function celestial_combat_unit_inventory_slot_is_compatible(unit_inventory_slot_
 	// Return Inventory Slot Compatibility
 	return temp_inventory_slot_is_compatible;
 }
+#endregion
 

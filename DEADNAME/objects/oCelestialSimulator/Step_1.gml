@@ -508,8 +508,8 @@ repeat (temp_solar_systems_count)
 										var temp_random_battle_units_a_contribution_pull_combat_unit_index = irandom(temp_battle_units_a_engaged_battles_combat_unit_contribution - 1);
 										var temp_random_battle_units_a_contribution_pull_combat_unit_instance = array_get(temp_battle_units_a_instance.engaged_battles_combat_units[temp_battle_units_a_engaged_battles_index], temp_random_battle_units_a_contribution_pull_combat_unit_index);
 										
-										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle
-										celestial_battle_remove_combat_unit(temp_battle_units_a_engaged_battle_instance, temp_random_battle_units_a_contribution_pull_combat_unit_instance);
+										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle (and Perform Leave Animation because Combat Unit is moving to another Battle)
+										celestial_battle_remove_combat_unit(temp_battle_units_a_engaged_battle_instance, temp_random_battle_units_a_contribution_pull_combat_unit_instance, true);
 										
 										// Add the Random Combat Unit to this Battle Instance
 										celestial_battle_add_combat_unit(temp_battle_instance, temp_random_battle_units_a_contribution_pull_combat_unit_instance);
@@ -581,8 +581,8 @@ repeat (temp_solar_systems_count)
 										var temp_random_battle_units_b_contribution_pull_combat_unit_index = irandom(temp_battle_units_b_engaged_battles_combat_unit_contribution - 1);
 										var temp_random_battle_units_b_contribution_pull_combat_unit_instance = array_get(temp_battle_units_b_instance.engaged_battles_combat_units[temp_battle_units_b_engaged_battles_index], temp_random_battle_units_b_contribution_pull_combat_unit_index);
 										
-										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle
-										celestial_battle_remove_combat_unit(temp_battle_units_b_engaged_battle_instance, temp_random_battle_units_b_contribution_pull_combat_unit_instance);
+										// Remove the Random Combat Unit from the Celestial Unit's Engaged Battle (and Perform Leave Animation because Combat Unit is moving to another Battle)
+										celestial_battle_remove_combat_unit(temp_battle_units_b_engaged_battle_instance, temp_random_battle_units_b_contribution_pull_combat_unit_instance, true);
 										
 										// Add the Random Combat Unit to this Battle Instance
 										celestial_battle_add_combat_unit(temp_battle_instance, temp_random_battle_units_b_contribution_pull_combat_unit_instance);
@@ -655,8 +655,8 @@ repeat (temp_solar_systems_count)
 						// Check if Celestial Unit is within the Battle's Collision Threshold
 						if (temp_battle_unit_dot_product < temp_battle_instance.battle_far_collision_threshold)
 						{
-							// Remove Celestial Unit from Celestial Battle's Combat
-							celestial_battle_remove_unit(temp_battle_instance, temp_battle_unit_instance);
+							// Remove Celestial Unit from Celestial Battle's Combat (and Perform Leave Animation because Unit is Retreating)
+							celestial_battle_remove_unit(temp_battle_instance, temp_battle_unit_instance, true);
 							
 							// Decrement Battle Celestial Units Index
 							temp_battle_units_index--;
@@ -719,7 +719,7 @@ repeat (temp_solar_systems_count)
 					var temp_combat_unit_instance = temp_battle_instance.battle_combat_units[temp_combat_unit_index];
 					var temp_combat_unit_struct = global.celestial_combat_units[temp_combat_unit_instance.combat_unit_type];
 					
-					//
+					// Establish Combat Item Variables
 					var temp_combat_unit_item_aim = false;
 					var temp_combat_unit_item_target_angle = 0;
 					
@@ -758,9 +758,9 @@ repeat (temp_solar_systems_count)
 							}
 							
 							// Calculate Entry Animation Alpha Transparency Value
-							var temp_combat_unit_alpha = power(temp_combat_unit_instance.combat_entry_animation_value, 0.5);
-							temp_combat_unit_instance.combat_grid_tile.tile_alpha = temp_combat_unit_alpha;
-							temp_combat_unit_instance.draw_alpha = temp_combat_unit_alpha;
+							var temp_combat_unit_entry_alpha = power(temp_combat_unit_instance.combat_entry_animation_value, 0.5);
+							temp_combat_unit_instance.combat_grid_tile.tile_alpha = temp_combat_unit_entry_alpha;
+							temp_combat_unit_instance.draw_alpha = temp_combat_unit_entry_alpha;
 							
 							// Calculate Entry Animation Value & Horizontal Offset
 							var temp_combat_unit_entry_horizontal_offset_value = power(1 - temp_combat_unit_instance.combat_entry_animation_value, global.celestial_battle_exit_stage_animation_mult);
@@ -771,6 +771,65 @@ repeat (temp_solar_systems_count)
 							
 							// Set Combat Unit's Lerp Target Angle as their Move Ambient Angle
 							temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_instance.draw_xscale * -(90 + temp_combat_unit_struct.unit_item_move_ambient_angle));
+							break;
+						case CelestialCombatUnitAnimationState.Exit:
+							// Reset Combat Unit's Action Variables
+							temp_combat_unit_instance.combat_unit_action_count = 0;
+							temp_combat_unit_instance.combat_unit_action_exhaustion = 1;
+							
+							// Exit Delay Animation Behaviour
+							if (temp_combat_unit_instance.combat_exiting_delay_duration > 0)
+							{
+								// Decrement Combat Unit's Combat Exiting Delay Duration
+								temp_combat_unit_instance.combat_exiting_delay_duration -= CelestialSimulator.global_clock_delta_time;
+								
+								// Exit Delay Idle Combat Unit Animation Behaviour - Update Combat Unit's Sprite as Idle
+								temp_combat_unit_instance.sprite_index = temp_combat_unit_struct.unit_idle_sprite;
+								
+								// Set Combat Unit's Lerp Target Angle as their Idle Ambient Angle
+								temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_instance.draw_xscale * -(90 + temp_combat_unit_struct.unit_item_idle_ambient_angle));
+								
+								// Skip Exit Animation Behaviour
+								break;
+							}
+							
+							// Exit Animation Behaviour
+							temp_combat_unit_instance.combat_exit_animation_value += global.celestial_battle_exit_stage_animation_spd * CelestialSimulator.global_clock_delta_time;
+							temp_combat_unit_instance.combat_exit_animation_value = clamp(temp_combat_unit_instance.combat_exit_animation_value, 0, 1);
+							
+							// Check if Exit Animation is finished
+							if (temp_combat_unit_instance.combat_exit_animation_value == 1)
+							{
+								// Reset Combat Grid Tile's Alpha
+								temp_combat_unit_instance.combat_grid_tile.tile_alpha = 0;
+								
+								// Remove Combat Unit from Celestial Battle Instance's Combat Units Array
+								array_delete(temp_battle_instance.battle_combat_units, temp_combat_unit_index, 1);
+								
+								// Destroy Combat Unit Instance
+								instance_destroy(temp_combat_unit_instance);
+								
+								// Decrement Battle Combat Unit Index
+								temp_combat_unit_index--;
+								
+								// Skip Combat Unit's Behaviour
+								continue;
+							}
+							
+							// Calculate Exit Animation Alpha Transparency Value
+							var temp_combat_unit_exit_alpha = power(1 - temp_combat_unit_instance.combat_exit_animation_value, 2);
+							temp_combat_unit_instance.combat_grid_tile.tile_alpha = temp_combat_unit_exit_alpha;
+							temp_combat_unit_instance.draw_alpha = temp_combat_unit_exit_alpha;
+							
+							// Calculate Exit Animation Value & Horizontal Offset
+							var temp_combat_unit_exit_horizontal_offset_value = 1 - power(1 - temp_combat_unit_instance.combat_exit_animation_value, global.celestial_battle_exit_stage_animation_mult);
+							temp_combat_unit_instance.combat_entry_draw_offset_x = -global.celestial_battle_exit_stage_animation_movement_distance * temp_combat_unit_instance.draw_xscale * temp_combat_unit_exit_horizontal_offset_value;
+							
+							// Update Combat Unit's Sprite as Moving
+							temp_combat_unit_instance.sprite_index = temp_combat_unit_struct.unit_move_sprite;
+							
+							// Set Combat Unit's Lerp Target Angle as their Move Ambient Angle
+							temp_combat_unit_item_target_angle = 90 + (temp_combat_unit_instance.draw_xscale * (90 + temp_combat_unit_struct.unit_item_move_ambient_angle));
 							break;
 						case CelestialCombatUnitAnimationState.ActionAttack:
 							// Set Combat Unit to perform Aim Behaviour
@@ -846,6 +905,9 @@ repeat (temp_solar_systems_count)
 						temp_combat_unit_instance.item_angle_recoil = lerp(temp_combat_unit_instance.item_angle_recoil, 0, temp_combat_unit_item_struct.item_recoil_recovery_spd * CelestialSimulator.global_clock_delta_time);
 						temp_combat_unit_instance.item_horizontal_recoil = lerp(temp_combat_unit_instance.item_horizontal_recoil, 0, temp_combat_unit_item_struct.item_recoil_recovery_spd * CelestialSimulator.global_clock_delta_time);
 						temp_combat_unit_instance.item_vertical_recoil = lerp(temp_combat_unit_instance.item_vertical_recoil, 0, temp_combat_unit_item_struct.item_recoil_recovery_spd * CelestialSimulator.global_clock_delta_time);
+						
+						// Decrement Combat Unit Instance's Item Muzzle Emission Duration
+						temp_combat_unit_instance.item_muzzle_emission_duration -= temp_combat_unit_instance.item_muzzle_emission_duration > 0 ? CelestialSimulator.global_clock_delta_time : 0;
 					}
 					
 					// Check if Combat Unit is performing an Action or reducing their Exhaustion
@@ -872,11 +934,6 @@ repeat (temp_solar_systems_count)
 						}
 						else if (temp_combat_unit_instance.combat_unit_action_duration <= 0)
 						{
-							// Apply Combat Item Recoil to Combat Unit Instance's Item
-							temp_combat_unit_instance.item_angle_recoil = random_range(temp_combat_unit_item_struct.item_angle_recoil_min, temp_combat_unit_item_struct.item_angle_recoil_max) * temp_combat_unit_instance.draw_xscale;
-							temp_combat_unit_instance.item_horizontal_recoil = random_range(temp_combat_unit_item_struct.item_horizontal_recoil_min, temp_combat_unit_item_struct.item_horizontal_recoil_max);
-							temp_combat_unit_instance.item_vertical_recoil = random_range(temp_combat_unit_item_struct.item_vertical_recoil_min, temp_combat_unit_item_struct.item_vertical_recoil_max) * temp_combat_unit_instance.draw_xscale;
-							
 							// Initialize Combat Action Instance
 							var temp_new_combat_action_instance = instance_create_depth(0, 0, 0, temp_combat_unit_item_struct.action_instance);
 							
@@ -884,11 +941,14 @@ repeat (temp_solar_systems_count)
 							array_insert(temp_battle_instance.battle_combat_actions, 0, temp_new_combat_action_instance);
 							temp_new_combat_action_instance.battle_instance = temp_battle_instance;
 							
-							// Set the Combat Action Instance's Combat Unit and Combat Unit Action Behaviour
+							// Set the Combat Action Instance's Combat Unit Instance
 							temp_new_combat_action_instance.combat_unit = temp_combat_unit_instance;
-							temp_new_combat_action_instance.combat_unit_action_type = temp_combat_unit_instance.combat_unit_action_type;
 							
-							// Set Combat Action Instance's Stats from Combat Unit's Stats
+							// Set the Combat Action Instance's Action Timer
+							temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
+							
+							// Set the Combat Action Instance's Action Type and Stats from Combat Unit's Action Type and Stats
+							temp_new_combat_action_instance.action_type = temp_combat_unit_instance.combat_unit_action_type;
 							temp_new_combat_action_instance.action_accuracy = temp_combat_unit_instance.combat_unit_accuracy;
 							
 							// Set the Combat Action Instance's Target Combat Unit and Target Combat Grid Variables
@@ -903,11 +963,136 @@ repeat (temp_solar_systems_count)
 							temp_combat_unit_instance.item_target_x = temp_combat_unit_instance.combat_unit_action_target_inst.x;
 							temp_combat_unit_instance.item_target_y = temp_combat_unit_instance.combat_unit_action_target_inst.y + temp_new_combat_action_target_sprite_vertical_offset * 0.5;
 							
+							// Update Combat Unit's Target Position with their Randomized Target Position Offset
+							temp_combat_unit_instance.item_target_x += temp_combat_unit_instance.item_target_random_offset_x;
+							temp_combat_unit_instance.item_target_y += temp_combat_unit_instance.item_target_random_offset_y;
+							
 							// Recalculate and set Combat Unit's Target Angle
 							var temp_combat_unit_angle_recalc_item_x = temp_combat_unit_instance.x + temp_combat_unit_struct.unit_item_aim_pivot_x * temp_combat_unit_instance.draw_xscale;
 							var temp_combat_unit_angle_recalc_item_y = temp_combat_unit_instance.y + temp_combat_unit_struct.unit_item_aim_pivot_y;
 							
 							temp_combat_unit_instance.item_target_angle = point_direction(temp_combat_unit_angle_recalc_item_x, temp_combat_unit_angle_recalc_item_y, temp_combat_unit_instance.item_target_x, temp_combat_unit_instance.item_target_y);
+							
+							// Reset Combat Unit's Item Aim & Aim Direction Values to "Item Aimed"
+							temp_combat_unit_instance.item_aim = 1;
+							temp_combat_unit_instance.item_angle = temp_combat_unit_instance.item_target_angle;
+							
+							// Calculate Combat Unit's Item Pivot
+							temp_combat_unit_instance.item_pivot_x = lerp(temp_combat_unit_struct.unit_item_pivot_x, temp_combat_unit_struct.unit_item_aim_pivot_x, temp_combat_unit_instance.item_aim) * temp_combat_unit_instance.draw_xscale;
+							temp_combat_unit_instance.item_pivot_y = lerp(temp_combat_unit_struct.unit_item_pivot_y, temp_combat_unit_struct.unit_item_aim_pivot_y, temp_combat_unit_instance.item_aim);
+							
+							// Pre-calc Combat Unit's Item Angle
+							rot_prefetch(temp_combat_unit_instance.item_angle);
+							
+							// Calculate Combat Unit's Item Offset from Item Recoil
+							temp_combat_unit_instance.item_offset_x = rot_point_x(temp_combat_unit_instance.item_horizontal_recoil, temp_combat_unit_instance.item_vertical_recoil);
+							temp_combat_unit_instance.item_offset_y = rot_point_y(temp_combat_unit_instance.item_horizontal_recoil, temp_combat_unit_instance.item_vertical_recoil);
+							
+							// Calculate Combat Unit's Item Muzzle Offset
+							temp_combat_unit_instance.item_muzzle_offset_x = rot_point_x(temp_combat_unit_item_struct.item_muzzle_x, temp_combat_unit_item_struct.item_muzzle_y * temp_combat_unit_instance.draw_xscale);
+							temp_combat_unit_instance.item_muzzle_offset_y = rot_point_y(temp_combat_unit_item_struct.item_muzzle_x, temp_combat_unit_item_struct.item_muzzle_y * temp_combat_unit_instance.draw_xscale);
+							
+							// Calculate Combat Unit's Item Muzzle Position as the Combat Action Instance's Spawn Position
+							var temp_combat_action_x = temp_combat_unit_instance.x + temp_combat_unit_instance.item_pivot_x + temp_combat_unit_instance.item_offset_x + temp_combat_unit_instance.item_muzzle_offset_x;
+							var temp_combat_action_y = temp_combat_unit_instance.y + temp_combat_unit_instance.item_pivot_y + temp_combat_unit_instance.item_offset_y + temp_combat_unit_instance.item_muzzle_offset_y + temp_combat_unit_instance.item_vertical_bobbing_y_offset;
+							
+							// Update Combat Action's Spawn Behaviour based on Combat Action's Choreography Stack Type
+							switch (temp_new_combat_action_instance.choreography_stack_type)
+							{
+								case CelestialBattleChoreographyStackType.LinearProjectile:
+									// Calculate Linear Projectile Attack was Successful
+									var temp_linear_projectile_attack_success = celestial_battle_calculate_combat_action_success(temp_new_combat_action_instance);
+									
+									// Check if Linear Projectile Attack was Successful
+									if (!temp_linear_projectile_attack_success)
+									{
+										// Create Missed Linear Projectile's Random Overshoot
+										var temp_linear_projectile_random_overshoot = random_range(-32, 64);
+										
+										// Add Random Overshoot to Combat Unit's Attack Target Position
+										temp_combat_unit_instance.item_target_x += rot_point_x(temp_linear_projectile_random_overshoot, 0);
+										temp_combat_unit_instance.item_target_y += rot_point_y(temp_linear_projectile_random_overshoot, 0);
+										
+										// Check if Combat Unit's Updated Attack Target Position is out of Battle Platform's Bounds
+										if (temp_combat_unit_instance.item_target_y < CelestialSimulator.battle_platform_top_vertical_position or temp_combat_unit_instance.item_target_y > CelestialSimulator.battle_platform_bottom_vertical_position)
+										{
+											// Create Missed Linear Projectile's Offscreen Overshoot
+											var temp_linear_projectile_screen_length = max(GameManager.game_width, GameManager.game_height);
+											
+											// Add Offscreen Overshoot to Combat Unit's Attack Target Position
+											temp_combat_unit_instance.item_target_x += rot_point_x(temp_linear_projectile_screen_length, 0);
+											temp_combat_unit_instance.item_target_y += rot_point_y(temp_linear_projectile_screen_length, 0);
+										}
+									}
+									
+									// Set the Linear Projectile's Hitmarker Sprite & Image Index
+									temp_new_combat_action_instance.sprite_index = temp_linear_projectile_attack_success ? temp_new_combat_action_instance.projectile_hit_hitmarker_sprite : temp_new_combat_action_instance.projectile_miss_hitmarker_sprite;
+									temp_new_combat_action_instance.image_index = irandom(sprite_get_number(temp_new_combat_action_instance.sprite_index) - 1);
+									
+									// Set the Linear Projectile's Hitmarker Rotation
+									temp_new_combat_action_instance.image_angle = temp_linear_projectile_attack_success ? random(360) : 0;
+									
+									// Set the Linear Projectile's Horizontal and Vertical Facing Directions
+									temp_new_combat_action_instance.image_xscale = random(1.0) > 0.5 ? 1 : -1;
+									temp_new_combat_action_instance.image_yscale = temp_linear_projectile_attack_success ? (random(1.0) > 0.5 ? 1 : -1) : 1;
+									
+									// Set the Linear Projectile's Position (Hitmarker) as the Target Position
+									temp_new_combat_action_instance.x = temp_combat_unit_instance.item_target_x;
+									temp_new_combat_action_instance.y = temp_combat_unit_instance.item_target_y;
+									
+									// Set the Linear Projectile's Line Start Position as the Combat Unit's Item Muzzle Position
+									temp_new_combat_action_instance.linear_projectile_start_x = temp_combat_action_x;
+									temp_new_combat_action_instance.linear_projectile_start_y = temp_combat_action_y;
+									
+									// Set the Linear Projectile's Line End Position as the Target Position
+									temp_new_combat_action_instance.linear_projectile_end_x = temp_combat_unit_instance.item_target_x;
+									temp_new_combat_action_instance.linear_projectile_end_y = temp_combat_unit_instance.item_target_y;
+									
+									// Set the Linear Projectile's Line & Hitmarker Color
+									temp_new_combat_action_instance.image_blend = temp_linear_projectile_attack_success ? c_white : c_dkgrey;
+									
+									// Set the Linear Projectile's Line Transparency
+									temp_new_combat_action_instance.linear_projectile_alpha = temp_linear_projectile_attack_success ? 1 : 0.3;
+									
+									// Set the Linear Projectile's Depth as the Target Combat Unit's Vertical Depth
+									temp_new_combat_action_instance.linear_projectile_vertical_depth_y = temp_linear_projectile_attack_success ? temp_combat_unit_instance.combat_unit_action_target_inst.y : temp_combat_unit_instance.item_target_y;
+									temp_new_combat_action_instance.linear_projectile_vertical_depth_offset = 2;
+									break;
+								case CelestialBattleChoreographyStackType.ArcProjectile:
+									// Set the Arc Projectile's Trajectory Start Position as the Combat Unit's Item Muzzle Position
+									temp_new_combat_action_instance.arc_projectile_start_x = temp_combat_action_x;
+									temp_new_combat_action_instance.arc_projectile_start_y = temp_combat_action_y;
+									
+									// Set the Arc Projectile's Trajectory End Position as the Target Combat Unit's Position
+									temp_new_combat_action_instance.arc_projectile_end_x = temp_combat_unit_instance.combat_unit_action_target_inst.x + temp_combat_unit_instance.item_target_random_offset_x;
+									temp_new_combat_action_instance.arc_projectile_end_y = temp_combat_unit_instance.combat_unit_action_target_inst.y + temp_combat_unit_instance.item_target_random_offset_y;
+									
+									//
+									temp_new_combat_action_instance.arc_projectile_start_vertical_depth_y = temp_combat_unit_instance.y;
+									temp_new_combat_action_instance.arc_projectile_end_vertical_depth_y = temp_new_combat_action_instance.arc_projectile_end_y;
+									temp_new_combat_action_instance.arc_projectile_vertical_depth_offset = 2;
+									break;
+								default:
+									break;
+							}
+							
+							// Check if Combat Unit's Item has a Muzzle Emission Sprite
+							if (temp_combat_unit_item_struct.item_muzzle_emission_sprite != -1)
+							{
+								// Set Combat Unit's Item Muzzle Emission Effect
+								temp_combat_unit_instance.item_muzzle_emission_duration = temp_combat_unit_item_struct.item_muzzle_emission_duration;
+								temp_combat_unit_instance.item_muzzle_emission_image_index = irandom(sprite_get_number(temp_combat_unit_item_struct.item_muzzle_emission_sprite) - 1);
+								temp_combat_unit_instance.item_muzzle_emission_yscale = random(1) > 0.5 ? 1 : -1;
+							}
+							
+							// Apply Combat Item Recoil to Combat Unit Instance's Item
+							temp_combat_unit_instance.item_angle_recoil = random_range(temp_combat_unit_item_struct.item_angle_recoil_min, temp_combat_unit_item_struct.item_angle_recoil_max) * temp_combat_unit_instance.draw_xscale;
+							temp_combat_unit_instance.item_horizontal_recoil = random_range(temp_combat_unit_item_struct.item_horizontal_recoil_min, temp_combat_unit_item_struct.item_horizontal_recoil_max);
+							temp_combat_unit_instance.item_vertical_recoil = random_range(temp_combat_unit_item_struct.item_vertical_recoil_min, temp_combat_unit_item_struct.item_vertical_recoil_max) * temp_combat_unit_instance.draw_xscale;
+							
+							// Set Combat Unit's Randomized Target Position Offset
+							temp_combat_unit_instance.item_target_random_offset_x = random_range(-3, 3);
+							temp_combat_unit_instance.item_target_random_offset_y = random_range(-3, 3);
 							
 							// Decrement Combat Unit's Action Count
 							temp_combat_unit_instance.combat_unit_action_count--;
@@ -1128,11 +1313,19 @@ repeat (temp_solar_systems_count)
 							temp_combat_unit_instance.combat_unit_action_target_combat_grid_column = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_column;
 							temp_combat_unit_instance.combat_unit_action_target_combat_grid_row = temp_combat_unit_instance.combat_unit_action_target_inst.combat_grid_row;
 							
+							// Set Combat Unit's Randomized Target Position Offset
+							temp_combat_unit_instance.item_target_random_offset_x = random_range(-3, 3);
+							temp_combat_unit_instance.item_target_random_offset_y = random_range(-3, 3);
+							
 							// Calculate and set Combat Unit's Target Position
 							var temp_combat_action_target_sprite_vertical_offset = -sprite_get_yoffset(temp_combat_unit_instance.combat_unit_action_target_inst.sprite_index) + sprite_get_bbox_top(temp_combat_unit_instance.combat_unit_action_target_inst.sprite_index);
 							
 							temp_combat_unit_instance.item_target_x = temp_combat_unit_instance.combat_unit_action_target_inst.x;
 							temp_combat_unit_instance.item_target_y = temp_combat_unit_instance.combat_unit_action_target_inst.y + temp_combat_action_target_sprite_vertical_offset * 0.5;
+							
+							// Update Combat Unit's Target Position with their Randomized Target Position Offset
+							temp_combat_unit_instance.item_target_x += temp_combat_unit_instance.item_target_random_offset_x;
+							temp_combat_unit_instance.item_target_y += temp_combat_unit_instance.item_target_random_offset_y;
 							
 							// Calculate and set Combat Unit's Target Angle
 							var temp_combat_unit_angle_calc_item_x = temp_combat_unit_instance.x + temp_combat_unit_struct.unit_item_aim_pivot_x * temp_combat_unit_instance.draw_xscale;
@@ -1168,49 +1361,43 @@ repeat (temp_solar_systems_count)
 					// Decrement Combat Action's Timer
 					temp_combat_action_instance.action_timer -= CelestialSimulator.global_clock_delta_time;
 					
+					// Perform Combat Action's Behaviour based on their Choreography Stack Type
+					switch (temp_combat_action_instance.choreography_stack_type)
+					{
+						case CelestialBattleChoreographyStackType.LinearProjectile:
+							// Calculate Linear Projectile Movement Animation
+							temp_combat_action_instance.linear_projectile_start_x = lerp(temp_combat_action_instance.linear_projectile_start_x, temp_combat_action_instance.linear_projectile_end_x, temp_combat_action_instance.linear_projectile_decay * CelestialSimulator.global_clock_delta_time);
+							temp_combat_action_instance.linear_projectile_start_y = lerp(temp_combat_action_instance.linear_projectile_start_y, temp_combat_action_instance.linear_projectile_end_y, temp_combat_action_instance.linear_projectile_decay * CelestialSimulator.global_clock_delta_time);
+							break;
+						case CelestialBattleChoreographyStackType.ArcProjectile:
+							//
+							temp_combat_action_instance.arc_projectile_progress_value = 1 - clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.action_duration, 0, 1);
+							
+							//
+							var temp_arc_projectile_horizontal_travel_x = lerp(temp_combat_action_instance.arc_projectile_start_x, temp_combat_action_instance.arc_projectile_end_x, temp_combat_action_instance.arc_projectile_progress_value);
+							var temp_arc_projectile_horizontal_travel_y = lerp(temp_combat_action_instance.arc_projectile_start_y, temp_combat_action_instance.arc_projectile_end_y, temp_combat_action_instance.arc_projectile_progress_value);
+							
+							//
+							temp_combat_action_instance.x = temp_arc_projectile_horizontal_travel_x;
+							temp_combat_action_instance.y = temp_arc_projectile_horizontal_travel_y;
+							break;
+						default:
+							break;
+					}
+					
 					// Check if Combat Action's Lifetime has Elapsed
 					if (temp_combat_action_instance.action_timer <= 0)
 					{
-						// Check if Combat Action's Target still exists
-						if (!instance_exists(temp_combat_action_instance.target_combat_unit))
+						// Combat Action Perform Behaviour upon Destroy Event
+						if (temp_combat_action_instance.action_perform_on_destroy)
 						{
-							// Combat Action's Target Instance does not exist - Attempt to pull Target Combat Unit from Target Combat Grid Variables
-							switch (temp_combat_action_instance.target_combat_grid_side)
+							// Calculate Combat Action was Successful
+							var temp_combat_action_success = celestial_battle_calculate_combat_action_success(temp_combat_action_instance);
+							
+							// Check if Combat Action was Successful
+							if (temp_combat_action_success)
 							{
-								case CelestialBattleCombatGridSide.Left:
-									// Combat Grid Left Side Target Instance Retrieval
-									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_a[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
-									break;
-								case CelestialBattleCombatGridSide.Right:
-									// Combat Grid Right Side Target Instance Retrieval
-									temp_combat_action_instance.target_combat_unit = array_get(temp_battle_instance.battle_combat_grid_b[temp_combat_action_instance.target_combat_grid_column], temp_combat_action_instance.target_combat_grid_row);
-									break;
 								
-							}
-						}
-						
-						// Check if Combat Action has a Valid Target Combat Unit Instance
-						if (instance_exists(temp_combat_action_instance.target_combat_unit))
-						{
-							// Perform Combat Action Behaviour on Target Combat Unit Instance
-							switch (temp_combat_action_instance.combat_unit_action_type)
-							{
-								case CelestialCombatUnitActionType.Attack:
-									// Calculate Combat Action's Attack Success Chance
-									var temp_combat_action_attack_accuracy = temp_combat_action_instance.action_accuracy;
-									var temp_combat_action_defend_evasion = temp_combat_action_instance.target_combat_unit.combat_unit_evasion;
-									var temp_combat_action_attack_success_chance = clamp(0.5 + (temp_combat_action_attack_accuracy - temp_combat_action_defend_evasion) * 0.05, 0, 1);
-									
-									// Calculate Combat Action's Attack Random Chance to hit the Target Combat Unit Instance
-									var temp_combat_action_attack_random_chance = random(1.0);
-									
-									if (temp_combat_action_attack_random_chance <= temp_combat_action_attack_success_chance)
-									{
-										
-									}
-									break;
-								case CelestialCombatUnitActionType.Support:
-									break;
 							}
 						}
 						
@@ -1546,7 +1733,15 @@ repeat (temp_solar_systems_count)
 								var temp_pathfinding_microbiome_movement_cost_modifier = celestial_microclimate_biome_get_movement_cost_modifier(temp_pathfinding_node_microbiome_type);
 								
 								// Find Unit Pathfinding Remaining Distance
-								var temp_pathfinding_remaining_distance = point_distance_3d(temp_pathfinding_unit_position_x, temp_pathfinding_unit_position_y, temp_pathfinding_unit_position_z, temp_pathfinding_target_position_x, temp_pathfinding_target_position_y, temp_pathfinding_target_position_z);
+								var temp_pathfinding_remaining_distance = point_distance_3d
+								(
+									temp_pathfinding_unit_position_x, 
+									temp_pathfinding_unit_position_y, 
+									temp_pathfinding_unit_position_z, 
+									temp_pathfinding_target_position_x, 
+									temp_pathfinding_target_position_y, 
+									temp_pathfinding_target_position_z
+								);
 								
 								// Find Unit Pathfinding Remaining Movement Cost
 								var temp_pathfinding_remaining_movement_cost = temp_pathfinding_remaining_distance * temp_pathfinding_microbiome_movement_cost_modifier;

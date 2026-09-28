@@ -17,4 +17,6 @@ repeat (temp_combat_unit_inventory_count)
 
 array_resize(item_inventory, 0);
 
+// Reset Combat Unit's Inventory Index
+item_inventory_index = -1;
 

@@ -7,11 +7,11 @@ persistent = true;
 // Unit Instance Variable
 unit_instance = noone;
 
-// Battle Variables
+// Battle Instance Variable
 battle_instance = noone;
 
-// Celestial Battle Choreography Object Type
-choreography_object_type = CelestialBattleChoreographyObjectType.Actor;
+// Celestial Battle Choreography Stack Type
+choreography_stack_type = CelestialBattleChoreographyStackType.CombatUnit;
 
 // Combat Unit Properties
 combat_unit_type = -1;
@@ -48,9 +48,6 @@ combat_grid_tile = -1;
 // Object Depth Sorting Variables
 vertical_depth = 0;
 
-// Item Settings
-item_render_enabled = false;
-
 // Inventory Variables
 item_inventory_index = -1;
 item_inventory = array_create(0);
@@ -68,6 +65,9 @@ item_target_x = 0;
 item_target_y = 0;
 item_target_angle = 0;
 
+item_target_random_offset_x = 0;
+item_target_random_offset_y = 0;
+
 item_angle = 270;
 
 item_angle_recoil = 0;
@@ -77,17 +77,27 @@ item_vertical_recoil = 0;
 item_vertical_bobbing_height = -1;
 item_vertical_bobbing_y_offset = 0;
 
+item_muzzle_offset_x = 0;
+item_muzzle_offset_y = 0;
+
+item_muzzle_emission_duration = 0;
+item_muzzle_emission_image_index = 0;
+item_muzzle_emission_yscale = 1;
+
 // Position Variables
 random_offset_x = 0;
 random_offset_y = 0;
 
-// Combat Entry Variables
+// Combat Entry & Exit Variables
 combat_entered_delay_duration = 0;
 combat_entry_animation_value = 0;
+
+combat_exiting_delay_duration = 0;
+combat_exit_animation_value = 0;
+
 combat_entry_draw_offset_x = 0;
 
 // Draw Variables
 draw_image_index_value = 0;
 draw_xscale = 1;
 draw_alpha = 1;
-

@@ -1,3 +1,5 @@
+/// @description Celestial Combat Action Destroy Event
+// Performs the Celestial Combat Action's Deletion Behaviour
 
 // Check if Combat Action's Celestial Battle Exists
 if (instance_exists(battle_instance))

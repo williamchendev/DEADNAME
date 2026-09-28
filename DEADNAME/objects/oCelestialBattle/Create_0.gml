@@ -28,7 +28,7 @@ miniature_sprite_index = sOverworld_Conflict_Icon;
 
 // Clock Variables
 battle_total_time = 0;
-battle_ending_time = 40;
+battle_ending_time = 120;
 
 // Battle Variables
 battle_exists = true;
@@ -180,7 +180,3 @@ repeat (CelestialBattleCombatGridColumns)
 
 // Initialize Battle Combat Action Variables
 battle_combat_actions = array_create(0);
-
-// Initialize Battle Choreography Arrays
-battle_choreography_actors = array_create(0);
-battle_choreography_actions = array_create(0);
