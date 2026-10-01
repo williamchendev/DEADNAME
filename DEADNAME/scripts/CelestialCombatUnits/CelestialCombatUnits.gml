@@ -6,6 +6,7 @@ enum CelestialCombatUnitInventorySlotType
 	InfantryHefty,
 	InfantryCumbersome,
 	TankMainCannon,
+	ArtilleryCannon
 }
 
 // Celestial Combat Unit Animation State
@@ -32,7 +33,8 @@ enum CelestialCombatUnitActionType
 enum CelestialCombatUnitType
 {
 	DefaultInfantry,
-	DefaultTank
+	DefaultTank,
+	DefaultArtillery
 }
 
 // Global Celestial Combat Units
@@ -126,13 +128,58 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
 	unit_item_idle_ambient_angle: 0,
 	unit_item_move_ambient_angle: 45,
 };
+
+global.celestial_combat_units[CelestialCombatUnitType.DefaultArtillery] =
+{
+	// Unit Sprites
+	unit_idle_sprite: sOverworld_Unit_Artillery,
+	unit_move_sprite: sOverworld_Unit_Artillery,
+	unit_attack_sprite: noone,
+	
+	// Unit Stats
+	unit_health: 10,
+	unit_accuracy: 6,
+	unit_evasion: 6,
+	unit_attack: 2,
+	unit_armor: 1,
+	unit_agility: 0.04,
+	unit_size: 1,
+	unit_entrenchment: 0,
+	
+	// Terrain Settings
+	unit_terrain_type: CelestialUnitTerrainType.Terrestrial,
+	
+	// Combat Settings
+	unit_combat_mandatory_attendance: false,
+	
+	unit_combat_column_type: CelestialBattleColumnType.Midline,
+	
+	unit_attack_assassination: false,
+	
+	// Inventory Settings
+	unit_inventory_slots: 
+	[ 
+		CelestialCombatUnitInventorySlotType.ArtilleryCannon,
+	],
+	
+	// Item Settings
+	unit_item_pivot_x: 0,
+	unit_item_pivot_y: -14,
+	
+	unit_item_aim_pivot_x: 3,
+	unit_item_aim_pivot_y: -16,
+	
+	unit_item_idle_ambient_angle: 0,
+	unit_item_move_ambient_angle: 45,
+};
 #endregion
 
 #region Combat Items
 // Celestial Combat Item Enum
 enum CelestialCombatItem
 {
-	DefaultFirearm
+	DefaultFirearm,
+	DefaultArtillery
 }
 
 // Global Celestial Combat Items
@@ -150,7 +197,6 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	action_count: 3,
 	action_delay: 30,
 	action_duration: 12,
-	//action_instance: oCelestialCombatAction_ArcProjectile,
 	action_instance: oCelestialCombatAction_LinearProjectile,
 	
 	// Rotation Settings
@@ -173,6 +219,47 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	// Muzzle Settings
 	item_muzzle_x: 10,
 	item_muzzle_y: -1,
+	
+	item_muzzle_emission_sprite: sOverworld_Unit_William_Firearm_MuzzleFlash,
+	item_muzzle_emission_duration: 3,
+};
+
+global.celestial_combat_items[CelestialCombatItem.DefaultArtillery] =
+{
+	// Item Sprite
+	item_sprite: sOverworld_Unit_William_Firearm,
+	
+	// Inventory Settings
+	inventory_slot_type: CelestialCombatUnitInventorySlotType.ArtilleryCannon,
+	
+	// Action Settings
+	action_type: CelestialCombatUnitActionType.Attack,
+	action_weight: 16,
+	action_count: 1,
+	action_delay: 30,
+	action_duration: 30,
+	action_instance: oCelestialCombatAction_ArcProjectile,
+	
+	// Rotation Settings
+	item_rotate_spd: 0.1,
+	
+	// Aim Settings
+	item_aiming_aim_transition_spd: 0.12,
+	item_aiming_hip_transition_spd: 0.08,
+	
+	// Recoil Settings
+	item_recoil_recovery_spd: 0.1,
+	
+	item_angle_recoil_min: 3,
+	item_angle_recoil_max: 13,
+	item_horizontal_recoil_min: -6,
+	item_horizontal_recoil_max: -4,
+	item_vertical_recoil_min: -3,
+	item_vertical_recoil_max: -1,
+	
+	// Muzzle Settings
+	item_muzzle_x: 0,
+	item_muzzle_y: 0,
 	
 	item_muzzle_emission_sprite: sOverworld_Unit_William_Firearm_MuzzleFlash,
 	item_muzzle_emission_duration: 3,
@@ -391,6 +478,10 @@ function celestial_combat_unit_inventory_slot_is_compatible(unit_inventory_slot_
 		case CelestialCombatUnitInventorySlotType.TankMainCannon:
 			// Check if Item's Slot Type is also a Tank's Main Cannon
 			temp_inventory_slot_is_compatible = item_inventory_slot_type == CelestialCombatUnitInventorySlotType.TankMainCannon;
+			break;
+		case CelestialCombatUnitInventorySlotType.ArtilleryCannon:
+			// Check if Item's Slot Type is also an Artillery Cannon
+			temp_inventory_slot_is_compatible = item_inventory_slot_type == CelestialCombatUnitInventorySlotType.ArtilleryCannon;
 			break;
 		default:
 			break;

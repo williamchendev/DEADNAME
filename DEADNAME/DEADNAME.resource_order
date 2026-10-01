@@ -750,6 +750,7 @@
     {"name":"sOverworld_Satellite_Default","order":13,"path":"sprites/sOverworld_Satellite_Default/sOverworld_Satellite_Default.yy",},
     {"name":"sOverworld_Satellite_Miniature","order":10,"path":"sprites/sOverworld_Satellite_Miniature/sOverworld_Satellite_Miniature.yy",},
     {"name":"sOverworld_Selection_Border","order":14,"path":"sprites/sOverworld_Selection_Border/sOverworld_Selection_Border.yy",},
+    {"name":"sOverworld_Unit_Artillery_Shell","order":30,"path":"sprites/sOverworld_Unit_Artillery_Shell/sOverworld_Unit_Artillery_Shell.yy",},
     {"name":"sOverworld_Unit_Artillery","order":20,"path":"sprites/sOverworld_Unit_Artillery/sOverworld_Unit_Artillery.yy",},
     {"name":"sOverworld_Unit_Miniature","order":8,"path":"sprites/sOverworld_Unit_Miniature/sOverworld_Unit_Miniature.yy",},
     {"name":"sOverworld_Unit_Ship_Carrier","order":7,"path":"sprites/sOverworld_Unit_Ship_Carrier/sOverworld_Unit_Ship_Carrier.yy",},

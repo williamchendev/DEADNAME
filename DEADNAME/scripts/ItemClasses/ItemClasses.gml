@@ -572,8 +572,8 @@ class ThrownClass extends WeaponClass define
 			
 			while (temp_projectile_trajectory_distance_traveled < global.projectile_trajectory_aim_reticule_distance_limit)
 			{
-				// Add Gravity to Simulated Projectile Vertical Velocity
-				temp_projectile_trajectory_vertical_velocity += temp_projectile_trajectory_gravity;
+				// Add Half Gravity to Simulated Projectile Vertical Velocity
+				temp_projectile_trajectory_vertical_velocity += temp_projectile_trajectory_gravity * 0.5;
 				
 				// Establish Previous Position of Simulated Moving Projectile
 				var temp_projectile_trajectory_position_x_old = temp_projectile_trajectory_position_x;
@@ -639,6 +639,9 @@ class ThrownClass extends WeaponClass define
 				
 				// Increment Projectile Trajectory Distance Traveled by the Distance of the Simulated Moving Projectile's Path of Motion
 				temp_projectile_trajectory_distance_traveled += temp_projectile_trajectory_velocity_path_distance;
+				
+				// Add Half Gravity to Simulated Projectile Vertical Velocity
+				temp_projectile_trajectory_vertical_velocity += temp_projectile_trajectory_gravity * 0.5;
 			}
 		}
 	}
@@ -790,6 +793,7 @@ class ThrownClass extends WeaponClass define
 		
 		// Calculate Angle of Throwing Direction
 		var temp_low_angle = radtodeg(arctan(((temp_initial_velocity_sqr * temp_inv_air_resistance) - sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
+		//var temp_high_angle = radtodeg(arctan(((temp_initial_velocity_sqr * temp_inv_air_resistance) + sqrt(temp_descriminator)) / (temp_gravity * temp_delta_x)));
 		
 		// Return the Mirrored Angle
 		return target_x < start_x ? (temp_low_angle + 180) mod 360 : temp_low_angle;
@@ -800,7 +804,7 @@ class ThrownClass extends WeaponClass define
 		// Disable Weapon Safety
 		thrown_weapon_safety_active = false;
 		
-		//
+		// Reset Thrown Weapon's Fuze Timer
 		if (!is_undefined(global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_timer))
 		{
 			thrown_weapon_fuze_timer = global.item_packs[item_pack].weapon_data.thrown_weapon_fuze_timer;
@@ -1314,7 +1318,7 @@ class FirearmClass extends WeaponClass define
 				var temp_firearm_projectile_impact_y = item_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
 				
 				// Check if Firearm's Projectile has made Contact with Weapon Target
-				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
+				if (position_meeting(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, weapon_target))
 				{
 					// Update Unit Combat Attack Impulse Properties
 					weapon_target.combat_attack_impulse_power = global.item_packs[item_pack].weapon_data.firearm_attack_impulse_power;
@@ -1345,7 +1349,7 @@ class FirearmClass extends WeaponClass define
 				var temp_firearm_projectile_impact_y = item_y + temp_firearm_muzzle_vertical_offset + rot_point_y(i, 0);
 				
 				// Check if Firearm's Projectile has made Contact with Physics Solid
-				if (instance_position(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid))
+				if (position_meeting(temp_firearm_projectile_impact_x, temp_firearm_projectile_impact_y, oSolid))
 				{
 					// Firearm Projectile Contact has been made
 					temp_firearm_attack_contact = true;

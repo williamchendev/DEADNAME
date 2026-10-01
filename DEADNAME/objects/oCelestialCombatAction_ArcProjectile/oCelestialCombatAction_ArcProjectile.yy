@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialCombatAction_ArcProjectile",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"30",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"-1",},
   ],
   "parent":{
     "name":"Combat",
@@ -31,19 +31,15 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"projectile_hit_hitmarker_sprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"projectile_hit_hitmarker_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Hitmarker","path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_Hitmarker","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"projectile_miss_hitmarker_sprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"projectile_miss_hitmarker_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_HitmarkerMiss","path":"sprites/sOverworld_HitmarkerMiss/sOverworld_HitmarkerMiss.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_HitmarkerMiss","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"projectile_speed","filters":[],"listItems":[],"multiselect":false,"name":"projectile_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"projectile_gravity_speed","filters":[],"listItems":[],"multiselect":false,"name":"projectile_gravity_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Hitmarker",
-    "path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",
+    "name":"sOverworld_Unit_Artillery_Shell",
+    "path":"sprites/sOverworld_Unit_Artillery_Shell/sOverworld_Unit_Artillery_Shell.yy",
   },
   "spriteMaskId":null,
   "visible":false,

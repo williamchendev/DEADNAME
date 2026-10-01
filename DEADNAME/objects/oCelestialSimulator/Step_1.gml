@@ -1060,12 +1060,78 @@ repeat (temp_solar_systems_count)
 									break;
 								case CelestialBattleChoreographyStackType.ArcProjectile:
 									// Set the Arc Projectile's Trajectory Start Position as the Combat Unit's Item Muzzle Position
-									temp_new_combat_action_instance.arc_projectile_start_x = temp_combat_action_x;
-									temp_new_combat_action_instance.arc_projectile_start_y = temp_combat_action_y;
+									var temp_arc_projectile_start_x = temp_combat_action_x;
+									var temp_arc_projectile_start_y = temp_combat_action_y;
+									
+									temp_new_combat_action_instance.arc_projectile_start_x = temp_arc_projectile_start_x;
+									temp_new_combat_action_instance.arc_projectile_start_y = temp_arc_projectile_start_y;
 									
 									// Set the Arc Projectile's Trajectory End Position as the Target Combat Unit's Position
-									temp_new_combat_action_instance.arc_projectile_end_x = temp_combat_unit_instance.combat_unit_action_target_inst.x + temp_combat_unit_instance.item_target_random_offset_x;
-									temp_new_combat_action_instance.arc_projectile_end_y = temp_combat_unit_instance.combat_unit_action_target_inst.y + temp_combat_unit_instance.item_target_random_offset_y;
+									var temp_arc_projectile_end_x = temp_combat_unit_instance.combat_unit_action_target_inst.x + temp_combat_unit_instance.item_target_random_offset_x;
+									var temp_arc_projectile_end_y = temp_combat_unit_instance.combat_unit_action_target_inst.y + temp_combat_unit_instance.item_target_random_offset_y;
+									
+									temp_new_combat_action_instance.arc_projectile_end_x = temp_arc_projectile_end_x;
+									temp_new_combat_action_instance.arc_projectile_end_y = temp_arc_projectile_end_y;
+									
+									//
+									var temp_arc_projectile_delta_x = temp_arc_projectile_end_x - temp_arc_projectile_start_x;
+									var temp_arc_projectile_delta_y = -(temp_arc_projectile_end_y - temp_arc_projectile_start_y);
+									
+									//
+									var temp_arc_projectile_init_velocity = temp_new_combat_action_instance.projectile_speed;
+									var temp_arc_projectile_velocity_sqr = temp_arc_projectile_init_velocity * temp_arc_projectile_init_velocity;
+									
+									//
+									var temp_arc_projectile_gravity = temp_new_combat_action_instance.projectile_gravity_speed;
+									
+									//
+									var temp_arc_projectile_descriminator = temp_arc_projectile_gravity * (temp_arc_projectile_gravity * temp_arc_projectile_delta_x * temp_arc_projectile_delta_x + 2 * temp_arc_projectile_delta_y * temp_arc_projectile_velocity_sqr);
+									temp_arc_projectile_descriminator = temp_arc_projectile_velocity_sqr * temp_arc_projectile_velocity_sqr - temp_arc_projectile_descriminator;
+									
+									//var temp_arc_projectile_descriminator = temp_arc_projectile_gravity * temp_arc_projectile_delta_x * temp_arc_projectile_delta_x;
+									//temp_arc_projectile_descriminator = temp_arc_projectile_gravity * (temp_arc_projectile_descriminator + 2 * temp_arc_projectile_delta_y * temp_arc_projectile_velocity_sqr * temp_arc_projectile_inv_air_resistance);
+									//temp_arc_projectile_descriminator = temp_arc_projectile_velocity_sqr * temp_arc_projectile_velocity_sqr * temp_arc_projectile_inv_air_resistance * temp_arc_projectile_inv_air_resistance - temp_arc_projectile_descriminator;
+									
+									// 
+									var temp_arc_projectile_angle = radtodeg(arctan((temp_arc_projectile_velocity_sqr + sqrt(temp_arc_projectile_descriminator)) / (temp_arc_projectile_gravity * temp_arc_projectile_delta_x)));
+									temp_arc_projectile_angle = temp_arc_projectile_end_x < temp_arc_projectile_start_x ? (temp_arc_projectile_angle + 180) mod 360 : temp_arc_projectile_angle;
+									
+									//
+									rot_prefetch(temp_arc_projectile_angle);
+									
+									//
+									var temp_arc_projectile_x_velocity = temp_arc_projectile_init_velocity * rot_point_x(1, 0);
+									var temp_arc_projectile_y_velocity = -temp_arc_projectile_init_velocity * rot_point_y(1, 0);
+									
+									//
+									temp_new_combat_action_instance.arc_projectile_x_velocity = temp_arc_projectile_x_velocity;
+									temp_new_combat_action_instance.arc_projectile_y_velocity = temp_arc_projectile_y_velocity;
+									
+									//
+									//temp_new_combat_action_instance.action_duration = temp_arc_projectile_duration;
+									//temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
+									
+									//
+									temp_new_combat_action_instance.action_duration = abs(temp_arc_projectile_delta_x / temp_arc_projectile_x_velocity);
+									temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
+									
+									/*
+									//
+									var temp_arc_projectile_horizontal_travel_distance = point_distance(temp_arc_projectile_start_x, temp_arc_projectile_start_y, temp_arc_projectile_end_x, temp_arc_projectile_end_y);
+									
+									//
+									temp_new_combat_action_instance.arc_projectile_height_potential = 1 - sqr(1 - temp_arc_projectile_horizontal_travel_distance / CelestialSimulator.battle_platform_bottom_horizontal_width);
+									*/
+									
+									//
+									temp_new_combat_action_instance.image_yscale = temp_arc_projectile_end_x < temp_arc_projectile_start_x ? -1 : 1;
+									
+									//
+									temp_new_combat_action_instance.arc_projectile_new_x = temp_combat_action_x;
+									temp_new_combat_action_instance.arc_projectile_new_y = temp_combat_action_y;
+									
+									temp_new_combat_action_instance.arc_projectile_old_x = temp_new_combat_action_instance.arc_projectile_new_x;
+									temp_new_combat_action_instance.arc_projectile_old_y = temp_new_combat_action_instance.arc_projectile_new_y;
 									
 									//
 									temp_new_combat_action_instance.arc_projectile_start_vertical_depth_y = temp_combat_unit_instance.y;
@@ -1374,12 +1440,19 @@ repeat (temp_solar_systems_count)
 							temp_combat_action_instance.arc_projectile_progress_value = 1 - clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.action_duration, 0, 1);
 							
 							//
-							var temp_arc_projectile_horizontal_travel_x = lerp(temp_combat_action_instance.arc_projectile_start_x, temp_combat_action_instance.arc_projectile_end_x, temp_combat_action_instance.arc_projectile_progress_value);
-							var temp_arc_projectile_horizontal_travel_y = lerp(temp_combat_action_instance.arc_projectile_start_y, temp_combat_action_instance.arc_projectile_end_y, temp_combat_action_instance.arc_projectile_progress_value);
+							var temp_arc_projectile_t = max(temp_combat_action_instance.action_duration - temp_combat_action_instance.action_timer, 0);
+							var temp_arc_projectile_grav = temp_combat_action_instance.projectile_gravity_speed;
 							
 							//
-							temp_combat_action_instance.x = temp_arc_projectile_horizontal_travel_x;
-							temp_combat_action_instance.y = temp_arc_projectile_horizontal_travel_y;
+							temp_combat_action_instance.x = temp_combat_action_instance.arc_projectile_start_x + temp_combat_action_instance.arc_projectile_x_velocity * temp_arc_projectile_t;
+							temp_combat_action_instance.y = temp_combat_action_instance.arc_projectile_start_y - temp_combat_action_instance.arc_projectile_y_velocity * temp_arc_projectile_t + 0.5 * temp_arc_projectile_grav * temp_arc_projectile_t * temp_arc_projectile_t;
+							
+							//
+							temp_combat_action_instance.arc_projectile_old_x = temp_combat_action_instance.arc_projectile_new_x;
+							temp_combat_action_instance.arc_projectile_old_y = temp_combat_action_instance.arc_projectile_new_y;
+							
+							temp_combat_action_instance.arc_projectile_new_x = temp_combat_action_instance.x;
+							temp_combat_action_instance.arc_projectile_new_y = temp_combat_action_instance.y;
 							break;
 						default:
 							break;

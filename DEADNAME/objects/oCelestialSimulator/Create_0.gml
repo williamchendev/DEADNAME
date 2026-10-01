@@ -1381,6 +1381,9 @@ calculate_celestial_battle_choreography_stack = function()
 				temp_combat_action_depth_calculation_y = temp_combat_action_instance.linear_projectile_vertical_depth_y + temp_combat_action_instance.linear_projectile_vertical_depth_offset;
 				break;
 			case CelestialBattleChoreographyStackType.ArcProjectile:
+				//
+				temp_combat_action_instance.image_angle = point_direction(temp_combat_action_instance.arc_projectile_old_x, temp_combat_action_instance.arc_projectile_old_y, temp_combat_action_instance.arc_projectile_new_x, temp_combat_action_instance.arc_projectile_new_y);
+				
 				// Update Arc Projectile's Depth Calculation Value
 				var temp_arc_projectile_vertical_depth_y = lerp(temp_combat_action_instance.arc_projectile_start_vertical_depth_y, temp_combat_action_instance.arc_projectile_end_vertical_depth_y, temp_combat_action_instance.arc_projectile_progress_value);
 				temp_combat_action_depth_calculation_y = temp_arc_projectile_vertical_depth_y + temp_combat_action_instance.arc_projectile_vertical_depth_offset;

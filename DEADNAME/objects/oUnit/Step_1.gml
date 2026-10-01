@@ -106,7 +106,7 @@ if (player_input)
 				var temp_player_input_combat_target = ds_list_find_value(temp_player_input_combat_target_list, temp_player_input_combat_target_index);
 				
 				// Compare Faction Hostility between Player Input Unit and Possible Combat Target Unit
-				if (GameManager.squad_behaviour_director.faction_get_realtionship(faction_id, temp_player_input_combat_target.faction_id) == FactionRelationship.Hostile)
+				if (GameManager.squad_behaviour_director.faction_get_relationship(faction_id, temp_player_input_combat_target.faction_id) == FactionRelationship.Hostile)
 				{
 					// Faction Relationship is Hostile - Select this Unit Instance as Combat Target and Early Return
 					combat_target = temp_player_input_combat_target;

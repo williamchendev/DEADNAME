@@ -66,6 +66,18 @@ repeat (irandom_range(3, 8))
 	}
 }
 
+repeat (irandom_range(2, 4))
+{
+	//
+	var temp_combat_unit_instance = celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultArtillery);
+	
+	//
+	if (instance_exists(temp_combat_unit_instance))
+	{
+		celestial_combat_unit_add_item(temp_combat_unit_instance, CelestialCombatItem.DefaultArtillery, 0);
+	}
+}
+
 // Solar Variables
 unit_solar = CelestialSolarType.Twilight;
 
