@@ -65,7 +65,7 @@ function celestial_pathfinding(celestial_object, unit_object, goal_node_index, g
 	if (funnel_smoothing)
 	{
 		// Create and set the Unit's Pathfinding Path Struct by smoothing the Path Node List using a Funnel Algorithm
-		unit_object.pathfinding_path = celestial_pathfinding_funnel_smooth(celestial_object, temp_path_node_list, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
+		unit_object.pathfinding_path = celestial_pathfinding_funnel_smooth(celestial_object, temp_path_node_list, unit_object.sphere_vector_x, unit_object.sphere_vector_y, unit_object.sphere_vector_z, goal_position_x, goal_position_y, goal_position_z, goal_position_elevation);
 	}
 	else
 	{
@@ -284,6 +284,25 @@ function celestial_pathfinding_a_star(celestial_object, start_node_index, end_no
 	return undefined;
 }
 
+/// @function celestial_pathfinding_vectors_equal(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, tolerance);
+/// @description Returns whether two 3D Vectors are (nearly) the same Position
+/// @param {real} vector_ax The first Vector's X Value
+/// @param {real} vector_ay The first Vector's Y Value
+/// @param {real} vector_az The first Vector's Z Value
+/// @param {real} vector_bx The second Vector's X Value
+/// @param {real} vector_by The second Vector's Y Value
+/// @param {real} vector_bz The second Vector's Z Value
+/// @param {real} tolerance The maximum distance between the two Vectors for them to be considered equal (should be much smaller than your smallest Portal Edge)
+/// @return {bool} Returns true if the two Vectors are within the given tolerance of each other
+function celestial_pathfinding_vectors_equal(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, tolerance = 0.0000001)
+{
+	var temp_difference_x = vector_ax - vector_bx;
+	var temp_difference_y = vector_ay - vector_by;
+	var temp_difference_z = vector_az - vector_bz;
+	
+	return (temp_difference_x * temp_difference_x + temp_difference_y * temp_difference_y + temp_difference_z * temp_difference_z) <= tolerance * tolerance;
+}
+
 /// @function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz);
 /// @description Returns the Signed Orientation of the Three Points using the Triangle's Triple Product, this is meant to be used in a Funnel Algorithm to find if the second given point is clockwise or counter-clockwise compared to the third given point as relative to the first given point
 /// @param {real} vector_ax The first Vector's X Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
@@ -298,50 +317,26 @@ function celestial_pathfinding_a_star(celestial_object, start_node_index, end_no
 /// @return {real} Returns the Signed Orientation of the Three Points using the given Triangle's Triple Product
 function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz)
 {
-	// Calculate Signed Orientation of the Three Points using the Triangle's Triple Product
-	var temp_cross_x = vector_by * vector_cz - vector_bz * vector_cy;
-	var temp_cross_y = vector_bz * vector_cx - vector_bx * vector_cz;
-	var temp_cross_z = vector_bx * vector_cy - vector_by * vector_cx;
+	// Find Edge Vectors relative to Vector A
+	var temp_ab_x = vector_bx - vector_ax;
+	var temp_ab_y = vector_by - vector_ay;
+	var temp_ab_z = vector_bz - vector_az;
+	
+	var temp_ac_x = vector_cx - vector_ax;
+	var temp_ac_y = vector_cy - vector_ay;
+	var temp_ac_z = vector_cz - vector_az;
+	
+	// Cross Product of the Edge Vectors
+	var temp_cross_x = temp_ab_y * temp_ac_z - temp_ab_z * temp_ac_y;
+	var temp_cross_y = temp_ab_z * temp_ac_x - temp_ab_x * temp_ac_z;
+	var temp_cross_z = temp_ab_x * temp_ac_y - temp_ab_y * temp_ac_x;
+	
+	// Project onto Vector A (the Sphere's Surface Normal at the Apex)
 	return vector_ax * temp_cross_x + vector_ay * temp_cross_y + vector_az * temp_cross_z;
 }
 
-/*
-// I AM NOT SURE HOW TO FIX PATHFINDING - POSSIBLY DELETE THIS LATER
-/// @function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz);
-/// @description Returns the Signed Orientation of the Three Points using Vector A as a reference, this is meant to be used in a Funnel Algorithm to find if the second given point is clockwise or counter-clockwise compared to the third given point as relative to the first given point
-/// @param {real} vector_ax The first Vector's X Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
-/// @param {real} vector_ay The first Vector's Y Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
-/// @param {real} vector_az The first Vector's Z Value as the Triangle's First Vertex in 3D World Space, meant to be the origin for calculating the orientation
-/// @param {real} vector_bx The second Vector's X Value as the Triangle's Second Vertex in 3D World Space
-/// @param {real} vector_by The second Vector's Y Value as the Triangle's Second Vertex in 3D World Space
-/// @param {real} vector_bz The second Vector's Z Value as the Triangle's Second Vertex in 3D World Space
-/// @param {real} vector_cx The third Vector's X Value as the Triangle's Third Vertex in 3D World Space
-/// @param {real} vector_cy The third Vector's Y Value as the Triangle's Third Vertex in 3D World Space
-/// @param {real} vector_cz The third Vector's Z Value as the Triangle's Third Vertex in 3D World Space
-/// @return {real} Returns the Signed Orientation of the Three Points using Vector A as the reference for calculating Vector C's Orientation from Vector B
-function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz, vector_cx, vector_cy, vector_cz) 
-{
-	// Dot products with reference point
-	var temp_ab_dot_product = dot_product_3d(vector_ax, vector_ay, vector_az, vector_bx, vector_by, vector_bz);
-	var temp_ac_dot_product = dot_product_3d(vector_ax, vector_ay, vector_az, vector_cx, vector_cy, vector_cz);
-	
-	// Dot product of tangent projections
-	var temp_cos_angle = vector_bx * vector_cx + vector_by * vector_cy + vector_bz * vector_cz - temp_ab_dot_product * temp_ac_dot_product;
-	
-	// Calculate the Sin Angle using Cross Product
-	var temp_cross_x = vector_by * vector_cz - vector_bz * vector_cy;
-	var temp_cross_y = vector_bz * vector_cx - vector_bx * vector_cz;
-	var temp_cross_z = vector_bx * vector_cy - vector_by * vector_cx;
-	
-	var temp_sin_angle = vector_ax * temp_cross_x + vector_ay * temp_cross_y + vector_az * temp_cross_z;
-	
-	// Return the signed orientation
-	return arctan2(temp_sin_angle, temp_cos_angle);
-}
-*/
-
 /// @function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, portal_ay, portal_az, portal_bx, portal_by, portal_bz, funnel_ax, funnel_ay, funnel_az, funnel_bx, funnel_by, funnel_bz);
-/// @description Finds the Closest Point on a Pathfinding Node's Portal Edge Line Segment to the Funnel Algorithm's Shortest Great-Circle Distance Path Segment by finding the intersection between the Funnel's Great-Circle Distance Path's Plane Normal and the Portal Edge Line Segment
+/// @description Finds where the Funnel's Great-Circle Segment crosses a Portal Edge (Lerp Value from Portal A to Portal B)
 /// @param {real} portal_ax The X position of the first point in the Pathfinding Node's Portal Edge Line Segment
 /// @param {real} portal_ay The Y position of the first point in the Pathfinding Node's Portal Edge Line Segment
 /// @param {real} portal_az The Z position of the first point in the Pathfinding Node's Portal Edge Line Segment
@@ -354,7 +349,7 @@ function celestial_pathfinding_triangle_orientation(vector_ax, vector_ay, vector
 /// @param {real} funnel_bx The X position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
 /// @param {real} funnel_by The Y position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
 /// @param {real} funnel_bz The Z position of the second point in the Funnel Algorithm's Shortest Great-Circle Distance Path Segment
-/// @return {?real} Returns a value between 0 and 1 corresponding to the Lerp Value between the Pathfinding Node's Portal Edge Line Segment Position A and B, but will return "Undefined" if no intersection is made between the Plane Normal and the Line Segment
+/// @return {?real} Returns a value between 0 and 1, or Undefined if the Funnel Segment is degenerate or parallel to the Portal Edge
 function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, portal_ay, portal_az, portal_bx, portal_by, portal_bz, funnel_ax, funnel_ay, funnel_az, funnel_bx, funnel_by, funnel_bz)
 {
 	// Find Great Circle Funnel Line Segment's Plane Normal
@@ -362,8 +357,13 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 	var temp_normal_y = funnel_az * funnel_bx - funnel_ax * funnel_bz;
 	var temp_normal_z = funnel_ax * funnel_by - funnel_ay * funnel_bx;
 	
-	// Normalize Great Circle Funnel Line Segment's Plane Normal
 	var temp_normal_magnitude = sqrt(dot_product_3d(temp_normal_x, temp_normal_y, temp_normal_z, temp_normal_x, temp_normal_y, temp_normal_z));
+	
+	// Funnel Segment is degenerate (Start and End are the same or antipodal) - the Plane Normal is meaningless
+	if (temp_normal_magnitude < 0.0000001)
+	{
+		return undefined;
+	}
 	
 	temp_normal_x /= temp_normal_magnitude;
 	temp_normal_y /= temp_normal_magnitude;
@@ -374,10 +374,12 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 	var temp_portal_edge_direction_y = portal_by - portal_ay;
 	var temp_portal_edge_direction_z = portal_bz - portal_az;
 	
-	// Check Line Plane Intersection
+	var temp_portal_edge_length = sqrt(dot_product_3d(temp_portal_edge_direction_x, temp_portal_edge_direction_y, temp_portal_edge_direction_z, temp_portal_edge_direction_x, temp_portal_edge_direction_y, temp_portal_edge_direction_z));
+	
+	// Check Line Plane Intersection (tolerance is relative to the Portal Edge's length so small Portals are not wrongly rejected)
 	var temp_denominator = dot_product_3d(temp_normal_x, temp_normal_y, temp_normal_z, temp_portal_edge_direction_x, temp_portal_edge_direction_y, temp_portal_edge_direction_z);
 	
-	if (abs(temp_denominator) > 0.00001)
+	if (abs(temp_denominator) > 0.000001 * temp_portal_edge_length)
 	{
 		// Valid Line Plane Intersection - Return Clamped Lerp Value
 		return clamp(-dot_product_3d(temp_normal_x, temp_normal_y, temp_normal_z, portal_ax, portal_ay, portal_az) / temp_denominator, 0, 1);
@@ -391,12 +393,15 @@ function celestial_pathfinding_funnel_portal_edge_closest_point(portal_ax, porta
 /// @description Uses a funnel algorithm to create a smoothed final path by iterating through the list of pathfinding nodes to create (hopefully) the most direct path on the Celestial Object's navigation mesh
 /// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object the Pathfinding Navigation Mesh belong to
 /// @param {Id.DsList<int>} path_list A DS List of Pathfinding Node Indexes from the Starting Pathfinding Node's Index to the Ending Pathfinding Node's Index
+/// @param {real} start_x The X value of the normalized vector from the Celestial Object's Origin representing the start position of the pathfinding path
+/// @param {real} start_y The Y value of the normalized vector from the Celestial Object's Origin representing the start position of the pathfinding path
+/// @param {real} start_z The Z value of the normalized vector from the Celestial Object's Origin representing the start position of the pathfinding path
 /// @param {real} end_x The X value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
 /// @param {real} end_y The Y value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
 /// @param {real} end_z The Z value of the normalized vector from the Celestial Object's Origin representing the end position of the pathfinding path
 /// @param {real} end_elevation The Elevation value of the vector from the Celestial Object's Origin representing the end position of the pathfinding path
 /// @return {struct} Returns a Struct of the of the final Pathfinding Path containing the path's size, pathfinding node indexes, and target positions within each pathfinding node
-function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x, end_y, end_z, end_elevation)
+function celestial_pathfinding_funnel_smooth(celestial_object, path_list, start_x, start_y, start_z, end_x, end_y, end_z, end_elevation)
 {
 	// Initialize Empty Path Struct
 	var temp_path_struct = 
@@ -409,12 +414,14 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 		position_elevation: ds_list_create(),
 	}
 	
+	var temp_path_list_size = ds_list_size(path_list);
+	
 	// Check if Path List contains entries
-	if (ds_list_size(path_list) < 2)
+	if (temp_path_list_size < 2)
 	{
 		// Populate Path Struct with Final Destination
 		temp_path_struct.path_size = 1;
-		ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, ds_list_size(path_list) - 1));
+		ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, temp_path_list_size - 1));
 		ds_list_add(temp_path_struct.position_x, end_x);
 		ds_list_add(temp_path_struct.position_y, end_y);
 		ds_list_add(temp_path_struct.position_z, end_z);
@@ -422,27 +429,28 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 		
 		// Destroy Unused Path DS List
 		ds_list_destroy(path_list);
-		path_list = -1;
 		
 		// Return Path Struct
 		return temp_path_struct;
 	}
 	
-	// Initialize Empty Portal DS Lists
-	var temp_portal_count = 0;
+	// Initialize Empty Portal Arrays
+	var temp_portal_count = temp_path_list_size;
 	
-	var temp_portal_left_x_list = ds_list_create();
-	var temp_portal_left_y_list = ds_list_create();
-	var temp_portal_left_z_list = ds_list_create();
+	var temp_portal_left_x_array = array_create(temp_portal_count, 0);
+	var temp_portal_left_y_array = array_create(temp_portal_count, 0);
+	var temp_portal_left_z_array = array_create(temp_portal_count, 0);
+	var temp_portal_left_elevation_array = array_create(temp_portal_count, 0);
 	
-	var temp_portal_right_x_list = ds_list_create();
-	var temp_portal_right_y_list = ds_list_create();
-	var temp_portal_right_z_list = ds_list_create();
+	var temp_portal_right_x_array = array_create(temp_portal_count, 0);
+	var temp_portal_right_y_array = array_create(temp_portal_count, 0);
+	var temp_portal_right_z_array = array_create(temp_portal_count, 0);
+	var temp_portal_right_elevation_array = array_create(temp_portal_count, 0);
 	
-	// Iterate through Path's Portals to populate Portal DS Lists
+	// Iterate through Path's Portals to populate Portal Arrays
 	var temp_portal_index = 0;
 	
-	repeat (ds_list_size(path_list) - 1)
+	repeat (temp_portal_count - 1)
 	{
 		// Find Node Indexes
 		var temp_node_index_a = ds_list_find_value(path_list, temp_portal_index);
@@ -451,305 +459,258 @@ function celestial_pathfinding_funnel_smooth(celestial_object, path_list, end_x,
 		// Find Edge Index
 		var temp_edge_index = array_get_index(celestial_object.pathfinding_node_edges_array[temp_node_index_a], temp_node_index_b);
 		
-		// Find Portal Indexes
-		var temp_edge_portal_left_index = array_get(celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index_a], temp_edge_index);
-		var temp_edge_portal_right_index = array_get(celestial_object.pathfinding_node_edges_portal_right_array[temp_node_index_a], temp_edge_index);
+		// Find Portal Vertex Indexes
+		var temp_left_vertex_index = array_get(celestial_object.pathfinding_node_edges_portal_left_array[temp_node_index_a], temp_edge_index);
+		var temp_right_vertex_index = array_get(celestial_object.pathfinding_node_edges_portal_right_array[temp_node_index_a], temp_edge_index);
 		
-		// Find Portal Positions
-		var temp_portal_left_vector_x = celestial_object.pathfinding_portal_x_array[temp_edge_portal_left_index];
-		var temp_portal_left_vector_y = celestial_object.pathfinding_portal_y_array[temp_edge_portal_left_index];
-		var temp_portal_left_vector_z = celestial_object.pathfinding_portal_z_array[temp_edge_portal_left_index];
+		// Store Portal Positions and Elevations
+		temp_portal_left_x_array[temp_portal_index] = celestial_object.pathfinding_portal_x_array[temp_left_vertex_index];
+		temp_portal_left_y_array[temp_portal_index] = celestial_object.pathfinding_portal_y_array[temp_left_vertex_index];
+		temp_portal_left_z_array[temp_portal_index] = celestial_object.pathfinding_portal_z_array[temp_left_vertex_index];
+		temp_portal_left_elevation_array[temp_portal_index] = celestial_object.pathfinding_portal_elevation_array[temp_left_vertex_index];
 		
-		var temp_portal_right_vector_x = celestial_object.pathfinding_portal_x_array[temp_edge_portal_right_index];
-		var temp_portal_right_vector_y = celestial_object.pathfinding_portal_y_array[temp_edge_portal_right_index];
-		var temp_portal_right_vector_z = celestial_object.pathfinding_portal_z_array[temp_edge_portal_right_index];
+		temp_portal_right_x_array[temp_portal_index] = celestial_object.pathfinding_portal_x_array[temp_right_vertex_index];
+		temp_portal_right_y_array[temp_portal_index] = celestial_object.pathfinding_portal_y_array[temp_right_vertex_index];
+		temp_portal_right_z_array[temp_portal_index] = celestial_object.pathfinding_portal_z_array[temp_right_vertex_index];
+		temp_portal_right_elevation_array[temp_portal_index] = celestial_object.pathfinding_portal_elevation_array[temp_right_vertex_index];
 		
-		// Index Portal Data into Portal DS Lists
-		ds_list_add(temp_portal_left_x_list, temp_portal_left_vector_x);
-		ds_list_add(temp_portal_left_y_list, temp_portal_left_vector_y);
-		ds_list_add(temp_portal_left_z_list, temp_portal_left_vector_z);
-		
-		ds_list_add(temp_portal_right_x_list, temp_portal_right_vector_x);
-		ds_list_add(temp_portal_right_y_list, temp_portal_right_vector_y);
-		ds_list_add(temp_portal_right_z_list, temp_portal_right_vector_z);
-		
-		// Increment Portal Count
-		temp_portal_count++;
-		
-		// Increment Portal Index
 		temp_portal_index++;
 	}
 	
-	// Index Goal Position as Final Portal in Portal DS Lists
-	ds_list_add(temp_portal_left_x_list, end_x);
-	ds_list_add(temp_portal_left_y_list, end_y);
-	ds_list_add(temp_portal_left_z_list, end_z);
+	// Goal Position as Final Portal
+	var temp_goal_portal_index = temp_portal_count - 1;
 	
-	ds_list_add(temp_portal_right_x_list, end_x);
-	ds_list_add(temp_portal_right_y_list, end_y);
-	ds_list_add(temp_portal_right_z_list, end_z);
+	temp_portal_left_x_array[temp_goal_portal_index] = end_x;
+	temp_portal_left_y_array[temp_goal_portal_index] = end_y;
+	temp_portal_left_z_array[temp_goal_portal_index] = end_z;
+	temp_portal_left_elevation_array[temp_goal_portal_index] = end_elevation;
 	
-	temp_portal_count++;
+	temp_portal_right_x_array[temp_goal_portal_index] = end_x;
+	temp_portal_right_y_array[temp_goal_portal_index] = end_y;
+	temp_portal_right_z_array[temp_goal_portal_index] = end_z;
+	temp_portal_right_elevation_array[temp_goal_portal_index] = end_elevation;
 	
-	// Establish Apex and Portal Funnel Vectors
-	var temp_apex_x = celestial_object.pathfinding_node_x_array[ds_list_find_value(path_list, 0)];
-	var temp_apex_y = celestial_object.pathfinding_node_y_array[ds_list_find_value(path_list, 0)];
-	var temp_apex_z = celestial_object.pathfinding_node_z_array[ds_list_find_value(path_list, 0)];
+	// Establish Apex and Funnel Legs
+	var temp_apex_x = start_x;
+	var temp_apex_y = start_y;
+	var temp_apex_z = start_z;
 	
-	var temp_left_x = ds_list_find_value(temp_portal_left_x_list, 0);
-	var temp_left_y = ds_list_find_value(temp_portal_left_y_list, 0);
-	var temp_left_z = ds_list_find_value(temp_portal_left_z_list, 0);
+	var temp_left_x = start_x;
+	var temp_left_y = start_y;
+	var temp_left_z = start_z;
 	
-	var temp_right_x = ds_list_find_value(temp_portal_right_x_list, 0);
-	var temp_right_y = ds_list_find_value(temp_portal_right_y_list, 0);
-	var temp_right_z = ds_list_find_value(temp_portal_right_z_list, 0);
+	var temp_right_x = start_x;
+	var temp_right_y = start_y;
+	var temp_right_z = start_z;
 	
-	var temp_apex_index = 0;
-	var temp_left_index = 0;
-	var temp_right_index = 0;
+	var temp_apex_index = -1;
+	var temp_left_index = -1;
+	var temp_right_index = -1;
 	
-	// Initialize Empty Funnel DS Lists
-	var temp_funnel_node_index_list = ds_list_create();
-	var temp_funnel_position_x_list = ds_list_create();
-	var temp_funnel_position_y_list = ds_list_create();
-	var temp_funnel_position_z_list = ds_list_create();
-	var temp_funnel_portal_lerp_list = ds_list_create();
+	// Funnel Corner Arrays - Index 0 is the Start Position, the Portal Index of each Corner is stored so Phase 2 can find the Funnel Segment covering any Portal
+	var temp_corner_x_array = array_create(0);
+	var temp_corner_y_array = array_create(0);
+	var temp_corner_z_array = array_create(0);
+	var temp_corner_portal_index_array = array_create(0);
 	
-	// Iterate through Path to perform Funnel Walk Behaviour
+	array_push(temp_corner_x_array, start_x);
+	array_push(temp_corner_y_array, start_y);
+	array_push(temp_corner_z_array, start_z);
+	array_push(temp_corner_portal_index_array, -1);
+	
+	// PHASE 1 - Funnel Walk
 	var temp_index = 0;
+	var temp_iterations = 0;
+	var temp_max_iterations = temp_portal_count * temp_portal_count + temp_portal_count; // Safety Net only, should never be reached
 	
-	while (temp_index < temp_portal_count and ds_list_size(temp_funnel_node_index_list) <= temp_portal_count)
+	while (temp_index < temp_portal_count and temp_iterations < temp_max_iterations)
 	{
-		// Find Portal Positions
-		var temp_portal_left_x = ds_list_find_value(temp_portal_left_x_list, temp_index);
-		var temp_portal_left_y = ds_list_find_value(temp_portal_left_y_list, temp_index);
-		var temp_portal_left_z = ds_list_find_value(temp_portal_left_z_list, temp_index);
+		// Increment Iterations
+		temp_iterations++;
 		
-		var temp_portal_right_x = ds_list_find_value(temp_portal_right_x_list, temp_index);
-		var temp_portal_right_y = ds_list_find_value(temp_portal_right_y_list, temp_index);
-		var temp_portal_right_z = ds_list_find_value(temp_portal_right_z_list, temp_index);
+		// Find Portal Positions
+		var temp_portal_left_x = temp_portal_left_x_array[temp_index];
+		var temp_portal_left_y = temp_portal_left_y_array[temp_index];
+		var temp_portal_left_z = temp_portal_left_z_array[temp_index];
+		
+		var temp_portal_right_x = temp_portal_right_x_array[temp_index];
+		var temp_portal_right_y = temp_portal_right_y_array[temp_index];
+		var temp_portal_right_z = temp_portal_right_z_array[temp_index];
 		
 		// Right-Side Funnel Tightening Behaviour
-		var temp_spherical_excess_portal_right_vector_right = celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_right_x, temp_portal_right_y, temp_portal_right_z, temp_right_x, temp_right_y, temp_right_z);
-		
-		if (temp_spherical_excess_portal_right_vector_right >= 0)
+		if (celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_right_x, temp_portal_right_y, temp_portal_right_z, temp_right_x, temp_right_y, temp_right_z) >= 0)
 		{
-			// Right Portal is inside or tightens the Right Side's Vector
-			var temp_spherical_excess_portal_left_vector_right = celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_right_x, temp_portal_right_y, temp_portal_right_z, temp_left_x, temp_left_y, temp_left_z);
+			// Check if Portal's Right Side Equals the Apex
+			var temp_right_side_equals_apex = celestial_pathfinding_vectors_equal(temp_apex_x, temp_apex_y, temp_apex_z, temp_right_x, temp_right_y, temp_right_z);
 			
-			// Check if crosses over Left Wall
-			if (dot_product_3d(temp_apex_x, temp_apex_y, temp_apex_z, temp_right_x, temp_right_y, temp_right_z) != 1 and temp_spherical_excess_portal_left_vector_right > 0)
+			// Tighten if the Right Leg is collapsed onto the Apex, or if the new Right Portal does not cross over the Left Leg
+			if (temp_right_side_equals_apex or celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_right_x, temp_portal_right_y, temp_portal_right_z, temp_left_x, temp_left_y, temp_left_z) <= 0)
 			{
-				// New Right Portal's Funnel Vector has crossed the Left Funnel Vector — Index Left Vector into Funnel Waypoint List
-				ds_list_add(temp_funnel_node_index_list, ds_list_find_value(path_list, temp_left_index));
-				ds_list_add(temp_funnel_position_x_list, temp_left_x);
-				ds_list_add(temp_funnel_position_y_list, temp_left_y);
-				ds_list_add(temp_funnel_position_z_list, temp_left_z);
-				ds_list_add(temp_funnel_portal_lerp_list, 0);
+				temp_right_x = temp_portal_right_x;
+				temp_right_y = temp_portal_right_y;
+				temp_right_z = temp_portal_right_z;
+				temp_right_index = temp_index;
+			}
+			else
+			{
+				// Right crossed over Left - the Left Vertex becomes a Corner and the new Apex
+				array_push(temp_corner_x_array, temp_left_x);
+				array_push(temp_corner_y_array, temp_left_y);
+				array_push(temp_corner_z_array, temp_left_z);
+				array_push(temp_corner_portal_index_array, temp_left_index);
 				
-				// Apex must advance to Left Funnel Vertex
 				temp_apex_x = temp_left_x;
 				temp_apex_y = temp_left_y;
 				temp_apex_z = temp_left_z;
-				
 				temp_apex_index = temp_left_index;
 				
-				// Update Right Funnel Vector with current Apex
+				// Reset Right Leg onto the new Apex
 				temp_right_x = temp_apex_x;
 				temp_right_y = temp_apex_y;
 				temp_right_z = temp_apex_z;
-				
-				// Update Indexes
 				temp_right_index = temp_apex_index;
-				temp_index = temp_apex_index;
 				
-				// Advance Loop Behaviour
+				// Restart the Walk from the Portal AFTER the Apex (restarting ON the Apex re-evaluates a degenerate Portal and can loop forever)
+				temp_index = temp_apex_index + 1;
 				continue;
 			}
-			
-			// Tighten Funnel - Update Right Vector with Portal Right Vector
-			temp_right_x = temp_portal_right_x;
-			temp_right_y = temp_portal_right_y;
-			temp_right_z = temp_portal_right_z;
-			
-			// Update Right Index
-			temp_right_index = temp_index;
-		} 
+		}
 		
 		// Left-Side Funnel Tightening Behaviour
-		var temp_spherical_excess_portal_left_vector_left = celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_left_x, temp_portal_left_y, temp_portal_left_z, temp_left_x, temp_left_y, temp_left_z);
-		
-		if (temp_spherical_excess_portal_left_vector_left <= 0)
+		if (celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_left_x, temp_portal_left_y, temp_portal_left_z, temp_left_x, temp_left_y, temp_left_z) <= 0)
 		{
-			// Left Portal is inside or tightens the Left Side's Vector
-			var temp_spherical_excess_portal_right_vector_left = celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_left_x, temp_portal_left_y, temp_portal_left_z, temp_right_x, temp_right_y, temp_right_z);
+			// Check if Portal's Left Side Equals the Apex
+			var temp_left_side_equals_apex = celestial_pathfinding_vectors_equal(temp_apex_x, temp_apex_y, temp_apex_z, temp_left_x, temp_left_y, temp_left_z);
 			
-			// Check if crosses over Right Wall
-			if (dot_product_3d(temp_apex_x, temp_apex_y, temp_apex_z, temp_left_x, temp_left_y, temp_left_z) != 1 and temp_spherical_excess_portal_right_vector_left < 0)
+			// Tighten if the Left Leg is collapsed onto the Apex, or if the new Left Portal does not cross over the Right Leg
+			if (temp_left_side_equals_apex or celestial_pathfinding_triangle_orientation(temp_apex_x, temp_apex_y, temp_apex_z, temp_portal_left_x, temp_portal_left_y, temp_portal_left_z, temp_right_x, temp_right_y, temp_right_z) >= 0)
 			{
-				// New Left Portal's Funnel Vector has crossed the Right Funnel Vector — Index Right Vector into Funnel Waypoint List
-				ds_list_add(temp_funnel_node_index_list, ds_list_find_value(path_list, temp_right_index));
-				ds_list_add(temp_funnel_position_x_list, temp_right_x);
-				ds_list_add(temp_funnel_position_y_list, temp_right_y);
-				ds_list_add(temp_funnel_position_z_list, temp_right_z);
-				ds_list_add(temp_funnel_portal_lerp_list, 1);
+				temp_left_x = temp_portal_left_x;
+				temp_left_y = temp_portal_left_y;
+				temp_left_z = temp_portal_left_z;
+				temp_left_index = temp_index;
+			}
+			else
+			{
+				// Left crossed over Right - the Right Vertex becomes a Corner and the new Apex
+				array_push(temp_corner_x_array, temp_right_x);
+				array_push(temp_corner_y_array, temp_right_y);
+				array_push(temp_corner_z_array, temp_right_z);
+				array_push(temp_corner_portal_index_array, temp_right_index);
 				
-				// Apex must advance to Right Funnel Vertex
 				temp_apex_x = temp_right_x;
 				temp_apex_y = temp_right_y;
 				temp_apex_z = temp_right_z;
-				
 				temp_apex_index = temp_right_index;
 				
-				// Update Left Funnel Vector with current Apex
+				// Reset Left Leg onto the new Apex
 				temp_left_x = temp_apex_x;
 				temp_left_y = temp_apex_y;
 				temp_left_z = temp_apex_z;
-				
-				// Update Indexes
 				temp_left_index = temp_apex_index;
-				temp_index = temp_apex_index;
 				
-				// Advance Loop Behaviour
+				temp_index = temp_apex_index + 1;
 				continue;
 			}
-			
-			// Tighten Funnel - Update Left Vector with Portal Left Vector
-			temp_left_x = temp_portal_left_x;
-			temp_left_y = temp_portal_left_y;
-			temp_left_z = temp_portal_left_z;
-			
-			// Update Left Index
-			temp_left_index = temp_index;
 		}
 		
-		// Increment Index
+		// Advance to next Portal
 		temp_index++;
 	}
 	
-	// Add Funnel List Start Waypoint
-	ds_list_insert(temp_funnel_node_index_list, 0, -1);
-	ds_list_insert(temp_funnel_position_x_list, 0, celestial_object.pathfinding_node_x_array[ds_list_find_value(path_list, 0)]);
-	ds_list_insert(temp_funnel_position_y_list, 0, celestial_object.pathfinding_node_y_array[ds_list_find_value(path_list, 0)]);
-	ds_list_insert(temp_funnel_position_z_list, 0, celestial_object.pathfinding_node_z_array[ds_list_find_value(path_list, 0)]);
-	ds_list_insert(temp_funnel_portal_lerp_list, 0, 0.5);
+	// Add Goal as the final Funnel Corner (its Portal Index is the Goal Portal, so it covers every remaining Portal)
+	array_push(temp_corner_x_array, end_x);
+	array_push(temp_corner_y_array, end_y);
+	array_push(temp_corner_z_array, end_z);
+	array_push(temp_corner_portal_index_array, temp_goal_portal_index);
 	
-	// Add Funnel List End Waypoint
-	ds_list_add(temp_funnel_node_index_list, ds_list_find_value(path_list, ds_list_size(path_list) - 1));
-	ds_list_add(temp_funnel_position_x_list, end_x);
-	ds_list_add(temp_funnel_position_y_list, end_y);
-	ds_list_add(temp_funnel_position_z_list, end_z);
-	ds_list_add(temp_funnel_portal_lerp_list, 0.5);
+	// PHASE 2 - Place one Waypoint per Portal where the string-pulled Funnel Segment crosses it
+	var temp_corner_segment_index = 1;
+	temp_portal_index = 0;
 	
-	// Iterate through Path and Funnel Lists to populate the Path Struct with the final Smoothed Path
-	var temp_smoothing_path_index = 0;
-	var temp_smoothing_funnel_index = 1;
-	
-	repeat (ds_list_size(path_list) - 1)
+	repeat (temp_portal_count - 1)
 	{
-		// Find Funnel Node and Path Indexes
-		var temp_funnel_node_index = ds_list_find_value(temp_funnel_node_index_list, temp_smoothing_funnel_index);
-		var temp_funnel_path_index = ds_list_find_index(path_list, temp_funnel_node_index);
-		
-		// Check to Increment Funnel Index
-		if (temp_smoothing_path_index >= temp_funnel_path_index)
+		// Advance to the first Funnel Segment whose end Corner is at or beyond this Portal
+		while (temp_corner_portal_index_array[temp_corner_segment_index] < temp_portal_index)
 		{
-			// Increment Funnel Index
-			temp_smoothing_funnel_index = clamp(temp_funnel_path_index + 1, 1, ds_list_size(temp_funnel_node_index_list) - 1);
+			temp_corner_segment_index++;
 		}
 		
-		// Find Path Node Indexes
-		var temp_path_node_index_a = ds_list_find_value(path_list, temp_smoothing_path_index);
-		var temp_path_node_index_b = ds_list_find_value(path_list, temp_smoothing_path_index + 1);
+		// Find Funnel Segment Start and End
+		var temp_funnel_ax = temp_corner_x_array[temp_corner_segment_index - 1];
+		var temp_funnel_ay = temp_corner_y_array[temp_corner_segment_index - 1];
+		var temp_funnel_az = temp_corner_z_array[temp_corner_segment_index - 1];
 		
-		// Find Path Edge Index
-		var temp_path_edge_index = array_get_index(celestial_object.pathfinding_node_edges_array[temp_path_node_index_a], temp_path_node_index_b);
+		var temp_funnel_bx = temp_corner_x_array[temp_corner_segment_index];
+		var temp_funnel_by = temp_corner_y_array[temp_corner_segment_index];
+		var temp_funnel_bz = temp_corner_z_array[temp_corner_segment_index];
 		
-		// Find Path Portal Indexes
-		var temp_path_portal_left_index = array_get(celestial_object.pathfinding_node_edges_portal_left_array[temp_path_node_index_a], temp_path_edge_index);
-		var temp_path_portal_right_index = array_get(celestial_object.pathfinding_node_edges_portal_right_array[temp_path_node_index_a], temp_path_edge_index);
+		// Find where the Funnel Segment crosses this Portal
+		var temp_portal_lerp_value = celestial_pathfinding_funnel_portal_edge_closest_point
+		(
+			temp_portal_left_x_array[temp_portal_index], temp_portal_left_y_array[temp_portal_index], temp_portal_left_z_array[temp_portal_index],
+			temp_portal_right_x_array[temp_portal_index], temp_portal_right_y_array[temp_portal_index], temp_portal_right_z_array[temp_portal_index],
+			temp_funnel_ax, temp_funnel_ay, temp_funnel_az,
+			temp_funnel_bx, temp_funnel_by, temp_funnel_bz
+		);
 		
-		// Find Path Portal Positions
-		var temp_portal_ax = celestial_object.pathfinding_portal_x_array[temp_path_portal_left_index];
-		var temp_portal_ay = celestial_object.pathfinding_portal_y_array[temp_path_portal_left_index];
-		var temp_portal_az = celestial_object.pathfinding_portal_z_array[temp_path_portal_left_index];
+		// Degenerate Funnel Segment or Portal Edge parallel to the Funnel - Fall back to the Portal's Midpoint
+		if (is_undefined(temp_portal_lerp_value))
+		{
+			temp_portal_lerp_value = 0.5;
+		}
 		
-		var temp_portal_bx = celestial_object.pathfinding_portal_x_array[temp_path_portal_right_index];
-		var temp_portal_by = celestial_object.pathfinding_portal_y_array[temp_path_portal_right_index];
-		var temp_portal_bz = celestial_object.pathfinding_portal_z_array[temp_path_portal_right_index];
+		// Find Waypoint Position (the Portal Edge is a chord, so re-normalize to keep the Waypoint on the Sphere's Surface)
+		var temp_waypoint_x = lerp(temp_portal_left_x_array[temp_portal_index], temp_portal_right_x_array[temp_portal_index], temp_portal_lerp_value);
+		var temp_waypoint_y = lerp(temp_portal_left_y_array[temp_portal_index], temp_portal_right_y_array[temp_portal_index], temp_portal_lerp_value);
+		var temp_waypoint_z = lerp(temp_portal_left_z_array[temp_portal_index], temp_portal_right_z_array[temp_portal_index], temp_portal_lerp_value);
 		
-		// Find Path Portal Elevations
-		var temp_portal_a_elevation = celestial_object.pathfinding_portal_elevation_array[temp_path_portal_left_index];
-		var temp_portal_b_elevation = celestial_object.pathfinding_portal_elevation_array[temp_path_portal_right_index];
+		var temp_waypoint_magnitude = sqrt(dot_product_3d(temp_waypoint_x, temp_waypoint_y, temp_waypoint_z, temp_waypoint_x, temp_waypoint_y, temp_waypoint_z));
 		
-		// Establish Funnel Variables
-		var temp_funnel_ax = ds_list_find_value(temp_funnel_position_x_list, temp_smoothing_funnel_index - 1);
-		var temp_funnel_ay = ds_list_find_value(temp_funnel_position_y_list, temp_smoothing_funnel_index - 1);
-		var temp_funnel_az = ds_list_find_value(temp_funnel_position_z_list, temp_smoothing_funnel_index - 1);
-		
-		var temp_funnel_bx = ds_list_find_value(temp_funnel_position_x_list, temp_smoothing_funnel_index);
-		var temp_funnel_by = ds_list_find_value(temp_funnel_position_y_list, temp_smoothing_funnel_index);
-		var temp_funnel_bz = ds_list_find_value(temp_funnel_position_z_list, temp_smoothing_funnel_index);
-		
-		// Calculate Portal Lerp based on Funnel Direction and Portal Edge Intersection
-		var temp_portal_lerp_value = celestial_pathfinding_funnel_portal_edge_closest_point(temp_portal_ax, temp_portal_ay, temp_portal_az, temp_portal_bx, temp_portal_by, temp_portal_bz, temp_funnel_ax, temp_funnel_ay, temp_funnel_az, temp_funnel_bx, temp_funnel_by, temp_funnel_bz);
-		
-		// Check if Funnel Direction and Portal Edge Intersection Exists, if Intersection does not exist Default to "hugging" the Portal Edge of the next Funnel Smoothing Position by using their Funnel Portal Lerp Value
-		temp_portal_lerp_value = !is_undefined(temp_portal_lerp_value) ? temp_portal_lerp_value : ds_list_find_value(temp_funnel_portal_lerp_list, temp_smoothing_funnel_index);
+		if (temp_waypoint_magnitude > 0)
+		{
+			temp_waypoint_x /= temp_waypoint_magnitude;
+			temp_waypoint_y /= temp_waypoint_magnitude;
+			temp_waypoint_z /= temp_waypoint_magnitude;
+		}
 		
 		// Populate Path Struct with new Smoothed Waypoint
 		temp_path_struct.path_size++;
-		ds_list_add(temp_path_struct.node_index, temp_path_node_index_a);
-		ds_list_add(temp_path_struct.position_x, lerp(temp_portal_ax, temp_portal_bx, temp_portal_lerp_value));
-		ds_list_add(temp_path_struct.position_y, lerp(temp_portal_ay, temp_portal_by, temp_portal_lerp_value));
-		ds_list_add(temp_path_struct.position_z, lerp(temp_portal_az, temp_portal_bz, temp_portal_lerp_value));
-		ds_list_add(temp_path_struct.position_elevation, lerp(temp_portal_a_elevation, temp_portal_b_elevation, temp_portal_lerp_value));
+		ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, temp_portal_index));
+		ds_list_add(temp_path_struct.position_x, temp_waypoint_x);
+		ds_list_add(temp_path_struct.position_y, temp_waypoint_y);
+		ds_list_add(temp_path_struct.position_z, temp_waypoint_z);
+		ds_list_add(temp_path_struct.position_elevation, lerp(temp_portal_left_elevation_array[temp_portal_index], temp_portal_right_elevation_array[temp_portal_index], temp_portal_lerp_value));
 		
-		// Increment Path Index
-		temp_smoothing_path_index++;
+		temp_portal_index++;
 	}
 	
 	// Populate Path Struct with Final Destination
 	temp_path_struct.path_size++;
-	ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, ds_list_size(path_list) - 1));
+	ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, temp_path_list_size - 1));
 	ds_list_add(temp_path_struct.position_x, end_x);
 	ds_list_add(temp_path_struct.position_y, end_y);
 	ds_list_add(temp_path_struct.position_z, end_z);
 	ds_list_add(temp_path_struct.position_elevation, end_elevation);
 	
-	// Destroy Unused Portal DS Lists
-	ds_list_destroy(temp_portal_left_x_list);
-	ds_list_destroy(temp_portal_left_y_list);
-	ds_list_destroy(temp_portal_left_z_list);
-	
-	ds_list_destroy(temp_portal_right_x_list);
-	ds_list_destroy(temp_portal_right_y_list);
-	ds_list_destroy(temp_portal_right_z_list);
-	
-	temp_portal_left_x_list = -1;
-	temp_portal_left_y_list = -1;
-	temp_portal_left_z_list = -1;
-	
-	temp_portal_right_x_list = -1;
-	temp_portal_right_y_list = -1;
-	temp_portal_right_z_list = -1;
-	
-	// Destroy Unused Funnel DS Lists
-	ds_list_destroy(temp_funnel_node_index_list);
-	ds_list_destroy(temp_funnel_position_x_list);
-	ds_list_destroy(temp_funnel_position_y_list);
-	ds_list_destroy(temp_funnel_position_z_list);
-	ds_list_destroy(temp_funnel_portal_lerp_list);
-	
-	temp_funnel_node_index_list = -1;
-	temp_funnel_position_x_list = -1;
-	temp_funnel_position_y_list = -1;
-	temp_funnel_position_z_list = -1;
-	temp_funnel_portal_lerp_list = -1;
-	
 	// Destroy Unused Path DS List
 	ds_list_destroy(path_list);
-	path_list = -1;
+	
+	// Delete Unused Arrays
+	array_resize(temp_portal_left_x_array, 0);
+	array_resize(temp_portal_left_y_array, 0);
+	array_resize(temp_portal_left_z_array, 0);
+	array_resize(temp_portal_left_elevation_array, 0);
+	
+	array_resize(temp_portal_right_x_array, 0);
+	array_resize(temp_portal_right_y_array, 0);
+	array_resize(temp_portal_right_z_array, 0);
+	array_resize(temp_portal_right_elevation_array, 0);
+	
+	array_resize(temp_corner_x_array, 0);
+	array_resize(temp_corner_y_array, 0);
+	array_resize(temp_corner_z_array, 0);
+	array_resize(temp_corner_portal_index_array, 0);
 	
 	// Return Final Path Struct
 	return temp_path_struct;
@@ -972,11 +933,11 @@ function celestial_pathfinding_midpoint_smooth(celestial_object, path_list, end_
 	{
 		// Populate Path Struct with Final Destination
 		temp_path_struct.path_size = 1;
-		ds_list_add(temp_path_struct.node_index, goal_node_index);
-		ds_list_add(temp_path_struct.position_x, goal_position_x);
-		ds_list_add(temp_path_struct.position_y, goal_position_y);
-		ds_list_add(temp_path_struct.position_z, goal_position_z);
-		ds_list_add(temp_path_struct.position_elevation, goal_position_elevation);
+		ds_list_add(temp_path_struct.node_index, ds_list_find_value(path_list, ds_list_size(path_list) - 1));
+		ds_list_add(temp_path_struct.position_x, end_x);
+		ds_list_add(temp_path_struct.position_y, end_y);
+		ds_list_add(temp_path_struct.position_z, end_z);
+		ds_list_add(temp_path_struct.position_elevation, end_elevation);
 	}
 	else
 	{
