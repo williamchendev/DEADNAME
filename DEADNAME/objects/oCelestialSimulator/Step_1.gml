@@ -1025,20 +1025,20 @@ repeat (temp_solar_systems_count)
 										}
 									}
 									
-									// Set the Linear Projectile's Hitmarker Sprite & Image Index
-									temp_new_combat_action_instance.sprite_index = temp_linear_projectile_attack_success ? temp_new_combat_action_instance.projectile_hit_hitmarker_sprite : temp_new_combat_action_instance.projectile_miss_hitmarker_sprite;
-									temp_new_combat_action_instance.image_index = irandom(sprite_get_number(temp_new_combat_action_instance.sprite_index) - 1);
+									// Initialize Linear Projectile's Hitmarker Combat Action Instance
+									var temp_linear_projectile_hitmarker_object = temp_linear_projectile_attack_success ? temp_new_combat_action_instance.hitmarker_hit_instance : temp_new_combat_action_instance.hitmarker_miss_instance;
+									var temp_linear_projectile_hitmarker_instance = instance_create_depth(0, 0, 0, temp_linear_projectile_hitmarker_object);
 									
-									// Set the Linear Projectile's Hitmarker Rotation
-									temp_new_combat_action_instance.image_angle = temp_linear_projectile_attack_success ? random(360) : 0;
+									// Index Linear Projectile's Hitmarker Combat Action Instance within the Celestial Battle's Combat Actions Array
+									array_insert(temp_battle_instance.battle_combat_actions, 0, temp_linear_projectile_hitmarker_instance);
+									temp_linear_projectile_hitmarker_instance.battle_instance = temp_battle_instance;
 									
-									// Set the Linear Projectile's Horizontal and Vertical Facing Directions
-									temp_new_combat_action_instance.image_xscale = random(1.0) > 0.5 ? 1 : -1;
-									temp_new_combat_action_instance.image_yscale = temp_linear_projectile_attack_success ? (random(1.0) > 0.5 ? 1 : -1) : 1;
+									// Set the Linear Projectile's Hitmarker Action Timer
+									temp_linear_projectile_hitmarker_instance.action_timer = temp_new_combat_action_instance.action_duration;
 									
-									// Set the Linear Projectile's Position (Hitmarker) as the Target Position
-									temp_new_combat_action_instance.x = temp_combat_unit_instance.item_target_x;
-									temp_new_combat_action_instance.y = temp_combat_unit_instance.item_target_y;
+									// Set the Linear Projectile's Hitmarker Position as the Target Position
+									temp_linear_projectile_hitmarker_instance.x = temp_combat_unit_instance.item_target_x;
+									temp_linear_projectile_hitmarker_instance.y = temp_combat_unit_instance.item_target_y;
 									
 									// Set the Linear Projectile's Line Start Position as the Combat Unit's Item Muzzle Position
 									temp_new_combat_action_instance.linear_projectile_start_x = temp_combat_action_x;
@@ -1050,6 +1050,7 @@ repeat (temp_solar_systems_count)
 									
 									// Set the Linear Projectile's Line & Hitmarker Color
 									temp_new_combat_action_instance.image_blend = temp_linear_projectile_attack_success ? c_white : c_dkgrey;
+									temp_linear_projectile_hitmarker_instance.image_blend = temp_linear_projectile_attack_success ? c_white : c_dkgrey;
 									
 									// Set the Linear Projectile's Line Transparency
 									temp_new_combat_action_instance.linear_projectile_alpha = temp_linear_projectile_attack_success ? 1 : 0.3;
@@ -1057,6 +1058,9 @@ repeat (temp_solar_systems_count)
 									// Set the Linear Projectile's Depth as the Target Combat Unit's Vertical Depth
 									temp_new_combat_action_instance.linear_projectile_vertical_depth_y = temp_linear_projectile_attack_success ? temp_combat_unit_instance.combat_unit_action_target_inst.y : temp_combat_unit_instance.item_target_y;
 									temp_new_combat_action_instance.linear_projectile_vertical_depth_offset = 2;
+									
+									// Set the Linear Projectile's Hitmarker Depth as the Target Combat Unit's Vertical Depth
+									temp_linear_projectile_hitmarker_instance.prop_vertical_depth_offset = (temp_new_combat_action_instance.linear_projectile_vertical_depth_y - temp_linear_projectile_hitmarker_instance.y) + 2.05;
 									break;
 								case CelestialBattleChoreographyStackType.ArcProjectile:
 									// Set the Arc Projectile's Trajectory Start Position as the Combat Unit's Item Muzzle Position
@@ -1073,67 +1077,58 @@ repeat (temp_solar_systems_count)
 									temp_new_combat_action_instance.arc_projectile_end_x = temp_arc_projectile_end_x;
 									temp_new_combat_action_instance.arc_projectile_end_y = temp_arc_projectile_end_y;
 									
-									//
-									var temp_arc_projectile_delta_x = temp_arc_projectile_end_x - temp_arc_projectile_start_x;
-									var temp_arc_projectile_delta_y = -(temp_arc_projectile_end_y - temp_arc_projectile_start_y);
+									// Update the Arc Projectile's Physics Properties
+									temp_new_combat_action_instance.arc_projectile_speed = temp_combat_unit_item_struct.projectile_speed;
+									temp_new_combat_action_instance.arc_projectile_gravity = temp_combat_unit_item_struct.projectile_gravity;
+									temp_new_combat_action_instance.arc_projectile_air_resistance = temp_combat_unit_item_struct.projectile_air_resistance;
 									
-									//
-									var temp_arc_projectile_init_velocity = temp_new_combat_action_instance.projectile_speed;
-									var temp_arc_projectile_velocity_sqr = temp_arc_projectile_init_velocity * temp_arc_projectile_init_velocity;
+									// Calculate the Arc Projectile's Trajectory
+									var temp_arc_projectile_angle = celestial_battle_arc_projectile_predict_angle
+									(
+										temp_arc_projectile_start_x, 
+										temp_arc_projectile_start_y, 
+										temp_arc_projectile_end_x, 
+										temp_arc_projectile_end_y, 
+										temp_new_combat_action_instance.arc_projectile_speed,
+										temp_new_combat_action_instance.arc_projectile_gravity,
+										temp_new_combat_action_instance.arc_projectile_air_resistance
+									);
 									
-									//
-									var temp_arc_projectile_gravity = temp_new_combat_action_instance.projectile_gravity_speed;
+									// Update Combat Unit Instance's Item Angle values with the Arc Projectile's Trajectory Angle
+									temp_combat_unit_instance.item_angle = temp_arc_projectile_angle
+									temp_combat_unit_instance.item_target_angle = temp_arc_projectile_angle;
 									
-									//
-									var temp_arc_projectile_descriminator = temp_arc_projectile_gravity * (temp_arc_projectile_gravity * temp_arc_projectile_delta_x * temp_arc_projectile_delta_x + 2 * temp_arc_projectile_delta_y * temp_arc_projectile_velocity_sqr);
-									temp_arc_projectile_descriminator = temp_arc_projectile_velocity_sqr * temp_arc_projectile_velocity_sqr - temp_arc_projectile_descriminator;
-									
-									//var temp_arc_projectile_descriminator = temp_arc_projectile_gravity * temp_arc_projectile_delta_x * temp_arc_projectile_delta_x;
-									//temp_arc_projectile_descriminator = temp_arc_projectile_gravity * (temp_arc_projectile_descriminator + 2 * temp_arc_projectile_delta_y * temp_arc_projectile_velocity_sqr * temp_arc_projectile_inv_air_resistance);
-									//temp_arc_projectile_descriminator = temp_arc_projectile_velocity_sqr * temp_arc_projectile_velocity_sqr * temp_arc_projectile_inv_air_resistance * temp_arc_projectile_inv_air_resistance - temp_arc_projectile_descriminator;
-									
-									// 
-									var temp_arc_projectile_angle = radtodeg(arctan((temp_arc_projectile_velocity_sqr + sqrt(temp_arc_projectile_descriminator)) / (temp_arc_projectile_gravity * temp_arc_projectile_delta_x)));
-									temp_arc_projectile_angle = temp_arc_projectile_end_x < temp_arc_projectile_start_x ? (temp_arc_projectile_angle + 180) mod 360 : temp_arc_projectile_angle;
-									
-									//
+									// Pre-calc Arc Projectile's Trajectory Angle
 									rot_prefetch(temp_arc_projectile_angle);
 									
-									//
-									var temp_arc_projectile_x_velocity = temp_arc_projectile_init_velocity * rot_point_x(1, 0);
-									var temp_arc_projectile_y_velocity = -temp_arc_projectile_init_velocity * rot_point_y(1, 0);
+									// Calculate and Update the Arc Projectile's Horizontal and Vertical Velocities from the Arc Projectile's Trajectory and Initial Velocity
+									var temp_arc_projectile_x_velocity = temp_new_combat_action_instance.arc_projectile_speed * rot_point_x(1, 0);
+									var temp_arc_projectile_y_velocity = temp_new_combat_action_instance.arc_projectile_speed * rot_point_y(1, 0);
 									
-									//
 									temp_new_combat_action_instance.arc_projectile_x_velocity = temp_arc_projectile_x_velocity;
 									temp_new_combat_action_instance.arc_projectile_y_velocity = temp_arc_projectile_y_velocity;
 									
-									//
-									//temp_new_combat_action_instance.action_duration = temp_arc_projectile_duration;
-									//temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
+									// Establish Arc Projectile's Inverse Air Resistance
+									var temp_arc_projectile_inverse_air_resistance = 1 - temp_new_combat_action_instance.arc_projectile_air_resistance;
 									
-									//
-									temp_new_combat_action_instance.action_duration = abs(temp_arc_projectile_delta_x / temp_arc_projectile_x_velocity);
+									// Establish Arc Projectile's Position Displacement Variables
+									var temp_arc_projectile_delta_x = temp_arc_projectile_end_x - temp_arc_projectile_start_x;
+									
+									// Calculate Arc Projectile's Action Duration from Arc Projectile's property of linear horizontal motion time to reach target position
+									temp_new_combat_action_instance.action_duration = abs(temp_arc_projectile_delta_x / (temp_arc_projectile_x_velocity * temp_arc_projectile_inverse_air_resistance));
 									temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
 									
-									/*
-									//
-									var temp_arc_projectile_horizontal_travel_distance = point_distance(temp_arc_projectile_start_x, temp_arc_projectile_start_y, temp_arc_projectile_end_x, temp_arc_projectile_end_y);
-									
-									//
-									temp_new_combat_action_instance.arc_projectile_height_potential = 1 - sqr(1 - temp_arc_projectile_horizontal_travel_distance / CelestialSimulator.battle_platform_bottom_horizontal_width);
-									*/
-									
-									//
+									// Set Arc Projectile's Facing Direction
 									temp_new_combat_action_instance.image_yscale = temp_arc_projectile_end_x < temp_arc_projectile_start_x ? -1 : 1;
 									
-									//
+									// Set Arc Projectile's New and Old Positions (used for updating Arc Projectile's Rotation)
 									temp_new_combat_action_instance.arc_projectile_new_x = temp_combat_action_x;
 									temp_new_combat_action_instance.arc_projectile_new_y = temp_combat_action_y;
 									
 									temp_new_combat_action_instance.arc_projectile_old_x = temp_new_combat_action_instance.arc_projectile_new_x;
 									temp_new_combat_action_instance.arc_projectile_old_y = temp_new_combat_action_instance.arc_projectile_new_y;
 									
-									//
+									// Set Arc Projectile's Depth as the Linear Interpolation between the Combat Unit's Vertical Position and the Target's Vertical Position
 									temp_new_combat_action_instance.arc_projectile_start_vertical_depth_y = temp_combat_unit_instance.y;
 									temp_new_combat_action_instance.arc_projectile_end_vertical_depth_y = temp_new_combat_action_instance.arc_projectile_end_y;
 									temp_new_combat_action_instance.arc_projectile_vertical_depth_offset = 2;
@@ -1274,6 +1269,8 @@ repeat (temp_solar_systems_count)
 						switch (temp_combat_unit_action_type)
 						{
 							case CelestialCombatUnitActionType.Attack:
+							case CelestialCombatUnitActionType.AttackLinearProjectile:
+							case CelestialCombatUnitActionType.AttackArcProjectile:
 								// Establish Combat Unit Attack Target
 								var temp_combat_unit_attack_target_instance = noone;
 								
@@ -1397,7 +1394,39 @@ repeat (temp_solar_systems_count)
 							var temp_combat_unit_angle_calc_item_x = temp_combat_unit_instance.x + temp_combat_unit_struct.unit_item_aim_pivot_x * temp_combat_unit_instance.draw_xscale;
 							var temp_combat_unit_angle_calc_item_y = temp_combat_unit_instance.y + temp_combat_unit_struct.unit_item_aim_pivot_y;
 							
-							temp_combat_unit_instance.item_target_angle = point_direction(temp_combat_unit_angle_calc_item_x, temp_combat_unit_angle_calc_item_y, temp_combat_unit_instance.item_target_x, temp_combat_unit_instance.item_target_y);
+							switch (temp_combat_unit_action_type)
+							{
+								case CelestialCombatUnitActionType.Attack:
+								case CelestialCombatUnitActionType.AttackLinearProjectile:
+								case CelestialCombatUnitActionType.Support:
+								case CelestialCombatUnitActionType.None:
+									// Combat Unit's Target Angle is the direction of the Combat Unit's Item Position towards the Combat Unit's Target Position
+									temp_combat_unit_instance.item_target_angle = point_direction(temp_combat_unit_angle_calc_item_x, temp_combat_unit_angle_calc_item_y, temp_combat_unit_instance.item_target_x, temp_combat_unit_instance.item_target_y);
+									break;
+								case CelestialCombatUnitActionType.AttackArcProjectile:
+									// Calculate and set Combat Unit's Target Position for Arc Projectile Attack at Tile
+									temp_combat_unit_instance.item_target_y -= temp_combat_action_target_sprite_vertical_offset * 0.5;
+									
+									// Calculate the Arc Projectile's Trajectory
+									var temp_arc_projectile_angle = celestial_battle_arc_projectile_predict_angle
+									(
+										temp_combat_unit_angle_calc_item_x, 
+										temp_combat_unit_angle_calc_item_y, 
+										temp_combat_unit_instance.item_target_x, 
+										temp_combat_unit_instance.item_target_y, 
+										global.celestial_combat_items[temp_combat_unit_action_item].projectile_speed,
+										global.celestial_combat_items[temp_combat_unit_action_item].projectile_gravity,
+										global.celestial_combat_items[temp_combat_unit_action_item].projectile_air_resistance
+									);
+									
+									// Combat Unit's Target Angle is the predicted Arc Projectile's Trajectory from the Combat Unit's Item Position towards the Combat Unit's Target Position given their Arc Projectile's Physics
+									temp_combat_unit_instance.item_target_angle = temp_arc_projectile_angle;
+									break;
+								default:
+									// Default Combat Unit's Target Angle - Combat Unit's Item Ambient Angle
+									temp_combat_unit_instance.item_target_angle = 90 + (temp_combat_unit_instance.draw_xscale * -(90 + temp_combat_unit_struct.unit_item_idle_ambient_angle));
+									break;
+							}
 						}
 						else
 						{
@@ -1436,18 +1465,22 @@ repeat (temp_solar_systems_count)
 							temp_combat_action_instance.linear_projectile_start_y = lerp(temp_combat_action_instance.linear_projectile_start_y, temp_combat_action_instance.linear_projectile_end_y, temp_combat_action_instance.linear_projectile_decay * CelestialSimulator.global_clock_delta_time);
 							break;
 						case CelestialBattleChoreographyStackType.ArcProjectile:
-							//
+							// Calculate Arc Projectile's Depth Linear Interpolation Value
 							temp_combat_action_instance.arc_projectile_progress_value = 1 - clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.action_duration, 0, 1);
 							
-							//
+							// Establish Arc Projectile's Physics Variables
 							var temp_arc_projectile_t = max(temp_combat_action_instance.action_duration - temp_combat_action_instance.action_timer, 0);
-							var temp_arc_projectile_grav = temp_combat_action_instance.projectile_gravity_speed;
+							var temp_arc_projectile_k = 1 - temp_combat_action_instance.arc_projectile_air_resistance;
+							var temp_arc_projectile_g = temp_combat_action_instance.arc_projectile_gravity;
 							
-							//
-							temp_combat_action_instance.x = temp_combat_action_instance.arc_projectile_start_x + temp_combat_action_instance.arc_projectile_x_velocity * temp_arc_projectile_t;
-							temp_combat_action_instance.y = temp_combat_action_instance.arc_projectile_start_y - temp_combat_action_instance.arc_projectile_y_velocity * temp_arc_projectile_t + 0.5 * temp_arc_projectile_grav * temp_arc_projectile_t * temp_arc_projectile_t;
+							var temp_arc_projectile_x_velocity = temp_combat_action_instance.arc_projectile_x_velocity;
+							var temp_arc_projectile_y_velocity = temp_combat_action_instance.arc_projectile_y_velocity;
 							
-							//
+							// Calculate Arc Projectile's Position from Duration Elapsed from Initial Launch
+							temp_combat_action_instance.x = temp_combat_action_instance.arc_projectile_start_x + temp_arc_projectile_k * temp_arc_projectile_x_velocity * temp_arc_projectile_t;
+							temp_combat_action_instance.y = temp_combat_action_instance.arc_projectile_start_y + temp_arc_projectile_k * (temp_arc_projectile_y_velocity * temp_arc_projectile_t + 0.5 * temp_arc_projectile_g * temp_arc_projectile_t * temp_arc_projectile_t);
+							
+							// Update Arc Projectile's Position Values used to calculate Arc Projectile's Rotation
 							temp_combat_action_instance.arc_projectile_old_x = temp_combat_action_instance.arc_projectile_new_x;
 							temp_combat_action_instance.arc_projectile_old_y = temp_combat_action_instance.arc_projectile_new_y;
 							

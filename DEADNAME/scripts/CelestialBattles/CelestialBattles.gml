@@ -81,6 +81,8 @@ function celestial_battle_calculate_combat_action_success(combat_action_instance
 		switch (combat_action_instance.action_type)
 		{
 			case CelestialCombatUnitActionType.Attack:
+			case CelestialCombatUnitActionType.AttackLinearProjectile:
+			case CelestialCombatUnitActionType.AttackArcProjectile:
 				// Calculate Combat Action's Attack Success Chance
 				var temp_combat_action_attack_accuracy = combat_action_instance.action_accuracy;
 				var temp_combat_action_defend_evasion = combat_action_instance.target_combat_unit.combat_unit_evasion;
@@ -112,6 +114,45 @@ function celestial_battle_calculate_combat_action_success(combat_action_instance
 function celestial_battle_perform_combat_action(combat_action_instance)
 {
 	
+}
+
+/// @function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_x, target_y, initial_velocity, projectile_gravity, air_resistance, high_angle = true);
+/// @description Predicts the angle to fire a projectile given the properties of the arc as described by the start position, target position, projectile's initial velocity, gravity, and the projectile's air resistance
+/// @param {real} start_x The x coordinate of the projectile's launch position
+/// @param {real} start_y The y coordinate of the projectile's launch position
+/// @param {real} target_x The x coordinate of the projectile's target destination
+/// @param {real} target_y The y coordinate of the projectile's target destination
+/// @param {real} initial_velocity The projectile's launch velocity
+/// @param {real} projectile_gravity The projectile's gravity speed
+/// @param {real} air_resistance The projectile's air resistance
+/// @param {bool} high_angle (Optional) Determines whether to return the Quadratic "High" angle or "Low" angle, by default this function returns the "High" angle to create more dramatic projectile arcs
+/// @returns {real} The predicted angle to launch the projectile as to hit the provided target position
+function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_x, target_y, initial_velocity, projectile_gravity, air_resistance, high_angle = true)
+{
+	// Establish Projectile Position Displacement Variables
+	var temp_delta_x = target_x - start_x;
+	var temp_delta_y = -(target_y - start_y);
+	
+	// Establish Projectile Angle Prediction Math Variables
+	var temp_inv_air_resist = 1 - air_resistance;
+	var temp_initial_velocity_sqr = initial_velocity * initial_velocity;
+	
+	// Calculate Projectile Angle Prediction Equation Descriminator
+	var temp_descriminator = temp_initial_velocity_sqr * temp_initial_velocity_sqr * temp_inv_air_resist * temp_inv_air_resist - projectile_gravity * ((projectile_gravity * temp_delta_x * temp_delta_x) + (2 * temp_delta_y * temp_initial_velocity_sqr * temp_inv_air_resist));
+	
+	// Check if Projectile Angle Prediction Equation Descriminator is Greater than Zero (if it is, the Target Position is within Reach of Projectile Trajectory's Path of Motion)
+	if (temp_descriminator < 0)
+	{
+		// Target Position is NOT within Reach of Projectile Trajectory's Path of Motion - Return the Projectile Angle that matches the Trajectory of the Direction between the Projectile's Starting Position and the Projectile's Target Position
+		var temp_direction = point_direction(start_x, start_y, target_x, target_y);
+		return temp_direction + (angle_difference(90, temp_direction) * 0.4);
+	}
+	
+	// Calculate Angle of Projectile Trajectory
+	var temp_angle = radtodeg(arctan(((temp_initial_velocity_sqr * temp_inv_air_resist) + (sqrt(temp_descriminator) * (high_angle ? 1 : -1))) / (projectile_gravity * temp_delta_x)));
+	
+	// Return the Mirrored Angle
+	return target_x < start_x ? (temp_angle + 180) mod 360 : temp_angle;
 }
 #endregion
 

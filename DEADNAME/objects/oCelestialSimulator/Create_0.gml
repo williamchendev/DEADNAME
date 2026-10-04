@@ -1388,6 +1388,10 @@ calculate_celestial_battle_choreography_stack = function()
 				var temp_arc_projectile_vertical_depth_y = lerp(temp_combat_action_instance.arc_projectile_start_vertical_depth_y, temp_combat_action_instance.arc_projectile_end_vertical_depth_y, temp_combat_action_instance.arc_projectile_progress_value);
 				temp_combat_action_depth_calculation_y = temp_arc_projectile_vertical_depth_y + temp_combat_action_instance.arc_projectile_vertical_depth_offset;
 				break;
+			case CelestialBattleChoreographyStackType.Prop:
+				// Update Prop's Depth Calculation Value
+				temp_combat_action_depth_calculation_y += temp_combat_action_instance.prop_vertical_depth_offset;
+				break;
 			default:
 				break;
 		}
@@ -1559,7 +1563,10 @@ render_celestial_battle_choreography_stack = function()
 					var temp_item_angle = temp_stack_obj.item_angle + temp_stack_obj.item_angle_recoil;
 					
 					// Draw Combat Unit's Equipped Combat Item
-					draw_sprite_ext(temp_stack_obj.item_sprite, 0, temp_item_x, temp_item_y, 1, temp_stack_obj.image_xscale, temp_item_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					if (temp_combat_unit_item_struct.item_render)
+					{
+						draw_sprite_ext(temp_stack_obj.item_sprite, 0, temp_item_x, temp_item_y, 1, temp_stack_obj.image_xscale, temp_item_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					}
 					
 					// Check if Combat Unit's Equipped Item has a Muzzle Emission Effect active
 					if (temp_stack_obj.item_muzzle_emission_duration > 0 and temp_combat_unit_item_struct.item_muzzle_emission_sprite != -1)
@@ -1590,11 +1597,12 @@ render_celestial_battle_choreography_stack = function()
 				
 				//
 				draw_set_alpha(1);
-				
+				break;
+			case CelestialBattleChoreographyStackType.ArcProjectile:
 				//
 				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
 				break;
-			case CelestialBattleChoreographyStackType.ArcProjectile:
+			case CelestialBattleChoreographyStackType.Prop:
 				//
 				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
 				break;

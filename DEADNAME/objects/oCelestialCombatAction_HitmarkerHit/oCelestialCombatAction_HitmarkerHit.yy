@@ -1,21 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"oCelestialCombatAction_ArcProjectile",
+  "%Name":"oCelestialCombatAction_HitmarkerHit",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oCelestialCombatAction_ArcProjectile",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"-1",},
-  ],
+  "name":"oCelestialCombatAction_HitmarkerHit",
+  "overriddenProperties":[],
   "parent":{
     "name":"Combat",
     "path":"folders/Objects/Celestial/Combat.yy",
   },
   "parentObjectId":{
-    "name":"oCelestialCombatAction",
-    "path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",
+    "name":"oCelestialCombatAction_Prop",
+    "path":"objects/oCelestialCombatAction_Prop/oCelestialCombatAction_Prop.yy",
   },
   "persistent":true,
   "physicsAngularDamping":0.1,
@@ -35,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Unit_Artillery_Shell",
-    "path":"sprites/sOverworld_Unit_Artillery_Shell/sOverworld_Unit_Artillery_Shell.yy",
+    "name":"sOverworld_Hitmarker",
+    "path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",
   },
   "spriteMaskId":null,
   "visible":false,

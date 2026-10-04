@@ -29,14 +29,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"projectile_hit_hitmarker_sprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"projectile_hit_hitmarker_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Hitmarker","path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_Hitmarker","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"projectile_miss_hitmarker_sprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"projectile_miss_hitmarker_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_HitmarkerMiss","path":"sprites/sOverworld_HitmarkerMiss/sOverworld_HitmarkerMiss.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_HitmarkerMiss","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"linear_projectile_width","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"linear_projectile_decay","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_decay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"linear_projectile_width","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"linear_projectile_decay","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_decay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_hit_instance","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_hit_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerHit","path":"objects/oCelestialCombatAction_HitmarkerHit/oCelestialCombatAction_HitmarkerHit.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerHit","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_miss_instance","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_miss_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerMiss","path":"objects/oCelestialCombatAction_HitmarkerMiss/oCelestialCombatAction_HitmarkerMiss.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerMiss","varType":5,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

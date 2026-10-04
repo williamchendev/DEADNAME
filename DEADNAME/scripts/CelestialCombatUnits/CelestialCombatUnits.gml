@@ -25,6 +25,8 @@ enum CelestialCombatUnitActionType
 {
 	None,
 	Attack,
+	AttackLinearProjectile,
+	AttackArcProjectile,
 	Support
 }
 
@@ -163,11 +165,11 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultArtillery] =
 	],
 	
 	// Item Settings
-	unit_item_pivot_x: 0,
-	unit_item_pivot_y: -14,
+	unit_item_pivot_x: 9,
+	unit_item_pivot_y: -18,
 	
-	unit_item_aim_pivot_x: 3,
-	unit_item_aim_pivot_y: -16,
+	unit_item_aim_pivot_x: 9,
+	unit_item_aim_pivot_y: -18,
 	
 	unit_item_idle_ambient_angle: 0,
 	unit_item_move_ambient_angle: 45,
@@ -186,13 +188,14 @@ enum CelestialCombatItem
 global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 {
 	// Item Sprite
+	item_render: true,
 	item_sprite: sOverworld_Unit_William_Firearm,
 	
 	// Inventory Settings
 	inventory_slot_type: CelestialCombatUnitInventorySlotType.InfantryHefty,
 	
 	// Action Settings
-	action_type: CelestialCombatUnitActionType.Attack,
+	action_type: CelestialCombatUnitActionType.AttackLinearProjectile,
 	action_weight: 16,
 	action_count: 3,
 	action_delay: 30,
@@ -222,18 +225,24 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	
 	item_muzzle_emission_sprite: sOverworld_Unit_William_Firearm_MuzzleFlash,
 	item_muzzle_emission_duration: 3,
+	
+	// Projectile Settings
+	projectile_speed: 1,
+	projectile_gravity: -1,
+	projectile_air_resistance: -1,
 };
 
 global.celestial_combat_items[CelestialCombatItem.DefaultArtillery] =
 {
 	// Item Sprite
+	item_render: false,
 	item_sprite: sOverworld_Unit_William_Firearm,
 	
 	// Inventory Settings
 	inventory_slot_type: CelestialCombatUnitInventorySlotType.ArtilleryCannon,
 	
 	// Action Settings
-	action_type: CelestialCombatUnitActionType.Attack,
+	action_type: CelestialCombatUnitActionType.AttackArcProjectile,
 	action_weight: 16,
 	action_count: 1,
 	action_delay: 30,
@@ -263,6 +272,11 @@ global.celestial_combat_items[CelestialCombatItem.DefaultArtillery] =
 	
 	item_muzzle_emission_sprite: sOverworld_Unit_William_Firearm_MuzzleFlash,
 	item_muzzle_emission_duration: 3,
+	
+	// Projectile Settings
+	projectile_speed: 26,
+	projectile_gravity: 1,
+	projectile_air_resistance: 0,
 };
 #endregion
 
