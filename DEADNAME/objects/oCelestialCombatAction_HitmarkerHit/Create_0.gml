@@ -1,7 +1,7 @@
 /// @description Hitmarker Hit Combat Action Initialization
 // Initializes the Hitmarker Hit Combat Action for Celestial Simulator Behaviour and Rendering
 
-// Prop Combat Action Initialization Behaviour
+// Hitmarker Combat Action Initialization Behaviour
 event_inherited();
 
 // Set Hitmarker's Image Index

@@ -8,12 +8,12 @@
   "name":"oCelestialCombatAction_HitmarkerHit",
   "overriddenProperties":[],
   "parent":{
-    "name":"Combat",
-    "path":"folders/Objects/Celestial/Combat.yy",
+    "name":"Hitmarkers",
+    "path":"folders/Objects/Celestial/Combat/Actions/Hitmarkers.yy",
   },
   "parentObjectId":{
-    "name":"oCelestialCombatAction_Prop",
-    "path":"objects/oCelestialCombatAction_Prop/oCelestialCombatAction_Prop.yy",
+    "name":"oCelestialCombatAction_Hitmarker",
+    "path":"objects/oCelestialCombatAction_Hitmarker/oCelestialCombatAction_Hitmarker.yy",
   },
   "persistent":true,
   "physicsAngularDamping":0.1,

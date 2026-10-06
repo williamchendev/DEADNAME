@@ -43,6 +43,7 @@ enum CelestialBattleChoreographyStackType
 	CombatUnit,
 	LinearProjectile,
 	ArcProjectile,
+	Hitmarker,
 	SmokeParticle
 }
 

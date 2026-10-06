@@ -36,5 +36,22 @@ arc_projectile_start_vertical_depth_y = 0;
 arc_projectile_end_vertical_depth_y = 0;
 arc_projectile_vertical_depth_offset = 0;
 
-arc_projectile_progress_value = 0;
+// Arc Projectile Functions
+combat_action_end = function()
+{
+	// Check if Combat Action's Battle Instance still exists and Combat Action has a Hitmarker Object Assigned
+	if (instance_exists(battle_instance) and hitmarker_ground_collision_object != noone)
+	{
+		// Initialize Arc Projectile's Hitmarker Combat Action Instance
+		var temp_hitmarker_instance = instance_create_depth(arc_projectile_end_x, arc_projectile_end_y, 0, hitmarker_ground_collision_object);
+		
+		// Index Arc Projectile's Hitmarker Combat Action Instance within the Celestial Battle's Combat Actions Array
+		array_push(battle_instance.battle_combat_actions, temp_hitmarker_instance);
+		temp_hitmarker_instance.battle_instance = battle_instance;
+		
+		// Set the Arc Projectile's Hitmarker Vertical Depth
+		temp_hitmarker_instance.hitmarker_vertical_depth_y = arc_projectile_end_y;
+		temp_hitmarker_instance.hitmarker_vertical_depth_offset = 2;
+	}
+}
 

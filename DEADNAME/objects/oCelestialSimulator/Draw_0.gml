@@ -321,6 +321,10 @@ repeat (temp_celestial_object_depth_render_count)
 				// Check if Celestial Object's Sub Object Rendering is Enabled
 				if (sub_objects_render_enabled)
 				{
+					// Reset Draw Color & Transparency
+					draw_set_color(c_white);
+					draw_set_alpha(1);
+					
 					// Battle Unit Connections UI Behaviour
 					if (battle_unit_connection_entries > 0)
 					{

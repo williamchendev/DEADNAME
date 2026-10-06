@@ -1381,12 +1381,16 @@ calculate_celestial_battle_choreography_stack = function()
 				temp_combat_action_depth_calculation_y = temp_combat_action_instance.linear_projectile_vertical_depth_y + temp_combat_action_instance.linear_projectile_vertical_depth_offset;
 				break;
 			case CelestialBattleChoreographyStackType.ArcProjectile:
-				//
+				// Update Arc Projectile's Rotation
 				temp_combat_action_instance.image_angle = point_direction(temp_combat_action_instance.arc_projectile_old_x, temp_combat_action_instance.arc_projectile_old_y, temp_combat_action_instance.arc_projectile_new_x, temp_combat_action_instance.arc_projectile_new_y);
 				
 				// Update Arc Projectile's Depth Calculation Value
-				var temp_arc_projectile_vertical_depth_y = lerp(temp_combat_action_instance.arc_projectile_start_vertical_depth_y, temp_combat_action_instance.arc_projectile_end_vertical_depth_y, temp_combat_action_instance.arc_projectile_progress_value);
+				var temp_arc_projectile_vertical_depth_y = lerp(temp_combat_action_instance.arc_projectile_start_vertical_depth_y, temp_combat_action_instance.arc_projectile_end_vertical_depth_y, temp_combat_action_instance.action_progress);
 				temp_combat_action_depth_calculation_y = temp_arc_projectile_vertical_depth_y + temp_combat_action_instance.arc_projectile_vertical_depth_offset;
+				break;
+			case CelestialBattleChoreographyStackType.Hitmarker:
+				// Update Hitmarker's Depth Calculation Value
+				temp_combat_action_depth_calculation_y = temp_combat_action_instance.hitmarker_vertical_depth_y + temp_combat_action_instance.hitmarker_vertical_depth_offset;
 				break;
 			case CelestialBattleChoreographyStackType.Prop:
 				// Update Prop's Depth Calculation Value
@@ -1412,7 +1416,8 @@ calculate_celestial_battle_choreography_stack = function()
 
 render_celestial_battle_choreography_stack = function()
 {
-	//
+	// Reset Draw Variables
+	draw_set_alpha(1);
 	draw_set_color(c_white);
 	
 	// Iterate through Combat Grid's Columns
@@ -1588,22 +1593,23 @@ render_celestial_battle_choreography_stack = function()
 				}
 				break;
 			case CelestialBattleChoreographyStackType.LinearProjectile:
-				//
+				// Set Linear Projectile's Transparency
 				draw_set_alpha(temp_stack_obj.linear_projectile_alpha);
 				
-				//
+				// Draw Linear Projectile's Line Width with Black Outline
 				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width + 2, c_black, c_black);
 				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, temp_stack_obj.image_blend, temp_stack_obj.image_blend);
-				
-				//
-				draw_set_alpha(1);
 				break;
 			case CelestialBattleChoreographyStackType.ArcProjectile:
-				//
+				// Draw Arc Projectile
+				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+				break;
+			case CelestialBattleChoreographyStackType.Hitmarker:
+				// Draw Hitmarker
 				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
 				break;
 			case CelestialBattleChoreographyStackType.Prop:
-				//
+				// Draw Prop
 				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
 				break;
 			default:
@@ -1613,6 +1619,11 @@ render_celestial_battle_choreography_stack = function()
 		// Increment Battle Choreography Stack Index
 		temp_battle_choreography_stack_index++;
 	}
+	
+	// Reset Draw Variables
+	draw_set_alpha(1);
+	draw_set_color(c_white);
+	
 	/*
 	// Iterate through Battle's Choreography Stack
 	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);

@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_celestial_combat_vertical_binary_cutoff",
+  "name":"shd_celestial_combat_vertical_binary_cutoff",
+  "parent":{
+    "name":"CelestialCombat",
+    "path":"folders/Shaders/CelestialCombat.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

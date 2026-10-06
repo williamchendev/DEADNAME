@@ -944,9 +944,6 @@ repeat (temp_solar_systems_count)
 							// Set the Combat Action Instance's Combat Unit Instance
 							temp_new_combat_action_instance.combat_unit = temp_combat_unit_instance;
 							
-							// Set the Combat Action Instance's Action Timer
-							temp_new_combat_action_instance.action_timer = temp_new_combat_action_instance.action_duration;
-							
 							// Set the Combat Action Instance's Action Type and Stats from Combat Unit's Action Type and Stats
 							temp_new_combat_action_instance.action_type = temp_combat_unit_instance.combat_unit_action_type;
 							temp_new_combat_action_instance.action_accuracy = temp_combat_unit_instance.combat_unit_accuracy;
@@ -1026,15 +1023,12 @@ repeat (temp_solar_systems_count)
 									}
 									
 									// Initialize Linear Projectile's Hitmarker Combat Action Instance
-									var temp_linear_projectile_hitmarker_object = temp_linear_projectile_attack_success ? temp_new_combat_action_instance.hitmarker_hit_instance : temp_new_combat_action_instance.hitmarker_miss_instance;
+									var temp_linear_projectile_hitmarker_object = temp_linear_projectile_attack_success ? temp_new_combat_action_instance.hitmarker_hit_object : temp_new_combat_action_instance.hitmarker_miss_object;
 									var temp_linear_projectile_hitmarker_instance = instance_create_depth(0, 0, 0, temp_linear_projectile_hitmarker_object);
 									
 									// Index Linear Projectile's Hitmarker Combat Action Instance within the Celestial Battle's Combat Actions Array
 									array_insert(temp_battle_instance.battle_combat_actions, 0, temp_linear_projectile_hitmarker_instance);
 									temp_linear_projectile_hitmarker_instance.battle_instance = temp_battle_instance;
-									
-									// Set the Linear Projectile's Hitmarker Action Timer
-									temp_linear_projectile_hitmarker_instance.action_timer = temp_new_combat_action_instance.action_duration;
 									
 									// Set the Linear Projectile's Hitmarker Position as the Target Position
 									temp_linear_projectile_hitmarker_instance.x = temp_combat_unit_instance.item_target_x;
@@ -1060,7 +1054,8 @@ repeat (temp_solar_systems_count)
 									temp_new_combat_action_instance.linear_projectile_vertical_depth_offset = 2;
 									
 									// Set the Linear Projectile's Hitmarker Depth as the Target Combat Unit's Vertical Depth
-									temp_linear_projectile_hitmarker_instance.prop_vertical_depth_offset = (temp_new_combat_action_instance.linear_projectile_vertical_depth_y - temp_linear_projectile_hitmarker_instance.y) + 2.05;
+									temp_linear_projectile_hitmarker_instance.hitmarker_vertical_depth_y = temp_new_combat_action_instance.linear_projectile_vertical_depth_y;
+									temp_linear_projectile_hitmarker_instance.hitmarker_vertical_depth_offset = 2.05;
 									break;
 								case CelestialBattleChoreographyStackType.ArcProjectile:
 									// Set the Arc Projectile's Trajectory Start Position as the Combat Unit's Item Muzzle Position
@@ -1456,6 +1451,9 @@ repeat (temp_solar_systems_count)
 					// Decrement Combat Action's Timer
 					temp_combat_action_instance.action_timer -= CelestialSimulator.global_clock_delta_time;
 					
+					// Calculate Combat Action's Progress Duration Linear Interpolation Value
+					temp_combat_action_instance.action_progress = 1 - clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.action_duration, 0, 1);
+					
 					// Perform Combat Action's Behaviour based on their Choreography Stack Type
 					switch (temp_combat_action_instance.choreography_stack_type)
 					{
@@ -1465,9 +1463,6 @@ repeat (temp_solar_systems_count)
 							temp_combat_action_instance.linear_projectile_start_y = lerp(temp_combat_action_instance.linear_projectile_start_y, temp_combat_action_instance.linear_projectile_end_y, temp_combat_action_instance.linear_projectile_decay * CelestialSimulator.global_clock_delta_time);
 							break;
 						case CelestialBattleChoreographyStackType.ArcProjectile:
-							// Calculate Arc Projectile's Depth Linear Interpolation Value
-							temp_combat_action_instance.arc_projectile_progress_value = 1 - clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.action_duration, 0, 1);
-							
 							// Establish Arc Projectile's Physics Variables
 							var temp_arc_projectile_t = max(temp_combat_action_instance.action_duration - temp_combat_action_instance.action_timer, 0);
 							var temp_arc_projectile_k = 1 - temp_combat_action_instance.arc_projectile_air_resistance;
@@ -1487,6 +1482,12 @@ repeat (temp_solar_systems_count)
 							temp_combat_action_instance.arc_projectile_new_x = temp_combat_action_instance.x;
 							temp_combat_action_instance.arc_projectile_new_y = temp_combat_action_instance.y;
 							break;
+						case CelestialBattleChoreographyStackType.Hitmarker:
+							//
+							var temp_hitmarker_scale = lerp(temp_combat_action_instance.hitmarker_scale_start, temp_combat_action_instance.hitmarker_scale_end, power(temp_combat_action_instance.action_progress, temp_combat_action_instance.hitmarker_scale_mult));
+							temp_combat_action_instance.image_xscale = sign(temp_combat_action_instance.image_xscale) * temp_hitmarker_scale;
+							temp_combat_action_instance.image_yscale = sign(temp_combat_action_instance.image_yscale) * temp_hitmarker_scale;
+							break;
 						default:
 							break;
 					}
@@ -1505,6 +1506,13 @@ repeat (temp_solar_systems_count)
 							{
 								
 							}
+						}
+						
+						// Check if Combat Action has an End Function
+						if (temp_combat_action_instance.combat_action_end != noone)
+						{
+							// Perform Combat Action's End Behaviour Function
+							temp_combat_action_instance.combat_action_end();
 						}
 						
 						// Deindex Combat Action from the Celestial Battle's Combat Actions Array

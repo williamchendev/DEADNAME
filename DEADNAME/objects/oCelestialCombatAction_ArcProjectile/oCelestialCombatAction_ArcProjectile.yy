@@ -10,8 +10,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"-1",},
   ],
   "parent":{
-    "name":"Combat",
-    "path":"folders/Objects/Celestial/Combat.yy",
+    "name":"Actions",
+    "path":"folders/Objects/Celestial/Combat/Actions.yy",
   },
   "parentObjectId":{
     "name":"oCelestialCombatAction",
@@ -30,7 +30,11 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_ground_collision_object","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_ground_collision_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","path":"objects/oCelestialCombatAction_HitmarkerArtilleryGroundContact/oCelestialCombatAction_HitmarkerArtilleryGroundContact.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","varType":5,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

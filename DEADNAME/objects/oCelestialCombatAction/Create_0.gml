@@ -17,7 +17,8 @@ action_perform_on_destroy = false;
 vertical_depth = 0;
 
 // Action Variables
-action_timer = 0;
+action_timer = action_duration;
+action_progress = 0;
 
 action_type = CelestialCombatUnitActionType.None;
 action_accuracy = -1;
@@ -27,3 +28,6 @@ target_combat_unit = noone;
 target_combat_grid_side = CelestialBattleCombatGridSide.None;
 target_combat_grid_column = -1;
 target_combat_grid_row = -1;
+
+// Combat Action Methods
+combat_action_end = noone;

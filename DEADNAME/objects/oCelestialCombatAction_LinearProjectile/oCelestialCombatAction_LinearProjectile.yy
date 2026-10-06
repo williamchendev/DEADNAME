@@ -8,8 +8,8 @@
   "name":"oCelestialCombatAction_LinearProjectile",
   "overriddenProperties":[],
   "parent":{
-    "name":"Combat",
-    "path":"folders/Objects/Celestial/Combat.yy",
+    "name":"Actions",
+    "path":"folders/Objects/Celestial/Combat/Actions.yy",
   },
   "parentObjectId":{
     "name":"oCelestialCombatAction",
@@ -29,14 +29,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"linear_projectile_width","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"2","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"linear_projectile_decay","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_decay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.2","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"hitmarker_hit_instance","filters":[
+    {"$GMObjectProperty":"v2","%Name":"linear_projectile_width","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_width","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"linear_projectile_decay","filters":[],"listItems":[],"multiselect":false,"name":"linear_projectile_decay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_hit_object","filters":[
         "GMObject",
-      ],"listItems":[],"multiselect":false,"name":"hitmarker_hit_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerHit","path":"objects/oCelestialCombatAction_HitmarkerHit/oCelestialCombatAction_HitmarkerHit.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerHit","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"hitmarker_miss_instance","filters":[
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_hit_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerHit","path":"objects/oCelestialCombatAction_HitmarkerHit/oCelestialCombatAction_HitmarkerHit.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oCelestialCombatAction_HitmarkerHit","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_miss_object","filters":[
         "GMObject",
-      ],"listItems":[],"multiselect":false,"name":"hitmarker_miss_instance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerMiss","path":"objects/oCelestialCombatAction_HitmarkerMiss/oCelestialCombatAction_HitmarkerMiss.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerMiss","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_miss_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerMiss","path":"objects/oCelestialCombatAction_HitmarkerMiss/oCelestialCombatAction_HitmarkerMiss.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oCelestialCombatAction_HitmarkerMiss","varType":5,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
