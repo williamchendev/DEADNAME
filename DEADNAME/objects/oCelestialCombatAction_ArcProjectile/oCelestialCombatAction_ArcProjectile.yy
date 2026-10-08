@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialCombatAction_ArcProjectile",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"-1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"-1",},
   ],
   "parent":{
     "name":"Actions",
@@ -31,9 +31,17 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v2","%Name":"smoke_particle_layer_count","filters":[],"listItems":[],"multiselect":false,"name":"smoke_particle_layer_count","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"smoke_particle_layer_offset","filters":[],"listItems":[],"multiselect":false,"name":"smoke_particle_layer_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"-2","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"smoke_particle_layer_object","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"smoke_particle_layer_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_SmokeParticle","path":"objects/oCelestialCombatAction_SmokeParticle/oCelestialCombatAction_SmokeParticle.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oCelestialCombatAction_SmokeParticle","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"hitmarker_shrapnel_object","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_shrapnel_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerArtilleryShrapnel","path":"objects/oCelestialCombatAction_HitmarkerArtilleryShrapnel/oCelestialCombatAction_HitmarkerArtilleryShrapnel.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oCelestialCombatAction_HitmarkerArtilleryShrapnel","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"hitmarker_ground_collision_object","filters":[
         "GMObject",
-      ],"listItems":[],"multiselect":false,"name":"hitmarker_ground_collision_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","path":"objects/oCelestialCombatAction_HitmarkerArtilleryGroundContact/oCelestialCombatAction_HitmarkerArtilleryGroundContact.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"hitmarker_ground_collision_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","path":"objects/oCelestialCombatAction_HitmarkerArtilleryGroundContact/oCelestialCombatAction_HitmarkerArtilleryGroundContact.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"oCelestialCombatAction_HitmarkerArtilleryGroundContact","varType":5,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

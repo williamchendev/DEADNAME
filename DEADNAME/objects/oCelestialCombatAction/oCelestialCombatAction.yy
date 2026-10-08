@@ -27,14 +27,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"action_duration","filters":[],"listItems":[],"multiselect":false,"name":"action_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"action_duration","filters":[],"listItems":[],"multiselect":false,"name":"action_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Hitmarker",
-    "path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",
+    "name":"sOverworld_Hitmarker_Hit",
+    "path":"sprites/sOverworld_Hitmarker_Hit/sOverworld_Hitmarker_Hit.yy",
   },
   "spriteMaskId":null,
   "visible":false,

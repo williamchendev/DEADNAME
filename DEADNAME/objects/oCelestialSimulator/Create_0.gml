@@ -619,6 +619,11 @@ sun_unlit_shader_elevation_index = shader_get_uniform(shd_sun_unlit, "u_Elevatio
 sun_unlit_shader_position_index = shader_get_uniform(shd_sun_unlit, "u_Position");
 sun_unlit_shader_euler_angles_index = shader_get_uniform(shd_sun_unlit, "u_EulerAngles");
 
+// Celestial Combat Vertical Fade Rendering Shader Indexes
+combat_vertical_fade_shader_fade_position_index = shader_get_uniform(shd_celestial_combat_vertical_fade, "in_FadePosition");
+combat_vertical_fade_shader_fade_length_index = shader_get_uniform(shd_celestial_combat_vertical_fade, "in_FadeLength");
+combat_vertical_fade_shader_fade_direction_index = shader_get_uniform(shd_celestial_combat_vertical_fade, "in_FadeDirection");
+
 #endregion
 
 // (Forward Rendered Lighting) Light Source Variables
@@ -1392,6 +1397,10 @@ calculate_celestial_battle_choreography_stack = function()
 				// Update Hitmarker's Depth Calculation Value
 				temp_combat_action_depth_calculation_y = temp_combat_action_instance.hitmarker_vertical_depth_y + temp_combat_action_instance.hitmarker_vertical_depth_offset;
 				break;
+			case CelestialBattleChoreographyStackType.SmokeParticle:
+				// Update Smoke Particle's Depth Calculation Value
+				temp_combat_action_depth_calculation_y = temp_combat_action_instance.smoke_particle_vertical_depth_y + temp_combat_action_instance.smoke_particle_vertical_depth_offset;
+				break;
 			case CelestialBattleChoreographyStackType.Prop:
 				// Update Prop's Depth Calculation Value
 				temp_combat_action_depth_calculation_y += temp_combat_action_instance.prop_vertical_depth_offset;
@@ -1607,6 +1616,50 @@ render_celestial_battle_choreography_stack = function()
 			case CelestialBattleChoreographyStackType.Hitmarker:
 				// Draw Hitmarker
 				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+				break;
+			case CelestialBattleChoreographyStackType.SmokeParticle:
+				// Enable Celestial Combat Vertical Fade Shader
+				shader_set(shd_celestial_combat_vertical_fade);
+				
+				// Set Celestial Combat Vertical Fade Shader Fade Properties
+				shader_set_uniform_f(CelestialSimulator.combat_vertical_fade_shader_fade_position_index, temp_stack_obj.y + temp_stack_obj.smoke_particle_vertical_fade_offset);
+				shader_set_uniform_f(CelestialSimulator.combat_vertical_fade_shader_fade_length_index, temp_stack_obj.smoke_particle_vertical_fade_length);
+				shader_set_uniform_f(CelestialSimulator.combat_vertical_fade_shader_fade_direction_index, temp_stack_obj.smoke_particle_vertical_fade_direction);
+				
+				// Iterate through Smoke Particle Combat Action Instance's Smoke Particle Array to render Smoke Particles as a Layer
+				var temp_smoke_particle_index = 0;
+				
+				repeat (temp_stack_obj.smoke_particle_count)
+				{
+					// Check if Smoke Particle's Rendering is Enabled
+					if (!temp_stack_obj.smoke_particle_render[temp_smoke_particle_index])
+					{
+						// Increment Smoke Particle Index
+						temp_smoke_particle_index++;
+						
+						// Skip Smoke Particle's Render Behaviour
+						continue;
+					}
+					
+					// Establish Smoke Particle's Draw Variables
+					var temp_smoke_particle_image_index = temp_stack_obj.smoke_particle_image_index[temp_smoke_particle_index];
+					var temp_smoke_particle_x = temp_stack_obj.smoke_particle_x[temp_smoke_particle_index] + temp_stack_obj.x;
+					var temp_smoke_particle_y = temp_stack_obj.smoke_particle_y[temp_smoke_particle_index] + temp_stack_obj.y;
+					var temp_smoke_particle_xscale = temp_stack_obj.smoke_particle_xscale[temp_smoke_particle_index];
+					var temp_smoke_particle_yscale = temp_stack_obj.smoke_particle_yscale[temp_smoke_particle_index];
+					var temp_smoke_particle_angle = temp_stack_obj.smoke_particle_angle[temp_smoke_particle_index];
+					var temp_smoke_particle_color = temp_stack_obj.smoke_particle_color[temp_smoke_particle_index];
+					var temp_smoke_particle_alpha = temp_stack_obj.smoke_particle_alpha[temp_smoke_particle_index];
+					
+					// Draw Smoke Particle
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_smoke_particle_image_index, temp_smoke_particle_x, temp_smoke_particle_y, temp_smoke_particle_xscale, temp_smoke_particle_yscale, temp_smoke_particle_angle, temp_smoke_particle_color, temp_smoke_particle_alpha);
+					
+					// Increment Smoke Particle Index
+					temp_smoke_particle_index++;
+				}
+				
+				// Reset Shader
+				shader_reset();
 				break;
 			case CelestialBattleChoreographyStackType.Prop:
 				// Draw Prop

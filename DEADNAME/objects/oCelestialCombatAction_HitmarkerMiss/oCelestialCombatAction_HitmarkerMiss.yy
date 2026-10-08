@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_HitmarkerMiss",
-    "path":"sprites/sOverworld_HitmarkerMiss/sOverworld_HitmarkerMiss.yy",
+    "name":"sOverworld_Hitmarker_Miss",
+    "path":"sprites/sOverworld_Hitmarker_Miss/sOverworld_Hitmarker_Miss.yy",
   },
   "spriteMaskId":null,
   "visible":false,

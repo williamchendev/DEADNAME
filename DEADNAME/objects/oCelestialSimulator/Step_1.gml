@@ -1483,10 +1483,58 @@ repeat (temp_solar_systems_count)
 							temp_combat_action_instance.arc_projectile_new_y = temp_combat_action_instance.y;
 							break;
 						case CelestialBattleChoreographyStackType.Hitmarker:
-							//
+							// Update Hitmarker's Horizontal and Vertical Scale Animation
 							var temp_hitmarker_scale = lerp(temp_combat_action_instance.hitmarker_scale_start, temp_combat_action_instance.hitmarker_scale_end, power(temp_combat_action_instance.action_progress, temp_combat_action_instance.hitmarker_scale_mult));
+							
 							temp_combat_action_instance.image_xscale = sign(temp_combat_action_instance.image_xscale) * temp_hitmarker_scale;
 							temp_combat_action_instance.image_yscale = sign(temp_combat_action_instance.image_yscale) * temp_hitmarker_scale;
+							break;
+						case CelestialBattleChoreographyStackType.SmokeParticle:
+							// Calculate Smoke Particle Physics Variables
+							var temp_smoke_particle_gravity = temp_combat_action_instance.smoke_particle_gravity * CelestialSimulator.global_clock_delta_time;
+							var temp_smoke_particle_velocity_decay = power(temp_combat_action_instance.smoke_particle_velocity_decay, CelestialSimulator.global_clock_delta_time);
+							
+							// Iterate through Smoke Particles and update their Physics Behaviour
+							var temp_smoke_particle_index = 0;
+							
+							repeat (temp_combat_action_instance.smoke_particle_count)
+							{
+								// Check if Smoke Particle is being Rendered
+								if (!temp_combat_action_instance.smoke_particle_render[temp_smoke_particle_index])
+								{
+									// Increment Smoke Particle Index
+									temp_smoke_particle_index++;
+									
+									// Skip Smoke Particle's Physics Behaviour
+									continue;
+								}
+								
+								// Increment Smoke Particle's Timer
+								var temp_smoke_particle_timer = temp_combat_action_instance.smoke_particle_timer[temp_smoke_particle_index] + CelestialSimulator.global_clock_delta_time;
+								temp_combat_action_instance.smoke_particle_timer[temp_smoke_particle_index] = temp_smoke_particle_timer;
+								temp_combat_action_instance.smoke_particle_render[temp_smoke_particle_index] = temp_smoke_particle_timer < temp_combat_action_instance.smoke_particle_lifespan[temp_smoke_particle_index] ? true : false;
+								
+								// Move Smoke Particle's Position by Smoke Particle's Velocity
+								temp_combat_action_instance.smoke_particle_x[temp_smoke_particle_index] += temp_combat_action_instance.smoke_particle_velocity_x[temp_smoke_particle_index] * CelestialSimulator.global_clock_delta_time;
+								temp_combat_action_instance.smoke_particle_y[temp_smoke_particle_index] += temp_combat_action_instance.smoke_particle_velocity_y[temp_smoke_particle_index] * CelestialSimulator.global_clock_delta_time;
+								
+								// Apply Smoke Particle's Velocity Decay to Smoke Particle's Velocity
+								temp_combat_action_instance.smoke_particle_velocity_x[temp_smoke_particle_index] *= temp_smoke_particle_velocity_decay;
+								temp_combat_action_instance.smoke_particle_velocity_y[temp_smoke_particle_index] *= temp_smoke_particle_velocity_decay;
+								
+								// Apply Smoke Particle's Gravity to Smoke Particle's Vertical Position
+								temp_combat_action_instance.smoke_particle_y[temp_smoke_particle_index] += temp_smoke_particle_gravity;
+								
+								// Calculate Smoke Particle's Lifespan Progress
+								var temp_smoke_particle_progress = power(max(temp_smoke_particle_timer / temp_combat_action_instance.smoke_particle_lifespan[temp_smoke_particle_index], 0), temp_combat_action_instance.smoke_particle_color_alpha_fade_mult);
+								
+								// Calculate Smoke Particle's Color & Transparency
+								temp_combat_action_instance.smoke_particle_color[temp_smoke_particle_index] = merge_color(temp_combat_action_instance.smoke_particle_start_color, temp_combat_action_instance.smoke_particle_end_color, temp_smoke_particle_progress);
+								temp_combat_action_instance.smoke_particle_alpha[temp_smoke_particle_index] = lerp(temp_combat_action_instance.smoke_particle_start_alpha, temp_combat_action_instance.smoke_particle_end_alpha, temp_smoke_particle_progress);
+								
+								// Increment Smoke Particle Index
+								temp_smoke_particle_index++;
+							}
 							break;
 						default:
 							break;

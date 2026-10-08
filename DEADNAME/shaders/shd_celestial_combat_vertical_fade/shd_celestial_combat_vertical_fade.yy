@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_celestial_combat_vertical_fade",
+  "name":"shd_celestial_combat_vertical_fade",
+  "parent":{
+    "name":"CelestialCombat",
+    "path":"folders/Shaders/CelestialCombat.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

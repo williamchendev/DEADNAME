@@ -5,7 +5,7 @@
   "managed":true,
   "name":"oCelestialCombatAction_HitmarkerArtilleryGroundContact",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"5",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
   ],
   "parent":{
     "name":"Hitmarkers",
@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_HitmarkerMiss_Large",
-    "path":"sprites/sOverworld_HitmarkerMiss_Large/sOverworld_HitmarkerMiss_Large.yy",
+    "name":"sOverworld_Hitmarker_GroundContact",
+    "path":"sprites/sOverworld_Hitmarker_GroundContact/sOverworld_Hitmarker_GroundContact.yy",
   },
   "spriteMaskId":null,
   "visible":false,

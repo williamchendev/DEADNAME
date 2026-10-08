@@ -37,8 +37,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sOverworld_Hitmarker",
-    "path":"sprites/sOverworld_Hitmarker/sOverworld_Hitmarker.yy",
+    "name":"sOverworld_Hitmarker_Hit",
+    "path":"sprites/sOverworld_Hitmarker_Hit/sOverworld_Hitmarker_Hit.yy",
   },
   "spriteMaskId":null,
   "visible":false,
