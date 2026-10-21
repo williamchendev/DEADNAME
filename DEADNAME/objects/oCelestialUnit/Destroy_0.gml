@@ -1,6 +1,33 @@
 /// @description Celestial Unit Destroy Event
 // Performs the Celestial Unit's Deletion Behaviour
 
+// Remove Unit Instance's Index from Unit's Engaged Celestial Battles
+if (array_length(engaged_battles) > 0)
+{
+	// Iterate through Unit's Engaged Celestial Battles Array
+	var temp_engaged_battle_count = array_length(engaged_battles);
+	var temp_engaged_battle_index = temp_engaged_battle_count - 1;
+	
+	repeat (temp_engaged_battle_count)
+	{
+		// Find Celestial Battle Instance of Battle the Unit is Engaged in
+		var temp_battle_instance = engaged_battles[temp_engaged_battle_index];
+		
+		// Check if Celestial Battle Instance Exists
+		if (instance_exists(temp_battle_instance))
+		{
+			// Remove Unit Instance from Celestial Battle
+			celestial_battle_remove_unit(temp_battle_instance, id, false);
+		}
+		
+		// Delete Celestial Battle from Unit's list of Engaged Celestial Battles
+		array_delete(engaged_battles, temp_engaged_battle_index, 1);
+		
+		// Decrement Engaged Battle Index
+		temp_engaged_battle_index--;
+	}
+}
+
 // Remove Unit Instance's Index from Celestial Body's Faction Unit Arrays
 if (instance_exists(celestial_body_instance))
 {

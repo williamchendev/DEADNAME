@@ -40,11 +40,21 @@ enum CelestialBattleCombatGridSide
 enum CelestialBattleChoreographyStackType
 {
 	Prop,
+	PropDisappear,
 	CombatUnit,
 	LinearProjectile,
 	ArcProjectile,
 	Hitmarker,
-	SmokeParticle
+	SmokeParticle,
+	PhysicsBody
+}
+
+// Combat Enums
+enum CelestialBattleDeathType
+{
+	None,
+	Firearm,
+	Explosive
 }
 
 #region Combat Action Functions
@@ -114,7 +124,51 @@ function celestial_battle_calculate_combat_action_success(combat_action_instance
 /// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to perform the Action Behaviour of
 function celestial_battle_perform_combat_action(combat_action_instance)
 {
+	//
+	var temp_battle_instance = combat_action_instance.battle_instance;
 	
+	//
+	var temp_target_combat_unit_instance = combat_action_instance.target_combat_unit;
+	var temp_target_celestial_unit_instance = combat_action_instance.target_combat_unit.unit_instance;
+	
+	//
+	temp_target_combat_unit_instance.combat_unit_death_type = combat_action_instance.action_death_type != CelestialBattleDeathType.None ? combat_action_instance.action_death_type : temp_target_combat_unit_instance.combat_unit_death_type;
+	
+	//
+	temp_target_combat_unit_instance.combat_unit_health -= combat_action_instance.action_damage;
+	
+	//
+	if (temp_target_combat_unit_instance.combat_unit_health <= 0)
+	{
+		//
+		celestial_battle_spawn_combat_unit_physics_body(temp_battle_instance, temp_target_combat_unit_instance, combat_action_instance);
+		
+		//
+		celestial_battle_remove_combat_unit(temp_battle_instance, temp_target_combat_unit_instance, false);
+		
+		//
+		celestial_unit_remove_combat_unit(temp_target_combat_unit_instance.unit_instance, temp_target_combat_unit_instance);
+		
+		//
+		instance_destroy(temp_target_combat_unit_instance);
+		
+		//
+		if (temp_target_celestial_unit_instance.combat_unit_count < 1)
+		{
+			//
+			celestial_battle_remove_unit(temp_battle_instance, temp_target_celestial_unit_instance, false);
+			
+			//
+			instance_destroy(temp_target_celestial_unit_instance);
+			
+			//
+			if (array_length(temp_battle_instance.battle_units_a) < 1 or array_length(temp_battle_instance.battle_units_b) < 1)
+			{
+				//
+				temp_battle_instance.battle_exists = false;
+			}
+		}
+	}
 }
 
 /// @function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_x, target_y, initial_velocity, projectile_gravity, air_resistance, high_angle = true);
@@ -154,6 +208,151 @@ function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_
 	
 	// Return the Mirrored Angle
 	return target_x < start_x ? (temp_angle + 180) mod 360 : temp_angle;
+}
+#endregion
+
+#region Combat Unit Functions
+/// @function celestial_battle_spawn_combat_unit_physics_body(combat_unit_instance, combat_action_instance);
+/// @description 
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to 
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit Instance to 
+/// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to perform the Action Behaviour of
+function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat_unit_instance, combat_action_instance)
+{
+	// Establish Combat Unit Type Struct
+	var temp_combat_unit_struct = global.celestial_combat_units[combat_unit_instance.combat_unit_type];
+	
+	// Establish Combat Unit's Color
+	var temp_combat_unit_color = instance_exists(combat_unit_instance.unit_instance) ? combat_unit_instance.unit_instance.image_blend : combat_unit_instance.image_blend;
+	
+	// Establish Combat Unit's Sprite Vertical Offset
+	var temp_combat_unit_sprite_vertical_offset = -sprite_get_yoffset(combat_unit_instance.sprite_index) + sprite_get_bbox_top(combat_unit_instance.sprite_index);
+	
+	// Default Infantry Death Animation
+	var temp_physics_body_object = oCelestialCombatAction_PhysicsBody_KnockedDown;
+	var temp_physics_body_struct = { physics_body_direction: 90 + (combat_unit_instance.draw_xscale * random_range(35, 45)), physics_body_velocity: random_range(4, 7) };
+	var temp_physics_body_ground_level = combat_unit_instance.y + random_range(-2, 2);
+	
+	// Check Combat Unit's Death Type and switch Combat Unit's Death Animation to appropriately match the Death Scenario
+	switch (combat_unit_instance.combat_unit_death_type)
+	{
+		case CelestialBattleDeathType.Firearm:
+			break;
+		case CelestialBattleDeathType.Explosive:
+			// Infantry Explosion Death Animation - (Aerial Spin)
+			var temp_physics_body_explosion_death_direction = random_range(10, 20) * (random(1) > 0.5 ? 1 : -1);
+			temp_physics_body_struct.physics_body_direction = 90 + (combat_unit_instance.draw_xscale * temp_physics_body_explosion_death_direction);
+			temp_physics_body_struct.physics_body_velocity = random_range(6, 8);
+			
+			// Select Explosion Death Aerial Spin Type based on Explosion Launch Direction
+			if (temp_physics_body_explosion_death_direction < 0)
+			{
+				// Aerial Spin in Forward Launch Direction - Aerial Spin lands Face Down
+				temp_physics_body_object = oCelestialCombatAction_PhysicsBody_AerialSpin_FaceDown;
+			}
+			else
+			{
+				// Aerial Spin in Backwards Launch Direction - Aerial Spin lands Face Up
+				temp_physics_body_object = oCelestialCombatAction_PhysicsBody_AerialSpin_FaceUp;
+			}
+			break;
+		case CelestialBattleDeathType.None:
+		default:
+			break;
+	}
+	
+	// Default Infantry Death Item Drop Animation
+	var temp_physics_item_object = oCelestialCombatAction_PhysicsBody_Item;
+	var temp_physics_item_struct = { physics_body_direction: temp_physics_body_struct.physics_body_direction + random_range(-15, 15), physics_body_velocity: temp_physics_body_struct.physics_body_velocity + random_range(-1, 1) };
+	var temp_physics_item_ground_level = temp_physics_body_ground_level + random_range(-3, 3);
+	
+	// Check if Combat Unit's Equipped Item Exists
+	if (combat_unit_instance.item_inventory_index != -1 and combat_unit_instance.item_inventory[combat_unit_instance.item_inventory_index].item != -1)
+	{
+		// Find Combat Unit's Equipped Item's Combat Item Struct
+		var temp_combat_unit_item = combat_unit_instance.item_inventory[combat_unit_instance.item_inventory_index].item;
+		
+		// Check if Combat Unit's Equipped Item's Slot Type is an Infantry Item Slot
+		var temp_combat_unit_item_is_infantry_slot_item = false;
+		
+		switch (combat_unit_instance.item_inventory[combat_unit_instance.item_inventory_index].slot_type)
+		{
+			case CelestialCombatUnitInventorySlotType.InfantryLight:
+			case CelestialCombatUnitInventorySlotType.InfantryModerate:
+			case CelestialCombatUnitInventorySlotType.InfantryHefty:
+			case CelestialCombatUnitInventorySlotType.InfantryCumbersome:
+				// Combat Unit's Equipped Item's Slot Type is an Infantry Item Slot
+				temp_combat_unit_item_is_infantry_slot_item = true;
+				break;
+			default:
+				break;
+		}
+		
+		// Check if Combat Unit is eligible to drop an Item upon Death
+		if (global.celestial_combat_items[temp_combat_unit_item].item_render and temp_combat_unit_item_is_infantry_slot_item)
+		{
+			// Update Combat Unit's Item Sprite
+			var temp_combat_unit_item_sprite = global.celestial_combat_items[temp_combat_unit_item].item_sprite;
+			
+			// Calculate Combat Unit's Item Pivot
+			combat_unit_instance.item_pivot_x = lerp(temp_combat_unit_struct.unit_item_pivot_x, temp_combat_unit_struct.unit_item_aim_pivot_x, combat_unit_instance.item_aim) * combat_unit_instance.image_xscale;
+			combat_unit_instance.item_pivot_y = lerp(temp_combat_unit_struct.unit_item_pivot_y, temp_combat_unit_struct.unit_item_aim_pivot_y, combat_unit_instance.item_aim);
+			
+			// Instantiate Physics Body Item Instance
+			var temp_physics_item_instance = instance_create_depth(combat_unit_instance.x + combat_unit_instance.item_pivot_x, combat_unit_instance.y + combat_unit_instance.item_pivot_y, 0, temp_physics_item_object, temp_physics_item_struct);
+			
+			// Index Combat Unit's Physics Body Item Combat Action Instance within the Celestial Battle's Combat Actions Array
+			array_push(battle_instance.battle_combat_actions, temp_physics_item_instance);
+			temp_physics_item_instance.battle_instance = battle_instance;
+			
+			// Update Combat Unit's Dropped Item Color
+			temp_physics_item_instance.image_blend = temp_combat_unit_color;
+			
+			// Update Combat Unit's Dropped Item Sprite Index
+			temp_physics_item_instance.sprite_index = temp_combat_unit_item_sprite;
+			temp_physics_item_instance.physics_body_aerial_sprite = temp_combat_unit_item_sprite;
+			temp_physics_item_instance.physics_body_ground_sprite = temp_combat_unit_item_sprite;
+			
+			// Update Combat Unit's Dropped Item Image Index
+			temp_physics_item_instance.image_index = 0;
+			temp_physics_item_instance.physics_body_grounded_image_index = 0;
+			
+			// Update Combat Unit's Dropped Item Facing Direction
+			temp_physics_item_instance.image_xscale = combat_unit_instance.draw_xscale;
+			temp_physics_item_instance.physics_body_xscale = combat_unit_instance.draw_xscale;
+			
+			// Randomize Combat Unit's Dropped Item Rotate Speed
+			temp_physics_item_instance.physics_body_rotate_speed = random_range(15, 24);
+			
+			// Update Combat Unit's Dropped Item Ground Y Level
+			temp_physics_item_instance.physics_body_ground_y = temp_physics_item_ground_level;
+			
+			// Set the Dropped Item's Vertical Depth
+			temp_physics_item_instance.physics_body_vertical_depth_y = temp_physics_item_ground_level;
+			temp_physics_item_instance.physics_body_vertical_depth_offset = 2;
+		}
+	}
+	
+	// Instantiate Physics Body Instance
+	var temp_physics_body_instance = instance_create_depth(combat_unit_instance.x, combat_unit_instance.y + (temp_combat_unit_sprite_vertical_offset * 0.5), 0, temp_physics_body_object, temp_physics_body_struct);
+	
+	// Index Combat Unit's Physics Body Combat Action Instance within the Celestial Battle's Combat Actions Array
+	array_push(battle_instance.battle_combat_actions, temp_physics_body_instance);
+	temp_physics_body_instance.battle_instance = battle_instance;
+	
+	// Update Combat Unit's Physics Body Color
+	temp_physics_body_instance.image_blend = temp_combat_unit_color;
+	
+	// Update Combat Unit's Physics Body Facing Direction
+	temp_physics_body_instance.image_xscale = combat_unit_instance.draw_xscale;
+	temp_physics_body_instance.physics_body_xscale = combat_unit_instance.draw_xscale;
+	
+	// Update Combat Unit's Physics Body Facing Ground Y Level
+	temp_physics_body_instance.physics_body_ground_y = temp_physics_body_ground_level;
+	
+	// Set the Physics Body's Vertical Depth
+	temp_physics_body_instance.physics_body_vertical_depth_y = temp_physics_body_ground_level;
+	temp_physics_body_instance.physics_body_vertical_depth_offset = 2;
 }
 #endregion
 

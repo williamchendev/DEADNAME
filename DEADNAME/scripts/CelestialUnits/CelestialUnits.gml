@@ -309,7 +309,7 @@ function celestial_unit_remove_combat_unit(celestial_unit, celestial_combat_unit
 	array_delete(celestial_unit.combat_units, temp_combat_unit_array_index, 1);
 	
 	// Remove Combat Unit Instance from Celestial Unit's Combat Unit Arrays based on Combat Unit's Combat Column Type
-	switch (global.celestial_combat_units[combat_unit_type].unit_combat_column_type)
+	switch (global.celestial_combat_units[temp_combat_unit_type].unit_combat_column_type)
 	{
 		case CelestialBattleColumnType.Frontline:
 			// Find Combat Unit's Type Index within the Celestial Unit's Frontline Combat Unit Arrays

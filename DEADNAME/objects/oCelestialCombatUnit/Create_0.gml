@@ -21,6 +21,7 @@ combat_unit_evasion = 1;
 
 // Health & Armor Variables
 combat_unit_health = -1;
+combat_unit_death_type = CelestialBattleDeathType.None;
 
 // Action Variables
 combat_unit_action_type = CelestialCombatUnitActionType.None;

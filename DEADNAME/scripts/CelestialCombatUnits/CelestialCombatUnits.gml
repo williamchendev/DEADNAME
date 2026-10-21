@@ -45,6 +45,7 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultInfantry] =
 	// Unit Sprites
 	unit_idle_sprite: sOverworld_Unit_William_Idle,
 	unit_move_sprite: sOverworld_Unit_William_Move,
+	unit_hurt_sprite: sOverworld_Unit_William_Hurt,
 	unit_attack_sprite: noone,
 	
 	// Unit Stats
@@ -85,6 +86,7 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultInfantry] =
 	
 	unit_item_idle_ambient_angle: 0,
 	unit_item_move_ambient_angle: 45,
+	unit_item_hurt_ambient_angle: 35,
 };
 
 global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
@@ -92,6 +94,7 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
 	// Unit Sprites
 	unit_idle_sprite: sOverworld_Unit_Tank_Medium,
 	unit_move_sprite: sOverworld_Unit_Tank_Medium,
+	unit_hurt_sprite: sOverworld_Unit_Tank_Medium,
 	unit_attack_sprite: sOverworld_Unit_Tank_Medium_Attack,
 	
 	// Unit Stats
@@ -128,7 +131,8 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultTank] =
 	unit_item_aim_pivot_y: -11,
 	
 	unit_item_idle_ambient_angle: 0,
-	unit_item_move_ambient_angle: 45,
+	unit_item_move_ambient_angle: 0,
+	unit_item_hurt_ambient_angle: 0,
 };
 
 global.celestial_combat_units[CelestialCombatUnitType.DefaultArtillery] =
@@ -136,6 +140,7 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultArtillery] =
 	// Unit Sprites
 	unit_idle_sprite: sOverworld_Unit_Artillery,
 	unit_move_sprite: sOverworld_Unit_Artillery,
+	unit_hurt_sprite: sOverworld_Unit_Artillery,
 	unit_attack_sprite: noone,
 	
 	// Unit Stats
@@ -172,7 +177,8 @@ global.celestial_combat_units[CelestialCombatUnitType.DefaultArtillery] =
 	unit_item_aim_pivot_y: -18,
 	
 	unit_item_idle_ambient_angle: 0,
-	unit_item_move_ambient_angle: 45,
+	unit_item_move_ambient_angle: 0,
+	unit_item_hurt_ambient_angle: 0,
 };
 #endregion
 
@@ -200,6 +206,8 @@ global.celestial_combat_items[CelestialCombatItem.DefaultFirearm] =
 	action_count: 3,
 	action_delay: 30,
 	action_duration: 12,
+	action_damage: 1,
+	action_death_type: CelestialBattleDeathType.Firearm,
 	action_instance: oCelestialCombatAction_LinearProjectile,
 	
 	// Rotation Settings
@@ -247,7 +255,9 @@ global.celestial_combat_items[CelestialCombatItem.DefaultArtillery] =
 	action_count: 1,
 	action_delay: 30,
 	action_duration: 30,
-	action_instance: oCelestialCombatAction_ArcProjectile,
+	action_damage: 1,
+	action_death_type: CelestialBattleDeathType.Explosive,
+	action_instance: oCelestialCombatAction_ArcProjectile_Shell,
 	
 	// Rotation Settings
 	item_rotate_spd: 0.1,

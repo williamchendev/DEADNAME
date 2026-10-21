@@ -11,7 +11,8 @@ combat_unit = noone;
 choreography_stack_type = CelestialBattleChoreographyStackType.Prop;
 
 // Action Settings
-action_perform_on_destroy = false;
+action_is_successful = false;
+action_perform_success_calculation = false;
 
 // Object Depth Sorting Variables
 vertical_depth = 0;
@@ -21,7 +22,9 @@ action_timer = action_duration;
 action_progress = 0;
 
 action_type = CelestialCombatUnitActionType.None;
+action_damage = 0;
 action_accuracy = -1;
+action_death_type = CelestialBattleDeathType.None;
 
 // Target Variables
 target_combat_unit = noone;

@@ -1357,7 +1357,7 @@ calculate_celestial_battle_choreography_stack = function()
 		
 		// Calculate and Update Combat Unit Instance's Vertical Depth
 		var temp_combat_unit_depth_calculation_y = temp_combat_unit_instance.y;
-		temp_combat_unit_instance.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_combat_unit_depth_calculation_y);
+		temp_combat_unit_instance.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_combat_unit_depth_calculation_y, false);
 		
 		// Add Combat Unit to the Battle's Choreography Stack
 		array_push(CelestialSimulator.battle_choreography_stack, temp_combat_unit_instance);
@@ -1401,7 +1401,20 @@ calculate_celestial_battle_choreography_stack = function()
 				// Update Smoke Particle's Depth Calculation Value
 				temp_combat_action_depth_calculation_y = temp_combat_action_instance.smoke_particle_vertical_depth_y + temp_combat_action_instance.smoke_particle_vertical_depth_offset;
 				break;
+			case CelestialBattleChoreographyStackType.PhysicsBody:
+				// Update Physics Body's Depth Calculation Value
+				temp_combat_action_depth_calculation_y = temp_combat_action_instance.physics_body_vertical_depth_y + temp_combat_action_instance.physics_body_vertical_depth_offset;
+				
+				// Check if Physics Body's Aerial Rotation Behaviour is linked to Movement Behaviour
+				if (!temp_combat_action_instance.physics_body_grounded and temp_combat_action_instance.physics_body_aerial_rotate_with_movement_direction)
+				{
+					// Update Aerial Physics Body's Rotation relative to Movement Direction
+					temp_combat_action_instance.image_angle = point_direction(temp_combat_action_instance.physics_body_old_x, temp_combat_action_instance.physics_body_old_y, temp_combat_action_instance.physics_body_new_x, temp_combat_action_instance.physics_body_new_y);
+					temp_combat_action_instance.image_angle += temp_combat_action_instance.image_xscale > 0 ? 180 : 0;
+				}
+				break;
 			case CelestialBattleChoreographyStackType.Prop:
+			case CelestialBattleChoreographyStackType.PropDisappear:
 				// Update Prop's Depth Calculation Value
 				temp_combat_action_depth_calculation_y += temp_combat_action_instance.prop_vertical_depth_offset;
 				break;
@@ -1410,7 +1423,7 @@ calculate_celestial_battle_choreography_stack = function()
 		}
 		
 		// Calculate and Update Combat Action Instance's Vertical Depth
-		temp_combat_action_instance.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_combat_action_depth_calculation_y);
+		temp_combat_action_instance.vertical_depth = inverse_lerp(CelestialSimulator.battle_platform_top_vertical_position, CelestialSimulator.battle_platform_bottom_vertical_position, temp_combat_action_depth_calculation_y, false);
 		
 		// Add Combat Action to the Battle's Choreography Stack
 		array_push(CelestialSimulator.battle_choreography_stack, temp_combat_action_instance);
@@ -1579,7 +1592,7 @@ render_celestial_battle_choreography_stack = function()
 					// Draw Combat Unit's Equipped Combat Item
 					if (temp_combat_unit_item_struct.item_render)
 					{
-						draw_sprite_ext(temp_stack_obj.item_sprite, 0, temp_item_x, temp_item_y, 1, temp_stack_obj.image_xscale, temp_item_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+						draw_sprite_ext(temp_stack_obj.item_sprite, 1, temp_item_x, temp_item_y, 1, temp_stack_obj.image_xscale, temp_item_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
 					}
 					
 					// Check if Combat Unit's Equipped Item has a Muzzle Emission Effect active
@@ -1660,6 +1673,38 @@ render_celestial_battle_choreography_stack = function()
 				
 				// Reset Shader
 				shader_reset();
+				break;
+			case CelestialBattleChoreographyStackType.PhysicsBody:
+				// Draw Physics Body
+				draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+				break;
+			case CelestialBattleChoreographyStackType.PropDisappear:
+				// Draw Prop Disappear Effect
+				if (temp_stack_obj.action_timer <= temp_stack_obj.disappear_duration)
+				{
+					// Save Current GPU State
+					gpu_push_state();
+					
+					// Set Additive Blendmode for Disappear Effect
+					gpu_set_blendmode(bm_add);
+					
+					// Draw Prop Disappear's White Outline
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x - 1, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y - 1, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x + 1, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y + 1, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					
+					// Draw Prop Disappear Sprite
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+					
+					// Load Previous GPU State
+					gpu_pop_state();
+				}
+				else
+				{
+					// Draw Prop Disappear Sprite
+					draw_sprite_ext(temp_stack_obj.sprite_index, temp_stack_obj.image_index, temp_stack_obj.x, temp_stack_obj.y, temp_stack_obj.image_xscale, temp_stack_obj.image_yscale, temp_stack_obj.image_angle, temp_stack_obj.image_blend, temp_stack_obj.image_alpha);
+				}
 				break;
 			case CelestialBattleChoreographyStackType.Prop:
 				// Draw Prop
