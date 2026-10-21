@@ -1832,14 +1832,14 @@ switch (unit_equipment_animation_state)
 				
 				// Calculate Thrown Weapon's Aim Exponent Animation Value
 				thrown_weapon_aim_transition_value = clamp(thrown_weapon_aim_transition_value, 0, 1);
-				var temp_thrown_weapon_aim_transition_value = power(thrown_weapon_aim_transition_value, thrown_aiming_animation_curve_exponent);
+				var temp_thrown_weapon_windup_aim_transition_value = power(thrown_weapon_aim_transition_value, thrown_aiming_animation_curve_exponent);
 				
 				// Update Thrown Weapon Limb Target Angles
-				temp_thrown_primary_limb_pivot_a_angle = lerp(thrown_idle_primary_limb_pivot_a_angle, thrown_aiming_primary_limb_pivot_a_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
-				temp_thrown_primary_limb_pivot_b_angle = lerp(thrown_idle_primary_limb_pivot_b_angle, thrown_aiming_primary_limb_pivot_b_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
+				temp_thrown_primary_limb_pivot_a_angle = lerp(thrown_idle_primary_limb_pivot_a_angle, thrown_aiming_primary_limb_pivot_a_angle, temp_thrown_weapon_windup_aim_transition_value) * temp_unit_direction;
+				temp_thrown_primary_limb_pivot_b_angle = lerp(thrown_idle_primary_limb_pivot_b_angle, thrown_aiming_primary_limb_pivot_b_angle, temp_thrown_weapon_windup_aim_transition_value) * temp_unit_direction;
 				
-				temp_thrown_secondary_limb_pivot_a_angle = lerp(thrown_idle_secondary_limb_pivot_a_angle, thrown_aiming_secondary_limb_pivot_a_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
-				temp_thrown_secondary_limb_pivot_b_angle = lerp(thrown_idle_secondary_limb_pivot_b_angle, thrown_aiming_secondary_limb_pivot_b_angle, temp_thrown_weapon_aim_transition_value) * temp_unit_direction;
+				temp_thrown_secondary_limb_pivot_a_angle = lerp(thrown_idle_secondary_limb_pivot_a_angle, thrown_aiming_secondary_limb_pivot_a_angle, temp_thrown_weapon_windup_aim_transition_value) * temp_unit_direction;
+				temp_thrown_secondary_limb_pivot_b_angle = lerp(thrown_idle_secondary_limb_pivot_b_angle, thrown_aiming_secondary_limb_pivot_b_angle, temp_thrown_weapon_windup_aim_transition_value) * temp_unit_direction;
 				
 				// Thrown Weapon Facing Direction Behaviour
 				thrown_weapon_angle = weapon_aim ? thrown_weapon_angle : (temp_unit_direction >= 0 ? 0 : 180);
@@ -2100,6 +2100,10 @@ switch (unit_equipment_animation_state)
 			var temp_thrown_weapon_primary_arm_target_x = inventory_slots[inventory_index].slot_position_x + hand_fumble_animation_offset_x;
 			var temp_thrown_weapon_primary_arm_target_y = inventory_slots[inventory_index].slot_position_y + hand_fumble_animation_offset_y;
 			
+			// Establish Default Thrown Weapon's Operate Pivot Position
+			var temp_thrown_weapon_operate_weapon_pivot_x = 0;
+			var temp_thrown_weapon_operate_weapon_pivot_y = 0;
+			
 			// Thrown Weapon Animation State Condition Tree
 			switch (unit_thrown_weapon_animation_state)
 			{
@@ -2110,12 +2114,12 @@ switch (unit_equipment_animation_state)
 					// Toggle Secondary Limb Animation Behaviour
 					temp_thrown_weapon_hand_operate_secondary = true;
 					
-					// Establish Thrown Weapon's Operate Pivot Position
+					// Calculate Thrown Weapon's Operate Pivot Position
 					var temp_thrown_weapon_operate_pivot_horizontal_offset = global.unit_packs[unit_pack].equipment_thrown_weapon_operate_pivot_x * draw_xscale;
 					var temp_thrown_weapon_operate_pivot_vertical_offset = (global.unit_packs[unit_pack].equipment_thrown_weapon_operate_pivot_y + (bobbing_animation_value * inventory_vertical_bobbing_height)) * draw_yscale;
 					
-					var temp_thrown_weapon_operate_weapon_pivot_x = x + rot_point_x(temp_thrown_weapon_operate_pivot_horizontal_offset, temp_thrown_weapon_operate_pivot_vertical_offset);
-					var temp_thrown_weapon_operate_weapon_pivot_y = y + ground_contact_vertical_offset + rot_point_y(temp_thrown_weapon_operate_pivot_horizontal_offset, temp_thrown_weapon_operate_pivot_vertical_offset);
+					temp_thrown_weapon_operate_weapon_pivot_x = x + rot_point_x(temp_thrown_weapon_operate_pivot_horizontal_offset, temp_thrown_weapon_operate_pivot_vertical_offset);
+					temp_thrown_weapon_operate_weapon_pivot_y = y + ground_contact_vertical_offset + rot_point_y(temp_thrown_weapon_operate_pivot_horizontal_offset, temp_thrown_weapon_operate_pivot_vertical_offset);
 					
 					// Calculate Primary Limb's Inverse Kinematics Smooth Transition between the Thrown Weapon's Grab Weapon Animation State and Thrown Weapon's Operate Action Animation States
 					temp_thrown_weapon_primary_arm_target_x = lerp(inventory_slots[inventory_index].slot_position_x, temp_thrown_weapon_operate_weapon_pivot_x, temp_thrown_weapon_operate_transition_value);
@@ -2852,17 +2856,17 @@ switch (unit_equipment_animation_state)
 		limb_primary_arm.limb_xscale = temp_unit_direction;
 		limb_secondary_arm.limb_xscale = temp_unit_direction * (temp_firearm_reload and global.item_packs[item_equipped.item_pack].weapon_data.firearm_reload_with_secondary_hand and temp_firearm_reload_secondary_hand_limb_direction_reversed ? -1 : 1);
 		
-		var temp_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
-		var temp_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
+		var temp_firearm_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
+		var temp_firearm_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
 		
-		limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
-		limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+		limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_firearm_left_arm_anchor_offset_x, temp_firearm_left_arm_anchor_offset_y);
+		limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_firearm_left_arm_anchor_offset_x, temp_firearm_left_arm_anchor_offset_y);
 		
-		var temp_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
-		var temp_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
+		var temp_firearm_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
+		var temp_firearm_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
 		
-		limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
-		limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+		limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_firearm_right_arm_anchor_offset_x, temp_firearm_right_arm_anchor_offset_y);
+		limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_firearm_right_arm_anchor_offset_x, temp_firearm_right_arm_anchor_offset_y);
 		
 		// Update Weapon's Angle
 		var temp_firearm_angle_difference = angle_difference(item_equipped.item_angle, temp_firearm_is_aimed ? point_direction(temp_firearm_x, temp_firearm_y, weapon_aim_x, weapon_aim_y) : temp_firearm_ambient_angle);
@@ -2949,11 +2953,11 @@ switch (unit_equipment_animation_state)
 			limb_primary_arm.limb_xscale = temp_unit_direction;
 			
 			// Update Limb's Holding Item Arm Pivots
-			var temp_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
-			var temp_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
+			var temp_item_left_arm_anchor_offset_x = limb_primary_arm.anchor_offset_x * draw_xscale;
+			var temp_item_left_arm_anchor_offset_y = limb_primary_arm.anchor_offset_y * draw_yscale;
 			
-			limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
-			limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_left_arm_anchor_offset_x, temp_left_arm_anchor_offset_y);
+			limb_primary_arm.limb_pivot_ax = x + rot_point_x(temp_item_left_arm_anchor_offset_x, temp_item_left_arm_anchor_offset_y);
+			limb_primary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_item_left_arm_anchor_offset_x, temp_item_left_arm_anchor_offset_y);
 			
 			// Update Limb's Holding Item Hand Positions
 			var temp_item_primary_hand_horizontal_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_data.item_primary_hand_horizontal_offset * draw_xscale;
@@ -2969,11 +2973,11 @@ switch (unit_equipment_animation_state)
 			limb_secondary_arm.limb_xscale = temp_unit_direction;
 			
 			// Update Limb's Holding Item Arm Pivots
-			var temp_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
-			var temp_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
+			var temp_item_right_arm_anchor_offset_x = limb_secondary_arm.anchor_offset_x * draw_xscale;
+			var temp_item_right_arm_anchor_offset_y = limb_secondary_arm.anchor_offset_y * draw_yscale;
 			
-			limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
-			limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_right_arm_anchor_offset_x, temp_right_arm_anchor_offset_y);
+			limb_secondary_arm.limb_pivot_ax = x + rot_point_x(temp_item_right_arm_anchor_offset_x, temp_item_right_arm_anchor_offset_y);
+			limb_secondary_arm.limb_pivot_ay = y + ground_contact_vertical_offset + rot_point_y(temp_item_right_arm_anchor_offset_x, temp_item_right_arm_anchor_offset_y);
 			
 			// Update Limb's Holding Item Hand Positions
 			var temp_item_secondary_hand_horizontal_offset = global.item_packs[inventory_slots[inventory_index].item_pack].item_data.item_secondary_hand_horizontal_offset * draw_xscale;

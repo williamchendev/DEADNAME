@@ -513,13 +513,14 @@ function unit_inventory_add_item(unit, item_pack, item_count = 1)
 	item_count = item_count < 0 ? abs(item_count) * global.item_packs[item_pack].item_count_limit : item_count;
 	
 	// Place Item in Unit Inventory Behaviour
+	var temp_slot_index = -1;
 	var temp_inventory_index = -1;
 	var temp_item_placed_count = 0;
 	
 	while (temp_item_placed_count < item_count)
 	{
 		// Establish Slot Index to check for Valid Inventory Slot Placement
-		var temp_slot_index = -1;
+		temp_slot_index = -1;
 		
 		// Iterate through Unit Inventory Slots for Valid Inventory Slot to place Item
 		for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
@@ -748,13 +749,14 @@ function unit_inventory_take_item_instance(unit, item_instance)
 	}
 	
 	// Place Item in Unit Inventory Behaviour
+	var temp_slot_index = -1;
 	var temp_inventory_index = -1;
 	var temp_item_placed_count = 0;
 	
 	while (temp_item_placed_count < item_instance.item_count)
 	{
 		// Establish Slot Index to check for Valid Inventory Slot Placement
-		var temp_slot_index = -1;
+		temp_slot_index = -1;
 		
 		// Iterate through Unit Inventory Slots for Valid Inventory Slot to place Item
 		for (var i = array_length(unit.inventory_slots) - 1; i >= 0; i--)
@@ -836,9 +838,9 @@ function unit_inventory_take_item_instance(unit, item_instance)
 				unit_inventory_change_slot(unit, unit.inventory_index);
 			}
 		}
-		else
+		else if (global.item_packs[item_instance.item_pack].item_type == ItemType.Weapon)
 		{
-			// Restore Item Properties to Unit Inventory's Item Slot's Item Instance
+			// Restore Item Weapon Properties to Unit Inventory's Item Slot's Item Instance
 			switch (global.item_packs[item_instance.item_pack].weapon_data.weapon_type)
 			{
 				case WeaponType.Thrown:

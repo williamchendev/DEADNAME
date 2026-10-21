@@ -19,13 +19,14 @@
 
 function game_get_step() {
 	// Use more accurate timing method, if available
+	var get_timer_current, get_timer_loss;
 	if (instance_exists(asset_get_index("obj_server_gmlp"))) {
-		var get_timer_current = global.ds_gmlp.time.step,
-			get_timer_loss = global.ds_gmlp.time.loss;
+		get_timer_current = global.ds_gmlp.time.step;
+		get_timer_loss = global.ds_gmlp.time.loss;
 	} else {
 		// Otherwise use fallback
-		var get_timer_current = get_timer(),
-			get_timer_loss = 0;
+		get_timer_current = get_timer();
+		get_timer_loss = 0;
 	}
 
 	// Get the current session time, adjusted for lost time

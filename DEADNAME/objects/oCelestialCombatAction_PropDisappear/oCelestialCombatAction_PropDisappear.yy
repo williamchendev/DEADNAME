@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialCombatAction_PropDisappear",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"-1",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"-1",},
   ],
   "parent":{
     "name":"Actions",
@@ -31,10 +31,10 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"blink_duration","filters":[],"listItems":[],"multiselect":false,"name":"blink_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"10","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"blink_alpha_modifier","filters":[],"listItems":[],"multiselect":false,"name":"blink_alpha_modifier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.2","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"disappear_duration","filters":[],"listItems":[],"multiselect":false,"name":"disappear_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"36","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"disappear_alpha_modifier","filters":[],"listItems":[],"multiselect":false,"name":"disappear_alpha_modifier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.6","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"blink_duration","filters":[],"listItems":[],"multiselect":false,"name":"blink_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"10","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"blink_alpha_modifier","filters":[],"listItems":[],"multiselect":false,"name":"blink_alpha_modifier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"disappear_duration","filters":[],"listItems":[],"multiselect":false,"name":"disappear_duration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"36","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"disappear_alpha_modifier","filters":[],"listItems":[],"multiselect":false,"name":"disappear_alpha_modifier","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.6","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

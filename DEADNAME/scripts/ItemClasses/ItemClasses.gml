@@ -1152,14 +1152,14 @@ class FirearmClass extends WeaponClass define
 			var temp_firearm_muzzle_position_x = item_x + rot_point_x(global.item_packs[item_pack].weapon_data.firearm_muzzle_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_muzzle_y);
 			var temp_firearm_muzzle_position_y = item_y + rot_point_y(global.item_packs[item_pack].weapon_data.firearm_muzzle_x, item_facing_sign * global.item_packs[item_pack].weapon_data.firearm_muzzle_y);
 			
+			// Set Default Crosshair Length from Firearm Muzzle Position
+			var temp_weapon_crosshair_length_target = weapon_crosshair_length_default;
+			
 			// Unit Aiming Behaviour
 			var temp_weapon_unit_is_reloading = item_unit.unit_equipment_animation_state == UnitEquipmentAnimationState.FirearmReload;
 			
 			if (!temp_weapon_unit_is_reloading)
 			{
-				// Set Default Crosshair Length from Firearm Muzzle Position
-				var temp_weapon_crosshair_length_target = weapon_crosshair_length_default;
-				
 				// Check if Unit is Aiming Firearm
 				if (item_unit.weapon_aim)
 				{

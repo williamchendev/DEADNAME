@@ -7,7 +7,7 @@
   "managed":true,
   "name":"oCelestialCombatAction_PhysicsBody",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"2000",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2000",},
   ],
   "parent":{
     "name":"PhysicsBody",
@@ -33,17 +33,17 @@
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"physics_body_aerial_sprite","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"physics_body_aerial_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Unit_William_Body_Ground_FaceUp","path":"sprites/sOverworld_Unit_William_Body_Ground_FaceUp/sOverworld_Unit_William_Body_Ground_FaceUp.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"sOverworld_Unit_William_Body_Ground_FaceUp","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"physics_body_aerial_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Unit_William_Body_Ground_FaceUp","path":"sprites/sOverworld_Unit_William_Body_Ground_FaceUp/sOverworld_Unit_William_Body_Ground_FaceUp.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_Unit_William_Body_Ground_FaceUp","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"physics_body_ground_sprite","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"physics_body_ground_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Unit_William_Body_Ground_FaceUp","path":"sprites/sOverworld_Unit_William_Body_Ground_FaceUp/sOverworld_Unit_William_Body_Ground_FaceUp.yy",},"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"sOverworld_Unit_William_Body_Ground_FaceUp","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_velocity","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_velocity","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"12","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_direction","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_direction","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_air_resistance","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_air_resistance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.6","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_gravity","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_gravity","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.5","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_friction","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_friction","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0.8","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_rotate_speed","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_rotate_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"physics_body_ground_collision_offset","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_ground_collision_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"6","varType":0,},
+      ],"listItems":[],"multiselect":false,"name":"physics_body_ground_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sOverworld_Unit_William_Body_Ground_FaceUp","path":"sprites/sOverworld_Unit_William_Body_Ground_FaceUp/sOverworld_Unit_William_Body_Ground_FaceUp.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sOverworld_Unit_William_Body_Ground_FaceUp","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_velocity","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_velocity","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"12","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_direction","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_direction","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_air_resistance","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_air_resistance","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.6","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_gravity","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_gravity","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_friction","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_friction","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_rotate_speed","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_rotate_speed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"physics_body_ground_collision_offset","filters":[],"listItems":[],"multiselect":false,"name":"physics_body_ground_collision_offset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"6","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

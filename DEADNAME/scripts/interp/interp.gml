@@ -392,17 +392,18 @@ function interp() {
 		// Cubic Bezier 
 		case ease_bezier: {
 			// Use input control point values, if supplied
+			var _bx1, _by1, _bx2, _by2;
 			if (argument_count > 4) {
-				var _bx1 = clamp(argument[4], 0, 1),
-					_by1 = argument[5],
-					_bx2 = clamp(argument[6], 0, 1),
-					_by2 = argument[7];	
+				_bx1 = clamp(argument[4], 0, 1);
+				_by1 = argument[5];
+				_bx2 = clamp(argument[6], 0, 1);
+				_by2 = argument[7];
 			} else {
 				// Otherwise default to ease
-				var _bx1 = 0.25,
-					_by1 = 0.10,
-					_bx2 = 0.25,
-					_by2 = 1.00;
+				_bx1 = 0.25;
+				_by1 = 0.10;
+				_bx2 = 0.25;
+				_by2 = 1.00;
 			}
 	
 			// Calculate control points on bezier curve
@@ -437,11 +438,12 @@ function interp() {
 		// Animation Curve 
 		case ease_curve: {
 			// Use input animation curve, if supplied
+			var _curve;
 			if (argument_count > 4) {
-				var _curve = argument[4];
+				_curve = argument[4];
 			} else { 
 				// Otherwise create default curve
-				var _curve = animcurve_create();
+				_curve = animcurve_create();
 				_curve.name = "crv_interp";
 				
 				// Create curve channel

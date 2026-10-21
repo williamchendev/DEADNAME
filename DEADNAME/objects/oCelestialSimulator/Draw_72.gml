@@ -213,14 +213,14 @@ if (instance_exists(camera_observing_instance))
 					var temp_selected_inst_emotion_battle_popup_y = y + temp_selected_inst_sprite_vertical_offset + (emotion_battle_popup_vertical_movement * temp_selected_inst_emotion_battle_popup_anim_value);
 					
 					// Unit Engaged in Battle Popup Animation Draw Sprite Behaviour
-					draw_sprite_ext(sOverworld_Emotion_Battle, 0, x, temp_selected_inst_emotion_battle_popup_y, image_xscale * temp_selected_inst_emotion_battle_popup_scale, temp_selected_inst_emotion_battle_popup_scale, 0, c_white, temp_alpha);
+					draw_sprite_ext(sOverworld_Emotion_Battle, 0, x, temp_selected_inst_emotion_battle_popup_y, image_xscale * temp_selected_inst_emotion_battle_popup_scale, temp_selected_inst_emotion_battle_popup_scale, 0, c_white, 1);
 				}
 				
 				// Unit Emotion Sprite Animation Rendering Behaviour
 				if (!temp_sub_object_miniature_icon and emotion_sprite_index != -1)
 				{
 					// Unit Emotion Animation Draw Sprite Behaviour
-					draw_sprite_ext(emotion_sprite_index, emotion_image_index, x, y + temp_selected_inst_sprite_vertical_offset, 1, 1, 0, c_white, temp_alpha);
+					draw_sprite_ext(emotion_sprite_index, emotion_image_index, x, y + temp_selected_inst_sprite_vertical_offset, 1, 1, 0, c_white, 1);
 				}
 			}
 		}

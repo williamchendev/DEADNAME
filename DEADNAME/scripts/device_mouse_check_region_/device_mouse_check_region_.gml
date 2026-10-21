@@ -46,16 +46,19 @@ function device_mouse_check_region() {
 		reg_shape_rectangle = 0.5,
 		reg_shape_circle = 1,
 		reg_debug = false;
+		
+	var reg_shape;
+	var reg_height;
 
 	// Get region shape and dimensions
 	if (argument_count == 6) or (argument_count == 8) {
-		var reg_shape = reg_shape_rectangle;
-		var reg_height = argument[5];
+		reg_shape = reg_shape_rectangle;
+		reg_height = argument[5];
 		reg_xorig = reg_width*0.5;
 		reg_yorig = reg_height*0.5;
 	} else {
-		var reg_shape = reg_shape_circle;
-		var reg_height = argument[4];
+		reg_shape = reg_shape_circle;
+		reg_height = argument[4];
 		reg_xorig = 0;
 		reg_yorig = 0;
 	}
@@ -186,16 +189,19 @@ function device_mouse_check_region_gui() {
 		reg_shape_rectangle = 0.5,
 		reg_shape_circle = 1,
 		reg_debug = false;
+		
+	var reg_shape;
+	var reg_height;
 
 	// Get region shape and dimensions
 	if (argument_count == 6) or (argument_count == 8) {
-		var reg_shape = reg_shape_rectangle;
-		var reg_height = argument[5];
+		reg_shape = reg_shape_rectangle;
+		reg_height = argument[5];
 		reg_xorig = reg_width*0.5;
 		reg_yorig = reg_height*0.5;
 	} else {
-		var reg_shape = reg_shape_circle;
-		var reg_height = argument[4];
+		reg_shape = reg_shape_circle;
+		reg_height = argument[4];
 		reg_xorig = 0;
 		reg_yorig = 0;
 	}

@@ -19,8 +19,7 @@ function haversine_distance_uv(first_u, first_v, second_u, second_v, radius)
 	var temp_lat_2 = (second_v - 0.5) * pi;
 	
 	// Find UV Distance
-	var temp_lon_distance = temp_lon_2 - temp_lon_1;
-	var temp_lon_distance = (temp_lon_distance + pi) mod (2 * pi) - pi;
+	var temp_lon_distance = ((temp_lon_2 - temp_lon_1) + pi) mod (2 * pi) - pi;
 	var temp_lat_distance = temp_lat_2 - temp_lat_1;
 	
 	// Great Circle distance from first coordinate to second coordinate

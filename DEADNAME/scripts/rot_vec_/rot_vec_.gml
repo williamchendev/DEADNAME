@@ -32,7 +32,7 @@ function rot_vec_x() {
 	return argument[0] + (argument[2]*trig_cosine) + (argument[3]*trig_sine);
 
 	// Null Y argument
-	argument[1] = 0;
+	//argument[1] = 0;
 }
 
 
@@ -70,5 +70,5 @@ function rot_vec_y() {
 	return argument[1] + (argument[2]*-trig_sine) + (argument[3]*trig_cosine);
 
 	// Null X argument
-	argument[0] = 0;
+	//argument[0] = 0;
 }

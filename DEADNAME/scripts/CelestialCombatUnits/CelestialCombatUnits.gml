@@ -255,7 +255,7 @@ global.celestial_combat_items[CelestialCombatItem.DefaultArtillery] =
 	action_count: 1,
 	action_delay: 30,
 	action_duration: 30,
-	action_damage: 1,
+	action_damage: 6,
 	action_death_type: CelestialBattleDeathType.Explosive,
 	action_instance: oCelestialCombatAction_ArcProjectile_Shell,
 	

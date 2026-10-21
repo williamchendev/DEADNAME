@@ -17,15 +17,17 @@
 function approx() {
 	// Get original input value
 	var _val = argument[0];
+	var _min;
+	var _max;
 	
 	// Get min/max values to test, if input
 	if (argument_count > 2) {
-		var _min = argument[1];
-		var _max = argument[2];
+		_min = argument[1];
+		_max = argument[2];
 	} else {
 		// Otherwise use defaults
-		var _max = abs(argument[1]);
-		var _min = -_max;
+		_max = abs(argument[1]);
+		_min = -_max;
 	}
 
 	// Check if value is inside range

@@ -24,8 +24,8 @@ function world_position_to_screen_position(position_x, position_y, position_z, v
 		}
 		
 		// Perspective Projection Matrix Clip Space Conversion
-		var temp_clip_space_x = projection_matrix[8] + projection_matrix[0] * (view_matrix[0] * position_x + view_matrix[4] * position_y + view_matrix[8] * position_z + view_matrix[12]) / temp_w;
-		var temp_clip_space_y = projection_matrix[9] + projection_matrix[5] * (view_matrix[1] * position_x + view_matrix[5] * position_y + view_matrix[9] * position_z + view_matrix[13]) / temp_w;
+		temp_clip_space_x = projection_matrix[8] + projection_matrix[0] * (view_matrix[0] * position_x + view_matrix[4] * position_y + view_matrix[8] * position_z + view_matrix[12]) / temp_w;
+		temp_clip_space_y = projection_matrix[9] + projection_matrix[5] * (view_matrix[1] * position_x + view_matrix[5] * position_y + view_matrix[9] * position_z + view_matrix[13]) / temp_w;
 	} 
 	else 
 	{

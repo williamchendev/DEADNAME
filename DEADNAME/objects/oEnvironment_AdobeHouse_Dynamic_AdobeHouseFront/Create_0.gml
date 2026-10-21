@@ -43,6 +43,13 @@ alpha_lerp_spd = 0.1;
 // Variables
 alpha_value = 1;
 
+// Create Adobe House Instantiation Structs
+var temp_dynamic_object_environment_backlayer_struct =
+{
+	sub_layer_name: temp_back_layer_name,
+	image_xscale: image_xscale
+};
+
 // Create Background
 instance_create_depth
 (
@@ -50,166 +57,134 @@ instance_create_depth
 	y,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_AdobeHouseBack, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Kiva Rumford Fireplace
 instance_create_depth
 (
-	x - 138, 
+	x - (sign(image_xscale) * 138), 
 	y - 78,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_KivaRumfordFireplace, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Bed
 instance_create_depth
 (
-	x - 81, 
+	x - (sign(image_xscale) * 81), 
 	y - 76,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_Bed, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Book Shelf
 instance_create_depth
 (
-	x - 11, 
+	x - (sign(image_xscale) * 11), 
 	y - 77,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_BookShelf, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Drawers
 instance_create_depth
 (
-	x + 80, 
+	x + (sign(image_xscale) * 80), 
 	y - 42,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_Drawers, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Wood Corbels
 instance_create_depth
 (
-	x - 145, 
+	x - (sign(image_xscale) * 145), 
 	y - 171,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_WoodCorbel, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 instance_create_depth
 (
-	x - 88, 
+	x - (sign(image_xscale) * 88), 
 	y - 173,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_WoodCorbel, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 instance_create_depth
 (
-	x - 34, 
+	x - (sign(image_xscale) * 34), 
 	y - 176,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_WoodCorbel, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 instance_create_depth
 (
-	x + 21, 
+	x + (sign(image_xscale) * 21), 
 	y - 178,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_WoodCorbel, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 instance_create_depth
 (
-	x + 72, 
+	x + (sign(image_xscale) * 72), 
 	y - 147,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_WoodCorbel, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Painting
 instance_create_depth
 (
-	x - 79, 
+	x - (sign(image_xscale) * 79), 
 	y - 128,
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_HorsesPainting, 
-	{
-		sub_layer_name: temp_back_layer_name,
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Inherit the parent event
 event_inherited();
 
 // Create Front Passthrough
-var temp_image_xscale = image_xscale;
-
 house_front = instance_create_depth
 (
 	x, 
 	y, 
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_AdobeHouseFrontPassthrough, 
-	{
-		sub_layer_name: temp_back_layer_name,
-		image_xscale: temp_image_xscale
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Door
 house_door = instance_create_depth
 (
 	x + (sign(image_xscale) * 150), 
-	y - 81, depth, 
+	y - 81, 
+	depth, 
 	oEnvironment_AdobeHouse_Dynamic_AdobeHouseDoor,
-	{
-		sub_layer_name: temp_back_layer_name,
-		image_xscale: temp_image_xscale
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
 
 // Create Ladder
 house_ladder = instance_create_depth
 (
-	x - 217, 
+	x - (sign(image_xscale) * 217), 
 	y + 3, 
 	depth, 
 	oEnvironment_AdobeHouse_Dynamic_Ladder,
-	{
-		sub_layer_name: temp_front_layer_name,
-		image_xscale: temp_image_xscale
-	}
+	temp_dynamic_object_environment_backlayer_struct
 );
