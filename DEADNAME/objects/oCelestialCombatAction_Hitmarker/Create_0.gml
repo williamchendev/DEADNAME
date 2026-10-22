@@ -7,7 +7,3 @@ event_inherited();
 // Celestial Battle Choreography Stack Type
 choreography_stack_type = CelestialBattleChoreographyStackType.Hitmarker;
 
-// Hitmarker Depth Variables
-hitmarker_vertical_depth_y = 0;
-hitmarker_vertical_depth_offset = 0;
-

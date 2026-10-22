@@ -4,7 +4,7 @@
   "bboxMode":0,
   "bbox_bottom":23,
   "bbox_left":6,
-  "bbox_right":21,
+  "bbox_right":22,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -22,6 +22,7 @@
   "height":24,
   "HTile":false,
   "layers":[
+    {"$GMImageLayer":"","%Name":"d22c4dbd-ee8e-4b28-b5bf-bcac811f4679","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"d22c4dbd-ee8e-4b28-b5bf-bcac811f4679","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
     {"$GMImageLayer":"","%Name":"f61e3d3b-809c-4cf1-a6f1-b77702efa911","blendMode":0,"displayName":"default","isLocked":false,"name":"f61e3d3b-809c-4cf1-a6f1-b77702efa911","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sOverworld_Unit_William_Body_KeelOver",

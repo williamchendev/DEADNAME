@@ -38,6 +38,8 @@ combat_unit_action_target_combat_grid_row = -1;
 // Animation Variables
 animation_state = CelestialCombatUnitAnimationState.EntryDelayed;
 
+combat_unit_hurt_image_index = 0;
+
 // Combat Grid Variables
 combat_grid_side = CelestialBattleCombatGridSide.None;
 

@@ -4,7 +4,7 @@
 // Arc Projectile Celestial Combat Action Initialization Behaviour
 event_inherited();
 
-// Arc Projectile Shell Functions
+// Combat Action Functions
 combat_action_end = function()
 {
 	// Check if Combat Action's Battle Instance still exists
@@ -30,8 +30,8 @@ combat_action_end = function()
 		temp_smoke_particle_instance.battle_instance = battle_instance;
 		
 		// Set the Arc Projectile's Smoke Particle Layer Vertical Depth
-		temp_smoke_particle_instance.smoke_particle_vertical_depth_y = temp_smoke_particle_y;
-		temp_smoke_particle_instance.smoke_particle_vertical_depth_offset = 2;
+		temp_smoke_particle_instance.vertical_depth_y = temp_smoke_particle_y;
+		temp_smoke_particle_instance.vertical_depth_offset = 2;
 		
 		// Increment Smoke Particle Layer Index
 		temp_smoke_particle_layer_index++;
@@ -51,8 +51,8 @@ combat_action_end = function()
 		temp_hitmarker_shrapnel_instance.image_angle = random_range(-25, 25);
 		
 		// Set the Arc Projectile's Hitmarker Shrapnel Vertical Depth
-		temp_hitmarker_shrapnel_instance.hitmarker_vertical_depth_y = y;
-		temp_hitmarker_shrapnel_instance.hitmarker_vertical_depth_offset = 2.04;
+		temp_hitmarker_shrapnel_instance.vertical_depth_y = y;
+		temp_hitmarker_shrapnel_instance.vertical_depth_offset = 2.04;
 	}
 	
 	// Check if Combat Action has a Hitmarker Ground Collision Object Assigned
@@ -66,8 +66,8 @@ combat_action_end = function()
 		temp_hitmarker_ground_collision_instance.battle_instance = battle_instance;
 		
 		// Set the Arc Projectile's Hitmarker Ground Collision Vertical Depth
-		temp_hitmarker_ground_collision_instance.hitmarker_vertical_depth_y = y;
-		temp_hitmarker_ground_collision_instance.hitmarker_vertical_depth_offset = 2.05;
+		temp_hitmarker_ground_collision_instance.vertical_depth_y = y;
+		temp_hitmarker_ground_collision_instance.vertical_depth_offset = 2.05;
 	}
 }
 

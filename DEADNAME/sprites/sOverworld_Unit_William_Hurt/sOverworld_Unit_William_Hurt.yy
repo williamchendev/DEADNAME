@@ -3,9 +3,9 @@
   "%Name":"sOverworld_Unit_William_Hurt",
   "bboxMode":0,
   "bbox_bottom":23,
-  "bbox_left":8,
-  "bbox_right":16,
-  "bbox_top":2,
+  "bbox_left":5,
+  "bbox_right":19,
+  "bbox_top":1,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
@@ -13,6 +13,9 @@
   "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"v1","%Name":"6a38950c-19d8-4a19-bedb-c1f631bb4588","name":"6a38950c-19d8-4a19-bedb-c1f631bb4588","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d32377c3-a4f4-4673-87e4-4b0fb3d9d708","name":"d32377c3-a4f4-4673-87e4-4b0fb3d9d708","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9be53915-6f37-4308-b672-3e084681ddee","name":"9be53915-6f37-4308-b672-3e084681ddee","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"5dbf16e7-c17c-4918-af3a-b9772c8d6b34","name":"5dbf16e7-c17c-4918-af3a-b9772c8d6b34","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -49,7 +52,7 @@
     },
     "eventStubScript":null,
     "eventToFunction":{},
-    "length":1.0,
+    "length":4.0,
     "lockOrigin":false,
     "moments":{
       "$KeyframeStore<MomentsEventKeyframe>":"",
@@ -59,7 +62,7 @@
     },
     "name":"sOverworld_Unit_William_Hurt",
     "playback":1,
-    "playbackSpeed":8.0,
+    "playbackSpeed":0.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
@@ -71,6 +74,15 @@
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6a38950c-19d8-4a19-bedb-c1f631bb4588","path":"sprites/sOverworld_Unit_William_Hurt/sOverworld_Unit_William_Hurt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"b7370a5d-cd9f-407a-875f-d4485cb4eeb5","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d32377c3-a4f4-4673-87e4-4b0fb3d9d708","path":"sprites/sOverworld_Unit_William_Hurt/sOverworld_Unit_William_Hurt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"625d0010-7565-421b-b0c3-484a5c6c873c","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9be53915-6f37-4308-b672-3e084681ddee","path":"sprites/sOverworld_Unit_William_Hurt/sOverworld_Unit_William_Hurt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"aa187d21-c01d-479c-b9ad-22feff6c3ba6","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"5dbf16e7-c17c-4918-af3a-b9772c8d6b34","path":"sprites/sOverworld_Unit_William_Hurt/sOverworld_Unit_William_Hurt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"90421e77-a37d-404d-ac07-e80b291c8f68","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

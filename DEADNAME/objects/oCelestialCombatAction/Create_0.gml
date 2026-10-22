@@ -16,6 +16,8 @@ action_perform_success_calculation = false;
 
 // Object Depth Sorting Variables
 vertical_depth = 0;
+vertical_depth_y = 0;
+vertical_depth_offset = 0;
 
 // Action Variables
 action_timer = action_duration;

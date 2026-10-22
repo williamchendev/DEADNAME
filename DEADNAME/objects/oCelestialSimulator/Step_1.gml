@@ -1010,6 +1010,9 @@ repeat (temp_solar_systems_count)
 									{
 										// Update Linear Projectile's Combat Action Instance Action was Successful
 										temp_new_combat_action_instance.action_is_successful = true;
+										
+										// Update Target Combat Unit's Hurt Image Index
+										temp_new_combat_action_instance.target_unit.combat_unit_hurt_image_index = irandom(sprite_get_number(global.celestial_combat_units[temp_new_combat_action_instance.target_unit.combat_unit_type].unit_hurt_sprite) - 1);
 									}
 									else
 									{
@@ -1060,12 +1063,12 @@ repeat (temp_solar_systems_count)
 									temp_new_combat_action_instance.linear_projectile_alpha = temp_new_combat_action_success ? 1 : 0.3;
 									
 									// Set the Linear Projectile's Depth as the Target Combat Unit's Vertical Depth
-									temp_new_combat_action_instance.linear_projectile_vertical_depth_y = temp_new_combat_action_success ? temp_combat_unit_instance.combat_unit_action_target_inst.y : temp_combat_unit_instance.item_target_y;
-									temp_new_combat_action_instance.linear_projectile_vertical_depth_offset = 2;
+									temp_new_combat_action_instance.vertical_depth_y = temp_new_combat_action_success ? temp_combat_unit_instance.combat_unit_action_target_inst.y : temp_combat_unit_instance.item_target_y;
+									temp_new_combat_action_instance.vertical_depth_offset = 2;
 									
 									// Set the Linear Projectile's Hitmarker Depth as the Target Combat Unit's Vertical Depth
-									temp_linear_projectile_hitmarker_instance.hitmarker_vertical_depth_y = temp_new_combat_action_instance.linear_projectile_vertical_depth_y;
-									temp_linear_projectile_hitmarker_instance.hitmarker_vertical_depth_offset = 2.05;
+									temp_linear_projectile_hitmarker_instance.vertical_depth_y = temp_new_combat_action_instance.vertical_depth_y;
+									temp_linear_projectile_hitmarker_instance.vertical_depth_offset = 2.05;
 									break;
 								case CelestialBattleChoreographyStackType.ArcProjectile:
 									// Set the Arc Projectile's Trajectory Start Position as the Combat Unit's Item Muzzle Position
@@ -1136,7 +1139,7 @@ repeat (temp_solar_systems_count)
 									// Set Arc Projectile's Depth as the Linear Interpolation between the Combat Unit's Vertical Position and the Target's Vertical Position
 									temp_new_combat_action_instance.arc_projectile_start_vertical_depth_y = temp_combat_unit_instance.y;
 									temp_new_combat_action_instance.arc_projectile_end_vertical_depth_y = temp_new_combat_action_instance.arc_projectile_end_y;
-									temp_new_combat_action_instance.arc_projectile_vertical_depth_offset = 2;
+									temp_new_combat_action_instance.vertical_depth_offset = 2;
 									break;
 								default:
 									break;
@@ -1280,7 +1283,6 @@ repeat (temp_solar_systems_count)
 						{
 							case CelestialCombatUnitActionType.Attack:
 							case CelestialCombatUnitActionType.AttackLinearProjectile:
-							case CelestialCombatUnitActionType.AttackArcProjectile:
 								// Establish Combat Unit Attack Target
 								var temp_combat_unit_attack_target_instance = noone;
 								
@@ -1343,6 +1345,75 @@ repeat (temp_solar_systems_count)
 								
 								// Set Combat Unit's Action Target Instance as the Attack Target Instance
 								temp_combat_unit_instance.combat_unit_action_target_inst = temp_combat_unit_attack_target_instance;
+								
+								// Set Combat Unit's Animation State to Action Attack
+								temp_combat_unit_instance.animation_state = CelestialCombatUnitAnimationState.ActionAttack;
+								break;
+							case CelestialCombatUnitActionType.AttackArcProjectile:
+								// Establish Combat Unit Attack Battle Column Type Target
+								var temp_combat_unit_attack_column_type_target_instance = noone;
+								
+								//
+								switch (temp_combat_unit_instance.combat_grid_side)
+								{
+									case CelestialBattleCombatGridSide.Left:
+										//
+										if (array_length(temp_battle_instance.battle_frontline_combat_units_b) > 0)
+										{
+											//
+											var temp_attack_random_frontline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_frontline_combat_units_b) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_frontline_combat_units_b, temp_attack_random_frontline_combat_unit_b_index);
+										}
+										else if (array_length(temp_battle_instance.battle_midline_combat_units_b) > 0)
+										{
+											//
+											var temp_attack_random_midline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_midline_combat_units_b) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_midline_combat_units_b, temp_attack_random_midline_combat_unit_b_index);
+										}
+										else if (array_length(temp_battle_instance.battle_backline_combat_units_b) > 0)
+										{
+											//
+											var temp_attack_random_backline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_backline_combat_units_b) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_backline_combat_units_b, temp_attack_random_backline_combat_unit_b_index);
+										}
+										break;
+									case CelestialBattleCombatGridSide.Right:
+										//
+										if (array_length(temp_battle_instance.battle_frontline_combat_units_a) > 0)
+										{
+											//
+											var temp_attack_random_frontline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_frontline_combat_units_a) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_frontline_combat_units_a, temp_attack_random_frontline_combat_unit_a_index);
+										}
+										else if (array_length(temp_battle_instance.battle_midline_combat_units_a) > 0)
+										{
+											//
+											var temp_attack_random_midline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_midline_combat_units_a) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_midline_combat_units_a, temp_attack_random_midline_combat_unit_a_index);
+										}
+										else if (array_length(temp_battle_instance.battle_backline_combat_units_a) > 0)
+										{
+											//
+											var temp_attack_random_backline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_backline_combat_units_a) - 1);
+											
+											//
+											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_backline_combat_units_a, temp_attack_random_backline_combat_unit_a_index);
+										}
+										break;
+								}
+								
+								// Set Combat Unit's Action Target Instance as the Attack Battle Column Type Target Instance
+								temp_combat_unit_instance.combat_unit_action_target_inst = temp_combat_unit_attack_column_type_target_instance;
 								
 								// Set Combat Unit's Animation State to Action Attack
 								temp_combat_unit_instance.animation_state = CelestialCombatUnitAnimationState.ActionAttack;
@@ -1454,8 +1525,8 @@ repeat (temp_solar_systems_count)
 						// Combat Unit's Target Unit was destroyed/removed during the Combat Unit's Action - Reset Combat Unit's Action Count
 						temp_combat_unit_instance.combat_unit_action_count = 0;
 						
-						// Reduce Combat Unit's Exhaustion
-						temp_combat_unit_instance.combat_unit_action_exhaustion *= 0.75;
+						// Reset Combat Unit's Exhaustion to a Reduced Exhaustion Score
+						temp_combat_unit_instance.combat_unit_action_exhaustion = 0.5 + sqr(random(1)) * 3;
 						
 						// Reset Combat Unit's Animation State to Idle
 						temp_combat_unit_instance.animation_state = CelestialCombatUnitAnimationState.Idle;
@@ -1493,8 +1564,10 @@ repeat (temp_solar_systems_count)
 							// Check if Linear Projectile's Combat Unit Target Instance exists and is not currently performing a Combat Action
 							if (instance_exists(temp_combat_action_instance.target_unit) and temp_combat_action_instance.target_unit.combat_unit_action_count < 1)
 							{
-								// Update Combat Unit Target Instance's Sprite Index to their Hurt Animation
+								// Update Combat Unit Target Instance's Sprite and Image Index to their Hurt Animation
 								temp_combat_action_instance.target_unit.sprite_index = global.celestial_combat_units[temp_combat_action_instance.target_unit.combat_unit_type].unit_hurt_sprite;
+								temp_combat_action_instance.target_unit.image_index = temp_combat_action_instance.target_unit.combat_unit_hurt_image_index;
+								temp_combat_action_instance.target_unit.draw_image_index_value = temp_combat_action_instance.target_unit.combat_unit_hurt_image_index;
 								
 								// Update Combat Unit Target Instance's Item Angle to their Hurt Item Angle
 								temp_combat_action_instance.target_unit.item_angle = 90 + (temp_combat_action_instance.target_unit.draw_xscale * -(90 + global.celestial_combat_units[temp_combat_action_instance.target_unit.combat_unit_type].unit_item_hurt_ambient_angle));
@@ -1655,7 +1728,7 @@ repeat (temp_solar_systems_count)
 									temp_physics_body_combat_action_prop_instance.image_blend = temp_combat_action_instance.image_blend;
 									
 									// Update Physics Body's Prop Disappear Instance Depth
-									temp_physics_body_combat_action_prop_instance.prop_vertical_depth_offset = temp_combat_action_instance.physics_body_vertical_depth_offset;
+									temp_physics_body_combat_action_prop_instance.vertical_depth_offset = temp_combat_action_instance.vertical_depth_offset;
 									
 									// Index Physics Body's Prop Disappear Combat Action Instance within the Celestial Battle's Combat Actions Array
 									array_push(temp_battle_instance.battle_combat_actions, temp_physics_body_combat_action_prop_instance);
@@ -1672,6 +1745,37 @@ repeat (temp_solar_systems_count)
 							
 							temp_combat_action_instance.physics_body_new_x = temp_combat_action_instance.x;
 							temp_combat_action_instance.physics_body_new_y = temp_combat_action_instance.y;
+							break;
+						case CelestialBattleChoreographyStackType.TileDisappear:
+							// Establish Tile Disappear's Combat Unit Check Toggle
+							var temp_tile_disappear_combat_unit_exists_on_tile = false;
+							
+							// Check if Combat Unit from Tile Disappear's Combat Grid Variables Exists on Combat Grid Tile
+							switch (temp_combat_action_instance.combat_grid_side)
+							{
+								case CelestialBattleCombatGridSide.Left:
+									// Combat Grid Left Side Combat Unit Instance Check
+									temp_tile_disappear_combat_unit_exists_on_tile = instance_exists(array_get(temp_battle_instance.battle_combat_grid_a[temp_combat_action_instance.combat_grid_column], temp_combat_action_instance.combat_grid_row));
+									break;
+								case CelestialBattleCombatGridSide.Right:
+									// Combat Grid Right Side Combat Unit Instance Check
+									temp_tile_disappear_combat_unit_exists_on_tile = instance_exists(array_get(temp_battle_instance.battle_combat_grid_b[temp_combat_action_instance.combat_grid_column], temp_combat_action_instance.combat_grid_row));
+									break;
+							}
+							
+							// Destroy Tile Disappear Combat Action Instance if Combat Unit Exists on Tile Disappear's Combat Grid Tile
+							if (temp_tile_disappear_combat_unit_exists_on_tile)
+							{
+								// Update Tile Disappear Instance's Action Timer to 0 so that the Tile Disappear Instance is destroyed
+								temp_combat_action_instance.action_timer = 0;
+							}
+							else
+							{
+								// Calculate Tile Disappear Animation Alpha Transparency Value
+								var temp_tile_disappear_alpha = power(1 - temp_combat_action_instance.action_progress, 2);
+								temp_combat_action_instance.combat_grid_tile.tile_alpha = temp_tile_disappear_alpha;
+								temp_combat_action_instance.draw_alpha = temp_tile_disappear_alpha;
+							}
 							break;
 						case CelestialBattleChoreographyStackType.PropDisappear:
 							// Check Disappear Prop's Action Timer to control Blink & Disappear Animation
@@ -1700,6 +1804,10 @@ repeat (temp_solar_systems_count)
 								// Disappear Animation Alpha Modifier
 								temp_combat_action_instance.image_alpha = power(clamp(temp_combat_action_instance.action_timer / temp_combat_action_instance.disappear_duration, 0, 1), 0.5) * temp_combat_action_instance.disappear_alpha_modifier;
 							}
+							break;
+						case CelestialBattleChoreographyStackType.PropAnimation:
+							// Update Prop Animation
+							temp_combat_action_instance.animation_image_value += temp_combat_action_instance.animation_speed * CelestialSimulator.global_clock_delta_time;
 							break;
 						default:
 							break;
@@ -2366,6 +2474,13 @@ repeat (temp_solar_systems_count)
 							
 							// Add Unit Instance to Battle
 							celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
+							
+							// Check if Unit Instance is currently selected by the Player
+							if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance)
+							{
+								// Select the Celestial Battle the Unit has just been added to
+								CelestialSimulator.select_sub_object_instance(temp_timed_collision_check_battle_instance);
+							}
 						}
 					}
 					
@@ -2414,6 +2529,13 @@ repeat (temp_solar_systems_count)
 							{
 								// Add Unit Instance to Battle
 								celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
+								
+								// Check if Unit Instance is currently selected by the Player
+								if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance)
+								{
+									// Select the Celestial Battle the Unit has just been added to
+									CelestialSimulator.select_sub_object_instance(temp_battle_check_instance);
+								}
 							}
 							else if (temp_unit_collision_check_battle_dot_product >= temp_battle_check_instance.battle_far_collision_threshold and array_get_index(temp_unit_instance.unit_battle_within_timed_collision_check_battles, temp_battle_check_instance) == -1)
 							{
@@ -2629,6 +2751,13 @@ if (ds_list_size(pathfinding_queue_list) > 0)
 						
 						// Initiate Unit Pathfinding Behaviour
 						celestial_pathfinding(temp_pathfinding_queue_unit_inst.celestial_body_instance, temp_pathfinding_queue_unit_inst, temp_unit_target_inst_node_index, temp_unit_target_inst_x, temp_unit_target_inst_y, temp_unit_target_inst_z, temp_unit_target_inst_elevation);
+						
+						// Check if Unit Instance's New Pathfinding Path Struct was Invalid
+						if (is_undefined(temp_pathfinding_queue_unit_inst.pathfinding_path))
+						{
+							// Reset Unit Instance's Behaviour
+							temp_pathfinding_queue_unit_inst.unit_behaviour = CelestialUnitBehaviourType.None;
+						}
 						break;
 					case CelestialUnitBehaviourType.Patrol:
 						// Check if Unit Instance's Pathfinding Target Node Index is a valid Pathfinding Node Index

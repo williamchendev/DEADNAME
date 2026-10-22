@@ -10,8 +10,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"oCelestialCombatAction","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"propertyId":{"name":"action_duration","path":"objects/oCelestialCombatAction/oCelestialCombatAction.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"-1",},
   ],
   "parent":{
-    "name":"Actions",
-    "path":"folders/Objects/Celestial/Combat/Actions.yy",
+    "name":"Props",
+    "path":"folders/Objects/Celestial/Combat/Actions/Props.yy",
   },
   "parentObjectId":{
     "name":"oCelestialCombatAction",
@@ -30,7 +30,9 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v2","%Name":"animation_loop_count","filters":[],"listItems":[],"multiselect":false,"name":"animation_loop_count","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

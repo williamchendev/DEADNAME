@@ -41,12 +41,14 @@ enum CelestialBattleChoreographyStackType
 {
 	Prop,
 	PropDisappear,
+	PropAnimation,
 	CombatUnit,
 	LinearProjectile,
 	ArcProjectile,
 	Hitmarker,
 	SmokeParticle,
-	PhysicsBody
+	PhysicsBody,
+	TileDisappear
 }
 
 // Combat Enums
@@ -140,6 +142,19 @@ function celestial_battle_perform_combat_action(combat_action_instance)
 	//
 	if (temp_target_combat_unit_instance.combat_unit_health <= 0)
 	{
+		// Instantiate Combat Unit's Tile Disappear Instance
+		var temp_tile_disappear_instance = instance_create_depth(temp_target_combat_unit_instance.x, temp_target_combat_unit_instance.y, 0, oCelestialCombatAction_TileDisappear);
+		
+		// Index Combat Unit's Tile Disappear Combat Action Instance within the Celestial Battle's Combat Actions Array
+		array_push(temp_battle_instance.battle_combat_actions, temp_tile_disappear_instance);
+		temp_tile_disappear_instance.battle_instance = temp_battle_instance;
+		
+		// Update Combat Unit's Tile Disappear Combat Grid Tile Variables
+		temp_tile_disappear_instance.combat_grid_side = temp_target_combat_unit_instance.combat_grid_side;
+		temp_tile_disappear_instance.combat_grid_column = temp_target_combat_unit_instance.combat_grid_column;
+		temp_tile_disappear_instance.combat_grid_row = temp_target_combat_unit_instance.combat_grid_row;
+		temp_tile_disappear_instance.combat_grid_tile = temp_target_combat_unit_instance.combat_grid_tile;
+		
 		//
 		celestial_battle_spawn_combat_unit_physics_body(temp_battle_instance, temp_target_combat_unit_instance, combat_action_instance);
 		
@@ -212,7 +227,7 @@ function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_
 #endregion
 
 #region Combat Unit Functions
-/// @function celestial_battle_spawn_combat_unit_physics_body(combat_unit_instance, combat_action_instance);
+/// @function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat_unit_instance, combat_action_instance)
 /// @description 
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to 
 /// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit Instance to 
@@ -228,6 +243,9 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 	// Establish Combat Unit's Sprite Vertical Offset
 	var temp_combat_unit_sprite_vertical_offset = -sprite_get_yoffset(combat_unit_instance.sprite_index) + sprite_get_bbox_top(combat_unit_instance.sprite_index);
 	
+	//
+	var temp_combat_unit_death_prop_animation = false;
+	
 	// Default Infantry Death Animation
 	var temp_physics_body_object = oCelestialCombatAction_PhysicsBody_KnockedDown;
 	var temp_physics_body_struct = { physics_body_direction: 90 + (combat_unit_instance.draw_xscale * random_range(35, 45)), physics_body_velocity: random_range(4, 7) };
@@ -237,6 +255,12 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 	switch (combat_unit_instance.combat_unit_death_type)
 	{
 		case CelestialBattleDeathType.Firearm:
+			//
+			if (random(1) <= 0.5)
+			{
+				//
+				temp_combat_unit_death_prop_animation = true;
+			}
 			break;
 		case CelestialBattleDeathType.Explosive:
 			// Infantry Explosion Death Animation - (Aerial Spin)
@@ -258,6 +282,8 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			break;
 		case CelestialBattleDeathType.None:
 		default:
+			//
+			temp_combat_unit_death_prop_animation = true;
 			break;
 	}
 	
@@ -328,9 +354,56 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			temp_physics_item_instance.physics_body_ground_y = temp_physics_item_ground_level;
 			
 			// Set the Dropped Item's Vertical Depth
-			temp_physics_item_instance.physics_body_vertical_depth_y = temp_physics_item_ground_level;
-			temp_physics_item_instance.physics_body_vertical_depth_offset = 2;
+			temp_physics_item_instance.vertical_depth_y = temp_physics_item_ground_level;
+			temp_physics_item_instance.vertical_depth_offset = 2;
+			
+			//
+			if (temp_combat_unit_death_prop_animation)
+			{
+				//
+				temp_physics_item_instance.physics_body_horizontal_velocity = 0;
+				temp_physics_item_instance.physics_body_vertical_velocity = 0;
+				
+				//
+				temp_physics_item_instance.physics_body_rotate_speed = 0;
+				
+				//
+				temp_physics_item_instance.image_angle = combat_unit_instance.item_angle;
+				
+				//
+				temp_physics_item_instance.physics_body_gravity = 0.1;
+				
+				//
+				temp_physics_item_instance.physics_body_ground_y = combat_unit_instance.y;
+				
+				//
+				temp_physics_item_instance.vertical_depth_y = combat_unit_instance.y;
+				temp_physics_item_instance.vertical_depth_offset = 3;
+			}
 		}
+	}
+	
+	//
+	if (temp_combat_unit_death_prop_animation)
+	{
+		//
+		var temp_combat_unit_death_animation_instance = instance_create_depth(combat_unit_instance.x, combat_unit_instance.y, 0, oCelestialCombatAction_PropAnimation_UnitDeath);
+		
+		// Index Combat Unit's Death Animation Prop Combat Action Instance within the Celestial Battle's Combat Actions Array
+		array_push(battle_instance.battle_combat_actions, temp_combat_unit_death_animation_instance);
+		temp_combat_unit_death_animation_instance.battle_instance = battle_instance;
+		
+		// Update Combat Unit's Physics Body Color
+		temp_combat_unit_death_animation_instance.image_blend = temp_combat_unit_color;
+		
+		//
+		temp_combat_unit_death_animation_instance.image_xscale = combat_unit_instance.draw_xscale;
+		
+		//
+		temp_combat_unit_death_animation_instance.vertical_depth_offset = 2;
+		
+		//
+		return;
 	}
 	
 	// Instantiate Physics Body Instance
@@ -351,8 +424,8 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 	temp_physics_body_instance.physics_body_ground_y = temp_physics_body_ground_level;
 	
 	// Set the Physics Body's Vertical Depth
-	temp_physics_body_instance.physics_body_vertical_depth_y = temp_physics_body_ground_level;
-	temp_physics_body_instance.physics_body_vertical_depth_offset = 2;
+	temp_physics_body_instance.vertical_depth_y = temp_physics_body_ground_level;
+	temp_physics_body_instance.vertical_depth_offset = 2;
 }
 #endregion
 

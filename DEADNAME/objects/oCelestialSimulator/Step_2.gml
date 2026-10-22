@@ -509,6 +509,13 @@ else if (temp_input_select or temp_input_action)
 								{
 									// Initiate Unit Pathfinding Behaviour
 									celestial_pathfinding(sub_object_selected_instance.celestial_body_instance, sub_object_selected_instance, temp_pathfinding_goal_node_index, temp_pathfinding_goal_x, temp_pathfinding_goal_y, temp_pathfinding_goal_z, temp_pathfinding_goal_elevation);
+									
+									// Check if Unit Instance's New Pathfinding Path Struct was Invalid
+									if (is_undefined(sub_object_selected_instance.pathfinding_path))
+									{
+										// Reset Unit Instance's Behaviour
+										sub_object_selected_instance.unit_behaviour = CelestialUnitBehaviourType.None;
+									}
 								}
 							}
 							else

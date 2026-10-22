@@ -16,7 +16,3 @@ linear_projectile_end_y = 0;
 // Linear Projectile's Transparency Variables
 linear_projectile_alpha = 1;
 
-// Linear Projectile's Depth Variables
-linear_projectile_vertical_depth_y = 0;
-linear_projectile_vertical_depth_offset = 0;
-

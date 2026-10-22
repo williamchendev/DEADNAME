@@ -34,5 +34,4 @@ arc_projectile_new_y = 0;
 // Arc Projectile's Depth Variables
 arc_projectile_start_vertical_depth_y = 0;
 arc_projectile_end_vertical_depth_y = 0;
-arc_projectile_vertical_depth_offset = 0;
 

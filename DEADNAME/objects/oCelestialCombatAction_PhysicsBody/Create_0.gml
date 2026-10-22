@@ -34,7 +34,3 @@ physics_body_old_y = y;
 physics_body_new_x = x;
 physics_body_new_y = y;
 
-// Physics Body's Depth Variables
-physics_body_vertical_depth_y = 0;
-physics_body_vertical_depth_offset = 0;
-

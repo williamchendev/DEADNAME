@@ -7,10 +7,6 @@ event_inherited();
 // Celestial Battle Choreography Stack Type
 choreography_stack_type = CelestialBattleChoreographyStackType.SmokeParticle;
 
-// Smoke Particle's Depth Variables
-smoke_particle_vertical_depth_y = 0;
-smoke_particle_vertical_depth_offset = 0;
-
 // Establish randomized spawn number of Smoke Particles
 smoke_particle_count = irandom_range(smoke_particle_spawn_min, smoke_particle_spawn_max);
 

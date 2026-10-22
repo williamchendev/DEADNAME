@@ -54,7 +54,7 @@ backline_combat_unit_unengaged_count = array_create(0);
 backline_combat_unit_engaged = array_create(0);
 backline_combat_unit_unengaged = array_create(0);
 
-repeat (irandom_range(3, 8))
+repeat (irandom_range(7, 14))
 {
 	//
 	var temp_combat_unit_instance = celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultInfantry);
@@ -66,7 +66,7 @@ repeat (irandom_range(3, 8))
 	}
 }
 
-repeat (irandom_range(2, 4))
+repeat (irandom_range(1, 3))
 {
 	//
 	var temp_combat_unit_instance = celestial_unit_add_combat_unit(id, CelestialCombatUnitType.DefaultArtillery);
