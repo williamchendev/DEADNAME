@@ -20,9 +20,6 @@ if (array_length(engaged_battles) > 0)
 			celestial_battle_remove_unit(temp_battle_instance, id, false);
 		}
 		
-		// Delete Celestial Battle from Unit's list of Engaged Celestial Battles
-		array_delete(engaged_battles, temp_engaged_battle_index, 1);
-		
 		// Decrement Engaged Battle Index
 		temp_engaged_battle_index--;
 	}

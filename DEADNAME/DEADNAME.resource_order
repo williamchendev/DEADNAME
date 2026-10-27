@@ -813,6 +813,7 @@
     {"name":"sUI_Inventory_Slot_TierIcon_Shadow","order":5,"path":"sprites/sUI_Inventory_Slot_TierIcon_Shadow/sUI_Inventory_Slot_TierIcon_Shadow.yy",},
     {"name":"sUI_Inventory_Slot_TierIcon","order":4,"path":"sprites/sUI_Inventory_Slot_TierIcon/sUI_Inventory_Slot_TierIcon.yy",},
     {"name":"sUI_Overworld_Solar_Icon","order":3,"path":"sprites/sUI_Overworld_Solar_Icon/sUI_Overworld_Solar_Icon.yy",},
+    {"name":"sUI_Overworld_UnitPortraits_Debug","order":4,"path":"sprites/sUI_Overworld_UnitPortraits_Debug/sUI_Overworld_UnitPortraits_Debug.yy",},
     {"name":"sUI_Overworld_UnitSelect_Background","order":1,"path":"sprites/sUI_Overworld_UnitSelect_Background/sUI_Overworld_UnitSelect_Background.yy",},
     {"name":"sUI_Overworld_UnitSelect_DebugUnit","order":2,"path":"sprites/sUI_Overworld_UnitSelect_DebugUnit/sUI_Overworld_UnitSelect_DebugUnit.yy",},
     {"name":"sWhiteBlocking","order":1,"path":"sprites/sWhiteBlocking/sWhiteBlocking.yy",},

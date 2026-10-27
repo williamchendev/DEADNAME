@@ -472,6 +472,10 @@ repeat (temp_solar_systems_count)
 					var temp_battle_combat_units_a_count = array_length(temp_battle_instance.battle_combat_units_a);
 					var temp_battle_combat_units_b_count = array_length(temp_battle_instance.battle_combat_units_b);
 					
+					// Establish the Battle's Faction Reinforcement Checks
+					var temp_battle_no_reinforcement_a = false;
+					var temp_battle_no_reinforcement_b = false;
+					
 					// Check if the Battle's Left-Hand Combat Grid is still populated Combat Units
 					if (temp_battle_combat_units_a_count < 1)
 					{
@@ -542,6 +546,16 @@ repeat (temp_solar_systems_count)
 							
 							// Increment Battle Faction Aligned Celestial Unit Index
 							temp_battle_units_a_index++;
+						}
+						
+						// Check if Battle successfully pulled Combat Units from Celestial Unit's other Engaged Battles
+						if (temp_battle_combat_units_a_count < 1)
+						{
+							// Unsuccessfully pulled extra Combat Units - End Battle
+							temp_battle_instance.battle_exists = false;
+							
+							// Toggle Battle's Left-Hand Combat Grid has no Combat Unit Reinforcement
+							temp_battle_no_reinforcement_a = true;
 						}
 					}
 					
@@ -616,6 +630,69 @@ repeat (temp_solar_systems_count)
 							// Increment Battle Faction Aligned Celestial Unit Index
 							temp_battle_units_b_index++;
 						}
+						
+						// Check if Battle successfully pulled Combat Units from Celestial Unit's other Engaged Battles
+						if (temp_battle_combat_units_b_count < 1)
+						{
+							// Unsuccessfully pulled extra Combat Units - End Battle
+							temp_battle_instance.battle_exists = false;
+							
+							// Toggle Battle's Right-Hand Combat Grid has no Combat Unit Reinforcement
+							temp_battle_no_reinforcement_b = true;
+						}
+					}
+					
+					// Check if Battle has ended due to Faction Aligned Celestial Units failing to reinforce an Empty Combat Grid Side
+					if (!temp_battle_instance.battle_exists)
+					{
+						// Left-Side Empty Combat Grid Battle Dissolution Behaviour
+						if (temp_battle_no_reinforcement_a)
+						{
+							// Iterate through the Battle's Right-Side Faction Aligned Celestial Units to check if they can engage in other Battles
+							var temp_battle_no_reinforcement_units_b_count = array_length(temp_battle_instance.battle_units_b);
+							var temp_battle_no_reinforcement_units_b_index = temp_battle_no_reinforcement_units_b_count - 1;
+							
+							repeat (temp_battle_no_reinforcement_units_b_count)
+							{
+								// Find Battle Faction Aligned Celestial Unit Instance
+								var temp_battle_no_reinforcement_units_b_instance = temp_battle_instance.battle_units_b[temp_battle_no_reinforcement_units_b_index];
+								
+								// Remove the Celestial Unit from the Battle (and Perform Leave Animation because the Celestial Unit will search for another viable Battle within range and move to it)
+								celestial_battle_remove_unit(temp_battle_instance, temp_battle_no_reinforcement_units_b_instance, true);
+								
+								// Celestial Unit Search for Battle within Range and Engage in Combat Behaviour
+								celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_b_instance);
+								
+								// Decrement Battle Faction Aligned Celestial Unit Index
+								temp_battle_no_reinforcement_units_b_index--;
+							}
+						}
+						
+						// Right-Side Empty Combat Grid Battle Dissolution Behaviour
+						if (temp_battle_no_reinforcement_b)
+						{
+							// Iterate through the Battle's Left-Side Faction Aligned Celestial Units to check if they can engage in other Battles
+							var temp_battle_no_reinforcement_units_a_count = array_length(temp_battle_instance.battle_units_a);
+							var temp_battle_no_reinforcement_units_a_index = temp_battle_no_reinforcement_units_a_count - 1;
+							
+							repeat (temp_battle_no_reinforcement_units_a_count)
+							{
+								// Find Battle Faction Aligned Celestial Unit Instance
+								var temp_battle_no_reinforcement_units_a_instance = temp_battle_instance.battle_units_a[temp_battle_no_reinforcement_units_a_index];
+								
+								// Remove the Celestial Unit from the Battle (and Perform Leave Animation because the Celestial Unit will search for another viable Battle within range and move to it)
+								celestial_battle_remove_unit(temp_battle_instance, temp_battle_no_reinforcement_units_a_instance, true);
+								
+								// Celestial Unit Search for Battle within Range and Engage in Combat Behaviour
+								celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_a_instance);
+								
+								// Decrement Battle Faction Aligned Celestial Unit Index
+								temp_battle_no_reinforcement_units_a_index--;
+							}
+						}
+						
+						// Update Battle Units Count after Battle's Celestial Unit Removal Behaviour
+						temp_battle_units_count = array_length(temp_battle_instance.battle_units);
 					}
 				}
 				
@@ -2235,8 +2312,42 @@ repeat (temp_solar_systems_count)
 												}
 												else if (celestial_faction_is_relationship_hostile(temp_unit_instance.unit_faction, temp_unit_instance.unit_behaviour_target_instance.unit_faction))
 												{
+													// Determine if Pathfinding Unit's Target Celestial Unit is eligible for a new Combat Encounter
+													var temp_pathfinding_collision_unit_target_combat_eligible = temp_unit_instance.unit_behaviour_target_instance.combat_unit_unengaged_count > 0;
+													
+													if (!temp_pathfinding_collision_unit_target_combat_eligible)
+													{
+														// Iterate through Target Celestial Unit's Engaged Battle Combat Unit Contribution to check if they have a Contribution above the Combat Grid Population Minimum
+														var temp_pathfinding_collision_unit_target_engaged_battles_count = array_length(temp_unit_instance.unit_behaviour_target_instance.engaged_battles_combat_units_contribution);
+														var temp_pathfinding_collision_unit_target_engaged_battles_index = temp_pathfinding_collision_unit_target_engaged_battles_count - 1;
+														
+														repeat (temp_pathfinding_collision_unit_target_engaged_battles_count)
+														{
+															// Check if Engaged Battle's Combat Unit Contribution is above the Combat Grid Population Minimum
+															if (temp_unit_instance.unit_behaviour_target_instance.engaged_battles_combat_units_contribution[temp_pathfinding_collision_unit_target_engaged_battles_index] > global.celestial_battle_combat_grid_population_minimum)
+															{
+																// Toggle Target Celestial Unit is eligible for a new Combat Encounter
+																temp_pathfinding_collision_unit_target_combat_eligible = true;
+																
+																// Exit Loop
+																break;
+															}
+															
+															// Decrement Target Celestial Unit's Engaged Battle Combat Unit Contribution Index
+															temp_pathfinding_collision_unit_target_engaged_battles_index--;
+														}
+													}
+													
 													// Unit is Hostile to Target Unit - Create a new Celestial Battle between the two Units if eligible to do so
-													if (!temp_unit_instance.engaged_in_battle)
+													if (!temp_pathfinding_collision_unit_target_combat_eligible)
+													{
+														// Pathfinding Unit's Target Celestial Unit is not eligible for a new Combat Encounter - Reset Unit's Behaviour
+														temp_unit_instance.unit_behaviour = CelestialUnitBehaviourType.None;
+														
+														// Reset Unit Instance's Movement Power
+														temp_movement_power = 0;
+													}
+													else if (!temp_unit_instance.engaged_in_battle)
 													{
 														// Instantiate and Establish Celestial Battle Instance
 														var temp_pathfinding_collision_unit_battle_instance = celestial_battle_create(id, temp_unit_instance.unit_faction, temp_unit_instance.unit_behaviour_target_instance.unit_faction);
@@ -2357,6 +2468,42 @@ repeat (temp_solar_systems_count)
 											// Add Unit Instance to Battle
 											if (celestial_faction_is_relationship_hostile(temp_unit_instance.unit_faction, temp_pathfinding_node_units_array_unit_instance.unit_faction))
 											{
+												// Determine if Pathfinding Node Celestial Unit is eligible for a new Combat Encounter
+												var temp_pathfinding_node_unit_combat_eligible = temp_pathfinding_node_units_array_unit_instance.combat_unit_unengaged_count > 0;
+												
+												if (!temp_pathfinding_node_unit_combat_eligible)
+												{
+													// Iterate through Pathfinding Node Celestial Unit's Engaged Battle Combat Unit Contribution to check if they have a Contribution above the Combat Grid Population Minimum
+													var temp_pathfinding_node_unit_engaged_battles_count = array_length(temp_pathfinding_node_units_array_unit_instance.engaged_battles_combat_units_contribution);
+													var temp_pathfinding_node_unit_engaged_battles_index = temp_pathfinding_node_unit_engaged_battles_count - 1;
+													
+													repeat (temp_pathfinding_node_unit_engaged_battles_count)
+													{
+														// Check if Engaged Battle's Combat Unit Contribution is above the Combat Grid Population Minimum
+														if (temp_pathfinding_node_units_array_unit_instance.engaged_battles_combat_units_contribution[temp_pathfinding_node_unit_engaged_battles_index] > global.celestial_battle_combat_grid_population_minimum)
+														{
+															// Toggle Pathfinding Node Celestial Unit is eligible for a new Combat Encounter
+															temp_pathfinding_node_unit_combat_eligible = true;
+															
+															// Exit Loop
+															break;
+														}
+														
+														// Decrement Pathfinding Node Celestial Unit's Engaged Battle Combat Unit Contribution Index
+														temp_pathfinding_node_unit_engaged_battles_index--;
+													}
+												}
+												
+												// Check if Pathfinding Node Celestial Unit is eligible for a Battle with the Pathfinding Unit
+												if (!temp_pathfinding_node_unit_combat_eligible)
+												{
+													// Decrement Pathfinding Node Units Array Index
+													temp_pathfinding_node_units_array_index--;
+													
+													// Skip Hostile Pathfinding Node Unit Battle Instantiation Behaviour
+													continue;
+												}
+												
 												// Instantiate and Establish Celestial Battle Instance
 												var temp_pathfinding_node_unit_battle_instance = celestial_battle_create(id, temp_unit_instance.unit_faction, temp_pathfinding_node_units_array_unit_instance.unit_faction);
 												
@@ -2476,7 +2623,7 @@ repeat (temp_solar_systems_count)
 							celestial_battle_add_unit(temp_timed_collision_check_battle_instance, temp_unit_instance);
 							
 							// Check if Unit Instance is currently selected by the Player
-							if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance)
+							if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance and array_get_index(temp_unit_instance.engaged_battles, temp_timed_collision_check_battle_instance) != -1)
 							{
 								// Select the Celestial Battle the Unit has just been added to
 								CelestialSimulator.select_sub_object_instance(temp_timed_collision_check_battle_instance);
@@ -2531,7 +2678,7 @@ repeat (temp_solar_systems_count)
 								celestial_battle_add_unit(temp_battle_check_instance, temp_unit_instance);
 								
 								// Check if Unit Instance is currently selected by the Player
-								if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance)
+								if (temp_unit_instance == CelestialSimulator.sub_object_selected_instance and array_get_index(temp_unit_instance.engaged_battles, temp_battle_check_instance) != -1)
 								{
 									// Select the Celestial Battle the Unit has just been added to
 									CelestialSimulator.select_sub_object_instance(temp_battle_check_instance);

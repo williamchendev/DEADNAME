@@ -480,6 +480,84 @@ function celestial_battle_create(celestial_object, celestial_faction_a, celestia
 	return temp_celestial_battle_instance;
 }
 
+//
+function celestial_battle_unit_search_for_battle(unit_instance)
+{
+	//
+	if (!instance_exists(unit_instance.celestial_body_instance) or array_length(unit_instance.engaged_battles) > 0)
+	{
+		return;
+	}
+	
+	//
+	var temp_battle_closest_instance = noone;
+	var temp_battle_closest_distance = undefined;
+	
+	// Iterate through Celestial Object Battle Behaviours
+	var temp_battle_check_index = 0;
+	var temp_battle_check_count = array_length(unit_instance.celestial_body_instance.battles);
+	
+	repeat (temp_battle_check_count)
+	{
+		// Find Battle Instance
+		var temp_battle_check_instance = unit_instance.celestial_body_instance.battles[temp_battle_check_index];
+		
+		// Calculate the Dot Product between the Battle Instance's Normalized Local Sphere Vector and the Unit Instance's Normalized Local Sphere Vector
+		var temp_unit_collision_check_battle_dot_product = dot_product_3d
+		(
+			unit_instance.sphere_vector_x, 
+			unit_instance.sphere_vector_y, 
+			unit_instance.sphere_vector_z,
+			temp_battle_check_instance.sphere_vector_x, 
+			temp_battle_check_instance.sphere_vector_y, 
+			temp_battle_check_instance.sphere_vector_z
+		);
+		
+		// Check if Unit is within the Battle's Combat Engagement Threshold
+		if (temp_battle_check_instance.battle_exists and temp_unit_collision_check_battle_dot_product <= temp_battle_check_instance.battle_far_collision_threshold)
+		{
+			//
+			if (celestial_faction_is_relationship_allied(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_a) and celestial_faction_is_relationship_hostile(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_b))
+			{
+				//
+				if (is_undefined(temp_battle_closest_distance) or temp_unit_collision_check_battle_dot_product < temp_battle_closest_distance)
+				{
+					//
+					temp_battle_closest_instance = temp_battle_check_instance;
+					temp_battle_closest_distance = temp_unit_collision_check_battle_dot_product;
+				}
+			}
+			else if (celestial_faction_is_relationship_allied(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_b) and celestial_faction_is_relationship_hostile(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_a))
+			{
+				//
+				if (is_undefined(temp_battle_closest_distance) or temp_unit_collision_check_battle_dot_product < temp_battle_closest_distance)
+				{
+					//
+					temp_battle_closest_instance = temp_battle_check_instance;
+					temp_battle_closest_distance = temp_unit_collision_check_battle_dot_product;
+				}
+			}
+		}
+		
+		// Increment Battles Check Index
+		temp_battle_check_index++;
+	}
+	
+	//
+	if (!is_undefined(temp_battle_closest_distance))
+	{
+		// Add Unit Instance to Battle
+		celestial_battle_add_unit(temp_battle_closest_instance, unit_instance);
+		
+		// Check if Unit Instance is currently selected by the Player
+		if (unit_instance == CelestialSimulator.sub_object_selected_instance)
+		{
+			// Select the Celestial Battle the Unit has just been added to
+			CelestialSimulator.select_sub_object_instance(temp_battle_closest_instance);
+		}
+	}
+}
+
 /// @function celestial_battle_check_for_duplicate(battle_instance);
 /// @description Checks if there is a duplicate Celestial Battle Instance that shares the same Celestial Body Instance and list of Celestial Unit Instances engaged in combat as the Celestial Battle provided and returns its Instance
 /// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to check for a duplicate instance of

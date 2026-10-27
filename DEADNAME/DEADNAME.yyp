@@ -1008,6 +1008,7 @@
     {"id":{"name":"sUI_Inventory_Slot_TierIcon_Shadow","path":"sprites/sUI_Inventory_Slot_TierIcon_Shadow/sUI_Inventory_Slot_TierIcon_Shadow.yy",},},
     {"id":{"name":"sUI_Inventory_Slot_TierIcon","path":"sprites/sUI_Inventory_Slot_TierIcon/sUI_Inventory_Slot_TierIcon.yy",},},
     {"id":{"name":"sUI_Overworld_Solar_Icon","path":"sprites/sUI_Overworld_Solar_Icon/sUI_Overworld_Solar_Icon.yy",},},
+    {"id":{"name":"sUI_Overworld_UnitPortraits_Debug","path":"sprites/sUI_Overworld_UnitPortraits_Debug/sUI_Overworld_UnitPortraits_Debug.yy",},},
     {"id":{"name":"sUI_Overworld_UnitSelect_Background","path":"sprites/sUI_Overworld_UnitSelect_Background/sUI_Overworld_UnitSelect_Background.yy",},},
     {"id":{"name":"sUI_Overworld_UnitSelect_DebugUnit","path":"sprites/sUI_Overworld_UnitSelect_DebugUnit/sUI_Overworld_UnitSelect_DebugUnit.yy",},},
     {"id":{"name":"sUI_Overworld_Willpower","path":"sprites/sUI_Overworld_Willpower/sUI_Overworld_Willpower.yy",},},
