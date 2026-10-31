@@ -645,6 +645,10 @@ repeat (temp_solar_systems_count)
 					// Check if Battle has ended due to Faction Aligned Celestial Units failing to reinforce an Empty Combat Grid Side
 					if (!temp_battle_instance.battle_exists)
 					{
+						// Establish Battle's No Reinforcement Select New Battle Behaviour Variables
+						var temp_battle_no_reinforcement_select_new_battle = temp_battle_instance == CelestialSimulator.sub_object_selected_instance;
+						var temp_battle_no_reinforcement_select_new_battle_instance = noone;
+						
 						// Left-Side Empty Combat Grid Battle Dissolution Behaviour
 						if (temp_battle_no_reinforcement_a)
 						{
@@ -661,7 +665,14 @@ repeat (temp_solar_systems_count)
 								celestial_battle_remove_unit(temp_battle_instance, temp_battle_no_reinforcement_units_b_instance, true);
 								
 								// Celestial Unit Search for Battle within Range and Engage in Combat Behaviour
-								celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_b_instance);
+								var temp_battle_no_reinforcement_units_b_search_battle_instance = celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_b_instance);
+								
+								// Check if Select New Battle Behaviour is Active
+								if (temp_battle_no_reinforcement_select_new_battle)
+								{
+									// Select Battle Last Unit has been added to
+									temp_battle_no_reinforcement_select_new_battle_instance = instance_exists(temp_battle_no_reinforcement_units_b_search_battle_instance) ? temp_battle_no_reinforcement_units_b_search_battle_instance : noone;
+								}
 								
 								// Decrement Battle Faction Aligned Celestial Unit Index
 								temp_battle_no_reinforcement_units_b_index--;
@@ -684,11 +695,25 @@ repeat (temp_solar_systems_count)
 								celestial_battle_remove_unit(temp_battle_instance, temp_battle_no_reinforcement_units_a_instance, true);
 								
 								// Celestial Unit Search for Battle within Range and Engage in Combat Behaviour
-								celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_a_instance);
+								var temp_battle_no_reinforcement_units_a_search_battle_instance = celestial_battle_unit_search_for_battle(temp_battle_no_reinforcement_units_a_instance);
+								
+								// Check if Select New Battle Behaviour is Active
+								if (temp_battle_no_reinforcement_select_new_battle)
+								{
+									// Select Battle Last Unit has been added to
+									temp_battle_no_reinforcement_select_new_battle_instance = instance_exists(temp_battle_no_reinforcement_units_a_search_battle_instance) ? temp_battle_no_reinforcement_units_a_search_battle_instance : noone;
+								}
 								
 								// Decrement Battle Faction Aligned Celestial Unit Index
 								temp_battle_no_reinforcement_units_a_index--;
 							}
+						}
+						
+						// If the current Battle has been Selected by the Celestial Simulator - Attempt to Select a new Battle Units have Area-Search added themselves to if the Battle Instance Exists
+						if (temp_battle_no_reinforcement_select_new_battle and instance_exists(temp_battle_no_reinforcement_select_new_battle_instance))
+						{
+							// Select the Celestial Battle the Last Unit has just been added to
+							CelestialSimulator.select_sub_object_instance(temp_battle_no_reinforcement_select_new_battle_instance);
 						}
 						
 						// Update Battle Units Count after Battle's Celestial Unit Removal Behaviour
@@ -1430,60 +1455,60 @@ repeat (temp_solar_systems_count)
 								// Establish Combat Unit Attack Battle Column Type Target
 								var temp_combat_unit_attack_column_type_target_instance = noone;
 								
-								//
+								// Find Valid Combat Unit Instance as Attack Target from first Populated Battle Column, iterating through each Battle Column Type by their Sequential Order (Frontline, Midline, and Backline)
 								switch (temp_combat_unit_instance.combat_grid_side)
 								{
 									case CelestialBattleCombatGridSide.Left:
-										//
+										// Sequentially check if Battle Column Type's Combat Unit Population Count is above Zero
 										if (array_length(temp_battle_instance.battle_frontline_combat_units_b) > 0)
 										{
-											//
+											// Frontline Battle Column is Populated - Pick Random Frontline Combat Unit Index
 											var temp_attack_random_frontline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_frontline_combat_units_b) - 1);
 											
-											//
+											// Choose Random Frontline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_frontline_combat_units_b, temp_attack_random_frontline_combat_unit_b_index);
 										}
 										else if (array_length(temp_battle_instance.battle_midline_combat_units_b) > 0)
 										{
-											//
+											// Midline Battle Column is Populated - Pick Random Midline Combat Unit Index
 											var temp_attack_random_midline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_midline_combat_units_b) - 1);
 											
-											//
+											// Choose Random Midline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_midline_combat_units_b, temp_attack_random_midline_combat_unit_b_index);
 										}
 										else if (array_length(temp_battle_instance.battle_backline_combat_units_b) > 0)
 										{
-											//
+											// Backline Battle Column is Populated - Pick Random Backline Combat Unit Index
 											var temp_attack_random_backline_combat_unit_b_index = irandom(array_length(temp_battle_instance.battle_backline_combat_units_b) - 1);
 											
-											//
+											// Choose Random Backline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_backline_combat_units_b, temp_attack_random_backline_combat_unit_b_index);
 										}
 										break;
 									case CelestialBattleCombatGridSide.Right:
-										//
+										// Sequentially check if Battle Column Type's Combat Unit Population Count is above Zero
 										if (array_length(temp_battle_instance.battle_frontline_combat_units_a) > 0)
 										{
-											//
+											// Frontline Battle Column is Populated - Pick Random Frontline Combat Unit Index
 											var temp_attack_random_frontline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_frontline_combat_units_a) - 1);
 											
-											//
+											// Choose Random Frontline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_frontline_combat_units_a, temp_attack_random_frontline_combat_unit_a_index);
 										}
 										else if (array_length(temp_battle_instance.battle_midline_combat_units_a) > 0)
 										{
-											//
+											// Midline Battle Column is Populated - Pick Random Midline Combat Unit Index
 											var temp_attack_random_midline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_midline_combat_units_a) - 1);
 											
-											//
+											// Choose Random Midline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_midline_combat_units_a, temp_attack_random_midline_combat_unit_a_index);
 										}
 										else if (array_length(temp_battle_instance.battle_backline_combat_units_a) > 0)
 										{
-											//
+											// Backline Battle Column is Populated - Pick Random Backline Combat Unit Index
 											var temp_attack_random_backline_combat_unit_a_index = irandom(array_length(temp_battle_instance.battle_backline_combat_units_a) - 1);
 											
-											//
+											// Choose Random Backline Combat Unit as Attack Target
 											temp_combat_unit_attack_column_type_target_instance = array_get(temp_battle_instance.battle_backline_combat_units_a, temp_attack_random_backline_combat_unit_a_index);
 										}
 										break;

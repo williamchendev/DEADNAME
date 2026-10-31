@@ -1453,15 +1453,15 @@ render_celestial_battle_choreography_stack = function()
 		
 		repeat (CelestialBattleCombatGridRows)
 		{
-			// 
+			// Establish Celestial Simulator's Combat Grid Tile Structs
 			var temp_tile_a = array_get(CelestialSimulator.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
 			var temp_tile_b = array_get(CelestialSimulator.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
 			
-			//
+			// Establish Celestial Battle Instance's Combat Grid Tile Structs
 			var temp_battle_combat_grid_tile_a = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_a_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
 			var temp_battle_combat_grid_tile_b = array_get(CelestialSimulator.sub_object_selected_instance.battle_combat_grid_b_structs[temp_combat_grid_column_index], temp_combat_grid_row_index);
 			
-			//
+			// Establish Celestial Simulator's Left-Side Combat Grid Tile Vertex Positions
 			var temp_left_tile_ax = temp_tile_a.tile_ax;
 			var temp_left_tile_ay = temp_tile_a.tile_ay;
 			
@@ -1502,11 +1502,11 @@ render_celestial_battle_choreography_stack = function()
 				draw_set_color(c_white);
 			}
 			
-			//
+			// Draw Left-Side Combat Grid Tile
 			draw_triangle(temp_left_tile_ax, temp_left_tile_ay, temp_left_tile_bx, temp_left_tile_by, temp_left_tile_cx, temp_left_tile_cy, false);
 			draw_triangle(temp_left_tile_bx, temp_left_tile_by, temp_left_tile_cx, temp_left_tile_cy, temp_left_tile_dx, temp_left_tile_dy, false);
 			
-			//
+			// Establish Celestial Simulator's Right-Side Combat Grid Tile Vertex Positions
 			var temp_right_tile_ax = temp_tile_b.tile_ax;
 			var temp_right_tile_ay = temp_tile_b.tile_ay;
 			
@@ -1547,6 +1547,7 @@ render_celestial_battle_choreography_stack = function()
 				draw_set_color(c_white);
 			}
 			
+			// Draw Right-Side Combat Grid Tile
 			draw_triangle(temp_right_tile_ax, temp_right_tile_ay, temp_right_tile_bx, temp_right_tile_by, temp_right_tile_cx, temp_right_tile_cy, false);
 			draw_triangle(temp_right_tile_bx, temp_right_tile_by, temp_right_tile_cx, temp_right_tile_cy, temp_right_tile_dx, temp_right_tile_dy, false);
 			
@@ -1614,6 +1615,40 @@ render_celestial_battle_choreography_stack = function()
 					// Unit Emotion Animation Draw Sprite Behaviour
 					draw_sprite_ext(temp_stack_obj.unit_instance.emotion_sprite_index, temp_stack_obj.unit_instance.emotion_image_index, temp_stack_obj.x, temp_stack_obj.y + temp_combat_unit_sprite_vertical_offset, 1, 1, 0, c_white, temp_stack_obj.image_alpha);
 				}
+				/*
+				else if (temp_stack_obj.combat_unit_action_exhaustion > 0 and temp_stack_obj.animation_state == CelestialCombatUnitAnimationState.Idle)
+				{
+					//
+					var temp_action_timer_bar_value = 1 - clamp(temp_stack_obj.combat_unit_action_exhaustion / 10, 0, 1);
+					
+					//
+					var temp_action_timer_rect_w = 22;
+					var temp_action_timer_rect_h = 1;
+					
+					var temp_action_timer_rect_h_offset = -4;
+					
+					//
+					var temp_action_timer_rect_x1 = temp_stack_obj.x - (temp_action_timer_rect_w * 0.5);
+					var temp_action_timer_rect_y1 = temp_stack_obj.y + temp_combat_unit_sprite_vertical_offset - temp_action_timer_rect_h + temp_action_timer_rect_h_offset;
+					var temp_action_timer_rect_x2 = temp_stack_obj.x + (temp_action_timer_rect_w * 0.5);
+					var temp_action_timer_rect_y2 = temp_stack_obj.y + temp_combat_unit_sprite_vertical_offset + temp_action_timer_rect_h_offset;
+					
+					var temp_action_timer_rect_xvalue = temp_stack_obj.x - (temp_action_timer_rect_w * 0.5) + (temp_action_timer_rect_w * temp_action_timer_bar_value);
+					
+					//
+					draw_set_alpha(temp_stack_obj.image_alpha);
+					
+					//
+					draw_set_color(c_white);
+					draw_rectangle(temp_action_timer_rect_x1 - 2, temp_action_timer_rect_y1 - 2, temp_action_timer_rect_x2 + 2, temp_action_timer_rect_y2 + 2, false);
+					draw_set_color(c_black);
+					draw_rectangle(temp_action_timer_rect_x1 - 1, temp_action_timer_rect_y1 - 1, temp_action_timer_rect_x2 + 1, temp_action_timer_rect_y2 + 1, false);
+					
+					//
+					draw_set_color(c_white);
+					draw_rectangle(temp_action_timer_rect_x1, temp_action_timer_rect_y1, temp_action_timer_rect_xvalue, temp_action_timer_rect_y2, false);
+				}
+				*/
 				break;
 			case CelestialBattleChoreographyStackType.LinearProjectile:
 				// Set Linear Projectile's Transparency
@@ -1729,127 +1764,6 @@ render_celestial_battle_choreography_stack = function()
 	// Reset Draw Variables
 	draw_set_alpha(1);
 	draw_set_color(c_white);
-	
-	/*
-	// Iterate through Battle's Choreography Stack
-	var temp_battle_choreography_stack_count = array_length(CelestialSimulator.battle_choreography_stack);
-	var temp_battle_choreography_stack_index = 0;
-	
-	repeat (temp_battle_choreography_stack_count)
-	{
-		// Establish Choreography Stack Object Struct
-		var temp_stack_obj = CelestialSimulator.battle_choreography_stack[temp_battle_choreography_stack_index];
-		
-		// Perform Battle Choreography Stack Render Behaviour based on Choreography Instance's Object Type
-		switch (temp_stack_obj.choreography_object_type)
-		{
-			case CelestialBattleChoreographyObjectType.Actor:
-				//
-				var temp_actor_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
-				var temp_actor_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
-				
-				// Calculate Sprite Vertical Offset
-				var temp_actor_sprite_vertical_offset = -sprite_get_yoffset(temp_stack_obj.draw_sprite_index) + sprite_get_bbox_top(temp_stack_obj.draw_sprite_index);
-				
-				// Draw Battle Choreography Actor Sprite
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_actor_x, temp_actor_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				
-				// Check to Draw Weapon
-				if (temp_stack_obj.actor_weapon_enabled)
-				{
-					//
-					var temp_actor_weapon_pivot_x = lerp(temp_stack_obj.actor_weapon_pivot_x, temp_stack_obj.actor_weapon_aim_pivot_x, temp_stack_obj.actor_weapon_aim) * temp_stack_obj.draw_xscale;
-					var temp_actor_weapon_pivot_y = lerp(temp_stack_obj.actor_weapon_pivot_y, temp_stack_obj.actor_weapon_aim_pivot_y, temp_stack_obj.actor_weapon_aim);
-					
-					//
-					var temp_actor_weapon_x = temp_actor_x + temp_actor_weapon_pivot_x + temp_stack_obj.actor_weapon_offset_x;
-					var temp_actor_weapon_y = temp_actor_y + temp_actor_weapon_pivot_y + temp_stack_obj.actor_weapon_offset_y + temp_stack_obj.actor_weapon_vertical_bobbing_y_offset;
-					
-					//
-					var temp_actor_weapon_angle = temp_stack_obj.actor_weapon_angle + temp_stack_obj.actor_weapon_angle_recoil;
-					
-					//
-					draw_sprite_ext(temp_stack_obj.actor_weapon_sprite, 0, temp_actor_weapon_x, temp_actor_weapon_y, 1, temp_stack_obj.draw_xscale, temp_actor_weapon_angle, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				}
-				
-				//
-				if (temp_stack_obj.actor_weapon_attack_timer > 0)
-				{
-					draw_sprite_ext(temp_stack_obj.actor_weapon_attack_sprite_index, temp_stack_obj.actor_weapon_attack_image_index, temp_stack_obj.actor_weapon_attack_x, temp_stack_obj.actor_weapon_attack_y, 1, 1, temp_stack_obj.actor_weapon_attack_image_angle, c_white, 1);
-				}
-				
-				// Unit Emotion Sprite Animation Rendering Behaviour
-				if (instance_exists(temp_stack_obj.combat_unit_instance))
-				{
-					if (instance_exists(temp_stack_obj.combat_unit_instance.unit_instance) and temp_stack_obj.combat_unit_instance.unit_instance.emotion_sprite_index != -1)
-					{
-						//
-						var temp_actor_unit_emotion_sprite_index = temp_stack_obj.combat_unit_instance.unit_instance.emotion_sprite_index;
-						var temp_actor_unit_emotion_image_index = temp_stack_obj.combat_unit_instance.unit_instance.emotion_image_index;
-						
-						// Unit Emotion Animation Draw Sprite Behaviour
-						draw_sprite_ext(temp_actor_unit_emotion_sprite_index, temp_actor_unit_emotion_image_index, temp_actor_x, temp_actor_y + temp_actor_sprite_vertical_offset, 1, 1, 0, c_white, temp_stack_obj.draw_alpha);
-					}
-					else if (temp_stack_obj.action_delay_timer > 0 and temp_stack_obj.action_duration_timer <= 0)
-					{
-						//
-						var temp_action_timer_rect_w = 22;
-						var temp_action_timer_rect_h = 1;
-						
-						var temp_action_timer_rect_h_offset = -4;
-						
-						//
-						var temp_action_timer_rect_x1 = temp_actor_x - (temp_action_timer_rect_w * 0.5);
-						var temp_action_timer_rect_y1 = temp_actor_y + temp_actor_sprite_vertical_offset - temp_action_timer_rect_h + temp_action_timer_rect_h_offset;
-						var temp_action_timer_rect_x2 = temp_actor_x + (temp_action_timer_rect_w * 0.5);
-						var temp_action_timer_rect_y2 = temp_actor_y + temp_actor_sprite_vertical_offset + temp_action_timer_rect_h_offset;
-						
-						var temp_action_timer_rect_xvalue = temp_actor_x - (temp_action_timer_rect_w * 0.5) + (temp_action_timer_rect_w * temp_stack_obj.action_delay_timer);
-						
-						//
-						draw_set_color(c_white);
-						draw_rectangle(temp_action_timer_rect_x1 - 2, temp_action_timer_rect_y1 - 2, temp_action_timer_rect_x2 + 2, temp_action_timer_rect_y2 + 2, false);
-						draw_set_color(c_black);
-						draw_rectangle(temp_action_timer_rect_x1 - 1, temp_action_timer_rect_y1 - 1, temp_action_timer_rect_x2 + 1, temp_action_timer_rect_y2 + 1, false);
-						
-						//
-						draw_set_color(c_white);
-						draw_rectangle(temp_action_timer_rect_x1, temp_action_timer_rect_y1, temp_action_timer_rect_xvalue, temp_action_timer_rect_y2, false);
-					}
-				}
-				break;
-			case CelestialBattleChoreographyObjectType.Prop:
-				//
-				var temp_prop_x = temp_stack_obj.draw_x + temp_stack_obj.draw_offset_x + temp_stack_obj.draw_random_offset_x;
-				var temp_prop_y = temp_stack_obj.draw_y + temp_stack_obj.draw_offset_y + temp_stack_obj.draw_random_offset_y;
-				
-				// Draw Battle Choreography Actor Sprite
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_prop_x, temp_prop_y, temp_stack_obj.draw_xscale, 1, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				
-				//
-				break;
-			case CelestialBattleChoreographyObjectType.LinearProjectile:
-				//
-				draw_set_alpha(temp_stack_obj.linear_projectile_alpha);
-				
-				//
-				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width + 2, c_black, c_black);
-				draw_line_width_color(temp_stack_obj.linear_projectile_start_x, temp_stack_obj.linear_projectile_start_y, temp_stack_obj.linear_projectile_end_x, temp_stack_obj.linear_projectile_end_y, temp_stack_obj.linear_projectile_width, temp_stack_obj.draw_color, temp_stack_obj.draw_color);
-				
-				//
-				draw_set_alpha(1);
-				
-				//
-				draw_sprite_ext(temp_stack_obj.draw_sprite_index, temp_stack_obj.draw_image_index, temp_stack_obj.draw_x, temp_stack_obj.draw_y, temp_stack_obj.draw_xscale, temp_stack_obj.draw_yscale, 0, temp_stack_obj.draw_color, temp_stack_obj.draw_alpha);
-				break;
-			case CelestialBattleChoreographyObjectType.SmokeParticle:
-				break;
-		}
-		
-		// Increment Battle Choreography Stack Index
-		temp_battle_choreography_stack_index++;
-	}
-	*/
 }
 
 calculate_celestial_battle_vertex_positions = function()

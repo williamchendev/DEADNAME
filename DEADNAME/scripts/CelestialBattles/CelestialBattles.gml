@@ -122,24 +122,24 @@ function celestial_battle_calculate_combat_action_success(combat_action_instance
 }
 
 /// @function celestial_battle_perform_combat_action(combat_action_instance);
-/// @description 
+/// @description Performs a Celestial Combat Action Instance's Action Behaviour on the Action's Target Combat Unit Instance
 /// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to perform the Action Behaviour of
 function celestial_battle_perform_combat_action(combat_action_instance)
 {
-	//
+	// Establish the Celestial Battle Instance the Combat Action Instance belongs to
 	var temp_battle_instance = combat_action_instance.battle_instance;
 	
-	//
+	// Establish the Target Combat Unit Instance and Target Combat Unit's Celestial Unit Instance of the Combat Action Instance
 	var temp_target_combat_unit_instance = combat_action_instance.target_combat_unit;
 	var temp_target_celestial_unit_instance = combat_action_instance.target_combat_unit.unit_instance;
 	
-	//
+	// Establish the Death Type of the Combat Action Instance's Target Combat Unit
 	temp_target_combat_unit_instance.combat_unit_death_type = combat_action_instance.action_death_type != CelestialBattleDeathType.None ? combat_action_instance.action_death_type : temp_target_combat_unit_instance.combat_unit_death_type;
 	
-	//
+	// Calculate Combat Action Instance's Attack Damage
 	temp_target_combat_unit_instance.combat_unit_health -= combat_action_instance.action_damage;
 	
-	//
+	// Check if Target Combat Unit's Health has been reduced to zero and has been Destroyed
 	if (temp_target_combat_unit_instance.combat_unit_health <= 0)
 	{
 		// Instantiate Combat Unit's Tile Disappear Instance
@@ -155,31 +155,31 @@ function celestial_battle_perform_combat_action(combat_action_instance)
 		temp_tile_disappear_instance.combat_grid_row = temp_target_combat_unit_instance.combat_grid_row;
 		temp_tile_disappear_instance.combat_grid_tile = temp_target_combat_unit_instance.combat_grid_tile;
 		
-		//
-		celestial_battle_spawn_combat_unit_physics_body(temp_battle_instance, temp_target_combat_unit_instance, combat_action_instance);
+		// Instantiate Combat Unit's Death Animation
+		celestial_battle_instantiate_combat_unit_death_animation(temp_battle_instance, temp_target_combat_unit_instance, combat_action_instance);
 		
-		//
+		// Remove Combat Unit from the Celestial Battle Instance
 		celestial_battle_remove_combat_unit(temp_battle_instance, temp_target_combat_unit_instance, false);
 		
-		//
+		// Remove Combat Unit from the Combat Unit's Celestial Unit Instance
 		celestial_unit_remove_combat_unit(temp_target_combat_unit_instance.unit_instance, temp_target_combat_unit_instance);
 		
-		//
+		// Destroy Combat Unit Instance
 		instance_destroy(temp_target_combat_unit_instance);
 		
-		//
+		// Check if Combat Unit's Celestial Unit Instance has had all their Combat Units destroyed and itself has been destroyed
 		if (temp_target_celestial_unit_instance.combat_unit_count < 1)
 		{
-			//
+			// Remove Combat Unit's Celestial Unit Instance from the Celestial Battle Instance
 			celestial_battle_remove_unit(temp_battle_instance, temp_target_celestial_unit_instance, false);
 			
-			//
+			// Destroy Combat Unit's Celestial Unit Instance
 			instance_destroy(temp_target_celestial_unit_instance);
 			
-			//
+			// Check if either of the Celestial Battle's Combat Grid Sides are Empty
 			if (array_length(temp_battle_instance.battle_units_a) < 1 or array_length(temp_battle_instance.battle_units_b) < 1)
 			{
-				//
+				// One (or more) of the Celestial Battle's Combat Grid Sides are Empty - End Celestial Battle
 				temp_battle_instance.battle_exists = false;
 			}
 		}
@@ -227,12 +227,12 @@ function celestial_battle_arc_projectile_predict_angle(start_x, start_y, target_
 #endregion
 
 #region Combat Unit Functions
-/// @function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat_unit_instance, combat_action_instance)
-/// @description 
-/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle to 
-/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit Instance to 
-/// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance to perform the Action Behaviour of
-function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat_unit_instance, combat_action_instance)
+/// @function celestial_battle_instantiate_combat_unit_death_animation(battle_instance, combat_unit_instance, combat_action_instance)
+/// @description Instantiates a Celestial Combat Action as a Death Animation for a Celestial Combat Unit Instance that has been destroyed during a Celestial Battle's Combat
+/// @param {real:Id.Instance<oCelestialBattle>} battle_instance The Celestial Battle that Combat is taking place within and the Physics Body Celestial Combat Action will be added to
+/// @param {real:Id.Instance<oCelestialCombatUnit>} combat_unit_instance The Celestial Combat Unit Instance that has been "killed" and will be used as the target of the Death Animation 
+/// @param {real:Id.Instance<oCelestialCombatAction>} combat_action_instance The Celestial Combat Action Instance of the Action that has "killed" the Celestial Combat Unit Instance being targeted for a Death Animation
+function celestial_battle_instantiate_combat_unit_death_animation(battle_instance, combat_unit_instance, combat_action_instance)
 {
 	// Establish Combat Unit Type Struct
 	var temp_combat_unit_struct = global.celestial_combat_units[combat_unit_instance.combat_unit_type];
@@ -243,7 +243,7 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 	// Establish Combat Unit's Sprite Vertical Offset
 	var temp_combat_unit_sprite_vertical_offset = -sprite_get_yoffset(combat_unit_instance.sprite_index) + sprite_get_bbox_top(combat_unit_instance.sprite_index);
 	
-	//
+	// Establish Combat Unit's Death Prop Animation Variables
 	var temp_combat_unit_death_prop_animation = false;
 	
 	// Default Infantry Death Animation
@@ -255,10 +255,10 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 	switch (combat_unit_instance.combat_unit_death_type)
 	{
 		case CelestialBattleDeathType.Firearm:
-			//
+			// Infantry Firearm Death Animation - (Keel Over Prop Death Animation) or (Knocked Down Physics Body Animation)
 			if (random(1) <= 0.5)
 			{
-				//
+				// Keel Over Prop Death Animation
 				temp_combat_unit_death_prop_animation = true;
 			}
 			break;
@@ -282,7 +282,7 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			break;
 		case CelestialBattleDeathType.None:
 		default:
-			//
+			// Infantry Default Death Animation - (Keel Over Prop Death Animation)
 			temp_combat_unit_death_prop_animation = true;
 			break;
 	}
@@ -324,7 +324,7 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			combat_unit_instance.item_pivot_x = lerp(temp_combat_unit_struct.unit_item_pivot_x, temp_combat_unit_struct.unit_item_aim_pivot_x, combat_unit_instance.item_aim) * combat_unit_instance.image_xscale;
 			combat_unit_instance.item_pivot_y = lerp(temp_combat_unit_struct.unit_item_pivot_y, temp_combat_unit_struct.unit_item_aim_pivot_y, combat_unit_instance.item_aim);
 			
-			// Instantiate Physics Body Item Instance
+			// Instantiate Combat Unit's Physics Body Item Instance
 			var temp_physics_item_instance = instance_create_depth(combat_unit_instance.x + combat_unit_instance.item_pivot_x, combat_unit_instance.y + combat_unit_instance.item_pivot_y, 0, temp_physics_item_object, temp_physics_item_struct);
 			
 			// Index Combat Unit's Physics Body Item Combat Action Instance within the Celestial Battle's Combat Actions Array
@@ -347,6 +347,9 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			temp_physics_item_instance.image_xscale = combat_unit_instance.draw_xscale;
 			temp_physics_item_instance.physics_body_xscale = combat_unit_instance.draw_xscale;
 			
+			// Reset Combat Unit's Dropped Item Rotate Speed
+			temp_physics_item_instance.image_angle = combat_unit_instance.item_angle;
+			
 			// Randomize Combat Unit's Dropped Item Rotate Speed
 			temp_physics_item_instance.physics_body_rotate_speed = random_range(15, 24);
 			
@@ -357,56 +360,53 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 			temp_physics_item_instance.vertical_depth_y = temp_physics_item_ground_level;
 			temp_physics_item_instance.vertical_depth_offset = 2;
 			
-			//
+			// Check if Combat Unit's Death Animation is a Death Prop Animation - Death Prop Animation Item Drop Behaviour
 			if (temp_combat_unit_death_prop_animation)
 			{
-				//
+				// Reset Combat Unit's Dropped Item Velocity
 				temp_physics_item_instance.physics_body_horizontal_velocity = 0;
 				temp_physics_item_instance.physics_body_vertical_velocity = 0;
 				
-				//
+				// Reset Combat Unit's Dropped Item Rotate Speed
 				temp_physics_item_instance.physics_body_rotate_speed = 0;
 				
-				//
-				temp_physics_item_instance.image_angle = combat_unit_instance.item_angle;
-				
-				//
+				// Reset Combat Unit's Dropped Item Gravity Speed
 				temp_physics_item_instance.physics_body_gravity = 0.1;
 				
-				//
+				// Update Combat Unit's Dropped Item Ground Y Level to Combat Unit's Vertical Position
 				temp_physics_item_instance.physics_body_ground_y = combat_unit_instance.y;
 				
-				//
+				// Set the Dropped Item's Vertical Depth to Combat Unit's Vertical Position
 				temp_physics_item_instance.vertical_depth_y = combat_unit_instance.y;
 				temp_physics_item_instance.vertical_depth_offset = 3;
 			}
 		}
 	}
 	
-	//
+	// Check if Combat Unit's Death Animation is a Death Prop Animation
 	if (temp_combat_unit_death_prop_animation)
 	{
-		//
+		// Instantiate Combat Unit's Death Animation Prop
 		var temp_combat_unit_death_animation_instance = instance_create_depth(combat_unit_instance.x, combat_unit_instance.y, 0, oCelestialCombatAction_PropAnimation_UnitDeath);
 		
 		// Index Combat Unit's Death Animation Prop Combat Action Instance within the Celestial Battle's Combat Actions Array
 		array_push(battle_instance.battle_combat_actions, temp_combat_unit_death_animation_instance);
 		temp_combat_unit_death_animation_instance.battle_instance = battle_instance;
 		
-		// Update Combat Unit's Physics Body Color
+		// Update Combat Unit's Death Animation Prop Color
 		temp_combat_unit_death_animation_instance.image_blend = temp_combat_unit_color;
 		
-		//
+		// Update Combat Unit's Death Animation Prop Facing Direction
 		temp_combat_unit_death_animation_instance.image_xscale = combat_unit_instance.draw_xscale;
 		
-		//
+		// Set Combat Unit's Death Animation Prop Vertical Depth
 		temp_combat_unit_death_animation_instance.vertical_depth_offset = 2;
 		
-		//
+		// Early Exit
 		return;
 	}
 	
-	// Instantiate Physics Body Instance
+	// Instantiate Combat Unit's Physics Body Instance
 	var temp_physics_body_instance = instance_create_depth(combat_unit_instance.x, combat_unit_instance.y + (temp_combat_unit_sprite_vertical_offset * 0.5), 0, temp_physics_body_object, temp_physics_body_struct);
 	
 	// Index Combat Unit's Physics Body Combat Action Instance within the Celestial Battle's Combat Actions Array
@@ -435,7 +435,7 @@ function celestial_battle_spawn_combat_unit_physics_body(battle_instance, combat
 /// @param {real:Id.Instance<oCelestialBody>} celestial_object The Celestial Object Instance the Celestial Battle will belong to
 /// @param {real:Id.Instance<oCelestialFaction>} celestial_faction_a The first Celestial Faction Instance that is engaged in the Celestial Battle
 /// @param {real:Id.Instance<oCelestialFaction>} celestial_faction_b The second Celestial Faction Instance that is engaged in the Celestial Battle
-/// @returns {?real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance
+/// @returns {?real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance if the two Factions has a Hostile Relationship, and an Empty Instance (noone) otherwise
 function celestial_battle_create(celestial_object, celestial_faction_a, celestial_faction_b)
 {
 	// Check if the given Celestial Factions are hostile to eachother
@@ -480,16 +480,20 @@ function celestial_battle_create(celestial_object, celestial_faction_a, celestia
 	return temp_celestial_battle_instance;
 }
 
-//
+/// @function celestial_battle_unit_search_for_battle(unit_instance);
+/// @description Searches for a compatible Celestial Battle Instance within range to the given Celestial Unit Instance on their parent Celestial Body and adds the Celestial Unit Instance to the Battle's Combat before returning the Battle Instance
+/// @param {real:Id.Instance<oCelestialUnit>} unit_instance The Celestial Unit Instance that is searching for a compatible Celestial Battle to join Combat
+/// @returns {?real:Id.Instance<oCelestialBattle>} Returns a Celestial Battle Instance if there is an eligible Celestial Battle Instance within range of the given Celestial Battle Instance, and an Empty Instance (noone) otherwise
 function celestial_battle_unit_search_for_battle(unit_instance)
 {
-	//
+	// Check if the Celestial Unit Instance belongs to a Celestial Body and is not Engaged in any Battles
 	if (!instance_exists(unit_instance.celestial_body_instance) or array_length(unit_instance.engaged_battles) > 0)
 	{
-		return;
+		// Skip Celestial Unit's Battle Search Behaviour - Return Empty Battle Instance
+		return noone;
 	}
 	
-	//
+	// Establish Empty Closest Battle Instance & Distance Variables
 	var temp_battle_closest_instance = noone;
 	var temp_battle_closest_distance = undefined;
 	
@@ -516,23 +520,23 @@ function celestial_battle_unit_search_for_battle(unit_instance)
 		// Check if Unit is within the Battle's Combat Engagement Threshold
 		if (temp_battle_check_instance.battle_exists and temp_unit_collision_check_battle_dot_product <= temp_battle_check_instance.battle_far_collision_threshold)
 		{
-			//
+			// Check if Battle Factions enable Celestial Unit to join either Combat Grid Sides
 			if (celestial_faction_is_relationship_allied(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_a) and celestial_faction_is_relationship_hostile(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_b))
 			{
-				//
+				// Check if new Battle Instance is closer than the previous Closest Battle Instance
 				if (is_undefined(temp_battle_closest_distance) or temp_unit_collision_check_battle_dot_product < temp_battle_closest_distance)
 				{
-					//
+					// Set new Battle Instance as the Closest Battle Instance
 					temp_battle_closest_instance = temp_battle_check_instance;
 					temp_battle_closest_distance = temp_unit_collision_check_battle_dot_product;
 				}
 			}
 			else if (celestial_faction_is_relationship_allied(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_b) and celestial_faction_is_relationship_hostile(unit_instance.unit_faction, temp_battle_check_instance.battle_faction_a))
 			{
-				//
+				// Check if new Battle Instance is closer than the previous Closest Battle Instance
 				if (is_undefined(temp_battle_closest_distance) or temp_unit_collision_check_battle_dot_product < temp_battle_closest_distance)
 				{
-					//
+					// Set new Battle Instance as the Closest Battle Instance
 					temp_battle_closest_instance = temp_battle_check_instance;
 					temp_battle_closest_distance = temp_unit_collision_check_battle_dot_product;
 				}
@@ -543,7 +547,7 @@ function celestial_battle_unit_search_for_battle(unit_instance)
 		temp_battle_check_index++;
 	}
 	
-	//
+	// Check if Celestial Unit's Battle Search was Successful
 	if (!is_undefined(temp_battle_closest_distance))
 	{
 		// Add Unit Instance to Battle
@@ -555,7 +559,13 @@ function celestial_battle_unit_search_for_battle(unit_instance)
 			// Select the Celestial Battle the Unit has just been added to
 			CelestialSimulator.select_sub_object_instance(temp_battle_closest_instance);
 		}
+		
+		// Return the Closest Battle Instance the Celestial Unit added themselves to
+		return temp_battle_closest_instance;
 	}
+	
+	// Celestial Unit's Battle Search was Unsuccessful - Return Empty Battle Instance
+	return noone;
 }
 
 /// @function celestial_battle_check_for_duplicate(battle_instance);
